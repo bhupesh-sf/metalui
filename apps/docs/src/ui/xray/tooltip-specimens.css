@@ -1,0 +1,36 @@
+/* TOOLTIP SPECIMENS: a real tool with its real tooltip; the handles ride inside the label */
+.ed-tip-well { overflow: visible; }
+/* room for the label on every side of the tool */
+.ed-tip-stage { padding: 40px 0; display: grid; place-items: center; }
+.ed-tip-strip { position: relative; }
+/* the popup (portalled to the page): a box for the overlay */
+.ed-tip { position: relative; }
+.ed-tip-over { position: absolute; inset: 0; pointer-events: none; border-radius: inherit; }
+.ed-tip-over .ed-outline { opacity: 0; transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-tip-over:is(:hover, :focus-within, [data-live], [data-peek]) .ed-outline { opacity: 1; }
+.ed-tip-over .ed-corner-art { opacity: 0; transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-tip-over[data-shown~="corner"]:is(:hover, :focus-within, [data-live], [data-peek]) .ed-corner-art { opacity: 1; }
+.ed-tip-body, .ed-tip-edge, .ed-tip-corner { position: absolute; display: block; pointer-events: auto; outline: none; touch-action: none; }
+/* the label itself is the handle: a faint ring on hover, focus or a readout's point (the label is
+ * always graphite, so the ring is the deep green) */
+.ed-tip-body { inset: 0; border-radius: inherit; transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-tip-body.is-move { cursor: grab; }
+.ed-tip-body.is-move:active { cursor: grabbing; }
+.ed-tip-body.is-lift { cursor: ns-resize; }
+.ed-tip-body:hover, .ed-tip-body:focus-visible, .ed-tip-over:is([data-peek="Side"], [data-live="Side"], [data-peek=""], [data-live=""]) .ed-tip-body { box-shadow: 0 0 0 .8px var(--green-deep); }
+/* an edge handle: a strip along the label's real edge, the hairline is the Outline's */
+.ed-tip-edge { z-index: 1; }
+.ed-tip-edge:is([data-seg="top"], [data-seg="bottom"]) { left: 6px; right: 6px; height: 6px; cursor: ns-resize; }
+.ed-tip-edge[data-seg="top"] { top: -3px; }
+.ed-tip-edge[data-seg="bottom"] { bottom: -3px; }
+.ed-tip-edge:is([data-seg="left"], [data-seg="right"]) { top: 0; bottom: 0; width: 6px; cursor: ew-resize; }
+.ed-tip-edge[data-seg="left"] { left: -3px; }
+.ed-tip-edge[data-seg="right"] { right: -3px; }
+.ed-tip-corner { left: 0; top: 0; z-index: 2; cursor: nwse-resize; max-width: 33%; max-height: 45%; }
+.ed-tip-corner:hover .ed-corner-circle, .ed-tip-corner:focus-visible .ed-corner-circle, .ed-tip-over[data-live="Corners"] .ed-corner-circle { opacity: .8; }
+/* the lean: the label's outline on the side it is about to take */
+.ed-tip-ghost { position: absolute; display: block; border: .8px solid var(--mu-presence-guide); box-shadow: 0 0 5px var(--mu-presence-guide); pointer-events: none; }
+/* the label is always graphite: its handles are drawn in the deep green */
+.ed-tip .ed-seg, .ed-tip .ed-corner-arc, .ed-tip .ed-corner-circle { stroke: var(--green-deep); }
+html.rm .ed-tip, html.rm .ed-tip * { transition: none !important; }
+@media (prefers-reduced-motion: reduce) { .ed-tip, .ed-tip * { transition: none !important; } }
