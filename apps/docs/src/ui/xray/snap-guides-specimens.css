@@ -1,0 +1,34 @@
+/* SNAP GUIDES specimens: a patch of canvas with two notes and the real guides between them */
+.ed-snap-canvas { position: relative; overflow: hidden; border-radius: 14px; outline: none; touch-action: none;
+  background-color: color-mix(in srgb, var(--page) 60%, transparent);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 12%, transparent) .6px, transparent .8px); background-size: 12px 12px;
+  box-shadow: inset 0 0 0 .5px transparent; transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-snap-world { position: absolute; left: 0; width: 100%; height: 100%; }
+.ed-snap-band { position: absolute; pointer-events: none; }
+.ed-snap-note { position: absolute; display: block; outline: none; border-radius: var(--mu-r-surface-radius-card); }
+.ed-snap-note-face { position: absolute; inset: 0; display: grid; place-items: center; white-space: nowrap; }
+/* the note as a handle: a faint ring on hover or focus, heavier while it is held */
+.ed-snap-note.is-handle { cursor: grab; touch-action: none; box-shadow: 0 0 0 .5px transparent; transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-snap-note.is-x { cursor: ew-resize; }
+.ed-snap-note.is-handle:is(:hover, :focus-visible), .ed-snap-canvas[data-peek] .ed-snap-note.is-handle { box-shadow: 0 0 0 .75px var(--mu-presence-guide); }
+.ed-snap-note.is-press:active { cursor: grabbing; }
+/* the canvas as the zoom handle: its own edge lights */
+.ed-snap-canvas.is-y { cursor: ns-resize; }
+.ed-snap-canvas.is-handle:is(:hover, :focus-visible), .ed-snap-canvas.is-handle[data-peek] { box-shadow: inset 0 0 0 .75px var(--mu-presence-guide); }
+/* a grip on a stretch of line: nothing drawn at rest but the line itself; a faint frame when pointed at */
+.ed-snap-grip { position: absolute; z-index: 1; outline: none; cursor: ns-resize; touch-action: none; border-radius: 3px;
+  box-shadow: 0 0 0 .5px transparent; transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-snap-grip:is(:hover, :focus-visible), .ed-snap-grip[data-peek], .ed-snap-grip[data-live] { box-shadow: 0 0 0 .6px var(--mu-presence-guide); }
+/* the overshoot grip draws the tips' reach: a hairline across the lines' lower ends */
+.ed-snap-grip.is-tip { box-shadow: none; }
+.ed-snap-grip.is-tip svg { position: absolute; left: 0; top: 0; overflow: visible; }
+.ed-snap-grip.is-tip path { fill: none; stroke: var(--mu-presence-guide); stroke-width: .5; stroke-linecap: round; opacity: .45;
+  transition: stroke-width var(--spring-part-d) var(--spring-part), opacity var(--spring-part-d) var(--spring-part); }
+.ed-snap-grip.is-tip:is(:hover, :focus-visible, [data-peek], [data-live]) path { stroke-width: 1; opacity: 1; }
+[data-mu-colorway="graphite"] .ed-snap-grip.is-tip path { stroke: var(--mu-presence-guide-dark); }
+[data-mu-colorway="graphite"] :is(.ed-snap-grip:is(:hover, :focus-visible, [data-peek], [data-live]):not(.is-tip), .ed-snap-note.is-handle:is(:hover, :focus-visible)) { box-shadow: 0 0 0 .75px var(--mu-presence-guide-dark); }
+/* the specimen never animates under the finger: the note and the guides land in the same frame */
+.ed-snap-note, .ed-snap-world { transition: none; }
+/* on the bench: the guides' layer spans the scene. The page's svg reset (max-width: 100%) squeezes the
+ * 1 × 1 svg to nothing inside the zero-width scene layer, and a tilted layer clips to its own box. */
+.xr-snap-guides > .mu-snap-guides { width: var(--xr-snap-w); height: var(--xr-snap-h); max-width: none; }
