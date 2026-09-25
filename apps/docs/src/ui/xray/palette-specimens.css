@@ -1,0 +1,21 @@
+/* The palette x-ray's specimens: a still of the real palette with hairline handles on it. */
+.ed-pal-well { overflow: hidden; }
+.ed-pal-box { display: block; }
+/* the still is the component's own classes; the status sits at the right of the footer, as in the palette */
+.ed-pal-still .ed-pal-status { margin-left: auto; }
+.ed-overlay .ed-pal-hit { position: absolute; z-index: 2; outline: none; touch-action: none; }
+.ed-pal-line { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.ed-pal-hit:hover .ed-seg, .ed-pal-hit:focus-visible .ed-seg { stroke-width: 1.3; opacity: 1; }
+.ed-pal-hit[data-away] .ed-seg, .ed-pal-corner[data-away] .ed-corner-art { opacity: 0; }
+.ed-overlay .ed-pal-corner { z-index: 3; touch-action: none; }
+/* the chosen row: the raised cap itself is the handle; a faint ring when pointed at */
+.ed-overlay .ed-pal-cap { position: absolute; z-index: 1; cursor: ns-resize; outline: none; touch-action: none;
+  box-shadow: 0 0 0 .5px color-mix(in srgb, var(--mu-presence-guide) 45%, transparent); }
+.ed-pal-cap[data-lit], .ed-pal-cap:focus-visible { box-shadow: 0 0 0 .9px var(--mu-presence-guide); }
+.ed-pal-cap[data-away] { box-shadow: none; }
+/* the lean: the row it will jump to lights up before it does */
+.ed-pal-lean { position: absolute; border: .8px solid var(--mu-presence-guide); opacity: .75; pointer-events: none; }
+[data-mu-colorway="graphite"] .ed-pal-cap { box-shadow: 0 0 0 .5px color-mix(in srgb, var(--green-deep) 55%, transparent); }
+[data-mu-colorway="graphite"] :is(.ed-pal-cap[data-lit], .ed-pal-cap:focus-visible) { box-shadow: 0 0 0 .9px var(--green-deep); }
+[data-mu-colorway="graphite"] .ed-pal-lean { border-color: var(--green-deep); }
+[data-mu-colorway="graphite"] .ed-pal-cap[data-away] { box-shadow: none; }
