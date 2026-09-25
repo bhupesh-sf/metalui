@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Checkbox, Switcher } from '@unlocalhosted/metalui';
+import { Checkbox } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Dial, Exploded, IsoCap, IsoTray, LayerList, LightDials, Proof, XrayFrame, aim, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { Exploded, IsoCap, IsoTray, XrayFrame, aim, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { HintLayer } from '../edit';
+import { CheckboxSpecimenCard } from './CheckboxSpecimens';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · CHECKBOX
@@ -17,7 +19,7 @@ import { Dial, Exploded, IsoCap, IsoTray, LayerList, LightDials, Proof, XrayFram
  *             Layers  the layers of the current state
  * ───────────────────────────────────────────────────────── */
 
-const R = tokens.recipes.checkbox as { props: { self: { size: number; radius: number; x: number }; tick: { x: number; y: number; w: number; h: number; stroke: number; rotate: string; draw: string; delay: string }; ghost: { size: number; radius: number } }; layers: { part: string; prop: string; value: string }[] };
+const R = tokens.recipes.checkbox;
 const P = R.props;
 const DOING = R.layers.find((l) => l.part === 'doing')!.value;
 const S = 10;
@@ -37,7 +39,7 @@ const SIDE: Record<Spot, ['left' | 'right', number]> = {
   layers: ['right', 0.2], tick: ['right', 0.48], states: ['right', 0.76],
 };
 
-const LAYERS: Record<'rest' | 'on' | 'ghost', LayerDef[]> = {
+export const LAYERS: Record<'rest' | 'on' | 'ghost', LayerDef[]> = {
   rest: [
     { name: 'Hole fill', why: 'The colour inside the hole. Darker at the top, lighter at the bottom, because the hole goes down into the page.' },
     { name: 'Inner shadow', why: 'A soft shadow inside the top edge. The edge blocks the light, so the top of the hole is darker.' },
@@ -55,9 +57,9 @@ const LAYERS: Record<'rest' | 'on' | 'ghost', LayerDef[]> = {
     { name: 'Inner shadow', why: 'A faint shadow inside the top edge, so the ring still looks like a shallow hole.' },
   ],
 };
-const groupOf = (s: State): 'rest' | 'on' | 'ghost' => (s === 'on' ? 'on' : s === 'ghost' ? 'ghost' : 'rest');
+export const groupOf = (s: State): 'rest' | 'on' | 'ghost' => (s === 'on' ? 'on' : s === 'ghost' ? 'ghost' : 'rest');
 
-interface Model {
+export interface Model {
   state: State; size: number; radius: number; depth: number; angle: number;
   lightDeg: number; lightK: number;
   on: Record<'rest' | 'on' | 'ghost', boolean[]>;
@@ -75,7 +77,13 @@ export function CheckboxXray({ startOpen = false }: { startOpen?: boolean }) {
   const [focus, setFocus] = React.useState<string | null>(null);
   const [replay, setReplay] = React.useState(0);
   const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
-  const setState = (state: State) => { set({ state }); if (state === 'on') setReplay((n) => n + 1); };
+  const setState = (state: State) => {
+    const ordinaryRadius = m.size === P.row.size ? P.row.radius : P.self.radius;
+    const radius = state === 'ghost' && m.state !== 'ghost' && m.radius === ordinaryRadius ? P.ghost.radius
+      : m.state === 'ghost' && state !== 'ghost' && m.radius === P.ghost.radius ? ordinaryRadius : m.radius;
+    set({ state, radius });
+    if (state === 'on') setReplay((n) => n + 1);
+  };
 
   const rest = useStateLayers('checkbox', '');
   const hover = useStateLayers('checkbox', 'hover');
@@ -85,8 +93,8 @@ export function CheckboxXray({ startOpen = false }: { startOpen?: boolean }) {
   const on = m.on[g];
 
   const ghost = m.state === 'ghost';
-  const size = ghost ? P.ghost.size + (m.size - P.self.size) : m.size;
-  const radius = ghost ? P.ghost.radius + (m.radius - P.self.radius) : m.radius;
+  const size = ghost ? P.ghost.size : m.size;
+  const radius = m.radius;
   const W = m.size * S, H = m.size * S, w = size * S, r = radius * S, off = ((m.size - size) / 2) * S;
 
   const lit = (list: string[], mask: boolean[], k = 1) => list.map((v, i) => (mask[i + 1] ? aim(k === 1 ? v : v.replace(/rgba\(([^)]*),\s*([\d.]+)\)/, (_, c, a) => `rgba(${c},${Math.min(1, Number(a) * k).toFixed(3)})`), m.lightDeg, m.lightK) : null)).filter(Boolean).join(', ') || 'none';
@@ -138,7 +146,7 @@ export function CheckboxXray({ startOpen = false }: { startOpen?: boolean }) {
   };
 
   const real = (
-    <Checkbox aria-label="Task" checked={m.state === 'on'} doing={m.state === 'doing'} ghost={ghost}
+    <Checkbox aria-label="Task" checked={m.state === 'on'} doing={m.state === 'doing'} ghost={ghost} size={m.size === P.row.size ? 'row' : 'margin'}
       onCheckedChange={(v) => setState(v ? 'on' : 'rest')} />
   );
   const line = (
@@ -148,65 +156,16 @@ export function CheckboxXray({ startOpen = false }: { startOpen?: boolean }) {
     </span>
   );
 
-  const card = (
-    <>
-      {spot === 'states' && (
-        <>
-          <p>A checkbox has five looks. At rest it is a small hole. Done, a dark key fills the hole and a tick draws on. Doing, the hole is half green. Suggested, it is only an outline, because the app guessed the task and nobody wrote it.</p>
-          <div className="xr-dials">
-            <Switcher size="compact" aria-label="State" value={m.state} onValueChange={(v) => setState(v as State)}
-              options={[{ value: 'rest', label: 'Rest' }, { value: 'hover', label: 'Hover' }, { value: 'on', label: 'Done' }, { value: 'doing', label: 'Doing' }, { value: 'ghost', label: 'Suggested' }]} />
-          </div>
-        </>
-      )}
-      {spot === 'tick' && (
-        <>
-          <p>The tick is an L shape turned {m.angle}°: the bottom and right edges of a small box. When you tick the box, it draws on in {P.tick.draw}, after a short {P.tick.delay} wait, so you see the key land first.</p>
-          <div className="xr-dials">
-            <Dial label="Angle" value={m.angle} min={0} max={90} step={1} fmt={(v) => `${v}°`} onChange={(angle) => set({ angle })} />
-          </div>
-          <p><button type="button" className="status" onClick={() => setState('on')}><span className="led" />Draw the tick again</button></p>
-        </>
-      )}
-      {spot === 'shape' && (
-        <>
-          <p>A {P.self.size} pt square with round corners. It hangs in the margin, {-P.self.x} pt to the left of the text, so the words of a task line up with every other line.</p>
-          <div className="xr-dials">
-            <Dial label="Size" value={m.size} min={12} max={24} step={1} fmt={(v) => `${v} pt`} onChange={(v) => set({ size: v })} />
-            <Dial label="Corners" value={m.radius} min={0} max={m.size / 2} step={0.5} fmt={(v) => `${v} pt`} onChange={(v) => set({ radius: v })} />
-          </div>
-        </>
-      )}
-      {spot === 'well' && (
-        <>
-          <p>At rest the checkbox is a hole, not a box drawn on top. A hole says "something goes here". Make it deeper and the inner shadow gets stronger.</p>
-          <div className="xr-dials"><Dial label="Depth" value={m.depth} min={0} max={3} step={0.1} fmt={(v) => (v === 0 ? 'flat' : v.toFixed(1))} onChange={(depth) => set({ depth })} /></div>
-        </>
-      )}
-      {spot === 'light' && (
-        <>
-          <p>The same light as everything else. The hole is dark at the top and bright at the bottom. The dark key is the other way round: bright at the top.</p>
-          <LightDials deg={m.lightDeg} k={m.lightK} set={set} />
-        </>
-      )}
-      {spot === 'layers' && (
-        <>
-          <p>These are the layers for the {m.state === 'on' ? 'done' : m.state === 'ghost' ? 'suggested' : 'rest'} look. Turn one off to see what it adds. Pick another state to see its layers.</p>
-          <LayerList groups={[{ layers: LAYERS[g], on, toggle: (i, v) => set({ on: { ...m.on, [g]: on.map((x, j) => (j === i ? v : x)) } }) }]} focus={focus} setFocus={setFocus} />
-        </>
-      )}
-      <Proof>{line}</Proof>
-    </>
-  );
+  const card = <CheckboxSpecimenCard spot={spot} m={m} set={set} setState={setState} focus={setFocus} />;
 
   return (
-    <XrayFrame
-      xray={xray} setXray={setXray} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot}
+    <HintLayer><XrayFrame
+      xray={xray} setXray={setXray} spots={SPOTS} side={SIDE} spot={spot} setSpot={(next) => { setSpot(next); if (next === 'tick') setState('on'); if (next === 'well') setState('rest'); }}
       solid={<div style={{ zoom: 2.4 }} onClick={(e) => e.stopPropagation()}>{line}</div>}
       W={W} H={H} scene={scene} anchors={anchors}
       sun={spot === 'light' ? { deg: m.lightDeg, k: m.lightK, z: top + 120 } : undefined}
       onReset={() => setM(INITIAL)} deps={[spot, m]}
       card={card}
-    />
+    /></HintLayer>
   );
 }
