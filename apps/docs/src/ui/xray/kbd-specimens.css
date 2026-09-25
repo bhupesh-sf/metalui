@@ -1,0 +1,12 @@
+.ed-kbd-box .ed-overlay { z-index: 2; }
+.ed-kbd-box .ed-edge.is-x { right: -3px; }
+.ed-kbd-box .ed-edge.is-y { top: -3px; }
+.ed-kbd-lean { position: absolute; inset: -2px; border: .7px solid var(--mu-presence-guide); border-radius: inherit; opacity: .7; pointer-events: none; }
+.ed-kbd-surface { position: relative; }
+.ed-kbd-surface-handle { display: inline-flex; cursor: ew-resize; outline: none; touch-action: none; }
+.ed-kbd-surface-handle:hover, .ed-kbd-surface-handle:focus-visible, .ed-kbd-surface-handle[data-peek] { box-shadow: 0 0 0 .8px var(--mu-presence-guide); border-radius: 7px; }
+.ed-kbd-surface-lean { position: absolute; inset: -3px; border: .8px solid var(--mu-presence-guide); border-radius: 7px; pointer-events: none; }
+.ed-kbd-light { position: relative; }
+.ed-kbd-light .ed-sun { position: absolute; left: calc(50% - 3.5px); top: calc(50% - 3.5px); }
+
+.ed-lift[data-peek] { box-shadow: 0 0 0 1px var(--mu-presence-guide); }

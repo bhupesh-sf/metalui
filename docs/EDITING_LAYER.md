@@ -79,6 +79,9 @@ Each of these shipped in a converted x-ray and had to be fixed. Check for them b
 - **Animation under the finger.** A spring left on a property while you drag a tunable, so the component chases the pointer. Only a snap animates; a tunable being dragged has no transition.
 - **A handle that crosses text.** A hairline through the middle of a word reads as a strikethrough. Draw a handle where the value lives (a word's padding is at its sides, so frame the word).
 - **Control names pasted into sentences.** "drag the top edge for Size, the right end for Space around the thumb". Write the sentence a person would say: "drag the top edge to change its size".
+- **A circular import that blanks the page.** `<Name>Specimens.tsx` reading a constant from `<Name>Xray.tsx` at load time, while the x-ray imports the specimens: the constant does not exist yet and the whole docs page shows "Something broke". Read tokens from `tokens/tokens.json` in the specimens file; use values from the x-ray only inside functions.
+- **A box drawn over text.** Type handles drawn as a frame around the glyph. The glyph itself is the handle (`ed-type-label` in an `ed-typebox`): sideways for spacing, up or down for size, a faint ring on hover.
+- **Distances that change with zoom.** A step that needs more than `STEP_AT` units becomes a long drag when a small part is magnified. Use `STEP_AT` for every step.
 - **Tests that pass nothing.** Dragging at coordinates below the fold (call `scrollIntoViewIfNeeded` first), or assuming a starting value the page does not have (read it first). Run every test yourself in a real browser; if your sandbox blocks the browser, say so plainly and do not claim you checked it.
 
 ## Tests and done
