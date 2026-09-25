@@ -71,6 +71,16 @@ A starting point, not a spec. Check each value against rule 7 first: if the comp
 
 The Switch has no x-ray yet. Its prototype is in the local, uncommitted lab page (`apps/docs/src/pages/Lab.tsx`, section 4): drag the thumb across to flip it (a ghost thumb shows the lean), hold and pull down for its pressed stretch, the top line steps regular and small, the right end sets the gap. When the Switch gets its x-ray, delete `Lab.tsx`, `lab.css` and the `lab` route in `apps/docs/src/main.tsx`.
 
+## Mistakes the review caught
+
+Each of these shipped in a converted x-ray and had to be fixed. Check for them before you hand anything back.
+
+- **Numbers typed in.** A size of 24 or 28 written into the file instead of read from `tokens/tokens.json`. Read every real option and token from the recipe.
+- **Animation under the finger.** A spring left on a property while you drag a tunable, so the component chases the pointer. Only a snap animates; a tunable being dragged has no transition.
+- **A handle that crosses text.** A hairline through the middle of a word reads as a strikethrough. Draw a handle where the value lives (a word's padding is at its sides, so frame the word).
+- **Control names pasted into sentences.** "drag the top edge for Size, the right end for Space around the thumb". Write the sentence a person would say: "drag the top edge to change its size".
+- **Tests that pass nothing.** Dragging at coordinates below the fold (call `scrollIntoViewIfNeeded` first), or assuming a starting value the page does not have (read it first). Run every test yourself in a real browser; if your sandbox blocks the browser, say so plainly and do not claim you checked it.
+
 ## Tests and done
 
 Tests are Playwright feature slices only (`e2e/`), through the real page. For each x-ray, prove:
