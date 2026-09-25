@@ -1,25 +1,26 @@
 import * as React from 'react';
 import { SuggestionChip } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, aim, capTop, scalePx, tones, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { Exploded, IsoCap, XrayFrame, aim, capTop, scalePx, tones, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { HintLayer } from '../edit';
+import { ChipSpecimenCard } from './ChipSpecimens';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · SUGGESTION CHIP
  *
  *   solid     a chip asking "Track as mood?" with its confidence and ✓ ×
  *   x-ray     a thin frosted pill standing low on the page, text and buttons on top
- *   play      Type     the question and how sure the app is
- *             States   quiet at rest, clear when you point at its line; how it arrives
- *             Press    ✓ accept · × dismiss
- *             Surface  frost and the green hairline
- *             Shape    height · padding
- *             Layers   seven layers, each switchable
+ *   card      the real chip, handled (ChipSpecimens): the question and how sure it is,
+ *             its line and arrival, ✓ and ×, frost and the green line, height and the
+ *             space on the left, and a switch per layer. The bench reads the same model.
  * ───────────────────────────────────────────────────────── */
 
 const P = tokens.recipes.chip.props.suggestion as { height: number; 'pad-left': number; 'pad-right': number; gap: number; ink: Record<string, string> };
 const S = 3;
+/** How see-through the frost is: the alpha of the recipe's suggestion background. */
+const FROST = Number((tokens.recipes.chip.layers as { part: string; prop: string; value: string }[]).find((l) => l.part === 'suggestion' && l.prop === 'background')!.value.match(/,\s*([\d.]+)\)$/)![1]);
 
-type Spot = 'type' | 'states' | 'press' | 'surface' | 'shape' | 'layers';
+export type Spot = 'type' | 'states' | 'press' | 'surface' | 'shape' | 'layers';
 const SPOTS: SpotDef<Spot>[] = [
   { id: 'type', title: 'Type', word: 'The question' },
   { id: 'states', title: 'States', word: 'Quiet until you look' },
@@ -33,7 +34,7 @@ const SIDE: Record<Spot, ['left' | 'right', number]> = {
   states: ['right', 0.2], layers: ['right', 0.48], press: ['right', 0.76],
 };
 
-const LAYERS: LayerDef[] = [
+export const LAYERS: LayerDef[] = [
   { name: 'Frost', why: 'A see-through light fill. The page shows through a little, so the chip feels like it floats over the text, not part of it.' },
   { name: 'Green line', why: 'A thin green outline. Green means "the app suggests this". You can tell a suggestion from your own writing at a glance.' },
   { name: 'Inner glow', why: 'A soft light just inside the edge, so the frost looks like soft plastic.' },
@@ -43,12 +44,13 @@ const LAYERS: LayerDef[] = [
   { name: 'Drop', why: 'A soft shadow a little lower. The chip floats just above the page.' },
 ];
 
-interface Model {
-  label: string; conf: number; host: boolean; hairline: boolean; frost: number;
+export interface Model {
+  label: string; conf: number; host: boolean; frost: number;
   h: number; padL: number; on: boolean[];
 }
-const INITIAL: Model = { label: 'Track as mood?', conf: 0.8, host: false, hairline: true, frost: 0.7, h: P.height, padL: P['pad-left'], on: LAYERS.map(() => true) };
-const QUESTIONS = ['Track as mood?', 'Task?', 'Date friday?', 'Move to Done?'];
+export const INITIAL: Model = { label: 'Track as mood?', conf: 0.8, host: false, frost: FROST, h: P.height, padL: P['pad-left'], on: LAYERS.map(() => true) };
+/** Questions the agent guide gives as examples; the chip shows one at a time. */
+export const QUESTIONS = ['Track as mood?', 'Task?', 'Date friday?', 'Move to Done?'];
 
 export function ChipXray({ startOpen = false }: { startOpen?: boolean }) {
   const [xray, setXray] = React.useState(startOpen);
@@ -69,8 +71,10 @@ export function ChipXray({ startOpen = false }: { startOpen?: boolean }) {
   const Wp = m.padL + textW + P.gap * 2 + BTN * 2 + P.gap + P['pad-right'];
   const W = Wp * S, H = m.h * S, R = H / 2;
 
-  const frostFill = m.on[0] ? rec.fill.replace(/,\s*\.7\)/, `, ${m.frost})`) : 'transparent';
-  const shadows = rec.shadows.map((v, i) => (m.on[i + 1] && (i !== 0 || m.hairline) ? aim(v, 0, 1) : null)).filter(Boolean).join(', ') || 'none';
+  const frostFill = m.on[0] ? rec.fill.replace(/,\s*[\d.]+\)$/, `, ${m.frost})`) : 'transparent';
+  // the specimen's own shadow stack: the recipe's layers, unscaled, the ones switched on
+  const specimenShadow = rec.shadows.filter((_, i) => m.on[i + 1]).join(', ') || 'none';
+  const shadows = rec.shadows.map((v, i) => (m.on[i + 1] ? aim(v, 0, 1) : null)).filter(Boolean).join(', ') || 'none';
   const z = 3;
   const top = capTop(z, 3);
   const exploded = spot === 'layers';
@@ -119,71 +123,18 @@ export function ChipXray({ startOpen = false }: { startOpen?: boolean }) {
 
   const real = gone ? <span className="eng">{gone === 'yes' ? 'accepted · undo' : 'dismissed · won’t ask again'}</span> : <SuggestionChip label={m.label} confidence={m.conf} hostHovered={m.host} onAccept={() => answer('yes')} onDismiss={() => answer('no')} />;
 
-  const card = (
-    <>
-      {spot === 'type' && (
-        <>
-          <p>The chip asks one short question, the way a person would. Next to it is how sure the app is, from 0 to 1. The app always shows this number. A guess that hides how sure it is would be a bug.</p>
-          <div className="xr-dials">
-            <div className="xr-actions-row">{QUESTIONS.map((q) => <button key={q} type="button" className="status" onClick={() => set({ label: q })}><span className={m.label === q ? 'led' : 'led off'} />{q}</button>)}</div>
-            <Dial label="How sure" value={m.conf} min={0.5} max={0.95} step={0.01} fmt={(v) => v.toFixed(2)} onChange={(conf) => set({ conf })} />
-          </div>
-        </>
-      )}
-      {spot === 'states' && (
-        <>
-          <p>The chip waits quietly at 62% so it never shouts over your writing. Point at the line it belongs to and it becomes fully clear. When it first shows up, it drops in from 3 pt above, without bouncing.</p>
-          <div className="xr-dials"><Switch label="Point at the line" on={m.host} onChange={(host) => set({ host })} /></div>
-          <p><button type="button" className="status" onClick={() => setArrive((n) => n + 1)}><span className="led" />Show it arriving</button></p>
-        </>
-      )}
-      {spot === 'press' && (
-        <>
-          <p>✓ says yes: the app makes the change, and you can undo it. × says no: the app remembers, and never asks that question about this line again. Hover ✓ and it turns green.</p>
-          <div className="xr-actions-row">
-            <button type="button" className="status" onClick={() => answer('yes')}><span className="led" />Say yes</button>
-            <button type="button" className="status" onClick={() => answer('no')}><span className="led off" />Say no</button>
-          </div>
-        </>
-      )}
-      {spot === 'surface' && (
-        <>
-          <p>The chip is frosted: you can see the page through it a little, so it floats over your text. A thin green line goes around it. Green always means "the app suggests this", so you never mistake it for something you wrote.</p>
-          <div className="xr-dials">
-            <Dial label="Frost" value={m.frost} min={0.2} max={1} step={0.05} fmt={(v) => `${Math.round(v * 100)}%`} onChange={(frost) => set({ frost })} />
-            <Switch label="Green line" on={m.hairline} onChange={(hairline) => set({ hairline })} />
-          </div>
-        </>
-      )}
-      {spot === 'shape' && (
-        <>
-          <p>A small pill, {P.height} pt tall. There is more space on the left than on the right, because the ✓ and × buttons already have space inside them.</p>
-          <div className="xr-dials">
-            <Dial label="Height" value={m.h} min={16} max={32} step={1} fmt={(v) => `${v} pt`} onChange={(h) => set({ h })} />
-            <Dial label="Space on the left" value={m.padL} min={3} max={18} step={1} fmt={(v) => `${v} pt`} onChange={(padL) => set({ padL })} />
-          </div>
-        </>
-      )}
-      {spot === 'layers' && (
-        <>
-          <p>The chip has seven layers. Turn one off to see what it adds.</p>
-          <LayerList groups={[{ layers: LAYERS, on: m.on, toggle: (i, v) => set({ on: m.on.map((x, j) => (j === i ? v : x)) }) }]} focus={focus} setFocus={setFocus} />
-        </>
-      )}
-      <Proof>{real}</Proof>
-    </>
-  );
+  const card = <ChipSpecimenCard spot={spot} m={m} set={set} focus={setFocus} fill={frostFill} shadow={specimenShadow} gone={gone} answer={answer} arrive={() => setArrive((n) => n + 1)} />;
 
   return (
     <>
       <span ref={measure} aria-hidden className="xr-measure" style={{ font: '500 11.5px/20px var(--sans)', letterSpacing: '-0.18px' }}>{m.label}<span style={{ font: '400 9px var(--mono)', marginLeft: 2 }}>{m.conf.toFixed(2)}</span></span>
-      <XrayFrame
+      <HintLayer><XrayFrame
         xray={xray} setXray={setXray} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot}
         solid={<div style={{ zoom: 2.4 }} onClick={(e) => e.stopPropagation()}>{real}</div>}
         W={W} H={H} scene={scene} anchors={anchors}
         onReset={() => setM(INITIAL)} deps={[spot, m, gone]}
         card={card}
-      />
+      /></HintLayer>
     </>
   );
 }

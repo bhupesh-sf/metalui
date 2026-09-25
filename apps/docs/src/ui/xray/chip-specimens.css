@@ -1,0 +1,24 @@
+/* the suggestion chip's specimens (ChipSpecimens): the words are handles framed at their sides,
+ * the chip's face is the frost handle, its line is the host you point at */
+.ed-chip-box { position: relative; display: inline-flex; }
+.ed-chip-box .ed-overlay { z-index: 2; }
+.ed-chip-box .ed-edge.is-y { top: -3px; }
+.ed-chip-box .ed-edge.is-x { left: -3px; }
+/* a word on the chip is its own handle: a faint frame around it, never a line through it */
+.ed-chip-word { position: absolute; z-index: 3; cursor: ew-resize; outline: none; touch-action: none; border-radius: 3px;
+  box-shadow: 0 0 0 .5px transparent; transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-chip-box:hover .ed-chip-word { box-shadow: 0 0 0 .5px color-mix(in srgb, var(--ed-chip-guide) 40%, transparent); }
+.ed-chip-word:hover, .ed-chip-word:focus-visible, .ed-chip-word[data-peek] { box-shadow: 0 0 0 .6px var(--ed-chip-guide); }
+.ed-chip-word[data-live] { box-shadow: 0 0 0 .9px var(--ed-chip-guide); }
+/* leaning toward the next question: the frame thickens before it snaps */
+.ed-chip-word[data-lean] { box-shadow: 0 0 0 1.4px var(--ed-chip-guide); }
+/* the frost handle is the chip's whole face */
+.ed-chip-frost { position: absolute; inset: 0; z-index: 3; border-radius: 999px; cursor: ns-resize; outline: none; touch-action: none; }
+.ed-chip-frost:focus-visible { box-shadow: 0 0 0 1px var(--ed-chip-guide); }
+/* the line the chip belongs to: pointing at it is the host's hover */
+.ed-chip-line { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px; }
+.ed-chip-host { font: 400 13px/20px var(--sans); color: var(--ink2); cursor: default; }
+.ed-chip-answer { display: inline-grid; place-items: center; min-height: 20px; }
+.ed-chip-actions { display: flex; }
+.ed-chip-box, .ed-chip-line { --ed-chip-guide: var(--mu-presence-guide); }
+[data-mu-colorway="graphite"] :is(.ed-chip-box, .ed-chip-line) { --ed-chip-guide: var(--green-deep); }
