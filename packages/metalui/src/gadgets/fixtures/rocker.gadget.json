@@ -1,0 +1,18 @@
+{
+  "$schema": "metalui/gadget@1",
+  "name": "rocker", "title": "Sound",
+  "job": "tune", "feel": { "v": 0.6, "a": 0.4, "w": 0.2 }, "container": "slab", "station": 80,
+  "parts": [
+    { "id": "body",   "part": "slab", "at": [200, 196], "size": [320, 320], "role": "body" },
+    { "id": "lamp",   "part": "led",  "at": [313, 78],  "role": "lamp" },
+    { "id": "well",   "part": "slab", "at": [200, 206], "size": [132, 180], "role": "cut", "params": { "cut": "well", "depth": 10, "radius": 30 } },
+    { "id": "rocker", "part": "cap",  "at": [200, 206], "size": [100, 150], "role": "actor", "material": "accent", "params": { "shape": "rocker" } }
+  ],
+  "mechanism": { "name": "flip", "bind": { "lid": "rocker", "lamp": "lamp" }, "drive": "on" },
+  "ports": { "in": { "on": { "kind": "boolean", "default": false } }, "out": { "on": { "kind": "boolean" } } },
+  "states": {
+    "rest": { "lamp": ["off", "steady"], "hint": "off" },
+    "on":   { "lamp": ["live", "steady"], "hint": "on" }
+  },
+  "describe": "{title}"
+}

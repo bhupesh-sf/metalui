@@ -190,7 +190,7 @@ public struct MetalGadget: View {
         guard let held = MetalMechanism.all.first(where: { $0.name == spec.mechanism.name })?.held else { return [] }
         let slot = MetalGadgetTokens.capSlot
         return (spec.mechanism.bind[held.slot] ?? []).compactMap { id in
-            part(id).flatMap { $0.part == "cap" ? $0 : nil }.map { p in
+            part(id).flatMap { $0.part == "cap" && $0.params?["shape"]?.text != "rocker" ? $0 : nil }.map { p in
                 MetalSlabCut(.slot, at: (p.at[0], p.at[1] + (held.from.y + held.to.y) / 2), size: (slot.width, abs(held.to.y - held.from.y) + slot.pad))
             }
         }
@@ -339,9 +339,11 @@ public struct MetalGadget: View {
         let index = held.flatMap { spec.mechanism.bind[$0.slot]?.firstIndex(of: p.id) }
         // Before the drive exists (the first frame, a capture) a cap sits at its start place, as the web draws it.
         let start = spec.driveTargets(value ?? spec.driveDefault)
-        let y = index.flatMap { i in drive?.pose(i).y ?? held.map { $0.from.y + ($0.to.y - $0.from.y) * start[i] } } ?? 0
-        MetalCap(shape: p.params?["shape"]?.text == "knob" ? .knob : .fader, ribs: Int(p.params?["ribs"]?.number ?? Double(MetalGadgetTokens.capRibs)),
-                 accent: accent, material: ceramic ? .ceramic : .clay, color: accent ? r.accent : nil, size: s)
+        let y = p.params?["shape"]?.text == "rocker" ? 0 : index.flatMap { i in drive?.pose(i).y ?? held.map { $0.from.y + ($0.to.y - $0.from.y) * start[i] } } ?? 0
+        // A rocker tilts where the flip has carried it (off at 0, on at 1).
+        let tilt = 2 * (index.flatMap { i in drive?.model.x[safe: i] ?? start[safe: i] } ?? 0) - 1
+        MetalCap(shape: MetalCap.Shape(rawValue: p.params?["shape"]?.text ?? "fader") ?? .fader, ribs: Int(p.params?["ribs"]?.number ?? Double(MetalGadgetTokens.capRibs)),
+                 accent: accent, material: ceramic ? .ceramic : .clay, color: accent ? r.accent : nil, tilt: tilt, size: s)
             .frame(width: s, height: s)
             .position(x: p.at[0] * unit, y: (p.at[1] + y) * unit)
             .accessibilityHidden(true)

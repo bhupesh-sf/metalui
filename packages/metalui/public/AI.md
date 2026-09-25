@@ -331,12 +331,13 @@ In a gadget spec: `{ "part": "cable", "role": "trim", "params": { "from": "plugA
 
 # Cap
 
-The fader or knob cap a person moves. React: `Cap` from `@unlocalhosted/metalui`. SwiftUI: `MetalCap`. A part: it has a look and no job of its own.
+The fader, knob or rocker cap a person moves. React: `Cap` from `@unlocalhosted/metalui`. SwiftUI: `MetalCap`. A part: it has a look and no job of its own.
 
 ## Use it for
 
 - A fader's cap, travelling along a slot (the fader bank's `slide`).
 - A knob, turning in place (`turn`).
+- A rocker, tilting between off and on about its middle (the rocker's `flip`).
 - The part a person would reach for: give that one the accent, and only that one.
 
 ## Don't use it for
@@ -346,7 +347,7 @@ The fader or knob cap a person moves. React: `Cap` from `@unlocalhosted/metalui`
 
 ## Anatomy
 
-A face on its darker side wall, which shows 4 units below it. A fader is 60 × 44 with radius 13 and 2 to 5 grip ribs across it, each a dark groove with a lit lower edge. A knob is round, the fader's height across, with a pointer groove. Its shadow is its own layer (`cap.shadow`). Tokens: `gadgets.cap`.
+A face on its darker side wall, which shows 4 units below it. A fader is 60 × 44 with radius 13 and 2 to 5 grip ribs across it, each a dark groove with a lit lower edge. A knob is round, the fader's height across, with a pointer groove. A rocker is a paddle (96 × 144 at the Part's size) engraved I on its upper half and O on its lower; tilted by `tilt` from -1 (off, its lower end pressed) to 1 (on), the half facing the light brightens, the other darkens, the fold between them deepens and its shadow moves toward the raised end. Its shadow is its own layer (`cap.shadow`). Tokens: `gadgets.cap`.
 
 ## States
 
@@ -356,7 +357,7 @@ A face on its darker side wall, which shows 4 units below it. A fader is 60 × 4
 
 ## API
 
-`Cap shape? ("fader" | "knob") ribs? (2..5) accent? material? ("clay" | "ceramic") color? pressed? size? host?`
+`Cap shape? ("fader" | "knob" | "rocker") tilt? (-1..1, a rocker) ribs? (2..5) accent? material? ("clay" | "ceramic") color? pressed? size? host?`
 
 SwiftUI: `MetalCap(shape: .fader, accent: true, pressed: isPressed, size: 96)`.
 

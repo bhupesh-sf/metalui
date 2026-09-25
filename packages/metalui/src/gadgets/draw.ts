@@ -130,6 +130,8 @@ export function driveTargets(spec: GadgetSpec, value: number, state?: string): n
     const poses = formPoses(spec, state ?? stateOf(spec)), full = (held.to as { r?: number }).r ?? 1;
     return boundTo(spec, held.slot).map((id) => Math.min(1, Math.max(0, (poses[id]?.r ?? 0) / full)));
   }
+  // A rocker tilts to its switch: off at 0, on at 1.
+  if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.params?.shape === 'rocker')) return boundTo(spec, held.slot).map(() => driveShare(spec, value));
   // Cells light to the value's share; on a first run the grid rises all the way.
   if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'cell')) return boundTo(spec, held.slot).map(() => (state === 'first-run' ? 1 : driveShare(spec, value)));
   // A needle points at the value's share of its range.
@@ -166,7 +168,7 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
   // A driven actor runs in a slot cut as long as its travel.
   const held = heldOf(spec), driven = held ? boundTo(spec, held.slot) : [];
   if (held) for (const id of driven) {
-    const p = spec.parts.find((q) => q.id === id); if (!p || p.part !== 'cap') continue;
+    const p = spec.parts.find((q) => q.id === id); if (!p || p.part !== 'cap' || p.params?.shape === 'rocker') continue;
     const y0 = held.from.y ?? 0, y1 = held.to.y ?? 0, [sw, pad] = GADGETS.cap.slot;
     cuts.push({ kind: 'slot', at: [p.at[0], p.at[1] + (y0 + y1) / 2], size: [sw, Math.abs(y1 - y0) + pad] });
   }
@@ -218,7 +220,9 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
     } else if (p.part === 'cap') {
       const r = byId[p.id], ceramic = p.material === 'ceramic';
       const face = r.accent && r.color ? r.color : ceramic ? { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clayFace().H } : clayFace();
-      const d = drawCap(pid, { at: p.at, size, color: face, material: ceramic ? 'ceramic' : 'clay', ribs: p.params?.ribs === undefined ? undefined : Number(p.params.ribs), shape: (p.params?.shape as 'fader' | 'knob' | undefined) ?? 'fader' }, { tier, host });
+      const k0 = driven.indexOf(p.id);
+      const d = drawCap(pid, { at: p.at, size, color: face, material: ceramic ? 'ceramic' : 'clay', ribs: p.params?.ribs === undefined ? undefined : Number(p.params.ribs),
+        shape: (p.params?.shape as 'fader' | 'knob' | 'rocker' | undefined) ?? 'fader', tilt: k0 >= 0 ? 2 * start[k0] - 1 : -1 }, { tier, host });
       defs += d.defs;
       // A driven cap is drawn at its starting place, so the first paint (and the server's) shows it there.
       const k = driven.indexOf(p.id), y = k >= 0 && held ? (held.from.y ?? 0) + ((held.to.y ?? 0) - (held.from.y ?? 0)) * start[k] : 0;

@@ -59,6 +59,7 @@ const router = createBrowserRouter([
       { path: 'gadgets/lidded-bin', lazy: lazy(() => import('./pages/gadgets/LiddedBin')) },
       { path: 'gadgets/drawer', lazy: lazy(() => import('./pages/gadgets/Drawer')) },
       { path: 'gadgets/shutter-lens', lazy: lazy(() => import('./pages/gadgets/ShutterLens')) },
+      { path: 'gadgets/rocker', lazy: lazy(() => import('./pages/gadgets/Rocker')) },
       { path: 'gadgets/reading-rig', lazy: lazy(() => import('./pages/gadgets/ReadingRig')) },
       { path: 'components/slab', lazy: lazy(() => import('./pages/components/Slab')) },
       { path: 'components/led', lazy: lazy(() => import('./pages/components/Led')) },

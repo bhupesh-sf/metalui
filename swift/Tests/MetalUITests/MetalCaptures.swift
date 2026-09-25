@@ -225,7 +225,8 @@ final class MetalCaptures: XCTestCase {
 
     func testCap() {
         let looks: [MetalCap] = [MetalCap(size: 120), MetalCap(material: .ceramic, size: 120), MetalCap(accent: true, size: 120),
-                                 MetalCap(ribs: 5, size: 120), MetalCap(shape: .knob, material: .ceramic, size: 120), MetalCap(shape: .knob, accent: true, size: 120)]
+                                 MetalCap(ribs: 5, size: 120), MetalCap(shape: .knob, material: .ceramic, size: 120), MetalCap(shape: .knob, accent: true, size: 120),
+                                 MetalCap(shape: .rocker, accent: true, tilt: -1, size: 120), MetalCap(shape: .rocker, accent: true, tilt: 1, size: 120)]
         for colorway in MetalColorway.allCases {
             let view = HStack(spacing: 24) { ForEach(0..<looks.count, id: \.self) { i in looks[i] } }
                 .padding(32)
@@ -453,6 +454,22 @@ final class MetalCaptures: XCTestCase {
                 .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
                 .metalColorway(colorway)
             capture("gadget-shutter-lens-\(colorway.rawValue)", view)
+        }
+    }
+
+    func testGadgetRocker() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/rocker.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual([0.0, 1].map { spec.derivedState("rest", value: $0) }, ["rest", "on"])
+        XCTAssertEqual(spec.driveTargets(1), [1])
+        XCTAssertEqual(spec.description("on", value: 1), "Sound, on")
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach([0.0, 1], id: \.self) { v in MetalGadget(spec: spec, value: v, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-rocker-\(colorway.rawValue)", view)
         }
     }
 

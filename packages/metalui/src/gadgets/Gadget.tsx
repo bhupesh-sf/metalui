@@ -13,6 +13,7 @@ import { needleAngle } from './parts/needle';
 import { lightCells } from './parts/cell';
 import { poseLid } from './parts/lid';
 import { turnLens } from './parts/lens';
+import { tiltRocker } from './parts/cap';
 import { fillTray } from './parts/slab';
 import { createPlayer, type MechanismName, type Player } from './player';
 import { createDrive, createRoll, type Drive, type DriveName, type Roll } from './drive';
@@ -200,6 +201,8 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
       const p = cells[i];
       lightCells(el, u * Number(p.params?.cols ?? 4) * Number(p.params?.rows ?? 4));
       svg.querySelectorAll<SVGGElement>('[data-part="backlight.level"]').forEach((b) => { b.style.opacity = String(+backlightLevel(u).toFixed(3)); });
+    } : valid.parts.some((p) => p.params?.shape === 'rocker') ? (el: Element, _i: number, u: number) => {
+      tiltRocker(el, 2 * u - 1);
     } : lenses.length ? (el: Element, i: number, u: number) => {
       turnLens(el, lenses[i].at, r0 + (r1 - r0) * u);
     } : lids.length ? (el: Element, i: number, u: number) => {

@@ -254,6 +254,8 @@ public enum MetalGadgetTokens {
     public static let lensGlare: (x: Double, y: Double, radius: Double, alpha: Double) = (0.36, 0.3, 0.42, 0.28)
     public static let lensGlint: (x: Double, y: Double, radius: Double, alpha: Double) = (0.3, 0.26, 0.07, 0.9)
     public static let lensShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (0.09, 0.05, 0.1, 0.4)
+    public static let capRocker: (light: Double, shade: Double, hinge: Double, shift: Double, glyph: Double) = (0.2, 0.18, 0.35, 5.0, 0.18)
+    public static let capRockerSize: (width: Double, height: Double) = (96.0, 144.0)
     public static let cellAlone: (side: Double, gap: Double) = (64.0, 10.0)
     public static let rigPitch: Double = 440.0
     public static let rigPadding: Double = 40.0

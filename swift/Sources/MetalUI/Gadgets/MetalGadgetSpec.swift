@@ -128,6 +128,8 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     public func driveTargets(_ value: Double, state: String? = nil) -> [Double] {
         guard let held = MetalMechanism.all.first(where: { $0.name == mechanism.name })?.held else { return [] }
         let ids = mechanism.bind[held.slot] ?? []
+        // A rocker tilts to its switch: off at 0, on at 1.
+        if ids.allSatisfy({ id in parts.first { $0.id == id }?.params?["shape"]?.text == "rocker" }) { return ids.map { _ in driveShare(value) } }
         // A lid goes where the state holds it (its form's turn, a share of the mechanism's full swing).
         if ids.allSatisfy({ id in parts.first { $0.id == id }?.part == "lid" }) {
             let s = state ?? self.state(nil)

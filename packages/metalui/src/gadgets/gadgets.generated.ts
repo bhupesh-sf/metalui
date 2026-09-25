@@ -456,6 +456,17 @@ export const GADGETS = {
     "slot": [
       18,
       20
+    ],
+    "rocker": [
+      0.2,
+      0.18,
+      0.35,
+      5,
+      0.18
+    ],
+    "rockerSize": [
+      96,
+      144
     ]
   },
   "key": {
@@ -1247,11 +1258,17 @@ export const GADGETS = {
         "shape": [
           "enum",
           "fader",
-          "knob"
+          "knob",
+          "rocker"
         ],
         "value": [
           "number",
           0,
+          1
+        ],
+        "tilt": [
+          "number",
+          -1,
           1
         ]
       },
