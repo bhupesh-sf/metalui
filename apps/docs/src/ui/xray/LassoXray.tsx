@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { SizeReadout } from '@unlocalhosted/metalui';
-import { tokens } from '../../lib/tokens';
-import { Dial, IsoCap, Proof, Switch, XrayFrame, scalePx, tones, useStateLayers, type SpotDef } from './kit';
+import { IsoCap, XrayFrame, scalePx, tones, useStateLayers, type SpotDef } from './kit';
 import { SnapCanvas } from '../SnapCanvas';
+import { HintLayer } from '../edit';
+import { LASSO_INITIAL, LassoSpecimenCard, NOTES, PAGE, countOf, touches, type LassoModel } from './LassoSpecimens';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · LASSO
@@ -10,19 +11,14 @@ import { SnapCanvas } from '../SnapCanvas';
  *   solid     the playground: drag on empty canvas to draw a box
  *   x-ray     three notes on the page, a box drawn on the page over some of them, its
  *             count under it
- *   play      Box     width and height; a hairline over a faint fill
- *             Count   the number it will select, and only when it is more than none
- *             Touch   a note counts as soon as the box touches it
- *             Timing  follows the pointer; fades when you let go
+ *   card      the real Lasso over the same notes (LassoSpecimens), handled, not slid:
+ *             Box     the pointer corner for width and height, the top line for the line
+ *             Count   the count itself, dragged away from the box for the gap
+ *             Touch   the box dragged over the notes; one counts as soon as it is touched
+ *             Timing  still dragging, or let go (it fades on the release spring)
  * ───────────────────────────────────────────────────────── */
 
-const PR = tokens.presence as unknown as { 'readout-gap': number };
 const S = 1.6;
-const NOTES = [
-  { id: 'a', x: 20, y: 20, w: 120, h: 44, t: 'call the printer' },
-  { id: 'b', x: 170, y: 70, w: 130, h: 44, t: 'pick the typeface' },
-  { id: 'c', x: 40, y: 140, w: 110, h: 44, t: 'book the venue' },
-];
 
 type Spot = 'shape' | 'type' | 'slide' | 'press';
 const SPOTS: SpotDef<Spot>[] = [
@@ -38,16 +34,15 @@ const SIDE: Record<Spot, ['left' | 'right', number]> = {
 export function LassoXray({ startOpen = false }: { startOpen?: boolean }) {
   const [xray, setXray] = React.useState(startOpen);
   const [spot, setSpot] = React.useState<Spot>('slide');
-  const [w, setW] = React.useState(170);
-  const [h, setH] = React.useState(110);
-  const [held, setHeld] = React.useState(true);
+  const [m, setM] = React.useState<LassoModel>(LASSO_INITIAL);
+  const set = React.useCallback((p: Partial<LassoModel>) => setM((o) => ({ ...o, ...p })), []);
   const card = useStateLayers('surface', 'raise-lite');
   const t = tones(card.colorway);
-  const box = { x: 0, y: 0, w, h };
-  const hit = (n: typeof NOTES[number]) => n.x < box.x + box.w && n.x + n.w > box.x && n.y < box.y + box.h && n.y + n.h > box.y;
-  const count = NOTES.filter(hit).length;
+  const box = { x: m.x, y: m.y, w: m.w, h: m.h };
+  const hit = (n: typeof NOTES[number]) => touches(m, n);
+  const count = countOf(m);
 
-  const Wp = 320, Hp = 210, W = Wp * S, H = Hp * S;
+  const Wp = PAGE.w, Hp = PAGE.h, W = Wp * S, H = Hp * S;
   const scene = (
     <>
       {NOTES.map((n) => (
@@ -55,9 +50,9 @@ export function LassoXray({ startOpen = false }: { startOpen?: boolean }) {
           <span className="type-ui" style={{ fontSize: 12 * S, color: hit(n) ? 'var(--ink)' : 'var(--ink3)' }}>{n.t}</span>
         </IsoCap>
       ))}
-      {held && (
+      {m.held && (
         <div className="xr-thumb" style={{ transform: 'translateZ(18px)' }}>
-          <div className="mu-lasso presence-lasso" style={{ position: 'absolute', left: box.x * S, top: box.y * S, width: box.w * S, height: box.h * S, ['--mu-canvas-scale' as string]: 1 / S }}>
+          <div className="mu-lasso presence-lasso" style={{ position: 'absolute', left: box.x * S, top: box.y * S, width: box.w * S, height: box.h * S, ['--mu-canvas-scale' as string]: 1 / S, ['--mu-presence-lasso-width' as string]: `${m.line}px`, ['--mu-presence-readout-gap' as string]: `${m.gap * 2}px` }}>
             {count > 0 && <span className="presence-lasso-readout"><SizeReadout value={count} unit={count === 1 ? 'block' : 'blocks'} /></span>}
           </div>
         </div>
@@ -66,53 +61,21 @@ export function LassoXray({ startOpen = false }: { startOpen?: boolean }) {
   );
 
   const anchors: Record<Spot, [number, number, number]> = {
-    shape: [box.w * S, box.h * S * 0.5, 18],
-    type: [box.w * S * 0.5, (box.h + PR['readout-gap']) * S, 18],
+    shape: [(box.x + box.w) * S, (box.y + box.h * 0.5) * S, 18],
+    type: [(box.x + box.w * 0.5) * S, (box.y + box.h + m.gap * 2) * S, 18],
     slide: [NOTES[1].x * S + 6, (NOTES[1].y + 10) * S, 4],
-    press: [box.w * S, box.h * S, 18],
+    press: [(box.x + box.w) * S, (box.y + box.h) * S, 18],
   };
 
-  const cardBody = (
-    <>
-      {spot === 'shape' && (
-        <>
-          <p>A drag that starts on empty space draws a box: a thin green line over a very faint green fill. No moving dashes and no glow, so it never looks more important than the notes under it.</p>
-          <div className="xr-dials">
-            <Dial label="Width" value={w} min={20} max={320} step={5} fmt={(v) => `${v} pt`} onChange={setW} />
-            <Dial label="Height" value={h} min={20} max={210} step={5} fmt={(v) => `${v} pt`} onChange={setH} />
-          </div>
-        </>
-      )}
-      {spot === 'type' && (
-        <p>Under the box, a small dark readout counts what will be selected when you let go: ● {count} {count === 1 ? 'block' : 'blocks'}. The box shows where; only the count can show how many. When the box touches nothing, there is no readout.</p>
-      )}
-      {spot === 'slide' && (
-        <>
-          <p>A note counts as soon as the box touches it, even a corner. You do not have to fit the whole note inside. Make the box bigger or smaller and watch the count and the note text change.</p>
-          <div className="xr-dials">
-            <Dial label="Width" value={w} min={20} max={320} step={5} fmt={(v) => `${v} pt`} onChange={setW} />
-            <Dial label="Height" value={h} min={20} max={210} step={5} fmt={(v) => `${v} pt`} onChange={setH} />
-          </div>
-          <p className="readout-t">{count} of {NOTES.length} notes touched</p>
-        </>
-      )}
-      {spot === 'press' && (
-        <>
-          <p>The box follows your pointer in the same frame, whichever way you drag. When you let go, it fades and the notes it touched are selected.</p>
-          <div className="xr-dials"><Switch label="Still dragging" on={held} onChange={setHeld} /></div>
-        </>
-      )}
-      <Proof><SnapCanvas height={220} lasso /></Proof>
-    </>
-  );
+  const cardBody = <LassoSpecimenCard spot={spot} m={m} set={set} />;
 
   return (
-    <XrayFrame
+    <HintLayer><XrayFrame
       xray={xray} setXray={setXray} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot}
       solid={<div onClick={(e) => e.stopPropagation()} style={{ width: '100%' }}><SnapCanvas height={300} lasso /></div>}
       W={W} H={H} scene={scene} anchors={anchors}
-      onReset={() => { setW(170); setH(110); setHeld(true); }} deps={[spot, w, h, held]}
+      onReset={() => setM(LASSO_INITIAL)} deps={[spot, m]}
       card={cardBody}
-    />
+    /></HintLayer>
   );
 }

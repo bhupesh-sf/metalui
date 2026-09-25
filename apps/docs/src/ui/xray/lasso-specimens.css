@@ -1,0 +1,30 @@
+/* LASSO specimens: the real lasso over three notes on a small page */
+.ed-lasso-page { position: relative; flex: none; }
+.ed-lasso-note { position: absolute; display: grid; place-items: center; border-radius: 14px; font-size: 12px; color: var(--ink3); white-space: nowrap;
+  transition: color var(--spring-part-d) var(--spring-part); }
+.ed-lasso-note[data-touched] { color: var(--ink); }
+/* the handles sit on the box's own rectangle; only they catch the pointer */
+.ed-lasso-frame { position: absolute; pointer-events: none; }
+.ed-lasso-frame :is(.ed-edge, .ed-lasso-pointer, .ed-lasso-body) { pointer-events: auto; touch-action: none; }
+.ed-lasso-top { top: -3px; z-index: 1; }
+/* the pointer: a hairline ring at the far corner, where the drag is */
+.ed-lasso-pointer { position: absolute; right: -7px; bottom: -7px; width: 14px; height: 14px; border-radius: 50%; cursor: nwse-resize; outline: none; z-index: 2;
+  transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-lasso-pointer svg, .ed-lasso-count svg { display: block; overflow: visible; pointer-events: none; }
+.ed-lasso-pointer circle { fill: var(--mu-presence-lasso-fill); stroke: var(--mu-presence-guide); stroke-width: .6; opacity: .7;
+  transition: stroke-width var(--spring-part-d) var(--spring-part), opacity var(--spring-part-d) var(--spring-part); }
+.ed-lasso-pointer:hover circle, .ed-lasso-pointer:focus-visible circle, .ed-lasso-frame[data-lit="size"] .ed-lasso-pointer circle { stroke-width: 1.3; opacity: 1; }
+.ed-lasso-pointer[data-hidden] { opacity: 0; }
+/* the box itself is the handle for where it is */
+.ed-lasso-body { position: absolute; inset: 0; cursor: move; outline: none; }
+.ed-lasso-frame[data-lit="move"] .ed-seg { opacity: 1; }
+/* the count: a faint frame around it, never across its digits */
+.ed-lasso-count { position: absolute; cursor: ns-resize; outline: none; touch-action: none; }
+.ed-lasso-count[hidden] { display: none; }
+.ed-lasso-count rect { fill: none; stroke: var(--mu-presence-guide); stroke-width: .6; stroke-dasharray: 2 2; opacity: .6;
+  transition: opacity var(--spring-part-d) var(--spring-part), stroke-width var(--spring-part-d) var(--spring-part); }
+.ed-lasso-count:hover rect, .ed-lasso-count:focus-visible rect, .ed-lasso-count[data-peek] rect, .ed-lasso-count[data-live] rect { stroke-dasharray: none; stroke-width: 1; opacity: 1; }
+/* nothing moves under the finger */
+.ed-lasso-frame[data-live] *, .ed-lasso-page:has([data-live]) .mu-lasso { transition: none; }
+[data-mu-colorway="graphite"] :is(.ed-lasso-pointer circle, .ed-lasso-count rect) { stroke: var(--mu-presence-guide-dark); }
+html.rm .ed-lasso-page *, html.rm .ed-lasso-page *::after { transition: none !important; }
