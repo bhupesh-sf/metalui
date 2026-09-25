@@ -48,7 +48,8 @@ for (const f of fixtures.filter((f) => f.endsWith('.rig.json'))) {
 // Read side by side in the catalog's shelf order (names off the shelf go last).
 const shelf = (n) => { const i = GADGETS.set.order.indexOf(n); return i < 0 ? Infinity : i; };
 const members = Object.values(catalog).sort((a, b) => shelf(a.name) - shelf(b.name)).map((g) => ({ name: g.name, resolved: resolveFeel(g), mechanism: g.mechanism.name, silhouette: g.parts.map((p) => p.part).sort().join(',') }));
-const setProblems = checkSet(members);
+// The catalog is a shelf: its neighbours are side by side; a rig checks all of its own (validateRig).
+const setProblems = checkSet(members, { neighbours: GADGETS.set.neighbours });
 if (setProblems.length) report('the catalog repeats itself', setProblems.map((p) => ({ path: p.members.join(' + '), code: p.code, message: p.message, fix: p.fix })));
 
 // The worked placements, resolved: the numbers SwiftUI must reproduce.

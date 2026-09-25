@@ -150,9 +150,11 @@ export interface SetProblem { code: 'set.hue' | 'set.band' | 'set.deltaE' | 'set
 
 const lchVec = (c: Oklch): [number, number, number] => [c.L, c.C, c.H];
 
-export function checkSet(members: SetMember[]): SetProblem[] {
+/** Checks gadgets side by side. `neighbours` limits the pairs to members at most that many places apart
+ *  (a catalog's shelf); left out, every pair is checked (a rig, where all sit together). */
+export function checkSet(members: SetMember[], o: { neighbours?: number } = {}): SetProblem[] {
   const S = GADGETS.set, out: SetProblem[] = [];
-  for (let i = 0; i < members.length; i++) for (let j = i + 1; j < members.length; j++) {
+  for (let i = 0; i < members.length; i++) for (let j = i + 1; j < members.length && (o.neighbours === undefined || j - i <= o.neighbours); j++) {
     const a = members[i], b = members[j], pair = [a.name, b.name];
     // An inset gadget is seen through its glass: compare its face, as glass, not its frame.
     const seen = (r: ResolvedFeel): ResolvedFeel => (r.container === 'inset' ? { ...r, body: r.face, material: 'glass', band: r.face.L >= GADGETS.set.bands[0] ? 0 : r.face.L >= GADGETS.set.bands[1] ? 1 : 2 } : r);

@@ -1069,7 +1069,8 @@ export const GADGETS = {
       "ink-well",
       "thumbwheel",
       "glass-badge"
-    ]
+    ],
+    "neighbours": 1
   },
   "parts": {
     "slab": {
