@@ -261,6 +261,9 @@ public enum MetalGadgetTokens {
     public static let labelEdge: Double = 1.0
     public static let labelTracking: Double = 0.14
     public static let labelAlpha: (ink: Double, edge: Double) = (0.55, 0.7)
+    public static let glyphAlpha: Double = 0.8
+    public static let glyphStroke: Double = 1.7
+    public static let backlightUnlit: (alpha: Double, L: Double) = (0.45, 0.22)
     public static let cellAlone: (side: Double, gap: Double) = (64.0, 10.0)
     public static let rigPitch: Double = 440.0
     public static let rigPadding: Double = 40.0

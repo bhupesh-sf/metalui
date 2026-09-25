@@ -539,7 +539,11 @@ export const GADGETS = {
     "glassLift": 0.14,
     "alpha": 0.85,
     "sliceAlpha": 0.75,
-    "glassChroma": 1.4
+    "glassChroma": 1.4,
+    "unlit": [
+      0.45,
+      0.22
+    ]
   },
   "lamp": {
     "off": [
@@ -1772,7 +1776,8 @@ export const GADGETS = {
       "mode": "held",
       "drive": [
         "number",
-        "count"
+        "count",
+        "boolean"
       ],
       "slots": {
         "light": {
@@ -1784,7 +1789,8 @@ export const GADGETS = {
           "parts": [
             "cell"
           ],
-          "many": true
+          "many": true,
+          "optional": true
         },
         "lamp": {
           "parts": [
@@ -1877,6 +1883,10 @@ export const GADGETS = {
       0.55,
       0.7
     ]
+  },
+  "glyph": {
+    "alpha": 0.8,
+    "stroke": 1.7
   }
 } as const;
 export type GadgetMaterial = 'clay' | 'ceramic' | 'resin' | 'stone' | 'glass' | 'metal' | 'rubber';

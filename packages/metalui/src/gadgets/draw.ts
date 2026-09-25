@@ -11,6 +11,8 @@ import { tierFor, type Host, type Tier } from './light';
 import { cutPath, drawSlab, drawTray, type Cut } from './parts/slab';
 import { drawPull } from './parts/pull';
 import { drawLens } from './parts/lens';
+import { ICON_CATALOG } from '../icons/catalog.generated';
+import { LIFE_CATALOG } from '../icons/life/catalog.generated';
 import { drawJack } from './parts/jack';
 import { drawPlug } from './parts/plug';
 import { drawCable } from './parts/cable';
@@ -54,7 +56,8 @@ const clayFace = (): Oklch => ({ L: GADGETS.plug.faceClay, C: GADGETS.plug.faceC
 /** The state a gadget shows: the one asked for if the spec has it, else its initial state. */
 export function stateOf(spec: GadgetSpec, state?: string): string {
   if (state && spec.states[state]) return state;
-  return spec.initial && spec.states[spec.initial] ? spec.initial : Object.keys(spec.states)[0];
+  // Every gadget has a rest state (the validator says so): with no other word, it rests.
+  return spec.initial && spec.states[spec.initial] ? spec.initial : spec.states.rest ? 'rest' : Object.keys(spec.states)[0];
 }
 
 export function describeGadget(spec: GadgetSpec, state: string, value?: number): string {
@@ -120,7 +123,8 @@ export function derivedState(spec: GadgetSpec, state: string, value?: number): s
   // A switch that names a state: on, it is that state; off, back to rest. A state entered by an act
   // (a bin emptied) is the host's and stands.
   const port = spec.mechanism.drive, ch = port ? spec.ports?.in?.[port] : undefined;
-  if (port && ch?.kind === 'boolean' && spec.states[port] && value !== undefined && spec.states[state]?.enter !== 'act') {
+  // Any other state the host sets (a bin emptied, a badge expired) stands.
+  if (port && ch?.kind === 'boolean' && spec.states[port] && value !== undefined && (state === 'rest' || state === port)) {
     return value >= 0.5 ? port : state === port ? 'rest' : state;
   }
   const needle = spec.parts.find((p) => p.part === 'needle'), t = needle?.params?.threshold;
@@ -132,6 +136,8 @@ export function derivedState(spec: GadgetSpec, state: string, value?: number): s
 export function driveTargets(spec: GadgetSpec, value: number, state?: string): number[] {
   const held = heldOf(spec);
   if (!held) return [];
+  // A glow with no cells lights its light alone, to the value's share (a badge).
+  if (spec.mechanism.name === 'glow' && !boundTo(spec, held.slot).length) return boundTo(spec, 'light').map(() => driveShare(spec, value));
   // A lid goes where the state holds it (its form's turn, a share of the mechanism's full swing).
   if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'lid')) {
     const poses = formPoses(spec, state ?? stateOf(spec)), full = (held.to as { r?: number }).r ?? 1;
@@ -243,8 +249,14 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const color = colorName === 'accent' ? { accent: true as const } : colorName === 'signal' ? { signal: rs.lamp[0] as LampSignal } : { glass: resolved.face };
       const d = drawBacklight(pid, { at: p.at, size: size[0], shape, color });
       defs += d.defs;
-      const form = spec.states[state]?.form?.[p.id], alpha = form && 'param' in form && form.param === 'alpha' ? Number(form.value) : shape === 'dot' ? 0 : 1;
-      if (!bodyPart || bodyPart.part !== 'slab') { lights += `<g data-id="${p.id}" data-moves style="opacity: ${alpha}">${d.body}</g>`; continue; }
+      const form = spec.states[state]?.form?.[p.id], glowing = boundTo(spec, 'light').includes(p.id) && spec.mechanism.name === 'glow';
+      // A glow's light burns as bright as its value (a badge lit when signed in).
+      const alpha = form && 'param' in form && form.param === 'alpha' ? Number(form.value) : glowing ? +backlightLevel(lit).toFixed(3) : shape === 'dot' ? 0 : 1;
+      if (!bodyPart || bodyPart.part !== 'slab') {
+        // Glass lit only by a glow greys when its light is out.
+        if (glowing) { const [ua, ul] = GADGETS.backlight.unlit, f = resolved.face; lights += `<rect data-part="backlight.unlit" x="0" y="0" width="400" height="400" fill="${pigment(ul, f.C, f.H).srgb}" style="opacity: ${+(ua * (1 - lit)).toFixed(3)}"/>`; }
+        lights += `<g data-id="${p.id}" data-moves style="opacity: ${alpha}">${d.body}</g>`; continue;
+      }
       // On a slab, light behind cells: in the floor of the cut it sits in, as bright as the cells are full.
       const cut = cuts.find((c) => c.at[0] === p.at[0] && c.at[1] === p.at[1]);
       if (cut) defs += `<clipPath id="${pid}-clip"><path d="${cutPath(cut)}"/></clipPath>`;
@@ -267,6 +279,16 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const d = drawLens(pid, { at: p.at, size: size[0], ticks: Number(p.params?.ticks ?? 24), iris: Number(p.params?.iris ?? 0.6), turn, color: resolved.accent }, { tier });
       defs += d.defs;
       trims += `<g data-id="${p.id}" data-accent="true">${d.shadow}${d.body}</g>`;
+    } else if (p.part === 'glyph') {
+      // A catalog icon printed on the glass in the glass's own ink: dark against the light behind it.
+      const G = GADGETS.glyph, name = String(p.params?.name ?? ''), f = resolved.face, [gd, gf, gg, ga, gm] = GADGETS.cap.grooveInk;
+      const rec = (ICON_CATALOG as Record<string, { body: string; defs: string }>)[name] ?? (LIFE_CATALOG as Record<string, { body: string; defs: string }>)[name];
+      if (rec) {
+        const ink = pigment(Math.max(gf, f.L - gd), Math.min(gm, f.C * gg + ga), f.H), uid = `${pid}-g`;
+        const markup = ((rec.defs ? `<defs>${rec.defs}</defs>` : '') + rec.body).replace(/&-/g, `${uid}-`);
+        lights += `<svg data-id="${p.id}" data-part="glyph" data-name="${name}" data-static="" class="mu-icon mu-life" viewBox="0 0 24 24" x="${p.at[0] - size[0] / 2}" y="${p.at[1] - size[1] / 2}" width="${size[0]}" height="${size[1]}"`
+          + ` fill="none" stroke="currentColor" stroke-width="${G.stroke}" stroke-linecap="round" stroke-linejoin="round" style="color: ${ink.srgb}; --sw: ${G.stroke}" opacity="${G.alpha}">${markup}</svg>`;
+      }
     } else if (p.part === 'label') {
       // A word engraved in the body: its ink, and a lit lower edge.
       const L = GADGETS.label, [gd, gf, gg, ga, gm] = GADGETS.cap.grooveInk, [el, ec] = GADGETS.cap.edgeInk, b = rs.body;

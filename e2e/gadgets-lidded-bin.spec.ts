@@ -36,6 +36,8 @@ test('arming lifts the lid ajar on the hinge; emptying swings it open and slams 
   expect(rise[rise.length - 1]).toBeCloseTo(18, 0);
   // Emptied: all the way up (near 70°), then shut against the rim, never below it.
   await page.getByRole('button', { name: 'Empty' }).click();
+  await expect(bin).toHaveAttribute('data-state', 'emptied');
+  await expect(bin.locator('[data-part="lamp"]')).toHaveAttribute('data-gesture', 'blink2');
   const swing = await page.evaluate(async () => {
     const svg = document.querySelector('[data-testid="bin"]')!, out: number[] = [], t0 = performance.now();
     await new Promise<void>((done) => { const id = setInterval(() => { out.push(Number(svg.querySelector('[data-part="lid"]')!.getAttribute('data-open'))); if (performance.now() - t0 > 1500) { clearInterval(id); done(); } }, 8); });
@@ -44,8 +46,6 @@ test('arming lifts the lid ajar on the hinge; emptying swings it open and slams 
   expect(Math.max(...swing)).toBeGreaterThan(60);
   expect(Math.min(...swing)).toBeGreaterThanOrEqual(0);
   expect(swing[swing.length - 1]).toBeCloseTo(0, 0);
-  await expect(bin).toHaveAttribute('data-state', 'emptied');
-  await expect(bin.locator('[data-part="lamp"]')).toHaveAttribute('data-gesture', 'blink2');
   await expect(bin).toHaveAttribute('data-state', 'rest', { timeout: 3000 });
 });
 

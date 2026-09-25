@@ -490,6 +490,24 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetGlassBadge() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/glass-badge.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual([0.0, 1].map { spec.derivedState("rest", value: $0) }, ["rest", "signed-in"])
+        XCTAssertEqual(spec.derivedState("expired", value: 1), "expired")
+        XCTAssertEqual(spec.driveTargets(1), [1])
+        XCTAssertEqual(spec.description("signed-in", value: 1), "Account, signed in")
+        let looks: [(Double, String?)] = [(0, nil), (1, nil), (1, "expired")]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach(0..<looks.count, id: \.self) { i in MetalGadget(spec: spec, state: looks[i].1, value: looks[i].0, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-glass-badge-\(colorway.rawValue)", view)
+        }
+    }
+
     func testReadingRig() throws {
         let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("packages/metalui/src/gadgets/fixtures")

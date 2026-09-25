@@ -107,7 +107,8 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     public func derivedState(_ state: String, value: Double?) -> String {
         // A switch that names a state: on, it is that state; off, back to rest. A state entered by an act
         // (a bin emptied) is the host's and stands.
-        if let port = mechanism.drive, ports?.in?[port]?.kind == "boolean", states[port] != nil, let value, states[state]?.enter != "act" {
+        // Any other state the host sets (a bin emptied, a badge expired) stands.
+        if let port = mechanism.drive, ports?.in?[port]?.kind == "boolean", states[port] != nil, let value, state == "rest" || state == port {
             return value >= 0.5 ? port : state == port ? "rest" : state
         }
         // A thumbwheel: at now it rests; back a little it is in the past; back further than far, far.
@@ -137,6 +138,8 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     public func driveTargets(_ value: Double, state: String? = nil) -> [Double] {
         guard let held = MetalMechanism.all.first(where: { $0.name == mechanism.name })?.held else { return [] }
         let ids = mechanism.bind[held.slot] ?? []
+        // A glow with no cells lights its light alone, to the value's share (a badge).
+        if mechanism.name == "glow", ids.isEmpty { return (mechanism.bind["light"] ?? []).map { _ in driveShare(value) } }
         // A wheel of ticks turns to the value's share of its range.
         if ids.allSatisfy({ id in parts.first { $0.id == id }?.part == "drum" }) { return ids.map { _ in driveShare(value) } }
         // A rocker tilts to its switch: off at 0, on at 1.
@@ -162,7 +165,8 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     public func state(_ wanted: String?) -> String {
         if let wanted, states[wanted] != nil { return wanted }
         if let initial, states[initial] != nil { return initial }
-        return states.keys.sorted().first ?? "rest"
+        // Every gadget has a rest state (the validator says so): with no other word, it rests.
+        return states["rest"] != nil ? "rest" : states.keys.sorted().first ?? "rest"
     }
 
     /// Its spoken description: `describe` with {title} and {state}, then the state's hint.

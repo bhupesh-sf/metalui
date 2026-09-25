@@ -79,7 +79,13 @@ public struct MetalGadget: View {
                     MetalBezel(r.material, color: body(r), glass: r.face, opening: p.params?["opening"]?.text == "square" ? .square : .round,
                                rings: spec.parts.first { $0.part == "glass-face" }?.params?["rings"].map { if case .flag(let on) = $0 { on } else { false } } ?? false, size: size) {
                         ZStack(alignment: .topLeading) {
+                            // Glass lit only by a glow greys when its light is out.
+                            if glows {
+                                let u = MetalGadgetTokens.backlightUnlit
+                                Rectangle().fill(MetalPigment.color(lightness: u.L, chroma: r.face.C, hue: r.face.H)).opacity(u.alpha * (1 - glowShare))
+                            }
                             ForEach(spec.parts.filter { $0.part == "backlight" }, id: \.id) { q in light(q, r: r, at: timeline.date) }
+                            ForEach(spec.parts.filter { $0.part == "glyph" }, id: \.id) { q in glyph(q, r: r) }
                             ForEach(spec.parts.filter { $0.part == "needle" }, id: \.id) { q in needle(q, r: r) }
                         }
                     }
@@ -199,8 +205,23 @@ public struct MetalGadget: View {
         }
     }
 
-    /// Whether the gadget's drive lights cells rather than moving parts.
-    private var lit: Bool { spec.parts.contains { $0.part == "cell" } }
+    /// Whether the gadget's drive lights cells (or a light) rather than moving parts: light is silent.
+    private var lit: Bool { spec.mechanism.name == "glow" }
+    /// A glow with no cells: its light alone, lit to the value (a badge).
+    private var glows: Bool { spec.mechanism.name == "glow" && !spec.parts.contains { $0.part == "cell" } }
+    private var glowShare: Double { drive?.model.x.first ?? spec.driveTargets(value ?? spec.driveDefault, state: state).first ?? 0 }
+
+    /// A catalog icon printed on the glass in the glass's own ink: dark against the light behind it.
+    @ViewBuilder private func glyph(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        if let icon = MetalLifeIconName(rawValue: p.params?["name"]?.text ?? "") {
+            let gi = MetalGadgetTokens.capGrooveInk, f = r.face
+            let ink = MetalPigment.color(lightness: max(gi.floor, f.L - gi.drop), chroma: min(gi.max, f.C * gi.gain + gi.add), hue: f.H)
+            MetalLifeIcon(icon, size: footprint(p).0 * unit, tint: nil)
+                .foregroundStyle(ink).opacity(MetalGadgetTokens.glyphAlpha)
+                .position(x: p.at[0] * unit, y: p.at[1] * unit)
+                .accessibilityHidden(true)
+        }
+    }
 
     /// The share the cells are lit to: where the glow has carried them, or the value's before it runs.
     private var litShare: Double { drive?.model.x.first ?? spec.driveTargets(value ?? spec.driveDefault, state: state).first ?? 0 }
@@ -295,7 +316,9 @@ public struct MetalGadget: View {
         let playing = player?.playing ?? false
         let posed = slot.flatMap { player?.pose($0.key, actor: index, at: date) }
         let form = spec.states[state]?.form?[p.id]?.alpha
-        let alpha = playing ? posed?.opacity ?? (shape == .dot ? 0 : 1) : form ?? (shape == .dot ? 0 : 1)
+        // A glow's light burns as bright as its value (a badge lit when signed in).
+        let glowing = glows && (spec.mechanism.bind["light"]?.contains(p.id) ?? false), lv = MetalGadgetTokens.cellBacklight
+        let alpha = glowing ? lv.empty + (lv.full - lv.empty) * glowShare : playing ? posed?.opacity ?? (shape == .dot ? 0 : 1) : form ?? (shape == .dot ? 0 : 1)
         let heading = playing ? posed?.pose.r ?? 0 : frozen[p.id] ?? 0
         MetalBacklight(shape, color: tint, heading: heading, at: CGPoint(x: p.at[0], y: p.at[1]), diameter: footprint(p).0, size: size)
             .opacity(alpha)

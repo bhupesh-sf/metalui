@@ -242,6 +242,9 @@ public enum MetalGadgetTokens {
     public static let labelEdge: Double = ${num(G.label.edge)}
     public static let labelTracking: Double = ${num(G.label.tracking)}
     public static let labelAlpha: (ink: Double, edge: Double) = (${G.label.alpha.map(num).join(', ')})
+    public static let glyphAlpha: Double = ${num(G.glyph.alpha)}
+    public static let glyphStroke: Double = ${num(G.glyph.stroke)}
+    public static let backlightUnlit: (alpha: Double, L: Double) = (${G.backlight.unlit.map(num).join(', ')})
     public static let cellAlone: (side: Double, gap: Double) = (${G.cell.alone.map(num).join(', ')})
     public static let rigPitch: Double = ${num(G.rig.pitch)}
     public static let rigPadding: Double = ${num(G.rig.padding)}

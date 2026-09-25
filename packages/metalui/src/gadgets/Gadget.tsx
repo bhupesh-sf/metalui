@@ -189,10 +189,13 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     // with them; caps slide between the mechanism's poses.
     const needles = valid.parts.filter((p) => p.part === 'needle'), cells = valid.parts.filter((p) => p.part === 'cell'), lids = valid.parts.filter((p) => p.part === 'lid');
     const lenses = valid.parts.filter((p) => p.part === 'lens'), wheels = valid.parts.filter((p) => p.part === 'drum');
+    // A glow with no cells lights its light alone (a badge).
+    const lights = !cells.length && valid.mechanism.name === 'glow' ? ([] as string[]).concat(valid.mechanism.bind.light ?? []).map((id) => valid.parts.find((p) => p.id === id)!).filter(Boolean) : [];
     const heldPoses = (TIMELINES as unknown as Record<string, { held: { from: { r?: number }; to: { r?: number } } }>)[valid.mechanism.name]?.held;
     const turns = -Number(heldPoses?.to.r ?? 0), r0 = Number(heldPoses?.from.r ?? 0), r1 = Number(heldPoses?.to.r ?? 0);
     const actors = needles.length
       ? needles.map((p) => svg.querySelector(`[data-id="${p.id}"] [data-part="needle"]`))
+      : lights.length ? lights.map((p) => svg.querySelector(`[data-id="${p.id}"][data-moves]`))
       : cells.length || lids.length || lenses.length || wheels.length ? [...cells, ...lids, ...lenses, ...wheels].map((p) => svg.querySelector(`[data-id="${p.id}"]`))
       : [...svg.querySelectorAll('[data-drive]')].sort((a, b) => Number(a.getAttribute('data-drive')) - Number(b.getAttribute('data-drive')));
     const paint = needles.length ? (el: Element, i: number, u: number) => {
@@ -204,6 +207,9 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
       svg.querySelectorAll<SVGGElement>('[data-part="backlight.level"]').forEach((b) => { b.style.opacity = String(+backlightLevel(u).toFixed(3)); });
     } : valid.parts.some((p) => p.params?.shape === 'rocker') ? (el: Element, _i: number, u: number) => {
       tiltRocker(el, 2 * u - 1);
+    } : lights.length ? (el: Element, _i: number, u: number) => {
+      (el as SVGGElement).style.opacity = String(+backlightLevel(u).toFixed(3));
+      svg.querySelectorAll<SVGElement>('[data-part="backlight.unlit"]').forEach((s) => { s.style.opacity = String(+(GADGETS.backlight.unlit[0] * (1 - u)).toFixed(3)); });
     } : wheels.length ? (el: Element, i: number, u: number) => {
       // A wheel of ticks: one tick a unit of the value, so it clicks once a day.
       const q = wheels[i], r = driveRange(valid), H = ((q.size ?? GADGETS.parts.drum.size) as number[])[1];
@@ -219,7 +225,7 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     const lidPart = lids[0], rubber = valid.parts.find((p) => p.role === 'body') && drawn?.resolved.material === 'rubber';
     // Light is silent: a glow has no knock and no scrape.
     const d = createDrive(valid.mechanism.name as DriveName, actors, driveTargets(valid, value ?? driveDefault(valid), state), {
-      sound: cells.length ? null : sound, reduced: reducedMotion(), paint, weight: valid.feel.w,
+      sound: cells.length || lights.length ? null : sound, reduced: reducedMotion(), paint, weight: valid.feel.w,
       // A lens ring clicks like the resin it is; a lid thuds in its own material.
       material: lidPart ? (rubber ? 'rubber' : 'clay') : lenses.length ? 'resin' : wheels.length ? (drawn?.resolved.material === 'stone' ? 'stone' : 'clay') : firstActor?.material === 'ceramic' ? 'ceramic' : 'clay',
       detents: valid.mechanism.detents,
@@ -241,7 +247,7 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
   }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (!valid || value === undefined || !drive.current) return;
-    drive.current.setOptions({ reduced: reducedMotion(), sound: valid.parts.some((p) => p.part === 'cell') ? null : sound });
+    drive.current.setOptions({ reduced: reducedMotion(), sound: valid.mechanism.name === 'glow' ? null : sound });
     drive.current.set(driveTargets(valid, value, state));
   }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -278,6 +284,8 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     ref.current?.querySelectorAll<SVGGElement>('[data-layer="parts"] [data-id][data-moves]').forEach((el) => {
       const id = el.getAttribute('data-id')!, f = st.form?.[id], dot = !!el.querySelector('[data-shape="dot"]');
       if (!el.querySelector('[data-part="backlight"]')) return;
+      // A glow's light is its drive's to set, not the state's.
+      if (valid.mechanism.name === 'glow' && ([] as string[]).concat(valid.mechanism.bind.light ?? []).includes(id)) return;
       el.style.opacity = String(f && 'param' in f && f.param === 'alpha' ? Number(f.value) : dot ? 0 : 1);
     });
     if (p && st.enter === 'act' && far && !reducedMotion()) landing.current = true;       // it flies home, then lands
