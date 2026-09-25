@@ -1,0 +1,41 @@
+/* THE LINK CARD'S SPECIMENS: handles laid over the real card, in the card's own units.
+ * The card is dark glass in both colorways, so the handles stay in the guide colour. */
+.ed-lc { position: relative; display: block; }
+.ed-lc-over { position: absolute; inset: 0; pointer-events: none; }
+.ed-lc-over > :is(span, div) { position: absolute; }
+.ed-lc-over [role="slider"] { pointer-events: auto; outline: none; touch-action: none; }
+
+/* frame width: the band between the screen and the outer edge on the right; faint at rest */
+.ed-lc-frame { cursor: ew-resize; }
+.ed-lc-frame i { position: absolute; top: 0; bottom: 0; border-left: .6px solid var(--mu-presence-guide); opacity: .6;
+  transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-lc-frame:is(:hover, :focus-visible) i, .ed-lc[data-lit] .ed-lc-frame i { opacity: 1; border-left-width: 1px; border-right: .6px solid var(--mu-presence-guide);
+  background: color-mix(in srgb, var(--mu-presence-guide) 18%, transparent); }
+
+/* the site: a ring where the glow starts; a lean fills it with the next site's colour */
+.ed-lc-glow { width: 10px; height: 10px; border-radius: 50%; cursor: ew-resize; box-sizing: border-box;
+  border: .6px solid var(--mu-presence-guide); opacity: .75;
+  background: color-mix(in srgb, var(--lean-tint, transparent) calc(var(--lean, 0) * 100%), transparent); }
+.ed-lc-glow:is(:hover, :focus-visible), .ed-lc[data-lit] .ed-lc-glow { opacity: 1; border-width: 1.1px; }
+.ed-lc-glow[data-lean] { box-shadow: 0 0 0 calc(var(--lean, 0) * 3px) color-mix(in srgb, var(--mu-presence-guide) 35%, transparent); }
+
+/* type: the words are the handle; a faint ring shows only while pointed at */
+.ed-lc-type { cursor: move; border-radius: 1px; box-shadow: 0 0 0 .5px transparent;
+  transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-lc-type[data-show], .ed-lc-type:focus-visible { box-shadow: 0 0 0 .6px var(--mu-presence-guide); }
+
+/* the LINK tag: its own outline is the handle; the space to the corner shows while you work it */
+.ed-lc-chip { cursor: nwse-resize; border-radius: 8px; box-shadow: 0 0 0 .5px color-mix(in srgb, var(--mu-presence-guide) 55%, transparent);
+  transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-lc-chip:is(:hover, :focus-visible), .ed-lc[data-lit] .ed-lc-chip { box-shadow: 0 0 0 .9px var(--mu-presence-guide); }
+.ed-lc-inset { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.ed-lc-inset path { fill: none; stroke: var(--mu-presence-guide); stroke-width: .6; stroke-dasharray: 1.5 1.5; }
+
+/* screen corners: the shared corner arc, kept to the screen's own box */
+.ed-lc-screenbox { pointer-events: none; }
+.ed-lc-screenbox .ed-corner { pointer-events: auto; }
+
+.ed-lc-group { display: block; margin: 12px 0 4px; font-size: 9px; letter-spacing: .14em; }
+.ed-lc-group:first-of-type { margin-top: 4px; }
+.ed-lc-opened { margin-top: 10px; }
+.ed-readouts + .ed-layers { margin-top: 10px; }
