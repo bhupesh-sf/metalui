@@ -1,0 +1,25 @@
+/* The toolbar x-ray's specimens: handles drawn on the real graphite strip. */
+.ed-tb { position: relative; display: inline-flex; }
+.ed-tb .ed-overlay { z-index: 2; }
+/* the strip's right end: a hairline inside its real edge, the grab strip just over it */
+.ed-tb .ed-tb-end { right: -3px; }
+.ed-tb .ed-corner { z-index: 2; }
+.ed-tb-cap, .ed-tb-gap, .ed-tb-groove, .ed-tb-lift { position: absolute; display: block; pointer-events: auto; outline: none; touch-action: none; }
+/* the pressed tool: a faint ring round the cap (the value is which cap is down) */
+.ed-tb-cap { cursor: grab; border-radius: var(--mu-r-toolbar-tool-radius); box-shadow: 0 0 0 .6px transparent;
+  transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-tb-cap[data-on], .ed-tb-cap:focus-visible { box-shadow: 0 0 0 .9px var(--mu-presence-guide); }
+.ed-tb-cap:active { cursor: grabbing; }
+/* the lean: the cap it will click over to lights up; nothing slides */
+.ed-tb-lean { position: absolute; display: block; pointer-events: none; border-radius: var(--mu-r-toolbar-tool-radius);
+  box-shadow: 0 0 0 .8px var(--mu-presence-guide), 0 0 5px var(--mu-presence-guide); }
+/* the gap between two tools, and the space beside the groove: two short hairlines frame the space */
+.ed-tb-gap, .ed-tb-groove { cursor: ew-resize; min-width: 4px; }
+.ed-tb-gap::after, .ed-tb-groove::after { content: ''; position: absolute; inset: 22% 0; border-left: .6px solid var(--mu-presence-guide); border-right: .6px solid var(--mu-presence-guide); opacity: .55; pointer-events: none;
+  transition: opacity var(--spring-part-d) var(--spring-part), border-width var(--spring-part-d) var(--spring-part); }
+.ed-tb-groove::after { inset: -8% 0; }
+.ed-tb-gap[data-on]::after, .ed-tb-gap:focus-visible::after, .ed-tb-groove[data-on]::after, .ed-tb-groove:focus-visible::after { opacity: 1; border-left-width: 1.2px; border-right-width: 1.2px; }
+/* height above the page: the strip itself is the handle */
+.ed-tb-lift { cursor: ns-resize; box-shadow: inset 0 0 0 .6px transparent; transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-tb-lift[data-on], .ed-tb-lift:focus-visible { box-shadow: inset 0 0 0 .9px var(--mu-presence-guide); }
+/* the handles sit on the dark strip in both colorways, so the guide green stays the bright one (no --green-deep swap) */
