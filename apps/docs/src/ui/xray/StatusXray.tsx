@@ -1,26 +1,28 @@
 import * as React from 'react';
-import { Switcher, StatusBadge, type LedKind } from '@unlocalhosted/metalui';
+import { StatusBadge, type LedKind } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, aim, capTop, scalePx, tones, useRecipeLayers, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { Exploded, IsoCap, XrayFrame, aim, capTop, scalePx, tones, useRecipeLayers, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { HintLayer } from '../edit';
+import { StatusSpecimenCard } from './StatusSpecimens';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · LED AND STATUS BADGE
  *
  *   solid     a badge: an LED and a short state in capitals
  *   x-ray     a raised pill; on it a tiny round lamp and the engraved words
- *   play      States  live · waiting · failed · link · off
- *             Lamp    the bright spot sits up and to the left, where the light is
- *             Glow    only a lamp that is on glows
- *             Type    small mono capitals, spaced out
- *             Shape   height · padding · lamp size
- *             Layers  badge and lamp layers
+ *   card      the real badge, handled (StatusSpecimens): drag it sideways through its
+ *             states; a sun moves the lamp's bright spot; glow is a switch; the words set
+ *             their size and spacing; the top edge, right end and lamp set the shape;
+ *             a switch per layer. The bench reads the same model.
  * ───────────────────────────────────────────────────────── */
 
-const RP = tokens.recipes.status.props as { led: { size: number }; badge: { height: number; pad: number; gap: number } };
+const RP = tokens.recipes.status.props as { led: { size: number; 'size-small': number }; badge: { height: number; pad: number; gap: number; font: string; tracking: string } };
+const LIVE_FILL = tokens.recipes.status.layers.find((l) => l.part === 'led' && l.prop === 'background' && 'state' in l && l.state === 'live')!.value;
+const SPOT_AT = LIVE_FILL.match(/at ([\d.]+)% ([\d.]+)%/)!.slice(1).map(Number) as [number, number];
 const S = 4;
-const WORDS: Record<LedKind, string> = { live: 'SYNC LIVE', waiting: 'WAITING', failed: 'SYNC FAILED', link: 'LINKED', off: 'OFFLINE' };
+export const WORDS: Record<LedKind, string> = { live: 'SYNC LIVE', waiting: 'WAITING', failed: 'SYNC FAILED', link: 'LINKED', off: 'OFFLINE' };
 
-type Spot = 'states' | 'light' | 'shadow' | 'type' | 'shape' | 'layers';
+export type Spot = 'states' | 'light' | 'shadow' | 'type' | 'shape' | 'layers';
 const SPOTS: SpotDef<Spot>[] = [
   { id: 'states', title: 'States', word: 'One colour for each state' },
   { id: 'light', title: 'Lamp', word: 'A tiny lit ball' },
@@ -34,7 +36,7 @@ const SIDE: Record<Spot, ['left' | 'right', number]> = {
   layers: ['right', 0.2], type: ['right', 0.48], shape: ['right', 0.76],
 };
 
-const BADGE: LayerDef[] = [
+export const BADGE: LayerDef[] = [
   { name: 'Fill', why: 'The badge colour, a little lighter at the top. It is raised like a button, but it is not a button: you cannot press it.' },
   { name: 'Inner glow', why: 'A soft light just inside the edge.' },
   { name: 'Top light', why: 'A thin bright line on the top left edge.' },
@@ -42,17 +44,22 @@ const BADGE: LayerDef[] = [
   { name: 'Contact', why: 'A small shadow right under the badge.' },
   { name: 'Drop', why: 'A soft shadow that shows it stands up a little.' },
 ];
-const LAMP: LayerDef[] = [
+export const LAMP: LayerDef[] = [
   { name: 'Lit ball', why: 'A round gradient with its brightest spot up and to the left. That spot is the reflection of the one light, so the lamp looks like a small glass ball.' },
   { name: 'Rim', why: 'A very thin dark outline so a pale lamp does not melt into the badge.' },
   { name: 'Glow', why: 'A soft coloured glow around the lamp. Only a lamp that is on has it.' },
 ];
 
-interface Model {
-  kind: LedKind; spotX: number; spotY: number; glow: boolean; track: number;
+export interface Model {
+  kind: LedKind; spotX: number; spotY: number; glow: boolean; track: number; size: number;
   h: number; pad: number; led: number; badge: boolean[]; lamp: boolean[];
 }
-const INITIAL: Model = { kind: 'live', spotX: 40, spotY: 35, glow: true, track: 0.1, h: RP.badge.height, pad: RP.badge.pad, led: RP.led.size, badge: BADGE.map(() => true), lamp: LAMP.map(() => true) };
+/** The recipe's own values: every starting number is read from tokens.json. */
+export const INITIAL: Model = {
+  kind: 'live', spotX: SPOT_AT[0], spotY: SPOT_AT[1], glow: true,
+  track: parseFloat(RP.badge.tracking), size: Number(RP.badge.font.match(/([\d.]+)px/)![1]),
+  h: RP.badge.height, pad: RP.badge.pad, led: RP.led.size, badge: BADGE.map(() => true), lamp: LAMP.map(() => true),
+};
 
 export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
   const [xray, setXray] = React.useState(startOpen);
@@ -67,15 +74,18 @@ export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
 
   const measure = React.useRef<HTMLSpanElement>(null);
   const [textW, setTextW] = React.useState(50);
-  React.useLayoutEffect(() => { if (measure.current) setTextW(measure.current.offsetWidth); }, [m.kind, m.track]);
+  React.useLayoutEffect(() => { if (measure.current) setTextW(measure.current.offsetWidth); }, [m.kind, m.track, m.size]);
   const Wp = m.pad * 2 + m.led + RP.badge.gap + textW;
   const W = Wp * S, H = m.h * S, R = H / 2;
   const fill = m.badge[0] ? `linear-gradient(180deg, ${badge.stops.join(', ')})` : 'transparent';
-  const shadow = scalePx(badge.shadows.map((v, i) => (m.badge[i + 1] ? aim(v, 0, 1) : null)).filter(Boolean).join(', ') || 'none', S);
-  const lampBg = m.lamp[0] ? lamp.fill.replace(/at 40% 35%/, `at ${m.spotX}% ${m.spotY}%`) : 'transparent';
-  const rim = [...base.shadows, ...lamp.shadows].find((v) => /\.5px/.test(v));
+  const badgeSh = badge.shadows.map((v, i) => (m.badge[i + 1] ? aim(v, 0, 1) : null)).filter(Boolean).join(', ') || 'none';
+  const shadow = scalePx(badgeSh, S);
+  const lampBg = m.lamp[0] ? lamp.fill.replace(/at [\d.]+% [\d.]+%/, `at ${m.spotX}% ${m.spotY}%`) : 'transparent';
+  // the lamp's own ring (an off bone lamp has a sunk inset instead), else the shared one
   const glowSh = lamp.shadows.find((v) => /0 0 2px/.test(v));
-  const lampShadow = scalePx([m.lamp[1] ? rim : null, m.lamp[2] && m.glow ? glowSh : null].filter(Boolean).join(', ') || 'none', S);
+  const rim = lamp.shadows.find((v) => v !== glowSh) ?? base.shadows[0];
+  const lampSh = [m.lamp[1] ? rim : null, m.lamp[2] && m.glow ? glowSh : null].filter(Boolean).join(', ') || 'none';
+  const lampShadow = scalePx(lampSh, S);
   const z = 1.5, top = capTop(z, 4);
   const L = m.led * S, lx = m.pad * S, ly = (H - L) / 2;
   const exploded = spot === 'layers';
@@ -89,7 +99,7 @@ export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
     <>
       <div className="xr-shadow" style={{ width: W, height: H, borderRadius: R, filter: 'blur(6px)', opacity: 0.12, transform: 'translate(4px, 8px)' }} />
       <IsoCap w={W} h={H} r={R} z={z} wall={4} fill={fill} shadow={shadow} wallTone={t.wall}>
-        <span className="xr-badgeface" style={{ paddingLeft: m.pad * S, gap: RP.badge.gap * S, fontSize: 9.5 * S, letterSpacing: `${m.track}em` }}>
+        <span className="xr-badgeface" style={{ paddingLeft: m.pad * S, gap: RP.badge.gap * S, fontSize: m.size * S, letterSpacing: `${m.track}em` }}>
           <i style={{ width: L, height: L, borderRadius: '50%', background: lampBg, boxShadow: lampShadow, flex: 'none' }} />
           {WORDS[m.kind]}
         </span>
@@ -117,60 +127,13 @@ export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
   const real = <StatusBadge led={m.kind}>{WORDS[m.kind]}</StatusBadge>;
 
   const card = (
-    <>
-      {spot === 'states' && (
-        <>
-          <p>The lamp's colour tells you the state. Green is on and working. Amber is waiting. Red has failed. Blue is linked. Grey is off. The words next to it always say the same thing, so you never have to rely on colour alone.</p>
-          <div className="xr-dials"><Switcher size="compact" aria-label="State" value={m.kind} onValueChange={(v) => set({ kind: v as LedKind })} options={[{ value: 'live', label: 'Live' }, { value: 'waiting', label: 'Waiting' }, { value: 'failed', label: 'Failed' }, { value: 'link', label: 'Link' }, { value: 'off', label: 'Off' }]} /></div>
-        </>
-      )}
-      {spot === 'light' && (
-        <>
-          <p>The lamp is a tiny glass ball, only {RP.led.size} pt wide. Its brightest spot is up and to the left, because that is where the light comes from. Move the spot and see how it stops looking like a ball.</p>
-          <div className="xr-dials">
-            <Dial label="Bright spot, left to right" value={m.spotX} min={10} max={90} step={1} fmt={(v) => `${v}%`} onChange={(spotX) => set({ spotX })} />
-            <Dial label="Bright spot, top to bottom" value={m.spotY} min={10} max={90} step={1} fmt={(v) => `${v}%`} onChange={(spotY) => set({ spotY })} />
-          </div>
-        </>
-      )}
-      {spot === 'shadow' && (
-        <>
-          <p>A lamp that is on gives off a little light, so it has a soft glow in its own colour. A lamp that is off has none. That is how you can tell "on" from "a green dot".</p>
-          <div className="xr-dials"><Switch label="Glow" on={m.glow} onChange={(glow) => set({ glow })} /></div>
-        </>
-      )}
-      {spot === 'type' && (
-        <>
-          <p>The words are small capitals in the mono font, spaced out. It looks stamped into the badge, like the labels on a machine. Keep it short: what state, and at most what fixes it.</p>
-          <div className="xr-dials"><Dial label="Letter spacing" value={m.track} min={0} max={0.25} step={0.01} fmt={(v) => `${v.toFixed(2)} em`} onChange={(track) => set({ track })} /></div>
-        </>
-      )}
-      {spot === 'shape' && (
-        <>
-          <p>A raised pill, {RP.badge.height} pt tall, with the same space on both ends. It looks like a button, but it is not one. If there is a fix, it shows in a tooltip when you point at it.</p>
-          <div className="xr-dials">
-            <Dial label="Height" value={m.h} min={18} max={40} step={1} fmt={(v) => `${v} pt`} onChange={(h) => set({ h })} />
-            <Dial label="Space on the ends" value={m.pad} min={4} max={20} step={1} fmt={(v) => `${v} pt`} onChange={(pad) => set({ pad })} />
-            <Dial label="Lamp size" value={m.led} min={3} max={10} step={0.5} fmt={(v) => `${v} pt`} onChange={(led) => set({ led })} />
-          </div>
-        </>
-      )}
-      {spot === 'layers' && (
-        <>
-          <p>Two parts: the badge has six layers and the lamp has three. Turn one off to see what it adds.</p>
-          <LayerList focus={focus} setFocus={setFocus} groups={[
-            { title: 'The badge', layers: BADGE, on: m.badge, toggle: (i, v) => set({ badge: m.badge.map((x, j) => (j === i ? v : x)) }) },
-            { title: 'The lamp', layers: LAMP, on: m.lamp, toggle: (i, v) => set({ lamp: m.lamp.map((x, j) => (j === i ? v : x)) }) },
-          ]} />
-        </>
-      )}
-      <Proof>{real}</Proof>
-    </>
+    <StatusSpecimenCard spot={spot} m={m} set={set} focus={setFocus} words={WORDS} badgeLayers={BADGE} lampLayers={LAMP}
+      parts={{ badgeBg: fill, badgeSh, lampBg, lampSh }} />
   );
 
   return (
-    <>
-      <span ref={measure} aria-hidden className="xr-measure" style={{ font: '500 9.5px/1 var(--mono)', letterSpacing: `${m.track}em` }}>{WORDS[m.kind]}</span>
+    <HintLayer>
+      <span ref={measure} aria-hidden className="xr-measure" style={{ font: `500 ${m.size}px/1 var(--mono)`, letterSpacing: `${m.track}em` }}>{WORDS[m.kind]}</span>
       <XrayFrame
         xray={xray} setXray={setXray} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot}
         solid={<div style={{ zoom: 3, cursor: 'zoom-in' }}>{real}</div>}
@@ -178,6 +141,6 @@ export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
         onReset={() => setM(INITIAL)} deps={[spot, m, textW]}
         card={card}
       />
-    </>
+    </HintLayer>
   );
 }

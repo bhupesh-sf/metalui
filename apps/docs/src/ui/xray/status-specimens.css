@@ -1,0 +1,28 @@
+/* THE STATUS BADGE'S SPECIMENS: handles on the real badge, in the editing layer's hairlines. */
+
+/* states: the badge itself is the handle, dragged sideways; a ring shows the lean, pips the five states */
+.ed-status-states { display: inline-flex; flex-direction: column; align-items: center; gap: 9px; }
+.ed-status-grab { position: relative; display: inline-flex; cursor: ew-resize; outline: none; touch-action: none; border-radius: 999px; }
+.ed-status-grab:hover, .ed-status-grab:focus-visible, .ed-status-grab[data-peek] { box-shadow: 0 0 0 .8px var(--mu-presence-guide); }
+.ed-status-lean { position: absolute; inset: -3px; border: .8px solid var(--mu-presence-guide); border-radius: 999px; box-shadow: 0 0 5px var(--mu-presence-guide); pointer-events: none; }
+.ed-status-pips { display: inline-flex; gap: 7px; }
+.ed-status-pips > span { display: grid; place-items: center; width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 0 0 transparent; opacity: .55;
+  transition: box-shadow var(--spring-part-d) var(--spring-part), opacity var(--spring-part-d) var(--spring-part); }
+.ed-status-pips > span[data-at] { opacity: 1; box-shadow: 0 0 0 .6px var(--mu-presence-guide); }
+.ed-status-pips > span[data-lean] { opacity: 1; box-shadow: 0 0 0 .9px var(--mu-presence-guide), 0 0 4px var(--mu-presence-guide); }
+
+/* lamp: the sun's arc is centred on the lamp, not the badge */
+.ed-status-light { position: relative; display: inline-flex; }
+.ed-status-orbit { position: absolute; width: 0; height: 0; }
+.ed-status-orbit .ed-orbit { position: absolute; max-width: none; }
+.ed-status-orbit .ed-sun { position: absolute; left: -3.5px; top: -3.5px; }
+.ed-status-light[data-lit] .ed-orbit { opacity: 1; }
+
+/* shape: the lamp's own ring is its size handle */
+.ed-status-box .ed-overlay { z-index: 2; }
+.ed-status-lamp { position: absolute; border-radius: 50%; cursor: nesw-resize; outline: none; pointer-events: auto; touch-action: none;
+  box-shadow: 0 0 0 .5px color-mix(in srgb, var(--mu-presence-guide) 60%, transparent);
+  transition: box-shadow var(--spring-part-d) var(--spring-part), opacity var(--spring-part-d) var(--spring-part); }
+.ed-status-lamp[data-away] { opacity: 0; }
+.ed-status-lamp:hover, .ed-status-lamp:focus-visible, .ed-status-lamp[data-on] { box-shadow: 0 0 0 1.1px var(--mu-presence-guide); }
+[data-mu-colorway="graphite"] :is(.ed-status-lamp, .ed-status-grab:hover, .ed-status-grab:focus-visible, .ed-status-grab[data-peek]) { --mu-presence-guide: var(--green-deep); }
