@@ -6,14 +6,16 @@ import { COLORWAYS, capture, open } from './helpers';
 for (const colorway of COLORWAYS) {
   test(`hover, glide and focus in ${colorway}`, async ({ page }) => {
     await open(page, '/components/tooltip', colorway);
-    const tip = page.locator('.mu-tooltip');
-    await page.getByRole('button', { name: 'Select', exact: true }).hover();
+    // the playground's tooltips, not the x-ray's specimen (a real tooltip held open in its card)
+    const tip = page.locator('.mu-tooltip:not([class*="ed-tip"])');
+    const play = page.locator('section', { hasText: 'Playground' }).first();
+    await play.getByRole('button', { name: 'Select', exact: true }).hover();
     await page.waitForTimeout(40);
     await expect(tip).toHaveCount(0);
     await expect(tip).toHaveText('Select · V');
     await expect(tip.locator('.mu-tooltip-key')).toHaveText(' · V');
     expect(await tip.evaluate((el) => getComputedStyle(el).pointerEvents)).toBe('none');
-    await page.getByRole('button', { name: 'Region', exact: true }).hover();
+    await play.getByRole('button', { name: 'Region', exact: true }).hover();
     await page.waitForTimeout(30);
     await expect(tip).toHaveText('Region · R');
     await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`tooltip-${colorway}`) });
