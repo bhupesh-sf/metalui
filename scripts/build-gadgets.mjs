@@ -237,6 +237,11 @@ public enum MetalGadgetTokens {
     public static let lensShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.lens.shadow.map(num).join(', ')})
     public static let capRocker: (light: Double, shade: Double, hinge: Double, shift: Double, glyph: Double) = (${G.cap.rocker.map(num).join(', ')})
     public static let capRockerSize: (width: Double, height: Double) = (${G.cap['rocker-size'].map(num).join(', ')})
+    public static let drumFar: Double = ${num(G.drum.far)}
+    public static let labelSize: Double = ${num(G.label.size)}
+    public static let labelEdge: Double = ${num(G.label.edge)}
+    public static let labelTracking: Double = ${num(G.label.tracking)}
+    public static let labelAlpha: (ink: Double, edge: Double) = (${G.label.alpha.map(num).join(', ')})
     public static let cellAlone: (side: Double, gap: Double) = (${G.cell.alone.map(num).join(', ')})
     public static let rigPitch: Double = ${num(G.rig.pitch)}
     public static let rigPadding: Double = ${num(G.rig.padding)}

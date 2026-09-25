@@ -147,6 +147,9 @@ public struct MetalRigEngine: Sendable {
         // A switch named after a state is on while the gadget shows it (a drawer full, a grid full).
         let shown = g.derivedState(state, value: v)
         for (name, ch) in outs where ch.kind == "boolean" && g.states[name] != nil && out[name] == nil { out[name] = .bool(shown == name) }
+        // A switch named in-<state> (a state it has) is on while the gadget is away from rest: in the past is
+        // any of past and far.
+        for (name, ch) in outs where ch.kind == "boolean" && name.hasPrefix("in-") && g.states[String(name.dropFirst(3))] != nil && out[name] == nil { out[name] = .bool(shown != "rest") }
         return out
     }
 

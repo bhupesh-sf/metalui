@@ -79,6 +79,9 @@ export function deriveOutputs(spec: GadgetSpec, inputs: Record<string, Value | u
   // A switch named after a state is on while the gadget shows it (a drawer full, a grid full).
   const shown = derivedState(spec, state, now);
   for (const [name, ch] of Object.entries(outs)) if (ch.kind === 'boolean' && spec.states[name] && !(name in out)) out[name] = shown === name;
+  // A switch named in-<state> (a state it has) is on while the gadget is away from rest: in the past is
+  // any of past and far.
+  for (const [name, ch] of Object.entries(outs)) if (ch.kind === 'boolean' && name.startsWith('in-') && spec.states[name.slice(3)] && !(name in out)) out[name] = shown !== 'rest';
   return out;
 }
 

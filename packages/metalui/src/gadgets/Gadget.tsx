@@ -8,12 +8,13 @@
 import * as React from 'react';
 import type { GadgetSpec } from './spec';
 import { validateGadget, type Problem } from './validate';
-import { backlightLevel, derivedState, drawGadget, driveDefault, driveShare, driveTargets, formPoses, stateOf } from './draw';
+import { backlightLevel, derivedState, drawGadget, driveRange, driveDefault, driveShare, driveTargets, formPoses, stateOf } from './draw';
 import { needleAngle } from './parts/needle';
 import { lightCells } from './parts/cell';
 import { poseLid } from './parts/lid';
 import { turnLens } from './parts/lens';
 import { tiltRocker } from './parts/cap';
+import { stripOffset } from './parts/drum';
 import { fillTray } from './parts/slab';
 import { createPlayer, type MechanismName, type Player } from './player';
 import { createDrive, createRoll, type Drive, type DriveName, type Roll } from './drive';
@@ -187,12 +188,12 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     // A needle turns about its pivot by its own arc; cells light to their share, the light behind them
     // with them; caps slide between the mechanism's poses.
     const needles = valid.parts.filter((p) => p.part === 'needle'), cells = valid.parts.filter((p) => p.part === 'cell'), lids = valid.parts.filter((p) => p.part === 'lid');
-    const lenses = valid.parts.filter((p) => p.part === 'lens');
+    const lenses = valid.parts.filter((p) => p.part === 'lens'), wheels = valid.parts.filter((p) => p.part === 'drum');
     const heldPoses = (TIMELINES as unknown as Record<string, { held: { from: { r?: number }; to: { r?: number } } }>)[valid.mechanism.name]?.held;
     const turns = -Number(heldPoses?.to.r ?? 0), r0 = Number(heldPoses?.from.r ?? 0), r1 = Number(heldPoses?.to.r ?? 0);
     const actors = needles.length
       ? needles.map((p) => svg.querySelector(`[data-id="${p.id}"] [data-part="needle"]`))
-      : cells.length || lids.length || lenses.length ? [...cells, ...lids, ...lenses].map((p) => svg.querySelector(`[data-id="${p.id}"]`))
+      : cells.length || lids.length || lenses.length || wheels.length ? [...cells, ...lids, ...lenses, ...wheels].map((p) => svg.querySelector(`[data-id="${p.id}"]`))
       : [...svg.querySelectorAll('[data-drive]')].sort((a, b) => Number(a.getAttribute('data-drive')) - Number(b.getAttribute('data-drive')));
     const paint = needles.length ? (el: Element, i: number, u: number) => {
       const p = needles[i];
@@ -203,6 +204,11 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
       svg.querySelectorAll<SVGGElement>('[data-part="backlight.level"]').forEach((b) => { b.style.opacity = String(+backlightLevel(u).toFixed(3)); });
     } : valid.parts.some((p) => p.params?.shape === 'rocker') ? (el: Element, _i: number, u: number) => {
       tiltRocker(el, 2 * u - 1);
+    } : wheels.length ? (el: Element, i: number, u: number) => {
+      // A wheel of ticks: one tick a unit of the value, so it clicks once a day.
+      const q = wheels[i], r = driveRange(valid), H = ((q.size ?? GADGETS.parts.drum.size) as number[])[1];
+      const pitch = GADGETS.drum.pitch * (H / GADGETS.parts.drum.size[1]);
+      el.querySelector('[data-part="drum.strip"]')?.setAttribute('transform', `translate(0 ${+stripOffset(r.min + (r.max - r.min) * u, pitch).toFixed(3)})`);
     } : lenses.length ? (el: Element, i: number, u: number) => {
       turnLens(el, lenses[i].at, r0 + (r1 - r0) * u);
     } : lids.length ? (el: Element, i: number, u: number) => {
@@ -215,7 +221,8 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     const d = createDrive(valid.mechanism.name as DriveName, actors, driveTargets(valid, value ?? driveDefault(valid), state), {
       sound: cells.length ? null : sound, reduced: reducedMotion(), paint, weight: valid.feel.w,
       // A lens ring clicks like the resin it is; a lid thuds in its own material.
-      material: lidPart ? (rubber ? 'rubber' : 'clay') : lenses.length ? 'resin' : firstActor?.material === 'ceramic' ? 'ceramic' : 'clay',
+      material: lidPart ? (rubber ? 'rubber' : 'clay') : lenses.length ? 'resin' : wheels.length ? (drawn?.resolved.material === 'stone' ? 'stone' : 'clay') : firstActor?.material === 'ceramic' ? 'ceramic' : 'clay',
+      detents: valid.mechanism.detents,
       partSize: lidPart ? Math.max(...((lidPart.size ?? GADGETS.parts.lid.size) as number[])) : lenses.length ? Number((lenses[0].size ?? GADGETS.parts.lens.size)[0]) : GADGETS.parts.cap.size[0],
     });
     drive.current = d;

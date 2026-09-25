@@ -578,7 +578,8 @@ export const GADGETS = {
       0.05,
       0.28
     ],
-    "alone": 150
+    "alone": 150,
+    "far": 7
   },
   "needle": {
     "base": 7,
@@ -1654,7 +1655,8 @@ export const GADGETS = {
         "ring": {
           "parts": [
             "lens",
-            "cap"
+            "cap",
+            "drum"
           ]
         },
         "lamp": {
@@ -1866,6 +1868,15 @@ export const GADGETS = {
       12
     ],
     "fanOut": 3
+  },
+  "label": {
+    "size": 0.72,
+    "edge": 1,
+    "tracking": 0.14,
+    "alpha": [
+      0.55,
+      0.7
+    ]
   }
 } as const;
 export type GadgetMaterial = 'clay' | 'ceramic' | 'resin' | 'stone' | 'glass' | 'metal' | 'rubber';

@@ -16,12 +16,14 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
         public let name: String
         /// A held mechanism's drive port.
         public let drive: String?
+        /// The gadget's own detents across a held drive's travel (a thumbwheel's days), over the mechanism's.
+        public let detents: Int?
         /// Slot → the Parts it moves: one part, or several (a counter's drums).
         public let bind: [String: [String]]
         /// Each slot's first Part.
         public var first: [String: String] { bind.compactMapValues(\.first) }
 
-        enum CodingKeys: String, CodingKey { case name, bind, drive }
+        enum CodingKeys: String, CodingKey { case name, bind, drive, detents }
         private struct OneOrMany: Codable, Hashable {
             let ids: [String]
             init(from decoder: Decoder) throws {
@@ -34,12 +36,14 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
             let c = try decoder.container(keyedBy: CodingKeys.self)
             name = try c.decode(String.self, forKey: .name)
             drive = try c.decodeIfPresent(String.self, forKey: .drive)
+            detents = try c.decodeIfPresent(Int.self, forKey: .detents)
             bind = try c.decode([String: OneOrMany].self, forKey: .bind).mapValues(\.ids)
         }
         public func encode(to encoder: Encoder) throws {
             var c = encoder.container(keyedBy: CodingKeys.self)
             try c.encode(name, forKey: .name)
             try c.encodeIfPresent(drive, forKey: .drive)
+            try c.encodeIfPresent(detents, forKey: .detents)
             try c.encode(bind, forKey: .bind)
         }
     }
@@ -106,6 +110,11 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
         if let port = mechanism.drive, ports?.in?[port]?.kind == "boolean", states[port] != nil, let value, states[state]?.enter != "act" {
             return value >= 0.5 ? port : state == port ? "rest" : state
         }
+        // A thumbwheel: at now it rests; back a little it is in the past; back further than far, far.
+        if parts.contains(where: { $0.part == "drum" && $0.params?["glyphs"]?.text == "ticks" }), states["past"] != nil, states["far"] != nil, let value {
+            let back = driveRange.max - value
+            return back <= 0 ? "rest" : back < MetalGadgetTokens.drumFar ? "past" : "far"
+        }
         // A drawer too full to close is full; opened by the host it is open. Emptied, back to rest.
         if parts.contains(where: { $0.part == "slab" && $0.role == "actor" }), states["full"] != nil, let value {
             if driveShare(value) >= MetalGadgetTokens.trayFull { return state == "open" ? "open" : "full" }
@@ -128,6 +137,8 @@ public struct MetalGadgetSpec: Codable, Sendable, Hashable {
     public func driveTargets(_ value: Double, state: String? = nil) -> [Double] {
         guard let held = MetalMechanism.all.first(where: { $0.name == mechanism.name })?.held else { return [] }
         let ids = mechanism.bind[held.slot] ?? []
+        // A wheel of ticks turns to the value's share of its range.
+        if ids.allSatisfy({ id in parts.first { $0.id == id }?.part == "drum" }) { return ids.map { _ in driveShare(value) } }
         // A rocker tilts to its switch: off at 0, on at 1.
         if ids.allSatisfy({ id in parts.first { $0.id == id }?.params?["shape"]?.text == "rocker" }) { return ids.map { _ in driveShare(value) } }
         // A lid goes where the state holds it (its form's turn, a share of the mechanism's full swing).

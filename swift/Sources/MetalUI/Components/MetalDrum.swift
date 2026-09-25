@@ -11,10 +11,12 @@ public struct MetalDrum: View {
     let size: Double
     let width: Double
     let accent: Bool
+    let height: Double?
 
     /// `width` is the drum's width on the 400-unit canvas (default: drawn by itself).
     public init(value: Double = 0, accent: Bool = false, face: Face = .ceramic, color: MetalOklch? = nil, ticks: Bool = false,
-                width: Double = MetalGadgetTokens.drumAlone, size: Double = 96) {
+                width: Double = MetalGadgetTokens.drumAlone, height: Double? = nil, size: Double = 96) {
+        self.height = height
         let warm = MetalGadgetFeelTokens.accentWarm, hue = MetalSoundMaterial.clay.finish.sampleHue
         self.value = value; self.accent = accent; self.ticks = ticks; self.width = width; self.size = size
         self.color = color ?? (accent ? MetalOklch(L: warm.L, C: warm.C, H: warm.H)
@@ -24,7 +26,7 @@ public struct MetalDrum: View {
 
     public var body: some View {
         let native = MetalGadgetTokens.partSizes["drum"] ?? (52, 88), unit = size / MetalGadgetTokens.canvas
-        let W = width * unit, H = width * native.1 / native.0 * unit, k = H / (native.1 * unit), P = MetalGadgetTokens.drumPitch * k * unit
+        let W = width * unit, H = (height ?? width * native.1 / native.0) * unit, k = H / (native.1 * unit), P = MetalGadgetTokens.drumPitch * k * unit
         let gi = MetalGadgetTokens.capGrooveInk
         let ink = MetalPigment.color(lightness: max(gi.floor, color.L - gi.drop), chroma: min(gi.max, color.C * gi.gain + gi.add), hue: color.H)
         let wrapped = (value.truncatingRemainder(dividingBy: 10) + 10).truncatingRemainder(dividingBy: 10)

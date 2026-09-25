@@ -19,6 +19,8 @@ import { drawLamp, type LampSignal } from './parts/led';
 import { drawCap } from './parts/cap';
 import { drawKey } from './parts/key';
 import { drawDrum } from './parts/drum';
+import { pigment } from './color';
+import { KEY_FONT } from './parts/key';
 import { drawNeedle } from './parts/needle';
 import { drawCells } from './parts/cell';
 import { drawLid } from './parts/lid';
@@ -100,6 +102,11 @@ export const driveShare = (spec: GadgetSpec, value: number) => { const r = drive
 /** The state a gadget shows for a value: a needle past its threshold makes it `over` (the value
  *  decides, not the host); back under, `over` falls back to rest. Other states are the host's. */
 export function derivedState(spec: GadgetSpec, state: string, value?: number): string {
+  // A thumbwheel: at now it rests; back a little it is in the past; back further than far, far.
+  if (spec.parts.some((p) => p.part === 'drum' && p.params?.glyphs === 'ticks') && spec.states.past && spec.states.far && value !== undefined) {
+    const r = driveRange(spec), back = r.max - value;
+    return back <= 0 ? 'rest' : back < GADGETS.drum.far ? 'past' : 'far';
+  }
   // A drawer too full to close is full; opened by the host it is open. Emptied, back to rest.
   if (spec.parts.some((p) => p.part === 'slab' && p.role === 'actor') && spec.states.full && value !== undefined) {
     if (driveShare(spec, value) >= GADGETS.tray.full) return state === 'open' ? 'open' : 'full';
@@ -130,6 +137,8 @@ export function driveTargets(spec: GadgetSpec, value: number, state?: string): n
     const poses = formPoses(spec, state ?? stateOf(spec)), full = (held.to as { r?: number }).r ?? 1;
     return boundTo(spec, held.slot).map((id) => Math.min(1, Math.max(0, (poses[id]?.r ?? 0) / full)));
   }
+  // A wheel of ticks turns to the value's share of its range.
+  if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'drum')) return boundTo(spec, held.slot).map(() => driveShare(spec, value));
   // A rocker tilts to its switch: off at 0, on at 1.
   if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.params?.shape === 'rocker')) return boundTo(spec, held.slot).map(() => driveShare(spec, value));
   // Cells light to the value's share; on a first run the grid rises all the way.
@@ -258,6 +267,13 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const d = drawLens(pid, { at: p.at, size: size[0], ticks: Number(p.params?.ticks ?? 24), iris: Number(p.params?.iris ?? 0.6), turn, color: resolved.accent }, { tier });
       defs += d.defs;
       trims += `<g data-id="${p.id}" data-accent="true">${d.shadow}${d.body}</g>`;
+    } else if (p.part === 'label') {
+      // A word engraved in the body: its ink, and a lit lower edge.
+      const L = GADGETS.label, [gd, gf, gg, ga, gm] = GADGETS.cap.grooveInk, [el, ec] = GADGETS.cap.edgeInk, b = rs.body;
+      const ink = pigment(Math.max(gf, b.L - gd), Math.min(gm, b.C * gg + ga), b.H), lit = pigment(Math.min(1, b.L + el), b.C * ec, b.H);
+      const esc = String(p.params?.text ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;'), fs = +(size[1] * L.size).toFixed(2);
+      const text = (dy: number, fill: string, a: number) => `<text x="${p.at[0]}" y="${+(p.at[1] + dy).toFixed(2)}" text-anchor="middle" dominant-baseline="central" font-family="${KEY_FONT}" font-weight="600" font-size="${fs}" letter-spacing="${+(fs * L.tracking).toFixed(2)}" fill="${fill}" fill-opacity="${a}">${esc}</text>`;
+      trims += `<g data-id="${p.id}" data-part="label">${tier === 'flat' ? '' : text(L.edge, lit.srgb, L.alpha[1])}${text(0, ink.srgb, L.alpha[0])}</g>`;
     } else if (p.part === 'pull') {
       // A pull on a drawer front: it goes where the tray goes.
       const d = drawPull(pid, { at: p.at, size: size as [number, number], style: (p.params?.style as 'bar' | 'recess' | undefined) ?? 'bar', color: p.params?.style === 'recess' ? rs.body : undefined }, { tier });
@@ -289,8 +305,9 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
     } else if (p.part === 'drum') {
       // A drum shows its digit of the count; the roll moves its strip from then on.
       const r = byId[p.id], face = r.accent && r.color ? r.color : p.params?.face === 'clay' ? clayFace() : { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clayFace().H };
-      const drums = boundTo(spec, 'drums'), k = drums.indexOf(p.id);
-      const value = k >= 0 ? digitOf(o.value ?? driveDefault(spec), k, drums.length) : 0;
+      // A drum of ticks turned by a held drive (a thumbwheel) stands at the value itself: one tick a unit.
+      const drums = boundTo(spec, 'drums'), k = drums.indexOf(p.id), wheel = driven.includes(p.id);
+      const value = wheel ? o.value ?? driveDefault(spec) : k >= 0 ? digitOf(o.value ?? driveDefault(spec), k, drums.length) : 0;
       const d = drawDrum(pid, { at: p.at, size: size as [number, number], value, color: face, glyphs: (p.params?.glyphs as 'digits' | 'ticks' | undefined) }, { tier });
       defs += d.defs;
       trims += `<g data-id="${p.id}"${r.accent ? ' data-accent="true"' : ''}>${d.body}</g>`;

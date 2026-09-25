@@ -473,6 +473,23 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetThumbwheel() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/thumbwheel.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual(spec.mechanism.detents, 30)
+        XCTAssertEqual([0.0, -3, -12].map { spec.derivedState("rest", value: $0) }, ["rest", "past", "far"])
+        XCTAssertEqual(spec.driveTargets(-3), [0.9])
+        XCTAssertEqual(spec.description("past", value: -3), "When, in the past")
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach([0.0, -3, -12], id: \.self) { v in MetalGadget(spec: spec, value: v, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-thumbwheel-\(colorway.rawValue)", view)
+        }
+    }
+
     func testReadingRig() throws {
         let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("packages/metalui/src/gadgets/fixtures")

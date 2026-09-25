@@ -21,9 +21,13 @@ public struct MetalDriveModel: Sendable {
     private var lastTick: [Double]
     public private(set) var t = 0.0
 
-    public init?(_ mechanism: MetalMechanism, start: [Double]) {
+    /// Detents across the travel: the mechanism's, or the gadget's own (a thumbwheel clicks once a day).
+    public let detents: Int
+
+    public init?(_ mechanism: MetalMechanism, start: [Double], detents: Int? = nil) {
         guard let held = mechanism.held else { return nil }
         self.held = held
+        self.detents = detents ?? held.detents
         let spring = mechanism.spring.spring
         k = spring.stiffness; c = spring.damping
         func level(_ kind: MetalMechanism.CueKind) -> Double { mechanism.cues.first { $0.kind == kind }?.level ?? 0 }
@@ -62,7 +66,7 @@ public struct MetalDriveModel: Sendable {
     public mutating func advance(to: Double) -> [Event] {
         var out: [Event] = []
         let h = 1 / held.step, hms = 1000 / held.step
-        func cell(_ u: Double) -> Int { min(held.detents - 1, Int(floor(u * Double(held.detents) + 1e-9))) }
+        func cell(_ u: Double) -> Int { min(detents - 1, Int(floor(u * Double(detents) + 1e-9))) }
         while t + hms <= to + 1e-9 {
             t += hms
             for i in x.indices {
@@ -75,7 +79,7 @@ public struct MetalDriveModel: Sendable {
                     x[i] = Double(end); v[i] = -v[i] * held.wall
                     if impact >= held.tickMin { out.append(.stop(actor: i, at: t, level: stopLevel * min(1, impact / held.impactFull), end: end)) }
                 }
-                if held.detents > 0, cell(before) != cell(x[i]), abs(v[i]) >= held.tickMin, t - lastTick[i] >= held.tickGap {
+                if detents > 0, cell(before) != cell(x[i]), abs(v[i]) >= held.tickMin, t - lastTick[i] >= held.tickGap {
                     lastTick[i] = t
                     out.append(.detent(actor: i, at: t, level: detentLevel))
                 }
@@ -115,8 +119,8 @@ public final class MetalDrive {
     @ObservationIgnored private let weight: Double
 
     /// `weight` is how heavy the gadget is (its feel's w): a heavy knock thumps.
-    public init?(_ mechanism: MetalMechanism, start values: [Double], sound: MetalSound? = nil, material: MetalSoundMaterial = .clay, partSize: Double = 60, weight: Double = 0) {
-        guard let model = MetalDriveModel(mechanism, start: values) else { return nil }
+    public init?(_ mechanism: MetalMechanism, start values: [Double], sound: MetalSound? = nil, material: MetalSoundMaterial = .clay, partSize: Double = 60, weight: Double = 0, detents: Int? = nil) {
+        guard let model = MetalDriveModel(mechanism, start: values, detents: detents) else { return nil }
         self.model = model; self.sound = sound; self.material = material; self.partSize = partSize; self.weight = weight
     }
 

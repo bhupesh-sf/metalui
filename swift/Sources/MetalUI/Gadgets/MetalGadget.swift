@@ -85,6 +85,7 @@ public struct MetalGadget: View {
                     }
                 }
                 ForEach(spec.parts.filter { $0.part == "lens" }, id: \.id) { p in lens(p, r: r) }
+                ForEach(spec.parts.filter { $0.part == "label" }, id: \.id) { p in label(p, r: r) }
                 ForEach(spec.parts.filter { $0.part == "jack" }, id: \.id) { p in
                     let s = footprint(p).0 * unit * MetalGadgetTokens.canvas / MetalGadgetTokens.jackNut
                     MetalJack(size: s).position(x: p.at[0] * unit, y: p.at[1] * unit)
@@ -142,9 +143,11 @@ public struct MetalGadget: View {
             if let m, let held = m.held, !held.roll, drive == nil {
                 // Light is silent: a glow has no knock and no scrape.
                 let lidPart = spec.parts.first { $0.part == "lid" }, lensPart = spec.parts.first { $0.part == "lens" }
+                let wheelPart = spec.parts.first { $0.part == "drum" && (spec.mechanism.bind["ring"]?.contains($0.id) ?? false) }
                 let d = MetalDrive(m, start: spec.driveTargets(value ?? spec.driveDefault, state: state), sound: lit ? nil : sound,
-                                   material: lidPart != nil ? (r.material == .clay ? .clay : .rubber) : lensPart != nil ? .resin : driveMaterial,
-                                   partSize: (lidPart ?? lensPart).map { let f = footprint($0); return max(f.0, f.1) } ?? MetalGadgetTokens.partSizes["cap"]?.0 ?? 60, weight: spec.feel.w)
+                                   material: lidPart != nil ? (r.material == .clay ? .clay : .rubber) : lensPart != nil ? .resin : wheelPart != nil ? (r.material == .stone ? .stone : .clay) : driveMaterial,
+                                   partSize: (lidPart ?? lensPart ?? wheelPart).map { let f = footprint($0); return max(f.0, f.1) } ?? MetalGadgetTokens.partSizes["cap"]?.0 ?? 60, weight: spec.feel.w,
+                                   detents: spec.mechanism.detents)
                 d?.reduced = reduceMotion
                 drive = d
             }
@@ -237,6 +240,21 @@ public struct MetalGadget: View {
             .offset(y: y * unit)
     }
 
+    /// A word engraved in the body: its ink, and a lit lower edge. The same as draw.ts.
+    @ViewBuilder private func label(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let b = body(r), gi = MetalGadgetTokens.capGrooveInk, ei = MetalGadgetTokens.capEdgeInk, a = MetalGadgetTokens.labelAlpha
+        let ink = MetalPigment.color(lightness: max(gi.floor, b.L - gi.drop), chroma: min(gi.max, b.C * gi.gain + gi.add), hue: b.H)
+        let lit = MetalPigment.color(lightness: min(1, b.L + ei.lift), chroma: b.C * ei.chroma, hue: b.H)
+        let fs = footprint(p).1 * MetalGadgetTokens.labelSize * unit, text = p.params?["text"]?.text ?? ""
+        let word = { (c: Color) in Text(text).font(.system(size: fs, weight: .semibold)).tracking(fs * MetalGadgetTokens.labelTracking).foregroundStyle(c) }
+        ZStack {
+            word(lit.opacity(a.edge)).offset(y: MetalGadgetTokens.labelEdge * unit)
+            word(ink.opacity(a.ink))
+        }
+        .position(x: p.at[0] * unit, y: p.at[1] * unit)
+        .accessibilityHidden(true)
+    }
+
     /// A lens over the glass, its ring turned where the turn has carried it (or at the value before it runs).
     @ViewBuilder private func lens(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
         let held = MetalMechanism.all.first { $0.name == spec.mechanism.name }?.held
@@ -300,10 +318,13 @@ public struct MetalGadget: View {
     /// A drum, showing its digit of the count (turned by the roll once it runs).
     @ViewBuilder private func drum(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
         let ids = spec.mechanism.bind["drums"] ?? [], i = ids.firstIndex(of: p.id) ?? 0
-        let digit = roll.map { $0.value(i) } ?? Double(MetalRollModel.digit(Int(value ?? spec.driveDefault), actor: i, actors: ids.count))
-        let accent = p.material == "accent"
+        // A wheel of ticks on a held drive (a thumbwheel) stands at the value itself: one tick a unit.
+        let wheel = spec.mechanism.bind["ring"]?.contains(p.id) ?? false, range = spec.driveRange
+        let digit = wheel ? range.min + (range.max - range.min) * (drive?.model.x.first ?? spec.driveShare(value ?? spec.driveDefault))
+            : roll.map { $0.value(i) } ?? Double(MetalRollModel.digit(Int(value ?? spec.driveDefault), actor: i, actors: ids.count))
+        let accent = p.material == "accent", f = footprint(p)
         MetalDrum(value: digit, accent: accent, face: p.params?["face"]?.text == "clay" ? .clay : .ceramic, color: accent ? r.accent : nil,
-                  width: footprint(p).0, size: size)
+                  ticks: p.params?["glyphs"]?.text == "ticks", width: f.0, height: f.1, size: size)
             .position(x: p.at[0] * unit, y: p.at[1] * unit)
             .accessibilityHidden(true)
     }
