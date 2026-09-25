@@ -529,6 +529,23 @@
       "agent": "https://metalui.dev/r/led.md"
     },
     {
+      "name": "lens",
+      "title": "Lens",
+      "status": "alpha",
+      "description": "A camera lens seen head-on: a knurled ring in the accent that turns, a domed glass dark at its centre and coated toward its rim, and an iris behind it closing to a polygon.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Lens",
+        "base": "none (SVG)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalLens"
+      },
+      "registry": "https://metalui.dev/r/lens.json",
+      "agent": "https://metalui.dev/r/lens.md"
+    },
+    {
       "name": "lid",
       "title": "Lid",
       "status": "alpha",

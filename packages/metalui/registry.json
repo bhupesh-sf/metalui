@@ -98,6 +98,11 @@
           "target": "components/gadgets/parts/led.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/lens.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/lens.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/lid.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/lid.ts"
@@ -704,6 +709,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/led.md. SwiftUI: MetalLED in the MetalUI Swift package."
+    },
+    {
+      "name": "lens",
+      "type": "registry:ui",
+      "title": "Lens",
+      "description": "A camera lens seen head-on: a knurled ring in the accent that turns, a domed glass dark at its centre and coated toward its rim, and an iris behind it closing to a polygon.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/lens/lens.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/lens/lens.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/lens.md. SwiftUI: MetalLens in the MetalUI Swift package."
     },
     {
       "name": "lid",

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "lens",
+  "type": "registry:ui",
+  "title": "Lens",
+  "description": "A camera lens seen head-on: a knurled ring in the accent that turns, a domed glass dark at its centre and coated toward its rim, and an iris behind it closing to a polygon.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/lens/lens.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/lens/lens.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawLens, type LensSpec } from '../../gadgets/parts/lens';\nimport { tierFor } from '../../gadgets/light';\n\n/* Lens (a Part): a camera lens seen head-on. A ring in the accent, knurled, that turns (`turn`,\n * degrees); a domed glass, dark and coated toward its rim; an iris behind it that closes as `iris`\n * runs from 1 to 0. In a gadget the turn mechanism turns its ring. Geometry is canvas units; `size`\n * is drawn pixels. */\n\nexport interface LensProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children'> {\n  iris?: number;\n  turn?: number;\n  ticks?: number;\n  /** The ring's pigment; defaults to the accent. */\n  color?: LensSpec['color'];\n  size?: number;\n}\n\nexport function Lens({ iris = 0.6, turn = 0, ticks = 24, color, size = 96, ...props }: LensProps) {\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const [wL, wC, wH] = GADGETS.accent.warm;\n  const d = drawLens(`lens-${uid}`, { at: [200, 200], size: GADGETS.lens.alone, iris, turn, ticks, color: color ?? { L: wL, C: wC, H: wH } }, { tier });\n  return (\n    <svg viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={`lens, iris ${Math.round(iris * 100)}% open`} data-tier={tier} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.shadow + d.body }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/lens.md. SwiftUI: MetalLens in the MetalUI Swift package."
+}

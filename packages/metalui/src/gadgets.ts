@@ -22,6 +22,7 @@ export { drawNeedle, needleAngle, type NeedleSpec } from './gadgets/parts/needle
 export { drawCells, lightCells, cellShares, cellOrder, cellCentres, cellGlow, type CellSpec } from './gadgets/parts/cell';
 export { drawLid, poseLid, lidPose, type LidSpec, type LidHinge } from './gadgets/parts/lid';
 export { drawPull, type PullSpec, type PullStyle } from './gadgets/parts/pull';
+export { drawLens, turnLens, irisCorners, type LensSpec } from './gadgets/parts/lens';
 export { drawDrum, stripOffset, DRUM_FONT, type DrumSpec } from './gadgets/parts/drum';
 export { drawKey, pressKey, KEY_FONT, type KeySpec } from './gadgets/parts/key';
 export { drawLamp, LAMP_COLORS, type LampSpec } from './gadgets/parts/led';
