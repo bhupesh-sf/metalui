@@ -1,0 +1,12 @@
+{
+  "name": "shutter-lens",
+  "title": "Shutter lens",
+  "status": "alpha",
+  "description": "A gadget for capture: a lens with a knurled accent ring in a warm clay bezel around glass lit from behind, and a lamp. Taken, the ring clicks round a detent and back, the glass flashes and the lamp flickers; its ring's angle is a zoom value. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/shutter-lens.gadget.json",
+  "uses": ["bezel", "glass-face", "backlight", "lens", "led"],
+  "page": "/gadgets/shutter-lens"
+}

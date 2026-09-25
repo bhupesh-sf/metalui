@@ -84,6 +84,7 @@ public struct MetalGadget: View {
                         }
                     }
                 }
+                ForEach(spec.parts.filter { $0.part == "lens" }, id: \.id) { p in lens(p, r: r) }
                 ForEach(spec.parts.filter { $0.part == "jack" }, id: \.id) { p in
                     let s = footprint(p).0 * unit * MetalGadgetTokens.canvas / MetalGadgetTokens.jackNut
                     MetalJack(size: s).position(x: p.at[0] * unit, y: p.at[1] * unit)
@@ -140,10 +141,10 @@ public struct MetalGadget: View {
             }
             if let m, let held = m.held, !held.roll, drive == nil {
                 // Light is silent: a glow has no knock and no scrape.
-                let lidPart = spec.parts.first { $0.part == "lid" }
+                let lidPart = spec.parts.first { $0.part == "lid" }, lensPart = spec.parts.first { $0.part == "lens" }
                 let d = MetalDrive(m, start: spec.driveTargets(value ?? spec.driveDefault, state: state), sound: lit ? nil : sound,
-                                   material: lidPart != nil ? (r.material == .clay ? .clay : .rubber) : driveMaterial,
-                                   partSize: lidPart.map { let f = footprint($0); return max(f.0, f.1) } ?? MetalGadgetTokens.partSizes["cap"]?.0 ?? 60, weight: spec.feel.w)
+                                   material: lidPart != nil ? (r.material == .clay ? .clay : .rubber) : lensPart != nil ? .resin : driveMaterial,
+                                   partSize: (lidPart ?? lensPart).map { let f = footprint($0); return max(f.0, f.1) } ?? MetalGadgetTokens.partSizes["cap"]?.0 ?? 60, weight: spec.feel.w)
                 d?.reduced = reduceMotion
                 drive = d
             }
@@ -234,6 +235,15 @@ public struct MetalGadget: View {
         MetalPullShape(style: p.params?["style"]?.text == "recess" ? .recess : .bar, at: CGPoint(x: p.at[0], y: p.at[1]), width: f.0, height: f.1, unit: unit)
             .frame(width: size, height: size, alignment: .topLeading)
             .offset(y: y * unit)
+    }
+
+    /// A lens over the glass, its ring turned where the turn has carried it (or at the value before it runs).
+    @ViewBuilder private func lens(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let held = MetalMechanism.all.first { $0.name == spec.mechanism.name }?.held
+        let u = drive?.model.x.first ?? spec.driveTargets(value ?? spec.driveDefault, state: state).first ?? 0.5
+        let turn = held.map { $0.from.r + ($0.to.r - $0.from.r) * u } ?? 0
+        MetalLens(iris: p.params?["iris"]?.number ?? 0.6, turn: turn, ticks: Int(p.params?["ticks"]?.number ?? 24), color: r.accent,
+                  diameter: footprint(p).0, center: CGPoint(x: p.at[0], y: p.at[1]), size: size)
     }
 
     /// A lid on its mouth, turned where the flip has carried it (or where the state holds it before it runs).
@@ -400,7 +410,7 @@ public struct MetalGadget: View {
             drive.reduced = reduceMotion
             let back = spec.driveTargets(value ?? spec.driveDefault, state: next), pulse = drive.model.held.pulse
             if pulse > 0, spec.states[next]?.enter == "act", !reduceMotion {
-                drive.set(back.map { _ in 1 })
+                drive.set(back.map { min(1, $0 + drive.model.held.pulseBy) })
                 DispatchQueue.main.asyncAfter(deadline: .now() + pulse / 2000) { if shown == next { drive.set(back) } }
             } else { drive.set(back) }
         }

@@ -10,6 +10,7 @@ import { resolve, type ResolvedGadget, type Oklch } from './resolve';
 import { tierFor, type Host, type Tier } from './light';
 import { cutPath, drawSlab, drawTray, type Cut } from './parts/slab';
 import { drawPull } from './parts/pull';
+import { drawLens } from './parts/lens';
 import { drawJack } from './parts/jack';
 import { drawPlug } from './parts/plug';
 import { drawCable } from './parts/cable';
@@ -245,6 +246,14 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const t = pose ? ` transform="translate(${pose.x ?? 0} ${pose.y ?? 0})"` : '';
       trims += `<g clip-path="url(#${pid}-out)"><g data-id="${p.id}"><g data-moves${t}>${d.body}</g></g>`
         + `<rect data-part="tray.edge" x="${p.at[0] - size[0] / 2 - GADGETS.tray.wall}" y="${edge}" width="${size[0] + 2 * GADGETS.tray.wall}" height="${dd}" fill="url(#${pid}-edge)"/></g>`;
+    } else if (p.part === 'lens') {
+      // A lens in the opening, over the glass: its ring in the accent, turned to the value (the turn
+      // mechanism turns it from then on).
+      const k = driven.indexOf(p.id), h = held as unknown as { from: { r?: number }; to: { r?: number } } | null;
+      const turn = k >= 0 && h ? (h.from.r ?? 0) + ((h.to.r ?? 0) - (h.from.r ?? 0)) * start[k] : 0;
+      const d = drawLens(pid, { at: p.at, size: size[0], ticks: Number(p.params?.ticks ?? 24), iris: Number(p.params?.iris ?? 0.6), turn, color: resolved.accent }, { tier });
+      defs += d.defs;
+      trims += `<g data-id="${p.id}" data-accent="true">${d.shadow}${d.body}</g>`;
     } else if (p.part === 'pull') {
       // A pull on a drawer front: it goes where the tray goes.
       const d = drawPull(pid, { at: p.at, size: size as [number, number], style: (p.params?.style as 'bar' | 'recess' | undefined) ?? 'bar', color: p.params?.style === 'recess' ? rs.body : undefined }, { tier });

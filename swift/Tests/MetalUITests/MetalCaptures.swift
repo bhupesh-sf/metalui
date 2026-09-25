@@ -441,6 +441,21 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetShutterLens() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/shutter-lens.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual(spec.driveTargets(0.5), [0.5])
+        XCTAssertEqual(spec.description("taken"), "Capture: taken")
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach([String?.none, "taken"], id: \.self) { s in MetalGadget(spec: spec, state: s, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-shutter-lens-\(colorway.rawValue)", view)
+        }
+    }
+
     func testReadingRig() throws {
         let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("packages/metalui/src/gadgets/fixtures")

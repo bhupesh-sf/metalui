@@ -12,6 +12,7 @@ import { backlightLevel, derivedState, drawGadget, driveDefault, driveShare, dri
 import { needleAngle } from './parts/needle';
 import { lightCells } from './parts/cell';
 import { poseLid } from './parts/lid';
+import { turnLens } from './parts/lens';
 import { fillTray } from './parts/slab';
 import { createPlayer, type MechanismName, type Player } from './player';
 import { createDrive, createRoll, type Drive, type DriveName, type Roll } from './drive';
@@ -185,10 +186,12 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     // A needle turns about its pivot by its own arc; cells light to their share, the light behind them
     // with them; caps slide between the mechanism's poses.
     const needles = valid.parts.filter((p) => p.part === 'needle'), cells = valid.parts.filter((p) => p.part === 'cell'), lids = valid.parts.filter((p) => p.part === 'lid');
-    const turns = -Number((TIMELINES as unknown as Record<string, { held: { to: { r?: number } } }>)[valid.mechanism.name]?.held.to.r ?? 0);
+    const lenses = valid.parts.filter((p) => p.part === 'lens');
+    const heldPoses = (TIMELINES as unknown as Record<string, { held: { from: { r?: number }; to: { r?: number } } }>)[valid.mechanism.name]?.held;
+    const turns = -Number(heldPoses?.to.r ?? 0), r0 = Number(heldPoses?.from.r ?? 0), r1 = Number(heldPoses?.to.r ?? 0);
     const actors = needles.length
       ? needles.map((p) => svg.querySelector(`[data-id="${p.id}"] [data-part="needle"]`))
-      : cells.length || lids.length ? [...cells, ...lids].map((p) => svg.querySelector(`[data-id="${p.id}"]`))
+      : cells.length || lids.length || lenses.length ? [...cells, ...lids, ...lenses].map((p) => svg.querySelector(`[data-id="${p.id}"]`))
       : [...svg.querySelectorAll('[data-drive]')].sort((a, b) => Number(a.getAttribute('data-drive')) - Number(b.getAttribute('data-drive')));
     const paint = needles.length ? (el: Element, i: number, u: number) => {
       const p = needles[i];
@@ -197,6 +200,8 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
       const p = cells[i];
       lightCells(el, u * Number(p.params?.cols ?? 4) * Number(p.params?.rows ?? 4));
       svg.querySelectorAll<SVGGElement>('[data-part="backlight.level"]').forEach((b) => { b.style.opacity = String(+backlightLevel(u).toFixed(3)); });
+    } : lenses.length ? (el: Element, i: number, u: number) => {
+      turnLens(el, lenses[i].at, r0 + (r1 - r0) * u);
     } : lids.length ? (el: Element, i: number, u: number) => {
       const p = lids[i];
       poseLid(el, { at: p.at, size: p.size as [number, number] | undefined, hinge: p.params?.hinge as 'back' | 'left' | undefined }, u * turns);
@@ -206,8 +211,9 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     // Light is silent: a glow has no knock and no scrape.
     const d = createDrive(valid.mechanism.name as DriveName, actors, driveTargets(valid, value ?? driveDefault(valid), state), {
       sound: cells.length ? null : sound, reduced: reducedMotion(), paint, weight: valid.feel.w,
-      material: lidPart ? (rubber ? 'rubber' : 'clay') : firstActor?.material === 'ceramic' ? 'ceramic' : 'clay',
-      partSize: lidPart ? Math.max(...((lidPart.size ?? GADGETS.parts.lid.size) as number[])) : GADGETS.parts.cap.size[0],
+      // A lens ring clicks like the resin it is; a lid thuds in its own material.
+      material: lidPart ? (rubber ? 'rubber' : 'clay') : lenses.length ? 'resin' : firstActor?.material === 'ceramic' ? 'ceramic' : 'clay',
+      partSize: lidPart ? Math.max(...((lidPart.size ?? GADGETS.parts.lid.size) as number[])) : lenses.length ? Number((lenses[0].size ?? GADGETS.parts.lens.size)[0]) : GADGETS.parts.cap.size[0],
     });
     drive.current = d;
     return () => { d.destroy(); drive.current = null; };
@@ -236,11 +242,11 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
     shown.current = state;
     // A state may move a held drive (a first run fills the grid, a lid goes ajar). One entered by an act
     // swings it all the way and lets it back at half the pulse (a bin emptied: open, and slam).
-    const heldDef = (TIMELINES as unknown as Record<string, { held: { pulse?: number } | null }>)[valid.mechanism.name]?.held;
+    const heldDef = (TIMELINES as unknown as Record<string, { held: { pulse?: number; pulseBy?: number } | null }>)[valid.mechanism.name]?.held;
     drive.current?.setOptions({ reduced: reducedMotion() });
     if (drive.current && heldDef?.pulse && valid.states[state]?.enter === 'act' && !reducedMotion()) {
       const d = drive.current, back = driveTargets(valid, value ?? driveDefault(valid), state);
-      d.set(back.map(() => 1));
+      d.set(back.map((b) => Math.min(1, b + (heldDef.pulseBy ?? 1))));
       window.setTimeout(() => { if (drive.current === d && shown.current === state) d.set(back); }, heldDef.pulse / 2);
     } else drive.current?.set(driveTargets(valid, value ?? driveDefault(valid), state));
     setLampCue(null);

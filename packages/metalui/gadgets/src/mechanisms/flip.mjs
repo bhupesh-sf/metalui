@@ -22,6 +22,7 @@ export const flip = mechanism('flip', {
     tickMin: 0.15, tickGap: 40,
     step: 240,
     pulse: 900,                        // ms: an act (emptied) swings it open and lets it fall at half of this
+    pulseBy: 1,                        // all the way open
   },
   cues: [scrape('lid', 0.08), stop('lid', 0.9)],   // the creak, low; the thud as it shuts
   states: { open: { hold: 'lid', pose: { r: -70 } }, ajar: { hold: 'lid', pose: { r: -18 } } },
