@@ -308,6 +308,22 @@
       "agent": "https://metalui.dev/r/drum.md"
     },
     {
+      "name": "fan",
+      "title": "Fan",
+      "status": "alpha",
+      "description": "A compact control bar whose cells open in place: a label, the current choice that fans its siblings out along one axis, and an options cap that stretches sideways into more controls. One open at a time; nothing hides in a menu.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Fan"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalFan"
+      },
+      "registry": "https://metalui.dev/r/fan.json",
+      "agent": "https://metalui.dev/r/fan.md"
+    },
+    {
       "name": "field",
       "title": "Field",
       "status": "alpha",

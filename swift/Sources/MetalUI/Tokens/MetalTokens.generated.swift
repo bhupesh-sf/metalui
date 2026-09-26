@@ -453,6 +453,7 @@ public enum MetalSprings {
 
 /// Travel values shared with the web motion helpers.
 public enum MetalMotionTokens {
+    public static let fanStagger: Double = 0.018
     public static let hopDuration: Double = 0.25
     public static let hopDurationFar: Double = 0.34
     public static let hopLift: Double = 14.0

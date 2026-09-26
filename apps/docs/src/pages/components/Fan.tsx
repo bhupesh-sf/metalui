@@ -13,7 +13,9 @@ import {
 import { SelectIcon, TextIcon, RegionIcon, PenIcon, DrawIcon, MarkerIcon, LineIcon, ArrowIcon, RectangleIcon, EllipseIcon, EraserIcon, MoreIcon, ImageIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/fan/fan.tsx?raw';
 import agentSource from '../../../../../packages/metalui/src/components/fan/fan.agent.md?raw';
+import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalFan.swift?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
+import { SwiftCapture } from '../../ui/SwiftCapture';
 
 type Tool = 'select' | 'write' | 'region' | 'pen' | 'pencil' | 'marker' | 'line' | 'arrow' | 'rectangle' | 'ellipse' | 'eraser';
 const TOOLS: FanOption<Tool>[] = [
@@ -98,9 +100,12 @@ export default function FanPage() {
       title="Fan"
       lede="A small control bar whose cells open in place. It shows only the current state; the current choice fans its siblings out, and the options cap stretches into more controls."
       play={{ on: 'table', lede: 'Press the tool to fan the tools up. Pick a pen: the label reads Ink and the tray holds inks and widths. Pick Select, then choose A text block: the tray holds its actions. Escape or a press outside folds whatever is open.', node: <Play /> }}
-      more={[{ id: 'both-ways', title: 'Both ways', lede: 'Centred on its cap, above and below: for a bar in the middle of a surface.', node: <div style={{ padding: '6rem 0' }} className="flex justify-center"><Both /></div> }]}
+      capture="fan-rest"
+      more={[{ id: 'both-ways', title: 'Both ways', lede: 'Centred on its cap, above and below: for a bar in the middle of a surface.', node: <div style={{ padding: '6rem 0' }} className="flex justify-center"><Both /></div> },
+        { id: 'swift-states', title: 'SwiftUI states', lede: 'Same tool fan and contextual trays rendered headlessly from the SwiftUI twin.', node: <div className="grid gap-6"><SwiftCapture name="fan-picker" maxWidth={680} /><SwiftCapture name="fan-ink" maxWidth={680} /><SwiftCapture name="fan-text" maxWidth={680} /></div> }]}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
+        { id: 'swift', label: 'SwiftUI', code: swiftSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },
       ]}
       rules={[

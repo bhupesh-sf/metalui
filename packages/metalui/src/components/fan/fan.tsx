@@ -54,7 +54,13 @@ export function Fan({ className, children, ...props }: FanProps) {
     if (!open) return;
     const fold = () => { const o = open; setOpenState(null); o.restore(); };
     const key = (e: KeyboardEvent) => { if (e.key === 'Escape') { e.preventDefault(); fold(); } };
-    const press = (e: PointerEvent) => { if (!root.current?.contains(e.target as Node)) setOpenState(null); };
+    const press = (e: PointerEvent) => {
+      if (!root.current?.contains(e.target as Node)) {
+        setOpenState(null);
+        // Pointerdown's default focus move runs after this listener; restore after release.
+        window.setTimeout(open.restore, 100);
+      }
+    };
     window.addEventListener('keydown', key);
     window.addEventListener('pointerdown', press, true);
     return () => { window.removeEventListener('keydown', key); window.removeEventListener('pointerdown', press, true); };
@@ -137,7 +143,8 @@ function FanPicker<V extends string>({ label, value, options, onValueChange, dir
                 transform: `translateY(${y}px)`,
                 opacity: isOpen ? 1 : 0,
                 pointerEvents: isOpen ? 'auto' : 'none',
-                transition: still ? `opacity ${SPRING}` : `transform ${SPRING} ${isOpen ? k * 18 : 0}ms, opacity ${SPRING}`,
+                transition: still ? `opacity ${SPRING}` : `transform ${SPRING}, opacity ${SPRING}`,
+                transitionDelay: !still && isOpen ? `calc(${k} * var(--mu-motion-fan-stagger))` : undefined,
               }}
               onClick={() => choose(o.value)}
               onKeyDown={(e) => move(e, k)}
