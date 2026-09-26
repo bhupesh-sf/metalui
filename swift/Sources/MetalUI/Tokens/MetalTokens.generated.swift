@@ -2253,6 +2253,19 @@ public enum MetalRecipes {
             "panel.drift": .number(6.0),
         ]
     )
+
+    /// A dot display: square dots on one pitch, printed into a well, each dot one px colour or unlit (px-off). A slow display: it steps at fps, never tweens. Coarse on purpose; a tile's sky is 21 dots across, a wide sky 46. (the weather widget and tiles design (Bone and Graphite), sky() and its 8 px pitch)
+    public static let dotDisplay = MetalObjectRecipe(
+        name: "dot-display",
+        layers: [
+
+        ],
+        props: [
+            "self.pitch": .number(8.0),
+            "self.dot": .number(6.0),
+            "self.step": .text("167ms"),
+        ]
+    )
 }
 
 /// E2 floating: a surface above other objects blurs what is behind it, lays a translucent fill over the blur, and wears its recipe's shadow stack. Every frosted recipe has an opaque twin: under Reduce Transparency (prefers-reduced-transparency, or data-mu-transparency="reduce" on any ancestor) the fill turns opaque and the blur goes. Under Increase Contrast a contrast-edge hairline rims the surface. A fill or opaque value that names a colorway key follows the colorway; anything else is the same in both.

@@ -162,6 +162,18 @@
   background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
   box-shadow: var(--mu-well);
 }
+/* A dot display (recipe dot-display): the SVG draws whole cells in grid units; this mask cuts each
+   cell down to its square dot, centred on the pitch, so the geometry lives in the recipe alone. */
+@utility dot-display {
+  --dot-in: calc((var(--mu-r-dot-display-self-pitch) - var(--mu-r-dot-display-self-dot)) / 2);
+  --dot-out: calc(var(--dot-in) + var(--mu-r-dot-display-self-dot));
+  display: block;
+  shape-rendering: crispEdges;
+  mask-image: linear-gradient(90deg, transparent var(--dot-in), black var(--dot-in) var(--dot-out), transparent var(--dot-out)),
+    linear-gradient(transparent var(--dot-in), black var(--dot-in) var(--dot-out), transparent var(--dot-out));
+  mask-size: var(--mu-r-dot-display-self-pitch) var(--mu-r-dot-display-self-pitch);
+  mask-composite: intersect;
+}
 @utility material-pressed {
   background: var(--mu-pressed-bg);
   box-shadow: var(--mu-pressed-sh);
@@ -890,6 +902,8 @@
   --spacing-select-led-slot: var(--mu-r-select-led-slot);
   --spacing-select-pop-offset: var(--mu-r-select-pop-offset);
   --spacing-tabs-panel-drift: var(--mu-r-tabs-panel-drift);
+  --spacing-dot-display-pitch: var(--mu-r-dot-display-self-pitch);
+  --spacing-dot-display-dot: var(--mu-r-dot-display-self-dot);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -2184,6 +2198,10 @@
 }
 @utility tabs-panel {
   outline: none; &[data-ending-style] { display: none; } &[data-activation-direction='right'] { --mu-tabs-dir: 1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &[data-activation-direction='left'] { --mu-tabs-dir: -1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); } @media (prefers-reduced-motion: reduce) { &[data-activation-direction] { animation-name: mu-tabs-fade; } }
+}
+@utility duration-dot-display-step {
+  --tw-duration: var(--mu-r-dot-display-self-step);
+  transition-duration: var(--mu-r-dot-display-self-step);
 }
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }

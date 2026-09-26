@@ -419,6 +419,24 @@
       "docs": "Agent guide: https://metalui.dev/r/dialog.md. SwiftUI: MetalDialog in the MetalUI Swift package."
     },
     {
+      "name": "dot-display",
+      "type": "registry:ui",
+      "title": "Dot display",
+      "description": "Square dots on one pitch, printed into a well: each dot one px colour or unlit. A slow display that steps six times a second and never tweens. The picture (a sky, a sticker) is the caller's.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/dot-display/dot-display.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/dot-display/dot-display.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/dot-display.md. SwiftUI: MetalDotDisplay in the MetalUI Swift package."
+    },
+    {
       "name": "draw-picks",
       "type": "registry:ui",
       "title": "Draw picks",

@@ -138,6 +138,29 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    /// Parts › Dot display: each px colour as a 3 × 3 block with its unlit ring, in a field well.
+    func testDotDisplay() {
+        let block: [UInt8] = (0..<25).map { i in i % 5 > 0 && i % 5 < 4 && i > 4 && i < 20 ? 1 : 0 }
+        let colours = MetalDotColour.allCases.filter { $0 != .off }
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 16) {
+                ForEach(colours, id: \.self) { c in
+                    VStack(spacing: 6) {
+                        MetalWell(.field, radius: 12) {
+                            MetalDotDisplay(cols: 5, rows: 5, dots: block, inks: [MetalDotInk(.off), MetalDotInk(c)])
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        Text(c.rawValue.uppercased()).font(.metal(MetalType.label)).foregroundStyle(colorway.tokens.engrave.color)
+                    }
+                }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("dot-display-\(colorway.rawValue)", view)
+        }
+    }
+
     /// Parts › Slab: every cut kind on the slab materials, the way the docs sheet shows them.
     func testSlab() {
         let cuts: [(String, [MetalSlabCut])] = [

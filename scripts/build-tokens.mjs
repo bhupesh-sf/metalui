@@ -438,6 +438,18 @@ ${Object.keys(ED.type).map((role) => `@utility type-doc-${role} {\n  ${typeDecls
   background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
   box-shadow: var(--mu-well);
 }
+/* A dot display (recipe dot-display): the SVG draws whole cells in grid units; this mask cuts each
+   cell down to its square dot, centred on the pitch, so the geometry lives in the recipe alone. */
+@utility dot-display {
+  --dot-in: calc((var(--mu-r-dot-display-self-pitch) - var(--mu-r-dot-display-self-dot)) / 2);
+  --dot-out: calc(var(--dot-in) + var(--mu-r-dot-display-self-dot));
+  display: block;
+  shape-rendering: crispEdges;
+  mask-image: linear-gradient(90deg, transparent var(--dot-in), black var(--dot-in) var(--dot-out), transparent var(--dot-out)),
+    linear-gradient(transparent var(--dot-in), black var(--dot-in) var(--dot-out), transparent var(--dot-out));
+  mask-size: var(--mu-r-dot-display-self-pitch) var(--mu-r-dot-display-self-pitch);
+  mask-composite: intersect;
+}
 @utility material-pressed {
   background: var(--mu-pressed-bg);
   box-shadow: var(--mu-pressed-sh);

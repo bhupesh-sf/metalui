@@ -257,6 +257,23 @@
       "agent": "https://metalui.dev/r/dialog.md"
     },
     {
+      "name": "dot-display",
+      "title": "Dot display",
+      "status": "alpha",
+      "description": "Square dots on one pitch, printed into a well: each dot one px colour or unlit. A slow display that steps six times a second and never tweens. The picture (a sky, a sticker) is the caller's.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "DotDisplay",
+        "base": "none (decorative)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalDotDisplay"
+      },
+      "registry": "https://metalui.dev/r/dot-display.json",
+      "agent": "https://metalui.dev/r/dot-display.md"
+    },
+    {
       "name": "draw-picks",
       "title": "Draw picks",
       "status": "alpha",

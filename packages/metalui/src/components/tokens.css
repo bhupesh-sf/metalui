@@ -1775,6 +1775,10 @@
   --mu-r-select-pop-offset: 6px;
   /* tabs: Soft Hardware switcher track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern */
   --mu-r-tabs-panel-drift: 6px;
+  /* dot-display: the weather widget and tiles design (Bone and Graphite), sky() and its 8 px pitch */
+  --mu-r-dot-display-self-pitch: 8px;
+  --mu-r-dot-display-self-dot: 6px;
+  --mu-r-dot-display-self-step: 167ms;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {

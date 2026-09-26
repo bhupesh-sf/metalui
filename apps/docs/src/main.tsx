@@ -70,6 +70,7 @@ const router = createBrowserRouter([
       { path: 'gadgets/emotion', lazy: lazy(() => import('./pages/gadgets/Emotion')) },
       { path: 'components/slab', lazy: lazy(() => import('./pages/components/Slab')) },
       { path: 'components/led', lazy: lazy(() => import('./pages/components/Led')) },
+      { path: 'components/dot-display', lazy: lazy(() => import('./pages/components/DotDisplay')) },
       { path: 'components/status', lazy: lazy(() => import('./pages/components/Status')) },
       { path: 'components/kbd', lazy: lazy(() => import('./pages/components/Kbd')) },
       { path: 'components/switcher', lazy: lazy(() => import('./pages/components/Switcher')) },
