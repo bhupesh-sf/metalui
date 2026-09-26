@@ -303,7 +303,15 @@ export const GADGETS = {
       "well": 6
     },
     "lipAlpha": 0.5,
-    "trayRadius": 20
+    "trayRadius": 20,
+    "ink": [
+      0.12,
+      0.14,
+      0.34,
+      0.3,
+      0.16,
+      0.7
+    ]
   },
   "jack": {
     "hole": 0.44,
@@ -1107,8 +1115,8 @@ export const GADGETS = {
       "lidded-bin",
       "shutter-lens",
       "counter-drum",
-      "needle-gauge",
       "cell-grid",
+      "needle-gauge",
       "rocker",
       "ink-well",
       "thumbwheel",
@@ -1148,6 +1156,9 @@ export const GADGETS = {
           "number",
           4,
           160
+        ],
+        "ink": [
+          "boolean"
         ]
       },
       "strike": [

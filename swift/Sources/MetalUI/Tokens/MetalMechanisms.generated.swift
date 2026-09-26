@@ -2,6 +2,18 @@
 // The same tracks and cues the web player runs (mechanisms.generated.ts).
 
 extension MetalMechanism {
+    /// The nib dips into its well and springs back up, with a soft tap on the well.
+    public static let dip = MetalMechanism(
+        name: "dip", momentary: true, duration: 424.0, stagger: 0.0, loops: false, phased: [], spring: .release,
+        tracks: [
+            .init(part: "nib", frames: [.init(at: 0.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.55, 0.0, 0.85, 0.45)), .init(at: 110.0, pose: .init(x: 0.0, y: 10.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.16, 0.75, 0.3, 0.95)), .init(at: 424.0, pose: .init(x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0), opacity: nil, ease: (0.0, 0.0, 1.0, 1.0))])
+        ],
+        cues: [.init(at: 110.0, until: nil, kind: .strike, slot: "well", level: 0.3, pitch: 1.0, gesture: nil)],
+        states: ["writing": .init(hold: "nib", pose: .init(x: 0.0, y: 6.0, r: 0.0, sx: 1.0, sy: 1.0))],
+        reduced: ["lamp", "sound"],
+        held: nil
+    )
+
     /// The lid swings about its hinge: it creaks as it rises, and thuds shut against the rim. Emptied, it swings open and slams.
     public static let flip = MetalMechanism(
         name: "flip", momentary: false, duration: 0.0, stagger: 0.0, loops: false, phased: [], spring: .hinge,
@@ -125,5 +137,5 @@ extension MetalMechanism {
         held: .init(slot: "ring", from: .init(x: 0.0, y: 0.0, r: -180.0, sx: 1.0, sy: 1.0), to: .init(x: 0.0, y: 0.0, r: 180.0, sx: 1.0, sy: 1.0), detents: 8, stagger: 0.0, wall: 0.3, impactFull: 2.0, scrapeFull: 3.0, tickMin: 0.1, tickGap: 40.0, step: 240.0, roll: false, rest: 0.0, pulse: 600.0, pulseBy: 0.125)
     )
 
-    public static let all: [MetalMechanism] = [flip, glow, press, roll, seat, slideOut, slide, sweep, swing, turn]
+    public static let all: [MetalMechanism] = [dip, flip, glow, press, roll, seat, slideOut, slide, sweep, swing, turn]
 }

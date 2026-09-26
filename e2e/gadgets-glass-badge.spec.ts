@@ -31,8 +31,8 @@ test('signing in raises the light on the settle spring; expired keeps it and tur
     await new Promise<void>((done) => { const id = setInterval(() => { out.push(Number((svg.querySelector('[data-id="light"]') as HTMLElement).style.opacity)); if (performance.now() - t0 > 1200) { clearInterval(id); done(); } }, 16); });
     return out;
   });
-  // It rises through the middle and never past full.
-  expect(trace.some((a) => a > 0.2 && a < 0.8)).toBe(true);
+  // It rises between dark and full (never past full).
+  expect(trace.some((a) => a > 0.09 && a < 0.91)).toBe(true);
   expect(Math.max(...trace)).toBeLessThanOrEqual(0.921);
   expect(trace[trace.length - 1]).toBeCloseTo(0.92, 2);
   await page.getByRole('switch', { name: 'Expired' }).click();

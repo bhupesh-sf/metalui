@@ -63,6 +63,7 @@ const router = createBrowserRouter([
       { path: 'gadgets/rocker', lazy: lazy(() => import('./pages/gadgets/Rocker')) },
       { path: 'gadgets/thumbwheel', lazy: lazy(() => import('./pages/gadgets/Thumbwheel')) },
       { path: 'gadgets/glass-badge', lazy: lazy(() => import('./pages/gadgets/GlassBadge')) },
+      { path: 'gadgets/ink-well', lazy: lazy(() => import('./pages/gadgets/InkWell')) },
       { path: 'gadgets/reading-rig', lazy: lazy(() => import('./pages/gadgets/ReadingRig')) },
       { path: 'components/slab', lazy: lazy(() => import('./pages/components/Slab')) },
       { path: 'components/led', lazy: lazy(() => import('./pages/components/Led')) },

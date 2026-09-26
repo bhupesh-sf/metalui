@@ -11,6 +11,7 @@ import { tierFor, type Host, type Tier } from './light';
 import { cutPath, drawSlab, drawTray, type Cut } from './parts/slab';
 import { drawPull } from './parts/pull';
 import { drawLens } from './parts/lens';
+import { drawNib } from './parts/nib';
 import { ICON_CATALOG } from '../icons/catalog.generated';
 import { LIFE_CATALOG } from '../icons/life/catalog.generated';
 import { drawJack } from './parts/jack';
@@ -279,6 +280,18 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const d = drawLens(pid, { at: p.at, size: size[0], ticks: Number(p.params?.ticks ?? 24), iris: Number(p.params?.iris ?? 0.6), turn, color: resolved.accent }, { tier });
       defs += d.defs;
       trims += `<g data-id="${p.id}" data-accent="true">${d.shadow}${d.body}</g>`;
+    } else if (p.part === 'slab' && p.role === 'cut' && p.params?.ink === true) {
+      // Ink in a well: a pool in the accent, darker at its meniscus, with a glint.
+      const [inset, men, gx, gy, gr, ga] = GADGETS.hole.ink, a = resolved.accent, R = (Math.min(size[0], size[1]) / 2) * (1 - inset);
+      defs += `<radialGradient id="${pid}-ink" cx=".5" cy=".5" r=".5"><stop offset=".7" stop-color="${pigment(a.L, a.C, a.H).srgb}"/><stop offset="1" stop-color="${pigment(a.L - men, a.C, a.H).srgb}"/></radialGradient>`;
+      trims += `<g data-id="${p.id}" data-part="ink"><circle cx="${p.at[0]}" cy="${p.at[1]}" r="${+R.toFixed(2)}" fill="url(#${pid}-ink)"/>`
+        + `<circle cx="${+(p.at[0] - R + 2 * R * gx).toFixed(2)}" cy="${+(p.at[1] - R + 2 * R * gy).toFixed(2)}" r="${+(R * gr).toFixed(2)}" fill="#fff" fill-opacity="${ga}"/></g>`;
+    } else if (p.part === 'nib') {
+      // A nib over its well, its origin at its tip; the dip moves it, and a held pose is drawn in.
+      const d = drawNib(pid, { tip: p.at, size: size as [number, number], angle: Number(p.params?.angle ?? 0), ink: resolved.accent }, { tier });
+      defs += d.defs;
+      const pose = poses[p.id], t = pose ? ` transform="translate(${pose.x ?? 0} ${pose.y ?? 0})"` : '';
+      plugs += `<g data-id="${p.id}"><g data-moves${t}>${d.shadow}${d.body}</g></g>`;
     } else if (p.part === 'glyph') {
       // A catalog icon printed on the glass in the glass's own ink: dark against the light behind it.
       const G = GADGETS.glyph, name = String(p.params?.name ?? ''), f = resolved.face, [gd, gf, gg, ga, gm] = GADGETS.cap.grooveInk;

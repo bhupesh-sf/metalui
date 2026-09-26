@@ -508,6 +508,21 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetInkWell() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/ink-well.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual([0.0, 1].map { spec.derivedState("rest", value: $0) }, ["rest", "writing"])
+        XCTAssertEqual(spec.description("writing", value: 1), "Draw, writing")
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach([0.0, 1], id: \.self) { v in MetalGadget(spec: spec, value: v, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-ink-well-\(colorway.rawValue)", view)
+        }
+    }
+
     func testReadingRig() throws {
         let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("packages/metalui/src/gadgets/fixtures")

@@ -114,6 +114,8 @@ public struct MetalGadget: View {
                                    sag: p.params?["sag"]?.number, length: p.params?["length"]?.number, size: size, followEnds: true)
                     }
                 }
+                ForEach(spec.parts.filter { $0.part == "slab" && $0.role == "cut" && $0.params?["ink"] == .flag(true) }, id: \.id) { p in ink(p, r: r) }
+                ForEach(spec.parts.filter { $0.part == "nib" }, id: \.id) { p in nib(p, r: r, at: timeline.date) }
                 ForEach(spec.parts.filter { $0.part == "slab" && $0.role == "actor" }, id: \.id) { p in
                     tray(p, r: r, at: timeline.date)
                 }
@@ -232,6 +234,29 @@ public struct MetalGadget: View {
         MetalBacklight(.glow, color: .glass(r.face), at: CGPoint(x: p.at[0], y: p.at[1]), diameter: footprint(p).0, size: size)
             .opacity(lv.empty + (lv.full - lv.empty) * min(1, max(0, litShare)))
             .mask { if let cut { Path(cut.path).applying(CGAffineTransform(scaleX: unit, y: unit)).fill(.black) } else { Rectangle() } }
+    }
+
+    /// Ink in a well: a pool in the accent, darker at its meniscus, with a glint. The same as draw.ts.
+    @ViewBuilder private func ink(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let k = MetalGadgetTokens.holeInk, a = r.accent, f = footprint(p), R = min(f.0, f.1) / 2 * (1 - k.inset)
+        let across = (R + R) * unit, glint = across * k.radius
+        ZStack(alignment: .topLeading) {
+            Circle().fill(RadialGradient(stops: [.init(color: MetalPigment.color(lightness: a.L, chroma: a.C, hue: a.H), location: 0.7),
+                                                 .init(color: MetalPigment.color(lightness: a.L - k.meniscus, chroma: a.C, hue: a.H), location: 1)],
+                                         center: .center, startRadius: 0, endRadius: R * unit))
+                .frame(width: across, height: across).position(x: p.at[0] * unit, y: p.at[1] * unit)
+            Circle().fill(.white.opacity(k.alpha)).frame(width: glint, height: glint)
+                .position(x: (p.at[0] - R + 2 * R * k.x) * unit, y: (p.at[1] - R + 2 * R * k.y) * unit)
+        }
+        .frame(width: size, height: size, alignment: .topLeading)
+    }
+
+    /// A nib over its well, its origin at its tip: where the dip carries it (or its state holds it).
+    @ViewBuilder private func nib(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved, at date: Date) -> some View {
+        let slot = spec.mechanism.bind.first { $0.value.contains(p.id) }?.key
+        let pose = slot.map { player?.pose($0, at: date).pose ?? .rest } ?? .rest
+        MetalNib(angle: p.params?["angle"]?.number ?? 0, ink: r.accent, tip: CGPoint(x: p.at[0], y: p.at[1]), dims: footprint(p), size: size)
+            .offset(x: pose.x * unit, y: pose.y * unit)
     }
 
     /// A drawer's tray, run under the body's front edge: only what is out past the edge shows, and the

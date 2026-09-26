@@ -2,6 +2,107 @@
 // How gadgets move when they act: tracks (poses as numbers, easings as cubic-bezier points), cues,
 // held poses and what survives reduced motion. MetalMechanisms.generated.swift carries the same.
 export const MECHANISMS = {
+  "dip": {
+    "name": "dip",
+    "mode": "momentary",
+    "duration": 424,
+    "caption": "The nib dips into its well and springs back up, with a soft tap on the well.",
+    "stages": [
+      "Dip",
+      "Touch",
+      "Lift"
+    ],
+    "stagger": 0,
+    "phase": null,
+    "loop": false,
+    "spring": "release",
+    "slots": {
+      "nib": "actor",
+      "well": "cut",
+      "lamp": "lamp"
+    },
+    "tracks": [
+      {
+        "part": "nib",
+        "origin": "tip",
+        "frames": [
+          {
+            "at": 0,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0.55,
+              0,
+              0.85,
+              0.45
+            ]
+          },
+          {
+            "at": 110,
+            "pose": {
+              "x": 0,
+              "y": 10,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0.16,
+              0.75,
+              0.3,
+              0.95
+            ]
+          },
+          {
+            "at": 424,
+            "pose": {
+              "x": 0,
+              "y": 0,
+              "r": 0,
+              "sx": 1,
+              "sy": 1
+            },
+            "opacity": null,
+            "ease": [
+              0,
+              0,
+              1,
+              1
+            ]
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "at": 110,
+        "kind": "strike",
+        "slot": "well",
+        "level": 0.3,
+        "pitch": 1
+      }
+    ],
+    "states": {
+      "writing": {
+        "hold": "nib",
+        "pose": {
+          "y": 6
+        }
+      }
+    },
+    "reduced": [
+      "lamp",
+      "sound"
+    ],
+    "held": null
+  },
   "flip": {
     "name": "flip",
     "mode": "held",
