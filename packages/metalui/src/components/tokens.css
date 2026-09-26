@@ -1713,6 +1713,80 @@
   --mu-r-select-pop-offset: 6px;
   /* tabs: Soft Hardware switcher track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern */
   --mu-r-tabs-panel-drift: 6px;
+  /* weather: metalui weather design (canvas Weather widget and tiles, 2026-09-26) */
+  --mu-r-weather-self-width: 400px;
+  --mu-r-weather-self-height: 560px;
+  --mu-r-weather-self-pad: 16px;
+  --mu-r-weather-self-gap: 12px;
+  --mu-r-weather-header-inset: 4px;
+  --mu-r-weather-header-top: 2px;
+  --mu-r-weather-header-gap: 2px;
+  --mu-r-weather-header-led-gap: 6px;
+  --mu-r-weather-header-height: 24px;
+  --mu-r-weather-screen-height: 224px;
+  --mu-r-weather-screen-radius: 18px;
+  --mu-r-weather-screen-inset: 14px;
+  --mu-r-weather-screen-foot: 6px;
+  --mu-r-weather-screen-lift: 4px;
+  --mu-r-weather-dot-pitch: 8px;
+  --mu-r-weather-dot-size: 6px;
+  --mu-r-weather-dot-frame: 166ms;
+  --mu-r-weather-hour-height: 72px;
+  --mu-r-weather-hour-font: 700 24px/28px var(--mu-pixel);
+  --mu-r-weather-hour-glyph: 21px;
+  --mu-r-weather-hour-gap: 4px;
+  --mu-r-weather-week-height: 140px;
+  --mu-r-weather-week-row: 14px;
+  --mu-r-weather-week-gap: 4px;
+  --mu-r-weather-week-day: 40px;
+  --mu-r-weather-week-glyph: 14px;
+  --mu-r-weather-week-value: 30px;
+  --mu-r-weather-week-bar: 168px;
+  --mu-r-weather-week-bar-height: 6px;
+  --mu-r-weather-week-col: 10px;
+  --mu-r-weather-tile-size: 180px;
+  --mu-r-weather-tile-pad: 6px;
+  --mu-r-weather-tile-screen: 168px;
+  --mu-r-weather-tile-inset: 12px;
+  --mu-r-weather-tile-lift: 6px;
+  --mu-r-weather-ink-glow-opacity: 0.32;
+  --mu-r-weather-ink-heat-opacity: 0.5;
+  --mu-r-weather-ink-fog-opacity: 0.7;
+  --mu-r-weather-ink-moon-dark-opacity: 0.22;
+  /* day: metalui day design (canvas Day widget, 2026-09-26) */
+  --mu-r-day-self-width: 364px;
+  --mu-r-day-self-height: 382px;
+  --mu-r-day-self-pad: 16px;
+  --mu-r-day-self-gap: 12px;
+  --mu-r-day-self-text-gap: 2px;
+  --mu-r-day-self-left-gap: 6px;
+  --mu-r-day-page-height: 196px;
+  --mu-r-day-page-radius: 18px;
+  --mu-r-day-page-side: 48px;
+  --mu-r-day-page-tear: 55ms;
+  --mu-r-day-page-tear-top: 10px;
+  --mu-r-day-page-tear-left: 8px;
+  --mu-r-day-page-tear-width: 264px;
+  --mu-r-day-page-tear-height: 172px;
+  --mu-r-day-page-tear-radius: 12px;
+  --mu-r-day-page-side-top: 12px;
+  --mu-r-day-page-side-right: 10px;
+  --mu-r-day-clock-font: 700 24px/28px var(--mu-pixel);
+  --mu-r-day-clock-colon: 12px;
+  --mu-r-day-clock-colon-dim: 0.2;
+  --mu-r-day-clock-gap: 14px;
+  --mu-r-day-clock-colon-gap: 1px;
+  --mu-r-day-year-height: 70px;
+  --mu-r-day-year-gap: 16px;
+  --mu-r-day-year-width: 135px;
+  --mu-r-day-left-font: 700 40px/44px var(--mu-pixel);
+  --mu-r-day-tile-size: 180px;
+  --mu-r-day-tile-pad: 6px;
+  --mu-r-day-tile-screen: 168px;
+  --mu-r-day-tile-inset: 12px;
+  --mu-r-day-tile-moon: 21px;
+  --mu-r-day-tile-foot: 10px;
+  --mu-r-day-ink-fall-opacity: 0.35;
 }
 /* Layers in an object's own colour resolve where --mu-self is set (data-mu-self on the object). */
 [data-mu-self] {
@@ -2136,6 +2210,23 @@
   --mu-r-select-chevron-ink: #8E8E93;
   --mu-r-select-veil-hover: rgba(255,255,255,.4);
   --mu-r-select-error-ring: rgba(216,69,59,.55);
+  --mu-r-weather-ink-off: rgba(40,38,32,.06);
+  --mu-r-weather-ink-hz: #9A9A9D;
+  --mu-r-weather-ink-hill: #5C5C60;
+  --mu-r-weather-ink-sun: #C98A18;
+  --mu-r-weather-ink-moon: #8A6212;
+  --mu-r-weather-ink-star: #C7A76B;
+  --mu-r-weather-ink-cloud: #9A9A9D;
+  --mu-r-weather-ink-cloud-dark: #5C5C60;
+  --mu-r-weather-ink-rain: #3558C9;
+  --mu-r-weather-ink-snow: #5C5C60;
+  --mu-r-day-ink-off: rgba(40,38,32,.06);
+  --mu-r-day-ink-left: rgba(40,38,32,.16);
+  --mu-r-day-ink-hole: #9A9A9D;
+  --mu-r-day-ink-date: #1B1B1D;
+  --mu-r-day-ink-saturday: #3558C9;
+  --mu-r-day-ink-sunday: #C98A18;
+  --mu-r-day-ink-moon: #8A6212;
 }
 [data-mu-colorway="graphite"] {
   --mu-r-checkbox-self-background:
@@ -2537,6 +2628,23 @@
   --mu-r-select-chevron-ink: #8E8E93;
   --mu-r-select-veil-hover: rgba(255,255,255,.035);
   --mu-r-select-error-ring: rgba(255,122,102,.5);
+  --mu-r-weather-ink-off: rgba(255,255,255,.05);
+  --mu-r-weather-ink-hz: #5C5C60;
+  --mu-r-weather-ink-hill: #77777B;
+  --mu-r-weather-ink-sun: #E4B25E;
+  --mu-r-weather-ink-moon: #F3D9A4;
+  --mu-r-weather-ink-star: #C7A76B;
+  --mu-r-weather-ink-cloud: #A6A6A9;
+  --mu-r-weather-ink-cloud-dark: #77777B;
+  --mu-r-weather-ink-rain: #8FB0FF;
+  --mu-r-weather-ink-snow: #F2F2F0;
+  --mu-r-day-ink-off: rgba(255,255,255,.05);
+  --mu-r-day-ink-left: rgba(255,255,255,.14);
+  --mu-r-day-ink-hole: #5C5C60;
+  --mu-r-day-ink-date: #F2F2F0;
+  --mu-r-day-ink-saturday: #8FB0FF;
+  --mu-r-day-ink-sunday: #E4B25E;
+  --mu-r-day-ink-moon: #F3D9A4;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
@@ -2939,5 +3047,22 @@
     --mu-r-select-chevron-ink: #8E8E93;
     --mu-r-select-veil-hover: rgba(255,255,255,.035);
     --mu-r-select-error-ring: rgba(255,122,102,.5);
+    --mu-r-weather-ink-off: rgba(255,255,255,.05);
+    --mu-r-weather-ink-hz: #5C5C60;
+    --mu-r-weather-ink-hill: #77777B;
+    --mu-r-weather-ink-sun: #E4B25E;
+    --mu-r-weather-ink-moon: #F3D9A4;
+    --mu-r-weather-ink-star: #C7A76B;
+    --mu-r-weather-ink-cloud: #A6A6A9;
+    --mu-r-weather-ink-cloud-dark: #77777B;
+    --mu-r-weather-ink-rain: #8FB0FF;
+    --mu-r-weather-ink-snow: #F2F2F0;
+    --mu-r-day-ink-off: rgba(255,255,255,.05);
+    --mu-r-day-ink-left: rgba(255,255,255,.14);
+    --mu-r-day-ink-hole: #5C5C60;
+    --mu-r-day-ink-date: #F2F2F0;
+    --mu-r-day-ink-saturday: #8FB0FF;
+    --mu-r-day-ink-sunday: #E4B25E;
+    --mu-r-day-ink-moon: #F3D9A4;
   }
 }
