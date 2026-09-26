@@ -21,7 +21,7 @@ The `turn` mechanism, held, on the part spring: `zoom` (0 to 1) is the ring's an
 | State | Glass | Lamp | News |
 |---|---|---|---|
 | rest | faintly lit | off | none |
-| taken | flashes | green, flickers | the ring's click |
+| taken | flashes | green, rising | the ring's click |
 
 It says: "Capture: taken".
 

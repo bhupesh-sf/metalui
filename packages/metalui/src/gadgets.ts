@@ -33,3 +33,4 @@ export { createDrive, DriveModel, createRoll, RollModel, digitOf, type Drive, ty
 export { SPRINGS, type SpringName } from './motion/springs.generated';
 export { layoutRig, createRigFlow, deriveOutputs, mapValue, rigSpecs, stateFromInput, type RigLayout, type RigHop, type RigFlow, type PortValues } from './gadgets/rig-engine';
 export { Rig, type RigProps } from './gadgets/Rig';
+export { emotionChecks, samTargets, scoreStudy, codeMaterial, STUDY_SIZES, type EmotionCheck, type Session, type SamAnswer, type StudyResult } from './gadgets/emotion';

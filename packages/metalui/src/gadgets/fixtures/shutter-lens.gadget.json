@@ -13,7 +13,7 @@
   "ports": { "in": { "zoom": { "kind": "number", "min": 0, "max": 1, "default": 0.5 }, "take": { "kind": "pulse" } }, "out": { "taken": { "kind": "pulse" } } },
   "states": {
     "rest":  { "lamp": ["off", "steady"], "form": { "light": { "param": "alpha", "value": 0.15 } } },
-    "taken": { "lamp": ["live", "flicker"], "enter": "act", "form": { "light": { "param": "alpha", "value": 0.9 } } }
+    "taken": { "lamp": ["live", "rise"], "enter": "act", "form": { "light": { "param": "alpha", "value": 0.9 } } }
   },
   "describe": "{title}: {state}"
 }

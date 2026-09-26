@@ -5,7 +5,7 @@ A gadget for something kept that fills, drawn from a spec. React: `<Gadget spec=
 ## Use it for
 
 - Something kept that fills up: a memory, a library of captures, a cache warming.
-- A first run: set the `first-run` state and the whole grid rises, the lamp breathes and the beeper says `ready`.
+- A first run: set the `first-run` state and the whole grid rises, it brightens toward good news (v 0.8), the lamp rises and the beeper says `ready`.
 
 ## Don't use it for
 
@@ -25,7 +25,7 @@ The share decides the first three; a first run is the host's.
 | rest | off | none (no cell lit) |
 | filling | live, steady | none |
 | full | live, steady | none |
-| first-run | live, breathing | `ready`, once; the grid lights all the way |
+| first-run | live, rising | `ready`, once; the grid lights all the way |
 
 It says how much it keeps: "Memory: 40% kept".
 

@@ -59,7 +59,7 @@ export default function ShutterLensPage() {
     <>
       <PageHeader
         title="Shutter lens"
-        lede="A gadget for capture: a lens with a knurled ring in the accent, in a warm clay bezel around glass lit from behind, and a lamp. Take a picture and the ring clicks round a detent and back, the glass flashes, and the lamp flickers. It is only a spec: the renderer draws it, and the turn mechanism turns the ring."
+        lede="A gadget for capture: a lens with a knurled ring in the accent, in a warm clay bezel around glass lit from behind, and a lamp. Take a picture and the ring clicks round a detent and back, the glass flashes, and the lamp rises. It is only a spec: the renderer draws it, and the turn mechanism turns the ring."
       />
       <Section title="Take one" lede="Take: the ring clicks round one detent and back while the glass behind the lens flashes. Turn the ring yourself: drag round it, scroll on it or use the arrow keys, and it clicks at every eighth of a turn. Turn sound on to hear the detents.">
         <Bench caption={`shutter-lens · take, world · feel .8 .9 .2 · turn · zoom ${Math.round(zoom * 8)} of 8 · ${taken ? 'taken' : 'rest'}`}>

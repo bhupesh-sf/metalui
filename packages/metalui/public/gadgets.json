@@ -2112,7 +2112,7 @@
     {
       "name": "shutter-lens",
       "title": "Capture",
-      "description": "A gadget for capture: a lens with a knurled accent ring in a warm clay bezel around glass lit from behind, and a lamp. Taken, the ring clicks round a detent and back, the glass flashes and the lamp flickers; its ring's angle is a zoom value. Drawn at runtime from its spec.",
+      "description": "A gadget for capture: a lens with a knurled accent ring in a warm clay bezel around glass lit from behind, and a lamp. Taken, the ring clicks round a detent and back, the glass flashes and the lamp rises; its ring's angle is a zoom value. Drawn at runtime from its spec.",
       "job": "take",
       "container": "inset",
       "mechanism": "turn",
@@ -2269,7 +2269,7 @@
           "taken": {
             "lamp": [
               "live",
-              "flicker"
+              "rise"
             ],
             "enter": "act",
             "form": {
@@ -2633,9 +2633,12 @@
             "hint": "full"
           },
           "first-run": {
+            "feel": {
+              "v": 0.8
+            },
             "lamp": [
               "live",
-              "breathe"
+              "rise"
             ],
             "beep": "ready"
           }

@@ -137,6 +137,10 @@ emit('packages/metalui/src/gadgets/fixtures/rig-samples.json', JSON.stringify({
     })];
   })),
 }) + '\n');
+// The emotion pre-checks (model §6): what needs no person, reported before a study (they never fail the build;
+// tuning follows the study, and is of coefficients and tables, never of one gadget).
+const { emotionChecks } = await import(pathToFileURL(`${dir}/emotion.ts`).href);
+for (const c of emotionChecks(Object.values(catalog))) if (!c.ok) console.warn(`gadgets: emotion pre-check "${c.title}": ${c.detail}`);
 // The whole catalog resolves (every state).
 for (const g of Object.values(catalog)) resolve(g);
 
