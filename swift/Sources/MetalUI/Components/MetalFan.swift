@@ -54,8 +54,15 @@ public struct MetalFan<Content: View>: View {
                 if ProcessInfo.processInfo.environment["METALUI_CAPTURES"] == nil {
                     MetalFanWindowProbe { view in
                         guard eventMonitor == nil else { return }
-                        eventMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { event in
+                        eventMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .keyDown]) { event in
                             guard state.open != nil, let window = view.window, event.window === window else { return event }
+                            // Escape folds from anywhere in the window: keyboard focus usually sits
+                            // in the host (a canvas), where `onExitCommand` never hears it.
+                            if event.type == .keyDown {
+                                guard event.keyCode == 53 else { return event }
+                                state.open = nil
+                                return nil
+                            }
                             var bounds = view.convert(view.bounds, to: nil)
                             if state.open == .picker {
                                 let reach = Double(state.pickerCount) * (MetalRecipes.iconButton.points("tool.size") + MetalRecipes.toolbar.points("self.gap"))
@@ -152,6 +159,8 @@ public struct MetalFanPicker<Value: Hashable>: View {
                     if next < 0 { capFocused = true }
                     else if next < others.count { focusedOption = next }
                 }
+                // Before the offset: the reported frame moves with the drawn option.
+                .metalHitRegion(open)
                 .offset(y: open ? Double(slot(index)) * step : 0)
                 .animation(still ? nil : MetalSprings.part.animation.delay(open ? Double(index) * MetalMotionTokens.fanStagger : .zero), value: open)
                 .opacity(open ? .one : .zero)
@@ -219,6 +228,7 @@ public struct MetalFanTray<Icon: View, Content: View>: View {
         .frame(height: r.points("tool.size"))
         .metalObjectRecipe(r, part: "tool", in: RoundedRectangle(cornerRadius: r.points("tool.radius"), style: .continuous))
         .fixedSize()
+        .metalHitRegion()
         .animation(MetalMotion.resolve(.part, reduceMotion: still).animation, value: open)
         .onChange(of: state.open) { old, new in
             if new == .tray { foldFocused = true }
