@@ -1,0 +1,19 @@
+{
+  "name": "fan",
+  "title": "Fan",
+  "status": "alpha",
+  "description": "A compact control bar whose cells open in place: a label, the current choice that fans its siblings out along one axis, and an options cap that stretches sideways into more controls. One open at a time; nothing hides in a menu.",
+  "react": {
+    "export": "Fan",
+    "files": [
+      "fan.tsx"
+    ]
+  },
+  "agent": "fan.agent.md",
+  "layer": "component",
+  "page": "/components/fan",
+  "swift": {
+    "symbol": "MetalFan",
+    "file": "swift/Sources/MetalUI/Components/MetalFan.swift"
+  }
+}

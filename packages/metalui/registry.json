@@ -478,6 +478,24 @@
       "docs": "Agent guide: https://metalui.dev/r/drum.md. SwiftUI: MetalDrum in the MetalUI Swift package."
     },
     {
+      "name": "fan",
+      "type": "registry:ui",
+      "title": "Fan",
+      "description": "A compact control bar whose cells open in place: a label, the current choice that fans its siblings out along one axis, and an options cap that stretches sideways into more controls. One open at a time; nothing hides in a menu.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/fan/fan.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/fan/fan.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/fan.md. SwiftUI: MetalFan in the MetalUI Swift package."
+    },
+    {
       "name": "field",
       "type": "registry:ui",
       "title": "Field",

@@ -73,6 +73,7 @@ const router = createBrowserRouter([
       { path: 'components/status', lazy: lazy(() => import('./pages/components/Status')) },
       { path: 'components/kbd', lazy: lazy(() => import('./pages/components/Kbd')) },
       { path: 'components/switcher', lazy: lazy(() => import('./pages/components/Switcher')) },
+      { path: 'components/fan', lazy: lazy(() => import('./pages/components/Fan')) },
       { path: 'components/swatch', lazy: lazy(() => import('./pages/components/Swatch')) },
       { path: 'components/checkbox', lazy: lazy(() => import('./pages/components/Checkbox')) },
       { path: 'components/slider', lazy: lazy(() => import('./pages/components/Slider')) },
