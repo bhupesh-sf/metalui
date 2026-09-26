@@ -1,0 +1,15 @@
+.mu-field-demo-wrap { width: 100%; min-width: 0; }
+.mu-field-demo { position: relative; isolation: isolate; width: 100%; height: 360px; overflow: hidden; touch-action: none; }
+.mu-field-demo-note { display: flex; flex-direction: column; justify-content: center; gap: 6px; width: 160px; height: 86px; padding: 14px 18px; user-select: none; }
+.mu-field-demo-one { left: 10%; top: 17%; }
+.mu-field-demo-two { right: 10%; top: 27%; }
+.mu-field-demo-moving { left: 29%; top: 63%; z-index: 1; cursor: grab; touch-action: none; outline: none; }
+.mu-field-demo-moving[data-held] { cursor: grabbing; }
+.mu-field-demo-moving:focus-visible { outline: 2px solid var(--mu-focus); outline-offset: 5px; }
+.mu-field-demo-caption { display: flex; justify-content: center; margin-top: 14px; color: var(--mu-ink2); text-align: center; font-size: 12px; }
+@media (max-width: 520px) {
+  .mu-field-demo-note { width: 128px; height: 76px; padding: 10px 12px; }
+  .mu-field-demo-one { left: 4%; top: 14%; }
+  .mu-field-demo-two { right: 4%; top: 34%; }
+  .mu-field-demo-moving { left: 15%; top: 69%; }
+}
