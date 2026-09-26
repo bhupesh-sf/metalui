@@ -30,6 +30,8 @@ public struct MetalSlider: View {
     @Environment(\.metalColorway) private var colorway
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @FocusState private var focused: Bool
+    /// Focus came from the keyboard (Tab, arrows): only then is the ring drawn, never after a press.
+    @State private var keyboardFocus = false
     @State private var dragging = false
 
     public init(value: Binding<Double>, in range: ClosedRange<Double>,
@@ -135,6 +137,7 @@ public struct MetalSlider: View {
                         onDragChange?(true)
                     }
                     dragging = true
+                    keyboardFocus = false
                     focused = true
                     set(range.lowerBound + clamp(gesture.location.x / max(.leastNonzeroMagnitude, width)) * span)
                 }
@@ -147,13 +150,30 @@ public struct MetalSlider: View {
                        value: value)
         }
         .focusable()
+        // No system ring: MetalUI's own ring, and only for keyboard focus.
+        .focusEffectDisabled()
         .focused($focused)
-        .onChange(of: focused) { _, isFocused in onFocusChange?(isFocused) }
+        .overlay {
+            if focused && keyboardFocus {
+                RoundedRectangle(cornerRadius: MetalRecipes.slider.points("track.height"), style: .continuous)
+                    .inset(by: -(MetalRing.focusOffset + MetalRing.focusWidth / 2))
+                    .stroke(MetalShared.focus.color, lineWidth: MetalRing.focusWidth)
+                    .allowsHitTesting(false)
+            }
+        }
+        .onChange(of: focused) { _, isFocused in
+            #if os(macOS)
+            keyboardFocus = isFocused && NSApp.currentEvent?.type == .keyDown
+            #endif
+            onFocusChange?(isFocused)
+        }
         .onKeyPress(.leftArrow, phases: .down) { press in
+            keyboardFocus = true
             set(value - (press.modifiers.contains(.shift) ? largeStep : step))
             return .handled
         }
         .onKeyPress(.rightArrow, phases: .down) { press in
+            keyboardFocus = true
             set(value + (press.modifiers.contains(.shift) ? largeStep : step))
             return .handled
         }
