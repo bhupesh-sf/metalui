@@ -64,6 +64,7 @@ export { Switch, type SwitchProps } from './components/switch/switch';
 export { BrushCursor, type BrushCursorProps, type BrushMode } from './components/brush-cursor/brush-cursor';
 export { BlockSilhouette, type BlockSilhouetteProps, type SilhouetteKind } from './components/block-silhouette/block-silhouette';
 export { SelectionFrame, type SelectionFrameProps, type SelectionHandle, type SelectionEdge } from './components/selection-frame/selection-frame';
+export { SpatialFieldCanvas, SpatialFieldController, type SpatialFieldRect, type SpatialFieldRegion, type SpatialFieldScene } from './components/spatial-field/spatial-field';
 export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './motion/swap';
 export { SlidingIndicator, type SlidingIndicatorProps } from './motion/indicator';
 export { hop, hopPoint, type HopPoint, type HopOptions } from './motion/hop';

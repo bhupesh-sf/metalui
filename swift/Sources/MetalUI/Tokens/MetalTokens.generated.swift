@@ -2495,11 +2495,13 @@ public enum MetalRegion {
     public static let rowMetaTop: Double = 3.0
 }
 
-/// Optional canvas response to a host-projected carry and eligible Region. Blank at rest. Marks clear the carried footprint, gather near its edge, and tint only near the host-selected target. These are proposed visual values for foundation review, not a placement rule.
+/// Optional content-aware canvas field. A quiet grid stays visible at rest, clears Region paper and object footprints, moves around a carried object, and tints near only the host-selected target. It never chooses placement or loops while idle.
 public enum MetalSpatialField {
     public static let markSpacing: Double = 22.0
     public static let markRadius: Double = 1.1
     public static let clearance: Double = 12.0
+    public static let baseOpacity: Double = 0.28
+    public static let push: Double = 6.0
     public static let carryReach: Double = 66.0
     public static let targetReach: Double = 42.0
     public static let carryOpacity: Double = 0.62

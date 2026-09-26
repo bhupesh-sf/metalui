@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Dimple, Region, RegionRow } from '@unlocalhosted/metalui';
+import { Dimple, Region, RegionRow, SpatialFieldCanvas, SpatialFieldController, type SpatialFieldRect, type SpatialFieldRegion } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/blocks/region/region.tsx?raw';
+import spatialSource from '../../../../../packages/metalui/src/components/spatial-field/spatial-field.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/region/region.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalRegionView.swift?raw';
@@ -22,17 +23,103 @@ function Board({ dim, past }: { dim: boolean; past: boolean }) {
   const [renaming, setRenaming] = React.useState<Rid | null>(null);
   const [inRegion, setInRegion] = React.useState<Rid | null>(null);
   const [over, setOver] = React.useState<Rid | null>(null);
-  const [drag, setDrag] = React.useState<{ x: number; y: number } | null>(null);
+  const [held, setHeld] = React.useState(false);
   const board = React.useRef<HTMLDivElement>(null);
+  const block = React.useRef<HTMLDivElement>(null);
   const refs = { todo: React.useRef<HTMLDivElement>(null), done: React.useRef<HTMLDivElement>(null) };
-  const hit = (x: number, y: number): Rid | null =>
-    (Object.keys(refs) as Rid[]).find((k) => { const r = refs[k].current!.getBoundingClientRect(); return x > r.left && x < r.right && y > r.top && y < r.bottom; }) ?? null;
-  const home = { x: 24, y: 300 };
-  const slot = (r: Rid) => { const b = board.current!.getBoundingClientRect(), g = refs[r].current!.getBoundingClientRect(); return { x: g.left - b.left + 22, y: g.top - b.top + 56 }; };
-  const pos = drag ?? (inRegion ? slot(inRegion) : home);
+  const controller = React.useMemo(() => new SpatialFieldController(), []);
+  const home = React.useRef({ x: 24, y: 300 });
+  const position = React.useRef(home.current);
+  const bounds = React.useRef({ left: 0, top: 0 });
+  const size = React.useRef({ width: 120, height: 40 });
+  const regions = React.useRef<SpatialFieldRegion[]>([]);
+  const currentRegion = React.useRef<Rid | null>(null);
+  const currentTarget = React.useRef<Rid | null>(null);
+  const drag = React.useRef<{ pointerId: number; startX: number; startY: number; origin: { x: number; y: number } } | null>(null);
+
+  const objectRect = (point = position.current): SpatialFieldRect => ({ ...point, ...size.current });
+  const setBlockPosition = (point: { x: number; y: number }, moving: boolean) => {
+    position.current = point;
+    if (!block.current) return;
+    block.current.style.transition = moving ? 'none' : `transform var(--mu-spring-${currentRegion.current ? 'object' : 'settle'}-d) var(--mu-spring-${currentRegion.current ? 'object' : 'settle'})`;
+    block.current.style.transform = `translate3d(${point.x}px, ${point.y}px, 0)${moving ? ' translateY(-3px) scale(1.01)' : ''}`;
+  };
+  const scene = () => controller.setScene({ regions: regions.current, object: objectRect() });
+  const measure = () => {
+    const stage = board.current, object = block.current;
+    if (!stage || !object || !refs.todo.current || !refs.done.current) return;
+    const origin = stage.getBoundingClientRect();
+    bounds.current = { left: origin.left, top: origin.top };
+    const rect = object.getBoundingClientRect();
+    size.current = { width: rect.width, height: rect.height };
+    regions.current = (['todo', 'done'] as Rid[]).map((id) => {
+      const r = refs[id].current!.getBoundingClientRect();
+      return { id, rect: { x: r.left - origin.left, y: r.top - origin.top, width: r.width, height: r.height } };
+    });
+    if (currentRegion.current && !drag.current) {
+      const r = regions.current.find((entry) => entry.id === currentRegion.current)!.rect;
+      setBlockPosition({ x: r.x + 22, y: r.y + 56 }, false);
+    }
+    scene();
+  };
+  const targetAt = (clientX: number, clientY: number): Rid | null => {
+    const x = clientX - bounds.current.left, y = clientY - bounds.current.top;
+    return (['todo', 'done'] as Rid[]).find((id) => {
+      if (past && id === 'done') return false;
+      const r = regions.current.find((entry) => entry.id === id)?.rect;
+      return r && x > r.x && x < r.x + r.width && y > r.y && y < r.y + r.height;
+    }) ?? null;
+  };
+  const setTarget = (target: Rid | null) => {
+    if (currentTarget.current === target) return;
+    currentTarget.current = target;
+    setOver(target);
+  };
+  const cancel = () => {
+    const active = drag.current;
+    if (!active && !currentTarget.current) return;
+    drag.current = null;
+    if (active) setBlockPosition(active.origin, false);
+    setHeld(false);
+    setTarget(null);
+    scene();
+    controller.endProjection(true);
+  };
+  const commit = (target: Rid | null) => {
+    drag.current = null;
+    currentRegion.current = target;
+    const r = target && regions.current.find((entry) => entry.id === target)?.rect;
+    setBlockPosition(r ? { x: r.x + 22, y: r.y + 56 } : home.current, false);
+    setInRegion(target);
+    setHeld(false);
+    setTarget(null);
+    scene();
+    controller.endProjection(false);
+  };
+
+  React.useEffect(() => {
+    const observer = new ResizeObserver(measure);
+    for (const element of [board.current, block.current, refs.todo.current, refs.done.current]) if (element) observer.observe(element);
+    window.addEventListener('scroll', measure, true);
+    window.addEventListener('resize', measure);
+    window.addEventListener('blur', cancel);
+    measure();
+    return () => { observer.disconnect(); window.removeEventListener('scroll', measure, true); window.removeEventListener('resize', measure); window.removeEventListener('blur', cancel); controller.detach(); };
+  }, [controller]);
+
+  const move = (event: React.PointerEvent<HTMLDivElement>) => {
+    const active = drag.current;
+    if (!active || active.pointerId !== event.pointerId) return;
+    const next = { x: active.origin.x + event.clientX - active.startX, y: active.origin.y + event.clientY - active.startY };
+    setBlockPosition(next, true);
+    const target = targetAt(event.clientX, event.clientY);
+    setTarget(target);
+    controller.setProjection(objectRect(next), target);
+  };
 
   return (
     <div ref={board} className="relative h-[360px] w-full max-w-[720px]" data-testid="region-board">
+      <SpatialFieldCanvas controller={controller} />
       <div className="absolute left-0 top-0 flex gap-24">
         {(['todo', 'done'] as Rid[]).map((r) => (
           <Region
@@ -56,25 +143,36 @@ function Board({ dim, past }: { dim: boolean; past: boolean }) {
         ))}
       </div>
       <div
+        ref={block}
         data-testid="drag-block"
         role="button"
         tabIndex={0}
-        aria-label="Send the poster, drag into a region"
-        className="type-content absolute cursor-grab select-none rounded-plate px-14 py-8 text-ink material-raised"
-        style={{
-          left: 0, top: 0,
-          transform: `translate(${pos.x}px, ${pos.y}px)${drag ? ' translateY(-3px) scale(1.01)' : ''}`,
-          // Carried under the pointer; lands inside a region on the object spring (a stop), home on settle.
-          transition: drag ? 'none' : inRegion ? 'transform var(--mu-spring-object-d) var(--mu-spring-object)' : 'transform var(--mu-spring-settle-d) var(--mu-spring-settle)',
-          zIndex: 2,
-        }}
+        aria-label="Send the poster. Drag into a region, or use left and right arrows then Enter; Escape cancels."
+        className="type-content absolute cursor-grab select-none touch-none rounded-plate px-14 py-8 text-ink material-raised"
+        style={{ left: 0, top: 0, transform: 'translate3d(24px, 300px, 0)', zIndex: 2 }}
+        data-held={held || undefined}
         onPointerDown={(e) => {
-          const b = board.current!.getBoundingClientRect(), start = { x: e.clientX, y: e.clientY }, from = pos;
-          (e.target as HTMLElement).setPointerCapture(e.pointerId);
-          const move = (ev: PointerEvent) => { setDrag({ x: from.x + ev.clientX - start.x, y: from.y + ev.clientY - start.y }); setOver(hit(ev.clientX, ev.clientY)); };
-          const up = (ev: PointerEvent) => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); setInRegion(hit(ev.clientX, ev.clientY)); setOver(null); setDrag(null); void b; };
-          window.addEventListener('pointermove', move);
-          window.addEventListener('pointerup', up);
+          if (e.button !== 0) return;
+          measure();
+          e.currentTarget.setPointerCapture(e.pointerId);
+          drag.current = { pointerId: e.pointerId, startX: e.clientX, startY: e.clientY, origin: { ...position.current } };
+          setHeld(true);
+          controller.setProjection(objectRect(), null);
+        }}
+        onPointerMove={move}
+        onPointerUp={(e) => { if (!drag.current || drag.current.pointerId !== e.pointerId) return; move(e); commit(targetAt(e.clientX, e.clientY)); }}
+        onPointerCancel={cancel}
+        onLostPointerCapture={cancel}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') { e.preventDefault(); cancel(); return; }
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            const target = e.key === 'ArrowLeft' ? 'todo' : 'done';
+            if (past && target === 'done') return;
+            setTarget(target);
+            controller.setProjection(objectRect(), target);
+          }
+          if (e.key === 'Enter' && currentTarget.current) { e.preventDefault(); commit(currentTarget.current); }
         }}
       >
         send the poster
@@ -97,13 +195,13 @@ export default function RegionPage() {
         lede="A drawn rectangle with a name that carries a rule. Done ticks what lands, To do makes tasks, a date dates, any other name tags. Arrangement is structure, and it is reversible: drag a block out and the rule comes off. A pinned lens is a region too: a frosted plate that lists its matches."
       />
 
-      <Section title="Drop a block" lede="Drag the block over a region: it lights and its rule says what the drop will do. Drop it and it lands inside on the object spring. Double-click a name to rename it. Dials: dim (an in-place lens with no match inside) and past (the region did not exist yet).">
+      <Section title="Drop a block" lede="Drag the block: one content-aware field clears the Regions and moves around the carried footprint. The chosen Region lights and says what the drop will do. Drop to land on the object spring; use left or right arrow then Enter for the keyboard path. Double-click a name to rename. Dials: dim and past.">
         <Bench caption={`${d.dim ? 'To do dimmed' : ''}${d.past ? ' · Done in the past' : ''}`.trim() || 'rest'} on="canvas" className="wide min-h-[400px] items-start justify-start">
           <Board dim={d.dim} past={d.past} />
         </Bench>
       </Section>
 
-      <Section id="spatial-response" title="Spatial response foundation" lede="One canvas response, driven by the carried footprint and the same target that makes Done say its drop rule. Rest leaves the canvas blank; each Region keeps its own paper. This fixed specimen sets the shared React and Swift look before gesture integration. Dial: rest, carry, target.">
+      <Section id="spatial-response" title="Spatial response foundation" lede="The moving board above is the live specimen. This fixed comparison shows the shared React and Swift appearance: a quiet grid at rest, space cleared around Region paper and the block, and marks that move around the carried footprint and tint near the chosen target. Dial: rest, carry, target.">
         <Bench on="canvas" caption={`${d.spatial.state}: response marks · Region paper remains local`} className="wide min-h-[280px] items-start justify-start">
           <SpatialFieldFoundation state={d.spatial.state as SpatialFoundationState} />
         </Bench>
@@ -130,6 +228,7 @@ export default function RegionPage() {
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
+          { id: 'spatial-field', label: 'Spatial field', code: spatialSource },
           { id: 'css', label: 'CSS', code: cssSource },
           { id: 'swift', label: 'SwiftUI', code: swiftSource },
           { id: 'agent', label: 'Agent guide', code: agentGuide },

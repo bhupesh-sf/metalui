@@ -1,5 +1,7 @@
 # Spatial field and Region
 
+Owner correction, 2026-09-26: the chosen first Place specimen keeps a quiet, content-aware grid visible at rest. During carry it moves around the projected object and tints near the host-selected target. The field sleeps when geometry and response are settled. Blank-rest language below describes the superseded proposal.
+
 Status: foundation proposal for owner review. No runtime implementation yet.
 
 Source audit: [Surface Field source study](research/surface-field-source-study.md), pinned to the docs-only trial's upstream commit.

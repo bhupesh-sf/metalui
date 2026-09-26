@@ -1163,6 +1163,24 @@
       "docs": "Agent guide: https://metalui.dev/r/sparkline.md. SwiftUI: MetalSparkline in the MetalUI Swift package."
     },
     {
+      "name": "spatial-field",
+      "type": "registry:ui",
+      "title": "Spatial field",
+      "description": "One quiet, content-aware dot field for a Place. It yields to object footprints and reinforces the host-selected Region while the host retains placement authority.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/spatial-field/spatial-field.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/spatial-field/spatial-field.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/spatial-field.md. SwiftUI: MetalSpatialFieldView in the MetalUI Swift package."
+    },
+    {
       "name": "status",
       "type": "registry:ui",
       "title": "Status badge",

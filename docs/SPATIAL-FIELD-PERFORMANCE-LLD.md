@@ -1,6 +1,8 @@
 # Spatial field: performance-first low-level design
 
-Status: **proposal for foundation review; no implementation or performance results claimed.**
+Status: **foundation and first React/Swift Region slice implemented; Kamui integrations remain proposed.**
+
+Owner correction, 2026-09-26: the optional field has a **visible, quiet grid at rest**. It clears Region paper and object footprints, then visibly yields to the carried object and reinforces the selected target. It still has no idle animation or frame loop. Earlier blank-rest statements below record the initial proposal and are superseded by this decision.
 
 Prepared 2026-09-26. Covers MetalUI React/SwiftUI and Kamui web/native canvas. Extends [Spatial field and Region](SPATIAL-FIELD-REGION-LLD.md) and the [pinned source study](research/surface-field-source-study.md). Current source inspected at MetalUI `521c00aa1cd4e717ee46b5c25e3c960cc9ec7f65` and Kamui `017a0d8c3768575fb9c28d9ff7c426dad8c19b50`, including working-tree files. Kamui is actively edited; citations below describe this inspected state, not immutable contents of those commits. Recheck before implementation.
 

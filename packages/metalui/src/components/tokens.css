@@ -274,6 +274,8 @@
   --mu-spatial-field-mark-spacing: 22px;
   --mu-spatial-field-mark-radius: 1.1px;
   --mu-spatial-field-clearance: 12px;
+  --mu-spatial-field-base-opacity: 0.28;
+  --mu-spatial-field-push: 6px;
   --mu-spatial-field-carry-reach: 66px;
   --mu-spatial-field-target-reach: 42px;
   --mu-spatial-field-carry-opacity: 0.62;

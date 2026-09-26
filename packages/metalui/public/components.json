@@ -937,6 +937,23 @@
       "agent": "https://metalui.dev/r/sparkline.md"
     },
     {
+      "name": "spatial-field",
+      "title": "Spatial field",
+      "status": "alpha",
+      "description": "One quiet, content-aware dot field for a Place. It yields to object footprints and reinforces the host-selected Region while the host retains placement authority.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "SpatialFieldCanvas",
+        "base": "none (decorative Canvas2D output)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSpatialFieldView"
+      },
+      "registry": "https://metalui.dev/r/spatial-field.json",
+      "agent": "https://metalui.dev/r/spatial-field.md"
+    },
+    {
       "name": "status",
       "title": "Status badge",
       "status": "alpha",

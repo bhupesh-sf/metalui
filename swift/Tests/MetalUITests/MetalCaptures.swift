@@ -825,35 +825,17 @@ final class MetalCaptures: XCTestCase {
     /// Visual integration specimen: generated foundation values with real Region and Surface views.
     func testSpatialFieldFoundation() {
         let carried = CGRect(x: 302, y: 148, width: 118, height: 38)
+        let atRest = CGRect(x: 265, y: 188, width: 118, height: 38)
+        let first = CGRect(x: 22, y: 20, width: 280, height: 180)
         let target = CGRect(x: 348, y: 20, width: 280, height: 180)
         for colorway in MetalColorway.allCases {
             for state in ["rest", "carry", "target"] {
-                let marks = Canvas(opaque: false) { context, size in
-                    guard state != "rest" else { return }
-                    let spacing = MetalSpatialField.markSpacing
-                    let radius = MetalSpatialField.markRadius
-                    func distance(_ x: CGFloat, _ y: CGFloat, _ rect: CGRect) -> CGFloat {
-                        let dx = max(max(rect.minX - x, 0), x - rect.maxX)
-                        let dy = max(max(rect.minY - y, 0), y - rect.maxY)
-                        return hypot(dx, dy)
-                    }
-                    for y in stride(from: spacing / 2, to: size.height, by: spacing) {
-                        for x in stride(from: spacing / 2, to: size.width, by: spacing) {
-                            let clearance = distance(x, y, carried)
-                            if clearance <= MetalSpatialField.clearance { continue }
-                            let carry = max(0, 1 - (clearance - MetalSpatialField.clearance) / MetalSpatialField.carryReach) * MetalSpatialField.carryOpacity
-                            let targetEdge = state == "target" && !target.contains(CGPoint(x: x, y: y))
-                                ? max(0, 1 - distance(x, y, target) / MetalSpatialField.targetReach) * MetalSpatialField.targetOpacity : 0
-                            let opacity = max(carry, targetEdge)
-                            if opacity < 0.025 { continue }
-                            let ink = targetEdge > carry ? colorway.tokens.spatialFieldTarget.color : colorway.tokens.spatialFieldMark.color
-                            context.fill(Path(ellipseIn: CGRect(x: x - radius, y: y - radius, width: radius * 2, height: radius * 2)),
-                                         with: .color(ink.opacity(opacity)))
-                        }
-                    }
-                }
+                let scene = MetalSpatialFieldScene(
+                    regions: [MetalSpatialFieldRegion(id: "todo", frame: first), MetalSpatialFieldRegion(id: "done", frame: target)],
+                    object: atRest, carried: state == "rest" ? nil : carried, targetID: state == "target" ? "done" : nil
+                )
                 let specimen = ZStack(alignment: .topLeading) {
-                    marks
+                    MetalSpatialFieldView(scene: scene)
                     MetalRegionView(name: "To do", rule: "makes tasks").frame(width: 280, height: 180).offset(x: 22, y: 20)
                     MetalRegionView(name: "Done", rule: "marks tasks done", dropRule: "drop to mark tasks done",
                                     state: state == "target" ? .over : .rest)

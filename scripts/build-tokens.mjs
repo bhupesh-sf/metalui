@@ -174,7 +174,7 @@ const regionVars = RG_KEYS.map((k) => `  --mu-region-${k}: ${typeof RG[k] === 'n
 // ---------- spatial field (tokens.json spatial-field) ----------
 const SF = T['spatial-field'];
 const SF_KEYS = Object.keys(SF).filter((k) => !k.startsWith('$'));
-const SF_UNITLESS = new Set(['carry-opacity', 'target-opacity']);
+const SF_UNITLESS = new Set(['base-opacity', 'carry-opacity', 'target-opacity']);
 const spatialFieldVars = SF_KEYS.map((k) => `  --mu-spatial-field-${k}: ${SF_UNITLESS.has(k) ? SF[k] : `${SF[k]}${k.endsWith('-ms') ? 'ms' : 'px'}`};`).join('\n');
 
 // ---------- switcher (tokens.json switcher) ----------

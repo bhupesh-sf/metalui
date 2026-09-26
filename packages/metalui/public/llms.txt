@@ -64,6 +64,7 @@
 - [Slider](https://metalui.dev/r/slider.md): A track well, a green fill up to a knurled knob, tick marks and labelled ticks; arrows step, Shift steps large.
 - [Snap guides](https://metalui.dev/r/snap-guides.md): The lines that explain a snap while a person moves or resizes on the canvas: 1 pt intent green, solid for aligned edges, dashed for aligned centres, spanning the aligned objects plus 8 pt, the same on screen at every zoom.
 - [Sparkline](https://metalui.dev/r/sparkline.md): A small series plot: a line with gaps, dots, the last point emphasised, a dashed baseline at the average.
+- [Spatial field](https://metalui.dev/r/spatial-field.md): One quiet, content-aware dot field for a Place. It yields to object footprints and reinforces the host-selected Region while the host retains placement authority.
 - [Status badge](https://metalui.dev/r/status.md): The 24 tall status badge: an LED part and the state in the label role, not pressable, with the fixing command as a tooltip.
 - [Suggestion chip](https://metalui.dev/r/suggestion-chip.md): One question the recognizer asks at middle confidence, beside its block: Chip(suggestion) with the question, its confidence as a small engraving, and mini accept and dismiss buttons. Faint until the block is hovered.
 - [Surface](https://metalui.dev/r/surface.md): A raised plate or card from a material recipe: raise, raise-lite, raise-sm, frost, plate, panel, pop, tip, lens and the graphites.

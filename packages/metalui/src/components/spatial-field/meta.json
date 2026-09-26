@@ -1,0 +1,20 @@
+{
+  "name": "spatial-field",
+  "title": "Spatial field",
+  "status": "alpha",
+  "description": "One quiet, content-aware dot field for a Place. It yields to object footprints and reinforces the host-selected Region while the host retains placement authority.",
+  "base": "none (decorative Canvas2D output)",
+  "react": {
+    "export": "SpatialFieldCanvas",
+    "files": ["spatial-field.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalSpatialFieldView",
+    "file": "swift/Sources/MetalUI/Components/MetalSpatialFieldView.swift"
+  },
+  "agent": "spatial-field.agent.md",
+  "layer": "part",
+  "kind": "custom",
+  "reason": "The content-aware field requires one clipped raster over the host Place; existing static Well paper cannot respond to projected object geometry.",
+  "page": "/components/region#spatial-response"
+}
