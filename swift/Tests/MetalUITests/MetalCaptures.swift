@@ -537,6 +537,23 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testRigs() throws {
+        let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures")
+        let names = try FileManager.default.contentsOfDirectory(atPath: dir.path).filter { $0.hasSuffix(".gadget.json") }
+        let catalog = try names.reduce(into: [String: MetalGadgetSpec]()) { out, f in let g = try MetalGadgetSpec.decode(Data(contentsOf: dir.appendingPathComponent(f))); out[g.name] = g }
+        for (name, id) in [("sync-health", "sync"), ("storage", "storage"), ("capture", "capture"), ("canvas-status", "canvas"), ("settings", "settings")] {
+            let spec = try MetalRigSpec.decode(Data(contentsOf: dir.appendingPathComponent("\(name).rig.json")))
+            for colorway in MetalColorway.allCases {
+                let view = MetalRig(spec: spec, catalog: catalog, width: spec.grid[0] == 3 ? 720 : 520)
+                    .padding(32)
+                    .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                    .metalColorway(colorway)
+                capture("rig-\(id)-\(colorway.rawValue)", view)
+            }
+        }
+    }
+
     func testCell() {
         let looks: [(Int, Int, Double)] = [(4, 4, 0), (4, 4, 6.5), (4, 4, 16), (3, 2, 4)]
         for colorway in MetalColorway.allCases {

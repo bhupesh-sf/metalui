@@ -1,0 +1,19 @@
+{
+  "name": "storage-rig",
+  "title": "Storage rig",
+  "status": "alpha",
+  "description": "A rig: how full the drawer is, scaled onto a used gauge; past its line the gauge arms the bin. Fill the drawer and the bin lifts its lid. Composed at runtime from a rig spec naming catalog gadgets.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/storage.rig.json",
+  "uses": [
+    "drawer",
+    "needle-gauge",
+    "lidded-bin",
+    "jack",
+    "plug",
+    "cable"
+  ],
+  "page": "/gadgets/rigs#storage"
+}
