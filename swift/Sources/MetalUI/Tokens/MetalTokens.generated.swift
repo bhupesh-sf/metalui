@@ -71,6 +71,16 @@ public struct MetalColorwayTokens: Sendable {
     public let synLine: MetalRGBA
     public let stageSh: [MetalShadow]
     public let stageBar: MetalRGBA
+    public let pxOff: MetalRGBA
+    public let pxHz: MetalRGBA
+    public let pxHill: MetalRGBA
+    public let pxSun: MetalRGBA
+    public let pxMoon: MetalRGBA
+    public let pxStar: MetalRGBA
+    public let pxCloud: MetalRGBA
+    public let pxCloudDark: MetalRGBA
+    public let pxRain: MetalRGBA
+    public let pxSnow: MetalRGBA
     public let tintEmber: MetalRGBA
     public let tintBlush: MetalRGBA
     public let tintTide: MetalRGBA
@@ -223,6 +233,16 @@ public enum MetalTokens {
             MetalShadow(inset: false, x: 0.0, y: 10.0, blur: 24.0, spread: -12.0, color: MetalRGBA(24, 22, 16, 0.1)),
         ],
         stageBar: MetalRGBA(24, 22, 16, 0.022),
+        pxOff: MetalRGBA(40, 38, 32, 0.06),
+        pxHz: MetalRGBA(154, 154, 157, 1.0),
+        pxHill: MetalRGBA(92, 92, 96, 1.0),
+        pxSun: MetalRGBA(201, 138, 24, 1.0),
+        pxMoon: MetalRGBA(138, 98, 18, 1.0),
+        pxStar: MetalRGBA(199, 167, 107, 1.0),
+        pxCloud: MetalRGBA(154, 154, 157, 1.0),
+        pxCloudDark: MetalRGBA(92, 92, 96, 1.0),
+        pxRain: MetalRGBA(53, 88, 201, 1.0),
+        pxSnow: MetalRGBA(92, 92, 96, 1.0),
         tintEmber: MetalRGBA(208, 86, 14, 1.0),
         tintBlush: MetalRGBA(213, 68, 135, 1.0),
         tintTide: MetalRGBA(16, 138, 139, 1.0),
@@ -365,6 +385,16 @@ public enum MetalTokens {
             MetalShadow(inset: false, x: 0.0, y: 10.0, blur: 24.0, spread: -12.0, color: MetalRGBA(0, 0, 0, 0.45)),
         ],
         stageBar: MetalRGBA(0, 0, 0, 0.16),
+        pxOff: MetalRGBA(255, 255, 255, 0.05),
+        pxHz: MetalRGBA(92, 92, 96, 1.0),
+        pxHill: MetalRGBA(119, 119, 123, 1.0),
+        pxSun: MetalRGBA(228, 178, 94, 1.0),
+        pxMoon: MetalRGBA(243, 217, 164, 1.0),
+        pxStar: MetalRGBA(199, 167, 107, 1.0),
+        pxCloud: MetalRGBA(166, 166, 169, 1.0),
+        pxCloudDark: MetalRGBA(119, 119, 123, 1.0),
+        pxRain: MetalRGBA(143, 176, 255, 1.0),
+        pxSnow: MetalRGBA(242, 242, 240, 1.0),
         tintEmber: MetalRGBA(251, 121, 74, 1.0),
         tintBlush: MetalRGBA(237, 107, 162, 1.0),
         tintTide: MetalRGBA(37, 194, 195, 1.0),
