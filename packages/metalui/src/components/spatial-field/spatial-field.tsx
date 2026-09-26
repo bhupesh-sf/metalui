@@ -6,7 +6,10 @@ export type SpatialFieldRect = Readonly<{ x: number; y: number; width: number; h
 export type SpatialFieldRegion = Readonly<{ id: string; rect: SpatialFieldRect }>;
 export type SpatialFieldScene = Readonly<{
   regions: readonly SpatialFieldRegion[];
-  object: SpatialFieldRect;
+  /** All stationary visible footprints. The host omits objects currently carried. */
+  objects?: readonly SpatialFieldRect[];
+  /** One-object shorthand for a small Place. */
+  object?: SpatialFieldRect;
 }>;
 
 type Tween = { from: number; to: number; start: number; ms: number };
@@ -33,6 +36,7 @@ export class SpatialFieldController {
   private context: CanvasRenderingContext2D | null = null;
   private scene: SpatialFieldScene | null = null;
   private carried: SpatialFieldRect | null = null;
+  private recoveryFootprint: SpatialFieldRect | null = null;
   private targetId: string | null = null;
   private paintTargetId: string | null = null;
   private recipe: Recipe | null = null;
@@ -40,6 +44,7 @@ export class SpatialFieldController {
   private height = 0;
   private scale = 1;
   private visible = true;
+  private enabled = true;
   private reducedMotion = false;
   private frame = 0;
   private dirty = false;
@@ -49,6 +54,11 @@ export class SpatialFieldController {
   private intersectionObserver: IntersectionObserver | null = null;
   private themeObserver: MutationObserver | null = null;
   private media: MediaQueryList | null = null;
+  private mask = new Uint8Array(0);
+  private maskSpacing = 0;
+  private maskColumns = 0;
+  private maskRows = 0;
+  private maskDirty = true;
 
   attach(canvas: HTMLCanvasElement) {
     this.detach();
@@ -99,15 +109,27 @@ export class SpatialFieldController {
 
   setScene(scene: SpatialFieldScene) {
     this.scene = scene;
+    this.maskDirty = true;
     this.invalidate();
+  }
+
+  setEnabled(enabled: boolean) {
+    if (this.enabled === enabled) return;
+    this.enabled = enabled;
+    if (enabled) this.invalidate();
+    else this.stop();
   }
 
   setProjection(carried: SpatialFieldRect, targetId: string | null) {
     const wasCarrying = this.carried !== null;
     const changedTarget = this.targetId !== targetId;
     this.carried = carried;
+    this.recoveryFootprint = carried;
     this.targetId = targetId;
-    if (!wasCarrying) this.carry = this.tween(this.carry, 1, 100);
+    if (!wasCarrying) {
+      this.carry = this.tween(this.carry, 1, 100);
+      this.maskDirty = true;
+    }
     if (changedTarget) {
       if (targetId) this.paintTargetId = targetId;
       this.target = this.tween(this.target, targetId ? 1 : 0, 140);
@@ -121,6 +143,8 @@ export class SpatialFieldController {
     const duration = cancelled ? 0 : this.recipe?.recoveryMs ?? 0;
     this.carry = this.tween(this.carry, 0, duration);
     this.target = this.tween(this.target, 0, cancelled ? 0 : Math.min(duration, 140));
+    if (cancelled || this.reducedMotion || !duration) this.recoveryFootprint = null;
+    this.maskDirty = true;
     this.invalidate();
   }
 
@@ -130,6 +154,7 @@ export class SpatialFieldController {
     if (reduced) {
       this.carry = this.tween(this.carry, this.carried ? 1 : 0, 0);
       this.target = this.tween(this.target, this.targetId ? 1 : 0, 0);
+      if (!this.carried) this.recoveryFootprint = null;
     }
     this.invalidate();
   }
@@ -146,6 +171,7 @@ export class SpatialFieldController {
       mark: style.getPropertyValue('--mu-spatial-field-mark').trim(),
       target: style.getPropertyValue('--mu-spatial-field-target').trim(),
     };
+    this.maskDirty = true;
     this.invalidate();
   }
 
@@ -162,6 +188,7 @@ export class SpatialFieldController {
       canvas.height = pixelsHigh;
     }
     this.width = width; this.height = height; this.scale = scale;
+    this.maskDirty = true;
     this.invalidate();
   }
 
@@ -179,7 +206,7 @@ export class SpatialFieldController {
 
   private invalidate() {
     this.dirty = true;
-    if (!this.frame && this.visible && !document.hidden && this.context && this.width && this.height) {
+    if (!this.frame && this.enabled && this.visible && !document.hidden && this.context && this.width && this.height) {
       this.frame = requestAnimationFrame(this.paint);
     }
   }
@@ -189,35 +216,58 @@ export class SpatialFieldController {
     this.frame = 0;
   }
 
+  private buildMask(scene: SpatialFieldScene, spacing: number, columns: number, rows: number, clearance: number) {
+    if (!this.maskDirty && this.maskSpacing === spacing && this.maskColumns === columns && this.maskRows === rows) return;
+    const count = columns * rows;
+    if (this.mask.length !== count) this.mask = new Uint8Array(count);
+    else this.mask.fill(0);
+    const cover = (rect: SpatialFieldRect, pad: number, region: boolean) => {
+      const x0 = Math.max(0, Math.ceil((rect.x - pad) / spacing - 0.5));
+      const y0 = Math.max(0, Math.ceil((rect.y - pad) / spacing - 0.5));
+      const x1 = Math.min(columns - 1, Math.floor((rect.x + rect.width + pad) / spacing - 0.5));
+      const y1 = Math.min(rows - 1, Math.floor((rect.y + rect.height + pad) / spacing - 0.5));
+      for (let row = y0; row <= y1; row++) for (let col = x0; col <= x1; col++) {
+        const x = (col + 0.5) * spacing, y = (row + 0.5) * spacing;
+        if (region ? inside(x, y, rect) : distanceToRect(x, y, rect) <= pad) this.mask[row * columns + col] = 1;
+      }
+    };
+    for (const region of scene.regions) cover(region.rect, 0, true);
+    for (const object of scene.objects ?? (this.carried || !scene.object ? [] : [scene.object])) cover(object, clearance, false);
+    this.maskSpacing = spacing;
+    this.maskColumns = columns;
+    this.maskRows = rows;
+    this.maskDirty = false;
+  }
+
   private paint = (now: number) => {
     this.frame = 0;
     const ctx = this.context, recipe = this.recipe, scene = this.scene;
-    if (!ctx || !recipe || !scene || !this.width || !this.height || !this.visible || document.hidden) return;
+    if (!ctx || !recipe || !scene || !this.width || !this.height || !this.enabled || !this.visible || document.hidden) return;
     this.dirty = false;
     ctx.setTransform(this.scale, 0, 0, this.scale, 0, 0);
     ctx.clearRect(0, 0, this.width, this.height);
     if (!Number.isFinite(recipe.spacing) || recipe.spacing <= 0 || !recipe.mark) return;
     const spacing = Math.max(recipe.spacing, Math.sqrt(this.width * this.height / MAX_MARKS));
+    const columns = Math.ceil(this.width / spacing), rows = Math.ceil(this.height / spacing);
+    this.buildMask(scene, spacing, columns, rows, recipe.clearance);
     const carryLevel = this.level(this.carry, now);
     const targetLevel = this.level(this.target, now);
-    const object = this.carried ?? scene.object;
+    const object = this.carried ?? this.recoveryFootprint;
     const region = scene.regions.find((r) => r.id === this.paintTargetId)?.rect;
-    for (let y = spacing / 2; y < this.height; y += spacing) {
-      for (let x = spacing / 2; x < this.width; x += spacing) {
-        let covered = false;
-        for (const candidate of scene.regions) {
-          if (inside(x, y, candidate.rect)) { covered = true; break; }
-        }
-        if (covered) continue;
-        const distance = distanceToRect(x, y, object);
+    for (let row = 0; row < rows; row++) {
+      const y = (row + 0.5) * spacing;
+      for (let col = 0; col < columns; col++) {
+        if (this.mask[row * columns + col]) continue;
+        const x = (col + 0.5) * spacing;
+        const distance = object ? distanceToRect(x, y, object) : Number.POSITIVE_INFINITY;
         if (distance <= recipe.clearance) continue;
-        const near = Math.max(0, 1 - (distance - recipe.clearance) / recipe.carryReach);
+        const near = object ? Math.max(0, 1 - (distance - recipe.clearance) / recipe.carryReach) : 0;
         const response = near * near * carryLevel;
         const edge = region ? Math.max(0, 1 - distanceToRect(x, y, region) / recipe.targetReach) * targetLevel : 0;
         const opacity = Math.min(1, recipe.baseOpacity + response * recipe.carryOpacity + edge * recipe.targetOpacity);
         if (opacity <= 0) continue;
         let drawX = x, drawY = y;
-        if (response > 0 && distance > 0) {
+        if (response > 0 && object && distance > 0) {
           const nearestX = Math.max(object.x, Math.min(x, object.x + object.width));
           const nearestY = Math.max(object.y, Math.min(y, object.y + object.height));
           drawX += (x - nearestX) / distance * recipe.push * response;
@@ -232,6 +282,7 @@ export class SpatialFieldController {
     }
     ctx.globalAlpha = 1;
     if (this.target.to === 0 && now >= this.target.start + this.target.ms) this.paintTargetId = null;
+    if (!this.carried && this.carry.to === 0 && now >= this.carry.start + this.carry.ms) this.recoveryFootprint = null;
     if (this.dirty || now < this.carry.start + this.carry.ms || now < this.target.start + this.target.ms) this.invalidate();
   };
 }

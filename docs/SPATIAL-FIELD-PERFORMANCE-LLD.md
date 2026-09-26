@@ -1,6 +1,6 @@
 # Spatial field: performance-first low-level design
 
-Status: **foundation and first React/Swift Region slice implemented; Kamui integrations remain proposed.**
+Status: **foundation, Region specimen, and Kamui web/native field adapters implemented and build-checked.** The adapters share the host's existing carry projection and target choice. Focused Region interactions and the Swift capture passed. The broader many-Region virtualization, performance trace, and release gates in this LLD remain separate follow-on work.
 
 Owner correction, 2026-09-26: the optional field has a **visible, quiet grid at rest**. It clears Region paper and object footprints, then visibly yields to the carried object and reinforces the selected target. It still has no idle animation or frame loop. Earlier blank-rest statements below record the initial proposal and are superseded by this decision.
 
@@ -8,7 +8,7 @@ Prepared 2026-09-26. Covers MetalUI React/SwiftUI and Kamui web/native canvas. E
 
 ## 1. Decision and scope
 
-Add a small, optional decorative spatial response, driven by the **same host projection that supplies Region target state**. One field belongs to one canvas surface; Regions never create field controllers or animation loops. Canvas remains blank at rest by default. Existing Region paper remains local, with its 16-point recipe. The native Medium canvas's disabled 18-world-unit dot backdrop stays disabled.
+Add a small, optional decorative spatial response, driven by the **same host projection that supplies Region target state**. One field belongs to one canvas surface; Regions never create field controllers or animation loops. The approved field has a quiet visible grid at rest. Existing Region paper remains local, with its 16-point recipe. The native Medium canvas's old 18-world-unit dot backdrop stays disabled.
 
 Adopt upstream's separation of retained scene and transient gesture, footprint-based response, bounded invalidation, and sleep lifecycle. Do not adopt its runtime wholesale: the docs trial is React-only, uses different coordinates and defaults, and provides no Swift renderer or placement semantics.
 

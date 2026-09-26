@@ -4,11 +4,11 @@ A decorative Part composed once by a containing Place. The Place supplies its di
 
 ## React
 
-Create one `SpatialFieldController` per surface, render `SpatialFieldCanvas` beneath objects, call `setScene` when displayed geometry changes, `setProjection` with the carried footprint and host-selected target, then `endProjection` on drop or cancellation. Keep the controller stable and give the canvas the full surface area. It coalesces pointer samples into one paint per animation frame, caps raster work, and stops at rest or when hidden. The canvas is inert and hidden from accessibility.
+Create one `SpatialFieldController` per surface, render `SpatialFieldCanvas` beneath objects, call `setScene` with bounded visible Regions and stationary object footprints when displayed geometry changes, `setProjection` with the carried footprint and host-selected target, then `endProjection` on drop or cancellation. The small `object` scene key is a one-object shorthand. Keep the controller stable and give the canvas the full surface area. It coalesces pointer samples into one paint per animation frame, caches the stationary occupancy mask, caps raster work, and stops at rest or when hidden. Use `setEnabled(false)` during Place travel. The canvas is inert and hidden from accessibility.
 
 ## SwiftUI
 
-Render one `MetalSpatialFieldView(scene:)` beneath the Place's content. Pass `MetalSpatialFieldScene` with displayed Region frames, committed object frame, optional carried frame and target ID. SwiftUI Canvas redraws only when the host changes that scene; it has no idle timer. It is inert and hidden from accessibility. The host may publish animated presentation frames, but the field must not own a second gesture loop.
+Render one `MetalSpatialFieldView(scene:)` beneath a SwiftUI Place, or one `MetalSpatialFieldNSView` beneath an AppKit canvas. Pass `MetalSpatialFieldScene` with displayed Region frames, bounded stationary object frames, optional carried frame and target ID, all in local viewport points. The SwiftUI Canvas redraws only when the host changes its scene; the AppKit view redraws when `setScene` changes its geometry or colorway. Neither has an idle timer or hit target. The host may publish animated presentation frames, but the field must not own a second gesture loop.
 
 ## Look and behavior
 
