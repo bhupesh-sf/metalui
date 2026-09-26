@@ -41,13 +41,13 @@ final class MetalFanCaptures: XCTestCase {
                         } else {
                             MetalFanTray(text ? "Text actions" : "Canvas options", icon: { MetalIcon(.more, size: MetalRecipes.iconButton.points("tool.glyph")) }) {
                                 if text {
-                                    Button("Tasks") {}
-                                    Button("Summarise") {}
-                                    Button("Gather") {}
-                                    Button("Region") {}
-                                    Button("Export") {}
-                                    Button("Send away") {}
-                                } else { Button("Image") {}; Button("Me") {} }
+                                    MetalButton("Tasks", size: .compact) {}
+                                    MetalButton("Summarise", size: .compact) {}
+                                    MetalButton("Gather", size: .compact) {}
+                                    MetalButton("Region", size: .compact) {}
+                                    MetalButton("Export", size: .compact) {}
+                                    MetalButton("Send away", size: .compact) {}
+                                } else { MetalButton("Image", size: .compact) {}; MetalButton("Me", size: .compact) {} }
                             }
                         }
                         MetalIconButton("Search · ⌘K", icon: .search, variant: .tool) {}
