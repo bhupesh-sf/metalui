@@ -4,6 +4,7 @@ import reactSource from '../../../../../packages/metalui/src/components/switch/s
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentSource from '../../../../../packages/metalui/src/components/switch/switch.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
+import { SwitchXray } from '../../ui/xray/SwitchXray';
 
 export default function SwitchPage() {
   const [on, setOn] = React.useState(true);
@@ -18,6 +19,7 @@ export default function SwitchPage() {
           <Switch aria-label="Disabled" disabled defaultChecked />
         </div>
       ) }}
+      xray={<SwitchXray />}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

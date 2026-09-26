@@ -68,8 +68,7 @@ A starting point, not a spec. Check each value against rule 7 first: if the comp
 | Suggestion chip | – | how sure, frost, height, space on the left | point at the line, green line |
 | Command palette | – | (it has none today; add from its tokens) | – |
 | Lasso, Snap guides | – | width, height, where you drag, zoom | still dragging, hold ⌘ |
-
-The Switch has no x-ray yet. Its prototype is in the local, uncommitted lab page (`apps/docs/src/pages/Lab.tsx`, section 4): drag the thumb across to flip it (a ghost thumb shows the lean), hold and pull down for its pressed stretch, the top line steps regular and small, the right end sets the gap. When the Switch gets its x-ray, delete `Lab.tsx`, `lab.css` and the `lab` route in `apps/docs/src/main.tsx`.
+| Switch | state (drag the thumb across; a ghost thumb shows the lean); size | gap around the thumb, light | layers |
 
 ## Mistakes the review caught
 
