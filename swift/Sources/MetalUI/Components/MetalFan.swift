@@ -6,6 +6,14 @@ import AppKit
 /// Shared open cell for one compact control bar.
 public enum MetalFanCell: Hashable, Sendable { case picker, tray }
 
+private struct MetalFanReduceMotionKey: EnvironmentKey { static let defaultValue: Bool? = nil }
+private extension EnvironmentValues {
+    var metalFanReduceMotionOverride: Bool? {
+        get { self[MetalFanReduceMotionKey.self] }
+        set { self[MetalFanReduceMotionKey.self] = newValue }
+    }
+}
+
 @MainActor
 private final class MetalFanState: ObservableObject {
     @Published var open: MetalFanCell?
@@ -19,20 +27,24 @@ private final class MetalFanState: ObservableObject {
 public struct MetalFan<Content: View>: View {
     private let label: String
     private let content: Content
+    private let reduceMotionOverride: Bool?
     @StateObject private var state: MetalFanState
     #if os(macOS)
     @State private var eventMonitor: Any?
     #endif
 
-    public init(_ label: String, initialOpen: MetalFanCell? = nil, @ViewBuilder content: () -> Content) {
+    public init(_ label: String, initialOpen: MetalFanCell? = nil, reduceMotion: Bool? = nil,
+                @ViewBuilder content: () -> Content) {
         self.label = label
         self.content = content()
+        self.reduceMotionOverride = reduceMotion
         _state = StateObject(wrappedValue: MetalFanState(open: initialOpen))
     }
 
     public var body: some View {
         HStack(alignment: .bottom, spacing: MetalRecipes.toolbar.points("self.gap")) { content }
             .environmentObject(state)
+            .environment(\.metalFanReduceMotionOverride, reduceMotionOverride)
             .accessibilityElement(children: .contain)
             .accessibilityLabel(label)
             .onExitCommand { state.open = nil }
@@ -107,6 +119,7 @@ public struct MetalFanPicker<Value: Hashable>: View {
     private let direction: MetalFanDirection
     @EnvironmentObject private var state: MetalFanState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.metalFanReduceMotionOverride) private var reduceMotionOverride
     @FocusState private var focusedOption: Int?
     @FocusState private var capFocused: Bool
 
@@ -117,6 +130,7 @@ public struct MetalFanPicker<Value: Hashable>: View {
     private var others: [MetalFanOption<Value>] { options.filter { $0.value != value } }
     private var current: MetalFanOption<Value>? { options.first { $0.value == value } ?? options.first }
     private var open: Bool { state.open == .picker }
+    private var still: Bool { reduceMotionOverride ?? reduceMotion }
     private func slot(_ index: Int) -> Int {
         if direction == .up { return -(index + 1) }
         return (index.isMultiple(of: 2) ? -1 : 1) * (index / 2 + 1)
@@ -138,12 +152,13 @@ public struct MetalFanPicker<Value: Hashable>: View {
                     if next < 0 { capFocused = true }
                     else if next < others.count { focusedOption = next }
                 }
-                .offset(y: open && !reduceMotion ? Double(slot(index)) * step : 0)
+                .offset(y: open ? Double(slot(index)) * step : 0)
+                .animation(still ? nil : MetalSprings.part.animation.delay(open ? Double(index) * MetalMotionTokens.fanStagger : .zero), value: open)
                 .opacity(open ? .one : .zero)
+                .animation(still ? MetalSpringClass.crossfade.spring.animation : nil, value: open)
                 .allowsHitTesting(open)
                 .accessibilityHidden(!open)
                 .zIndex(open ? Double(others.count - index) : 0)
-                .animation(MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation?.delay(open && !reduceMotion ? Double(index) * MetalMotionTokens.fanStagger : .zero), value: open)
             }
             if let current {
                 MetalIconButton("\(label): \(current.label)", icon: current.icon, variant: .tool) {
@@ -173,8 +188,10 @@ public struct MetalFanTray<Icon: View, Content: View>: View {
     private let content: Content
     @EnvironmentObject private var state: MetalFanState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.metalFanReduceMotionOverride) private var reduceMotionOverride
     @FocusState private var capFocused: Bool
     @FocusState private var foldFocused: Bool
+    private var still: Bool { reduceMotionOverride ?? reduceMotion }
 
     public init(_ label: String, @ViewBuilder icon: () -> Icon, @ViewBuilder content: () -> Content) {
         self.label = label; self.icon = icon(); self.content = content()
@@ -202,7 +219,7 @@ public struct MetalFanTray<Icon: View, Content: View>: View {
         .frame(height: r.points("tool.size"))
         .metalObjectRecipe(r, part: "tool", in: RoundedRectangle(cornerRadius: r.points("tool.radius"), style: .continuous))
         .fixedSize()
-        .animation(MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation, value: open)
+        .animation(MetalMotion.resolve(.part, reduceMotion: still).animation, value: open)
         .onChange(of: state.open) { old, new in
             if new == .tray { foldFocused = true }
             else if old == .tray && new == nil { capFocused = true }

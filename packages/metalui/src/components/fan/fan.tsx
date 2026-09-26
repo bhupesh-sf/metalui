@@ -143,7 +143,9 @@ function FanPicker<V extends string>({ label, value, options, onValueChange, dir
                 transform: `translateY(${y}px)`,
                 opacity: isOpen ? 1 : 0,
                 pointerEvents: isOpen ? 'auto' : 'none',
-                transition: still ? `opacity ${SPRING}` : `transform ${SPRING}, opacity ${SPRING}`,
+                transitionProperty: still ? 'opacity' : 'transform, opacity',
+                transitionDuration: 'var(--mu-spring-part-d)',
+                transitionTimingFunction: 'var(--mu-spring-part)',
                 transitionDelay: !still && isOpen ? `calc(${k} * var(--mu-motion-fan-stagger))` : undefined,
               }}
               onClick={() => choose(o.value)}

@@ -56,5 +56,15 @@ for (const colorway of COLORWAYS) {
       await expect(fan.getByRole('button', { name, exact: true })).toBeVisible();
     }
     await captureFan(page, `fan-text-${colorway}`);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await fan.getByRole('button', { name: 'Tool: Select' }).click();
+    const reducedChoice = fan.getByRole('option', { name: 'Write · T' });
+    await expect(reducedChoice).toBeVisible();
+    const reducedStyle = await reducedChoice.evaluate((el) => ({
+      property: getComputedStyle(el).transitionProperty,
+      transform: getComputedStyle(el).transform,
+    }));
+    expect(reducedStyle.property).toBe('opacity');
+    expect(reducedStyle.transform).not.toBe('none');
   });
 }

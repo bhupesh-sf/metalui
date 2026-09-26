@@ -23,12 +23,14 @@ final class MetalFanCaptures: XCTestCase {
     func testCanvasFanSpecimens() throws {
         let directory = try XCTUnwrap(ProcessInfo.processInfo.environment["METALUI_CAPTURES"])
         for colorway in MetalColorway.allCases {
-            for scene in ["rest", "picker", "ink", "text"] {
+            for scene in ["rest", "picker", "picker-reduced", "ink", "text"] {
+                let reduced = scene == "picker-reduced"
                 let drawing = scene == "ink"
                 let text = scene == "text"
                 let view = VStack {
                     Spacer(minLength: 0)
-                    MetalFan("Canvas tools", initialOpen: scene == "picker" ? .picker : scene == "rest" ? nil : .tray) {
+                    MetalFan("Canvas tools", initialOpen: scene.hasPrefix("picker") ? .picker : scene == "rest" ? nil : .tray,
+                             reduceMotion: reduced) {
                         MetalFanLabel(drawing ? "Ink" : text ? "Text" : "Canvas")
                         MetalFanPicker("Tool", value: .constant(drawing ? .pen : .select), options: tools)
                         if drawing {
