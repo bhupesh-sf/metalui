@@ -91,7 +91,7 @@ export type CableMap =
   | { kind: 'scale'; from: [number, number]; to: [number, number] }
   | { kind: 'match'; when: string | boolean; pulse: true }
   | { kind: 'count'; step: 1 | -1 }
-  | { kind: 'select'; table: Record<string, string> };
+  | { kind: 'select'; table: Record<string, string | number | boolean> };
 
 export interface Cable { from: string; to: string; map?: CableMap; jack?: 'auto' | [number, number] }
 

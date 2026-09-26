@@ -25,6 +25,8 @@ export interface RigProps extends Omit<React.SVGProps<SVGSVGElement>, 'values'> 
   catalog?: Record<string, GadgetSpec>;
   /** Inputs set from outside: instance → port → value. A change travels the cables. */
   values?: Record<string, Record<string, Value>>;
+  /** States set from outside: instance → state (a sync failed, a picture taken). A pulse named after it travels. */
+  states?: Record<string, string>;
   sound?: Sound | null;
   /** Rendered width in pixels. */
   width?: number;
@@ -36,7 +38,7 @@ export interface RigProps extends Omit<React.SVGProps<SVGSVGElement>, 'values'> 
 const R = GADGETS.rig;
 const reducedMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Rig({ spec, catalog = {}, values, sound = null, width = 560, host: forced, onPropagate, ...props }: RigProps) {
+export function Rig({ spec, catalog = {}, values, states, sound = null, width = 560, host: forced, onPropagate, ...props }: RigProps) {
   const ref = React.useRef<SVGSVGElement>(null);
   const { host } = useHost(ref, forced);
   const uid = React.useId().replace(/:/g, '');
@@ -45,6 +47,8 @@ export function Rig({ spec, catalog = {}, values, sound = null, width = 560, hos
   const unit = width / layout.width, tier = tierFor(400 * unit);
   // What each gadget shows: its inputs as they have arrived (a value on its way is not there yet).
   const [shown, setShown] = React.useState(() => structuredClone(flow.inputs));
+  // And each gadget's state as it has arrived.
+  const [shownStates, setShownStates] = React.useState<Record<string, string>>(() => Object.fromEntries(layout.modules.map((m) => [m.inst, flow.state(m.inst)])));
   const [beads, setBeads] = React.useState<{ key: number; cable: number; at: number }[]>([]);
 
   const art = React.useMemo(() => {
@@ -64,7 +68,32 @@ export function Rig({ spec, catalog = {}, values, sound = null, width = 560, hos
   }, [layout, spec.job, spec.feel, tier, host, uid]);
 
   // A change from outside: work out the hops, then run a bead along each and deliver on arrival.
-  const last = React.useRef(values);
+  const last = React.useRef(values), lastStates = React.useRef(states);
+  const travel = (hops: RigHop[]) => hops.forEach((hop) => {
+    onPropagate?.(hop);
+    const [ti, tp] = hop.to.split('.');
+    const deliver = () => {
+      setShown((s) => ({ ...s, [ti]: { ...s[ti], [tp]: typeof hop.value === 'object' ? s[ti][tp] : hop.value } }));
+      setShownStates((s) => ({ ...s, [ti]: hop.state }));
+    };
+    if (reducedMotion()) { deliver(); return; }
+    const key = Math.random();
+    const delay = (hop.hop - 1) * R.travel;
+    window.setTimeout(() => {
+      setBeads((b) => [...b, { key, cable: hop.cable, at: performance.now() }]);
+      window.setTimeout(() => { setBeads((b) => b.filter((x) => x.key !== key)); deliver(); }, R.travel);
+    }, delay);
+  });
+  React.useEffect(() => {
+    if (states === lastStates.current) return;
+    const before = lastStates.current;
+    lastStates.current = states;
+    for (const [inst, st] of Object.entries(states ?? {})) {
+      if (before?.[inst] === st) continue;
+      setShownStates((s) => ({ ...s, [inst]: st }));
+      travel(flow.setState(inst, st));
+    }
+  }, [states]); // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (values === last.current) return;
     const before = last.current;
@@ -73,18 +102,8 @@ export function Rig({ spec, catalog = {}, values, sound = null, width = 560, hos
       if (before?.[inst]?.[port] === v) continue;
       setShown((s) => ({ ...s, [inst]: { ...s[inst], [port]: v } }));
       const hops = flow.set(inst, port, v);
-      hops.forEach((hop) => {
-        onPropagate?.(hop);
-        const [ti, tp] = hop.to.split('.');
-        const deliver = () => setShown((s) => ({ ...s, [ti]: { ...s[ti], [tp]: typeof hop.value === 'object' ? s[ti][tp] : hop.value } }));
-        if (reducedMotion()) { deliver(); return; }
-        const key = Math.random();
-        const delay = (hop.hop - 1) * R.travel;
-        window.setTimeout(() => {
-          setBeads((b) => [...b, { key, cable: hop.cable, at: performance.now() }]);
-          window.setTimeout(() => { setBeads((b) => b.filter((x) => x.key !== key)); deliver(); }, R.travel);
-        }, delay);
-      });
+      setShownStates((s) => ({ ...s, [inst]: flow.state(inst) }));
+      travel(hops);
     }
   }, [values]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -112,7 +131,7 @@ export function Rig({ spec, catalog = {}, values, sound = null, width = 560, hos
       {layout.modules.map((m) => {
         const drive = m.spec.mechanism.drive ?? Object.keys(m.spec.ports?.in ?? {})[0];
         const v = drive ? shown[m.inst]?.[drive] : undefined;
-        return <Gadget key={m.inst} spec={m.spec} value={typeof v === 'number' ? v : typeof v === 'boolean' ? Number(v) : undefined} sound={voices.has(m.inst) ? sound : null}
+        return <Gadget key={m.inst} spec={m.spec} value={typeof v === 'number' ? v : typeof v === 'boolean' ? Number(v) : undefined} state={shownStates[m.inst]} sound={voices.has(m.inst) ? sound : null}
           x={m.at[0]} y={m.at[1]} size={400} tier={tier} host={host} data-inst={m.inst} />;
       })}
       <g data-layer="cables">

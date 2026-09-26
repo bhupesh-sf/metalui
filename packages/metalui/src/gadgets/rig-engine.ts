@@ -53,9 +53,22 @@ export function layoutRig(spec: RigSpec, catalog: Record<string, GadgetSpec> = {
 
 export type PortValues = Record<string, Record<string, Value | undefined>>;
 /** A value leaving a gadget along a cable: it arrives `hop` cables away from where the change began. */
-export interface RigHop { cable: number; from: string; to: string; value: Value; hop: number }
+export interface RigHop { cable: number; from: string; to: string; value: Value; hop: number; state: string }
 
 const isPulse = (v: Value | undefined): v is { pulse: true } => typeof v === 'object' && v !== null && 'pulse' in v;
+
+/** The state an input puts a gadget in, if any: a state port sets it; a pulse enters the state its act
+ *  plays in (a shutter taken, a bin emptied); a switch that names no state holds that state, and off,
+ *  it rests (a scope searching while there is a query). A switch that names a state is its drive's. */
+export function stateFromInput(spec: GadgetSpec, port: string, value: Value): string | undefined {
+  const ch = spec.ports?.in?.[port] as { kind: string } | undefined;
+  if (!ch) return undefined;
+  const act = Object.entries(spec.states).find(([, s]) => s.enter === 'act')?.[0];
+  if (ch.kind === 'state') return typeof value === 'string' && spec.states[value] ? value : undefined;
+  if (ch.kind === 'pulse') return isPulse(value) && act ? act : undefined;
+  if (ch.kind === 'boolean' && !spec.states[port] && act) return value === true ? act : 'rest';
+  return undefined;
+}
 
 /** What a gadget puts out, from its inputs and state: a needle past its threshold is `above` and pulses
  *  `over` as it crosses; a counter echoes its `count` and pulses `rolled` as it wraps; an out pulse
@@ -76,6 +89,17 @@ export function deriveOutputs(spec: GadgetSpec, inputs: Record<string, Value | u
     if ('rolled' in outs && max !== undefined && now < was && was >= max) out.rolled = { pulse: true };
   }
   for (const [name, ch] of Object.entries(outs)) if (ch.kind === 'pulse' && spec.states[name] && state === name && lastState !== name) out[name] = { pulse: true };
+  // A patch bay is healthy unless it has failed.
+  if (outs.healthy?.kind === 'boolean') out.healthy = state !== 'failed';
+  // A count named after a state puts out, as the gadget enters it, how many of its many actors there are
+  // (a scope found its blips).
+  for (const [name, ch] of Object.entries(outs)) {
+    if (ch.kind !== 'count' || !spec.states[name] || name in out || state !== name || lastState === name) continue;
+    const many = Object.values(spec.mechanism.bind).find((b) => Array.isArray(b) && b.length > 1) as string[] | undefined;
+    out[name] = many?.length ?? 1;
+  }
+  // An out named after an in passes it on (a drawer's fill).
+  for (const name of Object.keys(outs)) if (!(name in out) && spec.ports?.in?.[name] && inputs[name] !== undefined && !isPulse(inputs[name])) out[name] = inputs[name] as Value;
   // A switch named after a state is on while the gadget shows it (a drawer full, a grid full).
   const shown = derivedState(spec, state, now);
   for (const [name, ch] of Object.entries(outs)) if (ch.kind === 'boolean' && spec.states[name] && !(name in out)) out[name] = shown === name;
@@ -123,19 +147,23 @@ export function createRigFlow(spec: RigSpec, catalog: Record<string, GadgetSpec>
       if (fi !== inst || !(fp in outs)) return;
       const arrived = mapValue(c.map, outs[fp], inputs[ti][tp]);
       if (arrived === undefined) return;
-      out.push({ cable: i, from: c.from, to: c.to, value: arrived, hop });
-      const prev = { ...inputs[ti] };
+      const prev = { ...inputs[ti] }, last = states[ti];
       if (!isPulse(arrived)) inputs[ti][tp] = arrived;
-      run(ti, prev, states[ti], hop + 1, out);
+      states[ti] = stateFromInput(specs[ti], tp, arrived) ?? states[ti];
+      // The state the far gadget shows now (its drive may decide it: a bin armed, a drawer full).
+      const drive = specs[ti].mechanism.drive ?? Object.keys(specs[ti].ports?.in ?? {})[0], dv = inputs[ti][drive];
+      out.push({ cable: i, from: c.from, to: c.to, value: arrived, hop, state: derivedState(specs[ti], states[ti], typeof dv === 'number' ? dv : typeof dv === 'boolean' ? Number(dv) : undefined) });
+      run(ti, prev, last, hop + 1, out);
     });
   };
   return {
     get inputs() { return inputs; },
     state: (inst) => states[inst],
     set(inst, port, value) {
-      const before = { ...inputs[inst] }, out: RigHop[] = [];
+      const before = { ...inputs[inst] }, last = states[inst], out: RigHop[] = [];
       if (!isPulse(value)) inputs[inst][port] = value;
-      run(inst, before, states[inst], 1, out);
+      states[inst] = stateFromInput(specs[inst], port, value) ?? states[inst];
+      run(inst, before, last, 1, out);
       return out;
     },
     setState(inst, state) {

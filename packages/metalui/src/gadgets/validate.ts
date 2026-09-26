@@ -253,7 +253,7 @@ function walkGadget(w: Walk, input: unknown, path: string) {
 
 type Catalog = Record<string, GadgetSpec>;
 const KINDS_OK: Record<string, string[]> = { boolean: ['boolean', 'state'], number: ['number'], count: ['count', 'number'], state: ['state'], pulse: ['pulse'] };
-const MAPS: Record<string, [string[], string[]]> = { threshold: [['number', 'count'], ['state', 'boolean']], scale: [['number', 'count'], ['number']], match: [['state', 'boolean'], ['pulse']], count: [['pulse'], ['count']], select: [['state'], ['state']] };
+const MAPS: Record<string, [string[], string[]]> = { threshold: [['number', 'count'], ['state', 'boolean']], scale: [['number', 'count'], ['number']], match: [['state', 'boolean'], ['pulse']], count: [['pulse'], ['count']], select: [['state', 'boolean'], ['state', 'number', 'boolean']] };
 
 /** Validates a rig: its gadgets (inline or from the catalog), grid, cables, and the set rules across them. */
 export function validateRig(input: unknown, catalog: Catalog = {}, path = '$'): Validation<RigSpec> {
