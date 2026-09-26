@@ -261,7 +261,7 @@ private struct WeatherEngraved: View {
     @Environment(\.metalColorway) private var colorway
     var body: some View {
         let lip = MetalRecipes.label.textShadows("engraved", colorway: MetalRecipeColorway(colorway)).first
-        Text(text).font(.metal(MetalType.label)).tracking(MetalType.label.trackingPoints)
+        Text(text).metalType(MetalType.label)
             .foregroundColor(colorway.tokens.engrave.color)
             .shadow(color: (lip?.color ?? colorway.tokens.lip).color,
                     radius: lip?.blur ?? .zero, x: lip?.x ?? .zero, y: lip?.y ?? .zero)
@@ -312,7 +312,7 @@ public struct MetalWeatherTile: View {
                 .padding(.bottom, r.points("tile.text-y"))
             }
             .frame(width: r.points("tile.well"), height: r.points("tile.well"))
-            .clipped()
+            .clipShape(RoundedRectangle(cornerRadius: r.points("tile.well-radius"), style: .continuous))
         }
         .frame(width: r.points("tile.well"), height: r.points("tile.well"))
         .padding(r.points("tile.pad"))
@@ -420,7 +420,7 @@ public struct MetalWeather: View {
                 .padding(.bottom, r.points("sky.text-y"))
             }
             .frame(height: r.points("sky.height"))
-            .clipped()
+            .clipShape(RoundedRectangle(cornerRadius: r.points("sky.radius"), style: .continuous))
         }
         .frame(height: r.points("sky.height"))
         .accessibilityElement(children: .ignore).accessibilityAddTraits(.isImage).accessibilityLabel(skyLabel)
