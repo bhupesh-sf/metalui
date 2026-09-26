@@ -1,6 +1,6 @@
 # Spatial field: performance-first low-level design
 
-Status: **foundation, Region specimen, and Kamui web/native field adapters implemented and build-checked.** The adapters share the host's existing carry projection and target choice. Kamui web now shares one canvas geometry index across Region targeting, snap candidates, and field visibility; Region DOM virtualization remains open. Focused Region interactions and the Swift capture passed. The broader performance trace and release gates in this LLD remain separate follow-on work.
+Status: **MetalUI foundation and Region specimen implemented. Kamui canvas-wide field adapters removed after owner correction.** Kamui web shares one incremental geometry index across Region targeting and snap candidates; native already uses `CanvasSpatialIndex` for viewport queries and snap candidates. The optional MetalUI specimen remains on the Region documentation page. Region DOM virtualization, measured performance gates, and any future local field placement remain separate work.
 
 Owner correction, 2026-09-26: the optional field has a **visible, quiet grid at rest**. It clears Region paper and object footprints, then visibly yields to the carried object and reinforces the selected target. It still has no idle animation or frame loop. Earlier blank-rest statements below record the initial proposal and are superseded by this decision.
 
