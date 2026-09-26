@@ -28,17 +28,21 @@ public struct MetalFan<Content: View>: View {
     private let label: String
     private let content: Content
     private let reduceMotionOverride: Bool?
+    private let openBinding: Binding<MetalFanCell?>?
     @StateObject private var state: MetalFanState
     #if os(macOS)
     @State private var eventMonitor: Any?
     #endif
 
-    public init(_ label: String, initialOpen: MetalFanCell? = nil, reduceMotion: Bool? = nil,
-                @ViewBuilder content: () -> Content) {
+    /// `open`: the host's view of which cell is open, so it can fold the Fan from its own key
+    /// handling (Escape) or know it is open. Omit it and the Fan keeps the state itself.
+    public init(_ label: String, initialOpen: MetalFanCell? = nil, open: Binding<MetalFanCell?>? = nil,
+                reduceMotion: Bool? = nil, @ViewBuilder content: () -> Content) {
         self.label = label
         self.content = content()
         self.reduceMotionOverride = reduceMotion
-        _state = StateObject(wrappedValue: MetalFanState(open: initialOpen))
+        self.openBinding = open
+        _state = StateObject(wrappedValue: MetalFanState(open: open?.wrappedValue ?? initialOpen))
     }
 
     public var body: some View {
@@ -48,6 +52,13 @@ public struct MetalFan<Content: View>: View {
             .accessibilityElement(children: .contain)
             .accessibilityLabel(label)
             .onExitCommand { state.open = nil }
+            .onChange(of: state.open) { _, now in
+                if let openBinding, openBinding.wrappedValue != now { openBinding.wrappedValue = now }
+            }
+            // The host's value wins when it changes (without a binding this follows the Fan's own).
+            .onChange(of: openBinding.map { $0.wrappedValue } ?? state.open) { _, now in
+                if state.open != now { state.open = now }
+            }
             #if os(macOS)
             .background {
                 // ImageRenderer represents NSView bridges as a yellow placeholder.
