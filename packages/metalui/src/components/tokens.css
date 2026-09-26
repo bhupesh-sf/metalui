@@ -285,6 +285,7 @@
   --mu-lensbar-enter-drop: 8px;
   --mu-lensbar-enter-scale: 0.98;
   --mu-lensbar-note-led-gap: 5px;
+  --mu-lensbar-icon-hover-opacity: 0.05px;
   --mu-scrubber-width: 330px;
   --mu-scrubber-height: 50px;
   --mu-scrubber-track-top: 20px;
@@ -332,6 +333,8 @@
   --mu-toolstrip-sep: rgba(0,0,0,.55);
   --mu-toolstrip-sep-lip: rgba(255,255,255,.055);
   --mu-toolstrip-sep-height: 16px;
+  --mu-toolstrip-sep-width: 1px;
+  --mu-toolstrip-sep-pad: 3px;
   --mu-toolstrip-enter-rise: 4px;
   --mu-settings-row-min: 52px;
   --mu-settings-row-pad-y: 12px;
@@ -467,6 +470,8 @@
   --mu-palette-foot-key-gap: 5px;
   --mu-palette-edge: 1px;
   --mu-palette-bar-outset: 2px;
+  --mu-palette-caret-height: 18px;
+  --mu-palette-screen-fallback-height: 900px;
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
   --mu-type-content: 500 15px/20px var(--mu-sans);
@@ -1631,7 +1636,18 @@
   --mu-r-connector-label-pad-x: 7px;
   --mu-r-connector-label-pad-y: 2px;
   --mu-r-connector-label-radius: 7px;
+  --mu-r-connector-label-font-size: 12px;
   --mu-r-connector-hit-width: 18px;
+  --mu-r-connector-motion-frame-rate: 120px;
+  --mu-r-connector-current-band-opacity: 0.3px;
+  --mu-r-connector-current-bead-size: 1.7px;
+  --mu-r-connector-current-tail-count: 16px;
+  --mu-r-connector-current-tail-fade: 1.4px;
+  --mu-r-connector-current-tail-size-divisor: 20px;
+  --mu-r-connector-stardust-base-opacity: 0.45px;
+  --mu-r-connector-stardust-shimmer-opacity: 0.6px;
+  --mu-r-connector-stardust-base-size: 1.24px;
+  --mu-r-connector-stardust-shimmer-size: 0.9px;
   /* perfect: DRAWING.md DR-05 and §6 */
   --mu-r-perfect-self-line: 1.5px;
   --mu-r-perfect-self-opacity: 0.7;

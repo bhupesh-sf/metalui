@@ -781,7 +781,18 @@
   --spacing-connector-label-pad-y: var(--mu-r-connector-label-pad-y);
   --spacing-connector-label-radius: var(--mu-r-connector-label-radius);
   --radius-connector-label-radius: var(--mu-r-connector-label-radius);
+  --spacing-connector-label-font-size: var(--mu-r-connector-label-font-size);
   --spacing-connector-hit-width: var(--mu-r-connector-hit-width);
+  --spacing-connector-motion-frame-rate: var(--mu-r-connector-motion-frame-rate);
+  --spacing-connector-current-band-opacity: var(--mu-r-connector-current-band-opacity);
+  --spacing-connector-current-bead-size: var(--mu-r-connector-current-bead-size);
+  --spacing-connector-current-tail-count: var(--mu-r-connector-current-tail-count);
+  --spacing-connector-current-tail-fade: var(--mu-r-connector-current-tail-fade);
+  --spacing-connector-current-tail-size-divisor: var(--mu-r-connector-current-tail-size-divisor);
+  --spacing-connector-stardust-base-opacity: var(--mu-r-connector-stardust-base-opacity);
+  --spacing-connector-stardust-shimmer-opacity: var(--mu-r-connector-stardust-shimmer-opacity);
+  --spacing-connector-stardust-base-size: var(--mu-r-connector-stardust-base-size);
+  --spacing-connector-stardust-shimmer-size: var(--mu-r-connector-stardust-shimmer-size);
   --spacing-perfect-line: var(--mu-r-perfect-self-line);
   --spacing-perfect-tune-centre: var(--mu-r-perfect-tune-centre);
   --spacing-perfect-tune-readout-gap: var(--mu-r-perfect-tune-readout-gap);
@@ -1995,6 +2006,9 @@
 @utility stroke-width-connector-halo-width {
   stroke-width: var(--mu-r-connector-halo-width);
 }
+@utility font-size-connector-label-font-size {
+  font-size: var(--mu-r-connector-label-font-size);
+}
 @utility stroke-width-connector-hit-width {
   stroke-width: var(--mu-r-connector-hit-width);
 }
@@ -2354,6 +2368,7 @@
   --spacing-lensbar-icon-button: var(--mu-lensbar-icon-button);
   --spacing-lensbar-enter-drop: var(--mu-lensbar-enter-drop);
   --spacing-lensbar-note-led-gap: var(--mu-lensbar-note-led-gap);
+  --spacing-lensbar-icon-hover-opacity: var(--mu-lensbar-icon-hover-opacity);
   --spacing-scrubber-width: var(--mu-scrubber-width);
   --spacing-scrubber-height: var(--mu-scrubber-height);
   --spacing-scrubber-track-top: var(--mu-scrubber-track-top);
@@ -2394,6 +2409,8 @@
   --color-toolstrip-sep: var(--mu-toolstrip-sep);
   --color-toolstrip-sep-lip: var(--mu-toolstrip-sep-lip);
   --spacing-toolstrip-sep-height: var(--mu-toolstrip-sep-height);
+  --spacing-toolstrip-sep-width: var(--mu-toolstrip-sep-width);
+  --spacing-toolstrip-sep-pad: var(--mu-toolstrip-sep-pad);
   --spacing-toolstrip-enter-rise: var(--mu-toolstrip-enter-rise);
   --spacing-settings-row-min: var(--mu-settings-row-min);
   --spacing-settings-row-pad-y: var(--mu-settings-row-pad-y);
@@ -2462,6 +2479,8 @@
   --spacing-palette-foot-key-gap: var(--mu-palette-foot-key-gap);
   --spacing-palette-edge: var(--mu-palette-edge);
   --spacing-palette-bar-outset: var(--mu-palette-bar-outset);
+  --spacing-palette-caret-height: var(--mu-palette-caret-height);
+  --spacing-palette-screen-fallback-height: var(--mu-palette-screen-fallback-height);
   --color-presence-dot: var(--mu-presence-dot);
   --color-cue-quiet: var(--mu-cue-quiet);
   --color-cue-tag-bg: var(--mu-cue-tag-bg);

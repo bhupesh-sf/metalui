@@ -2036,7 +2036,18 @@ public enum MetalRecipes {
             "label.pad-x": .number(7.0),
             "label.pad-y": .number(2.0),
             "label.radius": .number(7.0),
+            "label.font-size": .number(12.0),
             "hit.width": .number(18.0),
+            "motion.frame-rate": .number(120.0),
+            "current.band-opacity": .number(0.3),
+            "current.bead-size": .number(1.7),
+            "current.tail-count": .number(16.0),
+            "current.tail-fade": .number(1.4),
+            "current.tail-size-divisor": .number(20.0),
+            "stardust.base-opacity": .number(0.45),
+            "stardust.shimmer-opacity": .number(0.6),
+            "stardust.base-size": .number(1.24),
+            "stardust.shimmer-size": .number(0.9),
         ]
     )
 
@@ -2563,6 +2574,8 @@ public enum MetalPaletteMetrics {
     public static let footKeyGap: Double = 5.0
     public static let edge: Double = 1.0
     public static let barOutset: Double = 2.0
+    public static let caretHeight: Double = 18.0
+    public static let screenFallbackHeight: Double = 900.0
 }
 
 /// The filter bar's layout: a floating pill at the top centre, 38 tall, padding 0 6 0 14, gap 8, the query ellipsised at 340; it drops 8 from above, from .98, on the surface spring. Its look is Surface(frost), Glyph, Label, Switcher and IconButton(ghost).
@@ -2682,6 +2695,8 @@ public enum MetalToolStripMetrics {
     public static let sep: MetalRGBA = MetalRGBA(0, 0, 0, 0.55)
     public static let sepLip: MetalRGBA = MetalRGBA(255, 255, 255, 0.055)
     public static let sepHeight: Double = 16.0
+    public static let sepWidth: Double = 1.0
+    public static let sepPad: Double = 3.0
     public static let enterRise: Double = 4.0
 }
 
@@ -2757,6 +2772,7 @@ public enum MetalLensBarMetrics {
     public static let enterDrop: Double = 8.0
     public static let enterScale: Double = 0.98
     public static let noteLedGap: Double = 5.0
+    public static let iconHoverOpacity: Double = 0.05
 }
 
 /// The switcher (object sheet): a pill of pills. A well track holds options on the height ladder (compact 24, regular 28), each padded by the pill rule (h/2 − 1); the selected one is a raised thumb in ink that glides between options on the part spring, since the track has ends. Inside a dense strip its focus ring is 1.5 with no offset.

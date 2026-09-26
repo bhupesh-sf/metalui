@@ -61,7 +61,7 @@ public struct MetalConnector: View {
                 band.stroke(ink, style: StrokeStyle(lineWidth: width, lineCap: .round))
                 arrowheads(mid).stroke(ink, style: StrokeStyle(lineWidth: width, lineCap: .round, lineJoin: .round))
             } else {
-                TimelineView(.animation(minimumInterval: 1.0 / 120.0)) { timeline in
+                TimelineView(.animation(minimumInterval: Double.one / recipe.scalar("motion.frame-rate"))) { timeline in
                     let t = timeline.date.timeIntervalSinceReferenceDate
                     if look == .current { current(mid: mid, time: t) }
                     else { stardust(mid: mid, time: t) }
@@ -80,13 +80,13 @@ public struct MetalConnector: View {
                     .fill(state == .selected || end.attached ? ink :
                           (recipe.color("end.free-fill", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.s).color)
                     .overlay(Circle().stroke(ink, lineWidth: recipe.points("end.ring") / zoom))
-                    .frame(width: radius * 2, height: radius * 2)
+                    .frame(width: radius + radius, height: radius + radius)
                     .position(end.point)
                     .onTapGesture { onEndPress(side) }
             }
             if let label, !label.isEmpty {
                 Text(label)
-                    .font(.system(size: 12 / zoom))
+                    .font(.system(size: recipe.points("label.font-size") / zoom))
                     .padding(.horizontal, recipe.points("label.pad-x") / zoom)
                     .padding(.vertical, recipe.points("label.pad-y") / zoom)
                     .background(.regularMaterial, in: RoundedRectangle(cornerRadius: recipe.points("label.radius") / zoom))
@@ -136,7 +136,8 @@ public struct MetalConnector: View {
     }
 
     @ViewBuilder private func current(mid: CGPoint, time: Double) -> some View {
-        bandPath(mid).stroke(ink.opacity(0.3), style: StrokeStyle(lineWidth: width, lineCap: .round))
+        let recipe = MetalRecipes.connector
+        bandPath(mid).stroke(ink.opacity(recipe.scalar("current.band-opacity")), style: StrokeStyle(lineWidth: width, lineCap: .round))
         ForEach(0..<6, id: \.self) { index in
             let direction = index < 3 ? 1.0 : -1.0
             let enabled = direction > 0 ? flow != .backward : flow != .forward
@@ -145,15 +146,16 @@ public struct MetalConnector: View {
                 let progress = 0.5 - 0.5 * cos(.pi * phase)
                 let head = direction > 0 ? progress : 1 - progress
                 let position = point(head, mid: mid)
-                Circle().fill(ink.opacity(sqrt(max(0, sin(.pi * phase)))))
-                    .frame(width: width * 1.7, height: width * 1.7)
+                Circle().fill(ink.opacity(sqrt(max(.zero, sin(.pi * phase)))))
+                    .frame(width: width * recipe.scalar("current.bead-size"), height: width * recipe.scalar("current.bead-size"))
                     .position(position)
-                ForEach(1..<16, id: \.self) { tail in
+                ForEach(1..<Int(recipe.points("current.tail-count")), id: \.self) { tail in
                     let fraction = head - direction * Double(tail) * 0.014 * (0.25 + 1.1 * sin(.pi * phase))
                     if (0...1).contains(fraction) {
                         let p = point(fraction, mid: mid)
-                        Circle().fill(ink.opacity(pow(1 - Double(tail) / 16, 1.4) * sqrt(max(0, sin(.pi * phase)))))
-                            .frame(width: width * (1 - Double(tail) / 20), height: width * (1 - Double(tail) / 20))
+                        Circle().fill(ink.opacity(pow(.one - Double(tail) / recipe.scalar("current.tail-count"), recipe.scalar("current.tail-fade")) * sqrt(max(.zero, sin(.pi * phase)))))
+                            .frame(width: width * (.one - Double(tail) / recipe.scalar("current.tail-size-divisor")),
+                                   height: width * (.one - Double(tail) / recipe.scalar("current.tail-size-divisor")))
                             .position(p)
                     }
                 }
@@ -162,6 +164,7 @@ public struct MetalConnector: View {
     }
 
     @ViewBuilder private func stardust(mid: CGPoint, time: Double) -> some View {
+        let recipe = MetalRecipes.connector
         ForEach(0..<34, id: \.self) { index in
             let fraction = Double(index) / 33
             let p = point(fraction, mid: mid)
@@ -170,8 +173,9 @@ public struct MetalConnector: View {
             let loose = state == .rest ? 1.0 : 0.0
             let drift = (sin(time * 1.3 + Double(index) * 2.1) + sin(time * 0.7 + Double(index) * 5.3) * 0.6) * 3.4 * loose
             let shimmer = max(0, 1 - abs((fraction - time * 0.5).truncatingRemainder(dividingBy: 1) - 0.5) * 7)
-            Circle().fill(ink.opacity(min(1, 0.45 + shimmer * 0.6)))
-                .frame(width: width * (1.24 + shimmer * 0.9), height: width * (1.24 + shimmer * 0.9))
+            Circle().fill(ink.opacity(min(.one, recipe.scalar("stardust.base-opacity") + shimmer * recipe.scalar("stardust.shimmer-opacity"))))
+                .frame(width: width * (recipe.scalar("stardust.base-size") + shimmer * recipe.scalar("stardust.shimmer-size")),
+                       height: width * (recipe.scalar("stardust.base-size") + shimmer * recipe.scalar("stardust.shimmer-size")))
                 .position(x: p.x - (next.y - p.y) / tangent * drift,
                           y: p.y + (next.x - p.x) / tangent * drift)
         }
