@@ -117,5 +117,41 @@
     "match": "medium",
     "lineIncludes": "weight: .medium",
     "reason": "Font.Weight.medium (500) is framework syntax, the key glyph's weight."
+  },
+  {
+    "file": "docs/SPATIAL-FIELD-REGION-LLD.md",
+    "word": "kamui",
+    "match": "Kamui",
+    "reason": "The research proposal identifies the host app whose canvas behavior is being compared."
+  },
+  {
+    "file": "docs/SPATIAL-FIELD-REGION-LLD.md",
+    "word": "medium",
+    "match": "medium",
+    "reason": "The research proposal identifies the host app canvas mode being compared."
+  },
+  {
+    "file": "docs/research/surface-field-source-study.md",
+    "word": "kamui",
+    "match": "Kamui",
+    "reason": "The source study identifies the separate host app and its local code, not a MetalUI API name."
+  },
+  {
+    "file": "docs/research/surface-field-source-study.md",
+    "word": "kamui",
+    "match": "kamui",
+    "reason": "The source study links to the separate host app checkout for evidence."
+  },
+  {
+    "file": "docs/research/surface-field-source-study.md",
+    "word": "medium",
+    "match": "Medium",
+    "reason": "The source study cites exact native host app types and paths."
+  },
+  {
+    "file": "docs/research/surface-field-source-study.md",
+    "word": "medium",
+    "match": "medium",
+    "reason": "The source study cites the host app canvas mode and source paths."
   }
 ]
