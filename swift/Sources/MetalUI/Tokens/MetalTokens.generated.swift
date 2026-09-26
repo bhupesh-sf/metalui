@@ -40,6 +40,8 @@ public struct MetalColorwayTokens: Sendable {
     public let regionSh: [MetalShadow]
     public let regionLensFill: MetalGradient
     public let regionOverShade: [MetalShadow]
+    public let spatialFieldMark: MetalRGBA
+    public let spatialFieldTarget: MetalRGBA
     public let raiseLite: [MetalShadow]
     public let rowHover: MetalRGBA
     public let rowOnBg: MetalGradient
@@ -144,6 +146,8 @@ public enum MetalTokens {
         regionOverShade: [
             MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, color: MetalRGBA(60, 55, 40, 0.07)),
         ],
+        spatialFieldMark: MetalRGBA(40, 38, 32, 0.24),
+        spatialFieldTarget: MetalRGBA(47, 158, 99, 0.45),
         raiseLite: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.75)),
             MetalShadow(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.95)),
@@ -284,6 +288,8 @@ public enum MetalTokens {
         regionOverShade: [
             MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, color: MetalRGBA(0, 0, 0, 0.5)),
         ],
+        spatialFieldMark: MetalRGBA(255, 255, 255, 0.28),
+        spatialFieldTarget: MetalRGBA(120, 214, 165, 0.55),
         raiseLite: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.05)),
             MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.09)),
@@ -2487,6 +2493,18 @@ public enum MetalRegion {
     public static let rowDimple: Double = 14.0
     public static let nameMin: Double = 20.0
     public static let rowMetaTop: Double = 3.0
+}
+
+/// Optional canvas response to a host-projected carry and eligible Region. Blank at rest. Marks clear the carried footprint, gather near its edge, and tint only near the host-selected target. These are proposed visual values for foundation review, not a placement rule.
+public enum MetalSpatialField {
+    public static let markSpacing: Double = 22.0
+    public static let markRadius: Double = 1.1
+    public static let clearance: Double = 12.0
+    public static let carryReach: Double = 66.0
+    public static let targetReach: Double = 42.0
+    public static let carryOpacity: Double = 0.62
+    public static let targetOpacity: Double = 0.58
+    public static let recoveryMs: Double = 180.0
 }
 
 /// The press-in pill button (object sheet): 32 tall, padding 15, the ui role, a 16 glyph 6 before the label. Compact (the canvas pills, refit to the height ladder): 28 tall, padding 11, 12 pt, a 14 glyph 7 before, the raise-sm shadow on the button fill, ink2 until hover. Pressed sinks 1 into its well in 50 ms, linear, and returns on release; fills and shadows cross-fade 180 ms. Focus is the 2 ring at offset 2. Disabled is 40 %, no icon motion.

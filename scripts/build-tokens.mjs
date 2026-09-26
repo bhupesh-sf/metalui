@@ -171,6 +171,12 @@ const RG = T.region;
 const RG_KEYS = Object.keys(RG).filter((k) => !k.startsWith('$'));
 const regionVars = RG_KEYS.map((k) => `  --mu-region-${k}: ${typeof RG[k] === 'number' ? (k === 'dim' ? RG[k] : `${RG[k]}px`) : RG[k]};`).join('\n');
 
+// ---------- spatial field (tokens.json spatial-field) ----------
+const SF = T['spatial-field'];
+const SF_KEYS = Object.keys(SF).filter((k) => !k.startsWith('$'));
+const SF_UNITLESS = new Set(['carry-opacity', 'target-opacity']);
+const spatialFieldVars = SF_KEYS.map((k) => `  --mu-spatial-field-${k}: ${SF_UNITLESS.has(k) ? SF[k] : `${SF[k]}${k.endsWith('-ms') ? 'ms' : 'px'}`};`).join('\n');
+
 // ---------- switcher (tokens.json switcher) ----------
 const SE = T.switcher;
 const SE_KEYS = Object.keys(SE).filter((k) => !k.startsWith('$'));
@@ -268,6 +274,7 @@ ${suggestionVars}
 ${engravingVars}
 ${provenanceVars}
 ${regionVars}
+${spatialFieldVars}
 ${switcherVars}
 ${lensbarVars}
 ${scrubberVars}
@@ -823,7 +830,13 @@ public enum MetalRegion {
 ${RG_KEYS.map((k) => { const v = RG[k]; if (typeof v === 'number') return `    public static let ${camel(k)}: Double = ${num(v)}`; const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; }).join('\n')}
 }
 `;
-emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + RECIPES.swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + `
+const swiftSpatialField = `
+/// ${SF.$use}
+public enum MetalSpatialField {
+${SF_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(SF[k])}`).join('\n')}
+}
+`;
+emit('swift/Sources/MetalUI/Tokens/MetalTokens.generated.swift', swift + RECIPES.swift + swiftFrost + swiftPresence + swiftCue + swiftSuggestion + swiftEngraving + swiftProvenance + swiftRegion + swiftSpatialField + `
 /// ${BT.$use}
 public enum MetalButtonMetrics {
 ${BT_KEYS.map((k) => `    public static let ${camel(k)}: Double = ${num(BT[k])}`).join("\n")}

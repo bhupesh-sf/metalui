@@ -7,6 +7,7 @@ import agentGuide from '../../../../../packages/metalui/src/blocks/region/region
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalRegionView.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { SpatialFieldFoundation, type SpatialFoundationState } from '../../ui/SpatialFieldFoundation';
 
 type Rid = 'todo' | 'done';
 const RULES: Record<Rid, { rule: string; drop: string }> = {
@@ -83,7 +84,11 @@ function Board({ dim, past }: { dim: boolean; past: boolean }) {
 }
 
 export default function RegionPage() {
-  const d = useDialKit('Region', { dim: false, past: false });
+  const d = useDialKit('Region', {
+    dim: false,
+    past: false,
+    spatial: { state: { type: 'select', options: ['rest', 'carry', 'target'], default: 'target' } },
+  });
   const [ticked, setTicked] = React.useState(false);
   return (
     <>
@@ -96,6 +101,13 @@ export default function RegionPage() {
         <Bench caption={`${d.dim ? 'To do dimmed' : ''}${d.past ? ' · Done in the past' : ''}`.trim() || 'rest'} on="canvas" className="wide min-h-[400px] items-start justify-start">
           <Board dim={d.dim} past={d.past} />
         </Bench>
+      </Section>
+
+      <Section id="spatial-response" title="Spatial response foundation" lede="One canvas response, driven by the carried footprint and the same target that makes Done say its drop rule. Rest leaves the canvas blank; each Region keeps its own paper. This fixed specimen sets the shared React and Swift look before gesture integration. Dial: rest, carry, target.">
+        <Bench on="canvas" caption={`${d.spatial.state}: response marks · Region paper remains local`} className="wide min-h-[280px] items-start justify-start">
+          <SpatialFieldFoundation state={d.spatial.state as SpatialFoundationState} />
+        </Bench>
+        <SwiftCapture name={`spatial-field-${d.spatial.state}`} />
       </Section>
 
       <Section title="States and a lens">
