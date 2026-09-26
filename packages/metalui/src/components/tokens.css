@@ -54,6 +54,11 @@
   --mu-spring-settle-d: 0.44s;
   --mu-spring-settle-half: 83ms;
   --mu-spring-settle-near: 214ms;
+  /* chrome: k=640 c=50.6 ζ=1 · controls opening in place: a fan of choices, a tray stretching, a picker; fast and exact like the system's own menus, no overshoot */
+  --mu-spring-chrome: linear(NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 1);
+  --mu-spring-chrome-d: 0.28s;
+  --mu-spring-chrome-half: 66ms;
+  --mu-spring-chrome-near: 187ms;
   /* release: k=500 c=40 ζ=0.89 · departures and letting go: content leaving, a pressed cap returning */
   --mu-spring-release: linear(0, 0.0141, 0.0508, 0.1029, 0.165, 0.2325, 0.3023, 0.3719, 0.4394, 0.5035, 0.5636, 0.6191, 0.6697, 0.7154, 0.7563, 0.7927, 0.8247, 0.8528, 0.8771, 0.8982, 0.9162, 0.9317, 0.9447, 0.9557, 0.9649, 0.9725, 0.9788, 0.984, 0.9882, 0.9915, 0.9942, 0.9963, 0.998, 0.9992, 1);
   --mu-spring-release-d: 0.3s;
@@ -81,7 +86,7 @@
   --mu-motion-focus-step: 2px; /* defocus for a drum turn (half the step) */
   --mu-motion-focus-content: 4px; /* defocus for a content change (half the travel) */
   --mu-motion-stagger: var(--mu-spring-release-half); /* offset between items: each starts as the previous is half gone */
-  --mu-motion-fan-stagger: 18ms; /* one beat between adjacent tool caps opening from the fan */
+  --mu-motion-fan-stagger: 10ms; /* one beat between adjacent tool caps opening from the fan (folding has none) */
   --mu-motion-hop-duration: 250ms; /* a hop: one short throw from stop to stop (a light down a list, a thing from one region to another), easing out */
   --mu-motion-hop-duration-far: 340ms; /* a far hop's flight: long enough to feel it rise, hang and fall */
   --mu-motion-hop-lift: 14px; /* the most a hop's arc bows: its control point sits min(0.8 × distance, 14) off the straight line, so the arc peaks at half that */
@@ -510,11 +515,12 @@
   --mu-travel-hinge: 1;
   --mu-travel-surface: 1;
   --mu-travel-settle: 1;
+  --mu-travel-chrome: 1;
   --mu-travel-release: 1;
   --mu-travel-refusal: 1;
 }
 
-/* Reduce Motion: part instant, object instant, hinge instant, surface crossfade, settle crossfade, release unchanged, refusal instant. */
+/* Reduce Motion: part instant, object instant, hinge instant, surface crossfade, settle crossfade, chrome crossfade, release unchanged, refusal instant. */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --mu-travel-part: 0;
@@ -525,6 +531,7 @@
     --mu-spring-hinge-d: 0s;
     --mu-travel-surface: 0;
     --mu-travel-settle: 0;
+    --mu-travel-chrome: 0;
     --mu-travel-refusal: 0;
     --mu-spring-refusal-d: 0s;
   }
@@ -538,6 +545,7 @@
   --mu-spring-hinge-d: 0s;
   --mu-travel-surface: 0;
   --mu-travel-settle: 0;
+  --mu-travel-chrome: 0;
   --mu-travel-refusal: 0;
   --mu-spring-refusal-d: 0s;
 }

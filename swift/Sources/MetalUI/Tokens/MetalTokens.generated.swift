@@ -436,24 +436,26 @@ public enum MetalCaps {
 
 public enum MetalSprings {
     /// parts you touch: thumbs, toggles, keys, detents; may overshoot against a stop
-    public static let part = MetalSpring(stiffness: 170.0, damping: 16.0, duration: 0.6)
+    public static let part = MetalSpring(stiffness: 170.0, damping: 16.0, duration: 0.6, native: .snappy)
     /// objects landing on the table: a dropped block settling in a region, folder cards, a stack opening; a stop, and rare by design
-    public static let object = MetalSpring(stiffness: 120.0, damping: 13.0, duration: 0.92)
+    public static let object = MetalSpring(stiffness: 120.0, damping: 13.0, duration: 0.92, native: .bouncy)
     /// anything on a hinge: flaps, lids, drawers that tilt
-    public static let hinge = MetalSpring(stiffness: 120.0, damping: 14.0, duration: 0.94)
+    public static let hinge = MetalSpring(stiffness: 120.0, damping: 14.0, duration: 0.94, native: .bouncy)
     /// floating surfaces (menus, palettes, toasts, dialogs) rising and settling; no stop, so no overshoot
-    public static let surface = MetalSpring(stiffness: 220.0, damping: 28.0, duration: 0.5)
+    public static let surface = MetalSpring(stiffness: 220.0, damping: 28.0, duration: 0.5, native: .smooth)
     /// arrivals and footprints: content coming into place, a control growing to new content, the hover lift (T5a)
-    public static let settle = MetalSpring(stiffness: 380.0, damping: 36.0, duration: 0.44)
+    public static let settle = MetalSpring(stiffness: 380.0, damping: 36.0, duration: 0.44, native: .smooth)
+    /// controls opening in place: a fan of choices, a tray stretching, a picker; fast and exact like the system's own menus, no overshoot
+    public static let chrome = MetalSpring(stiffness: 640.0, damping: 50.6, duration: 0.28, native: .snappy)
     /// departures and letting go: content leaving, a pressed cap returning
-    public static let release = MetalSpring(stiffness: 500.0, damping: 40.0, duration: 0.3)
+    public static let release = MetalSpring(stiffness: 500.0, damping: 40.0, duration: 0.3, native: .quick)
     /// a refusal shake: released from one nest aside, it rings against the nest walls and dies out
-    public static let refusal = MetalSpring(stiffness: 900.0, damping: 12.0, duration: 1.1)
+    public static let refusal = MetalSpring(stiffness: 900.0, damping: 12.0, duration: 1.1, native: .shake)
 }
 
 /// Travel values shared with the web motion helpers.
 public enum MetalMotionTokens {
-    public static let fanStagger: Double = 0.018
+    public static let fanStagger: Double = 0.01
     public static let hopDuration: Double = 0.25
     public static let hopDurationFar: Double = 0.34
     public static let hopLift: Double = 14.0
@@ -488,6 +490,8 @@ public enum MetalSpringClass: String, CaseIterable, Sendable {
     case surface
     /// arrivals and footprints: content coming into place, a control growing to new content, the hover lift (T5a)
     case settle
+    /// controls opening in place: a fan of choices, a tray stretching, a picker; fast and exact like the system's own menus, no overshoot
+    case chrome
     /// departures and letting go: content leaving, a pressed cap returning
     case release
     /// a refusal shake: released from one nest aside, it rings against the nest walls and dies out
@@ -500,6 +504,7 @@ public enum MetalSpringClass: String, CaseIterable, Sendable {
         case .hinge: return MetalSprings.hinge
         case .surface: return MetalSprings.surface
         case .settle: return MetalSprings.settle
+        case .chrome: return MetalSprings.chrome
         case .release: return MetalSprings.release
         case .refusal: return MetalSprings.refusal
         }
@@ -512,6 +517,7 @@ public enum MetalSpringClass: String, CaseIterable, Sendable {
         case .hinge: return .instant
         case .surface: return .crossfade
         case .settle: return .crossfade
+        case .chrome: return .crossfade
         case .release: return .unchanged
         case .refusal: return .instant
         }

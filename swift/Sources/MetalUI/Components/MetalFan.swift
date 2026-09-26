@@ -172,10 +172,14 @@ public struct MetalFanPicker<Value: Hashable>: View {
                 }
                 // Before the offset: the reported frame moves with the drawn option.
                 .metalHitRegion(open)
+                // Each choice travels out of the cap on SwiftUI's own snappy motion (the chrome
+                // role): quick and exact like a system menu. Opening staggers by a beat; folding
+                // goes back together.
                 .offset(y: open ? Double(slot(index)) * step : 0)
-                .animation(still ? nil : MetalSprings.part.animation.delay(open ? Double(index) * MetalMotionTokens.fanStagger : .zero), value: open)
                 .opacity(open ? .one : .zero)
-                .animation(still ? MetalSpringClass.crossfade.spring.animation : nil, value: open)
+                .animation(still ? MetalSpringClass.crossfade.spring.animation
+                                 : MetalSprings.chrome.animation.delay(open ? Double(index) * MetalMotionTokens.fanStagger : .zero),
+                           value: open)
                 .allowsHitTesting(open)
                 .accessibilityHidden(!open)
                 .zIndex(open ? Double(others.count - index) : 0)
@@ -240,7 +244,7 @@ public struct MetalFanTray<Icon: View, Content: View>: View {
         .metalObjectRecipe(r, part: "tool", in: RoundedRectangle(cornerRadius: r.points("tool.radius"), style: .continuous))
         .fixedSize()
         .metalHitRegion()
-        .animation(MetalMotion.resolve(.part, reduceMotion: still).animation, value: open)
+        .animation(MetalMotion.resolve(.chrome, reduceMotion: still).animation, value: open)
         .onChange(of: state.open) { old, new in
             if new == .tray { foldFocused = true }
             else if old == .tray && new == nil { capFocused = true }

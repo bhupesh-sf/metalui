@@ -63,6 +63,7 @@
   --ease-hinge: var(--mu-spring-hinge);
   --ease-surface: var(--mu-spring-surface);
   --ease-settle: var(--mu-spring-settle);
+  --ease-chrome: var(--mu-spring-chrome);
   --ease-release: var(--mu-spring-release);
   --ease-refusal: var(--mu-spring-refusal);
 }
@@ -2709,6 +2710,10 @@
 @utility duration-settle {
   --tw-duration: var(--mu-spring-settle-d);
   transition-duration: var(--mu-spring-settle-d);
+}
+@utility duration-chrome {
+  --tw-duration: var(--mu-spring-chrome-d);
+  transition-duration: var(--mu-spring-chrome-d);
 }
 @utility duration-release {
   --tw-duration: var(--mu-spring-release-d);
