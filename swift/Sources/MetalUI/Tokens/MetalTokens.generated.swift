@@ -1361,8 +1361,8 @@ public enum MetalRecipes {
             "match.offset": .number(2.5),
             "chip.font": .text("500 9.5px/1.3 mono"),
             "chip.tracking": .text("0.08em"),
-            "inferred.font": .text("500 9px/17px mono"),
-            "inferred.tracking": .text("0.08em"),
+            "inferred.font": .text("500 10.5px/17px mono"),
+            "inferred.tracking": .text("0.06em"),
         ]
     )
 
