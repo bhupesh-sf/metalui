@@ -96,6 +96,11 @@
   font: 400 11px/14px var(--mu-sans);
   letter-spacing: 0;
 }
+@utility type-figure {
+  font: 400 12px/14px var(--mu-sans);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
 @utility type-label {
   font: 400 9px/12px var(--mu-mono);
   letter-spacing: 0.11em;
@@ -108,6 +113,12 @@
   font-stretch: var(--mu-mono-stretch);
   font-variant-numeric: tabular-nums;
 }
+@utility type-tick {
+  font: 500 9px/14px var(--mu-mono);
+  letter-spacing: 0.02em;
+  font-stretch: var(--mu-mono-stretch);
+  font-variant-numeric: tabular-nums;
+}
 @utility type-code {
   font: 400 10.5px/17px var(--mu-mono);
   letter-spacing: 0;
@@ -115,6 +126,10 @@
 }
 @utility type-pixel {
   font: 700 40px/44px var(--mu-pixel);
+  letter-spacing: 0;
+}
+@utility type-pixel-small {
+  font: 700 24px/28px var(--mu-pixel);
   letter-spacing: 0;
 }
 
@@ -165,14 +180,21 @@
 /* A dot display (recipe dot-display): the SVG draws whole cells in grid units; this mask cuts each
    cell down to its square dot, centred on the pitch, so the geometry lives in the recipe alone. */
 @utility dot-display {
-  --dot-in: calc((var(--mu-r-dot-display-self-pitch) - var(--mu-r-dot-display-self-dot)) / 2);
-  --dot-out: calc(var(--dot-in) + var(--mu-r-dot-display-self-dot));
+  --dot-pitch: var(--mu-r-dot-display-self-pitch);
+  --dot-size: var(--mu-r-dot-display-self-dot);
+  --dot-in: calc((var(--dot-pitch) - var(--dot-size)) / 2);
+  --dot-out: calc(var(--dot-in) + var(--dot-size));
   display: block;
   shape-rendering: crispEdges;
   mask-image: linear-gradient(90deg, transparent var(--dot-in), black var(--dot-in) var(--dot-out), transparent var(--dot-out)),
     linear-gradient(transparent var(--dot-in), black var(--dot-in) var(--dot-out), transparent var(--dot-out));
-  mask-size: var(--mu-r-dot-display-self-pitch) var(--mu-r-dot-display-self-pitch);
+  mask-size: var(--dot-pitch) var(--dot-pitch);
   mask-composite: intersect;
+}
+/* The mini size: a glyph in a row of text (an hour's weather). */
+@utility dot-display-mini {
+  --dot-pitch: var(--mu-r-dot-display-mini-pitch);
+  --dot-size: var(--mu-r-dot-display-mini-dot);
 }
 @utility material-pressed {
   background: var(--mu-pressed-bg);
@@ -904,6 +926,64 @@
   --spacing-tabs-panel-drift: var(--mu-r-tabs-panel-drift);
   --spacing-dot-display-pitch: var(--mu-r-dot-display-self-pitch);
   --spacing-dot-display-dot: var(--mu-r-dot-display-self-dot);
+  --spacing-dot-display-mini-pitch: var(--mu-r-dot-display-mini-pitch);
+  --spacing-dot-display-mini-dot: var(--mu-r-dot-display-mini-dot);
+  --spacing-weather-width: var(--mu-r-weather-self-width);
+  --spacing-weather-height: var(--mu-r-weather-self-height);
+  --spacing-weather-pad: var(--mu-r-weather-self-pad);
+  --spacing-weather-radius: var(--mu-r-weather-self-radius);
+  --radius-weather-radius: var(--mu-r-weather-self-radius);
+  --spacing-weather-gap: var(--mu-r-weather-self-gap);
+  --spacing-weather-header-gap: var(--mu-r-weather-header-gap);
+  --spacing-weather-header-pad-top: var(--mu-r-weather-header-pad-top);
+  --spacing-weather-header-pad-x: var(--mu-r-weather-header-pad-x);
+  --spacing-weather-header-title-gap: var(--mu-r-weather-header-title-gap);
+  --spacing-weather-header-status-gap: var(--mu-r-weather-header-status-gap);
+  --spacing-weather-header-status-height: var(--mu-r-weather-header-status-height);
+  --spacing-weather-header-led: var(--mu-r-weather-header-led);
+  --spacing-weather-sky-height: var(--mu-r-weather-sky-height);
+  --spacing-weather-sky-radius: var(--mu-r-weather-sky-radius);
+  --radius-weather-sky-radius: var(--mu-r-weather-sky-radius);
+  --spacing-weather-sky-cols: var(--mu-r-weather-sky-cols);
+  --spacing-weather-sky-rows: var(--mu-r-weather-sky-rows);
+  --spacing-weather-sky-horizon: var(--mu-r-weather-sky-horizon);
+  --spacing-weather-sky-text-x: var(--mu-r-weather-sky-text-x);
+  --spacing-weather-sky-text-y: var(--mu-r-weather-sky-text-y);
+  --spacing-weather-sky-text-gap: var(--mu-r-weather-sky-text-gap);
+  --spacing-weather-sky-meta-gap: var(--mu-r-weather-sky-meta-gap);
+  --spacing-weather-sky-meta-pad: var(--mu-r-weather-sky-meta-pad);
+  --spacing-weather-hours-height: var(--mu-r-weather-hours-height);
+  --spacing-weather-hours-gap: var(--mu-r-weather-hours-gap);
+  --spacing-weather-hours-count: var(--mu-r-weather-hours-count);
+  --spacing-weather-hours-mini: var(--mu-r-weather-hours-mini);
+  --spacing-weather-week-height: var(--mu-r-weather-week-height);
+  --spacing-weather-week-gap: var(--mu-r-weather-week-gap);
+  --spacing-weather-week-pad-x: var(--mu-r-weather-week-pad-x);
+  --spacing-weather-week-row: var(--mu-r-weather-week-row);
+  --spacing-weather-week-col-gap: var(--mu-r-weather-week-col-gap);
+  --spacing-weather-week-day: var(--mu-r-weather-week-day);
+  --spacing-weather-week-glyph: var(--mu-r-weather-week-glyph);
+  --spacing-weather-week-lo: var(--mu-r-weather-week-lo);
+  --spacing-weather-week-bar: var(--mu-r-weather-week-bar);
+  --spacing-weather-week-hi: var(--mu-r-weather-week-hi);
+  --spacing-weather-week-stroke: var(--mu-r-weather-week-stroke);
+  --spacing-weather-week-scale-min: var(--mu-r-weather-week-scale-min);
+  --spacing-weather-week-scale-max: var(--mu-r-weather-week-scale-max);
+  --spacing-weather-rule-inset: var(--mu-r-weather-rule-inset);
+  --spacing-weather-tile-size: var(--mu-r-weather-tile-size);
+  --spacing-weather-tile-pad: var(--mu-r-weather-tile-pad);
+  --spacing-weather-tile-radius: var(--mu-r-weather-tile-radius);
+  --radius-weather-tile-radius: var(--mu-r-weather-tile-radius);
+  --spacing-weather-tile-well-radius: var(--mu-r-weather-tile-well-radius);
+  --radius-weather-tile-well-radius: var(--mu-r-weather-tile-well-radius);
+  --spacing-weather-tile-well: var(--mu-r-weather-tile-well);
+  --spacing-weather-tile-cols: var(--mu-r-weather-tile-cols);
+  --spacing-weather-tile-rows: var(--mu-r-weather-tile-rows);
+  --spacing-weather-tile-horizon: var(--mu-r-weather-tile-horizon);
+  --spacing-weather-tile-text-x: var(--mu-r-weather-tile-text-x);
+  --spacing-weather-tile-text-y: var(--mu-r-weather-tile-text-y);
+  --spacing-weather-tile-meta-gap: var(--mu-r-weather-tile-meta-gap);
+  --spacing-weather-tile-meta-pad: var(--mu-r-weather-tile-meta-pad);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -2202,6 +2282,16 @@
 @utility duration-dot-display-step {
   --tw-duration: var(--mu-r-dot-display-self-step);
   transition-duration: var(--mu-r-dot-display-self-step);
+}
+@utility recipe-weather {
+  background: var(--mu-r-weather-self-background);
+  box-shadow: var(--mu-r-weather-self-shadow);
+}
+@utility stroke-width-weather-width {
+  stroke-width: var(--mu-r-weather-self-width);
+}
+@utility stroke-width-weather-week-stroke {
+  stroke-width: var(--mu-r-weather-week-stroke);
 }
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }

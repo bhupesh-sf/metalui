@@ -1,0 +1,21 @@
+{
+  "name": "weather",
+  "title": "Weather",
+  "status": "alpha",
+  "description": "A slim raised slab with a dot sky sunk into it. The tile (180) is a 21 × 21 sky with the temperature; the large widget (400 × 560) adds the place, the next hours as dot glyphs and seven days as lit dots on one scale. One sky for each weather, drawn for the clock.",
+  "base": "none",
+  "react": {
+    "export": "Weather",
+    "files": [
+      "weather.tsx",
+      "sky.ts"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalWeather",
+    "file": "swift/Sources/MetalUI/Components/MetalWeather.swift"
+  },
+  "agent": "weather.agent.md",
+  "layer": "object",
+  "page": "/components/weather"
+}

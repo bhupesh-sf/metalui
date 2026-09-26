@@ -14,25 +14,27 @@ import * as React from 'react';
  * A part: no role of its own. The object around it names what it shows.
  * ───────────────────────────────────────────────────────── */
 
-/** The dot colours (tokens colorways px-*): an unlit dot, then the lit ones. */
-export type DotColour = 'off' | 'hz' | 'hill' | 'sun' | 'moon' | 'star' | 'cloud' | 'cloud-dark' | 'rain' | 'snow';
+/** The dot colours (tokens colorways px-*): an unlit dot, then the lit ones; ink marks "now". */
+export type DotColour = 'off' | 'hz' | 'hill' | 'sun' | 'moon' | 'star' | 'cloud' | 'cloud-dark' | 'rain' | 'snow' | 'ink';
 /** A colour, or a colour at an alpha. */
 export type DotInk = DotColour | readonly [DotColour, number];
 
-export interface DotDisplayProps extends Omit<React.SVGProps<SVGSVGElement>, 'children'> {
+export interface DotDisplayProps extends Omit<React.SVGProps<SVGSVGElement>, 'children' | 'ref'> {
   cols: number;
   rows: number;
   /** One ink index per dot, row by row (`cols × rows` long). An index with no ink is unlit. */
   dots: ArrayLike<number>;
   inks: readonly DotInk[];
+  /** default (pitch 8, dot 6) or mini (pitch 3, dot 2.4): a glyph in a row of text. */
+  size?: 'default' | 'mini';
 }
 
 const fillOf = (ink: DotInk | undefined) => {
   const [colour, alpha] = typeof ink === 'string' ? [ink, 1] : ink ?? ['off', 1];
-  return { fill: `var(--mu-px-${colour})`, fillOpacity: alpha };
+  return { fill: colour === 'ink' ? 'var(--mu-ink)' : `var(--mu-px-${colour})`, fillOpacity: alpha };
 };
 
-export function DotDisplay({ cols, rows, dots, inks, className, style, ...props }: DotDisplayProps) {
+export const DotDisplay = React.forwardRef<SVGSVGElement, DotDisplayProps>(function DotDisplay({ cols, rows, dots, inks, size = 'default', className, style, ...props }, ref) {
   // One path per ink: every dot of that ink as a unit cell.
   const paths = React.useMemo(() => {
     const byInk: string[] = [];
@@ -43,22 +45,24 @@ export function DotDisplay({ cols, rows, dots, inks, className, style, ...props 
     }
     return byInk;
   }, [cols, rows, dots, inks]);
-  const own = 'dot-display';
+  const own = size === 'mini' ? 'dot-display dot-display-mini' : 'dot-display';
   return (
     <svg
+      ref={ref}
       aria-hidden
       viewBox={`0 0 ${cols} ${rows}`}
       preserveAspectRatio="none"
       data-cols={cols}
       data-rows={rows}
+      data-size={size}
       className={className ? `${own} ${className}` : own}
-      style={{ width: `calc(${cols} * var(--mu-r-dot-display-self-pitch))`, height: `calc(${rows} * var(--mu-r-dot-display-self-pitch))`, ...style }}
+      style={{ width: `calc(${cols} * var(--dot-pitch))`, height: `calc(${rows} * var(--dot-pitch))`, ...style }}
       {...props}
     >
       {paths.map((d, i) => (d ? <path key={i} d={d} data-ink={i} style={i === 0 ? fillOf('off') : fillOf(inks[i])} /> : null))}
     </svg>
   );
-}
+});
 
 const stepMs = (el: Element | null) => {
   const raw = el ? getComputedStyle(el).getPropertyValue('--mu-r-dot-display-self-step').trim() : '';

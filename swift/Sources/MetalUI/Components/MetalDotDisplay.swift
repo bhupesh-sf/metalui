@@ -2,7 +2,7 @@ import SwiftUI
 
 /// A dot colour (tokens colorways px-*): an unlit dot, then the lit ones.
 public enum MetalDotColour: String, Sendable, CaseIterable {
-    case off, hz, hill, sun, moon, star, cloud, cloudDark = "cloud-dark", rain, snow
+    case off, hz, hill, sun, moon, star, cloud, cloudDark = "cloud-dark", rain, snow, ink
 
     public func color(in colorway: MetalColorway) -> MetalRGBA {
         let t = colorway.tokens
@@ -17,6 +17,7 @@ public enum MetalDotColour: String, Sendable, CaseIterable {
         case .cloudDark: return t.pxCloudDark
         case .rain: return t.pxRain
         case .snow: return t.pxSnow
+        case .ink: return t.ink
         }
     }
 }
@@ -36,17 +37,21 @@ public struct MetalDotDisplay: View {
     let rows: Int
     let dots: [UInt8]
     let inks: [MetalDotInk]
+    let size: Size
     @Environment(\.metalColorway) private var colorway
 
-    public init(cols: Int, rows: Int, dots: [UInt8], inks: [MetalDotInk]) {
-        self.cols = cols; self.rows = rows; self.dots = dots; self.inks = inks
+    /// default (pitch 8, dot 6) or mini (pitch 3, dot 2.4): a glyph in a row of text.
+    public enum Size: String, Sendable { case `default` = "self", mini }
+
+    public init(cols: Int, rows: Int, dots: [UInt8], inks: [MetalDotInk], size: Size = .default) {
+        self.cols = cols; self.rows = rows; self.dots = dots; self.inks = inks; self.size = size
     }
 
-    public static var pitch: CGFloat { MetalRecipes.dotDisplay.points("self.pitch") }
-    public static var dot: CGFloat { MetalRecipes.dotDisplay.points("self.dot") }
+    public static func pitch(_ size: Size = .default) -> CGFloat { MetalRecipes.dotDisplay.points("\(size.rawValue).pitch") }
+    public static func dot(_ size: Size = .default) -> CGFloat { MetalRecipes.dotDisplay.points("\(size.rawValue).dot") }
 
     public var body: some View {
-        let pitch = Self.pitch, dot = Self.dot, inset = (Self.pitch - Self.dot) / 2
+        let pitch = Self.pitch(size), dot = Self.dot(size), inset = (pitch - dot) / 2
         let off = MetalDotColour.off.color(in: colorway).color
         let fills = inks.map { ink in ink.colour.color(in: colorway).color.opacity(ink.alpha) }
         Canvas { context, _ in

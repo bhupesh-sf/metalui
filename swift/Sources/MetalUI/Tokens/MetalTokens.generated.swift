@@ -2264,6 +2264,87 @@ public enum MetalRecipes {
             "self.pitch": .number(8.0),
             "self.dot": .number(6.0),
             "self.step": .text("167ms"),
+            "mini.pitch": .number(3.0),
+            "mini.dot": .number(2.4),
+        ]
+    )
+
+    /// Weather: a slim raised slab with a dot-display sky sunk into it. The large widget (400 × 560) has a header, a 46 × 28 sky, the next hours as 7 × 7 dot glyphs and a seven-day range on one dot scale; a tile (180) is a 21 × 21 sky with a 6 rim. One sky for each weather, drawn for the clock and stepped by the dot display. (the weather widget and tiles design (Bone and Graphite), Main.dc.html)
+    public static let weather = MetalObjectRecipe(
+        name: "weather",
+        layers: [
+            .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(252.0, 251.0, 249.0, 1.0)), 0.0), .init(.color(MetalRGBA(246.0, 245.0, 242.0, 1.0)), 1.0)])), // mu-recipe:weather:0 linear-gradient(#FCFBF9, #F6F5F2)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.75)))), // mu-recipe:weather:1 inset 0 0 6px 2px rgba(255,255,255,.75)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.95)))), // mu-recipe:weather:2 inset 2px 3px 3px -1px rgba(255,255,255,.95)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(110.0, 100.0, 80.0, 0.07)))), // mu-recipe:weather:3 inset -1px -3px 5px -2px rgba(110,100,80,.07)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.045)))), // mu-recipe:weather:4 0 0 0 .5px rgba(24,22,16,.045)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:weather:5 0 1px 2px rgba(24,22,16,.05)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 8.0, blur: 18.0, spread: -6.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.08)))), // mu-recipe:weather:6 0 8px 18px -6px rgba(24,22,16,.08)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 26.0, blur: 50.0, spread: -16.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.13)))), // mu-recipe:weather:7 0 26px 50px -16px rgba(24,22,16,.13)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 52.0, blur: 96.0, spread: -36.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.13)))), // mu-recipe:weather:8 0 52px 96px -36px rgba(24,22,16,.13)
+            .init(part: "self", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(44.0, 44.0, 47.0, 1.0)), 0.0), .init(.color(MetalRGBA(37.0, 37.0, 39.0, 1.0)), 1.0)])), // mu-recipe:weather:9 linear-gradient(#2C2C2F, #252527)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:weather:10 inset 0 0 6px 2px rgba(255,255,255,.055)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:weather:11 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:weather:12 inset -1px -3px 5px -2px rgba(0,0,0,.35)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:weather:13 0 0 0 .5px rgba(0,0,0,.45)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.22)))), // mu-recipe:weather:14 0 1px 2px rgba(0,0,0,.22)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 8.0, blur: 18.0, spread: -6.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:weather:15 0 8px 18px -6px rgba(0,0,0,.2)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 26.0, blur: 50.0, spread: -16.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:weather:16 0 26px 50px -16px rgba(0,0,0,.34)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 52.0, blur: 96.0, spread: -36.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:weather:17 0 52px 96px -36px rgba(0,0,0,.3)
+        ],
+        props: [
+            "self.width": .number(400.0),
+            "self.height": .number(560.0),
+            "self.pad": .number(16.0),
+            "self.radius": .number(24.0),
+            "self.gap": .number(12.0),
+            "header.gap": .number(12.0),
+            "header.pad-top": .number(2.0),
+            "header.pad-x": .number(4.0),
+            "header.title-gap": .number(2.0),
+            "header.status-gap": .number(6.0),
+            "header.status-height": .number(24.0),
+            "header.led": .number(6.0),
+            "sky.height": .number(224.0),
+            "sky.radius": .number(18.0),
+            "sky.cols": .number(46.0),
+            "sky.rows": .number(28.0),
+            "sky.horizon": .number(21.0),
+            "sky.text-x": .number(14.0),
+            "sky.text-y": .number(6.0),
+            "sky.text-gap": .number(12.0),
+            "sky.meta-gap": .number(2.0),
+            "sky.meta-pad": .number(4.0),
+            "hours.height": .number(72.0),
+            "hours.gap": .number(4.0),
+            "hours.count": .number(6.0),
+            "hours.mini": .number(21.0),
+            "week.height": .number(140.0),
+            "week.gap": .number(4.0),
+            "week.pad-x": .number(4.0),
+            "week.row": .number(14.0),
+            "week.col-gap": .number(10.0),
+            "week.day": .number(40.0),
+            "week.glyph": .number(14.0),
+            "week.lo": .number(30.0),
+            "week.bar": .number(168.0),
+            "week.hi": .number(30.0),
+            "week.stroke": .number(1.7),
+            "week.scale-min": .number(10.0),
+            "week.scale-max": .number(30.0),
+            "rule.inset": .number(4.0),
+            "tile.size": .number(180.0),
+            "tile.pad": .number(6.0),
+            "tile.radius": .number(24.0),
+            "tile.well-radius": .number(18.0),
+            "tile.well": .number(168.0),
+            "tile.cols": .number(21.0),
+            "tile.rows": .number(21.0),
+            "tile.horizon": .number(13.0),
+            "tile.text-x": .number(12.0),
+            "tile.text-y": .number(6.0),
+            "tile.meta-gap": .number(2.0),
+            "tile.meta-pad": .number(6.0),
         ]
     )
 }

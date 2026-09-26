@@ -1433,6 +1433,29 @@
       "docs": "Agent guide: https://metalui.dev/r/tooltip.md. SwiftUI: View.metalTooltip(_:shortcut:edge:) in the MetalUI Swift package."
     },
     {
+      "name": "weather",
+      "type": "registry:ui",
+      "title": "Weather",
+      "description": "A slim raised slab with a dot sky sunk into it. The tile (180) is a 21 × 21 sky with the temperature; the large widget (400 × 560) adds the place, the next hours as dot glyphs and seven days as lit dots on one scale. One sky for each weather, drawn for the clock.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/weather/weather.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/weather/weather.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/weather/sky.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/weather/sky.ts"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/weather.md. SwiftUI: MetalWeather in the MetalUI Swift package."
+    },
+    {
       "name": "well",
       "type": "registry:ui",
       "title": "Well",

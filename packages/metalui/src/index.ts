@@ -2,6 +2,8 @@
 export { Surface, type SurfaceProps, type SurfaceMaterial, type SurfaceRadius } from './components/surface/surface';
 export { Well, type WellProps, type WellVariant, type WellRadius } from './components/well/well';
 export { DotDisplay, useDotTick, type DotDisplayProps, type DotColour, type DotInk } from './components/dot-display/dot-display';
+export { Weather, WeatherTile, type WeatherProps, type WeatherTileProps, type WeatherHour, type WeatherDay, type WeatherDayKind, type WeatherKind, type SunHours } from './components/weather/weather';
+export { sky, mini, SKY_INKS, MINI_INKS, DEFAULT_SUN } from './components/weather/sky';
 export { Label, type LabelProps, type LabelVariant } from './components/label/label';
 export { Rule, type RuleProps } from './components/rule/rule';
 export { IconButton, type IconButtonProps } from './components/icon-button/icon-button';
