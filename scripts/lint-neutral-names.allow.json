@@ -153,5 +153,29 @@
     "word": "medium",
     "match": "medium",
     "reason": "The source study cites the host app canvas mode and source paths."
+  },
+  {
+    "file": "docs/SPATIAL-FIELD-PERFORMANCE-LLD.md",
+    "word": "kamui",
+    "match": "Kamui",
+    "reason": "The cross-repository design names the host app whose canvas is being integrated."
+  },
+  {
+    "file": "docs/SPATIAL-FIELD-PERFORMANCE-LLD.md",
+    "word": "kamui",
+    "match": "kamui",
+    "reason": "The cross-repository design links to exact host app source paths."
+  },
+  {
+    "file": "docs/SPATIAL-FIELD-PERFORMANCE-LLD.md",
+    "word": "medium",
+    "match": "Medium",
+    "reason": "The design cites the host app canvas mode and native source types."
+  },
+  {
+    "file": "docs/SPATIAL-FIELD-PERFORMANCE-LLD.md",
+    "word": "medium",
+    "match": "medium",
+    "reason": "The design cites the host app canvas mode and native source paths."
   }
 ]
