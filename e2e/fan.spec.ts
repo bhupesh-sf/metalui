@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import { COLORWAYS, open } from './helpers';
 
 async function captureFan(page: import('@playwright/test').Page, name: string) {
+  await page.getByRole('toolbar', { name: 'Canvas tools' }).scrollIntoViewIfNeeded();
   await page.waitForTimeout(650); // part spring reaches its final layout
   const box = (await page.getByRole('toolbar', { name: 'Canvas tools' }).boundingBox())!;
   const x = Math.max(0, box.x - 160);
