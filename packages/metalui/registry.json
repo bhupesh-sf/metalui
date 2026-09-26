@@ -419,6 +419,24 @@
       "docs": "Agent guide: https://metalui.dev/r/dialog.md. SwiftUI: MetalDialog in the MetalUI Swift package."
     },
     {
+      "name": "dot-display",
+      "type": "registry:ui",
+      "title": "Dot display",
+      "description": "Square dots on one pitch, printed into a well: each dot one px colour or unlit. A slow display that steps six times a second and never tweens. The picture (a sky, a sticker) is the caller's.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/dot-display/dot-display.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/dot-display/dot-display.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/dot-display.md. SwiftUI: MetalDotDisplay in the MetalUI Swift package."
+    },
+    {
       "name": "draw-picks",
       "type": "registry:ui",
       "title": "Draw picks",
@@ -1413,6 +1431,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/tooltip.md. SwiftUI: View.metalTooltip(_:shortcut:edge:) in the MetalUI Swift package."
+    },
+    {
+      "name": "weather",
+      "type": "registry:ui",
+      "title": "Weather",
+      "description": "A slim raised slab with a dot sky sunk into it. The tile (180) is a 21 × 21 sky with the temperature; the large widget (400 × 560) adds the place, the next hours as dot glyphs and seven days as lit dots on one scale. One sky for each weather, drawn for the clock.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/weather/weather.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/weather/weather.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/weather/sky.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/weather/sky.ts"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/weather.md. SwiftUI: MetalWeather in the MetalUI Swift package."
     },
     {
       "name": "well",

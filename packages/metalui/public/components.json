@@ -257,6 +257,23 @@
       "agent": "https://metalui.dev/r/dialog.md"
     },
     {
+      "name": "dot-display",
+      "title": "Dot display",
+      "status": "alpha",
+      "description": "Square dots on one pitch, printed into a well: each dot one px colour or unlit. A slow display that steps six times a second and never tweens. The picture (a sky, a sticker) is the caller's.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "DotDisplay",
+        "base": "none (decorative)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalDotDisplay"
+      },
+      "registry": "https://metalui.dev/r/dot-display.json",
+      "agent": "https://metalui.dev/r/dot-display.md"
+    },
+    {
       "name": "draw-picks",
       "title": "Draw picks",
       "status": "alpha",
@@ -1155,6 +1172,23 @@
       },
       "registry": "https://metalui.dev/r/tooltip.json",
       "agent": "https://metalui.dev/r/tooltip.md"
+    },
+    {
+      "name": "weather",
+      "title": "Weather",
+      "status": "alpha",
+      "description": "A slim raised slab with a dot sky sunk into it. The tile (180) is a 21 × 21 sky with the temperature; the large widget (400 × 560) adds the place, the next hours as dot glyphs and seven days as lit dots on one scale. One sky for each weather, drawn for the clock.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Weather",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalWeather"
+      },
+      "registry": "https://metalui.dev/r/weather.json",
+      "agent": "https://metalui.dev/r/weather.md"
     },
     {
       "name": "well",

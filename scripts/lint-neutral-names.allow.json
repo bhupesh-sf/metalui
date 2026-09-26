@@ -177,5 +177,19 @@
     "word": "medium",
     "match": "medium",
     "reason": "The design cites the host app canvas mode and native source paths."
+  },
+  {
+    "file": "packages/metalui/src/components/weather/weather.tsx",
+    "word": "medium",
+    "match": "medium",
+    "lineIncludes": "font-medium",
+    "reason": "Tailwind's font-medium is the 500 weight utility."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalWeather.swift",
+    "word": "medium",
+    "match": "medium",
+    "lineIncludes": ".fontWeight(index == .zero ? .semibold : .medium)",
+    "reason": "SwiftUI's medium is the React weather row's font-medium weight."
   }
 ]

@@ -438,6 +438,25 @@ ${Object.keys(ED.type).map((role) => `@utility type-doc-${role} {\n  ${typeDecls
   background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
   box-shadow: var(--mu-well);
 }
+/* A dot display (recipe dot-display): the SVG draws whole cells in grid units; this mask cuts each
+   cell down to its square dot, centred on the pitch, so the geometry lives in the recipe alone. */
+@utility dot-display {
+  --dot-pitch: var(--mu-r-dot-display-self-pitch);
+  --dot-size: var(--mu-r-dot-display-self-dot);
+  --dot-in: calc((var(--dot-pitch) - var(--dot-size)) / 2);
+  --dot-out: calc(var(--dot-in) + var(--dot-size));
+  display: block;
+  shape-rendering: crispEdges;
+  mask-image: linear-gradient(90deg, transparent var(--dot-in), black var(--dot-in) var(--dot-out), transparent var(--dot-out)),
+    linear-gradient(transparent var(--dot-in), black var(--dot-in) var(--dot-out), transparent var(--dot-out));
+  mask-size: var(--dot-pitch) var(--dot-pitch);
+  mask-composite: intersect;
+}
+/* The mini size: a glyph in a row of text (an hour's weather). */
+@utility dot-display-mini {
+  --dot-pitch: var(--mu-r-dot-display-mini-pitch);
+  --dot-size: var(--mu-r-dot-display-mini-dot);
+}
 @utility material-pressed {
   background: var(--mu-pressed-bg);
   box-shadow: var(--mu-pressed-sh);
@@ -919,7 +938,7 @@ const STRETCH = { mono: parseFloat(T.shared['mono-stretch']) / 100, code: parseF
 const role = ([name, r]) => {
   const stretch = r.family === 'mono' ? (r.stretch === 'code' ? STRETCH.code : STRETCH.mono) : 1;
   return `    /// ${r.size}/${r.line} · ${r.weight}${r.max ? ` · scales with the host's text size up to ${r.max} pt` : ''}
-    public static let ${name} = MetalTypeRole(
+    public static let ${camel(name)} = MetalTypeRole(
         name: ${JSON.stringify(name)}, family: .${r.family}, size: ${num(r.size)}, line: ${num(r.line)}, weight: ${r.weight},
         tracking: ${em(r.tracking)}, stretch: ${num(stretch)}, uppercase: ${!!r.uppercase}, tabular: ${!!r.tabular}, maxSize: ${r.max ? num(r.max) : 'nil'}
     )`;
@@ -967,7 +986,7 @@ ${Object.entries(F.ring).map(([k, v]) => `    public static let ${camel(k)}: Dou
 public enum MetalType {
 ${Object.entries(F.type).map(role).join('\n')}
 
-    public static let all: [MetalTypeRole] = [${Object.keys(F.type).join(', ')}]
+    public static let all: [MetalTypeRole] = [${Object.keys(F.type).map(camel).join(', ')}]
 }
 `;
 emit('swift/Sources/MetalUI/Tokens/MetalFoundations.generated.swift', foundationsSwift);
