@@ -23,6 +23,7 @@ export { drawCells, lightCells, cellShares, cellOrder, cellCentres, cellGlow, ty
 export { drawLid, poseLid, lidPose, type LidSpec, type LidHinge } from './gadgets/parts/lid';
 export { drawPull, type PullSpec, type PullStyle } from './gadgets/parts/pull';
 export { drawLens, turnLens, irisCorners, type LensSpec } from './gadgets/parts/lens';
+export { drawNib, nibOutline, type NibSpec } from './gadgets/parts/nib';
 export { drawDrum, stripOffset, DRUM_FONT, type DrumSpec } from './gadgets/parts/drum';
 export { drawKey, pressKey, KEY_FONT, type KeySpec } from './gadgets/parts/key';
 export { drawLamp, LAMP_COLORS, type LampSpec } from './gadgets/parts/led';

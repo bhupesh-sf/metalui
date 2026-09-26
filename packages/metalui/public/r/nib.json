@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "nib",
+  "type": "registry:ui",
+  "title": "Nib",
+  "description": "A pen nib seen from above: brass, narrowing to its tip, with a slit and a breather hole, its tip wet with ink in the accent. In a gadget it dips into its well.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/gadgets.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/nib/nib.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/nib/nib.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { GADGETS } from '../../gadgets/gadgets.generated';\nimport { drawNib, type NibSpec } from '../../gadgets/parts/nib';\nimport { tierFor } from '../../gadgets/light';\n\n/* Nib (a Part): a pen nib seen from above, in brass, its tip wet with ink in the accent. It lies back\n * from its tip, turned by `angle` (degrees); in a gadget the dip mechanism dips it into its well.\n * Geometry is canvas units; `size` is drawn pixels. */\n\nexport interface NibProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 'children'> {\n  angle?: number;\n  /** The ink on its tip; defaults to the accent. */\n  ink?: NibSpec['ink'];\n  size?: number;\n}\n\nexport function Nib({ angle = 0, ink, size = 96, ...props }: NibProps) {\n  const uid = React.useId().replace(/:/g, '');\n  const tier = tierFor(size);\n  const [wL, wC, wH] = GADGETS.accent.warm, [pl, pw] = GADGETS.parts.nib.size, L = GADGETS.nib.alone, W = (L * pw) / pl;\n  const d = drawNib(`nib-${uid}`, { tip: [200, 200 + L / 2], size: [L, W], angle, ink: ink ?? { L: wL, C: wC, H: wH } }, { tier });\n  return (\n    <svg viewBox=\"0 0 400 400\" width={size} height={size} role=\"img\" aria-label={`nib${angle ? `, turned ${Math.round(angle)}°` : ''}`} data-tier={tier} className=\"overflow-visible\" {...props}>\n      <defs dangerouslySetInnerHTML={{ __html: d.defs }} />\n      <g dangerouslySetInnerHTML={{ __html: d.shadow + d.body }} />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/nib.md. SwiftUI: MetalNib in the MetalUI Swift package."
+}

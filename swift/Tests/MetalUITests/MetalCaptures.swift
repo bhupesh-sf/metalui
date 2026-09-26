@@ -575,6 +575,20 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testNib() {
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                MetalNib(size: 180)
+                MetalNib(angle: -20, size: 180)
+                MetalNib(angle: 20, ink: MetalOklch(L: 0.32, C: 0.08, H: 265), size: 180)
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("nib-\(colorway.rawValue)", view)
+        }
+    }
+
     func testGadgetMaterials() {
         for colorway in MetalColorway.allCases {
             capture("gadget-materials-\(colorway.rawValue)", gadgetMaterialSheet(colorway))

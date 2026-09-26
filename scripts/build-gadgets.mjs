@@ -245,6 +245,14 @@ public enum MetalGadgetTokens {
     public static let glyphAlpha: Double = ${num(G.glyph.alpha)}
     public static let glyphStroke: Double = ${num(G.glyph.stroke)}
     public static let backlightUnlit: (alpha: Double, L: Double) = (${G.backlight.unlit.map(num).join(', ')})
+    public static let nibShoulder: (at: Double, width: Double) = (${G.nib.shoulder.map(num).join(', ')})
+    public static let nibSlit: Double = ${num(G.nib.slit)}
+    public static let nibHole: (at: Double, radius: Double) = (${G.nib.hole.map(num).join(', ')})
+    public static let nibCrown: Double = ${num(G.nib.crown)}
+    public static let nibWet: (share: Double, alpha: Double) = (${G.nib.wet.map(num).join(', ')})
+    public static let nibShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.nib.shadow.map(num).join(', ')})
+    public static let nibCut: (width: Double, slit: Double, hole: Double) = (${G.nib.cut.map(num).join(', ')})
+    public static let nibAlone: Double = ${num(G.nib.alone)}
     public static let cellAlone: (side: Double, gap: Double) = (${G.cell.alone.map(num).join(', ')})
     public static let rigPitch: Double = ${num(G.rig.pitch)}
     public static let rigPadding: Double = ${num(G.rig.padding)}

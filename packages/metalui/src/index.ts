@@ -35,6 +35,7 @@ export { Cell, type CellProps } from './components/cell/cell';
 export { Lid, type LidProps } from './components/lid/lid';
 export { Pull, type PullProps } from './components/pull/pull';
 export { Lens, type LensProps } from './components/lens/lens';
+export { Nib, type NibProps } from './components/nib/nib';
 export { StatusBadge, type StatusBadgeProps } from './components/status/status';
 export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';

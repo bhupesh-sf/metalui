@@ -113,6 +113,11 @@
           "target": "components/gadgets/parts/needle.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/nib.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/nib.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/plug.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/plug.ts"
@@ -840,6 +845,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/needle.md. SwiftUI: MetalNeedle in the MetalUI Swift package."
+    },
+    {
+      "name": "nib",
+      "type": "registry:ui",
+      "title": "Nib",
+      "description": "A pen nib seen from above: brass, narrowing to its tip, with a slit and a breather hole, its tip wet with ink in the accent. In a gadget it dips into its well.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/nib/nib.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/nib/nib.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/nib.md. SwiftUI: MetalNib in the MetalUI Swift package."
     },
     {
       "name": "past-banner",

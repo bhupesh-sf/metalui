@@ -264,6 +264,14 @@ public enum MetalGadgetTokens {
     public static let glyphAlpha: Double = 0.8
     public static let glyphStroke: Double = 1.7
     public static let backlightUnlit: (alpha: Double, L: Double) = (0.45, 0.22)
+    public static let nibShoulder: (at: Double, width: Double) = (0.62, 1.0)
+    public static let nibSlit: Double = 0.52
+    public static let nibHole: (at: Double, radius: Double) = (0.55, 0.1)
+    public static let nibCrown: Double = 0.14
+    public static let nibWet: (share: Double, alpha: Double) = (0.2, 0.85)
+    public static let nibShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (0.12, 0.1, 0.22, 0.35)
+    public static let nibCut: (width: Double, slit: Double, hole: Double) = (0.04, 0.7, 0.8)
+    public static let nibAlone: Double = 230.0
     public static let cellAlone: (side: Double, gap: Double) = (64.0, 10.0)
     public static let rigPitch: Double = 440.0
     public static let rigPadding: Double = 40.0

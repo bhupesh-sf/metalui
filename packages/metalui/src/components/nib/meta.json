@@ -1,0 +1,21 @@
+{
+  "name": "nib",
+  "title": "Nib",
+  "status": "alpha",
+  "description": "A pen nib seen from above: brass, narrowing to its tip, with a slit and a breather hole, its tip wet with ink in the accent. In a gadget it dips into its well.",
+  "base": "none (SVG)",
+  "react": {
+    "export": "Nib",
+    "files": [
+      "nib.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalNib",
+    "file": "swift/Sources/MetalUI/Components/MetalNib.swift"
+  },
+  "agent": "nib.agent.md",
+  "layer": "part",
+  "page": "/components/nib",
+  "recipe": "gadgets"
+}

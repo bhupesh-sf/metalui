@@ -648,6 +648,23 @@
       "agent": "https://metalui.dev/r/needle.md"
     },
     {
+      "name": "nib",
+      "title": "Nib",
+      "status": "alpha",
+      "description": "A pen nib seen from above: brass, narrowing to its tip, with a slit and a breather hole, its tip wet with ink in the accent. In a gadget it dips into its well.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Nib",
+        "base": "none (SVG)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalNib"
+      },
+      "registry": "https://metalui.dev/r/nib.json",
+      "agent": "https://metalui.dev/r/nib.md"
+    },
+    {
       "name": "past-banner",
       "title": "Past banner",
       "status": "alpha",
