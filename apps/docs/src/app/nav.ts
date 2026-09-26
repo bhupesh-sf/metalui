@@ -42,6 +42,7 @@ export const NAV: NavGroup[] = [
       { to: '/foundations/sound', label: 'Sound' },
       { to: '/foundations/gadgets', label: 'Gadgets' },
       { to: '/foundations/mechanisms', label: 'Mechanisms' },
+      { to: '/gadgets/compose', label: 'Compose a gadget' },
       { to: '/foundations/motion', label: 'Motion' },
       { to: '/foundations/transitions', label: 'Transitions' },
     ],

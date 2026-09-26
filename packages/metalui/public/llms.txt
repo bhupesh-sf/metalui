@@ -5,6 +5,7 @@
 - [Full agent guide](https://metalui.dev/AI.md)
 - [Component manifest](https://metalui.dev/components.json)
 - [Icon manifest](https://metalui.dev/icons.json)
+- [Gadget manifest](https://metalui.dev/gadgets.json): the catalog of Parts, mechanisms, gadgets and rigs an assistant composes from
 
 ## Components
 

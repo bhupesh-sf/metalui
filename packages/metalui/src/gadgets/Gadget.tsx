@@ -15,6 +15,7 @@ import { poseLid } from './parts/lid';
 import { turnLens } from './parts/lens';
 import { tiltRocker } from './parts/cap';
 import { stripOffset } from './parts/drum';
+import { pigment } from './color';
 import { fillTray } from './parts/slab';
 import { createPlayer, type MechanismName, type Player } from './player';
 import { createDrive, createRoll, type Drive, type DriveName, type Roll } from './drive';
@@ -313,7 +314,9 @@ export function Gadget({ spec, state: wanted, act = 0, value, sound = null, size
   }
   return (
     <svg ref={ref} viewBox="0 0 400 400" width={size} height={size} role="img" aria-labelledby={`g${uid}-t g${uid}-d`}
-      data-gadget={valid.name} data-state={state} data-tier={tier} data-host={host} className="overflow-visible" {...props}>
+      data-gadget={valid.name} data-state={state} data-tier={tier} data-host={host}
+      data-material={drawn.resolved.material} data-body={pigment(drawn.resolved.states[state].body.L, drawn.resolved.states[state].body.C, drawn.resolved.states[state].body.H).srgb}
+      className="overflow-visible" {...props}>
       <title id={`g${uid}-t`}>{valid.title}</title>
       <desc id={`g${uid}-d`}>{drawn.description}</desc>
       <defs dangerouslySetInnerHTML={{ __html: drawn.body.defs + parts.defs + drawn.top.defs + lamp.defs }} />

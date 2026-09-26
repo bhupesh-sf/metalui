@@ -2834,3 +2834,177 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `ClockIcon` | `clock` | Status | An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back. | plays the same act |
 | `MeIcon` | `me` | Tools | Today's point runs back along your days and climbs to today again, drawing the trend behind it. | plays the same act |
 | `SeedIcon` | `seed` | Actions | The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings. | plays the same act |
+
+---
+
+# Gadgets
+
+Gadgets are small Soft Hardware objects that stand for a feature: a patch bay for sync, a counter drum for a streak, a needle gauge for a level. They are Objects (emblems): looked at, never operated, so a gadget never stands in for a control. A gadget is a JSON spec (`metalui/gadget@1`) composed from a closed catalog of Parts and mechanisms; gadgets wire into rigs (`metalui/rig@1`) with patch cables. The manifest is [`/gadgets.json`](https://metalui.dev/gadgets.json) and the schemas are [`gadget.schema.json`](https://metalui.dev/schemas/gadget.schema.json) and [`rig.schema.json`](https://metalui.dev/schemas/rig.schema.json). Try a spec on [Gadgets › Compose](https://metalui.dev/gadgets/compose).
+
+```tsx
+import { Gadget, Rig, validateGadget, validateRig } from '@unlocalhosted/metalui/gadgets';
+
+<Gadget spec={needleGauge} value={24} />                       // a value drives it; its state follows
+<Gadget spec={patchBay} state="failed" />                       // or the host sets a state
+<Rig spec={reading} catalog={{ 'needle-gauge': needleGauge, 'counter-drum': counterDrum }} values={{ today: { value: 34 } }} />
+```
+
+SwiftUI: `MetalGadget(spec: spec, state: "failed", value: 24)` and `MetalRig(spec: rig, catalog: catalog, values: [...], states: [...])`, from the same JSON.
+
+## What you cannot do
+
+- **Invent a Part, a mechanism, a colour or a sound.** Compose from the catalog below. If a request needs something that is not there, say so: "this needs a new Part; ask a person to draw it".
+- **Pick colours.** A gadget's colours come from its job (a hue station) and its feel; you set the job and three numbers, never a colour.
+- **Make a gadget a control.** It shows a feature's state; the controls stay Components.
+
+## Composing a gadget
+
+1. **Job**: what it means. Each job owns hue stations (gadgets side by side need 30° between colourful bodies), a reach for its sound, its containers and sometimes a pinned material.
+2. **Feel**: `v` (tense ↔ pleased), `a` (still ↔ active), `w` (how much the act commits you), each 0 to 1. Feel picks the material and the body's lightness and colour.
+3. **Parts** on the 400-unit canvas (the body is 320 across at [200, 196]): one `body` (a slab or a bezel), `actor`s the mechanism moves, `trim`, a `lamp` (an LED, top right at [313, 78]), `cut`s into a slab. 2 to 24 parts.
+4. **Mechanism**: exactly one; `bind` maps its slots to part ids. Held mechanisms follow a `drive` port's value; momentary ones play an act.
+5. **States**: always `rest`; each gives the lamp `[signal, gesture]`, may pose parts (`form`), beep an earcon (`beep`), or play the act on entering (`enter: "act"`), with a `hint` for its spoken description. At most 8.
+6. **Ports**: `in` and `out` channels a rig can wire. `describe` says it aloud, with `{title}`, `{state}`, `{value}`, `{max}`, `{unit}`, `{share}`.
+
+Signals: `off`, `live`, `link`, `waiting`, `failed`. Gestures: `steady`, `flicker`, `breathe`, `blink2`, `rise`. Earcons: `done`, `failed`, `waiting`, `ready`.
+
+### Jobs
+
+| Job | Stations | Reach | Containers | Pinned material |
+|---|---|---|---|---|
+| `tune` | 80 | own | slab |  |
+| `command` | 95 | own | slab | ceramic |
+| `link` | 195, 230 | world | slab, free |  |
+| `keep` | 140, 300 | own | slab, inset |  |
+| `identify` | 260 | others | inset | glass |
+| `destroy` | 25 | own | slab |  |
+| `take` | 55 | world | inset |  |
+| `find` | 250 | world | inset | stone |
+| `make` | 330 | own | slab, free |  |
+| `signal` | 55, 80 | own | slab, inset, free |  |
+
+### Parts
+
+| Part | Size | Materials | Params |
+|---|---|---|---|
+| `slab` | 320 × 320 | clay, stone, ceramic, rubber, metal, resin | `cut` (enum: none, slot, hole, tray, well); `depth` (number: 0, 24); `radius` (number: 4, 160); `ink` (boolean) |
+| `bezel` | 320 × 320 | stone, metal, clay | `width` (number: 16, 32); `face` (enum: glass-face, cell, backlight); `opening` (enum: round, square) |
+| `glass-face` | 276 × 276 | glass | `shape` (enum: round, square); `rings` (boolean) |
+| `backlight` | 200 × 200 | lamp | `alpha` (number: 0, 1); `color` (enum: signal, accent, glass); `shape` (enum: glow, beam, dot) |
+| `led` | 22 × 22 | lamp |  |
+| `key` | 112 × 112 | clay, ceramic, accent | `glyph` (string) |
+| `cap` | 60 × 44 | clay, ceramic, accent | `ribs` (number: 2, 5); `shape` (enum: fader, knob, rocker); `value` (number: 0, 1); `tilt` (number: -1, 1) |
+| `jack` | 68 × 68 | metal | `knurls` (number: 8, 16) |
+| `plug` | 54 × 54 | clay, accent | `stub` (enum: up, left, right, none) |
+| `cable` | 0 × 0 | rubber | `sag` (number: 0, 90); `from` (ref); `to` (ref) |
+| `cell` | 44 × 44 | resin | `cols` (number: 1, 8); `rows` (number: 1, 8); `gap` (number: 6, 14) |
+| `drum` | 52 × 88 | clay, ceramic, accent | `digits` (number: 10, 10); `face` (enum: ceramic, clay); `glyphs` (enum: digits, ticks) |
+| `needle` | 96 × 8 | metal | `arc` (number: 90, 150); `ticks` (number: 5, 21); `threshold` (number: 0, 1) |
+| `lid` | 240 × 160 | rubber, clay | `hinge` (enum: back, left); `armed` (boolean) |
+| `pull` | 96 × 14 | metal, clay | `style` (enum: bar, recess) |
+| `lens` | 184 × 184 | glass, accent | `ticks` (number: 12, 36); `iris` (number: 0, 1) |
+| `nib` | 70 × 20 | metal | `angle` (number: -30, 30) |
+| `beeper` | 44 × 24 | metal, clay | `slots` (number: 3, 7) |
+| `label` | 80 × 16 | clay | `text` (string) |
+| `glyph` | 24 × 24 | clay | `name` (string) |
+
+### Mechanisms
+
+| Mechanism | Mode | Drive | Slots | What it does |
+|---|---|---|---|---|
+| `press` | momentary |  | `keys`: key/cap (many); `lamp`: led | The keys drop into their skirts one after another and spring back: a chord. |
+| `slide` | held | number, count | `caps`: cap (many); `slot`: slab; `lamp`: led | Caps travel along their slots to a new mix, one after another; they scrape as they go, tick past each detent, and knock if they reach the end. |
+| `seat` | momentary |  | `plug`: plug; `socket`: jack; `lamp`: led; `beeper`: beeper (optional) | The plug lifts, its shadow opens, and it seats again with a click. |
+| `turn` | held | number, count | `ring`: lens/cap/drum; `lamp`: led | The ring turns to the value, clicking at every eighth of a turn; taken, it clicks round one and back. |
+| `flip` | held | boolean, state | `lid`: lid/cap; `lamp`: led | The lid swings about its hinge: it creaks as it rises, and thuds shut against the rim. Emptied, it swings open and slams. |
+| `sweep` | momentary |  | `beam`: backlight; `face`: glass-face; `blips`: backlight (many) (optional); `lamp`: led | The beam turns once around the glass; each blip lights as the beam crosses it, and fades. |
+| `roll` | held | count | `drums`: drum (many); `window`: slab; `lamp`: led | The drums turn to the new count, the lowest first; each ticks past its digits and settles with a small knock. |
+| `swing` | held | number | `needle`: needle; `face`: glass-face/bezel; `lamp`: led; `beeper`: beeper (optional) | The needle swings to the value, overshoots a little and settles; at the ends of its scale it bounces off the pegs. |
+| `glow` | held | number, count, boolean | `light`: backlight; `cells`: cell (many) (optional); `lamp`: led | Light rises behind the resin: the cells light in turn from the bottom row up, and the backlight brightens with them. |
+| `slide-out` | momentary |  | `tray`: slab; `pull`: pull; `lamp`: led | The drawer is pulled out toward you on its runners, stops against them, is held a moment, and springs home. |
+| `dip` | momentary |  | `nib`: nib; `well`: slab; `lamp`: led | The nib dips into its well and springs back up, with a soft tap on the well. |
+
+## The catalog
+
+Name a catalog gadget in a rig, or copy its spec from `/gadgets.json` and change it.
+
+| Gadget | Job | Mechanism | In | Out | States |
+|---|---|---|---|---|---|
+| `patch-bay` (Sync) | link | seat | `state` state | `healthy` boolean, `done` pulse | rest, connected, syncing, done, failed |
+| `fader-bank` (Settings) | tune | slide | `mix` number |  | rest, on, changed |
+| `keycap-chord` (Shortcuts) | command | press | `press` pulse |  | rest, ready, chord |
+| `scope` (Search) | find | sweep | `query` boolean | `found` count | rest, searching, found, nothing |
+| `drawer` (Storage) | keep | slide-out | `fill` number | `full` boolean, `fill` number | rest, open, full |
+| `lidded-bin` (Trash) | destroy | flip | `armed` boolean, `empty` pulse | `emptied` pulse | rest, armed, emptied |
+| `shutter-lens` (Capture) | take | turn | `zoom` number, `take` pulse | `taken` pulse | rest, taken |
+| `counter-drum` (Streak) | keep | roll | `count` count | `rolled` pulse, `count` count | rest, counting, rolled-over |
+| `cell-grid` (Memory) | keep | glow | `fill` number, `first-run` pulse | `full` boolean | rest, filling, full, first-run |
+| `needle-gauge` (Today) | signal | swing | `value` number | `over` pulse, `above` boolean | rest, over |
+| `rocker` (Sound) | tune | flip | `on` boolean | `on` boolean | rest, on |
+| `ink-well` (Draw) | make | dip | `writing` boolean |  | rest, writing |
+| `thumbwheel` (When) | keep | turn | `offset` number | `in-past` boolean | rest, past, far |
+| `glass-badge` (Account) | identify | glow | `signed-in` boolean |  | rest, signed-in, expired |
+
+## Rigs
+
+A rig puts 2 to 8 gadgets on a grid (up to 4 × 3) and wires out ports to in ports with cables. Outs have jacks on a gadget's right and ins on its left, so wire each cable to a gadget to the right or below. A cable carries its value as it is, or through one map:
+
+- `threshold`: a number or count at or past `at` becomes `above`, else `below` (a word or a switch).
+- `scale`: a number mapped linearly from `from` [a, b] onto `to` [c, d].
+- `match`: a word or switch equal to `when` becomes a pulse.
+- `count`: a pulse adds `step` (1 or -1) to the count already at the far port.
+- `select`: a word or switch looked up in `table` (keys are words, "true" or "false"): a word, a number or a switch.
+
+Ports: `number` is a value between `min` and `max`, with a `unit`; `count` is a whole count up to `max`; `boolean` is a switch; named after a state, it puts the gadget in that state; `state` is one of `options`; it sets the gadget's state; `pulse` is an event, never stored; into a gadget it plays its act. No cycles; at most 3 cables out of one port; every pair of gadgets in a rig passes the set rules (hue apart, not the same material and lightness band, a visible difference also for colour blindness, no more than 3 slab gadgets in a row).
+
+### Worked example: the reading rig
+
+Today's needle gauge drives the streak counter: crossing today's line sends a pulse that counts one more day.
+
+```json
+{
+  "$schema": "metalui/rig@1",
+  "name": "reading",
+  "title": "Reading",
+  "job": "keep",
+  "feel": {
+    "v": 0.8,
+    "a": 0.3,
+    "w": 0.3
+  },
+  "grid": [
+    2,
+    1
+  ],
+  "gadgets": {
+    "today": {
+      "gadget": "needle-gauge",
+      "at": [
+        0,
+        0
+      ]
+    },
+    "streak": {
+      "gadget": "counter-drum",
+      "at": [
+        1,
+        0
+      ]
+    }
+  },
+  "cables": [
+    {
+      "from": "today.over",
+      "to": "streak.count",
+      "map": {
+        "kind": "count",
+        "step": 1
+      }
+    }
+  ]
+}
+```
+
+## Checking a spec
+
+`validateGadget(spec)` and `validateRig(spec, catalog)` return `{ ok: true, spec }` or `{ ok: false, problems }`, each problem a `path`, a `code`, a `message` and a `fix`. Fix every problem before rendering; the renderer draws only valid specs.

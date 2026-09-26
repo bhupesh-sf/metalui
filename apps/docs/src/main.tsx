@@ -66,6 +66,7 @@ const router = createBrowserRouter([
       { path: 'gadgets/ink-well', lazy: lazy(() => import('./pages/gadgets/InkWell')) },
       { path: 'gadgets/reading-rig', lazy: lazy(() => import('./pages/gadgets/ReadingRig')) },
       { path: 'gadgets/rigs', lazy: lazy(() => import('./pages/gadgets/Rigs')) },
+      { path: 'gadgets/compose', lazy: lazy(() => import('./pages/gadgets/Compose')) },
       { path: 'components/slab', lazy: lazy(() => import('./pages/components/Slab')) },
       { path: 'components/led', lazy: lazy(() => import('./pages/components/Led')) },
       { path: 'components/status', lazy: lazy(() => import('./pages/components/Status')) },
