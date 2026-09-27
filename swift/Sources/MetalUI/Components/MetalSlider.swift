@@ -154,7 +154,9 @@ public struct MetalSlider: View {
             .animation(dragging || isExternallyDragging ? nil : MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation,
                        value: value)
         }
-        .focusable()
+        // Focus by keyboard navigation only, like NSSlider: a click or a host
+        // taking the keyboard never parks typing here.
+        .focusable(interactions: .activate)
         // No system ring: MetalUI's own ring, and only for keyboard focus.
         .focusEffectDisabled()
         .focused($focused)

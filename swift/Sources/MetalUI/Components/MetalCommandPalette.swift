@@ -59,6 +59,7 @@ public struct MetalCommandPalette: View {
     @Environment(\.metalSnapshot) private var snapshot
     @State private var selected = 0
     @FocusState private var fieldFocused: Bool
+    @Namespace private var focusScope
 
     /// - Parameters:
     ///   - filter: true filters `items` by every query word against label and keywords; false shows them as given.
@@ -136,6 +137,13 @@ public struct MetalCommandPalette: View {
             return .handled
         }
         .onKeyPress(.escape) { onClose(); return .handled }
+        // While the field types, ⎋ arrives as `cancelOperation:` from its field
+        // editor, never as a key press.
+        .onExitCommand { onClose() }
+        // The field is the palette's default focus: when the host view takes the
+        // keyboard, focus lands here, not on the first focusable view in the tree.
+        .focusScope(focusScope)
+        .defaultFocus($fieldFocused, true)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Lenses and actions")
         .accessibilityAddTraits(.isModal)
