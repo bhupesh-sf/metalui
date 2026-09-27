@@ -127,7 +127,9 @@ public struct MetalCommandPalette: View {
         .padding(MetalPaletteMetrics.pad)
         .frame(width: MetalPaletteMetrics.width)
         .metalFrost(.plate, in: RoundedRectangle(cornerRadius: MetalRadius.card, style: .continuous))
-        .onAppear { fieldFocused = true }
+        // Asked once the field is in the window: in `onAppear` the field has no
+        // window yet and the request is dropped (audit F-063).
+        .task { fieldFocused = true }
         .onChange(of: query) { _, _ in selected = 0 }
         .onKeyPress(.downArrow) { move(1, count: rows.count); return .handled }
         .onKeyPress(.upArrow) { move(-1, count: rows.count); return .handled }
