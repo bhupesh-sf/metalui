@@ -2589,6 +2589,8 @@
   --spacing-palette-edge: var(--mu-palette-edge);
   --spacing-palette-bar-outset: var(--mu-palette-bar-outset);
   --spacing-palette-caret-height: var(--mu-palette-caret-height);
+  --spacing-palette-caret-width: var(--mu-palette-caret-width);
+  --spacing-palette-lip-y: var(--mu-palette-lip-y);
   --spacing-palette-screen-fallback-height: var(--mu-palette-screen-fallback-height);
   --color-presence-dot: var(--mu-presence-dot);
   --color-cue-quiet: var(--mu-cue-quiet);

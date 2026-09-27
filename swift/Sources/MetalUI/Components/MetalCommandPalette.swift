@@ -1,6 +1,6 @@
 import SwiftUI
 
-// Command palette (KAMUI-06; Kamui 04 §3). Mirrors components/command-palette from MetalPaletteMetrics:
+// Command palette (Soft Hardware spec §3). Mirrors components/command-palette from MetalPaletteMetrics:
 // one field, sections of rows, a raised selected row, a footer of keys. Hover moves the selection;
 // ↩ runs, ⇧↩ runs pinned, ⎋ closes. The selection is instant (rows are scanned, not watched).
 
@@ -12,13 +12,13 @@ public struct MetalCommandPaletteItem: Identifiable, Sendable {
         case key(String)
         /// A readout engraving: "8:52", "RULES".
         case readout(String)
-        /// A readout, then a key: a fragment's time and ↩.
+        /// A readout, then a key: a block's time and ↩.
         case readoutKey(String, String)
     }
 
     public let id: String
     public let label: String
-    /// LENS, LENSES, FRAGMENTS, ACTIONS. Rows of one section must be adjacent.
+    /// LENS, LENSES, BLOCKS, ACTIONS. Rows of one name form one section, placed where the name first appears.
     public let section: String
     public let icon: MetalIconName?
     public let hint: Hint?
@@ -85,24 +85,39 @@ public struct MetalCommandPalette: View {
 
     private var shown: [MetalCommandPaletteItem] { filter ? items.filter { $0.matches(query) } : items }
 
+    /// One section per name, in the order names first appear; `offset` indexes
+    /// this display order, which selection and ↩ follow. Rows given under the
+    /// same name at two places join one section: two sections with one name
+    /// left SwiftUI two children with one identity, and rows drew under the
+    /// wrong heading after filtering.
     private var sections: [(name: String, rows: [(offset: Int, element: MetalCommandPaletteItem)])] {
-        var out: [(name: String, rows: [(offset: Int, element: MetalCommandPaletteItem)])] = []
-        for (i, item) in shown.enumerated() {
-            if let last = out.indices.last, out[last].name == item.section { out[last].rows.append((i, item)) }
-            else { out.append((item.section, [(i, item)])) }
+        var order: [String] = []
+        var groups: [String: [MetalCommandPaletteItem]] = [:]
+        for item in shown {
+            if groups[item.section] == nil { order.append(item.section) }
+            groups[item.section, default: []].append(item)
         }
-        return out
+        var offset = 0
+        return order.map { name in
+            (name, groups[name, default: []].map { item in
+                defer { offset += 1 }
+                return (offset, item)
+            })
+        }
     }
+
+    /// The rows in display order.
+    private var ordered: [MetalCommandPaletteItem] { sections.flatMap { $0.rows.map(\.element) } }
 
     public var body: some View {
         let t = colorway.tokens
-        let rows = shown
+        let rows = ordered
         VStack(spacing: 0) {
             field(t)
             if rows.isEmpty {
                 Text("Nothing matches").font(.metal(MetalType.ui)).foregroundColor(t.ink3.color)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, MetalPaletteMetrics.rowPad).padding(.vertical, 14)
+                    .padding(.horizontal, MetalPaletteMetrics.rowPad).padding(.vertical, MetalPaletteMetrics.emptyPadY)
             } else {
                 list(t)
             }
@@ -139,7 +154,7 @@ public struct MetalCommandPalette: View {
                     // ImageRenderer cannot draw a text field: the same text and its caret, drawn.
                     HStack(spacing: 1) {
                         Text(query.isEmpty ? placeholder : query).foregroundColor((query.isEmpty ? t.ink3 : t.ink).color)
-                        Rectangle().fill(MetalShared.greenDeep.color).frame(width: 1.5, height: 18)
+                        Rectangle().fill(MetalShared.greenDeep.color).frame(width: MetalPaletteMetrics.caretWidth, height: MetalPaletteMetrics.caretHeight)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
@@ -165,7 +180,7 @@ public struct MetalCommandPalette: View {
     private func engraving(_ text: String, _ t: MetalColorwayTokens) -> some View {
         Text(text).font(.metal(MetalType.label)).tracking(MetalType.label.trackingPoints)
             .foregroundColor(t.engrave.color)
-            .shadow(color: t.lip.color, radius: 0, x: 0, y: 0.5)
+            .shadow(color: t.lip.color, radius: .zero, x: .zero, y: MetalPaletteMetrics.lipY)
     }
 
     private func rowsView(_ t: MetalColorwayTokens) -> some View {
@@ -182,13 +197,13 @@ public struct MetalCommandPalette: View {
                 .accessibilityAddTraits(.isHeader)
                 ForEach(section.rows, id: \.element.id) { row in
                     MetalCommandPaletteRow(item: row.element, query: query, selected: row.offset == selected)
-                        .id(row.offset)
+                        .id(row.element.id)
                         .onHover { if $0 { selected = row.offset } }
                         .onTapGesture { onRun(row.element, false) }
                 }
             }
         }
-        .padding(.top, 4).padding(.bottom, 2)
+        .padding(.top, MetalPaletteMetrics.listPadTop).padding(.bottom, MetalPaletteMetrics.listPadBottom)
         // The selected row's bar sits 2 outside the row: room for it inside the scroll clip.
         .padding(.horizontal, -MetalPaletteMetrics.barLeft)
     }
@@ -199,19 +214,22 @@ public struct MetalCommandPalette: View {
         } else {
             ScrollViewReader { proxy in
                 ScrollView { rowsView(t) }
-                    .frame(maxHeight: (NSScreen.main?.visibleFrame.height ?? 900) * MetalPaletteMetrics.listMax)
+                    .frame(maxHeight: (NSScreen.main?.visibleFrame.height ?? CGFloat(MetalPaletteMetrics.screenFallbackHeight)) * MetalPaletteMetrics.listMax)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, MetalPaletteMetrics.barLeft)
-                    .onChange(of: selected) { _, now in proxy.scrollTo(now) }
+                    .onChange(of: selected) { _, now in
+                        let rows = ordered
+                        if rows.indices.contains(now) { proxy.scrollTo(rows[now].id) }
+                    }
             }
         }
     }
 
     private func footer(_ t: MetalColorwayTokens) -> some View {
         HStack(spacing: MetalPaletteMetrics.footGap) {
-            HStack(spacing: 5) { MetalKbd("↑", size: .small); MetalKbd("↓", size: .small); engraving("MOVE", t) }
-            HStack(spacing: 5) { MetalKbd("↩", size: .small); engraving("OPEN", t) }
-            if pinnable { HStack(spacing: 5) { MetalKbd("⇧↩", size: .small); engraving("PIN", t) } }
+            HStack(spacing: MetalPaletteMetrics.footKeyGap) { MetalKbd("↑", size: .small); MetalKbd("↓", size: .small); engraving("MOVE", t) }
+            HStack(spacing: MetalPaletteMetrics.footKeyGap) { MetalKbd("↩", size: .small); engraving("OPEN", t) }
+            if pinnable { HStack(spacing: MetalPaletteMetrics.footKeyGap) { MetalKbd("⇧↩", size: .small); engraving("PIN", t) } }
             Spacer(minLength: 0)
             if let status { engraving(status, t) }
         }
@@ -219,9 +237,9 @@ public struct MetalCommandPalette: View {
         .padding(.bottom, MetalPaletteMetrics.footPadBottom)
         .padding(.horizontal, MetalPaletteMetrics.rowPad)
         .overlay(alignment: .top) {
-            VStack(spacing: 0) { Rectangle().fill(t.rule.color).frame(height: 1); Rectangle().fill(t.ruleLip.color).frame(height: 1) }
+            VStack(spacing: .zero) { Rectangle().fill(t.rule.color).frame(height: MetalPaletteMetrics.edge); Rectangle().fill(t.ruleLip.color).frame(height: MetalPaletteMetrics.edge) }
         }
-        .padding(.top, 4)
+        .padding(.top, MetalPaletteMetrics.footMarginTop)
         .accessibilityHidden(true)
     }
 }

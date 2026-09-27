@@ -2726,6 +2726,8 @@ public enum MetalPaletteMetrics {
     public static let edge: Double = 1.0
     public static let barOutset: Double = 2.0
     public static let caretHeight: Double = 18.0
+    public static let caretWidth: Double = 1.5
+    public static let lipY: Double = 0.5
     public static let screenFallbackHeight: Double = 900.0
 }
 

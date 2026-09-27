@@ -487,6 +487,8 @@
   --mu-palette-edge: 1px;
   --mu-palette-bar-outset: 2px;
   --mu-palette-caret-height: 18px;
+  --mu-palette-caret-width: 1.5px;
+  --mu-palette-lip-y: 0.5px;
   --mu-palette-screen-fallback-height: 900px;
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
