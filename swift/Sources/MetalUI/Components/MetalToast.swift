@@ -9,13 +9,28 @@ public struct MetalToastModel: Identifiable, Equatable {
     public let title: String
     public let sub: String?
     public let tone: Tone
+    /// The toast's one action (Undo unless named otherwise).
     public let undo: (() -> Void)?
+    /// The action cap's label; only Undo carries ⌘Z.
+    public let actionLabel: String
+    var isUndo: Bool { actionLabel == Self.undoLabel }
+    static let undoLabel = "Undo"
 
     public init(_ title: String, sub: String? = nil, tone: Tone = .default, undo: (() -> Void)? = nil) {
         self.title = title
         self.sub = sub
         self.tone = tone
         self.undo = undo
+        self.actionLabel = Self.undoLabel
+    }
+
+    /// A toast whose action is not Undo ("Back to Now").
+    public init(_ title: String, sub: String? = nil, tone: Tone = .default, action: String, perform: @escaping () -> Void) {
+        self.title = title
+        self.sub = sub
+        self.tone = tone
+        self.undo = perform
+        self.actionLabel = action
     }
 
     public static func == (a: Self, b: Self) -> Bool { a.id == b.id }
@@ -48,8 +63,8 @@ public struct MetalToast: View {
                     onUndo()
                 } label: {
                     HStack(spacing: recipe.points("undo.gap")) {
-                        Text("Undo").font(recipe.font("undo.font"))
-                        MetalKbd("⌘Z", surface: .sunk)
+                        Text(model.actionLabel).font(recipe.font("undo.font"))
+                        if model.isUndo { MetalKbd("⌘Z", surface: .sunk) }
                     }
                     .padding(.leading, recipe.points("undo.pad-left"))
                     .padding(.trailing, recipe.points("undo.pad-right"))
@@ -57,7 +72,7 @@ public struct MetalToast: View {
                     .metalObjectRecipe(recipe, part: "undo", in: Capsule(style: .continuous))
                 }
                 .buttonStyle(.plain)
-                .keyboardShortcut("z", modifiers: .command)
+                .keyboardShortcut(model.isUndo ? KeyboardShortcut("z", modifiers: .command) : nil)
             }
         }
         .foregroundColor((recipe.color("self.ink") ?? MetalToastMetrics.ink).color)
