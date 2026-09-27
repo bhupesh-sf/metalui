@@ -53,6 +53,8 @@ public struct MetalTimeScrubber: View {
         }
         let earlier = starts.filter { !calendar.isDate($0, inSameDayAs: range.upperBound) }
         let step = max(1, Int((Double(earlier.count) / 6).rounded(.up)))
+        // One earlier day is only the range's margin, not history: no lone "SAT" on a new canvas.
+        guard earlier.count >= 2 || selection != nil else { return [] }
         let labels = earlier.enumerated().compactMap { offset, date -> MetalSliderTick? in
             guard offset % step == 0 else { return nil }
             let formatter = DateFormatter()
@@ -60,7 +62,8 @@ public struct MetalTimeScrubber: View {
             let noon = calendar.date(byAdding: .hour, value: 12, to: date) ?? date
             return MetalSliderTick(at: fraction(noon), label: formatter.string(from: date).uppercased())
         }
-        return labels + [MetalSliderTick(at: 1, label: "TODAY")]
+        // At Now the knob is the today mark and would cover the label; in the past it shows the way back.
+        return labels + (selection == nil ? [] : [MetalSliderTick(at: 1, label: "TODAY")])
     }
 
     public var body: some View {
