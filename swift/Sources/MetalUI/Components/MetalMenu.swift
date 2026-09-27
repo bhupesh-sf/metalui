@@ -61,6 +61,8 @@ public struct MetalMenuPanel: View {
         self.onClose = onClose
     }
 
+    private var hasIcons: Bool { items.contains { $0.icon != nil } }
+
     private var choosable: [Int] { items.indices.filter { !items[$0].isSeparator && !items[$0].disabled } }
 
     public var body: some View {
@@ -151,6 +153,9 @@ public struct MetalMenuPanel: View {
             if let icon = item.icon {
                 MetalIcon(icon, size: recipe.points("row.glyph"))
                     .foregroundStyle((item.danger ? MetalShared.red : t.ink2).color)
+            } else if hasIcons {
+                // Rows without a glyph keep the glyph's slot: every label starts on one line.
+                Color.clear.frame(width: recipe.points("row.glyph"), height: recipe.points("row.glyph"))
             }
             Text(item.label)
                 .font(recipe.font("row.font"))
