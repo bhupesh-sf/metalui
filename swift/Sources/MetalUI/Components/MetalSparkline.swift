@@ -72,6 +72,25 @@ public struct MetalSparkline: View {
                             style: StrokeStyle(lineWidth: recipe.points("line.width"),
                                                lineCap: .round, lineJoin: .round))
 
+                    // Missing days stay visible as a dashed bridge, so a sparse series
+                    // still reads as one line and can be compared (audit F-042).
+                    Path { path in
+                        var previous: CGPoint?
+                        var gap = false
+                        for index in points.indices {
+                            guard let point = points[index] else { gap = true; continue }
+                            let position = CGPoint(x: x(index), y: y(point.value))
+                            if gap, let previous {
+                                path.move(to: previous)
+                                path.addLine(to: position)
+                            }
+                            previous = position
+                            gap = false
+                        }
+                    }
+                    .stroke((recipe.color("line.color", colorway: finish) ?? colorway.tokens.ink2).color,
+                            style: StrokeStyle(lineWidth: recipe.points("base.width"), lineCap: .round, dash: dash))
+
                     ForEach(points.indices, id: \.self) { index in
                         if let point = points[index] {
                             let isLast = index == last

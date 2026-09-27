@@ -939,8 +939,8 @@ final class MetalCaptures: XCTestCase {
     func testLensBar() {
         for colorway in MetalColorway.allCases {
             let view = VStack(spacing: 20) {
-                MetalLensBar(query: "open tasks about the poster", count: 6, source: .local, mode: .constant(.list), onPin: {}, onClose: {})
-                MetalLensBar(query: "lunch this week", source: .asking, mode: .constant(.place), onPin: {}, onClose: {})
+                MetalLensBar(query: "open tasks about the poster", count: 6, source: MetalLensSource("LOCAL"), mode: .constant(.list), onPin: {}, onClose: {})
+                MetalLensBar(query: "lunch this week", source: MetalLensSource("ASKING", waiting: true), mode: .constant(.place), onPin: {}, onClose: {})
             }
             .padding(28)
             .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
