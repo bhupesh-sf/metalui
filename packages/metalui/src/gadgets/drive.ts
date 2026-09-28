@@ -35,10 +35,14 @@ export class DriveModel {
   private readonly keepsSound: boolean;
   t = 0;
 
-  constructor(name: string, start: number[]) {
+  /** Detents across the travel: the mechanism's, or the gadget's own (a thumbwheel clicks once a day). */
+  readonly detents: number;
+
+  constructor(name: string, start: number[], o: { detents?: number } = {}) {
     const m = heldOf(name);
     if (!m?.held) throw new Error(`${name} is not a held mechanism`);
     this.held = m.held;
+    this.detents = o.detents ?? m.held.detents;
     const sp = SPRINGS[m.spring as keyof typeof SPRINGS] ?? SPRINGS.part;
     this.k = sp.stiffness; this.c = sp.damping;
     const level = (kind: string) => m.cues.find((q) => q.kind === kind)?.level ?? 0;
@@ -91,9 +95,9 @@ export class DriveModel {
           if (impact >= H.tickMin) out.push({ kind: 'stop', actor: i, at: this.t, end, level: this.levels.stop * Math.min(1, impact / H.impactFull) });
         }
         // A detent crossed at speed ticks; a slow wobble across one does not.
-        if (H.detents > 0) {
+        if (this.detents > 0) {
           // Detents lie inside the travel: reaching an end is the wall's knock, not a tick.
-          const cell = (u: number) => Math.min(H.detents - 1, Math.floor(u * H.detents + 1e-9));
+          const cell = (u: number) => Math.min(this.detents - 1, Math.floor(u * this.detents + 1e-9));
           const a = cell(before), b = cell(this.x[i]);
           if (a !== b && Math.abs(this.v[i]) >= H.tickMin && this.t - this.lastTick[i] >= H.tickGap) {
             this.lastTick[i] = this.t;
@@ -123,6 +127,8 @@ export class DriveModel {
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 
 export interface DriveOptions {
+  /** The gadget's own detents across the travel, over the mechanism's. */
+  detents?: number;
   reduced?: boolean;
   /** Plays the motion: detents tick and ends knock in `material`, and it scrapes while it moves. */
   sound?: Sound | null;
@@ -155,7 +161,7 @@ export interface Drive {
 
 /** Runs a held mechanism on drawn actors: writes each one's transform every frame while it moves. */
 export function createDrive(name: DriveName, actors: (Element | null | undefined)[], start: number[], options: DriveOptions = {}): Drive {
-  const model = new DriveModel(name, start);
+  const model = new DriveModel(name, start, { detents: options.detents });
   let o = options, raf = 0, t0 = 0, moving = false;
   const paint = () => actors.forEach((el, i) => {
     if (!el) return;

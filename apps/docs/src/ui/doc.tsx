@@ -266,14 +266,14 @@ export function CopyPageButton() {
 /** Highlighted lines inside a <pre>. */
 function Lines({ code, lang, numbers, className = '' }: { code: string; lang: Lang; numbers?: boolean; className?: string }) {
   const html = React.useMemo(() => highlight(code, lang, numbers), [code, lang, numbers]);
-  return <pre className={`twinkleplop overflow-auto ${className}`}><code dangerouslySetInnerHTML={{ __html: html }} /></pre>;
+  return <pre className={`twinkleplop max-w-full min-w-0 overflow-auto ${className}`}><code dangerouslySetInnerHTML={{ __html: html }} /></pre>;
 }
 
 /** A quiet code object: a file name (or tabs), a copy button, highlighted lines. */
 export function Code({ code, label, lang, head, numbers = false, maxH = true, wrap }: { code: string; label?: string; lang?: Lang; head?: React.ReactNode; numbers?: boolean; maxH?: boolean; wrap?: (lines: React.ReactNode) => React.ReactNode }) {
   const lines = <Lines code={code} lang={lang ?? langOf(label)} numbers={numbers} className={['type-doc-code px-16 py-14', maxH ? 'max-h-440' : ''].join(' ')} />;
   return (
-    <div className="material-stage overflow-hidden rounded-plate">
+    <div className="material-stage max-w-full min-w-0 overflow-hidden rounded-plate">
       <div data-md="skip" className="flex min-h-40 items-center justify-between gap-12 border-b border-rule py-6 pl-14 pr-6">
         {head ?? <span className="type-readout truncate text-ink3">{label ?? 'Code'}</span>}
         <CopyButton text={code} />

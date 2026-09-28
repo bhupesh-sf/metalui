@@ -37,11 +37,13 @@ public struct MetalMechanism: Sendable {
         public let roll: Bool, rest: Double
         /// Milliseconds: an act on a held mechanism (a lid emptied) swings it all the way and lets it back at half of this.
         public let pulse: Double
+        /// How far that act swings it, as a share of its travel added to where it is held (1: all the way).
+        public let pulseBy: Double
         public init(slot: String, from: MetalMechanismPose, to: MetalMechanismPose, detents: Int, stagger: Double, wall: Double,
-                    impactFull: Double, scrapeFull: Double, tickMin: Double, tickGap: Double, step: Double, roll: Bool = false, rest: Double = 0, pulse: Double = 0) {
+                    impactFull: Double, scrapeFull: Double, tickMin: Double, tickGap: Double, step: Double, roll: Bool = false, rest: Double = 0, pulse: Double = 0, pulseBy: Double = 1) {
             self.slot = slot; self.from = from; self.to = to; self.detents = detents; self.stagger = stagger; self.wall = wall
             self.impactFull = impactFull; self.scrapeFull = scrapeFull; self.tickMin = tickMin; self.tickGap = tickGap; self.step = step
-            self.roll = roll; self.rest = rest; self.pulse = pulse
+            self.roll = roll; self.rest = rest; self.pulse = pulse; self.pulseBy = pulseBy
         }
     }
     public struct HeldPose: Sendable {

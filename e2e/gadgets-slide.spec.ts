@@ -26,7 +26,8 @@ test('a new mix mid-flight carries on from where the caps are', async ({ page })
   const bench = page.getByTestId('slide-bench');
   await bench.scrollIntoViewIfNeeded();
   await bench.getByRole('button', { name: 'All down' }).click();
-  await page.waitForTimeout(90);
+  // As soon as the first cap has left its place (however busy the machine), and before it arrives.
+  await expect.poll(async () => Number((await values(bench))!.split(',')[0]), { intervals: [10] }).toBeLessThan(0.5);
   const mid = (await values(bench))!.split(',').map(Number);
   expect(mid[0]).toBeLessThan(0.5);                       // on its way
   expect(mid[0]).toBeGreaterThan(0);

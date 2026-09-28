@@ -1,0 +1,17 @@
+/* FIELD SPECIMENS: handles on the real field's own edges and on its glyph */
+.ed-field-box .ed-overlay { z-index: 2; }
+.ed-field-box .ed-edge.ed-field-top { top: -3px; }
+.ed-field-box .ed-edge.ed-field-bottom { bottom: -3px; left: 12px; right: 12px; }
+/* the glyph is the handle for the space on the left: a faint ring around it, never across the words */
+.ed-field-glyph { position: absolute; display: block; pointer-events: auto; cursor: ew-resize; outline: none; touch-action: none; border-radius: 5px;
+  box-shadow: 0 0 0 .5px color-mix(in srgb, var(--mu-presence-guide) 55%, transparent); transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-field-box:not([data-shown~="left"]) .ed-field-glyph { box-shadow: 0 0 0 .5px transparent; }
+.ed-field-glyph[data-on], .ed-field-glyph:focus-visible { box-shadow: 0 0 0 .9px var(--mu-presence-guide); }
+/* the space itself: a hairline from the edge to the glyph, only while it is pointed at */
+.ed-field-gap { position: absolute; left: 0; height: 0; border-top: .6px dashed var(--mu-presence-guide); pointer-events: none; opacity: 0;
+  transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-field-gap[data-on] { opacity: 1; }
+[data-mu-colorway="graphite"] .ed-field-glyph[data-on], [data-mu-colorway="graphite"] .ed-field-glyph:focus-visible { box-shadow: 0 0 0 .9px var(--green-deep); }
+[data-mu-colorway="graphite"] .ed-field-gap { border-color: var(--green-deep); }
+/* the key switched off: printed text in the trail, where the raised key was */
+.ed-field-flatkey { font: 500 10px/1 var(--mono); color: var(--ink3); padding-inline: 5px; }

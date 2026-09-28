@@ -10,6 +10,10 @@ import { resolve, type ResolvedGadget, type Oklch } from './resolve';
 import { tierFor, type Host, type Tier } from './light';
 import { cutPath, drawSlab, drawTray, type Cut } from './parts/slab';
 import { drawPull } from './parts/pull';
+import { drawLens } from './parts/lens';
+import { drawNib } from './parts/nib';
+import { ICON_CATALOG } from '../icons/catalog.generated';
+import { LIFE_CATALOG } from '../icons/life/catalog.generated';
 import { drawJack } from './parts/jack';
 import { drawPlug } from './parts/plug';
 import { drawCable } from './parts/cable';
@@ -18,6 +22,8 @@ import { drawLamp, type LampSignal } from './parts/led';
 import { drawCap } from './parts/cap';
 import { drawKey } from './parts/key';
 import { drawDrum } from './parts/drum';
+import { pigment } from './color';
+import { KEY_FONT } from './parts/key';
 import { drawNeedle } from './parts/needle';
 import { drawCells } from './parts/cell';
 import { drawLid } from './parts/lid';
@@ -51,7 +57,8 @@ const clayFace = (): Oklch => ({ L: GADGETS.plug.faceClay, C: GADGETS.plug.faceC
 /** The state a gadget shows: the one asked for if the spec has it, else its initial state. */
 export function stateOf(spec: GadgetSpec, state?: string): string {
   if (state && spec.states[state]) return state;
-  return spec.initial && spec.states[spec.initial] ? spec.initial : Object.keys(spec.states)[0];
+  // Every gadget has a rest state (the validator says so): with no other word, it rests.
+  return spec.initial && spec.states[spec.initial] ? spec.initial : spec.states.rest ? 'rest' : Object.keys(spec.states)[0];
 }
 
 export function describeGadget(spec: GadgetSpec, state: string, value?: number): string {
@@ -99,6 +106,11 @@ export const driveShare = (spec: GadgetSpec, value: number) => { const r = drive
 /** The state a gadget shows for a value: a needle past its threshold makes it `over` (the value
  *  decides, not the host); back under, `over` falls back to rest. Other states are the host's. */
 export function derivedState(spec: GadgetSpec, state: string, value?: number): string {
+  // A thumbwheel: at now it rests; back a little it is in the past; back further than far, far.
+  if (spec.parts.some((p) => p.part === 'drum' && p.params?.glyphs === 'ticks') && spec.states.past && spec.states.far && value !== undefined) {
+    const r = driveRange(spec), back = r.max - value;
+    return back <= 0 ? 'rest' : back < GADGETS.drum.far ? 'past' : 'far';
+  }
   // A drawer too full to close is full; opened by the host it is open. Emptied, back to rest.
   if (spec.parts.some((p) => p.part === 'slab' && p.role === 'actor') && spec.states.full && value !== undefined) {
     if (driveShare(spec, value) >= GADGETS.tray.full) return state === 'open' ? 'open' : 'full';
@@ -112,7 +124,8 @@ export function derivedState(spec: GadgetSpec, state: string, value?: number): s
   // A switch that names a state: on, it is that state; off, back to rest. A state entered by an act
   // (a bin emptied) is the host's and stands.
   const port = spec.mechanism.drive, ch = port ? spec.ports?.in?.[port] : undefined;
-  if (port && ch?.kind === 'boolean' && spec.states[port] && value !== undefined && spec.states[state]?.enter !== 'act') {
+  // Any other state the host sets (a bin emptied, a badge expired) stands.
+  if (port && ch?.kind === 'boolean' && spec.states[port] && value !== undefined && (state === 'rest' || state === port)) {
     return value >= 0.5 ? port : state === port ? 'rest' : state;
   }
   const needle = spec.parts.find((p) => p.part === 'needle'), t = needle?.params?.threshold;
@@ -124,11 +137,17 @@ export function derivedState(spec: GadgetSpec, state: string, value?: number): s
 export function driveTargets(spec: GadgetSpec, value: number, state?: string): number[] {
   const held = heldOf(spec);
   if (!held) return [];
+  // A glow with no cells lights its light alone, to the value's share (a badge).
+  if (spec.mechanism.name === 'glow' && !boundTo(spec, held.slot).length) return boundTo(spec, 'light').map(() => driveShare(spec, value));
   // A lid goes where the state holds it (its form's turn, a share of the mechanism's full swing).
   if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'lid')) {
     const poses = formPoses(spec, state ?? stateOf(spec)), full = (held.to as { r?: number }).r ?? 1;
     return boundTo(spec, held.slot).map((id) => Math.min(1, Math.max(0, (poses[id]?.r ?? 0) / full)));
   }
+  // A wheel of ticks turns to the value's share of its range.
+  if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'drum')) return boundTo(spec, held.slot).map(() => driveShare(spec, value));
+  // A rocker tilts to its switch: off at 0, on at 1.
+  if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.params?.shape === 'rocker')) return boundTo(spec, held.slot).map(() => driveShare(spec, value));
   // Cells light to the value's share; on a first run the grid rises all the way.
   if (boundTo(spec, held.slot).every((id) => spec.parts.find((p) => p.id === id)?.part === 'cell')) return boundTo(spec, held.slot).map(() => (state === 'first-run' ? 1 : driveShare(spec, value)));
   // A needle points at the value's share of its range.
@@ -165,7 +184,7 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
   // A driven actor runs in a slot cut as long as its travel.
   const held = heldOf(spec), driven = held ? boundTo(spec, held.slot) : [];
   if (held) for (const id of driven) {
-    const p = spec.parts.find((q) => q.id === id); if (!p || p.part !== 'cap') continue;
+    const p = spec.parts.find((q) => q.id === id); if (!p || p.part !== 'cap' || p.params?.shape === 'rocker') continue;
     const y0 = held.from.y ?? 0, y1 = held.to.y ?? 0, [sw, pad] = GADGETS.cap.slot;
     cuts.push({ kind: 'slot', at: [p.at[0], p.at[1] + (y0 + y1) / 2], size: [sw, Math.abs(y1 - y0) + pad] });
   }
@@ -217,7 +236,9 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
     } else if (p.part === 'cap') {
       const r = byId[p.id], ceramic = p.material === 'ceramic';
       const face = r.accent && r.color ? r.color : ceramic ? { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clayFace().H } : clayFace();
-      const d = drawCap(pid, { at: p.at, size, color: face, material: ceramic ? 'ceramic' : 'clay', ribs: p.params?.ribs === undefined ? undefined : Number(p.params.ribs), shape: (p.params?.shape as 'fader' | 'knob' | undefined) ?? 'fader' }, { tier, host });
+      const k0 = driven.indexOf(p.id);
+      const d = drawCap(pid, { at: p.at, size, color: face, material: ceramic ? 'ceramic' : 'clay', ribs: p.params?.ribs === undefined ? undefined : Number(p.params.ribs),
+        shape: (p.params?.shape as 'fader' | 'knob' | 'rocker' | undefined) ?? 'fader', tilt: k0 >= 0 ? 2 * start[k0] - 1 : -1 }, { tier, host });
       defs += d.defs;
       // A driven cap is drawn at its starting place, so the first paint (and the server's) shows it there.
       const k = driven.indexOf(p.id), y = k >= 0 && held ? (held.from.y ?? 0) + ((held.to.y ?? 0) - (held.from.y ?? 0)) * start[k] : 0;
@@ -229,8 +250,14 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const color = colorName === 'accent' ? { accent: true as const } : colorName === 'signal' ? { signal: rs.lamp[0] as LampSignal } : { glass: resolved.face };
       const d = drawBacklight(pid, { at: p.at, size: size[0], shape, color });
       defs += d.defs;
-      const form = spec.states[state]?.form?.[p.id], alpha = form && 'param' in form && form.param === 'alpha' ? Number(form.value) : shape === 'dot' ? 0 : 1;
-      if (!bodyPart || bodyPart.part !== 'slab') { lights += `<g data-id="${p.id}" data-moves style="opacity: ${alpha}">${d.body}</g>`; continue; }
+      const form = spec.states[state]?.form?.[p.id], glowing = boundTo(spec, 'light').includes(p.id) && spec.mechanism.name === 'glow';
+      // A glow's light burns as bright as its value (a badge lit when signed in).
+      const alpha = form && 'param' in form && form.param === 'alpha' ? Number(form.value) : glowing ? +backlightLevel(lit).toFixed(3) : shape === 'dot' ? 0 : 1;
+      if (!bodyPart || bodyPart.part !== 'slab') {
+        // Glass lit only by a glow greys when its light is out.
+        if (glowing) { const [ua, ul] = GADGETS.backlight.unlit, f = resolved.face; lights += `<rect data-part="backlight.unlit" x="0" y="0" width="400" height="400" fill="${pigment(ul, f.C, f.H).srgb}" style="opacity: ${+(ua * (1 - lit)).toFixed(3)}"/>`; }
+        lights += `<g data-id="${p.id}" data-moves style="opacity: ${alpha}">${d.body}</g>`; continue;
+      }
       // On a slab, light behind cells: in the floor of the cut it sits in, as bright as the cells are full.
       const cut = cuts.find((c) => c.at[0] === p.at[0] && c.at[1] === p.at[1]);
       if (cut) defs += `<clipPath id="${pid}-clip"><path d="${cutPath(cut)}"/></clipPath>`;
@@ -245,6 +272,43 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
       const t = pose ? ` transform="translate(${pose.x ?? 0} ${pose.y ?? 0})"` : '';
       trims += `<g clip-path="url(#${pid}-out)"><g data-id="${p.id}"><g data-moves${t}>${d.body}</g></g>`
         + `<rect data-part="tray.edge" x="${p.at[0] - size[0] / 2 - GADGETS.tray.wall}" y="${edge}" width="${size[0] + 2 * GADGETS.tray.wall}" height="${dd}" fill="url(#${pid}-edge)"/></g>`;
+    } else if (p.part === 'lens') {
+      // A lens in the opening, over the glass: its ring in the accent, turned to the value (the turn
+      // mechanism turns it from then on).
+      const k = driven.indexOf(p.id), h = held as unknown as { from: { r?: number }; to: { r?: number } } | null;
+      const turn = k >= 0 && h ? (h.from.r ?? 0) + ((h.to.r ?? 0) - (h.from.r ?? 0)) * start[k] : 0;
+      const d = drawLens(pid, { at: p.at, size: size[0], ticks: Number(p.params?.ticks ?? 24), iris: Number(p.params?.iris ?? 0.6), turn, color: resolved.accent }, { tier });
+      defs += d.defs;
+      trims += `<g data-id="${p.id}" data-accent="true">${d.shadow}${d.body}</g>`;
+    } else if (p.part === 'slab' && p.role === 'cut' && p.params?.ink === true) {
+      // Ink in a well: a pool in the accent, darker at its meniscus, with a glint.
+      const [inset, men, gx, gy, gr, ga] = GADGETS.hole.ink, a = resolved.accent, R = (Math.min(size[0], size[1]) / 2) * (1 - inset);
+      defs += `<radialGradient id="${pid}-ink" cx=".5" cy=".5" r=".5"><stop offset=".7" stop-color="${pigment(a.L, a.C, a.H).srgb}"/><stop offset="1" stop-color="${pigment(a.L - men, a.C, a.H).srgb}"/></radialGradient>`;
+      trims += `<g data-id="${p.id}" data-part="ink"><circle cx="${p.at[0]}" cy="${p.at[1]}" r="${+R.toFixed(2)}" fill="url(#${pid}-ink)"/>`
+        + `<circle cx="${+(p.at[0] - R + 2 * R * gx).toFixed(2)}" cy="${+(p.at[1] - R + 2 * R * gy).toFixed(2)}" r="${+(R * gr).toFixed(2)}" fill="#fff" fill-opacity="${ga}"/></g>`;
+    } else if (p.part === 'nib') {
+      // A nib over its well, its origin at its tip; the dip moves it, and a held pose is drawn in.
+      const d = drawNib(pid, { tip: p.at, size: size as [number, number], angle: Number(p.params?.angle ?? 0), ink: resolved.accent }, { tier });
+      defs += d.defs;
+      const pose = poses[p.id], t = pose ? ` transform="translate(${pose.x ?? 0} ${pose.y ?? 0})"` : '';
+      plugs += `<g data-id="${p.id}"><g data-moves${t}>${d.shadow}${d.body}</g></g>`;
+    } else if (p.part === 'glyph') {
+      // A catalog icon printed on the glass in the glass's own ink: dark against the light behind it.
+      const G = GADGETS.glyph, name = String(p.params?.name ?? ''), f = resolved.face, [gd, gf, gg, ga, gm] = GADGETS.cap.grooveInk;
+      const rec = (ICON_CATALOG as Record<string, { body: string; defs: string }>)[name] ?? (LIFE_CATALOG as Record<string, { body: string; defs: string }>)[name];
+      if (rec) {
+        const ink = pigment(Math.max(gf, f.L - gd), Math.min(gm, f.C * gg + ga), f.H), uid = `${pid}-g`;
+        const markup = ((rec.defs ? `<defs>${rec.defs}</defs>` : '') + rec.body).replace(/&-/g, `${uid}-`);
+        lights += `<svg data-id="${p.id}" data-part="glyph" data-name="${name}" data-static="" class="mu-icon mu-life" viewBox="0 0 24 24" x="${p.at[0] - size[0] / 2}" y="${p.at[1] - size[1] / 2}" width="${size[0]}" height="${size[1]}"`
+          + ` fill="none" stroke="currentColor" stroke-width="${G.stroke}" stroke-linecap="round" stroke-linejoin="round" style="color: ${ink.srgb}; --sw: ${G.stroke}" opacity="${G.alpha}">${markup}</svg>`;
+      }
+    } else if (p.part === 'label') {
+      // A word engraved in the body: its ink, and a lit lower edge.
+      const L = GADGETS.label, [gd, gf, gg, ga, gm] = GADGETS.cap.grooveInk, [el, ec] = GADGETS.cap.edgeInk, b = rs.body;
+      const ink = pigment(Math.max(gf, b.L - gd), Math.min(gm, b.C * gg + ga), b.H), lit = pigment(Math.min(1, b.L + el), b.C * ec, b.H);
+      const esc = String(p.params?.text ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;'), fs = +(size[1] * L.size).toFixed(2);
+      const text = (dy: number, fill: string, a: number) => `<text x="${p.at[0]}" y="${+(p.at[1] + dy).toFixed(2)}" text-anchor="middle" dominant-baseline="central" font-family="${KEY_FONT}" font-weight="600" font-size="${fs}" letter-spacing="${+(fs * L.tracking).toFixed(2)}" fill="${fill}" fill-opacity="${a}">${esc}</text>`;
+      trims += `<g data-id="${p.id}" data-part="label">${tier === 'flat' ? '' : text(L.edge, lit.srgb, L.alpha[1])}${text(0, ink.srgb, L.alpha[0])}</g>`;
     } else if (p.part === 'pull') {
       // A pull on a drawer front: it goes where the tray goes.
       const d = drawPull(pid, { at: p.at, size: size as [number, number], style: (p.params?.style as 'bar' | 'recess' | undefined) ?? 'bar', color: p.params?.style === 'recess' ? rs.body : undefined }, { tier });
@@ -276,8 +340,9 @@ export function drawGadget(spec: GadgetSpec, o: DrawOptions = {}): GadgetDraw {
     } else if (p.part === 'drum') {
       // A drum shows its digit of the count; the roll moves its strip from then on.
       const r = byId[p.id], face = r.accent && r.color ? r.color : p.params?.face === 'clay' ? clayFace() : { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clayFace().H };
-      const drums = boundTo(spec, 'drums'), k = drums.indexOf(p.id);
-      const value = k >= 0 ? digitOf(o.value ?? driveDefault(spec), k, drums.length) : 0;
+      // A drum of ticks turned by a held drive (a thumbwheel) stands at the value itself: one tick a unit.
+      const drums = boundTo(spec, 'drums'), k = drums.indexOf(p.id), wheel = driven.includes(p.id);
+      const value = wheel ? o.value ?? driveDefault(spec) : k >= 0 ? digitOf(o.value ?? driveDefault(spec), k, drums.length) : 0;
       const d = drawDrum(pid, { at: p.at, size: size as [number, number], value, color: face, glyphs: (p.params?.glyphs as 'digits' | 'ticks' | undefined) }, { tier });
       defs += d.defs;
       trims += `<g data-id="${p.id}"${r.accent ? ' data-accent="true"' : ''}>${d.body}</g>`;

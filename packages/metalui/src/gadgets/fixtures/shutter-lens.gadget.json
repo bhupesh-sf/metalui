@@ -1,0 +1,19 @@
+{
+  "$schema": "metalui/gadget@1",
+  "name": "shutter-lens", "title": "Capture",
+  "job": "take", "feel": { "v": 0.8, "a": 0.9, "w": 0.2 }, "container": "inset", "station": 55, "material": "clay",
+  "parts": [
+    { "id": "body",  "part": "bezel",      "at": [200, 196], "size": [320, 320], "role": "body", "params": { "width": 22, "face": "glass-face" } },
+    { "id": "face",  "part": "glass-face", "at": [200, 196], "size": [276, 276], "role": "trim" },
+    { "id": "light", "part": "backlight",  "at": [200, 196], "size": [276, 276], "role": "trim", "params": { "shape": "glow", "color": "glass" } },
+    { "id": "lamp",  "part": "led",        "at": [313, 78],  "role": "lamp" },
+    { "id": "lens",  "part": "lens",       "at": [200, 196], "size": [184, 184], "role": "actor", "material": "accent", "params": { "ticks": 24, "iris": 0.55 } }
+  ],
+  "mechanism": { "name": "turn", "bind": { "ring": "lens", "lamp": "lamp" }, "drive": "zoom" },
+  "ports": { "in": { "zoom": { "kind": "number", "min": 0, "max": 1, "default": 0.5 }, "take": { "kind": "pulse" } }, "out": { "taken": { "kind": "pulse" } } },
+  "states": {
+    "rest":  { "lamp": ["off", "steady"], "form": { "light": { "param": "alpha", "value": 0.15 } } },
+    "taken": { "lamp": ["live", "rise"], "enter": "act", "form": { "light": { "param": "alpha", "value": 0.9 } } }
+  },
+  "describe": "{title}: {state}"
+}

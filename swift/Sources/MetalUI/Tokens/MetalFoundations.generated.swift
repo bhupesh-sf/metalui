@@ -101,6 +101,11 @@ public enum MetalType {
         name: "meta", family: .sans, size: 11.0, line: 14.0, weight: 400,
         tracking: 0.0, stretch: 1.0, uppercase: false, tabular: false, maxSize: nil
     )
+    /// 12/14 · 400
+    public static let figure = MetalTypeRole(
+        name: "figure", family: .sans, size: 12.0, line: 14.0, weight: 400,
+        tracking: 0.0, stretch: 1.0, uppercase: false, tabular: true, maxSize: nil
+    )
     /// 9/12 · 400 · scales with the host's text size up to 11 pt
     public static let label = MetalTypeRole(
         name: "label", family: .mono, size: 9.0, line: 12.0, weight: 400,
@@ -109,6 +114,11 @@ public enum MetalType {
     /// 10.5/14 · 500
     public static let readout = MetalTypeRole(
         name: "readout", family: .mono, size: 10.5, line: 14.0, weight: 500,
+        tracking: 0.02, stretch: 1.0, uppercase: false, tabular: true, maxSize: nil
+    )
+    /// 9/14 · 500
+    public static let tick = MetalTypeRole(
+        name: "tick", family: .mono, size: 9.0, line: 14.0, weight: 500,
         tracking: 0.02, stretch: 1.0, uppercase: false, tabular: true, maxSize: nil
     )
     /// 10.5/17 · 400
@@ -121,6 +131,11 @@ public enum MetalType {
         name: "pixel", family: .pixel, size: 40.0, line: 44.0, weight: 700,
         tracking: 0.0, stretch: 1.0, uppercase: false, tabular: false, maxSize: nil
     )
+    /// 24/28 · 700
+    public static let pixelSmall = MetalTypeRole(
+        name: "pixel-small", family: .pixel, size: 24.0, line: 28.0, weight: 700,
+        tracking: 0.0, stretch: 1.0, uppercase: false, tabular: false, maxSize: nil
+    )
 
-    public static let all: [MetalTypeRole] = [display, content, title, lead, ui, body, meta, label, readout, code, pixel]
+    public static let all: [MetalTypeRole] = [display, content, title, lead, ui, body, meta, figure, label, readout, tick, code, pixel, pixelSmall]
 }

@@ -63,7 +63,7 @@ export default function CellGridPage() {
         title="Cell grid"
         lede="A gadget for something kept that fills: sixteen resin cells in a tray sunk into a lilac resin slab, lit from behind, with a lamp. A share lights the cells in turn from the bottom row up, the one filling now part way, and the light behind them brightens with them. On a first run the whole grid rises. It is only a spec: the renderer draws it, and the glow mechanism lights it."
       />
-      <Section title="Fill it" lede="Press or drag on a cell: the grid fills up to it, in its order, and settles. Light is silent. With a keyboard, the arrow keys add or take away a cell. First run lights the whole grid, the lamp breathes and the beeper says ready; then it falls back to what it keeps.">
+      <Section title="Fill it" lede="Press or drag on a cell: the grid fills up to it, in its order, and settles. Light is silent. With a keyboard, the arrow keys add or take away a cell. First run lights the whole grid, the lamp rises and the beeper says ready; then it falls back to what it keeps.">
         <Bench caption={`cell-grid · keep, own · resin · glow · ${Math.round(value * N)} of ${N} cells`}>
           <div className="flex w-full flex-wrap items-center gap-24">
             <PointedGrid sound={sound} state={firstRun ? 'first-run' : undefined} onValue={setValue} />

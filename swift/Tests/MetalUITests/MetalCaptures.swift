@@ -138,6 +138,29 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    /// Parts › Dot display: each px colour as a 3 × 3 block with its unlit ring, in a field well.
+    func testDotDisplay() {
+        let block: [UInt8] = (0..<25).map { i in i % 5 > 0 && i % 5 < 4 && i > 4 && i < 20 ? 1 : 0 }
+        let colours = MetalDotColour.allCases.filter { $0 != .off }
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 16) {
+                ForEach(colours, id: \.self) { c in
+                    VStack(spacing: 6) {
+                        MetalWell(.field, radius: 12) {
+                            MetalDotDisplay(cols: 5, rows: 5, dots: block, inks: [MetalDotInk(.off), MetalDotInk(c)])
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        Text(c.rawValue.uppercased()).font(.metal(MetalType.label)).foregroundStyle(colorway.tokens.engrave.color)
+                    }
+                }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("dot-display-\(colorway.rawValue)", view)
+        }
+    }
+
     /// Parts › Slab: every cut kind on the slab materials, the way the docs sheet shows them.
     func testSlab() {
         let cuts: [(String, [MetalSlabCut])] = [
@@ -225,7 +248,8 @@ final class MetalCaptures: XCTestCase {
 
     func testCap() {
         let looks: [MetalCap] = [MetalCap(size: 120), MetalCap(material: .ceramic, size: 120), MetalCap(accent: true, size: 120),
-                                 MetalCap(ribs: 5, size: 120), MetalCap(shape: .knob, material: .ceramic, size: 120), MetalCap(shape: .knob, accent: true, size: 120)]
+                                 MetalCap(ribs: 5, size: 120), MetalCap(shape: .knob, material: .ceramic, size: 120), MetalCap(shape: .knob, accent: true, size: 120),
+                                 MetalCap(shape: .rocker, accent: true, tilt: -1, size: 120), MetalCap(shape: .rocker, accent: true, tilt: 1, size: 120)]
         for colorway in MetalColorway.allCases {
             let view = HStack(spacing: 24) { ForEach(0..<looks.count, id: \.self) { i in looks[i] } }
                 .padding(32)
@@ -441,6 +465,87 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    func testGadgetShutterLens() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/shutter-lens.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual(spec.driveTargets(0.5), [0.5])
+        XCTAssertEqual(spec.description("taken"), "Capture: taken")
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach([String?.none, "taken"], id: \.self) { s in MetalGadget(spec: spec, state: s, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-shutter-lens-\(colorway.rawValue)", view)
+        }
+    }
+
+    func testGadgetRocker() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/rocker.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual([0.0, 1].map { spec.derivedState("rest", value: $0) }, ["rest", "on"])
+        XCTAssertEqual(spec.driveTargets(1), [1])
+        XCTAssertEqual(spec.description("on", value: 1), "Sound, on")
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach([0.0, 1], id: \.self) { v in MetalGadget(spec: spec, value: v, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-rocker-\(colorway.rawValue)", view)
+        }
+    }
+
+    func testGadgetThumbwheel() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/thumbwheel.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual(spec.mechanism.detents, 30)
+        XCTAssertEqual([0.0, -3, -12].map { spec.derivedState("rest", value: $0) }, ["rest", "past", "far"])
+        XCTAssertEqual(spec.driveTargets(-3), [0.9])
+        XCTAssertEqual(spec.description("past", value: -3), "When, in the past")
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach([0.0, -3, -12], id: \.self) { v in MetalGadget(spec: spec, value: v, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-thumbwheel-\(colorway.rawValue)", view)
+        }
+    }
+
+    func testGadgetGlassBadge() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/glass-badge.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual([0.0, 1].map { spec.derivedState("rest", value: $0) }, ["rest", "signed-in"])
+        XCTAssertEqual(spec.derivedState("expired", value: 1), "expired")
+        XCTAssertEqual(spec.driveTargets(1), [1])
+        XCTAssertEqual(spec.description("signed-in", value: 1), "Account, signed in")
+        let looks: [(Double, String?)] = [(0, nil), (1, nil), (1, "expired")]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach(0..<looks.count, id: \.self) { i in MetalGadget(spec: spec, state: looks[i].1, value: looks[i].0, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-glass-badge-\(colorway.rawValue)", view)
+        }
+    }
+
+    func testGadgetInkWell() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures/ink-well.gadget.json")
+        let spec = try MetalGadgetSpec.decode(Data(contentsOf: url))
+        XCTAssertEqual([0.0, 1].map { spec.derivedState("rest", value: $0) }, ["rest", "writing"])
+        XCTAssertEqual(spec.description("writing", value: 1), "Draw, writing")
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 20) { ForEach([0.0, 1], id: \.self) { v in MetalGadget(spec: spec, value: v, size: 128) } }
+                .padding(32)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+            capture("gadget-ink-well-\(colorway.rawValue)", view)
+        }
+    }
+
     func testReadingRig() throws {
         let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
             .appendingPathComponent("packages/metalui/src/gadgets/fixtures")
@@ -452,6 +557,23 @@ final class MetalCaptures: XCTestCase {
                 .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
                 .metalColorway(colorway)
             capture("gadget-reading-rig-\(colorway.rawValue)", view)
+        }
+    }
+
+    func testRigs() throws {
+        let dir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("packages/metalui/src/gadgets/fixtures")
+        let names = try FileManager.default.contentsOfDirectory(atPath: dir.path).filter { $0.hasSuffix(".gadget.json") }
+        let catalog = try names.reduce(into: [String: MetalGadgetSpec]()) { out, f in let g = try MetalGadgetSpec.decode(Data(contentsOf: dir.appendingPathComponent(f))); out[g.name] = g }
+        for (name, id) in [("sync-health", "sync"), ("storage", "storage"), ("capture", "capture"), ("canvas-status", "canvas"), ("settings", "settings")] {
+            let spec = try MetalRigSpec.decode(Data(contentsOf: dir.appendingPathComponent("\(name).rig.json")))
+            for colorway in MetalColorway.allCases {
+                let view = MetalRig(spec: spec, catalog: catalog, width: spec.grid[0] == 3 ? 720 : 520)
+                    .padding(32)
+                    .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                    .metalColorway(colorway)
+                capture("rig-\(id)-\(colorway.rawValue)", view)
+            }
         }
     }
 
@@ -492,6 +614,33 @@ final class MetalCaptures: XCTestCase {
             .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
             .metalColorway(colorway)
             capture("pull-\(colorway.rawValue)", view)
+        }
+    }
+
+    func testLens() {
+        let looks: [(Double, Double, Int)] = [(1, 0, 24), (0.6, 0, 24), (0.1, 0, 24), (0.6, 45, 12)]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                ForEach(0..<looks.count, id: \.self) { i in MetalLens(iris: looks[i].0, turn: looks[i].1, ticks: looks[i].2, size: 180) }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("lens-\(colorway.rawValue)", view)
+        }
+    }
+
+    func testNib() {
+        for colorway in MetalColorway.allCases {
+            let view = HStack(spacing: 24) {
+                MetalNib(size: 180)
+                MetalNib(angle: -20, size: 180)
+                MetalNib(angle: 20, ink: MetalOklch(L: 0.32, C: 0.08, H: 265), size: 180)
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("nib-\(colorway.rawValue)", view)
         }
     }
 
@@ -696,6 +845,38 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    /// Visual integration specimen: generated foundation values with real Region and Surface views.
+    func testSpatialFieldFoundation() {
+        let carried = CGRect(x: 302, y: 148, width: 118, height: 38)
+        let atRest = CGRect(x: 265, y: 188, width: 118, height: 38)
+        let first = CGRect(x: 22, y: 20, width: 280, height: 180)
+        let target = CGRect(x: 348, y: 20, width: 280, height: 180)
+        for colorway in MetalColorway.allCases {
+            for state in ["rest", "carry", "target"] {
+                let scene = MetalSpatialFieldScene(
+                    regions: [MetalSpatialFieldRegion(id: "todo", frame: first), MetalSpatialFieldRegion(id: "done", frame: target)],
+                    object: atRest, carried: state == "rest" ? nil : carried, targetID: state == "target" ? "done" : nil
+                )
+                let specimen = ZStack(alignment: .topLeading) {
+                    MetalSpatialFieldView(scene: scene)
+                    MetalRegionView(name: "To do", rule: "makes tasks").frame(width: 280, height: 180).offset(x: 22, y: 20)
+                    MetalRegionView(name: "Done", rule: "marks tasks done", dropRule: "drop to mark tasks done",
+                                    state: state == "target" ? .over : .rest)
+                        .frame(width: 280, height: 180).offset(x: 348, y: 20)
+                    MetalSurface(.raiseLite, radius: .card) {
+                        Text("send the poster").font(.metal(MetalType.content)).foregroundStyle(colorway.tokens.ink.color)
+                            .padding(.horizontal, 14).padding(.vertical, 8)
+                    }
+                    .offset(x: state == "rest" ? 265 : carried.minX, y: state == "rest" ? 188 : carried.minY)
+                }
+                .frame(width: 660, height: 240)
+                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+                .metalColorway(colorway)
+                capture("spatial-field-\(state)-\(colorway.rawValue)", specimen)
+            }
+        }
+    }
+
     func testSelect() {
         for colorway in MetalColorway.allCases {
             let options = [
@@ -758,8 +939,8 @@ final class MetalCaptures: XCTestCase {
     func testLensBar() {
         for colorway in MetalColorway.allCases {
             let view = VStack(spacing: 20) {
-                MetalLensBar(query: "open tasks about the poster", count: 6, source: .local, mode: .constant(.list), onPin: {}, onClose: {})
-                MetalLensBar(query: "lunch this week", source: .asking, mode: .constant(.place), onPin: {}, onClose: {})
+                MetalLensBar(query: "open tasks about the poster", count: 6, source: MetalLensSource("LOCAL"), mode: .constant(.list), onPin: {}, onClose: {})
+                MetalLensBar(query: "lunch this week", source: MetalLensSource("ASKING", waiting: true), mode: .constant(.place), onPin: {}, onClose: {})
             }
             .padding(28)
             .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
@@ -978,6 +1159,88 @@ final class MetalCaptures: XCTestCase {
             .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
             .metalColorway(colorway)
             capture("dialog-\(colorway.rawValue)", view)
+        }
+    }
+
+    func testWeather() {
+        let hours: [MetalWeatherHour] = [
+            .init(label: "Now", hour: 9, kind: .clear, temp: "19°", accessibilityLabel: "Now, 19°"),
+            .init(label: "12", hour: 12, kind: .partly, temp: "24°", accessibilityLabel: "12, 24°"),
+            .init(label: "15", hour: 15, kind: .drizzle, temp: "22°", accessibilityLabel: "15, 22°"),
+            .init(label: "18", hour: 18, kind: .cloud, temp: "20°", accessibilityLabel: "18, 20°"),
+            .init(label: "21", hour: 21, kind: .clear, temp: "17°", accessibilityLabel: "21, 17°"),
+            .init(label: "00", hour: 0, kind: .partly, temp: "15°", accessibilityLabel: "00, 15°")
+        ]
+        let days: [MetalWeatherDay] = [
+            .init(name: "Today", kind: .rain, low: 14, high: 24, accessibilityLabel: "Today: low 14°, high 24°"),
+            .init(name: "Sun", kind: .partly, low: 15, high: 23, accessibilityLabel: "Sun: low 15°, high 23°"),
+            .init(name: "Mon", kind: .clear, low: 16, high: 26, accessibilityLabel: "Mon: low 16°, high 26°"),
+            .init(name: "Tue", kind: .heat, low: 17, high: 28, accessibilityLabel: "Tue: low 17°, high 28°"),
+            .init(name: "Wed", kind: .cloud, low: 16, high: 25, accessibilityLabel: "Wed: low 16°, high 25°"),
+            .init(name: "Thu", kind: .storm, low: 14, high: 20, accessibilityLabel: "Thu: low 14°, high 20°"),
+            .init(name: "Fri", kind: .snow, low: 10, high: 15, accessibilityLabel: "Fri: low 10°, high 15°")
+        ]
+        let tiles: [(MetalWeatherKind, String, String, String, Double)] = [
+            (.clear, "Clear", "21°", "Dry", 9), (.partly, "Partly", "20°", "Rain 10%", 13),
+            (.rain, "Rain", "14°", "Rain 80%", 10), (.storm, "Thunder", "16°", "Rain 90%", 16),
+            (.snow, "Snow", "-3°", "Snow 60%", 11), (.sleet, "Sleet", "1°", "Rain 70%", 8),
+            (.mist, "Mist", "9°", "Vis 800 m", 7.6), (.windy, "Windy", "15°", "42 km/h", 14),
+            (.clear, "Clear", "12°", "Moon", 23)
+        ]
+        for colorway in MetalColorway.allCases {
+            let view = HStack(alignment: .top, spacing: 32) {
+                MetalWeather(place: "Lisbon", summary: "Sunny now · partly cloudy from 11:00", clock: "09:00",
+                             hour: 9, sky: .of(.clear), condition: "Sunny", temp: "19°",
+                             readout: "Feels 18° · Rain 0% · 9 km/h", skyLabel: "Lisbon: Sunny, 19°",
+                             hours: hours, days: days, now: 19, tick: 0)
+                LazyVGrid(columns: Array(repeating: GridItem(.fixed(MetalRecipes.weather.points("tile.size")), spacing: 10), count: 3), spacing: 10) {
+                    ForEach(tiles.indices, id: \.self) { i in
+                        let tile = tiles[i]
+                        MetalWeatherTile(sky: .of(tile.0), hour: tile.4, temp: tile.2, name: tile.1, meta: tile.3,
+                                         tick: i * 5, accessibilityLabel: "\(tile.1), \(tile.2)")
+                    }
+                }
+            }
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("weather-\(colorway.rawValue)", view)
+        }
+    }
+
+    /// The Swift sky draws the web's weatherScene dot for dot (scripts/weather-fixtures.mjs).
+    func testWeatherSkyMatchesWeb() throws {
+        struct Fixture: Decodable {
+            struct Cloud: Decodable { let x: Double, y: Double, size: Double, dark: Bool? }
+            struct Sky: Decodable {
+                let clouds: [Cloud]?, overcast: Bool?, rain: Double?, snow: Double?, thunder: Bool?
+                let mist: Double?, wind: Double?, windFrom: Int?, heat: Double?, birds: Int?, moonPhase: Double?
+            }
+            struct Frame: Decodable {
+                let kind: String, sky: Sky?, hour: Double, tick: Int, cols: Int, rows: Int, horizon: Int
+                let dots: [UInt8]
+            }
+            let layers: [String]
+            let cases: [Frame]
+        }
+        let file = try XCTUnwrap(Bundle.module.url(forResource: "weather", withExtension: "json", subdirectory: "Fixtures"))
+        let fixture = try JSONDecoder().decode(Fixture.self, from: Data(contentsOf: file))
+        XCTAssertEqual(fixture.layers.count, MetalWeatherScene.Layer.allCases.count)
+        XCTAssertEqual(fixture.cases.count, 128)
+        for frame in fixture.cases {
+            let sky: MetalWeatherSky
+            if let own = frame.sky {
+                sky = MetalWeatherSky(clouds: (own.clouds ?? []).map { .init(x: $0.x, y: $0.y, size: $0.size, dark: $0.dark ?? false) },
+                                      overcast: own.overcast ?? false, rain: own.rain ?? 0, snow: own.snow ?? 0,
+                                      thunder: own.thunder ?? false, mist: own.mist ?? 0, wind: own.wind ?? 0,
+                                      windFrom: own.windFrom ?? 1, heat: own.heat ?? 0, birds: own.birds ?? 0,
+                                      moonPhase: own.moonPhase)
+            } else {
+                sky = .of(try XCTUnwrap(MetalWeatherKind(rawValue: frame.kind)))
+            }
+            let actual = MetalWeatherScene.dots(cols: frame.cols, rows: frame.rows, horizon: frame.horizon,
+                                                hour: frame.hour, sky: sky, tick: frame.tick)
+            XCTAssertEqual(actual, frame.dots, "\(frame.kind) at \(frame.hour), tick \(frame.tick), \(frame.cols) × \(frame.rows)")
         }
     }
 }

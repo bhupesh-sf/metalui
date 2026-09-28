@@ -331,12 +331,13 @@ In a gadget spec: `{ "part": "cable", "role": "trim", "params": { "from": "plugA
 
 # Cap
 
-The fader or knob cap a person moves. React: `Cap` from `@unlocalhosted/metalui`. SwiftUI: `MetalCap`. A part: it has a look and no job of its own.
+The fader, knob or rocker cap a person moves. React: `Cap` from `@unlocalhosted/metalui`. SwiftUI: `MetalCap`. A part: it has a look and no job of its own.
 
 ## Use it for
 
 - A fader's cap, travelling along a slot (the fader bank's `slide`).
 - A knob, turning in place (`turn`).
+- A rocker, tilting between off and on about its middle (the rocker's `flip`).
 - The part a person would reach for: give that one the accent, and only that one.
 
 ## Don't use it for
@@ -346,7 +347,7 @@ The fader or knob cap a person moves. React: `Cap` from `@unlocalhosted/metalui`
 
 ## Anatomy
 
-A face on its darker side wall, which shows 4 units below it. A fader is 60 × 44 with radius 13 and 2 to 5 grip ribs across it, each a dark groove with a lit lower edge. A knob is round, the fader's height across, with a pointer groove. Its shadow is its own layer (`cap.shadow`). Tokens: `gadgets.cap`.
+A face on its darker side wall, which shows 4 units below it. A fader is 60 × 44 with radius 13 and 2 to 5 grip ribs across it, each a dark groove with a lit lower edge. A knob is round, the fader's height across, with a pointer groove. A rocker is a paddle (96 × 144 at the Part's size) engraved I on its upper half and O on its lower; tilted by `tilt` from -1 (off, its lower end pressed) to 1 (on), the half facing the light brightens, the other darkens, the fold between them deepens and its shadow moves toward the raised end. Its shadow is its own layer (`cap.shadow`). Tokens: `gadgets.cap`.
 
 ## States
 
@@ -356,7 +357,7 @@ A face on its darker side wall, which shows 4 units below it. A fader is 60 × 4
 
 ## API
 
-`Cap shape? ("fader" | "knob") ribs? (2..5) accent? material? ("clay" | "ceramic") color? pressed? size? host?`
+`Cap shape? ("fader" | "knob" | "rocker") tilt? (-1..1, a rocker) ribs? (2..5) accent? material? ("clay" | "ceramic") color? pressed? size? host?`
 
 SwiftUI: `MetalCap(shape: .fader, accent: true, pressed: isPressed, size: 96)`.
 
@@ -651,6 +652,33 @@ A modal layer. React: `Dialog` with parts `Dialog.Root` (open, onOpenChange) and
 
 ---
 
+# Dot display
+
+Square dots on one pitch, printed into a well. React: `DotDisplay` and `useDotTick`. SwiftUI: `MetalDotDisplay` and `MetalDotClock`.
+
+## Use it for
+
+- A picture made of dots inside an object: a weather sky, a sticker, a small readout. Put it in a `Well`; the object around it carries the label.
+
+## Props
+
+- `cols`, `rows`: the grid. A tile's sky is 21 × 21, a wide sky 46 × 28.
+- `dots`: one ink index per dot, row by row. An index with no ink is unlit.
+- `inks`: index → a px colour (`off`, `hz`, `hill`, `sun`, `moon`, `star`, `cloud`, `cloud-dark`, `rain`, `snow`), or `[colour, alpha]` for a dimmer dot. Index 0 is always drawn unlit.
+
+## Behaviour
+
+- Pitch 8, dot 6 (recipe `dot-display`). The SVG draws cells; the `dot-display` utility masks them to squares.
+- `useDotTick(ref)` gives a frame number that steps every 167 ms. It holds still under reduced motion, in a hidden tab and off screen. Draw the next picture from the tick; never tween between frames.
+- Decorative (`aria-hidden`): describe the picture on the object ("Rain, 14°").
+
+## Don't
+
+- Don't round the dots, add glow or draw on black: the dots are printed into the colorway's well.
+- Don't pick colours outside the px set; the set is what makes every display read as one family.
+
+---
+
 # Draw picks
 
 The ink and width choices beside the drawing tools. React: `InkPicks`, `WidthPicks` from `@unlocalhosted/metalui`. SwiftUI: `MetalInkPicks`, `MetalWidthPicks` with `Binding<MetalInk>` and `Binding<MetalInkWidth>`.
@@ -748,6 +776,32 @@ A drum the Part's 52 × 88, its face ceramic or clay (or the accent on the digit
 SwiftUI: `MetalDrum(value: 7, face: .ceramic, size: 96)`.
 
 In a gadget spec: `{ "part": "drum", "role": "actor", "params": { "digits": 10, "face": "ceramic" } }`, several bound to `roll`'s `drums` slot, lowest digit last.
+
+---
+
+# Fan
+
+A compact control bar for a toolbar that must stay small: it shows the current state, and each cell opens in place.
+
+## Parts
+- `Fan` (the bar, `aria-label` required): keeps which cell is open, one at a time; Escape or a press outside folds it and focus returns to the cell that opened it.
+- `Fan.Label`: what the bar is about now ("Canvas", "Text", "Ink", "3 selected").
+- `Fan.Picker`: the current choice. Pressing it fans the other choices out from behind it: `direction="up"` for a bar at the bottom of the screen, `"both"` to open above and below, centred. Choosing one folds the fan. Arrows move along the fan, Enter picks.
+- `Fan.Tray`: an options cap that stretches sideways into a capsule of more controls (any children: picks, buttons); a ‹ at its end folds it.
+
+## Rules
+- Use it where a full strip does not fit or would crowd the canvas. Every option is one press away and in view once opened: never put options in a dropdown menu instead.
+- The picker holds one kind of choice (tools). The tray holds what goes with the current context (inks and widths while drawing; a selection's actions).
+- Motion is the part spring; Reduce Motion keeps the layout and drops the travel.
+
+## Example
+```tsx
+<Fan aria-label="Canvas tools">
+  <Fan.Label>Ink</Fan.Label>
+  <Fan.Picker label="Tool" value={tool} options={TOOLS} onValueChange={setTool} />
+  <Fan.Tray label="Ink" icon={<InkBead ink={ink} />}>…</Fan.Tray>
+</Fan>
+```
 
 ---
 
@@ -1206,6 +1260,36 @@ SwiftUI: `MetalLED(.live, gesture: .flicker)`.
 
 ---
 
+# Lens
+
+A camera lens seen head-on. React: `Lens` from `@unlocalhosted/metalui`. SwiftUI: `MetalLens`. A part: it has a look and no job of its own.
+
+## Use it for
+
+- Taking something in: a capture, a photo, a scan.
+
+## Don't use it for
+
+- Searching or finding: that's the scope's glass.
+- A dial a person sets: that's a knob cap.
+
+## Anatomy
+
+A ring 14 units wide at its rim (at the Part's 184 across) in the accent, lit from the top left and knurled with 12 to 36 grip lines; it turns. Inside, a thin metal bevel and the domed glass, dark at its centre and coated violet toward its rim. Behind the glass, six dark iris blades close to a hexagon whose opening runs from 22 % to 90 % of the glass's radius as `iris` runs from 0 to 1, their seams drawn where they overlap. A soft glare and a small glint sit on the dome, and it casts a shadow. Tokens: `gadgets.lens`.
+
+## States
+
+- **Ready.** At rest: the ring where it was left.
+- **Taken.** In a gadget the `turn` mechanism turns the ring a detent (45°) and back, clicking at each.
+
+## API
+
+`Lens iris? turn? ticks? color? size?` (turn: degrees; color: the ring's OKLCH, the accent by default).
+
+SwiftUI: `MetalLens(iris: 0.6, turn: 0, size: 160)`.
+
+---
+
 # Lid
 
 A hinged flap over a bin's mouth, seen from above. React: `Lid` from `@unlocalhosted/metalui`. SwiftUI: `MetalLid`. A part: it has a look and no job of its own.
@@ -1491,6 +1575,36 @@ A pointer the Part's 96 long from its pivot, tapered from 7 at the base to 2.4 a
 `Needle value? arc? ticks? threshold? length? at? color? glass` (glass: the face colour it is printed on).
 
 SwiftUI: `MetalNeedle(value: 0.6, arc: 120, ticks: 9, threshold: 0.75, glass: face, size: 160)`.
+
+---
+
+# Nib
+
+A pen nib seen from above. React: `Nib` from `@unlocalhosted/metalui`. SwiftUI: `MetalNib`. A part: it has a look and no job of its own.
+
+## Use it for
+
+- Making: drawing, writing, the draw tools' emblem.
+
+## Don't use it for
+
+- Editing or picking: that's a cursor or a selection frame (Instruments).
+- A pen a person holds on the canvas: that's the brush cursor.
+
+## Anatomy
+
+A nib 70 × 20 at the Part's size, its origin at its tip, lying back along its length and turned by `angle` (−30° to 30°). Its outline narrows from its shoulders (62 % of the way back) to the tip; a slit runs from the tip to a breather hole just past the middle. It is brass, lit along a stripe; the last fifth of it, at the tip, is wet with ink in the accent. It casts a small shadow. Tokens: `gadgets.nib`.
+
+## States
+
+- **Ready.** At rest over its well.
+- **Writing.** In a gadget the `dip` mechanism dips it 10 units into its well and it springs back up, tapping the well; writing, it rests 6 units down.
+
+## API
+
+`Nib angle? ink? size?` (ink: OKLCH, the accent by default).
+
+SwiftUI: `MetalNib(angle: -12, size: 160)`.
 
 ---
 
@@ -2143,6 +2257,24 @@ A small series plot. React: `Sparkline`. SwiftUI: `MetalSparkline`.
 
 - The last dot is in the intent green; the others ring ink2. A dot with `onSelect` is a button named by its `title` ("WED 24 SEP · 6.5"): selecting it focuses its source.
 - The dashed baseline sits at the average. Values are plotted, never summarised with a face or a colour.
+
+---
+
+# Spatial field
+
+A decorative Part composed once by a containing Place. The Place supplies its displayed object and Region rectangles in the field's local coordinate system. It chooses the current target, applies the drop and supplies the committed scene. The field never performs hit testing, selects a target or changes placement.
+
+## React
+
+Create one `SpatialFieldController` per surface, render `SpatialFieldCanvas` beneath objects, call `setScene` with bounded visible Regions and stationary object footprints when displayed geometry changes, `setProjection` with the carried footprint and host-selected target, then `endProjection` on drop or cancellation. The small `object` scene key is a one-object shorthand. Keep the controller stable and give the canvas the full surface area. It coalesces pointer samples into one paint per animation frame, caches the stationary occupancy mask, caps raster work, and stops at rest or when hidden. Use `setEnabled(false)` during Place travel. The canvas is inert and hidden from accessibility.
+
+## SwiftUI
+
+Render one `MetalSpatialFieldView(scene:)` beneath a SwiftUI Place, or one `MetalSpatialFieldNSView` beneath an AppKit canvas. Pass `MetalSpatialFieldScene` with displayed Region frames, bounded stationary object frames, optional carried frame and target ID, all in local viewport points. The SwiftUI Canvas redraws only when the host changes its scene; the AppKit view redraws when `setScene` changes its geometry or colorway. Neither has an idle timer or hit target. The host may publish animated presentation frames, but the field must not own a second gesture loop.
+
+## Look and behavior
+
+The field keeps a quiet visible grid at rest. Marks clear Region paper and object footprints. A carried object displaces nearby marks; only the host-selected Region tints nearby marks. Bone and Graphite use the same geometry and generated `spatial-field` recipe. Reduced motion removes field recovery on React; the target and written Region rule remain semantic on both platforms. Standalone Region paper keeps its own local dot material.
 
 ---
 
@@ -2883,3 +3015,177 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `ClockIcon` | `clock` | Status | An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back. | plays the same act |
 | `MeIcon` | `me` | Tools | Today's point runs back along your days and climbs to today again, drawing the trend behind it. | plays the same act |
 | `SeedIcon` | `seed` | Actions | The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings. | plays the same act |
+
+---
+
+# Gadgets
+
+Gadgets are small Soft Hardware objects that stand for a feature: a patch bay for sync, a counter drum for a streak, a needle gauge for a level. They are Objects (emblems): looked at, never operated, so a gadget never stands in for a control. A gadget is a JSON spec (`metalui/gadget@1`) composed from a closed catalog of Parts and mechanisms; gadgets wire into rigs (`metalui/rig@1`) with patch cables. The manifest is [`/gadgets.json`](https://metalui.dev/gadgets.json) and the schemas are [`gadget.schema.json`](https://metalui.dev/schemas/gadget.schema.json) and [`rig.schema.json`](https://metalui.dev/schemas/rig.schema.json). Try a spec on [Gadgets › Compose](https://metalui.dev/gadgets/compose).
+
+```tsx
+import { Gadget, Rig, validateGadget, validateRig } from '@unlocalhosted/metalui/gadgets';
+
+<Gadget spec={needleGauge} value={24} />                       // a value drives it; its state follows
+<Gadget spec={patchBay} state="failed" />                       // or the host sets a state
+<Rig spec={reading} catalog={{ 'needle-gauge': needleGauge, 'counter-drum': counterDrum }} values={{ today: { value: 34 } }} />
+```
+
+SwiftUI: `MetalGadget(spec: spec, state: "failed", value: 24)` and `MetalRig(spec: rig, catalog: catalog, values: [...], states: [...])`, from the same JSON.
+
+## What you cannot do
+
+- **Invent a Part, a mechanism, a colour or a sound.** Compose from the catalog below. If a request needs something that is not there, say so: "this needs a new Part; ask a person to draw it".
+- **Pick colours.** A gadget's colours come from its job (a hue station) and its feel; you set the job and three numbers, never a colour.
+- **Make a gadget a control.** It shows a feature's state; the controls stay Components.
+
+## Composing a gadget
+
+1. **Job**: what it means. Each job owns hue stations (gadgets side by side need 30° between colourful bodies), a reach for its sound, its containers and sometimes a pinned material.
+2. **Feel**: `v` (tense ↔ pleased), `a` (still ↔ active), `w` (how much the act commits you), each 0 to 1. Feel picks the material and the body's lightness and colour.
+3. **Parts** on the 400-unit canvas (the body is 320 across at [200, 196]): one `body` (a slab or a bezel), `actor`s the mechanism moves, `trim`, a `lamp` (an LED, top right at [313, 78]), `cut`s into a slab. 2 to 24 parts.
+4. **Mechanism**: exactly one; `bind` maps its slots to part ids. Held mechanisms follow a `drive` port's value; momentary ones play an act.
+5. **States**: always `rest`; each gives the lamp `[signal, gesture]`, may pose parts (`form`), beep an earcon (`beep`), or play the act on entering (`enter: "act"`), with a `hint` for its spoken description. At most 8.
+6. **Ports**: `in` and `out` channels a rig can wire. `describe` says it aloud, with `{title}`, `{state}`, `{value}`, `{max}`, `{unit}`, `{share}`.
+
+Signals: `off`, `live`, `link`, `waiting`, `failed`. Gestures: `steady`, `flicker`, `breathe`, `blink2`, `rise`. Earcons: `done`, `failed`, `waiting`, `ready`.
+
+### Jobs
+
+| Job | Stations | Reach | Containers | Pinned material |
+|---|---|---|---|---|
+| `tune` | 80 | own | slab |  |
+| `command` | 95 | own | slab | ceramic |
+| `link` | 195, 230 | world | slab, free |  |
+| `keep` | 140, 300 | own | slab, inset |  |
+| `identify` | 260 | others | inset | glass |
+| `destroy` | 25 | own | slab |  |
+| `take` | 55 | world | inset |  |
+| `find` | 250 | world | inset | stone |
+| `make` | 330 | own | slab, free |  |
+| `signal` | 55, 80 | own | slab, inset, free |  |
+
+### Parts
+
+| Part | Size | Materials | Params |
+|---|---|---|---|
+| `slab` | 320 × 320 | clay, stone, ceramic, rubber, metal, resin | `cut` (enum: none, slot, hole, tray, well); `depth` (number: 0, 24); `radius` (number: 4, 160); `ink` (boolean) |
+| `bezel` | 320 × 320 | stone, metal, clay | `width` (number: 16, 32); `face` (enum: glass-face, cell, backlight); `opening` (enum: round, square) |
+| `glass-face` | 276 × 276 | glass | `shape` (enum: round, square); `rings` (boolean) |
+| `backlight` | 200 × 200 | lamp | `alpha` (number: 0, 1); `color` (enum: signal, accent, glass); `shape` (enum: glow, beam, dot) |
+| `led` | 22 × 22 | lamp |  |
+| `key` | 112 × 112 | clay, ceramic, accent | `glyph` (string) |
+| `cap` | 60 × 44 | clay, ceramic, accent | `ribs` (number: 2, 5); `shape` (enum: fader, knob, rocker); `value` (number: 0, 1); `tilt` (number: -1, 1) |
+| `jack` | 68 × 68 | metal | `knurls` (number: 8, 16) |
+| `plug` | 54 × 54 | clay, accent | `stub` (enum: up, left, right, none) |
+| `cable` | 0 × 0 | rubber | `sag` (number: 0, 90); `from` (ref); `to` (ref) |
+| `cell` | 44 × 44 | resin | `cols` (number: 1, 8); `rows` (number: 1, 8); `gap` (number: 6, 14) |
+| `drum` | 52 × 88 | clay, ceramic, accent | `digits` (number: 10, 10); `face` (enum: ceramic, clay); `glyphs` (enum: digits, ticks) |
+| `needle` | 96 × 8 | metal | `arc` (number: 90, 150); `ticks` (number: 5, 21); `threshold` (number: 0, 1) |
+| `lid` | 240 × 160 | rubber, clay | `hinge` (enum: back, left); `armed` (boolean) |
+| `pull` | 96 × 14 | metal, clay | `style` (enum: bar, recess) |
+| `lens` | 184 × 184 | glass, accent | `ticks` (number: 12, 36); `iris` (number: 0, 1) |
+| `nib` | 70 × 20 | metal | `angle` (number: -30, 30) |
+| `beeper` | 44 × 24 | metal, clay | `slots` (number: 3, 7) |
+| `label` | 80 × 16 | clay | `text` (string) |
+| `glyph` | 24 × 24 | clay | `name` (string) |
+
+### Mechanisms
+
+| Mechanism | Mode | Drive | Slots | What it does |
+|---|---|---|---|---|
+| `press` | momentary |  | `keys`: key/cap (many); `lamp`: led | The keys drop into their skirts one after another and spring back: a chord. |
+| `slide` | held | number, count | `caps`: cap (many); `slot`: slab; `lamp`: led | Caps travel along their slots to a new mix, one after another; they scrape as they go, tick past each detent, and knock if they reach the end. |
+| `seat` | momentary |  | `plug`: plug; `socket`: jack; `lamp`: led; `beeper`: beeper (optional) | The plug lifts, its shadow opens, and it seats again with a click. |
+| `turn` | held | number, count | `ring`: lens/cap/drum; `lamp`: led | The ring turns to the value, clicking at every eighth of a turn; taken, it clicks round one and back. |
+| `flip` | held | boolean, state | `lid`: lid/cap; `lamp`: led | The lid swings about its hinge: it creaks as it rises, and thuds shut against the rim. Emptied, it swings open and slams. |
+| `sweep` | momentary |  | `beam`: backlight; `face`: glass-face; `blips`: backlight (many) (optional); `lamp`: led | The beam turns once around the glass; each blip lights as the beam crosses it, and fades. |
+| `roll` | held | count | `drums`: drum (many); `window`: slab; `lamp`: led | The drums turn to the new count, the lowest first; each ticks past its digits and settles with a small knock. |
+| `swing` | held | number | `needle`: needle; `face`: glass-face/bezel; `lamp`: led; `beeper`: beeper (optional) | The needle swings to the value, overshoots a little and settles; at the ends of its scale it bounces off the pegs. |
+| `glow` | held | number, count, boolean | `light`: backlight; `cells`: cell (many) (optional); `lamp`: led | Light rises behind the resin: the cells light in turn from the bottom row up, and the backlight brightens with them. |
+| `slide-out` | momentary |  | `tray`: slab; `pull`: pull; `lamp`: led | The drawer is pulled out toward you on its runners, stops against them, is held a moment, and springs home. |
+| `dip` | momentary |  | `nib`: nib; `well`: slab; `lamp`: led | The nib dips into its well and springs back up, with a soft tap on the well. |
+
+## The catalog
+
+Name a catalog gadget in a rig, or copy its spec from `/gadgets.json` and change it.
+
+| Gadget | Job | Mechanism | In | Out | States |
+|---|---|---|---|---|---|
+| `patch-bay` (Sync) | link | seat | `state` state | `healthy` boolean, `done` pulse | rest, connected, syncing, done, failed |
+| `fader-bank` (Settings) | tune | slide | `mix` number |  | rest, on, changed |
+| `keycap-chord` (Shortcuts) | command | press | `press` pulse |  | rest, ready, chord |
+| `scope` (Search) | find | sweep | `query` boolean | `found` count | rest, searching, found, nothing |
+| `drawer` (Storage) | keep | slide-out | `fill` number | `full` boolean, `fill` number | rest, open, full |
+| `lidded-bin` (Trash) | destroy | flip | `armed` boolean, `empty` pulse | `emptied` pulse | rest, armed, emptied |
+| `shutter-lens` (Capture) | take | turn | `zoom` number, `take` pulse | `taken` pulse | rest, taken |
+| `counter-drum` (Streak) | keep | roll | `count` count | `rolled` pulse, `count` count | rest, counting, rolled-over |
+| `cell-grid` (Memory) | keep | glow | `fill` number, `first-run` pulse | `full` boolean | rest, filling, full, first-run |
+| `needle-gauge` (Today) | signal | swing | `value` number | `over` pulse, `above` boolean | rest, over |
+| `rocker` (Sound) | tune | flip | `on` boolean | `on` boolean | rest, on |
+| `ink-well` (Draw) | make | dip | `writing` boolean |  | rest, writing |
+| `thumbwheel` (When) | keep | turn | `offset` number | `in-past` boolean | rest, past, far |
+| `glass-badge` (Account) | identify | glow | `signed-in` boolean |  | rest, signed-in, expired |
+
+## Rigs
+
+A rig puts 2 to 8 gadgets on a grid (up to 4 × 3) and wires out ports to in ports with cables. Outs have jacks on a gadget's right and ins on its left, so wire each cable to a gadget to the right or below. A cable carries its value as it is, or through one map:
+
+- `threshold`: a number or count at or past `at` becomes `above`, else `below` (a word or a switch).
+- `scale`: a number mapped linearly from `from` [a, b] onto `to` [c, d].
+- `match`: a word or switch equal to `when` becomes a pulse.
+- `count`: a pulse adds `step` (1 or -1) to the count already at the far port.
+- `select`: a word or switch looked up in `table` (keys are words, "true" or "false"): a word, a number or a switch.
+
+Ports: `number` is a value between `min` and `max`, with a `unit`; `count` is a whole count up to `max`; `boolean` is a switch; named after a state, it puts the gadget in that state; `state` is one of `options`; it sets the gadget's state; `pulse` is an event, never stored; into a gadget it plays its act. No cycles; at most 3 cables out of one port; every pair of gadgets in a rig passes the set rules (hue apart, not the same material and lightness band, a visible difference also for colour blindness, no more than 3 slab gadgets in a row).
+
+### Worked example: the reading rig
+
+Today's needle gauge drives the streak counter: crossing today's line sends a pulse that counts one more day.
+
+```json
+{
+  "$schema": "metalui/rig@1",
+  "name": "reading",
+  "title": "Reading",
+  "job": "keep",
+  "feel": {
+    "v": 0.8,
+    "a": 0.3,
+    "w": 0.3
+  },
+  "grid": [
+    2,
+    1
+  ],
+  "gadgets": {
+    "today": {
+      "gadget": "needle-gauge",
+      "at": [
+        0,
+        0
+      ]
+    },
+    "streak": {
+      "gadget": "counter-drum",
+      "at": [
+        1,
+        0
+      ]
+    }
+  },
+  "cables": [
+    {
+      "from": "today.over",
+      "to": "streak.count",
+      "map": {
+        "kind": "count",
+        "step": 1
+      }
+    }
+  ]
+}
+```
+
+## Checking a spec
+
+`validateGadget(spec)` and `validateRig(spec, catalog)` return `{ ok: true, spec }` or `{ ok: false, problems }`, each problem a `path`, a `code`, a `message` and a `fix`. Fix every problem before rendering; the renderer draws only valid specs.

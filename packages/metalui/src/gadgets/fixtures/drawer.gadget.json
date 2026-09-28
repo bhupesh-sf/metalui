@@ -10,7 +10,7 @@
   ],
   "mechanism": { "name": "slide-out", "bind": { "tray": "tray", "pull": "pull", "lamp": "lamp" }, "drive": "fill" },
   "ports": { "in": { "fill": { "kind": "number", "min": 0, "max": 1, "default": 0.4 } },
-             "out": { "full": { "kind": "boolean" } } },
+             "out": { "full": { "kind": "boolean" }, "fill": { "kind": "number", "min": 0, "max": 1 } } },
   "states": {
     "rest": { "lamp": ["off", "steady"] },
     "open": { "lamp": ["live", "steady"], "form": { "tray": { "pose": { "y": 60 } }, "pull": { "pose": { "y": 60 } } } },

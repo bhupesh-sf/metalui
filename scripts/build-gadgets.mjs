@@ -223,6 +223,37 @@ public enum MetalGadgetTokens {
     public static let trayTab: (width: Double, height: Double) = (${G.tray.tab.map(num).join(', ')})
     public static let trayEdgeShadow: (depth: Double, alpha: Double) = (${G.tray['edge-shadow'].map(num).join(', ')})
     public static let trayFull: Double = ${num(G.tray.full)}
+    public static let lensAlone: Double = ${num(G.lens.alone)}
+    public static let lensRing: Double = ${num(G.lens.ring)}
+    public static let lensGrip: (length: Double, alpha: Double) = (${G.lens.grip.map(num).join(', ')})
+    public static let lensBevel: Double = ${num(G.lens.bevel)}
+    public static let lensDome: (centreL: Double, rimL: Double, rimC: Double, hue: Double) = (${G.lens.dome.map(num).join(', ')})
+    public static let lensBlades: Int = ${G.lens.blades}
+    public static let lensBlade: Double = ${num(G.lens.blade)}
+    public static let lensIris: (min: Double, max: Double) = (${G.lens.iris.map(num).join(', ')})
+    public static let lensSeam: Double = ${num(G.lens.seam)}
+    public static let lensGlare: (x: Double, y: Double, radius: Double, alpha: Double) = (${G.lens.glare.map(num).join(', ')})
+    public static let lensGlint: (x: Double, y: Double, radius: Double, alpha: Double) = (${G.lens.glint.map(num).join(', ')})
+    public static let lensShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.lens.shadow.map(num).join(', ')})
+    public static let capRocker: (light: Double, shade: Double, hinge: Double, shift: Double, glyph: Double) = (${G.cap.rocker.map(num).join(', ')})
+    public static let capRockerSize: (width: Double, height: Double) = (${G.cap['rocker-size'].map(num).join(', ')})
+    public static let drumFar: Double = ${num(G.drum.far)}
+    public static let labelSize: Double = ${num(G.label.size)}
+    public static let labelEdge: Double = ${num(G.label.edge)}
+    public static let labelTracking: Double = ${num(G.label.tracking)}
+    public static let labelAlpha: (ink: Double, edge: Double) = (${G.label.alpha.map(num).join(', ')})
+    public static let glyphAlpha: Double = ${num(G.glyph.alpha)}
+    public static let glyphStroke: Double = ${num(G.glyph.stroke)}
+    public static let backlightUnlit: (alpha: Double, L: Double) = (${G.backlight.unlit.map(num).join(', ')})
+    public static let nibShoulder: (at: Double, width: Double) = (${G.nib.shoulder.map(num).join(', ')})
+    public static let nibSlit: Double = ${num(G.nib.slit)}
+    public static let nibHole: (at: Double, radius: Double) = (${G.nib.hole.map(num).join(', ')})
+    public static let nibCrown: Double = ${num(G.nib.crown)}
+    public static let nibWet: (share: Double, alpha: Double) = (${G.nib.wet.map(num).join(', ')})
+    public static let nibShadow: (blur: Double, dx: Double, dy: Double, alpha: Double) = (${G.nib.shadow.map(num).join(', ')})
+    public static let nibCut: (width: Double, slit: Double, hole: Double) = (${G.nib.cut.map(num).join(', ')})
+    public static let nibAlone: Double = ${num(G.nib.alone)}
+    public static let holeInk: (inset: Double, meniscus: Double, x: Double, y: Double, radius: Double, alpha: Double) = (${G.hole.ink.map(num).join(', ')})
     public static let cellAlone: (side: Double, gap: Double) = (${G.cell.alone.map(num).join(', ')})
     public static let rigPitch: Double = ${num(G.rig.pitch)}
     public static let rigPadding: Double = ${num(G.rig.padding)}
@@ -323,7 +354,7 @@ ${m.tracks.map((t) => `            .init(part: ${JSON.stringify(t.part)}, frames
         cues: [${m.cues.map(swiftCue).join(', ')}],
         states: [${Object.entries(m.states).map(([k, v]) => `${JSON.stringify(k)}: .init(hold: ${JSON.stringify(v.hold)}, pose: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...v.pose })})`).join(', ') || ':'}],
         reduced: [${m.reduced.map((r) => JSON.stringify(r)).join(', ')}],
-        held: ${m.held ? `.init(slot: ${JSON.stringify(m.held.slot)}, from: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...m.held.from })}, to: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...m.held.to })}, detents: ${m.held.detents ?? 0}, stagger: ${num(m.held.stagger ?? 0)}, wall: ${num(m.held.wall ?? 0)}, impactFull: ${num(m.held.impactFull ?? 1)}, scrapeFull: ${num(m.held.scrapeFull ?? 1)}, tickMin: ${num(m.held.tickMin)}, tickGap: ${num(m.held.tickGap)}, step: ${num(m.held.step)}, roll: ${!!m.held.roll}, rest: ${num(m.held.rest ?? 0)}, pulse: ${num(m.held.pulse ?? 0)})` : 'nil'}
+        held: ${m.held ? `.init(slot: ${JSON.stringify(m.held.slot)}, from: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...m.held.from })}, to: ${swiftPose({ x: 0, y: 0, r: 0, sx: 1, sy: 1, ...m.held.to })}, detents: ${m.held.detents ?? 0}, stagger: ${num(m.held.stagger ?? 0)}, wall: ${num(m.held.wall ?? 0)}, impactFull: ${num(m.held.impactFull ?? 1)}, scrapeFull: ${num(m.held.scrapeFull ?? 1)}, tickMin: ${num(m.held.tickMin)}, tickGap: ${num(m.held.tickGap)}, step: ${num(m.held.step)}, roll: ${!!m.held.roll}, rest: ${num(m.held.rest ?? 0)}, pulse: ${num(m.held.pulse ?? 0)}, pulseBy: ${num(m.held.pulseBy ?? 1)})` : 'nil'}
     )`).join('\n\n')}
 
     public static let all: [MetalMechanism] = [${MECHS.map((m) => m.name.replace(/-([a-z])/g, (_, c) => c.toUpperCase())).join(', ')}]

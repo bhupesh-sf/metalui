@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Button, Dialog, Field, Surface } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { Exploded, IsoCap, XrayFrame, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
+import { HintLayer } from '../edit';
+import { DIM, RISE, TOP, DialogSpecimenCard, arrive, withAlpha, type DialogModel } from './DialogSpecimens';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · DIALOG (three layers deep: the page, a dimming sheet, the dialog)
@@ -9,15 +11,16 @@ import { Dial, Exploded, IsoCap, LayerList, Proof, Switch, XrayFrame, capTop, sc
  *   solid     a button that opens a real dialog
  *   x-ray     the page lies flat; a thin see-through sheet floats over it; the dialog floats
  *             above that, near the top, with a title and two buttons
- *   play      Sheet    how much it dims the page
- *             Opening  it drops in a step from above, without bouncing
- *             Focus    Tab stays inside; Escape or a click outside closes it
- *             Place    near the top, not the middle
- *             Shadow   how high it floats
- *             Layers   the dialog's layers
+ *   card      the real dialog in a small window, handled (DialogSpecimens.tsx):
+ *             Sheet    drag on the sheet: how much it dims the page
+ *             Opening  pull it up and let go: how far it drops in from
+ *             Focus    drag the focus ring: Tab stays inside; Escape closes it
+ *             Place    drag it up or down: near the top, not the middle
+ *             Shadow   lift it: how high it floats
+ *             Layers   a switch per layer
  * ───────────────────────────────────────────────────────── */
 
-const D = tokens.recipes.dialog.props as { scrim: { color: Record<string, string> }; self: { top: string; 'enter-y': number; 'enter-scale': string } };
+const D = tokens.recipes.dialog.props as { scrim: { color: Record<string, string> } };
 const S = 1.3;
 const PAGE_W = 300, PAGE_H = 210, DW = 196, DH = 112;
 
@@ -46,10 +49,9 @@ const LAYERS: LayerDef[] = [
   { name: 'Mid shadow', why: 'A larger soft shadow.' },
   { name: 'Far shadow', why: 'A very big, very faint shadow. Together they lift the dialog well above the page.' },
 ];
-const FOCUSABLE = ['Name field', 'Cancel', 'Save'];
 
-interface Model { dim: number; top: number; lift: number; on: boolean[] }
-const INITIAL: Model = { dim: 0.25, top: parseFloat(D.self.top), lift: 1, on: LAYERS.map(() => true) };
+type Model = DialogModel;
+const INITIAL: Model = { dim: DIM, top: TOP, lift: 1, rise: RISE, on: LAYERS.map(() => true) };
 
 export function DialogXray({ startOpen = false }: { startOpen?: boolean }) {
   const [xray, setXray] = React.useState(startOpen);
@@ -70,7 +72,10 @@ export function DialogXray({ startOpen = false }: { startOpen?: boolean }) {
   const top = capTop(zDialog, 3);
   const exploded = spot === 'layers';
   const shadow = scalePx(plate.shadows.slice(0, 5).filter((_, i) => m.on[i + 1]).join(', ') || 'none', S);
-  const reopen = () => { setOpen(true); setCycle((n) => n + 1); setFocusAt(0); };
+  const reopen = React.useCallback(() => { setOpen(true); setCycle((n) => n + 1); setFocusAt(0); }, []);
+  // the bench arrives the way the dialog does: from the drop above, on the surface spring
+  const wrap = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => { if (cycle) arrive(wrap.current, m.rise * S); }, [cycle]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const body = (
     <div className="xr-dialogface" style={{ padding: 14 * S, gap: 10 * S }}>
@@ -94,8 +99,8 @@ export function DialogXray({ startOpen = false }: { startOpen?: boolean }) {
       {exploded
         ? <Exploded layers={LAYERS} on={m.on} fill={plate.fill} shadows={plate.shadows} x={dx} y={dy} w={DW * S} h={DH * S} r={24 * S} z0={30} gap={14} focus={focus} scale={S} />
         : open && (
-          <div key={cycle} className={cycle ? 'xr-dialogwrap is-arriving' : 'xr-dialogwrap'}>
-            <div className="xr-face is-flat xr-sheet3d" style={{ width: W, height: H, borderRadius: 18 * S, transform: `translateZ(${zSheet}px)`, background: D.scrim.color[cw].replace(/,\s*\.25\)/, `, ${m.dim})`) }} onClick={() => setOpen(false)} />
+          <div key={cycle} ref={wrap} className="xr-dialogwrap">
+            <div className="xr-face is-flat xr-sheet3d" style={{ width: W, height: H, borderRadius: 18 * S, transform: `translateZ(${zSheet}px)`, background: withAlpha(D.scrim.color[cw], m.dim) }} onClick={() => setOpen(false)} />
             {m.on[8] && <div className="xr-shadow" style={{ left: dx, top: dy, width: DW * S, height: DH * S, borderRadius: 24 * S, filter: 'blur(20px)', opacity: 0.22, transform: `translate(12px, 26px) translateZ(${zSheet + 1}px)` }} />}
             <IsoCap x={dx} y={dy} w={DW * S} h={DH * S} r={24 * S} z={zDialog} wall={3} fill={m.on[0] ? plate.fill : 'transparent'} shadow={shadow} wallTone={cw === 'graphite' ? '#1c1c1f' : '#e4e2dc'}>{body}</IsoCap>
           </div>
@@ -113,54 +118,12 @@ export function DialogXray({ startOpen = false }: { startOpen?: boolean }) {
   };
 
   const card = (
-    <>
-      {spot === 'surface' && (
-        <>
-          <p>When a dialog opens, a thin sheet slides over the page and dims it a little, {Math.round(INITIAL.dim * 100)}%. Your eye goes to the dialog, but you can still see where you were. Click the sheet and the dialog closes.</p>
-          <div className="xr-dials"><Dial label="Dim" value={m.dim} min={0} max={0.9} step={0.05} fmt={(v) => `${Math.round(v * 100)}%`} onChange={(dim) => set({ dim })} /></div>
-        </>
-      )}
-      {spot === 'states' && (
-        <>
-          <p>The dialog drops in from {Math.abs(D.self['enter-y'])} pt above while growing from {Number(D.self['enter-scale']) * 100}% to full size. It settles without bouncing, because it is a surface, not a part you pushed. It leaves faster than it came.</p>
-          <p><button type="button" className="status" onClick={reopen}><span className="led" />Open it again</button></p>
-        </>
-      )}
-      {spot === 'press' && (
-        <>
-          <p>While a dialog is open, Tab only moves between the things inside it. You cannot tab out to the page by accident. Escape closes it, and so does a click on the dimmed page. Then focus goes back to the button that opened it.</p>
-          <div className="xr-actions-row">
-            <button type="button" className="status" onClick={() => { setOpen(true); setFocusAt((f) => (f + 1) % FOCUSABLE.length); }}><span className="led off" />Tab</button>
-            <button type="button" className="status" onClick={() => setOpen(false)}><span className="led off" />Escape</button>
-            {!open && <button type="button" className="status" onClick={reopen}><span className="led" />Open</button>}
-          </div>
-          <p className="readout-t">{open ? `focus: ${FOCUSABLE[focusAt]}` : 'closed · focus is back on the button'}</p>
-        </>
-      )}
-      {spot === 'shape' && (
-        <>
-          <p>The dialog sits {INITIAL.top}% down from the top of the window, not in the middle. That is closer to where your eyes already are, and it leaves room below for a keyboard or a longer form.</p>
-          <div className="xr-dials"><Dial label="Distance from the top" value={m.top} min={0} max={46} step={1} fmt={(v) => `${v}%`} onChange={(v) => set({ top: v })} /></div>
-        </>
-      )}
-      {spot === 'shadow' && (
-        <>
-          <p>A dialog floats the highest of the large surfaces, with four shadows from small to very big. Its shadow falls on the dimmed sheet, not on the page.</p>
-          <div className="xr-dials"><Dial label="Height" value={m.lift} min={0} max={3} step={0.1} fmt={(v) => v.toFixed(1)} onChange={(lift) => set({ lift })} /></div>
-        </>
-      )}
-      {spot === 'layers' && (
-        <>
-          <p>The dialog is a plate with nine layers. Turn one off to see what it adds.</p>
-          <LayerList groups={[{ layers: LAYERS, on: m.on, toggle: (i, v) => set({ on: m.on.map((x, j) => (j === i ? v : x)) }) }]} focus={focus} setFocus={setFocus} />
-        </>
-      )}
-      <Proof><Switch label="Open a real dialog" on={real} onChange={setReal} /></Proof>
-    </>
+    <DialogSpecimenCard spot={spot} m={m} set={set} fill={plate.fill} shadows={plate.shadows} cw={cw} layers={LAYERS} focus={setFocus}
+      open={open} setOpen={setOpen} focusAt={focusAt} setFocusAt={setFocusAt} replay={reopen} real={real} setReal={setReal} />
   );
 
   return (
-    <>
+    <HintLayer>
     <XrayFrame
       xray={xray} setXray={setXray} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot}
       solid={<div style={{ zoom: 1.6 }} onClick={(e) => { e.stopPropagation(); setReal(true); }}><Button>Rename canvas…</Button></div>}
@@ -180,7 +143,7 @@ export function DialogXray({ startOpen = false }: { startOpen?: boolean }) {
           </Dialog.Actions>
         </Dialog.Popup>
       </Dialog>
-    </>
+    </HintLayer>
   );
 }
 

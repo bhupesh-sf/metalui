@@ -130,9 +130,22 @@ const native = [...walk(join(root, 'swift/Sources/MetalUI/Components'), ['.swift
 // Gadget Parts take their look from the gadget foundations (tokens gadgets.*), checked by build-gadgets
 // and the parity fixtures; their meta.json says "recipe": "gadgets" and they carry no CSS recipe.
 const gadgetParts = new Set(readdirSync(join(root, 'packages/metalui/src/components')).filter((d) => { const m = join(root, 'packages/metalui/src/components', d, 'meta.json'); return existsSync(m) && JSON.parse(readFileSync(m, 'utf8')).recipe === 'gadgets'; }).map((d) => norm(d)));
+// Spatial field is a generated metric/ink recipe rather than an ordered fill/shadow stack.
+const spatialField = tokens['spatial-field'];
+const spatialMetrics = new Set();
+if (spatialField) {
+  for (const [key, expected] of Object.entries(spatialField).filter(([key]) => !key.startsWith('$'))) {
+    const camel = key.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+    const cssValue = Number.parseFloat(cssVars[`--mu-spatial-field-${key}`]);
+    const swiftValue = Number(swift.match(new RegExp(`public static let ${camel}: Double = ([-\\d.]+)`))?.[1]);
+    if (!Number.isFinite(cssValue) || cssValue !== expected || !Number.isFinite(swiftValue) || swiftValue !== expected)
+      errors.push(`spatial-field.${key}: CSS/Swift numeric mismatch`);
+  }
+  spatialMetrics.add(norm('spatial-field'));
+}
 for (const path of [...react, ...native]) {
   const name = norm(path.split('/').at(-1).replace(/\.(tsx|swift)$/, ''));
-  if (gadgetParts.has(name)) continue;
+  if (gadgetParts.has(name) || spatialMetrics.has(name)) continue;
   if (![...names].some((n) => norm(n) === name)) errors.push(`${path.slice(root.length + 1)}: component has no matching component recipe`);
 }
 // Existing alpha components without shared recipes remain visible as known gaps.

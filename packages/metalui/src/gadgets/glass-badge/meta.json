@@ -1,0 +1,12 @@
+{
+  "name": "glass-badge",
+  "title": "Glass badge",
+  "status": "alpha",
+  "description": "A gadget for who you are: a person printed on a square of cool glass in a heavy steel bezel, lit from behind, and a lamp. Signed in, the light rises and the lamp rises green; expired, the lamp turns amber. Silent. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/glass-badge.gadget.json",
+  "uses": ["bezel", "glass-face", "backlight", "glyph", "led"],
+  "page": "/gadgets/glass-badge"
+}

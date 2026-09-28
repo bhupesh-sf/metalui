@@ -51,7 +51,7 @@ export interface CommandPaletteItem {
   id: string;
   /** What the row says. Matches of the query are marked in it. */
   label: string;
-  /** The section heading this row sits under: LENS, LENSES, BLOCKS, ACTIONS. Rows of one section must be adjacent. */
+  /** The section heading this row sits under: LENS, LENSES, BLOCKS, ACTIONS. Rows of one name form one section, placed where the name first appears. */
   section: string;
   /** The 14 glyph at the left, e.g. <LensIcon size={14} />. */
   icon?: React.ReactNode;
@@ -136,15 +136,22 @@ export function CommandPalette({
   }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const shown = React.useMemo(() => (filter ? items.filter((it) => matches(it, query)) : items), [items, query, filter]);
+  // One section per name, in the order names first appear; `index` is this display order, which the
+  // highlight and ↩ follow. Rows given under one name at two places join one section (two groups with
+  // one key drew rows under the wrong heading after filtering).
   const sections = React.useMemo(() => {
     const out: { name: string; rows: { item: CommandPaletteItem; index: number }[] }[] = [];
-    shown.forEach((item, index) => {
-      const last = out[out.length - 1];
-      if (last && last.name === item.section) last.rows.push({ item, index });
-      else out.push({ name: item.section, rows: [{ item, index }] });
-    });
+    const byName = new Map<string, { item: CommandPaletteItem; index: number }[]>();
+    for (const item of shown) {
+      let rows = byName.get(item.section);
+      if (!rows) { rows = []; byName.set(item.section, rows); out.push({ name: item.section, rows }); }
+      rows.push({ item, index: 0 });
+    }
+    let index = 0;
+    for (const sec of out) for (const row of sec.rows) row.index = index++;
     return out;
   }, [shown]);
+  const ordered = React.useMemo(() => sections.flatMap((sec) => sec.rows.map((r) => r.item)), [sections]);
 
   const highlighted = React.useRef<CommandPaletteItem | undefined>(undefined);
   const run = (item: CommandPaletteItem | undefined, pin: boolean) => {
@@ -161,8 +168,8 @@ export function CommandPalette({
           <Combobox.Root
             inline
             open
-            items={shown}
-            filteredItems={shown}
+            items={ordered}
+            filteredItems={ordered}
             itemToStringLabel={(it: CommandPaletteItem) => it.label}
             isItemEqualToValue={(a: CommandPaletteItem, b: CommandPaletteItem) => a.id === b.id}
             highlightItemOnHover
@@ -188,7 +195,7 @@ export function CommandPalette({
                   if (e.key === 'Enter' && e.shiftKey && pinnable) {
                     e.preventDefault();
                     e.stopPropagation();
-                    run(highlighted.current ?? shown[0], true);
+                    run(highlighted.current ?? ordered[0], true);
                   }
                 }}
               />

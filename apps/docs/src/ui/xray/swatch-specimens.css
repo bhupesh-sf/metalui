@@ -1,0 +1,11 @@
+.ed-swatch-box .ed-edge.is-y { top: -3px; }
+.ed-swatch-box .ed-corner { z-index: 2; }
+.ed-swatch-color, .ed-swatch-dimple { position: relative; display: inline-flex; }
+.ed-swatch-color-handle { position: absolute; inset: 30% 28% 38% 26%; cursor: ew-resize; outline: none; border-radius: 50%; touch-action: none; }
+.ed-swatch-color-handle::after { content: ''; position: absolute; inset: 24%; border: .6px dashed var(--mu-presence-guide); border-radius: 50%; opacity: .45; pointer-events: none; }
+.ed-swatch-color[data-peek] .ed-swatch-color-handle::after, .ed-swatch-color-handle:hover::after, .ed-swatch-color-handle:focus-visible::after { opacity: 1; border-width: 1px; }
+.ed-swatch-dimple-handle { position: absolute; min-width: 8px; min-height: 8px; border: .6px solid var(--mu-presence-guide); border-radius: 50%; cursor: ew-resize; outline: none; touch-action: none; }
+.ed-swatch-dimple[data-peek] .ed-swatch-dimple-handle, .ed-swatch-dimple-handle:hover, .ed-swatch-dimple-handle:focus-visible { border-width: 1.3px; }
+.ed-swatch-light { position: relative; }
+.ed-swatch-lift { border-radius: var(--mu-r-swatch-self-radius); touch-action: none; }
+[data-mu-colorway="graphite"] :is(.ed-swatch-color-handle::after, .ed-swatch-dimple-handle) { border-color: var(--green-deep); }

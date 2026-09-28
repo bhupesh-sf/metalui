@@ -30,7 +30,7 @@ public struct MetalKbd: View {
         case .strip: recipe = MetalRecipe(fill: MetalKbdMetrics.stripBg, shadows: MetalKbdMetrics.stripSh); ink = MetalKbdMetrics.stripInk
         case .sunk: recipe = MetalRecipe(fill: MetalKbdMetrics.sunkBg, shadows: MetalKbdMetrics.sunkSh); ink = MetalKbdMetrics.sunkInk
         }
-        let shape = RoundedRectangle(cornerRadius: surface == .sunk ? 999 : MetalRadius.key, style: .continuous)
+        let shape = RoundedRectangle(cornerRadius: surface == .sunk ? MetalRadius.pill : MetalRadius.key, style: .continuous)
         return Text(key)
             .font(.metal(MetalType.readout)).tracking(MetalType.readout.trackingPoints).monospacedDigit()
             .foregroundColor(ink.color)

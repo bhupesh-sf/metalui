@@ -118,21 +118,70 @@ public struct MetalBackdrop: Equatable, Sendable {
 }
 
 /// A damped spring (mass 1). CSS uses the sampled `linear()` twin.
+/// The SwiftUI motion a spring role uses on Apple platforms: the system's own presets, never
+/// hand-set physics. The web samples `stiffness`/`damping` into CSS curves; SwiftUI does not.
+public enum MetalNativeMotion: String, Sendable {
+    /// Quick, exact, no overshoot: parts you touch, controls opening in place.
+    case snappy
+    /// Unhurried, no overshoot: surfaces rising, content settling.
+    case smooth
+    /// A little life at the stop: objects landing, hinges.
+    case bouncy
+    /// Letting go: faster than snappy.
+    case quick
+    /// A refusal: a short, firm shake.
+    case shake
+
+    public var animation: Animation {
+        switch self {
+        case .snappy: return .snappy
+        case .smooth: return .smooth
+        case .bouncy: return .bouncy
+        case .quick: return .snappy(duration: 0.2)
+        case .shake: return .bouncy(duration: 0.3, extraBounce: 0.3)
+        }
+    }
+
+    /// The same preset as a response / damping pair, for Core Animation
+    /// (`CASpringAnimation(perceptualDuration: response, bounce: 1 - dampingFraction)`), so layers
+    /// and SwiftUI views move identically. Apple's presets: smooth has no bounce, snappy 0.15,
+    /// bouncy 0.3, over half a second.
+    public var response: Double {
+        switch self {
+        case .snappy, .smooth, .bouncy: return 0.5
+        case .quick: return 0.2
+        case .shake: return 0.3
+        }
+    }
+
+    public var dampingFraction: Double {
+        switch self {
+        case .smooth: return 1
+        case .snappy, .quick: return 0.85
+        case .bouncy: return 0.7
+        case .shake: return 0.4
+        }
+    }
+}
+
 public struct MetalSpring: Equatable, Sendable {
     public let stiffness: Double
     public let damping: Double
-    /// Settle time the CSS curve is sampled over, in seconds.
+    /// Settle time the CSS curve is sampled over, in seconds (the web's).
     public let duration: Double
+    /// What SwiftUI uses for this role: an Apple preset.
+    public let native: MetalNativeMotion
 
-    public init(stiffness: Double, damping: Double, duration: Double) {
+    public init(stiffness: Double, damping: Double, duration: Double, native: MetalNativeMotion = .smooth) {
         self.stiffness = stiffness
         self.damping = damping
         self.duration = duration
+        self.native = native
     }
 
-    public var animation: Animation {
-        .interpolatingSpring(mass: 1, stiffness: stiffness, damping: damping)
-    }
+    /// The system's own motion for this role (`.snappy`, `.smooth`, `.bouncy`), so every
+    /// MetalUI view moves the way native SwiftUI does and interrupts the way it does.
+    public var animation: Animation { native.animation }
 }
 
 /// A font family in the Soft Hardware type system.

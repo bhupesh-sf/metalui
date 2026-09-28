@@ -9,8 +9,11 @@ for (const colorway of COLORWAYS) {
   test(`caps in ${colorway}`, async ({ page }) => {
     await open(page, '/components/cap', colorway);
     const looks = page.getByTestId('cap-looks').locator('svg[role="img"]');
-    await expect(looks).toHaveCount(6);
-    expect(await looks.evaluateAll((els) => els.map((e) => e.querySelector('[data-shape]')!.getAttribute('data-shape')))).toEqual(['fader', 'fader', 'fader', 'fader', 'knob', 'knob']);
+    await expect(looks).toHaveCount(8);
+    expect(await looks.evaluateAll((els) => els.map((e) => e.querySelector('[data-shape]')!.getAttribute('data-shape')))).toEqual(['fader', 'fader', 'fader', 'fader', 'knob', 'knob', 'rocker', 'rocker']);
+    // A rocker rocks: off, its lower half faces the light; on, its upper half.
+    expect(await looks.nth(6).evaluate((e) => Number(e.querySelector('[data-rocker="bottom-lit"]')!.getAttribute('opacity')))).toBeGreaterThan(0);
+    expect(await looks.nth(7).evaluate((e) => Number(e.querySelector('[data-rocker="top-lit"]')!.getAttribute('opacity')))).toBeGreaterThan(0);
     // Three ribs (a groove and its lit edge each) on a fader, five when asked; a pointer on a knob.
     expect(await looks.first().evaluate((e) => e.querySelector('[data-part="cap.face"] path[stroke]')!.getAttribute('d')!.match(/M/g)!.length)).toBe(3);
     expect(await looks.nth(3).evaluate((e) => e.querySelector('[data-part="cap.face"] path[stroke]')!.getAttribute('d')!.match(/M/g)!.length)).toBe(5);

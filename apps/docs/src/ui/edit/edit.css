@@ -28,7 +28,11 @@
 .ed-seg[data-weight="heavy"] { stroke-width: .9; opacity: .85; }
 .ed-seg[data-on] { stroke-width: 1.3; opacity: 1; }
 /* the corner handle: an arc along the corner's own curve; working it shows the whole radius */
-.ed-corner { position: absolute; left: 0; top: 0; cursor: nwse-resize; outline: none; }
+.ed-corner { position: absolute; left: 0; top: 0; cursor: nwse-resize; outline: none;
+  /* on a small part (a keycap) the corner must not swallow the edges: it keeps to its corner */
+  max-width: 33%; max-height: 45%; overflow: visible; }
+/* where an edge meets the corner, the thin strip along the edge is the edge's */
+.ed-overlay .ed-edge { z-index: 1; }
 .ed-corner-art { position: absolute; left: 0; top: 0; overflow: visible; }
 .ed-corner-arc { fill: none; stroke: var(--mu-presence-guide); stroke-width: .5; stroke-linecap: round; opacity: .6;
   transition: stroke-width var(--spring-part-d) var(--spring-part), opacity var(--spring-part-d) var(--spring-part); }

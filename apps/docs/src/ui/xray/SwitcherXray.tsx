@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Switcher } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Callouts, Dial, useFit, Glyph, SpringPlot, Switch, alphaK, scalePx, springEasing, useRecipeLayers, type SpotDef } from './kit';
+import { Callouts, useFit, Glyph, alphaK, scalePx, springEasing, useRecipeLayers, type SpotDef } from './kit';
+import { HintLayer } from '../edit';
+import { SwitcherSpecimenCard } from './SwitcherSpecimens';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · SWITCHER
@@ -23,7 +25,7 @@ const SEG = RECIPE.props.option as { height: number; 'height-regular': number; '
 const PART = tokens.springs.part as { stiffness: number; damping: number };
 const S = 2.4;
 const RIM = 5;
-const OPTIONS = [{ value: 'day', label: 'Day' }, { value: 'week', label: 'Week' }, { value: 'month', label: 'Month' }];
+export const OPTIONS = [{ value: 'day', label: 'Day' }, { value: 'week', label: 'Week' }, { value: 'month', label: 'Month' }];
 
 type Spot = 'shape' | 'well' | 'thumb' | 'slide' | 'light' | 'layers';
 const SPOTS: SpotDef<Spot>[] = [
@@ -39,13 +41,13 @@ const SIDE: Record<Spot, ['left' | 'right', number]> = {
   layers: ['right', 0.2], well: ['right', 0.48], slide: ['right', 0.76],
 };
 
-const WELL_LAYERS = [
+export const WELL_LAYERS = [
   { name: 'Tray fill', why: 'The tray colour. It is darker at the top and lighter at the bottom. That is the opposite of the button, because the tray goes down into the page.' },
   { name: 'Inner shadow', why: 'A soft shadow inside the top edge. The top edge blocks the light, so the inside is darker there.' },
   { name: 'Edge line', why: 'A very thin outline so the tray still has an edge on a page of almost the same colour.' },
   { name: 'Bottom light', why: 'A thin bright line on the bottom edge. The light hits the far wall of the tray. This is what makes it look dug in and not just grey.' },
 ];
-const THUMB_LAYERS = [
+export const THUMB_LAYERS = [
   { name: 'Thumb fill', why: 'The thumb colour. Lighter at the top, like the button.' },
   { name: 'Inner glow', why: 'A soft light just inside the edge. It makes the thumb look like soft plastic.' },
   { name: 'Top light', why: 'A thin bright line on the top left edge. It shows the thumb is rounded and facing the light.' },
@@ -54,14 +56,14 @@ const THUMB_LAYERS = [
   { name: 'Drop', why: 'A bigger, softer shadow. It shows how far the thumb stands above the tray.' },
 ];
 
-interface Model {
+export interface Model {
   size: 'regular' | 'compact'; pad: number; padX: number;
   depth: number; lift: number;
   k: number; c: number; instant: boolean;
   lightDeg: number; lightK: number;
   well: boolean[]; thumb: boolean[];
 }
-const INITIAL: Model = {
+export const INITIAL: Model = {
   size: 'regular', pad: SELF.pad, padX: SEG['pad-x'],
   depth: 1, lift: 1,
   k: PART.stiffness, c: PART.damping, instant: false,
@@ -139,7 +141,7 @@ export function SwitcherXray({ startOpen = false }: { startOpen?: boolean }) {
   const control = (label: string) => <span className="xr-seg-vars" style={segVars}><Switcher aria-label={label} size={m.size} value={sel} onValueChange={setSel} options={OPTIONS} /></span>;
 
   return (
-    <div className="xr" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
+    <HintLayer><div className="xr" data-xray={xray || undefined} data-spot={xray ? spot : undefined}>
       <span ref={measure} aria-hidden className="xr-measure" style={{ font: '500 11.5px/1 var(--sans)' }}>
         {OPTIONS.map((o) => <span key={o.value} style={{ display: 'inline-block' }}>{o.label}</span>)}
       </span>
@@ -236,7 +238,7 @@ export function SwitcherXray({ startOpen = false }: { startOpen?: boolean }) {
         )}
 
         {xray && <Callouts bench={bench} spots={SPOTS} side={SIDE} spot={spot} setSpot={setSpot} deps={[spot, m, sel, textW, fit]} />}
-        <div className="xr-hint eng">{xray ? (spot === 'slide' ? 'Click a label to move the thumb' : 'Pick an icon to learn about that part') : 'Try it, then open the x-ray'}</div>
+        <div className="xr-hint eng">{xray ? (spot === 'slide' ? 'Drag the thumb or click an option' : 'Pick an icon to learn about that part') : 'Try it, then open the x-ray'}</div>
         <div className="xr-actions">
           {xray && <button type="button" className="status" onClick={() => setM(INITIAL)}><span className="led off" />Reset</button>}
           <button type="button" className="status" onClick={() => setXray(!xray)}><span className={xray ? 'led' : 'led off'} />{xray ? 'Solid' : 'X-ray'}</button>
@@ -246,117 +248,9 @@ export function SwitcherXray({ startOpen = false }: { startOpen?: boolean }) {
       {xray && (
         <div className="xr-card raised" key={spot}>
           <span className="eng xr-card-head"><Glyph id={spot} /> {current.title} · {current.word}</span>
-          {spot === 'shape' && <ShapeCard m={m} set={set} control={control} />}
-          {spot === 'well' && <WellCard m={m} set={set} control={control} />}
-          {spot === 'thumb' && <ThumbCard m={m} set={set} control={control} />}
-          {spot === 'slide' && <SlideCard m={m} set={set} control={control} />}
-          {spot === 'light' && <LightCard m={m} set={set} control={control} />}
-          {spot === 'layers' && <LayersCard m={m} set={set} focus={focus} setFocus={setFocus} control={control} parts={parts} />}
+          <SwitcherSpecimenCard spot={spot} m={m} set={set} sel={sel} setSel={setSel} focus={setFocus} parts={parts} />
         </div>
       )}
-    </div>
-  );
-}
-
-/* ───────────────────────── cards ───────────────────────── */
-
-type CardProps = { m: Model; set: (p: Partial<Model>) => void; control: (label: string) => React.ReactNode };
-
-function Proof({ children }: { children: React.ReactNode }) {
-  return <div className="xr-proof" style={{ justifyContent: 'center' }}>{children}</div>;
-}
-
-function ShapeCard({ m, set, control }: CardProps) {
-  return (
-    <>
-      <p>Each option is as wide as its word plus some space on both sides. The tray adds a little space all around, so the thumb never touches the tray's edge.</p>
-      <div className="xr-dials">
-        <div className="xr-dial"><span className="xr-dial-head"><span>Size</span></span><Switcher size="compact" aria-label="Size" value={m.size} onValueChange={(v) => set({ size: v as Model['size'] })} options={[{ value: 'regular', label: 'Regular 28' }, { value: 'compact', label: 'Compact 24' }]} /></div>
-        <Dial label="Space around the thumb" value={m.pad} min={0} max={8} step={1} fmt={(v) => `${v} pt`} onChange={(pad) => set({ pad })} />
-        <Dial label="Space beside each word" value={m.padX} min={4} max={20} step={1} fmt={(v) => `${v} pt`} onChange={(padX) => set({ padX })} />
-      </div>
-      <Proof>{control('Shape preview')}</Proof>
-    </>
-  );
-}
-
-function WellCard({ m, set, control }: CardProps) {
-  return (
-    <>
-      <p>The well is a tray pressed into the page. It is darker at the top and has a bright line at the bottom. Make it deeper and the inner shadow gets stronger.</p>
-      <div className="xr-dials">
-        <Dial label="Depth" value={m.depth} min={0} max={3} step={0.1} fmt={(v) => (v === 0 ? 'flat' : v.toFixed(1))} onChange={(depth) => set({ depth })} />
-      </div>
-      <Proof>{control('Well preview')}</Proof>
-    </>
-  );
-}
-
-function ThumbCard({ m, set, control }: CardProps) {
-  return (
-    <>
-      <p>The thumb is a small raised button inside the tray. It shows which option is on. Raise it and its shadow grows, so it looks like it stands higher.</p>
-      <div className="xr-dials">
-        <Dial label="Height above the tray" value={m.lift} min={0} max={3} step={0.1} fmt={(v) => v.toFixed(1)} onChange={(lift) => set({ lift })} />
-      </div>
-      <Proof>{control('Thumb preview')}</Proof>
-    </>
-  );
-}
-
-function SlideCard({ m, set, control }: CardProps) {
-  const ease = springEasing(m.k, m.c);
-  return (
-    <>
-      <p>When you pick another option, the thumb slides there on a spring. It goes a little past the spot and comes back, like a real part hitting a stop. Change the spring and click a label.</p>
-      <div className="xr-dials">
-        <Dial label="Stiffness" value={m.k} min={60} max={600} step={10} onChange={(k) => set({ k })} />
-        <Dial label="Damping" value={m.c} min={6} max={50} step={1} onChange={(c) => set({ c })} />
-        <Switch label="No animation" on={m.instant} onChange={(instant) => set({ instant })} />
-      </div>
-      <div className="xr-proof" style={{ flexDirection: 'column', gap: 10 }}>
-        {control('Slide preview')}
-        <SpringPlot k={m.k} c={m.c} ms={Math.max(360, Math.min(900, ease.ms))} />
-        <span className="readout-t ink2">settles in about {Math.round(ease.ms / 10) * 10} ms</span>
-      </div>
-    </>
-  );
-}
-
-function LightCard({ m, set, control }: CardProps) {
-  return (
-    <>
-      <p>One light shines on both parts. The thumb sticks up, so its top edge is bright. The tray goes down, so its top edge is in shadow and its bottom edge is bright. Move the light and both change.</p>
-      <div className="xr-dials">
-        <Dial label="Direction" value={m.lightDeg} min={-90} max={90} step={5} fmt={(v) => (v === 0 ? 'top' : v < 0 ? `${-v}° left` : `${v}° right`)} onChange={(lightDeg) => set({ lightDeg })} />
-        <Dial label="Strength" value={m.lightK} min={0} max={1.5} step={0.05} fmt={(v) => `${Math.round(v * 100)}%`} onChange={(lightK) => set({ lightK })} />
-      </div>
-      <Proof>{control('Light preview')}</Proof>
-    </>
-  );
-}
-
-function LayersCard({ m, set, focus, setFocus, control }: CardProps & { focus: string | null; setFocus: (n: string | null) => void; parts: Parts }) {
-  const row = (group: 'well' | 'thumb', list: typeof WELL_LAYERS, i: number) => {
-    const l = list[i];
-    const on = m[group][i];
-    return (
-      <li key={l.name} className={[focus === l.name ? 'is-focus' : '', on ? '' : 'is-off'].join(' ')} onPointerEnter={() => setFocus(l.name)} onPointerLeave={() => setFocus(null)}>
-        <Switch label={l.name} on={on} onChange={(v) => set({ [group]: m[group].map((x, j) => (j === i ? v : x)) } as Partial<Model>)} />
-        <p>{l.why}</p>
-      </li>
-    );
-  };
-  return (
-    <>
-      <p>Two parts: the tray has four layers and the thumb has six. Turn one off to see what it adds.</p>
-      <Proof>{control('Layers preview')}</Proof>
-      <ol className="xr-layers">
-        <li className="xr-layers-head eng">The tray</li>
-        {WELL_LAYERS.map((_, i) => row('well', WELL_LAYERS, i))}
-        <li className="xr-layers-head eng">The thumb</li>
-        {THUMB_LAYERS.map((_, i) => row('thumb', THUMB_LAYERS, i))}
-      </ol>
-    </>
+    </div></HintLayer>
   );
 }

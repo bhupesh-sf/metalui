@@ -1,0 +1,12 @@
+.ed-sw-ghost { position: absolute; border-radius: 50%; pointer-events: none; outline: .5px dashed var(--mu-presence-guide); outline-offset: -.25px; background: color-mix(in srgb, var(--mu-presence-guide) 12%, transparent); }
+.ed-sw[data-shown~="thumb"] .mu-switch-thumb { outline: .4px solid var(--mu-presence-guide); outline-offset: .6px; }
+.ed-sw .ed-edge.is-y { height: 4px; }
+.ed-sw .ed-edge.is-x { width: 4px; }
+.ed-sw[data-lean] .ed-seg[data-weight="heavy"] { stroke-width: 1.4px; }
+.ed-sw-size-lean { position: absolute; border: .5px dashed var(--mu-presence-guide); border-radius: 999px; pointer-events: none; }
+.ed-sw[data-live="Gap"] .mu-switch-thumb, .ed-sw[data-live="Stretch"] .mu-switch-thumb { transition: none; }
+.ed-switch-lightbox { position: relative; }
+.ed-switch-orbit { position: absolute; left: 50%; top: 50%; translate: -50% -50%; }
+.ed-switch-sun { position: absolute; left: 50%; top: 50%; margin-left: -3.5px; margin-top: -3.5px; }
+html.rm .ed-sw *, html.rm .ed-switch-lightbox * { transition: none !important; }
+@media (prefers-reduced-motion: reduce) { .ed-sw *, .ed-switch-lightbox * { transition: none !important; } }

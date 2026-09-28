@@ -303,7 +303,15 @@ export const GADGETS = {
       "well": 6
     },
     "lipAlpha": 0.5,
-    "trayRadius": 20
+    "trayRadius": 20,
+    "ink": [
+      0.12,
+      0.14,
+      0.34,
+      0.3,
+      0.16,
+      0.7
+    ]
   },
   "jack": {
     "hole": 0.44,
@@ -456,6 +464,17 @@ export const GADGETS = {
     "slot": [
       18,
       20
+    ],
+    "rocker": [
+      0.2,
+      0.18,
+      0.35,
+      5,
+      0.18
+    ],
+    "rockerSize": [
+      96,
+      144
     ]
   },
   "key": {
@@ -528,7 +547,11 @@ export const GADGETS = {
     "glassLift": 0.14,
     "alpha": 0.85,
     "sliceAlpha": 0.75,
-    "glassChroma": 1.4
+    "glassChroma": 1.4,
+    "unlit": [
+      0.45,
+      0.22
+    ]
   },
   "lamp": {
     "off": [
@@ -567,7 +590,8 @@ export const GADGETS = {
       0.05,
       0.28
     ],
-    "alone": 150
+    "alone": 150,
+    "far": 7
   },
   "needle": {
     "base": 7,
@@ -715,6 +739,74 @@ export const GADGETS = {
       0.35
     ],
     "full": 0.9
+  },
+  "lens": {
+    "ring": 14,
+    "grip": [
+      0.7,
+      0.35
+    ],
+    "bevel": 2,
+    "dome": [
+      0.12,
+      0.3,
+      0.09,
+      285
+    ],
+    "blades": 6,
+    "blade": 0.24,
+    "iris": [
+      0.22,
+      0.9
+    ],
+    "seam": 0.4,
+    "glare": [
+      0.36,
+      0.3,
+      0.42,
+      0.28
+    ],
+    "glint": [
+      0.3,
+      0.26,
+      0.07,
+      0.9
+    ],
+    "shadow": [
+      0.09,
+      0.05,
+      0.1,
+      0.4
+    ],
+    "alone": 260
+  },
+  "nib": {
+    "shoulder": [
+      0.62,
+      1
+    ],
+    "slit": 0.52,
+    "hole": [
+      0.55,
+      0.1
+    ],
+    "crown": 0.14,
+    "wet": [
+      0.2,
+      0.85
+    ],
+    "shadow": [
+      0.12,
+      0.1,
+      0.22,
+      0.35
+    ],
+    "alone": 230,
+    "cut": [
+      0.04,
+      0.7,
+      0.8
+    ]
   },
   "rig": {
     "pitch": 440,
@@ -1023,13 +1115,14 @@ export const GADGETS = {
       "lidded-bin",
       "shutter-lens",
       "counter-drum",
-      "needle-gauge",
       "cell-grid",
+      "needle-gauge",
       "rocker",
       "ink-well",
       "thumbwheel",
       "glass-badge"
-    ]
+    ],
+    "neighbours": 1
   },
   "parts": {
     "slab": {
@@ -1063,6 +1156,9 @@ export const GADGETS = {
           "number",
           4,
           160
+        ],
+        "ink": [
+          "boolean"
         ]
       },
       "strike": [
@@ -1206,11 +1302,17 @@ export const GADGETS = {
         "shape": [
           "enum",
           "fader",
-          "knob"
+          "knob",
+          "rocker"
         ],
         "value": [
           "number",
           0,
+          1
+        ],
+        "tilt": [
+          "number",
+          -1,
           1
         ]
       },
@@ -1596,7 +1698,8 @@ export const GADGETS = {
         "ring": {
           "parts": [
             "lens",
-            "cap"
+            "cap",
+            "drum"
           ]
         },
         "lamp": {
@@ -1712,7 +1815,8 @@ export const GADGETS = {
       "mode": "held",
       "drive": [
         "number",
-        "count"
+        "count",
+        "boolean"
       ],
       "slots": {
         "light": {
@@ -1724,7 +1828,8 @@ export const GADGETS = {
           "parts": [
             "cell"
           ],
-          "many": true
+          "many": true,
+          "optional": true
         },
         "lamp": {
           "parts": [
@@ -1808,6 +1913,19 @@ export const GADGETS = {
       12
     ],
     "fanOut": 3
+  },
+  "label": {
+    "size": 0.72,
+    "edge": 1,
+    "tracking": 0.14,
+    "alpha": [
+      0.55,
+      0.7
+    ]
+  },
+  "glyph": {
+    "alpha": 0.8,
+    "stroke": 1.7
   }
 } as const;
 export type GadgetMaterial = 'clay' | 'ceramic' | 'resin' | 'stone' | 'glass' | 'metal' | 'rubber';

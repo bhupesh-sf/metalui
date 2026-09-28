@@ -1,6 +1,7 @@
 // @unlocalhosted/metalui: React components on Base UI. Import '@unlocalhosted/metalui/styles.css' once.
 export { Surface, type SurfaceProps, type SurfaceMaterial, type SurfaceRadius } from './components/surface/surface';
 export { Well, type WellProps, type WellVariant, type WellRadius } from './components/well/well';
+export { DotDisplay, useDotTick, type DotDisplayProps, type DotColour, type DotInk } from './components/dot-display/dot-display';
 export { Label, type LabelProps, type LabelVariant } from './components/label/label';
 export { Rule, type RuleProps } from './components/rule/rule';
 export { IconButton, type IconButtonProps } from './components/icon-button/icon-button';
@@ -34,6 +35,8 @@ export { Needle, type NeedleProps } from './components/needle/needle';
 export { Cell, type CellProps } from './components/cell/cell';
 export { Lid, type LidProps } from './components/lid/lid';
 export { Pull, type PullProps } from './components/pull/pull';
+export { Lens, type LensProps } from './components/lens/lens';
+export { Nib, type NibProps } from './components/nib/nib';
 export { StatusBadge, type StatusBadgeProps } from './components/status/status';
 export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
@@ -51,6 +54,7 @@ export { PastBanner, type PastBannerProps } from './blocks/past-banner/past-bann
 export { TimeScrubber, MemoryScrubber, type TimeScrubberProps, type MemoryScrubberProps } from './blocks/time-scrubber/time-scrubber';
 export { FilterBar, LensBar, type FilterBarProps, type FilterView, type LensBarProps, type LensMode } from './blocks/filter-bar/filter-bar';
 export { Switcher, type SwitcherProps, type SwitcherOption, Segmented, type SegmentedProps, type SegmentedOption } from './components/switcher/switcher';
+export { Fan, type FanProps, type FanOption, type FanPickerProps, type FanTrayProps } from './components/fan/fan';
 export { Region, RegionRow, type RegionProps, type RegionRowProps } from './blocks/region/region';
 export { ProvenanceTooltip, ProvenanceProvider, type ProvenanceTooltipProps } from './blocks/provenance-tooltip/provenance-tooltip';
 export { HoverEngraving, type HoverEngravingProps, type EngravingStatus } from './blocks/hover-engraving/hover-engraving';
@@ -62,6 +66,7 @@ export { Switch, type SwitchProps } from './components/switch/switch';
 export { BrushCursor, type BrushCursorProps, type BrushMode } from './components/brush-cursor/brush-cursor';
 export { BlockSilhouette, type BlockSilhouetteProps, type SilhouetteKind } from './components/block-silhouette/block-silhouette';
 export { SelectionFrame, type SelectionFrameProps, type SelectionHandle, type SelectionEdge } from './components/selection-frame/selection-frame';
+export { SpatialFieldCanvas, SpatialFieldController, type SpatialFieldRect, type SpatialFieldRegion, type SpatialFieldScene } from './components/spatial-field/spatial-field';
 export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './motion/swap';
 export { SlidingIndicator, type SlidingIndicatorProps } from './motion/indicator';
 export { hop, hopPoint, type HopPoint, type HopOptions } from './motion/hop';

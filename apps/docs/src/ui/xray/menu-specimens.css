@@ -1,0 +1,15 @@
+/* THE MENU'S SPECIMENS: the real plate in the card, with its handles over it */
+.ed-menu { position: relative; display: inline-flex; }
+.ed-menu .ed-overlay { z-index: 2; }
+.ed-menu .ed-edge.is-y { top: -3px; left: 18px; right: 18px; }
+.ed-menu .ed-edge.is-x { right: -3px; top: 18px; bottom: 18px; }
+.ed-menu-stack { display: inline-flex; flex-direction: column; align-items: flex-start; }
+/* the lit row: its own rounded edge is the handle, framing the words, never crossing them */
+.ed-menu-lit { position: absolute; display: block; pointer-events: auto; cursor: ns-resize; outline: none; touch-action: none;
+  box-shadow: inset 0 0 0 .5px color-mix(in srgb, var(--mu-presence-guide) 60%, transparent); }
+.ed-menu-lit:hover, .ed-menu-lit:focus-visible, .ed-menu[data-live="lit"] .ed-menu-lit, .ed-menu[data-peek="lit"] .ed-menu-lit { box-shadow: inset 0 0 0 1px var(--mu-presence-guide); }
+/* the lean: the row it is about to light, outlined before it snaps there */
+.ed-menu-lean { position: absolute; display: block; pointer-events: none; box-shadow: inset 0 0 0 .8px var(--mu-presence-guide), 0 0 5px color-mix(in srgb, var(--mu-presence-guide) 50%, transparent); }
+.ed-menu-rowcorner { position: absolute; pointer-events: none; }
+[data-mu-colorway="graphite"] .ed-menu-lit { box-shadow: inset 0 0 0 .5px color-mix(in srgb, var(--green-deep) 70%, transparent); }
+[data-mu-colorway="graphite"] :is(.ed-menu-lit:hover, .ed-menu-lit:focus-visible, .ed-menu[data-live="lit"] .ed-menu-lit, .ed-menu[data-peek="lit"] .ed-menu-lit) { box-shadow: inset 0 0 0 1px var(--green-deep); }

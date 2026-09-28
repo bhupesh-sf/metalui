@@ -1,0 +1,21 @@
+{
+  "$schema": "metalui/gadget@1",
+  "name": "thumbwheel", "title": "When",
+  "job": "keep", "feel": { "v": 0.6, "a": 0.3, "w": 0.5 }, "container": "slab", "station": 300,
+  "parts": [
+    { "id": "body",  "part": "slab",  "at": [200, 196], "size": [320, 320], "role": "body" },
+    { "id": "lamp",  "part": "led",   "at": [313, 78],  "role": "lamp" },
+    { "id": "now",   "part": "label", "at": [200, 96],  "size": [120, 30], "role": "trim", "params": { "text": "NOW" } },
+    { "id": "slot",  "part": "slab",  "at": [200, 222], "size": [76, 196], "role": "cut", "params": { "cut": "tray", "depth": 16, "radius": 22 } },
+    { "id": "wheel", "part": "drum",  "at": [200, 222], "size": [56, 176], "role": "actor", "params": { "glyphs": "ticks", "face": "clay" } }
+  ],
+  "mechanism": { "name": "turn", "bind": { "ring": "wheel", "lamp": "lamp" }, "drive": "offset", "detents": 30 },
+  "ports": { "in": { "offset": { "kind": "number", "min": -30, "max": 0, "unit": "days", "default": 0 } },
+             "out": { "in-past": { "kind": "boolean" } } },
+  "states": {
+    "rest": { "lamp": ["off", "steady"], "hint": "now" },
+    "past": { "lamp": ["waiting", "steady"], "hint": "in the past" },
+    "far":  { "lamp": ["waiting", "breathe"], "hint": "long ago" }
+  },
+  "describe": "{title}"
+}

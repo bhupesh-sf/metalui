@@ -48,7 +48,8 @@ for (const f of fixtures.filter((f) => f.endsWith('.rig.json'))) {
 // Read side by side in the catalog's shelf order (names off the shelf go last).
 const shelf = (n) => { const i = GADGETS.set.order.indexOf(n); return i < 0 ? Infinity : i; };
 const members = Object.values(catalog).sort((a, b) => shelf(a.name) - shelf(b.name)).map((g) => ({ name: g.name, resolved: resolveFeel(g), mechanism: g.mechanism.name, silhouette: g.parts.map((p) => p.part).sort().join(',') }));
-const setProblems = checkSet(members);
+// The catalog is a shelf: its neighbours are side by side; a rig checks all of its own (validateRig).
+const setProblems = checkSet(members, { neighbours: GADGETS.set.neighbours });
 if (setProblems.length) report('the catalog repeats itself', setProblems.map((p) => ({ path: p.members.join(' + '), code: p.code, message: p.message, fix: p.fix })));
 
 // The worked placements, resolved: the numbers SwiftUI must reproduce.
@@ -120,7 +121,26 @@ const script = [['today', 'value', 28], ['today', 'value', 34], ['today', 'value
 emit('packages/metalui/src/gadgets/fixtures/rig-samples.json', JSON.stringify({
   layout: { width: rigLayout.width, height: rigLayout.height, modules: rigLayout.modules.map((m) => [m.inst, ...m.at]), jacks: rigLayout.jacks.map((j) => [j.inst, j.port, j.dir, ...j.at]), cables: rigLayout.cables.map((c) => [c.from, c.to, ...c.a, ...c.b, +c.length.toFixed(6)]) },
   script: script.map(([inst, port, v]) => ({ set: [inst, port, v], hops: rigFlow.set(inst, port, v).map((h) => [h.cable, h.from, h.to, h.value, h.hop]), streak: rigFlow.inputs.streak.count })),
+  // Every other rig run through a script of inputs and states, each hop with the state it leaves the
+  // far gadget in: SwiftUI's engine must carry the same values and states the same way.
+  flows: Object.fromEntries(Object.entries({
+    'sync-health': [['set', 'sync', 'state', 'failed'], ['set', 'sync', 'state', 'done'], ['set', 'sync', 'state', 'connected']],
+    'storage': [['set', 'local', 'fill', 0.95], ['set', 'local', 'fill', 0.3]],
+    'capture': [['state', 'take', 'taken'], ['state', 'take', 'rest'], ['state', 'take', 'taken']],
+    'canvas-status': [['state', 'find', 'found'], ['set', 'when', 'offset', -3], ['set', 'when', 'offset', 0]],
+    'settings': [['set', 'sound', 'on', true], ['set', 'sound', 'on', false]],
+  }).map(([name, steps]) => {
+    const flow = createRigFlow(read(`${name}.rig.json`), rigCatalog);
+    return [name, steps.map(([kind, inst, a, b]) => {
+      const hops = kind === 'set' ? flow.set(inst, a, b) : flow.setState(inst, a);
+      return { [kind]: kind === 'set' ? [inst, a, b] : [inst, a], hops: hops.map((h) => [h.cable, h.to, h.value, h.hop, h.state]), after: flow.state(inst) };
+    })];
+  })),
 }) + '\n');
+// The emotion pre-checks (model §6): what needs no person, reported before a study (they never fail the build;
+// tuning follows the study, and is of coefficients and tables, never of one gadget).
+const { emotionChecks } = await import(pathToFileURL(`${dir}/emotion.ts`).href);
+for (const c of emotionChecks(Object.values(catalog))) if (!c.ok) console.warn(`gadgets: emotion pre-check "${c.title}": ${c.detail}`);
 // The whole catalog resolves (every state).
 for (const g of Object.values(catalog)) resolve(g);
 

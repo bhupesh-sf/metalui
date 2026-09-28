@@ -214,9 +214,9 @@ public struct MetalCueInferred: View {
 
     public var body: some View {
         Text(text.uppercased())
-            .font(.metal(MetalType.label))
-            .tracking(MetalType.label.trackingPoints)
-            .foregroundColor(colorway.tokens.ink3.color)
+            .font(.metal(MetalType.readout))
+            .tracking(MetalType.readout.trackingPoints)
+            .foregroundColor(colorway.tokens.ink2.color)
             .padding(.horizontal, MetalCue.inferredPad)
             .frame(height: MetalCue.inferredHeight)
             .metalRecipe(MetalRecipe(fill: .solid(MetalRGBA(0, 0, 0, 0)), shadows: MetalCue.inferredRing), in: Capsule(style: .continuous))

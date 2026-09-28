@@ -11,6 +11,7 @@ import { LinkCardXray } from './LinkCardXray';
 import { MenuXray } from './MenuXray';
 import { PaletteXray } from './PaletteXray';
 import { SwitcherXray } from './SwitcherXray';
+import { SwitchXray } from './SwitchXray';
 import { SliderXray } from './SliderXray';
 import { StatusXray } from './StatusXray';
 import { SwatchXray } from './SwatchXray';
@@ -23,6 +24,7 @@ export const XRAYS = {
   // the table's New Canvas is a primary button, so its x-ray is too: it lands on a model of itself
   button: { title: 'Button', View: (p: { startOpen?: boolean }) => <ButtonXray {...p} cap="primary" /> },
   switcher: { title: 'Switcher', View: SwitcherXray },
+  switch: { title: 'Switch', View: SwitchXray },
   kbd: { title: 'Keycap', View: KbdXray },
   swatch: { title: 'Swatch', View: SwatchXray },
   checkbox: { title: 'Checkbox', View: CheckboxXray },

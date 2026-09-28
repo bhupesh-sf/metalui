@@ -7,6 +7,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/selection
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSelectionFrame.swift?raw';
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { SurfaceFieldDemo } from '../../ui/SurfaceFieldDemo';
 
 const TABS = [
   { id: 'react', label: 'React', code: reactSource },
@@ -143,6 +144,13 @@ export default function SelectionFramePage() {
         <Bench caption={`radius ${d.block.radius} · ring ${d.block.radius + 6} · handles ${d.block.handles}`} className="min-h-[260px]">
           <TextBlock radius={d.block.radius} handles={d.block.handles as 'text'} entrance={d.block.entrance} />
         </Bench>
+      </Section>
+
+      <Section id="object-aware-field" title="Object-aware field" lede="Carry the note across the work surface. The field leaves its interior clear and answers its moving footprint, so the borderless objects stay distinct while you work. This is a docs trial of Surface Field by Angelo Libero, paired with MetalUI's Surface and Selection frame.">
+        <Bench on="canvas" caption="Scene geometry drives the field · pointer and keyboard both move the note">
+          <SurfaceFieldDemo />
+        </Bench>
+        <p className="type-meta text-ink2">Renderer: <a href="https://github.com/angelolibero/surface-field" target="_blank" rel="noreferrer">Surface Field (MIT)</a>. This experiment stays in documentation while its shared React and Swift contract is defined.</p>
       </Section>
 
       <Section title="States" lede="Every state as a still. A multi-selection is a lite ring on each member and one readout with the count.">

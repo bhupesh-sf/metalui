@@ -16,6 +16,8 @@ const LOOKS: { label: string; props: CapProps }[] = [
   { label: 'clay · 5 ribs', props: { ribs: 5 } },
   { label: 'knob', props: { shape: 'knob', material: 'ceramic' } },
   { label: 'knob · accent', props: { shape: 'knob', accent: true } },
+  { label: 'rocker · off', props: { shape: 'rocker', accent: true, tilt: -1 } },
+  { label: 'rocker · on', props: { shape: 'rocker', accent: true, tilt: 1 } },
 ];
 const PRESS_LEVEL = GADGETS.parts.cap.strike[1] as number;
 
@@ -42,9 +44,9 @@ export default function CapPage() {
     <>
       <PageHeader
         title="Cap"
-        lede="The fader or knob cap a person moves. A face on its darker side wall, grip ribs across a fader or a pointer groove on a knob, and its own shadow. Pressed, it sinks toward the body and its shadow draws in."
+        lede="The fader, knob or rocker cap a person moves. A face on its darker side wall, grip ribs across a fader, a pointer groove on a knob, I and O on a rocker, and its own shadow. Pressed, it sinks toward the body and its shadow draws in; a rocker tilts about its middle."
       />
-      <Section title="Faders and knobs" lede="Pale clay, white ceramic, or the accent for the one you would touch. Two to five ribs on a fader; a knob is round, the fader's height across.">
+      <Section title="Faders, knobs and rockers" lede="Pale clay, white ceramic, or the accent for the one you would touch. Two to five ribs on a fader; a knob is round, the fader's height across; a rocker is a paddle that tilts about its middle, the half facing the light brightening.">
         <Bench caption="gadgets.cap · fader 60 × 44 r 13 · side 4 · ribs pitch 8">
           <div className="flex flex-wrap items-end gap-24" data-testid="cap-looks">
             {LOOKS.map((l) => (

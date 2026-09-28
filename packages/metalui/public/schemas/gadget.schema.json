@@ -1,0 +1,405 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://metalui.dev/schemas/gadget.schema.json",
+  "title": "MetalUI gadget spec (metalui/gadget@1)",
+  "description": "A gadget: Parts from the catalog on a body, one mechanism, states. validateGadget checks what a schema cannot (bindings, overlap, colour).",
+  "type": "object",
+  "required": [
+    "$schema",
+    "name",
+    "title",
+    "job",
+    "feel",
+    "parts",
+    "mechanism",
+    "states"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "metalui/gadget@1"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "maxLength": 32
+    },
+    "title": {
+      "type": "string"
+    },
+    "job": {
+      "enum": [
+        "tune",
+        "command",
+        "link",
+        "keep",
+        "identify",
+        "destroy",
+        "take",
+        "find",
+        "make",
+        "signal"
+      ]
+    },
+    "feel": {
+      "type": "object",
+      "required": [
+        "v",
+        "a",
+        "w"
+      ],
+      "properties": {
+        "v": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "a": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "w": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "container": {
+      "enum": [
+        "slab",
+        "inset",
+        "free"
+      ]
+    },
+    "station": {
+      "type": "number"
+    },
+    "material": {
+      "enum": [
+        "clay",
+        "ceramic",
+        "resin",
+        "stone",
+        "glass",
+        "metal",
+        "rubber"
+      ]
+    },
+    "parts": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "part",
+          "at",
+          "role"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "part": {
+            "enum": [
+              "slab",
+              "bezel",
+              "glass-face",
+              "backlight",
+              "led",
+              "key",
+              "cap",
+              "jack",
+              "plug",
+              "cable",
+              "cell",
+              "drum",
+              "needle",
+              "lid",
+              "pull",
+              "lens",
+              "nib",
+              "beeper",
+              "label",
+              "glyph"
+            ]
+          },
+          "at": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "size": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "role": {
+            "enum": [
+              "body",
+              "actor",
+              "trim",
+              "lamp",
+              "cut"
+            ]
+          },
+          "material": {
+            "enum": [
+              "clay",
+              "ceramic",
+              "resin",
+              "stone",
+              "glass",
+              "metal",
+              "rubber",
+              "accent"
+            ]
+          },
+          "params": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "mechanism": {
+      "type": "object",
+      "required": [
+        "name",
+        "bind"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "press",
+            "slide",
+            "seat",
+            "turn",
+            "flip",
+            "sweep",
+            "roll",
+            "swing",
+            "glow",
+            "slide-out",
+            "dip"
+          ]
+        },
+        "bind": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "drive": {
+          "type": "string"
+        },
+        "detents": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 60
+        }
+      }
+    },
+    "ports": {
+      "type": "object",
+      "properties": {
+        "in": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "number",
+                  "count",
+                  "boolean",
+                  "state",
+                  "pulse"
+                ]
+              },
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              },
+              "unit": {
+                "type": "string"
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "default": {}
+            }
+          }
+        },
+        "out": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "number",
+                  "count",
+                  "boolean",
+                  "state",
+                  "pulse"
+                ]
+              },
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              },
+              "unit": {
+                "type": "string"
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "default": {}
+            }
+          }
+        }
+      }
+    },
+    "states": {
+      "type": "object",
+      "required": [
+        "rest"
+      ],
+      "maxProperties": 8,
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "feel": {
+            "type": "object"
+          },
+          "lamp": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "enum": [
+                  "off",
+                  "live",
+                  "link",
+                  "waiting",
+                  "failed"
+                ]
+              },
+              {
+                "enum": [
+                  "steady",
+                  "flicker",
+                  "breathe",
+                  "blink2",
+                  "rise"
+                ]
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "form": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "pose"
+                  ],
+                  "properties": {
+                    "pose": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        },
+                        "r": {
+                          "type": "number"
+                        },
+                        "sx": {
+                          "type": "number"
+                        },
+                        "sy": {
+                          "type": "number"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "param",
+                    "value"
+                  ]
+                }
+              ]
+            }
+          },
+          "beep": {
+            "enum": [
+              "done",
+              "failed",
+              "waiting",
+              "ready"
+            ]
+          },
+          "enter": {
+            "enum": [
+              "act",
+              "none"
+            ]
+          },
+          "hint": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "initial": {
+      "type": "string"
+    },
+    "describe": {
+      "type": "string"
+    }
+  }
+}

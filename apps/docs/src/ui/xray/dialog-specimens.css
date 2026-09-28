@@ -1,0 +1,39 @@
+/* THE DIALOG'S SPECIMENS: the real dialog in a small window (a page, the sheet over it). */
+.ed-dlg-specimen { padding-top: 44px; }
+@container (max-width: 380px) { .ed-dlg-specimen { padding-top: 40px; } }
+.ed-dlg-win { position: relative; overflow: hidden; border-radius: 10px; background: var(--page);
+  box-shadow: 0 0 0 .5px color-mix(in srgb, var(--ink) 16%, transparent); }
+.ed-dlg-lines { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; pointer-events: none; }
+.ed-dlg-lines i { display: block; height: 3px; border-radius: 9px; background: color-mix(in srgb, var(--ink) 9%, transparent); }
+.ed-dlg-scrim { position: absolute; inset: 0; }
+.ed-dlg-scrim[role="slider"] { cursor: ns-resize; outline: none; touch-action: none; }
+.ed-dlg-win .ed-outline { z-index: 3; }
+.ed-dlg-place { position: absolute; z-index: 1; }
+.ed-dlg-grab .mu-dialog { pointer-events: none; }
+/* the dialog as a handle: the pointer takes the whole plate; a faint guide ring when pointed at */
+.ed-dlg-grab { cursor: ns-resize; outline: none; touch-action: none; border-radius: 10px; }
+.ed-dlg-grab::after { content: ''; position: absolute; inset: -1.5px; border-radius: inherit; pointer-events: none;
+  box-shadow: 0 0 0 .6px var(--mu-presence-guide); opacity: 0; transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-dlg-grab:is(:hover, :focus-visible, [data-peek], [data-live])::after { opacity: 1; }
+/* nothing moves under the finger; a lift let go rides the release spring */
+.ed-dlg-lift { transition: translate var(--spring-release-d) var(--spring-release); }
+.ed-dlg-lift[data-live] { transition: none; }
+/* opening: while you pull it up, the ring stays where it will land, dashed */
+.ed-dlg-rise[data-live]::after { box-shadow: none; border: .7px dashed var(--mu-presence-guide); }
+/* place: the distance itself, from the window's top down to the dialog's */
+.ed-dlg-measure { position: absolute; top: 0; z-index: 2; overflow: visible; pointer-events: none; }
+.ed-dlg-measure path { fill: none; stroke: var(--mu-presence-guide); stroke-width: .5; stroke-linecap: round; opacity: .6;
+  transition: stroke-width var(--spring-part-d) var(--spring-part), opacity var(--spring-part-d) var(--spring-part); }
+.ed-dlg-measure[data-on] path { stroke-width: 1.1; opacity: 1; }
+/* focus: the real focus ring is the handle; it never follows the finger, it snaps to the next stop */
+.ed-dlg-ring { position: absolute; z-index: 2; box-sizing: border-box; border: 1.26px solid var(--mu-focus); cursor: grab; outline: none; touch-action: none;
+  transition: left var(--spring-part-d) var(--spring-part), top var(--spring-part-d) var(--spring-part), width var(--spring-part-d) var(--spring-part), height var(--spring-part-d) var(--spring-part), border-radius var(--spring-part-d) var(--spring-part); }
+.ed-dlg-ring:is(:focus-visible, [data-peek], [data-live]) { box-shadow: 0 0 0 1px var(--mu-presence-guide); }
+.ed-dlg-ring.is-ghost { border-style: dashed; border-color: var(--mu-presence-guide); pointer-events: none; transition: none; }
+.ed-dlg-ring.is-rest { pointer-events: none; }
+.ed-dlg-opener { position: absolute; left: 50%; top: 42%; translate: -50% 0; }
+.ed-dlg-real { margin-top: 10px; }
+[data-mu-colorway="graphite"] :is(.ed-dlg-measure path) { stroke: var(--green-deep); }
+[data-mu-colorway="graphite"] .ed-dlg-ring.is-ghost, [data-mu-colorway="graphite"] .ed-dlg-rise[data-live]::after { border-color: var(--green-deep); }
+html.rm .ed-dlg-specimen *, html.rm .ed-dlg-specimen *::after { transition: none !important; }
+@media (prefers-reduced-motion: reduce) { .ed-dlg-specimen *, .ed-dlg-specimen *::after { transition: none !important; } }

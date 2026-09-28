@@ -20,11 +20,13 @@ export interface CapProps extends Omit<React.SVGProps<SVGSVGElement>, 'color' | 
   /** The face's pigment, OKLCH; overrides accent and material. */
   color?: CapSpec['color'];
   pressed?: boolean;
+  /** A rocker's tilt: -1 off (its lower end pressed) to 1 on. */
+  tilt?: number;
   size?: number;
   host?: Host;
 }
 
-export function Cap({ shape = 'fader', ribs, accent = false, material = 'clay', color, pressed = false, size = 96, host: forced, ...props }: CapProps) {
+export function Cap({ shape = 'fader', ribs, accent = false, material = 'clay', color, pressed = false, tilt = -1, size = 96, host: forced, ...props }: CapProps) {
   const ref = React.useRef<SVGSVGElement>(null);
   const { host } = useHost(ref, forced);
   const uid = React.useId().replace(/:/g, '');
@@ -33,16 +35,16 @@ export function Cap({ shape = 'fader', ribs, accent = false, material = 'clay', 
   const clay = GADGETS.materials.clay as unknown as { sample: number };
   const face = color ?? (accent ? { L: wL, C: wC, H: wH } : material === 'ceramic' ? { L: GADGETS.cap.ceramic[0], C: GADGETS.cap.ceramic[1], H: clay.sample } : { L: GADGETS.plug.faceClay, C: GADGETS.plug.faceC, H: clay.sample });
   // Drawn alone, the face is `alone` units wide on the canvas; its height keeps the Part's aspect.
-  const [pw, ph] = GADGETS.parts.cap.size;
+  const [pw, ph] = shape === 'rocker' ? GADGETS.cap.rockerSize : GADGETS.parts.cap.size;
   const W = GADGETS.cap.alone, Hh = (W * ph) / pw;
-  const d = React.useMemo(() => drawCap(`cap-${uid}`, { at: [200, 200], size: [W, Hh], shape, ribs, color: face, material }, { tier, host }),
-    [uid, shape, ribs, face.L, face.C, face.H, material, tier, host, W, Hh]); // eslint-disable-line react-hooks/exhaustive-deps
+  const d = React.useMemo(() => drawCap(`cap-${uid}`, { at: [200, 200], size: [W, Hh], shape, ribs, color: face, material, tilt }, { tier, host }),
+    [uid, shape, ribs, face.L, face.C, face.H, material, tier, host, W, Hh, tilt]); // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (!ref.current) return;
     pressCap(ref.current, pressed, { reduced: matchMedia('(prefers-reduced-motion: reduce)').matches });
   }, [pressed, d]);
   return (
-    <svg ref={ref} viewBox="0 0 400 400" width={size} height={size} role="img" aria-label={`${shape} cap${accent ? ' (accent)' : ''}`}
+    <svg ref={ref} viewBox="0 0 400 400" width={size} height={size} role="img" aria-label={`${shape} cap${shape === 'rocker' ? (tilt > 0 ? ', on' : ', off') : ''}${accent ? ' (accent)' : ''}`}
       data-tier={tier} data-host={host} data-pressed={pressed || undefined} className="overflow-visible" {...props}>
       <defs dangerouslySetInnerHTML={{ __html: d.defs }} />
       <g dangerouslySetInnerHTML={{ __html: d.shadow + d.body }} />

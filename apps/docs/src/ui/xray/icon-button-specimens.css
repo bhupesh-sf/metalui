@@ -1,0 +1,22 @@
+/* THE ICON BUTTON'S SPECIMENS: handles on the real IconButton (IconButtonSpecimens.tsx) */
+.ed-ib-box .ed-overlay { z-index: 2; }
+/* the icon is the handle for its own size: up or down only, a faint ring on hover */
+.ed-ib-glyph { display: grid; place-items: center; cursor: ns-resize; touch-action: none; }
+.ed-ib-glyph:hover, .ed-ib-glyph:focus-visible { box-shadow: 0 0 0 .5px color-mix(in srgb, var(--mu-presence-guide) 80%, transparent); }
+
+/* press and kind: the whole button is the handle; pointing at it rings its own outline */
+.ed-ib-hold, .ed-ib-kind { display: inline-flex; outline: none; touch-action: none; }
+.ed-ib-hold { cursor: ns-resize; border-radius: var(--mu-r-icon-button-tool-radius); }
+.ed-ib-kind { cursor: ew-resize; border-radius: var(--ib-r); }
+:is(.ed-ib-hold, .ed-ib-kind):is(:focus-visible, [data-peek]) { box-shadow: 0 0 0 .8px var(--mu-presence-guide); }
+
+/* a kind drag leans first: the next kind's footprint lights up around the button, then it snaps */
+.ed-ib-kinds { position: relative; display: grid; place-items: center; }
+.ed-ib-kinds > * { grid-area: 1 / 1; }
+.ed-ib-lean { border: .7px solid var(--mu-presence-guide); opacity: .8; pointer-events: none; }
+
+.ed-ib-light { position: relative; }
+.ed-ib-light .ed-sun { position: absolute; left: calc(50% - 3.5px); top: calc(50% - 3.5px); }
+
+[data-mu-colorway="graphite"] .ed-ib-lean { border-color: var(--green-deep); }
+[data-mu-colorway="graphite"] :is(.ed-ib-hold, .ed-ib-kind):is(:focus-visible, [data-peek]) { box-shadow: 0 0 0 .8px var(--green-deep); }

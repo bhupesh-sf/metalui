@@ -150,16 +150,26 @@ export interface SetProblem { code: 'set.hue' | 'set.band' | 'set.deltaE' | 'set
 
 const lchVec = (c: Oklch): [number, number, number] => [c.L, c.C, c.H];
 
-export function checkSet(members: SetMember[]): SetProblem[] {
+/** Checks gadgets side by side. `neighbours` limits the pairs to members at most that many places apart
+ *  (a catalog's shelf); left out, every pair is checked (a rig, where all sit together). */
+export function checkSet(members: SetMember[], o: { neighbours?: number } = {}): SetProblem[] {
   const S = GADGETS.set, out: SetProblem[] = [];
-  for (let i = 0; i < members.length; i++) for (let j = i + 1; j < members.length; j++) {
+  for (let i = 0; i < members.length; i++) for (let j = i + 1; j < members.length && (o.neighbours === undefined || j - i <= o.neighbours); j++) {
     const a = members[i], b = members[j], pair = [a.name, b.name];
     // An inset gadget is seen through its glass: compare its face, as glass, not its frame.
     const seen = (r: ResolvedFeel): ResolvedFeel => (r.container === 'inset' ? { ...r, body: r.face, material: 'glass', band: r.face.L >= GADGETS.set.bands[0] ? 0 : r.face.L >= GADGETS.set.bands[1] ? 1 : 2 } : r);
     const ra = seen(a.resolved), rb = seen(b.resolved);
     const gap = Math.abs(((ra.station - rb.station + 540) % 360) - 180);
     const colourful = ra.body.C >= S.hueMinC && rb.body.C >= S.hueMinC;      // a grey's hue is not seen
-    if (colourful && gap < S.hueGap) out.push({ code: 'set.hue', members: pair, message: `${a.name} (${ra.station}°) and ${b.name} (${rb.station}°) sit ${gap}° apart; gadgets side by side need ${S.hueGap}°.`, fix: `Give one of them another station of its job, or move it to another rig.` });
+    if (colourful && gap < S.hueGap) {
+      // The stations either could move to: its job's own, clear of every other member's hue.
+      const free = (m: SetMember) => (GADGETS.jobs[m.resolved.job].stations as readonly number[]).filter((st) => st !== m.resolved.station
+        && members.every((o) => o === m || Math.abs(((st - seen(o.resolved).station + 540) % 360) - 180) >= S.hueGap));
+      const fa = free(a), fb = free(b);
+      const said = (m: SetMember, f: number[]) => f.length ? `${m.name} (${m.resolved.job}) may move to ${f.map((x) => `${x}°`).join(' or ')}` : `${m.name} (${m.resolved.job}) has no free station`;
+      out.push({ code: 'set.hue', members: pair, message: `${a.name} (${ra.station}°) and ${b.name} (${rb.station}°) sit ${gap}° apart; gadgets side by side need ${S.hueGap}°.`,
+        fix: `${said(a, fa)}; ${said(b, fb)}.${fa.length || fb.length ? '' : ' Move one to another rig.'}` });
+    }
     if (ra.material === rb.material && ra.band === rb.band) out.push({ code: 'set.band', members: pair, message: `${a.name} and ${b.name} are both ${ra.material} in the same lightness band.`, fix: `Change one's weight (w) to move it to another band, or pin another material.` });
     const d = deltaE(lchVec(ra.body), lchVec(rb.body));
     if (d < S.deltaE) out.push({ code: 'set.deltaE', members: pair, message: `${a.name} and ${b.name} differ by ΔE ${d.toFixed(3)}; they need ${S.deltaE}.`, fix: `Move one's feel further apart (valence shifts hue, weight shifts lightness).` });

@@ -35,14 +35,14 @@ public struct MetalToolStrip: View {
             ForEach(items) { item in
                 if item.destructive {
                     Rectangle().fill(MetalToolStripMetrics.sep.color)
-                        .frame(width: MetalSpace.s2 / 2,
+                        .frame(width: MetalToolStripMetrics.sepWidth,
                                height: MetalToolStripMetrics.sepHeight)
                         .overlay(alignment: .trailing) {
                             Rectangle().fill(MetalToolStripMetrics.sepLip.color)
-                                .frame(width: MetalSpace.s2 / 2)
-                                .offset(x: MetalSpace.s2 / 2)
+                                .frame(width: MetalToolStripMetrics.sepWidth)
+                                .offset(x: MetalToolStripMetrics.sepWidth)
                         }
-                        .padding(.horizontal, MetalSpace.s6 / 2)
+                        .padding(.horizontal, MetalToolStripMetrics.sepPad)
                 }
                 MetalToolStripButton(item: item)
             }
@@ -52,7 +52,7 @@ public struct MetalToolStrip: View {
         .background {
             MetalSurface(.graphiteStrip, radius: .strip) { Color.clear }
         }
-        .opacity(arrived ? 1 : 0)
+        .opacity(arrived ? .one : .zero)
         .offset(y: arrived || !travel ? 0 : MetalToolStripMetrics.enterRise)
         .onAppear { withMetalAnimation(.part, reduceMotion: reduceMotion) { arrived = true } }
         .accessibilityElement(children: .contain)

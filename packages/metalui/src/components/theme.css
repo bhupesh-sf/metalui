@@ -63,6 +63,7 @@
   --ease-hinge: var(--mu-spring-hinge);
   --ease-surface: var(--mu-spring-surface);
   --ease-settle: var(--mu-spring-settle);
+  --ease-chrome: var(--mu-spring-chrome);
   --ease-release: var(--mu-spring-release);
   --ease-refusal: var(--mu-spring-refusal);
 }
@@ -96,6 +97,11 @@
   font: 400 11px/14px var(--mu-sans);
   letter-spacing: 0;
 }
+@utility type-figure {
+  font: 400 12px/14px var(--mu-sans);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
 @utility type-label {
   font: 400 9px/12px var(--mu-mono);
   letter-spacing: 0.11em;
@@ -108,6 +114,12 @@
   font-stretch: var(--mu-mono-stretch);
   font-variant-numeric: tabular-nums;
 }
+@utility type-tick {
+  font: 500 9px/14px var(--mu-mono);
+  letter-spacing: 0.02em;
+  font-stretch: var(--mu-mono-stretch);
+  font-variant-numeric: tabular-nums;
+}
 @utility type-code {
   font: 400 10.5px/17px var(--mu-mono);
   letter-spacing: 0;
@@ -115,6 +127,10 @@
 }
 @utility type-pixel {
   font: 700 40px/44px var(--mu-pixel);
+  letter-spacing: 0;
+}
+@utility type-pixel-small {
+  font: 700 24px/28px var(--mu-pixel);
   letter-spacing: 0;
 }
 
@@ -161,6 +177,25 @@
 @utility material-well {
   background: linear-gradient(var(--mu-well-top), var(--mu-well-bot));
   box-shadow: var(--mu-well);
+}
+/* A dot display (recipe dot-display): the SVG draws whole cells in grid units; this mask cuts each
+   cell down to its square dot, centred on the pitch, so the geometry lives in the recipe alone. */
+@utility dot-display {
+  --dot-pitch: var(--mu-r-dot-display-self-pitch);
+  --dot-size: var(--mu-r-dot-display-self-dot);
+  --dot-in: calc((var(--dot-pitch) - var(--dot-size)) / 2);
+  --dot-out: calc(var(--dot-in) + var(--dot-size));
+  display: block;
+  shape-rendering: crispEdges;
+  mask-image: linear-gradient(90deg, transparent var(--dot-in), black var(--dot-in) var(--dot-out), transparent var(--dot-out)),
+    linear-gradient(transparent var(--dot-in), black var(--dot-in) var(--dot-out), transparent var(--dot-out));
+  mask-size: var(--dot-pitch) var(--dot-pitch);
+  mask-composite: intersect;
+}
+/* The mini size: a glyph in a row of text (an hour's weather). */
+@utility dot-display-mini {
+  --dot-pitch: var(--mu-r-dot-display-mini-pitch);
+  --dot-size: var(--mu-r-dot-display-mini-dot);
 }
 @utility material-pressed {
   background: var(--mu-pressed-bg);
@@ -781,7 +816,18 @@
   --spacing-connector-label-pad-y: var(--mu-r-connector-label-pad-y);
   --spacing-connector-label-radius: var(--mu-r-connector-label-radius);
   --radius-connector-label-radius: var(--mu-r-connector-label-radius);
+  --spacing-connector-label-font-size: var(--mu-r-connector-label-font-size);
   --spacing-connector-hit-width: var(--mu-r-connector-hit-width);
+  --spacing-connector-motion-frame-rate: var(--mu-r-connector-motion-frame-rate);
+  --spacing-connector-current-band-opacity: var(--mu-r-connector-current-band-opacity);
+  --spacing-connector-current-bead-size: var(--mu-r-connector-current-bead-size);
+  --spacing-connector-current-tail-count: var(--mu-r-connector-current-tail-count);
+  --spacing-connector-current-tail-fade: var(--mu-r-connector-current-tail-fade);
+  --spacing-connector-current-tail-size-divisor: var(--mu-r-connector-current-tail-size-divisor);
+  --spacing-connector-stardust-base-opacity: var(--mu-r-connector-stardust-base-opacity);
+  --spacing-connector-stardust-shimmer-opacity: var(--mu-r-connector-stardust-shimmer-opacity);
+  --spacing-connector-stardust-base-size: var(--mu-r-connector-stardust-base-size);
+  --spacing-connector-stardust-shimmer-size: var(--mu-r-connector-stardust-shimmer-size);
   --spacing-perfect-line: var(--mu-r-perfect-self-line);
   --spacing-perfect-tune-centre: var(--mu-r-perfect-tune-centre);
   --spacing-perfect-tune-readout-gap: var(--mu-r-perfect-tune-readout-gap);
@@ -879,6 +925,10 @@
   --spacing-select-led-slot: var(--mu-r-select-led-slot);
   --spacing-select-pop-offset: var(--mu-r-select-pop-offset);
   --spacing-tabs-panel-drift: var(--mu-r-tabs-panel-drift);
+  --spacing-dot-display-pitch: var(--mu-r-dot-display-self-pitch);
+  --spacing-dot-display-dot: var(--mu-r-dot-display-self-dot);
+  --spacing-dot-display-mini-pitch: var(--mu-r-dot-display-mini-pitch);
+  --spacing-dot-display-mini-dot: var(--mu-r-dot-display-mini-dot);
   --spacing-weather-width: var(--mu-r-weather-self-width);
   --spacing-weather-height: var(--mu-r-weather-self-height);
   --spacing-weather-pad: var(--mu-r-weather-self-pad);
@@ -1530,7 +1580,7 @@
   display: inline-flex; align-items: center; gap: var(--mu-cue-url-gap); height: var(--mu-cue-url-height); padding: 0 var(--mu-cue-url-pad-end) 0 var(--mu-cue-url-pad-start); border-radius: var(--mu-radius-pill); vertical-align: 1px; color: var(--mu-cue-url-ink); text-decoration: none; background: var(--mu-r-mark-url-background); box-shadow: var(--mu-r-mark-url-shadow); transition: background var(--mu-spring-settle-d) var(--mu-spring-settle); &:hover { background: var(--mu-r-mark-url-hover-background); } & > svg { width: var(--mu-cue-url-glyph); height: var(--mu-cue-url-glyph); } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
 }
 @utility mark-inferred {
-  position: relative; display: inline-block; margin-left: var(--mu-cue-inferred-gap); padding: 0 var(--mu-cue-inferred-pad); height: var(--mu-cue-inferred-height); border-radius: var(--mu-radius-pill); vertical-align: 1px; font: var(--mu-r-mark-inferred-font); letter-spacing: var(--mu-r-mark-inferred-tracking); text-transform: uppercase; color: var(--mu-ink3); box-shadow: var(--mu-r-mark-inferred-shadow);
+  position: relative; display: inline-block; margin-left: var(--mu-cue-inferred-gap); padding: 0 var(--mu-cue-inferred-pad); height: var(--mu-cue-inferred-height); border-radius: var(--mu-radius-pill); vertical-align: 1px; font: var(--mu-r-mark-inferred-font); letter-spacing: var(--mu-r-mark-inferred-tracking); text-transform: uppercase; color: var(--mu-ink2); box-shadow: var(--mu-r-mark-inferred-shadow);
 }
 @utility mark-urgency {
   display: inline-block; width: var(--mu-cue-urgency-led); height: var(--mu-cue-urgency-led); border-radius: var(--mu-round); background: var(--mu-r-mark-urgency-background); box-shadow: var(--mu-r-mark-urgency-shadow);
@@ -2076,6 +2126,9 @@
 @utility stroke-width-connector-halo-width {
   stroke-width: var(--mu-r-connector-halo-width);
 }
+@utility font-size-connector-label-font-size {
+  font-size: var(--mu-r-connector-label-font-size);
+}
 @utility stroke-width-connector-hit-width {
   stroke-width: var(--mu-r-connector-hit-width);
 }
@@ -2251,6 +2304,10 @@
 }
 @utility tabs-panel {
   outline: none; &[data-ending-style] { display: none; } &[data-activation-direction='right'] { --mu-tabs-dir: 1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &[data-activation-direction='left'] { --mu-tabs-dir: -1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); } @media (prefers-reduced-motion: reduce) { &[data-activation-direction] { animation-name: mu-tabs-fade; } }
+}
+@utility duration-dot-display-step {
+  --tw-duration: var(--mu-r-dot-display-self-step);
+  transition-duration: var(--mu-r-dot-display-self-step);
 }
 @utility stroke-width-weather-width {
   stroke-width: var(--mu-r-weather-self-width);
@@ -2479,6 +2536,7 @@
   --spacing-lensbar-icon-button: var(--mu-lensbar-icon-button);
   --spacing-lensbar-enter-drop: var(--mu-lensbar-enter-drop);
   --spacing-lensbar-note-led-gap: var(--mu-lensbar-note-led-gap);
+  --spacing-lensbar-icon-hover-opacity: var(--mu-lensbar-icon-hover-opacity);
   --spacing-scrubber-width: var(--mu-scrubber-width);
   --spacing-scrubber-height: var(--mu-scrubber-height);
   --spacing-scrubber-track-top: var(--mu-scrubber-track-top);
@@ -2519,6 +2577,8 @@
   --color-toolstrip-sep: var(--mu-toolstrip-sep);
   --color-toolstrip-sep-lip: var(--mu-toolstrip-sep-lip);
   --spacing-toolstrip-sep-height: var(--mu-toolstrip-sep-height);
+  --spacing-toolstrip-sep-width: var(--mu-toolstrip-sep-width);
+  --spacing-toolstrip-sep-pad: var(--mu-toolstrip-sep-pad);
   --spacing-toolstrip-enter-rise: var(--mu-toolstrip-enter-rise);
   --spacing-settings-row-min: var(--mu-settings-row-min);
   --spacing-settings-row-pad-y: var(--mu-settings-row-pad-y);
@@ -2587,6 +2647,10 @@
   --spacing-palette-foot-key-gap: var(--mu-palette-foot-key-gap);
   --spacing-palette-edge: var(--mu-palette-edge);
   --spacing-palette-bar-outset: var(--mu-palette-bar-outset);
+  --spacing-palette-caret-height: var(--mu-palette-caret-height);
+  --spacing-palette-caret-width: var(--mu-palette-caret-width);
+  --spacing-palette-lip-y: var(--mu-palette-lip-y);
+  --spacing-palette-screen-fallback-height: var(--mu-palette-screen-fallback-height);
   --color-presence-dot: var(--mu-presence-dot);
   --color-cue-quiet: var(--mu-cue-quiet);
   --color-cue-tag-bg: var(--mu-cue-tag-bg);
@@ -2815,6 +2879,10 @@
 @utility duration-settle {
   --tw-duration: var(--mu-spring-settle-d);
   transition-duration: var(--mu-spring-settle-d);
+}
+@utility duration-chrome {
+  --tw-duration: var(--mu-spring-chrome-d);
+  transition-duration: var(--mu-spring-chrome-d);
 }
 @utility duration-release {
   --tw-duration: var(--mu-spring-release-d);

@@ -19,5 +19,5 @@ export function SwiftCapture({ name, maxWidth = 760 }: { name: string; maxWidth?
 /** Captures are rendered at 2×; show them at their point size, so the SwiftUI twin sits at the web's scale. */
 function Capture({ src, alt, maxWidth }: { src: string; alt: string; maxWidth: number }) {
   const [w, setW] = React.useState<number | undefined>(undefined);
-  return <img src={src} alt={alt} onLoad={(e) => setW(e.currentTarget.naturalWidth / 2)} className="h-auto max-w-full" style={{ width: w, maxWidth: Math.max(maxWidth, w ?? 0) }} />;
+  return <img src={src} alt={alt} onLoad={(e) => setW(e.currentTarget.naturalWidth / 2)} className="h-auto max-w-full" style={{ width: w, maxWidth: `min(100%, ${Math.max(maxWidth, w ?? 0)}px)` }} />;
 }

@@ -1,0 +1,20 @@
+{
+  "name": "dot-display",
+  "title": "Dot display",
+  "status": "alpha",
+  "description": "Square dots on one pitch, printed into a well: each dot one px colour or unlit. A slow display that steps six times a second and never tweens. The picture (a sky, a sticker) is the caller's.",
+  "base": "none (decorative)",
+  "react": {
+    "export": "DotDisplay",
+    "files": [
+      "dot-display.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalDotDisplay",
+    "file": "swift/Sources/MetalUI/Components/MetalDotDisplay.swift"
+  },
+  "agent": "dot-display.agent.md",
+  "layer": "part",
+  "page": "/components/dot-display"
+}

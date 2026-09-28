@@ -1,0 +1,51 @@
+{
+  "$schema": "metalui/rig@1",
+  "name": "settings",
+  "title": "Settings",
+  "job": "tune",
+  "feel": {
+    "v": 0.6,
+    "a": 0.4,
+    "w": 0.3
+  },
+  "grid": [
+    2,
+    2
+  ],
+  "gadgets": {
+    "prefs": {
+      "gadget": "fader-bank",
+      "at": [
+        1,
+        0
+      ]
+    },
+    "sound": {
+      "gadget": "rocker",
+      "at": [
+        0,
+        0
+      ]
+    },
+    "keys": {
+      "gadget": "keycap-chord",
+      "at": [
+        0,
+        1
+      ]
+    }
+  },
+  "cables": [
+    {
+      "from": "sound.on",
+      "to": "prefs.mix",
+      "map": {
+        "kind": "select",
+        "table": {
+          "false": 0.2,
+          "true": 0.8
+        }
+      }
+    }
+  ]
+}

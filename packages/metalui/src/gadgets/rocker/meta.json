@@ -1,0 +1,12 @@
+{
+  "name": "rocker",
+  "title": "Rocker",
+  "status": "alpha",
+  "description": "A gadget for one setting: a rocker in the accent sunk in a well in a pale clay slab, and a lamp. On, its upper end (I) is pressed and the lamp lit; off, its lower end (O). It rocks on the hinge spring and clicks each way. Drawn at runtime from its spec.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/rocker.gadget.json",
+  "uses": ["slab", "cap", "led"],
+  "page": "/gadgets/rocker"
+}

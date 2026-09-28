@@ -40,6 +40,8 @@ public struct MetalColorwayTokens: Sendable {
     public let regionSh: [MetalShadow]
     public let regionLensFill: MetalGradient
     public let regionOverShade: [MetalShadow]
+    public let spatialFieldMark: MetalRGBA
+    public let spatialFieldTarget: MetalRGBA
     public let raiseLite: [MetalShadow]
     public let rowHover: MetalRGBA
     public let rowOnBg: MetalGradient
@@ -69,6 +71,16 @@ public struct MetalColorwayTokens: Sendable {
     public let synLine: MetalRGBA
     public let stageSh: [MetalShadow]
     public let stageBar: MetalRGBA
+    public let pxOff: MetalRGBA
+    public let pxHz: MetalRGBA
+    public let pxHill: MetalRGBA
+    public let pxSun: MetalRGBA
+    public let pxMoon: MetalRGBA
+    public let pxStar: MetalRGBA
+    public let pxCloud: MetalRGBA
+    public let pxCloudDark: MetalRGBA
+    public let pxRain: MetalRGBA
+    public let pxSnow: MetalRGBA
     public let tintEmber: MetalRGBA
     public let tintBlush: MetalRGBA
     public let tintTide: MetalRGBA
@@ -144,6 +156,8 @@ public enum MetalTokens {
         regionOverShade: [
             MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, color: MetalRGBA(60, 55, 40, 0.07)),
         ],
+        spatialFieldMark: MetalRGBA(40, 38, 32, 0.24),
+        spatialFieldTarget: MetalRGBA(47, 158, 99, 0.45),
         raiseLite: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.75)),
             MetalShadow(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.95)),
@@ -219,6 +233,16 @@ public enum MetalTokens {
             MetalShadow(inset: false, x: 0.0, y: 10.0, blur: 24.0, spread: -12.0, color: MetalRGBA(24, 22, 16, 0.1)),
         ],
         stageBar: MetalRGBA(24, 22, 16, 0.022),
+        pxOff: MetalRGBA(40, 38, 32, 0.06),
+        pxHz: MetalRGBA(154, 154, 157, 1.0),
+        pxHill: MetalRGBA(92, 92, 96, 1.0),
+        pxSun: MetalRGBA(201, 138, 24, 1.0),
+        pxMoon: MetalRGBA(138, 98, 18, 1.0),
+        pxStar: MetalRGBA(199, 167, 107, 1.0),
+        pxCloud: MetalRGBA(154, 154, 157, 1.0),
+        pxCloudDark: MetalRGBA(92, 92, 96, 1.0),
+        pxRain: MetalRGBA(53, 88, 201, 1.0),
+        pxSnow: MetalRGBA(92, 92, 96, 1.0),
         tintEmber: MetalRGBA(208, 86, 14, 1.0),
         tintBlush: MetalRGBA(213, 68, 135, 1.0),
         tintTide: MetalRGBA(16, 138, 139, 1.0),
@@ -284,6 +308,8 @@ public enum MetalTokens {
         regionOverShade: [
             MetalShadow(inset: true, x: 0.0, y: 2.0, blur: 6.0, spread: -1.0, color: MetalRGBA(0, 0, 0, 0.5)),
         ],
+        spatialFieldMark: MetalRGBA(255, 255, 255, 0.28),
+        spatialFieldTarget: MetalRGBA(120, 214, 165, 0.55),
         raiseLite: [
             MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.05)),
             MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.09)),
@@ -359,6 +385,16 @@ public enum MetalTokens {
             MetalShadow(inset: false, x: 0.0, y: 10.0, blur: 24.0, spread: -12.0, color: MetalRGBA(0, 0, 0, 0.45)),
         ],
         stageBar: MetalRGBA(0, 0, 0, 0.16),
+        pxOff: MetalRGBA(255, 255, 255, 0.05),
+        pxHz: MetalRGBA(92, 92, 96, 1.0),
+        pxHill: MetalRGBA(119, 119, 123, 1.0),
+        pxSun: MetalRGBA(228, 178, 94, 1.0),
+        pxMoon: MetalRGBA(243, 217, 164, 1.0),
+        pxStar: MetalRGBA(199, 167, 107, 1.0),
+        pxCloud: MetalRGBA(166, 166, 169, 1.0),
+        pxCloudDark: MetalRGBA(119, 119, 123, 1.0),
+        pxRain: MetalRGBA(143, 176, 255, 1.0),
+        pxSnow: MetalRGBA(242, 242, 240, 1.0),
         tintEmber: MetalRGBA(251, 121, 74, 1.0),
         tintBlush: MetalRGBA(237, 107, 162, 1.0),
         tintTide: MetalRGBA(37, 194, 195, 1.0),
@@ -430,23 +466,26 @@ public enum MetalCaps {
 
 public enum MetalSprings {
     /// parts you touch: thumbs, toggles, keys, detents; may overshoot against a stop
-    public static let part = MetalSpring(stiffness: 170.0, damping: 16.0, duration: 0.6)
+    public static let part = MetalSpring(stiffness: 170.0, damping: 16.0, duration: 0.6, native: .snappy)
     /// objects landing on the table: a dropped block settling in a region, folder cards, a stack opening; a stop, and rare by design
-    public static let object = MetalSpring(stiffness: 120.0, damping: 13.0, duration: 0.92)
+    public static let object = MetalSpring(stiffness: 120.0, damping: 13.0, duration: 0.92, native: .bouncy)
     /// anything on a hinge: flaps, lids, drawers that tilt
-    public static let hinge = MetalSpring(stiffness: 120.0, damping: 14.0, duration: 0.94)
+    public static let hinge = MetalSpring(stiffness: 120.0, damping: 14.0, duration: 0.94, native: .bouncy)
     /// floating surfaces (menus, palettes, toasts, dialogs) rising and settling; no stop, so no overshoot
-    public static let surface = MetalSpring(stiffness: 220.0, damping: 28.0, duration: 0.5)
+    public static let surface = MetalSpring(stiffness: 220.0, damping: 28.0, duration: 0.5, native: .smooth)
     /// arrivals and footprints: content coming into place, a control growing to new content, the hover lift (T5a)
-    public static let settle = MetalSpring(stiffness: 380.0, damping: 36.0, duration: 0.44)
+    public static let settle = MetalSpring(stiffness: 380.0, damping: 36.0, duration: 0.44, native: .smooth)
+    /// controls opening in place: a fan of choices, a tray stretching, a picker; fast and exact like the system's own menus, no overshoot
+    public static let chrome = MetalSpring(stiffness: 640.0, damping: 50.6, duration: 0.28, native: .snappy)
     /// departures and letting go: content leaving, a pressed cap returning
-    public static let release = MetalSpring(stiffness: 500.0, damping: 40.0, duration: 0.3)
+    public static let release = MetalSpring(stiffness: 500.0, damping: 40.0, duration: 0.3, native: .quick)
     /// a refusal shake: released from one nest aside, it rings against the nest walls and dies out
-    public static let refusal = MetalSpring(stiffness: 900.0, damping: 12.0, duration: 1.1)
+    public static let refusal = MetalSpring(stiffness: 900.0, damping: 12.0, duration: 1.1, native: .shake)
 }
 
 /// Travel values shared with the web motion helpers.
 public enum MetalMotionTokens {
+    public static let fanStagger: Double = 0.01
     public static let hopDuration: Double = 0.25
     public static let hopDurationFar: Double = 0.34
     public static let hopLift: Double = 14.0
@@ -481,6 +520,8 @@ public enum MetalSpringClass: String, CaseIterable, Sendable {
     case surface
     /// arrivals and footprints: content coming into place, a control growing to new content, the hover lift (T5a)
     case settle
+    /// controls opening in place: a fan of choices, a tray stretching, a picker; fast and exact like the system's own menus, no overshoot
+    case chrome
     /// departures and letting go: content leaving, a pressed cap returning
     case release
     /// a refusal shake: released from one nest aside, it rings against the nest walls and dies out
@@ -493,6 +534,7 @@ public enum MetalSpringClass: String, CaseIterable, Sendable {
         case .hinge: return MetalSprings.hinge
         case .surface: return MetalSprings.surface
         case .settle: return MetalSprings.settle
+        case .chrome: return MetalSprings.chrome
         case .release: return MetalSprings.release
         case .refusal: return MetalSprings.refusal
         }
@@ -505,6 +547,7 @@ public enum MetalSpringClass: String, CaseIterable, Sendable {
         case .hinge: return .instant
         case .surface: return .crossfade
         case .settle: return .crossfade
+        case .chrome: return .crossfade
         case .release: return .unchanged
         case .refusal: return .instant
         }
@@ -1354,8 +1397,8 @@ public enum MetalRecipes {
             "match.offset": .number(2.5),
             "chip.font": .text("500 9.5px/1.3 mono"),
             "chip.tracking": .text("0.08em"),
-            "inferred.font": .text("500 9px/17px mono"),
-            "inferred.tracking": .text("0.08em"),
+            "inferred.font": .text("500 10.5px/17px mono"),
+            "inferred.tracking": .text("0.06em"),
         ]
     )
 
@@ -2036,7 +2079,18 @@ public enum MetalRecipes {
             "label.pad-x": .number(7.0),
             "label.pad-y": .number(2.0),
             "label.radius": .number(7.0),
+            "label.font-size": .number(12.0),
             "hit.width": .number(18.0),
+            "motion.frame-rate": .number(120.0),
+            "current.band-opacity": .number(0.3),
+            "current.bead-size": .number(1.7),
+            "current.tail-count": .number(16.0),
+            "current.tail-fade": .number(1.4),
+            "current.tail-size-divisor": .number(20.0),
+            "stardust.base-opacity": .number(0.45),
+            "stardust.shimmer-opacity": .number(0.6),
+            "stardust.base-size": .number(1.24),
+            "stardust.shimmer-size": .number(0.9),
         ]
     )
 
@@ -2204,6 +2258,21 @@ public enum MetalRecipes {
         ],
         props: [
             "panel.drift": .number(6.0),
+        ]
+    )
+
+    /// A dot display: square dots on one pitch, printed into a well, each dot one px colour or unlit (px-off). A slow display: it steps at fps, never tweens. Coarse on purpose; a tile's sky is 21 dots across, a wide sky 46. (the weather widget and tiles design (Bone and Graphite), sky() and its 8 px pitch)
+    public static let dotDisplay = MetalObjectRecipe(
+        name: "dot-display",
+        layers: [
+
+        ],
+        props: [
+            "self.pitch": .number(8.0),
+            "self.dot": .number(6.0),
+            "self.step": .text("167ms"),
+            "mini.pitch": .number(3.0),
+            "mini.dot": .number(2.4),
         ]
     )
 
@@ -2587,6 +2656,20 @@ public enum MetalRegion {
     public static let rowMetaTop: Double = 3.0
 }
 
+/// Optional content-aware canvas field. A quiet grid stays visible at rest, clears Region paper and object footprints, moves around a carried object, and tints near only the host-selected target. It never chooses placement or loops while idle.
+public enum MetalSpatialField {
+    public static let markSpacing: Double = 22.0
+    public static let markRadius: Double = 1.1
+    public static let clearance: Double = 12.0
+    public static let baseOpacity: Double = 0.28
+    public static let push: Double = 6.0
+    public static let carryReach: Double = 66.0
+    public static let targetReach: Double = 42.0
+    public static let carryOpacity: Double = 0.62
+    public static let targetOpacity: Double = 0.58
+    public static let recoveryMs: Double = 180.0
+}
+
 /// The press-in pill button (object sheet): 32 tall, padding 15, the ui role, a 16 glyph 6 before the label. Compact (the canvas pills, refit to the height ladder): 28 tall, padding 11, 12 pt, a 14 glyph 7 before, the raise-sm shadow on the button fill, ink2 until hover. Pressed sinks 1 into its well in 50 ms, linear, and returns on release; fills and shadows cross-fade 180 ms. Focus is the 2 ring at offset 2. Disabled is 40 %, no icon motion.
 public enum MetalButtonMetrics {
     public static let height: Double = 32.0
@@ -2672,6 +2755,10 @@ public enum MetalPaletteMetrics {
     public static let footKeyGap: Double = 5.0
     public static let edge: Double = 1.0
     public static let barOutset: Double = 2.0
+    public static let caretHeight: Double = 18.0
+    public static let caretWidth: Double = 1.5
+    public static let lipY: Double = 0.5
+    public static let screenFallbackHeight: Double = 900.0
 }
 
 /// The filter bar's layout: a floating pill at the top centre, 38 tall, padding 0 6 0 14, gap 8, the query ellipsised at 340; it drops 8 from above, from .98, on the surface spring. Its look is Surface(frost), Glyph, Label, Switcher and IconButton(ghost).
@@ -2791,6 +2878,8 @@ public enum MetalToolStripMetrics {
     public static let sep: MetalRGBA = MetalRGBA(0, 0, 0, 0.55)
     public static let sepLip: MetalRGBA = MetalRGBA(255, 255, 255, 0.055)
     public static let sepHeight: Double = 16.0
+    public static let sepWidth: Double = 1.0
+    public static let sepPad: Double = 3.0
     public static let enterRise: Double = 4.0
 }
 
@@ -2866,6 +2955,7 @@ public enum MetalLensBarMetrics {
     public static let enterDrop: Double = 8.0
     public static let enterScale: Double = 0.98
     public static let noteLedGap: Double = 5.0
+    public static let iconHoverOpacity: Double = 0.05
 }
 
 /// The switcher (object sheet): a pill of pills. A well track holds options on the height ladder (compact 24, regular 28), each padded by the pill rule (h/2 − 1); the selected one is a raised thumb in ink that glides between options on the part spring, since the track has ends. Inside a dense strip its focus ring is 1.5 with no offset.

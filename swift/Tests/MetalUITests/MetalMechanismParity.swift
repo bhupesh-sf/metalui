@@ -145,4 +145,35 @@ final class MetalMechanismParity: XCTestCase {
             XCTAssertEqual(rig.inputs["streak"]?["count"], .number(step["streak"] as! Double))
         }
     }
+
+    func testEveryRigCarriesValuesAndStatesLikeTheWeb() throws {
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: fixtures.appendingPathComponent("rig-samples.json"))) as! [String: Any]
+        let names = try FileManager.default.contentsOfDirectory(atPath: fixtures.path).filter { $0.hasSuffix(".gadget.json") }
+        let catalog = try names.reduce(into: [String: MetalGadgetSpec]()) { out, f in let g = try MetalGadgetSpec.decode(Data(contentsOf: fixtures.appendingPathComponent(f))); out[g.name] = g }
+        // A JSON value as the engine's value: a switch, a number, a word, or a pulse.
+        func value(_ v: Any) -> MetalGadgetValue {
+            if let n = v as? NSNumber { return CFGetTypeID(n) == CFBooleanGetTypeID() ? .bool(n.boolValue) : .number(n.doubleValue) }
+            if let s = v as? String { return .text(s) }
+            return .pulse
+        }
+        let flows = fixture["flows"] as! [String: [[String: Any]]]
+        XCTAssertEqual(flows.count, 5)
+        for (name, steps) in flows {
+            var rig = MetalRigEngine(try MetalRigSpec.decode(Data(contentsOf: fixtures.appendingPathComponent("\(name).rig.json"))), catalog: catalog)
+            for step in steps {
+                let hops: [MetalRigEngine.Hop]
+                let inst: String
+                if let set = step["set"] as? [Any] { inst = set[0] as! String; hops = rig.set(inst, set[1] as! String, value(set[2])) }
+                else { let st = step["state"] as! [String]; inst = st[0]; hops = rig.setState(inst, st[1]) }
+                let web = step["hops"] as! [[Any]]
+                XCTAssertEqual(hops.count, web.count, "\(name): \(step)")
+                for (h, w) in zip(hops, web) {
+                    XCTAssertEqual(h.cable, w[0] as! Int, name); XCTAssertEqual(h.to, w[1] as! String, name)
+                    if case .number(let n) = h.value, case .number(let m) = value(w[2]) { XCTAssertEqual(n, m, accuracy: 1e-9, name) } else { XCTAssertEqual(h.value, value(w[2]), name) }
+                    XCTAssertEqual(h.hop, w[3] as! Int, name); XCTAssertEqual(h.state, w[4] as! String, "\(name): \(h.to)")
+                }
+                XCTAssertEqual(rig.states[inst], step["after"] as? String, name)
+            }
+        }
+    }
 }

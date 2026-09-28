@@ -39,10 +39,10 @@ export default function ToolbarPage() {
     <>
       <PageHeader title="Toolbar and tool button" lede="A strip of round tool buttons. The tool you are using stays down with a green light. Point at a tool and after 120 ms it shows its name and key. The dark strip is used in both colorways. Built on Base UI Toolbar, Toggle and Tooltip." />
       <Section title="Playground" lede="Pick a tool, hover for its tooltip, press the momentary ones, tab in and use the arrows. Dial: graphite or frost.">
-        <Bench caption={`${d.variant} strip · 48 tall · tools 36`} className="min-h-[200px]">
+        <Bench caption={`${d.variant} strip · 48 tall · tools 36`} className="toolbar-demo min-h-[200px]">
           <Strip variant={d.variant as 'graphite'} />
         </Bench>
-        <Bench tone="page" caption="graphite and frost, over the page">
+        <Bench tone="page" caption="graphite and frost, over the page" className="toolbar-demo">
           <div className="flex flex-col items-center gap-20">
             <Strip variant="graphite" />
             <Strip variant="frost" />

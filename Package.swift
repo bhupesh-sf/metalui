@@ -15,6 +15,7 @@ let package = Package(
             // the product and life glyphs as custom SF Symbols (npm run symbols), compiled by actool.
             resources: [.copy("Resources/Fonts"), .process("Resources/MetalIcons.xcassets")]
         ),
-        .testTarget(name: "MetalUITests", dependencies: ["MetalUI"], path: "swift/Tests/MetalUITests"),
+        .testTarget(name: "MetalUITests", dependencies: ["MetalUI"], path: "swift/Tests/MetalUITests",
+                    resources: [.copy("Fixtures")]),
     ]
 )

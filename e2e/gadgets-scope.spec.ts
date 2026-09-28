@@ -40,7 +40,7 @@ test('searching sweeps the beam round and round, and each blip lights as the bea
   const angles = trace.map((r) => r[1]);
   expect(Math.max(...angles)).toBeGreaterThan(300);                           // it goes all the way round
   // It loops: after reaching the end of a turn it starts again from the top.
-  expect(angles.some((a, i) => i > 0 && angles[i - 1] > 300 && a < 60)).toBe(true);
+  expect(angles.some((a, i) => i > 0 && angles[i - 1] - a > 180)).toBe(true);        // a drop of more than half a turn
   // Each blip is lit while the beam is just past it, and never before its angle in that turn.
   for (const [k, deg] of [[2, 315], [3, 115], [4, 197]] as const) {     // b1 up-left, b2 right-down, b3 down-left
     const lit = trace.filter((r) => r[k] > 0.6);

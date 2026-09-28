@@ -40,7 +40,7 @@ public struct MetalRigSpec: Decodable, Sendable {
         case scale(from: [Double], to: [Double])
         case match(when: MetalGadgetValue)
         case count(step: Double)
-        case select(table: [String: String])
+        case select(table: [String: MetalGadgetValue])
         enum CodingKeys: String, CodingKey { case kind, at, above, below, from, to, when, step, table }
         public init(from decoder: Decoder) throws {
             let c = try decoder.container(keyedBy: CodingKeys.self)
@@ -49,7 +49,7 @@ public struct MetalRigSpec: Decodable, Sendable {
             case "scale": self = .scale(from: try c.decode([Double].self, forKey: .from), to: try c.decode([Double].self, forKey: .to))
             case "match": self = .match(when: try c.decode(MetalGadgetValue.self, forKey: .when))
             case "count": self = .count(step: try c.decode(Double.self, forKey: .step))
-            default: self = .select(table: try c.decode([String: String].self, forKey: .table))
+            default: self = .select(table: try c.decode([String: MetalGadgetValue].self, forKey: .table))
             }
         }
     }
@@ -72,7 +72,7 @@ public struct MetalRigEngine: Sendable {
     public struct Module: Sendable { public let inst: String; public let spec: MetalGadgetSpec; public let at: CGPoint }
     public struct Jack: Sendable { public let inst: String; public let port: String; public let out: Bool; public let at: CGPoint }
     public struct Cord: Sendable { public let index: Int; public let from: String; public let to: String; public let a: CGPoint; public let b: CGPoint; public let length: Double }
-    public struct Hop: Sendable, Equatable { public let cable: Int; public let from: String; public let to: String; public let value: MetalGadgetValue; public let hop: Int }
+    public struct Hop: Sendable, Equatable { public let cable: Int; public let from: String; public let to: String; public let value: MetalGadgetValue; public let hop: Int; public let state: String }
 
     public let spec: MetalRigSpec
     public let width: Double, height: Double
@@ -144,9 +144,20 @@ public struct MetalRigEngine: Sendable {
             if outs["rolled"] != nil, let max = g.ports?.in?[drive]?.max, v < was, was >= max { out["rolled"] = .pulse }
         }
         for (name, ch) in outs where ch.kind == "pulse" && g.states[name] != nil && state == name && last != name { out[name] = .pulse }
+        // A patch bay is healthy unless it has failed.
+        if outs["healthy"]?.kind == "boolean" { out["healthy"] = .bool(state != "failed") }
+        // A count named after a state puts out, as the gadget enters it, how many of its many actors there are.
+        for (name, ch) in outs where ch.kind == "count" && g.states[name] != nil && out[name] == nil && state == name && last != name {
+            out[name] = .number(Double(g.mechanism.bind.values.first { $0.count > 1 }?.count ?? 1))
+        }
+        // An out named after an in passes it on (a drawer's fill).
+        for name in outs.keys where out[name] == nil && g.ports?.in?[name] != nil { if let v = now[name], !v.isPulse { out[name] = v } }
         // A switch named after a state is on while the gadget shows it (a drawer full, a grid full).
         let shown = g.derivedState(state, value: v)
         for (name, ch) in outs where ch.kind == "boolean" && g.states[name] != nil && out[name] == nil { out[name] = .bool(shown == name) }
+        // A switch named in-<state> (a state it has) is on while the gadget is away from rest: in the past is
+        // any of past and far.
+        for (name, ch) in outs where ch.kind == "boolean" && name.hasPrefix("in-") && g.states[String(name.dropFirst(3))] != nil && out[name] == nil { out[name] = .bool(shown != "rest") }
         return out
     }
 
@@ -157,7 +168,21 @@ public struct MetalRigEngine: Sendable {
         case .scale(let f, let t): return .number(t[0] + ((v.number ?? 0) - f[0]) / (f[1] - f[0] == 0 ? 1 : f[1] - f[0]) * (t[1] - t[0]))
         case .match(let when): return v == when ? .pulse : nil
         case .count(let step): return v.isPulse ? .number(max(0, (current?.number ?? 0) + step)) : nil
-        case .select(let table): if case .text(let s) = v, let r = table[s] { return .text(r) }; return nil
+        case .select(let table):
+            let key: String? = switch v { case .text(let s): s; case .bool(let b): String(b); case .number(let n): n == n.rounded() ? String(Int(n)) : String(n); case .pulse: nil }
+            return key.flatMap { table[$0] }
+        }
+    }
+
+    /// The state an input puts a gadget in, if any: the same rule as stateFromInput in rig-engine.ts.
+    static func stateFromInput(_ g: MetalGadgetSpec, port: String, value: MetalGadgetValue) -> String? {
+        guard let ch = g.ports?.in?[port] else { return nil }
+        let act = g.states.first { $0.value.enter == "act" }?.key
+        switch ch.kind {
+        case "state": if case .text(let s) = value, g.states[s] != nil { return s }; return nil
+        case "pulse": return value.isPulse ? act : nil
+        case "boolean" where g.states[port] == nil && act != nil: if case .bool(let b) = value { return b ? act : "rest" }; return nil
+        default: return nil
         }
     }
 
@@ -167,19 +192,33 @@ public struct MetalRigEngine: Sendable {
         for (i, c) in spec.cables.enumerated() {
             let f = c.from.split(separator: ".").map(String.init), t = c.to.split(separator: ".").map(String.init)
             guard f[0] == inst, let v = outs[f[1]], let arrived = Self.map(c.map, v, current: inputs[t[0]]?[t[1]]) else { continue }
-            out.append(Hop(cable: i, from: c.from, to: c.to, value: arrived, hop: hop))
-            let prev = inputs[t[0]] ?? [:]
+            let prev = inputs[t[0]] ?? [:], lastState = states[t[0]] ?? ""
             if !arrived.isPulse { inputs[t[0], default: [:]][t[1]] = arrived }
-            run(t[0], before: prev, last: states[t[0]] ?? "", hop: hop + 1, into: &out)
+            if let target = spec(t[0]), let s = Self.stateFromInput(target, port: t[1], value: arrived) { states[t[0]] = s }
+            // The state the far gadget shows now (its drive may decide it: a bin armed, a drawer full).
+            let target = spec(t[0]), drive = target.flatMap { $0.mechanism.drive ?? $0.ports?.in?.keys.sorted().first } ?? ""
+            let dv: Double? = switch inputs[t[0]]?[drive] { case .number(let n): n; case .bool(let b): b ? 1 : 0; default: nil }
+            out.append(Hop(cable: i, from: c.from, to: c.to, value: arrived, hop: hop, state: target.map { $0.derivedState(states[t[0]] ?? "", value: dv) } ?? (states[t[0]] ?? "")))
+            run(t[0], before: prev, last: lastState, hop: hop + 1, into: &out)
         }
     }
 
     /// Sets one gadget's input from outside, and returns what then travels along the cables, in order.
     public mutating func set(_ inst: String, _ port: String, _ value: MetalGadgetValue) -> [Hop] {
-        let before = inputs[inst] ?? [:]
+        let before = inputs[inst] ?? [:], last = states[inst] ?? ""
         if !value.isPulse { inputs[inst, default: [:]][port] = value }
+        if let g = spec(inst), let s = Self.stateFromInput(g, port: port, value: value) { states[inst] = s }
         var out: [Hop] = []
-        run(inst, before: before, last: states[inst] ?? "", hop: 1, into: &out)
+        run(inst, before: before, last: last, hop: 1, into: &out)
+        return out
+    }
+
+    /// Sets a gadget's state from outside (a pulse named after it may leave along a cable).
+    public mutating func setState(_ inst: String, _ state: String) -> [Hop] {
+        let last = states[inst] ?? ""
+        states[inst] = state
+        var out: [Hop] = []
+        run(inst, before: inputs[inst] ?? [:], last: last, hop: 1, into: &out)
         return out
     }
 }

@@ -52,6 +52,26 @@ public struct MetalDrawTools: View {
 
     public var body: some View {
         MetalToolbar("Drawing", variant: variant == .graphite ? .graphite : .frost) {
+            MetalDrawToolsParts(tool: $tool, ink: $ink, width: $width)
+        }
+    }
+}
+
+/// The drawing tools, inks and widths without their strip, for a toolbar that grows to hold them
+/// (the app's one toolbar while Ink is the tool). `MetalDrawTools` is these parts in their own strip.
+public struct MetalDrawToolsParts: View {
+    @Binding private var tool: MetalDrawTool?
+    @Binding private var ink: MetalInk
+    @Binding private var width: MetalInkWidth
+
+    public init(tool: Binding<MetalDrawTool?>, ink: Binding<MetalInk>, width: Binding<MetalInkWidth>) {
+        _tool = tool
+        _ink = ink
+        _width = width
+    }
+
+    public var body: some View {
+        Group {
             ForEach(MetalDrawTool.allCases) { item in
                 MetalToolButton(item.label, shortcut: item.shortcut, latched: tool == item) {
                     if item == .pencil {

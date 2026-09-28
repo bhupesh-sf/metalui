@@ -65,7 +65,13 @@ export function TimeScrubber({ start, end, value, onValueChange, marks = [], for
   const days: number[] = [];
   for (let d = startOfDay(start); d <= end; d += DAY) days.push(d);
   const every = Math.ceil(days.length / 6);
-  const shown = days.filter((_, i) => i % every === 0 || i === days.length - 1);
+  const today = startOfDay(end);
+  const earlier = days.filter((d) => d !== today);
+  // At Now the knob is the today mark (a TODAY label would sit under it); one earlier day is only
+  // the range's margin, not history, so a new surface shows no lone weekday.
+  const shown = days
+    .filter((_, i) => i % every === 0 || i === days.length - 1)
+    .filter((d) => (d === today ? value != null : earlier.length >= 2 || value != null));
 
   return (
     <div className={className ? `${BOX} ${className}` : BOX}>

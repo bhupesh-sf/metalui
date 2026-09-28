@@ -22,6 +22,8 @@ export { drawNeedle, needleAngle, type NeedleSpec } from './gadgets/parts/needle
 export { drawCells, lightCells, cellShares, cellOrder, cellCentres, cellGlow, type CellSpec } from './gadgets/parts/cell';
 export { drawLid, poseLid, lidPose, type LidSpec, type LidHinge } from './gadgets/parts/lid';
 export { drawPull, type PullSpec, type PullStyle } from './gadgets/parts/pull';
+export { drawLens, turnLens, irisCorners, type LensSpec } from './gadgets/parts/lens';
+export { drawNib, nibOutline, type NibSpec } from './gadgets/parts/nib';
 export { drawDrum, stripOffset, DRUM_FONT, type DrumSpec } from './gadgets/parts/drum';
 export { drawKey, pressKey, KEY_FONT, type KeySpec } from './gadgets/parts/key';
 export { drawLamp, LAMP_COLORS, type LampSpec } from './gadgets/parts/led';
@@ -29,5 +31,6 @@ export { drawGadget, driveTargets, driveDefault, driveRange, driveShare, derived
 export { Gadget, type GadgetProps } from './gadgets/Gadget';
 export { createDrive, DriveModel, createRoll, RollModel, digitOf, type Drive, type DriveEvent, type DriveName, type DriveOptions, type Roll, type RollEvent, type RollOptions } from './gadgets/drive';
 export { SPRINGS, type SpringName } from './motion/springs.generated';
-export { layoutRig, createRigFlow, deriveOutputs, mapValue, rigSpecs, type RigLayout, type RigHop, type RigFlow, type PortValues } from './gadgets/rig-engine';
+export { layoutRig, createRigFlow, deriveOutputs, mapValue, rigSpecs, stateFromInput, type RigLayout, type RigHop, type RigFlow, type PortValues } from './gadgets/rig-engine';
 export { Rig, type RigProps } from './gadgets/Rig';
+export { emotionChecks, samTargets, scoreStudy, codeMaterial, STUDY_SIZES, type EmotionCheck, type Session, type SamAnswer, type StudyResult } from './gadgets/emotion';

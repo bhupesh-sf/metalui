@@ -16,7 +16,7 @@
     "rest":      { "lamp": ["off", "steady"], "hint": "dark" },
     "filling":   { "lamp": ["live", "steady"] },
     "full":      { "lamp": ["live", "steady"], "hint": "full" },
-    "first-run": { "lamp": ["live", "breathe"], "beep": "ready" }
+    "first-run": { "feel": { "v": 0.8 }, "lamp": ["live", "rise"], "beep": "ready" }
   },
   "initial": "filling",
   "describe": "{title}: {share} kept"

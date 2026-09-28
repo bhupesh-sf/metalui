@@ -418,6 +418,7 @@ tbody tr:hover td { background: color-mix(in srgb, var(--ink) 2.5%, transparent)
   .masthead .seg button { padding: 0 9px; }
   .motion-ctl { display: none; }
   .brand b { font-size: 14px; }
+  .stage.toolbar-demo { overflow-x: auto; justify-content: safe center; }
 }
 
 /* ============================================================ REDUCE MOTION
@@ -841,6 +842,7 @@ html.rm .xr-dialogwrap { animation: none; }
 /* In an instrument's pit the pit is the work surface: the board keeps its size but draws nothing. */
 .stage.on-pit .snap-canvas { background: none; }
 .snap-world { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 0 0; }
+.snap-caption { max-width: 100%; white-space: normal; text-align: center; }
 .xr-catch { background: color-mix(in srgb, var(--green-deep) 12%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--green-deep) 30%, transparent); border-radius: 4px; }
 .xr-solid:has(.snap-canvas) { width: 100%; cursor: default; }
 .xr-solid:has(.snap-canvas) .xr-solid-fit { width: 100%; }

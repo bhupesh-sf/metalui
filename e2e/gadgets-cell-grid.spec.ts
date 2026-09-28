@@ -62,12 +62,12 @@ test('pointing fills the grid up to a cell, in order, on a spring; the share dec
   await expect(grid).toHaveAttribute('data-state', 'rest');
 });
 
-test('a first run raises the whole grid and breathes the lamp, then falls back to what it keeps', async ({ page }) => {
+test('a first run raises the whole grid and rises the lamp, then falls back to what it keeps', async ({ page }) => {
   await open(page, '/gadgets/cell-grid', 'graphite');
   const grid = page.getByTestId('grid');
   await page.getByRole('button', { name: 'First run' }).click();
   await expect(grid).toHaveAttribute('data-state', 'first-run');
-  await expect(grid.locator('[data-part="lamp"]')).toHaveAttribute('data-gesture', 'breathe');
+  await expect(grid.locator('[data-part="lamp"]')).toHaveAttribute('data-gesture', 'rise');
   await expect.poll(() => lit(grid), { timeout: 2000 }).toBeGreaterThan(15.9);
   await expect(grid).toHaveAttribute('data-state', 'filling', { timeout: 4000 });
   await expect.poll(() => lit(grid), { timeout: 3000 }).toBeLessThan(6.5);

@@ -98,6 +98,11 @@
           "target": "components/gadgets/parts/led.ts"
         },
         {
+          "path": "packages/metalui/src/gadgets/parts/lens.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/lens.ts"
+        },
+        {
           "path": "packages/metalui/src/gadgets/parts/lid.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/lid.ts"
@@ -106,6 +111,11 @@
           "path": "packages/metalui/src/gadgets/parts/needle.ts",
           "type": "registry:lib",
           "target": "components/gadgets/parts/needle.ts"
+        },
+        {
+          "path": "packages/metalui/src/gadgets/parts/nib.ts",
+          "type": "registry:lib",
+          "target": "components/gadgets/parts/nib.ts"
         },
         {
           "path": "packages/metalui/src/gadgets/parts/plug.ts",
@@ -260,7 +270,7 @@
       "name": "cap",
       "type": "registry:ui",
       "title": "Cap",
-      "description": "The fader or knob cap a person moves: a face on its darker side wall, grip ribs or a pointer groove, and its own shadow. Pressed, it sinks toward the body. The cap you would touch wears the accent.",
+      "description": "The fader, knob or rocker cap a person moves: a face on its darker side wall, grip ribs, a pointer groove or I and O, and its own shadow. Pressed, it sinks toward the body; a rocker tilts about its middle. The cap you would touch wears the accent.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/tokens.json",
@@ -427,6 +437,24 @@
       "docs": "Agent guide: https://metalui.dev/r/dialog.md. SwiftUI: MetalDialog in the MetalUI Swift package."
     },
     {
+      "name": "dot-display",
+      "type": "registry:ui",
+      "title": "Dot display",
+      "description": "Square dots on one pitch, printed into a well: each dot one px colour or unlit. A slow display that steps six times a second and never tweens. The picture (a sky, a sticker) is the caller's.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/dot-display/dot-display.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/dot-display/dot-display.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/dot-display.md. SwiftUI: MetalDotDisplay in the MetalUI Swift package."
+    },
+    {
       "name": "draw-picks",
       "type": "registry:ui",
       "title": "Draw picks",
@@ -484,6 +512,24 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/drum.md. SwiftUI: MetalDrum in the MetalUI Swift package."
+    },
+    {
+      "name": "fan",
+      "type": "registry:ui",
+      "title": "Fan",
+      "description": "A compact control bar whose cells open in place: a label, the current choice that fans its siblings out along one axis, and an options cap that stretches sideways into more controls. One open at a time; nothing hides in a menu.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/fan/fan.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/fan/fan.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/fan.md. SwiftUI: MetalFan in the MetalUI Swift package."
     },
     {
       "name": "field",
@@ -724,6 +770,25 @@
       "docs": "Agent guide: https://metalui.dev/r/led.md. SwiftUI: MetalLED in the MetalUI Swift package."
     },
     {
+      "name": "lens",
+      "type": "registry:ui",
+      "title": "Lens",
+      "description": "A camera lens seen head-on: a knurled ring in the accent that turns, a domed glass dark at its centre and coated toward its rim, and an iris behind it closing to a polygon.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/lens/lens.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/lens/lens.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/lens.md. SwiftUI: MetalLens in the MetalUI Swift package."
+    },
+    {
       "name": "lid",
       "type": "registry:ui",
       "title": "Lid",
@@ -834,6 +899,25 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/needle.md. SwiftUI: MetalNeedle in the MetalUI Swift package."
+    },
+    {
+      "name": "nib",
+      "type": "registry:ui",
+      "title": "Nib",
+      "description": "A pen nib seen from above: brass, narrowing to its tip, with a slit and a breather hole, its tip wet with ink in the accent. In a gadget it dips into its well.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/gadgets.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/nib/nib.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/nib/nib.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/nib.md. SwiftUI: MetalNib in the MetalUI Swift package."
     },
     {
       "name": "past-banner",
@@ -1131,6 +1215,24 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/sparkline.md. SwiftUI: MetalSparkline in the MetalUI Swift package."
+    },
+    {
+      "name": "spatial-field",
+      "type": "registry:ui",
+      "title": "Spatial field",
+      "description": "One quiet, content-aware dot field for a Place. It yields to object footprints and reinforces the host-selected Region while the host retains placement authority.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/spatial-field/spatial-field.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/spatial-field/spatial-field.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/spatial-field.md. SwiftUI: MetalSpatialFieldView in the MetalUI Swift package."
     },
     {
       "name": "status",

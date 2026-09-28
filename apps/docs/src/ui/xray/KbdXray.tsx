@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Kbd, Switcher } from '@unlocalhosted/metalui';
+import { Kbd } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Dial, Exploded, IsoCap, IsoTray, LayerList, LightDials, Proof, XrayFrame, aim, alphaK, capTop, scalePx, tones, useRecipeLayers, type LayerDef, type SpotDef } from './kit';
+import { Exploded, IsoCap, IsoTray, XrayFrame, aim, alphaK, capTop, scalePx, tones, useRecipeLayers, type LayerDef, type SpotDef } from './kit';
+import { HintLayer } from '../edit';
+import { KbdSpecimenCard } from './KbdSpecimens';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · KEYCAP
@@ -16,11 +18,12 @@ import { Dial, Exploded, IsoCap, IsoTray, LayerList, LightDials, Proof, XrayFram
  *             Layers   the current surface's layers, each switchable
  * ───────────────────────────────────────────────────────── */
 
-const P = tokens.recipes.kbd.props.self as { height: number; min: number; pad: number; radius: number; gap: number };
+export const KBD_PROPS = tokens.recipes.kbd.props;
+const P = KBD_PROPS.self;
 const S = 5;
 const KEYS = ['⌘', 'K'];
 
-type Surface = 'self' | 'strip' | 'sunk';
+export type Surface = 'self' | 'strip' | 'sunk';
 type Spot = 'shape' | 'type' | 'surface' | 'light' | 'shadow' | 'layers';
 const SPOTS: SpotDef<Spot>[] = [
   { id: 'shape', title: 'Shape', word: 'Size and corners' },
@@ -35,7 +38,7 @@ const SIDE: Record<Spot, ['left' | 'right', number]> = {
   type: ['right', 0.2], surface: ['right', 0.48], shadow: ['right', 0.76],
 };
 
-const LAYERS: Record<Surface, LayerDef[]> = {
+export const LAYERS: Record<Surface, LayerDef[]> = {
   self: [
     { name: 'Fill', why: 'The key colour. A little lighter at the top, where the light hits.' },
     { name: 'Inner glow', why: 'A soft light just inside the edge. It makes the key look like soft plastic.' },
@@ -56,13 +59,13 @@ const LAYERS: Record<Surface, LayerDef[]> = {
   ],
 };
 
-interface Model {
+export interface KbdXrayModel {
   h: number; radius: number; pad: number; size: number; track: number;
   surface: Surface; lightDeg: number; lightK: number; lift: number;
   on: Record<Surface, boolean[]>;
 }
-const INITIAL: Model = {
-  h: P.height, radius: P.radius, pad: P.pad, size: 10, track: 0.02,
+export const KBD_XRAY_INITIAL: KbdXrayModel = {
+  h: P.height, radius: P.radius, pad: P.pad, size: Number(P.font.match(/\d+(?=px)/)?.[0]), track: Number(P.tracking.replace('em', '')),
   surface: 'self', lightDeg: 0, lightK: 1, lift: 1,
   on: { self: LAYERS.self.map(() => true), strip: LAYERS.strip.map(() => true), sunk: LAYERS.sunk.map(() => true) },
 };
@@ -70,9 +73,9 @@ const INITIAL: Model = {
 export function KbdXray({ startOpen = false }: { startOpen?: boolean }) {
   const [xray, setXray] = React.useState(startOpen);
   const [spot, setSpot] = React.useState<Spot>('surface');
-  const [m, setM] = React.useState<Model>(INITIAL);
+  const [m, setM] = React.useState<KbdXrayModel>(KBD_XRAY_INITIAL);
   const [focus, setFocus] = React.useState<string | null>(null);
-  const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
+  const set = React.useCallback((p: Partial<KbdXrayModel>) => setM((o) => ({ ...o, ...p })), []);
   const rec = useRecipeLayers('kbd', m.surface);
   const on = m.on[m.surface];
   const t = tones(rec.colorway);
@@ -150,74 +153,16 @@ export function KbdXray({ startOpen = false }: { startOpen?: boolean }) {
     layers: [capX[0] + capW[0] * S * 0.7, x0 + Hp * S * 0.3, Z],
   };
 
-  const chord = (label = 'Command K') => (
-    <span className="flex items-center gap-kbd-gap" aria-label={label}>
+  const chord = () => (
+    <span className="flex items-center gap-kbd-gap" aria-label="Command K">
       {KEYS.map((k) => <Kbd key={k} surface={m.surface === 'self' ? 'default' : m.surface}>{k}</Kbd>)}
     </span>
   );
-  const inContext = (s: Surface) => s === 'self'
-    ? <span className="type-ui flex h-32 items-center gap-8 rounded-pill bg-s-lo px-12 text-ink3 ring-1 ring-rule">Search <Kbd>⌘K</Kbd></span>
-    : s === 'strip'
-      ? <span data-mu-colorway="graphite" className="material-frost-graphite type-ui flex h-32 items-center gap-8 rounded-pill px-12 text-kbd-strip-ink">Search <Kbd surface="strip">⌘K</Kbd></span>
-      : <span className="recipe-toast-undo type-ui flex h-toast-undo-height items-center gap-toast-undo-gap rounded-pill pl-toast-undo-pad-left pr-toast-undo-pad-right text-toast-ink">Undo <Kbd surface="sunk">⌘Z</Kbd></span>;
 
-  const card = (
-    <>
-      {spot === 'shape' && (
-        <>
-          <p>A key is never narrower than it is tall, so a single letter gets an almost square key. Longer text makes it wider. The corners are round but not fully round, so it looks like a key and not a button.</p>
-          <div className="xr-dials">
-            <Dial label="Height" value={m.h} min={14} max={28} step={1} fmt={(v) => `${v} pt`} onChange={(h) => set({ h })} />
-            <Dial label="Corners" value={m.radius} min={0} max={14} step={0.5} fmt={(v) => `${v} pt`} onChange={(radius) => set({ radius })} />
-            <Dial label="Space beside the glyph" value={m.pad} min={2} max={12} step={0.5} fmt={(v) => `${v} pt`} onChange={(pad) => set({ pad })} />
-          </div>
-        </>
-      )}
-      {spot === 'type' && (
-        <>
-          <p>The glyph uses the mono font at 10 pt, in the softer ink. Keys are small, so a little extra letter spacing keeps them easy to read.</p>
-          <div className="xr-dials">
-            <Dial label="Size" value={m.size} min={8} max={14} step={0.5} fmt={(v) => `${v} pt`} onChange={(size) => set({ size })} />
-            <Dial label="Letter spacing" value={m.track} min={-0.04} max={0.12} step={0.01} fmt={(v) => `${v.toFixed(2)} em`} onChange={(track) => set({ track })} />
-          </div>
-        </>
-      )}
-      {spot === 'surface' && (
-        <>
-          <p>A key matches the place it sits. On a light surface it is raised. On a dark toolbar it is a dark key with one bright top edge. Inside a toast's Undo button it is pressed in. The glyph and the size stay the same.</p>
-          <div className="xr-dials">
-            <Switcher size="compact" aria-label="Surface" value={m.surface} onValueChange={(v) => set({ surface: v as Surface })} options={[{ value: 'self', label: 'Light' }, { value: 'strip', label: 'Dark strip' }, { value: 'sunk', label: 'Pressed in' }]} />
-          </div>
-          <Proof column>{inContext(m.surface)}</Proof>
-        </>
-      )}
-      {spot === 'light' && (
-        <>
-          <p>The key uses the same light as everything else. The side facing the light is lighter and its edge gets a bright line. Move the light and the key changes with it.</p>
-          <LightDials deg={m.lightDeg} k={m.lightK} set={set} />
-        </>
-      )}
-      {spot === 'shadow' && (
-        <>
-          <p>A raised key has two shadows. The small one is where it touches. The soft one shows how high it is. Keys stay low, so both are small. A key on the dark strip or pressed in has no drop shadow.</p>
-          {m.surface === 'self'
-            ? <div className="xr-dials"><Dial label="Height above the page" value={m.lift} min={0} max={3} step={0.1} fmt={(v) => v.toFixed(1)} onChange={(lift) => set({ lift })} /></div>
-            : <p><button type="button" className="status" onClick={() => set({ surface: 'self' })}><span className="led off" />Show the raised key</button></p>}
-        </>
-      )}
-      {spot === 'layers' && (
-        <>
-          <p>This key has {LAYERS[m.surface].length} layers. Turn one off to see what it adds. Pick another surface under Surface to see its layers.</p>
-          <LayerList groups={[{ layers: LAYERS[m.surface], on, toggle: (i, v) => set({ on: { ...m.on, [m.surface]: on.map((x, j) => (j === i ? v : x)) } }) }]} focus={focus} setFocus={setFocus} />
-        </>
-      )}
-      {spot !== 'surface' && spot !== 'layers' && <Proof>{chord()}</Proof>}
-      {spot === 'layers' && <Proof>{chord()}</Proof>}
-    </>
-  );
+  const card = <KbdSpecimenCard spot={spot} m={m} set={set} focus={setFocus} />;
 
   return (
-    <>
+    <HintLayer>
       <span ref={measure} aria-hidden className="xr-measure" style={{ font: `500 ${m.size}px/1 var(--mono)`, letterSpacing: `${m.track}em` }}>
         {KEYS.map((k) => <span key={k} style={{ display: 'inline-block' }}>{k}</span>)}
       </span>
@@ -226,9 +171,9 @@ export function KbdXray({ startOpen = false }: { startOpen?: boolean }) {
         solid={<div style={{ zoom: S, cursor: 'zoom-in' }}>{chord()}</div>}
         W={W} H={H} scene={scene} anchors={anchors}
         sun={spot === 'light' ? { deg: m.lightDeg, k: m.lightK, z: top + 120 } : undefined}
-        onReset={() => setM(INITIAL)} deps={[spot, m, glyphW]}
+        onReset={() => setM(KBD_XRAY_INITIAL)} deps={[spot, m, glyphW]}
         card={card}
       />
-    </>
+    </HintLayer>
   );
 }

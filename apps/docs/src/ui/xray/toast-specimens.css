@@ -1,0 +1,39 @@
+/* THE TOAST'S SPECIMENS: the real toast in the card, and its arrival on the bench. */
+.ed-toast-box, .ed-toast-rise { position: relative; display: inline-flex; }
+.ed-toast-box .ed-overlay { z-index: 2; }
+.ed-toast-sub { position: relative; }
+
+/* timing: the toast is the handle; its resting outline shows how far below it starts */
+.ed-toast-grip { display: inline-flex; cursor: ns-resize; outline: none; border-radius: 999px; touch-action: none; }
+.ed-toast-grip:focus-visible { box-shadow: 0 0 0 1px var(--mu-presence-guide); }
+.ed-toast-grip > span { display: inline-flex; }
+.ed-toast-rest { position: absolute; inset: 0; border: .6px dashed var(--mu-presence-guide); border-radius: 999px; opacity: 0; pointer-events: none;
+  transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-toast-rise:is([data-live], [data-peek]) .ed-toast-rest { opacity: .8; }
+/* the arrival, from the recipe's own pose: one nest below, a little small, on the settle spring (a crossfade under Reduce Motion) */
+.ed-toast-in { animation: ed-toast-in var(--mu-spring-settle-d, .44s) var(--mu-spring-settle, ease-out) both; }
+@keyframes ed-toast-in { from { opacity: 0; transform: translateY(calc(var(--rise) * var(--mu-travel-settle, 1))) scale(calc(1 - (1 - var(--from)) * var(--mu-travel-settle, 1))); } }
+html.rm .ed-toast-in { animation-name: ed-toast-fade; }
+@keyframes ed-toast-fade { from { opacity: 0; } }
+.xr-toastwrap.ed-toast-benchin { animation: ed-toast-bench-in var(--spring-settle-d, .44s) var(--spring-settle, ease-out) both; }
+@keyframes ed-toast-bench-in { from { transform: translate3d(0, var(--rise), 0) scale(var(--from)); } }
+@media (prefers-reduced-motion: reduce) { .xr-toastwrap.ed-toast-benchin { animation: none; } }
+
+/* type: the space before the detail is the handle; two hairlines frame the gap, never a letter */
+.ed-toast-gap { position: absolute; top: -5px; bottom: -5px; right: 100%; cursor: ew-resize; outline: none; touch-action: none; }
+.ed-toast-gap::after { content: ''; position: absolute; inset: 0 4px; border-left: .6px solid var(--mu-presence-guide); border-right: .6px solid var(--mu-presence-guide); opacity: .55; pointer-events: none; }
+.ed-toast-gap:is(:hover, :focus-visible, [data-live], [data-peek])::after { border-left-width: 1.2px; border-right-width: 1.2px; opacity: 1; }
+
+/* undo: the cap presses by the material's travel, on the release spring back */
+.ed-toast-cap { touch-action: none; }
+
+/* shadow */
+.ed-toast-lift { border-radius: 999px; touch-action: none; }
+.ed-toast-lift[data-peek] { box-shadow: 0 0 0 1px var(--mu-presence-guide); }
+
+/* layers: two groups, the pill's and the cap's */
+.ed-toast-group + .ed-toast-group { margin-top: 10px; }
+.ed-toast-group > b { display: block; margin: 0 0 4px 2px; font: 500 9px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+
+[data-mu-colorway="graphite"] :is(.ed-toast-rest, .ed-toast-gap::after) { border-color: var(--green-deep); }
+.ed-toast-leftend { position: absolute; left: 0; top: 0; pointer-events: none; }

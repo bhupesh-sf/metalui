@@ -6,6 +6,7 @@ export const SPRINGS = {
   hinge: { stiffness: 120, damping: 14, duration: 0.94 },
   surface: { stiffness: 220, damping: 28, duration: 0.5 },
   settle: { stiffness: 380, damping: 36, duration: 0.44 },
+  chrome: { stiffness: 640, damping: 50.6, duration: 0.28 },
   release: { stiffness: 500, damping: 40, duration: 0.3 },
   refusal: { stiffness: 900, damping: 12, duration: 1.1 },
 } as const;

@@ -1,0 +1,4142 @@
+{
+  "$description": "MetalUI gadgets: the catalog an assistant composes gadgets and rigs from. Specs are JSON (metalui/gadget@1, metalui/rig@1), validated by validateGadget and validateRig, drawn by <Gadget> and <Rig> (React) and MetalGadget and MetalRig (SwiftUI).",
+  "schemas": {
+    "gadget": "https://metalui.dev/schemas/gadget.schema.json",
+    "rig": "https://metalui.dev/schemas/rig.schema.json"
+  },
+  "jobs": {
+    "tune": {
+      "stations": [
+        80
+      ],
+      "reach": "own",
+      "containers": [
+        "slab"
+      ],
+      "pin": null
+    },
+    "command": {
+      "stations": [
+        95
+      ],
+      "reach": "own",
+      "containers": [
+        "slab"
+      ],
+      "pin": "ceramic"
+    },
+    "link": {
+      "stations": [
+        195,
+        230
+      ],
+      "reach": "world",
+      "containers": [
+        "slab",
+        "free"
+      ],
+      "pin": null
+    },
+    "keep": {
+      "stations": [
+        140,
+        300
+      ],
+      "reach": "own",
+      "containers": [
+        "slab",
+        "inset"
+      ],
+      "pin": null
+    },
+    "identify": {
+      "stations": [
+        260
+      ],
+      "reach": "others",
+      "containers": [
+        "inset"
+      ],
+      "pin": "glass"
+    },
+    "destroy": {
+      "stations": [
+        25
+      ],
+      "reach": "own",
+      "containers": [
+        "slab"
+      ],
+      "pin": null
+    },
+    "take": {
+      "stations": [
+        55
+      ],
+      "reach": "world",
+      "containers": [
+        "inset"
+      ],
+      "pin": null
+    },
+    "find": {
+      "stations": [
+        250
+      ],
+      "reach": "world",
+      "containers": [
+        "inset"
+      ],
+      "pin": "stone"
+    },
+    "make": {
+      "stations": [
+        330
+      ],
+      "reach": "own",
+      "containers": [
+        "slab",
+        "free"
+      ],
+      "pin": null
+    },
+    "signal": {
+      "stations": [
+        55,
+        80
+      ],
+      "reach": "own",
+      "containers": [
+        "slab",
+        "inset",
+        "free"
+      ],
+      "pin": null
+    }
+  },
+  "materials": [
+    "clay",
+    "ceramic",
+    "resin",
+    "stone",
+    "glass",
+    "metal",
+    "rubber"
+  ],
+  "parts": {
+    "slab": {
+      "size": [
+        320,
+        320
+      ],
+      "materials": [
+        "clay",
+        "stone",
+        "ceramic",
+        "rubber",
+        "metal",
+        "resin"
+      ],
+      "params": {
+        "cut": [
+          "enum",
+          "none",
+          "slot",
+          "hole",
+          "tray",
+          "well"
+        ],
+        "depth": [
+          "number",
+          0,
+          24
+        ],
+        "radius": [
+          "number",
+          4,
+          160
+        ],
+        "ink": [
+          "boolean"
+        ]
+      },
+      "strike": [
+        "body",
+        0.6
+      ]
+    },
+    "bezel": {
+      "size": [
+        320,
+        320
+      ],
+      "materials": [
+        "stone",
+        "metal",
+        "clay"
+      ],
+      "params": {
+        "width": [
+          "number",
+          16,
+          32
+        ],
+        "face": [
+          "enum",
+          "glass-face",
+          "cell",
+          "backlight"
+        ],
+        "opening": [
+          "enum",
+          "round",
+          "square"
+        ]
+      },
+      "strike": [
+        "frame",
+        0.5
+      ]
+    },
+    "glass-face": {
+      "size": [
+        276,
+        276
+      ],
+      "materials": [
+        "glass"
+      ],
+      "params": {
+        "shape": [
+          "enum",
+          "round",
+          "square"
+        ],
+        "rings": [
+          "boolean"
+        ]
+      },
+      "strike": [
+        "face",
+        0.5
+      ]
+    },
+    "backlight": {
+      "size": [
+        200,
+        200
+      ],
+      "materials": [
+        "lamp"
+      ],
+      "params": {
+        "alpha": [
+          "number",
+          0,
+          1
+        ],
+        "color": [
+          "enum",
+          "signal",
+          "accent",
+          "glass"
+        ],
+        "shape": [
+          "enum",
+          "glow",
+          "beam",
+          "dot"
+        ]
+      },
+      "strike": null
+    },
+    "led": {
+      "size": [
+        22,
+        22
+      ],
+      "materials": [
+        "lamp"
+      ],
+      "params": {},
+      "strike": null
+    },
+    "key": {
+      "size": [
+        112,
+        112
+      ],
+      "materials": [
+        "clay",
+        "ceramic",
+        "accent"
+      ],
+      "params": {
+        "glyph": [
+          "string"
+        ]
+      },
+      "strike": [
+        "face",
+        1
+      ]
+    },
+    "cap": {
+      "size": [
+        60,
+        44
+      ],
+      "materials": [
+        "clay",
+        "ceramic",
+        "accent"
+      ],
+      "params": {
+        "ribs": [
+          "number",
+          2,
+          5
+        ],
+        "shape": [
+          "enum",
+          "fader",
+          "knob",
+          "rocker"
+        ],
+        "value": [
+          "number",
+          0,
+          1
+        ],
+        "tilt": [
+          "number",
+          -1,
+          1
+        ]
+      },
+      "strike": [
+        "face",
+        0.8
+      ]
+    },
+    "jack": {
+      "size": [
+        68,
+        68
+      ],
+      "materials": [
+        "metal"
+      ],
+      "params": {
+        "knurls": [
+          "number",
+          8,
+          16
+        ]
+      },
+      "strike": [
+        "nut",
+        0.7
+      ]
+    },
+    "plug": {
+      "size": [
+        54,
+        54
+      ],
+      "materials": [
+        "clay",
+        "accent"
+      ],
+      "params": {
+        "stub": [
+          "enum",
+          "up",
+          "left",
+          "right",
+          "none"
+        ]
+      },
+      "strike": [
+        "body",
+        0.85
+      ]
+    },
+    "cable": {
+      "size": [
+        0,
+        0
+      ],
+      "materials": [
+        "rubber"
+      ],
+      "params": {
+        "sag": [
+          "number",
+          0,
+          90
+        ],
+        "from": [
+          "ref"
+        ],
+        "to": [
+          "ref"
+        ]
+      },
+      "strike": [
+        "tube",
+        0.2
+      ]
+    },
+    "cell": {
+      "size": [
+        44,
+        44
+      ],
+      "materials": [
+        "resin"
+      ],
+      "params": {
+        "cols": [
+          "number",
+          1,
+          8
+        ],
+        "rows": [
+          "number",
+          1,
+          8
+        ],
+        "gap": [
+          "number",
+          6,
+          14
+        ]
+      },
+      "strike": [
+        "cells",
+        0.5
+      ]
+    },
+    "drum": {
+      "size": [
+        52,
+        88
+      ],
+      "materials": [
+        "clay",
+        "ceramic",
+        "accent"
+      ],
+      "params": {
+        "digits": [
+          "number",
+          10,
+          10
+        ],
+        "face": [
+          "enum",
+          "ceramic",
+          "clay"
+        ],
+        "glyphs": [
+          "enum",
+          "digits",
+          "ticks"
+        ]
+      },
+      "strike": [
+        "strip",
+        0.35
+      ]
+    },
+    "needle": {
+      "size": [
+        96,
+        8
+      ],
+      "materials": [
+        "metal"
+      ],
+      "params": {
+        "arc": [
+          "number",
+          90,
+          150
+        ],
+        "ticks": [
+          "number",
+          5,
+          21
+        ],
+        "threshold": [
+          "number",
+          0,
+          1
+        ]
+      },
+      "strike": null
+    },
+    "lid": {
+      "size": [
+        240,
+        160
+      ],
+      "materials": [
+        "rubber",
+        "clay"
+      ],
+      "params": {
+        "hinge": [
+          "enum",
+          "back",
+          "left"
+        ],
+        "armed": [
+          "boolean"
+        ]
+      },
+      "strike": [
+        "lid",
+        0.9
+      ]
+    },
+    "pull": {
+      "size": [
+        96,
+        14
+      ],
+      "materials": [
+        "metal",
+        "clay"
+      ],
+      "params": {
+        "style": [
+          "enum",
+          "bar",
+          "recess"
+        ]
+      },
+      "strike": [
+        "pull",
+        0.5
+      ]
+    },
+    "lens": {
+      "size": [
+        184,
+        184
+      ],
+      "materials": [
+        "glass",
+        "accent"
+      ],
+      "params": {
+        "ticks": [
+          "number",
+          12,
+          36
+        ],
+        "iris": [
+          "number",
+          0,
+          1
+        ]
+      },
+      "strike": [
+        "ring",
+        0.3
+      ]
+    },
+    "nib": {
+      "size": [
+        70,
+        20
+      ],
+      "materials": [
+        "metal"
+      ],
+      "params": {
+        "angle": [
+          "number",
+          -30,
+          30
+        ]
+      },
+      "strike": [
+        "nib",
+        0.3
+      ]
+    },
+    "beeper": {
+      "size": [
+        44,
+        24
+      ],
+      "materials": [
+        "metal",
+        "clay"
+      ],
+      "params": {
+        "slots": [
+          "number",
+          3,
+          7
+        ]
+      },
+      "strike": null
+    },
+    "label": {
+      "size": [
+        80,
+        16
+      ],
+      "materials": [
+        "clay"
+      ],
+      "params": {
+        "text": [
+          "string"
+        ]
+      },
+      "strike": null
+    },
+    "glyph": {
+      "size": [
+        24,
+        24
+      ],
+      "materials": [
+        "clay"
+      ],
+      "params": {
+        "name": [
+          "string"
+        ]
+      },
+      "strike": null
+    }
+  },
+  "mechanisms": {
+    "press": {
+      "mode": "momentary",
+      "drive": null,
+      "slots": {
+        "keys": {
+          "parts": [
+            "key",
+            "cap"
+          ],
+          "many": true,
+          "optional": false
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        }
+      },
+      "states": [],
+      "caption": "The keys drop into their skirts one after another and spring back: a chord.",
+      "spring": "release"
+    },
+    "slide": {
+      "mode": "held",
+      "drive": [
+        "number",
+        "count"
+      ],
+      "slots": {
+        "caps": {
+          "parts": [
+            "cap"
+          ],
+          "many": true,
+          "optional": false
+        },
+        "slot": {
+          "parts": [
+            "slab"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        }
+      },
+      "states": [],
+      "caption": "Caps travel along their slots to a new mix, one after another; they scrape as they go, tick past each detent, and knock if they reach the end.",
+      "spring": "part"
+    },
+    "seat": {
+      "mode": "momentary",
+      "drive": null,
+      "slots": {
+        "plug": {
+          "parts": [
+            "plug"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "socket": {
+          "parts": [
+            "jack"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "beeper": {
+          "parts": [
+            "beeper"
+          ],
+          "many": false,
+          "optional": true
+        }
+      },
+      "states": [
+        "half",
+        "out"
+      ],
+      "caption": "The plug lifts, its shadow opens, and it seats again with a click.",
+      "spring": "part"
+    },
+    "turn": {
+      "mode": "held",
+      "drive": [
+        "number",
+        "count"
+      ],
+      "slots": {
+        "ring": {
+          "parts": [
+            "lens",
+            "cap",
+            "drum"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        }
+      },
+      "states": [
+        "taken"
+      ],
+      "caption": "The ring turns to the value, clicking at every eighth of a turn; taken, it clicks round one and back.",
+      "spring": "part"
+    },
+    "flip": {
+      "mode": "held",
+      "drive": [
+        "boolean",
+        "state"
+      ],
+      "slots": {
+        "lid": {
+          "parts": [
+            "lid",
+            "cap"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        }
+      },
+      "states": [
+        "open",
+        "ajar"
+      ],
+      "caption": "The lid swings about its hinge: it creaks as it rises, and thuds shut against the rim. Emptied, it swings open and slams.",
+      "spring": "hinge"
+    },
+    "sweep": {
+      "mode": "momentary",
+      "drive": null,
+      "slots": {
+        "beam": {
+          "parts": [
+            "backlight"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "face": {
+          "parts": [
+            "glass-face"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "blips": {
+          "parts": [
+            "backlight"
+          ],
+          "many": true,
+          "optional": true
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        }
+      },
+      "states": [
+        "stopped"
+      ],
+      "caption": "The beam turns once around the glass; each blip lights as the beam crosses it, and fades.",
+      "spring": "part"
+    },
+    "roll": {
+      "mode": "held",
+      "drive": [
+        "count"
+      ],
+      "slots": {
+        "drums": {
+          "parts": [
+            "drum"
+          ],
+          "many": true,
+          "optional": false
+        },
+        "window": {
+          "parts": [
+            "slab"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        }
+      },
+      "states": [],
+      "caption": "The drums turn to the new count, the lowest first; each ticks past its digits and settles with a small knock.",
+      "spring": "settle"
+    },
+    "swing": {
+      "mode": "held",
+      "drive": [
+        "number"
+      ],
+      "slots": {
+        "needle": {
+          "parts": [
+            "needle"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "face": {
+          "parts": [
+            "glass-face",
+            "bezel"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "beeper": {
+          "parts": [
+            "beeper"
+          ],
+          "many": false,
+          "optional": true
+        }
+      },
+      "states": [],
+      "caption": "The needle swings to the value, overshoots a little and settles; at the ends of its scale it bounces off the pegs.",
+      "spring": "part"
+    },
+    "glow": {
+      "mode": "held",
+      "drive": [
+        "number",
+        "count",
+        "boolean"
+      ],
+      "slots": {
+        "light": {
+          "parts": [
+            "backlight"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "cells": {
+          "parts": [
+            "cell"
+          ],
+          "many": true,
+          "optional": true
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        }
+      },
+      "states": [],
+      "caption": "Light rises behind the resin: the cells light in turn from the bottom row up, and the backlight brightens with them.",
+      "spring": "settle"
+    },
+    "slide-out": {
+      "mode": "momentary",
+      "drive": null,
+      "slots": {
+        "tray": {
+          "parts": [
+            "slab"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "pull": {
+          "parts": [
+            "pull"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        }
+      },
+      "states": [
+        "open",
+        "full"
+      ],
+      "caption": "The drawer is pulled out toward you on its runners, stops against them, is held a moment, and springs home.",
+      "spring": "object"
+    },
+    "dip": {
+      "mode": "momentary",
+      "drive": null,
+      "slots": {
+        "nib": {
+          "parts": [
+            "nib"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "well": {
+          "parts": [
+            "slab"
+          ],
+          "many": false,
+          "optional": false
+        },
+        "lamp": {
+          "parts": [
+            "led"
+          ],
+          "many": false,
+          "optional": false
+        }
+      },
+      "states": [
+        "writing"
+      ],
+      "caption": "The nib dips into its well and springs back up, with a soft tap on the well.",
+      "spring": "release"
+    }
+  },
+  "lamp": {
+    "signals": [
+      "off",
+      "live",
+      "link",
+      "waiting",
+      "failed"
+    ],
+    "gestures": [
+      "steady",
+      "flicker",
+      "breathe",
+      "blink2",
+      "rise"
+    ]
+  },
+  "earcons": [
+    "done",
+    "failed",
+    "waiting",
+    "ready"
+  ],
+  "ports": {
+    "number": "a value between `min` and `max`, with a `unit`",
+    "count": "a whole count up to `max`",
+    "boolean": "a switch; named after a state, it puts the gadget in that state",
+    "state": "one of `options`; it sets the gadget's state",
+    "pulse": "an event, never stored; into a gadget it plays its act"
+  },
+  "maps": {
+    "threshold": "a number or count at or past `at` becomes `above`, else `below` (a word or a switch)",
+    "scale": "a number mapped linearly from `from` [a, b] onto `to` [c, d]",
+    "match": "a word or switch equal to `when` becomes a pulse",
+    "count": "a pulse adds `step` (1 or -1) to the count already at the far port",
+    "select": "a word or switch looked up in `table` (keys are words, \"true\" or \"false\"): a word, a number or a switch"
+  },
+  "limits": {
+    "parts": [
+      2,
+      24
+    ],
+    "states": 8,
+    "ports": 4,
+    "name-max": 32,
+    "pose": {
+      "x": 100,
+      "y": 100,
+      "r": 180,
+      "s": [
+        0.5,
+        1.5
+      ]
+    },
+    "detents": [
+      2,
+      60
+    ],
+    "rig-grid": [
+      4,
+      3
+    ],
+    "rig-gadgets": [
+      2,
+      8
+    ],
+    "cables": [
+      1,
+      12
+    ],
+    "fan-out": 3
+  },
+  "gadgets": [
+    {
+      "name": "patch-bay",
+      "title": "Sync",
+      "description": "A gadget for sync: two jacks in a stone slab, a cord between their plugs, a lamp and a beeper. Drawn at runtime from its spec by the gadget renderer.",
+      "job": "link",
+      "container": "slab",
+      "mechanism": "seat",
+      "ports": {
+        "in": {
+          "state": {
+            "kind": "state",
+            "options": [
+              "connected",
+              "syncing",
+              "done",
+              "failed"
+            ],
+            "default": "connected"
+          }
+        },
+        "out": {
+          "healthy": {
+            "kind": "boolean"
+          },
+          "done": {
+            "kind": "pulse"
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "connected",
+        "syncing",
+        "done",
+        "failed"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "patch-bay",
+        "title": "Sync",
+        "job": "link",
+        "reach": "world",
+        "feel": {
+          "v": 0.7,
+          "a": 0.8,
+          "w": 0.4
+        },
+        "container": "slab",
+        "station": 195,
+        "material": "stone",
+        "parts": [
+          {
+            "id": "body",
+            "part": "slab",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body"
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "jackA",
+            "part": "jack",
+            "at": [
+              128,
+              180
+            ],
+            "role": "trim"
+          },
+          {
+            "id": "jackB",
+            "part": "jack",
+            "at": [
+              272,
+              180
+            ],
+            "role": "trim"
+          },
+          {
+            "id": "plugA",
+            "part": "plug",
+            "at": [
+              128,
+              180
+            ],
+            "role": "actor",
+            "material": "accent"
+          },
+          {
+            "id": "plugB",
+            "part": "plug",
+            "at": [
+              272,
+              180
+            ],
+            "role": "actor"
+          },
+          {
+            "id": "cable",
+            "part": "cable",
+            "at": [
+              200,
+              200
+            ],
+            "role": "trim",
+            "params": {
+              "from": "plugA",
+              "to": "plugB",
+              "sag": 34
+            }
+          },
+          {
+            "id": "beeper",
+            "part": "beeper",
+            "at": [
+              96,
+              310
+            ],
+            "role": "trim",
+            "params": {
+              "slots": 5
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "seat",
+          "bind": {
+            "plug": "plugA",
+            "socket": "jackA",
+            "lamp": "lamp",
+            "beeper": "beeper"
+          }
+        },
+        "ports": {
+          "in": {
+            "state": {
+              "kind": "state",
+              "options": [
+                "connected",
+                "syncing",
+                "done",
+                "failed"
+              ],
+              "default": "connected"
+            }
+          },
+          "out": {
+            "healthy": {
+              "kind": "boolean"
+            },
+            "done": {
+              "kind": "pulse"
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ]
+          },
+          "connected": {
+            "lamp": [
+              "live",
+              "steady"
+            ]
+          },
+          "syncing": {
+            "feel": {
+              "a": 1
+            },
+            "lamp": [
+              "waiting",
+              "breathe"
+            ],
+            "form": {
+              "plugA": {
+                "pose": {
+                  "y": -7
+                }
+              }
+            }
+          },
+          "done": {
+            "lamp": [
+              "live",
+              "steady"
+            ],
+            "beep": "done",
+            "enter": "act"
+          },
+          "failed": {
+            "feel": {
+              "v": 0.1,
+              "w": 0.7
+            },
+            "lamp": [
+              "failed",
+              "blink2"
+            ],
+            "beep": "failed",
+            "form": {
+              "plugA": {
+                "pose": {
+                  "x": -22,
+                  "y": -46,
+                  "r": -14
+                }
+              }
+            },
+            "hint": "check your connection"
+          }
+        },
+        "describe": "{title}: {state}"
+      }
+    },
+    {
+      "name": "fader-bank",
+      "title": "Settings",
+      "description": "A gadget for settings: three fader caps in slots cut into a pale warm-grey clay slab, the one you would touch in orange, and a lamp. One value moves the whole bank; the caps scrape, tick past detents and knock at the ends. Drawn at runtime from its spec.",
+      "job": "tune",
+      "container": "slab",
+      "mechanism": "slide",
+      "ports": {
+        "in": {
+          "mix": {
+            "kind": "number",
+            "min": 0,
+            "max": 1,
+            "default": 0.5
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "on",
+        "changed"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "fader-bank",
+        "title": "Settings",
+        "job": "tune",
+        "reach": "own",
+        "feel": {
+          "v": 0.6,
+          "a": 0.5,
+          "w": 0
+        },
+        "container": "slab",
+        "parts": [
+          {
+            "id": "body",
+            "part": "slab",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body"
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "cap1",
+            "part": "cap",
+            "at": [
+              128,
+              210
+            ],
+            "role": "actor",
+            "params": {
+              "value": 0.3
+            }
+          },
+          {
+            "id": "cap2",
+            "part": "cap",
+            "at": [
+              200,
+              210
+            ],
+            "role": "actor",
+            "material": "accent",
+            "params": {
+              "value": 0.72
+            }
+          },
+          {
+            "id": "cap3",
+            "part": "cap",
+            "at": [
+              272,
+              210
+            ],
+            "role": "actor",
+            "params": {
+              "value": 0.5
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "slide",
+          "bind": {
+            "caps": [
+              "cap1",
+              "cap2",
+              "cap3"
+            ],
+            "slot": "body",
+            "lamp": "lamp"
+          },
+          "detents": 8,
+          "drive": "mix"
+        },
+        "ports": {
+          "in": {
+            "mix": {
+              "kind": "number",
+              "min": 0,
+              "max": 1,
+              "default": 0.5
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ]
+          },
+          "on": {
+            "lamp": [
+              "live",
+              "steady"
+            ]
+          },
+          "changed": {
+            "lamp": [
+              "live",
+              "flicker"
+            ],
+            "beep": "done"
+          }
+        },
+        "initial": "on",
+        "describe": "{title}: {state}"
+      }
+    },
+    {
+      "name": "keycap-chord",
+      "title": "Shortcuts",
+      "description": "A gadget for shortcuts: two keys, ⌘ and K, standing in a tray sunk into a ceramic slab, the one you would press in orange, and a lamp. Its act is a chord: the keys drop one after another and spring back, with two ceramic tinks and higher clicks on the way up. Drawn at runtime from its spec.",
+      "job": "command",
+      "container": "slab",
+      "mechanism": "press",
+      "ports": {
+        "in": {
+          "press": {
+            "kind": "pulse"
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "ready",
+        "chord"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "keycap-chord",
+        "title": "Shortcuts",
+        "job": "command",
+        "reach": "own",
+        "feel": {
+          "v": 0.8,
+          "a": 0.8,
+          "w": 0.1
+        },
+        "container": "slab",
+        "material": "ceramic",
+        "parts": [
+          {
+            "id": "body",
+            "part": "slab",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body"
+          },
+          {
+            "id": "tray",
+            "part": "slab",
+            "at": [
+              200,
+              218
+            ],
+            "size": [
+              268,
+              164
+            ],
+            "role": "cut",
+            "params": {
+              "cut": "tray",
+              "depth": 14
+            }
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "cmd",
+            "part": "key",
+            "at": [
+              140,
+              222
+            ],
+            "role": "actor",
+            "material": "ceramic",
+            "params": {
+              "glyph": "⌘"
+            }
+          },
+          {
+            "id": "k",
+            "part": "key",
+            "at": [
+              260,
+              222
+            ],
+            "role": "actor",
+            "material": "accent",
+            "params": {
+              "glyph": "K"
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "press",
+          "bind": {
+            "keys": [
+              "cmd",
+              "k"
+            ],
+            "lamp": "lamp"
+          }
+        },
+        "ports": {
+          "in": {
+            "press": {
+              "kind": "pulse"
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ]
+          },
+          "ready": {
+            "lamp": [
+              "live",
+              "steady"
+            ]
+          },
+          "chord": {
+            "lamp": [
+              "live",
+              "steady"
+            ],
+            "enter": "act"
+          }
+        },
+        "initial": "ready",
+        "describe": "{title}: {state}"
+      }
+    },
+    {
+      "name": "scope",
+      "title": "Search",
+      "description": "A gadget for search: an ice-glass radar face sunk in a stone bezel. While it searches, a beam sweeps the glass and blips light as it crosses them, with a glass tick each; found, the blips stay lit. Drawn at runtime from its spec.",
+      "job": "find",
+      "container": "inset",
+      "mechanism": "sweep",
+      "ports": {
+        "in": {
+          "query": {
+            "kind": "boolean",
+            "default": false
+          }
+        },
+        "out": {
+          "found": {
+            "kind": "count",
+            "max": 99
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "searching",
+        "found",
+        "nothing"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "scope",
+        "title": "Search",
+        "job": "find",
+        "reach": "world",
+        "feel": {
+          "v": 0.7,
+          "a": 0.8,
+          "w": 0.1
+        },
+        "container": "inset",
+        "material": "stone",
+        "parts": [
+          {
+            "id": "body",
+            "part": "bezel",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body",
+            "params": {
+              "opening": "round"
+            }
+          },
+          {
+            "id": "face",
+            "part": "glass-face",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              276,
+              276
+            ],
+            "role": "trim",
+            "params": {
+              "rings": true
+            }
+          },
+          {
+            "id": "beam",
+            "part": "backlight",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              276,
+              276
+            ],
+            "role": "actor",
+            "params": {
+              "shape": "beam",
+              "color": "glass"
+            }
+          },
+          {
+            "id": "b1",
+            "part": "backlight",
+            "at": [
+              150,
+              146
+            ],
+            "size": [
+              20,
+              20
+            ],
+            "role": "actor",
+            "params": {
+              "shape": "dot",
+              "color": "glass"
+            }
+          },
+          {
+            "id": "b2",
+            "part": "backlight",
+            "at": [
+              266,
+              230
+            ],
+            "size": [
+              20,
+              20
+            ],
+            "role": "actor",
+            "params": {
+              "shape": "dot",
+              "color": "glass"
+            }
+          },
+          {
+            "id": "b3",
+            "part": "backlight",
+            "at": [
+              176,
+              278
+            ],
+            "size": [
+              20,
+              20
+            ],
+            "role": "actor",
+            "params": {
+              "shape": "dot",
+              "color": "glass"
+            }
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              322,
+              72
+            ],
+            "role": "lamp"
+          }
+        ],
+        "mechanism": {
+          "name": "sweep",
+          "bind": {
+            "beam": "beam",
+            "face": "face",
+            "blips": [
+              "b1",
+              "b2",
+              "b3"
+            ],
+            "lamp": "lamp"
+          }
+        },
+        "ports": {
+          "in": {
+            "query": {
+              "kind": "boolean",
+              "default": false
+            }
+          },
+          "out": {
+            "found": {
+              "kind": "count",
+              "max": 99
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ]
+          },
+          "searching": {
+            "lamp": [
+              "waiting",
+              "breathe"
+            ],
+            "enter": "act"
+          },
+          "found": {
+            "lamp": [
+              "live",
+              "steady"
+            ],
+            "beep": "done",
+            "form": {
+              "b1": {
+                "param": "alpha",
+                "value": 1
+              },
+              "b2": {
+                "param": "alpha",
+                "value": 1
+              },
+              "b3": {
+                "param": "alpha",
+                "value": 1
+              }
+            }
+          },
+          "nothing": {
+            "lamp": [
+              "waiting",
+              "steady"
+            ],
+            "beep": "waiting"
+          }
+        },
+        "initial": "rest",
+        "describe": "{title}: {state}"
+      }
+    },
+    {
+      "name": "drawer",
+      "title": "Storage",
+      "description": "A gadget for what is kept: a pale steel filing drawer under a steel top, with a metal pull and a lamp. Its index cards stand to how full it is; filing one slides it out on its runners and home again, and full, it will not close. Drawn at runtime from its spec.",
+      "job": "keep",
+      "container": "slab",
+      "mechanism": "slide-out",
+      "ports": {
+        "in": {
+          "fill": {
+            "kind": "number",
+            "min": 0,
+            "max": 1,
+            "default": 0.4
+          }
+        },
+        "out": {
+          "full": {
+            "kind": "boolean"
+          },
+          "fill": {
+            "kind": "number",
+            "min": 0,
+            "max": 1
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "open",
+        "full"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "drawer",
+        "title": "Storage",
+        "job": "keep",
+        "feel": {
+          "v": 0.6,
+          "a": 0.1,
+          "w": 0.2
+        },
+        "container": "slab",
+        "station": 140,
+        "material": "metal",
+        "parts": [
+          {
+            "id": "body",
+            "part": "slab",
+            "at": [
+              200,
+              160
+            ],
+            "size": [
+              320,
+              248
+            ],
+            "role": "body"
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "tray",
+            "part": "slab",
+            "at": [
+              200,
+              206
+            ],
+            "size": [
+              256,
+              140
+            ],
+            "role": "actor"
+          },
+          {
+            "id": "pull",
+            "part": "pull",
+            "at": [
+              200,
+              311
+            ],
+            "role": "actor",
+            "material": "metal",
+            "params": {
+              "style": "bar"
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "slide-out",
+          "bind": {
+            "tray": "tray",
+            "pull": "pull",
+            "lamp": "lamp"
+          },
+          "drive": "fill"
+        },
+        "ports": {
+          "in": {
+            "fill": {
+              "kind": "number",
+              "min": 0,
+              "max": 1,
+              "default": 0.4
+            }
+          },
+          "out": {
+            "full": {
+              "kind": "boolean"
+            },
+            "fill": {
+              "kind": "number",
+              "min": 0,
+              "max": 1
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ]
+          },
+          "open": {
+            "lamp": [
+              "live",
+              "steady"
+            ],
+            "form": {
+              "tray": {
+                "pose": {
+                  "y": 60
+                }
+              },
+              "pull": {
+                "pose": {
+                  "y": 60
+                }
+              }
+            }
+          },
+          "full": {
+            "lamp": [
+              "waiting",
+              "steady"
+            ],
+            "form": {
+              "tray": {
+                "pose": {
+                  "y": 22
+                }
+              },
+              "pull": {
+                "pose": {
+                  "y": 22
+                }
+              }
+            },
+            "hint": "too full to close"
+          }
+        },
+        "describe": "{title}: {share} full"
+      }
+    },
+    {
+      "name": "lidded-bin",
+      "title": "Trash",
+      "description": "A gadget for throwing away: a heavy near-black rubber lid over a bin's mouth, on a rubber slab, and a lamp. Armed, the lid rises ajar showing its red underside and the lamp goes red; emptied, it swings open and slams shut with a thud. Drawn at runtime from its spec.",
+      "job": "destroy",
+      "container": "slab",
+      "mechanism": "flip",
+      "ports": {
+        "in": {
+          "armed": {
+            "kind": "boolean",
+            "default": false
+          },
+          "empty": {
+            "kind": "pulse"
+          }
+        },
+        "out": {
+          "emptied": {
+            "kind": "pulse"
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "armed",
+        "emptied"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "lidded-bin",
+        "title": "Trash",
+        "job": "destroy",
+        "feel": {
+          "v": 0.3,
+          "a": 0.4,
+          "w": 0.9
+        },
+        "container": "slab",
+        "station": 25,
+        "material": "rubber",
+        "parts": [
+          {
+            "id": "body",
+            "part": "slab",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body"
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "lid",
+            "part": "lid",
+            "at": [
+              200,
+              216
+            ],
+            "size": [
+              240,
+              200
+            ],
+            "role": "actor",
+            "params": {
+              "hinge": "back",
+              "armed": true
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "flip",
+          "bind": {
+            "lid": "lid",
+            "lamp": "lamp"
+          },
+          "drive": "armed"
+        },
+        "ports": {
+          "in": {
+            "armed": {
+              "kind": "boolean",
+              "default": false
+            },
+            "empty": {
+              "kind": "pulse"
+            }
+          },
+          "out": {
+            "emptied": {
+              "kind": "pulse"
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ]
+          },
+          "armed": {
+            "lamp": [
+              "failed",
+              "steady"
+            ],
+            "form": {
+              "lid": {
+                "pose": {
+                  "r": -18
+                }
+              }
+            },
+            "hint": "ready to empty"
+          },
+          "emptied": {
+            "lamp": [
+              "live",
+              "blink2"
+            ],
+            "enter": "act",
+            "beep": "done"
+          }
+        },
+        "describe": "{title}: {state}"
+      }
+    },
+    {
+      "name": "shutter-lens",
+      "title": "Capture",
+      "description": "A gadget for capture: a lens with a knurled accent ring in a warm clay bezel around glass lit from behind, and a lamp. Taken, the ring clicks round a detent and back, the glass flashes and the lamp rises; its ring's angle is a zoom value. Drawn at runtime from its spec.",
+      "job": "take",
+      "container": "inset",
+      "mechanism": "turn",
+      "ports": {
+        "in": {
+          "zoom": {
+            "kind": "number",
+            "min": 0,
+            "max": 1,
+            "default": 0.5
+          },
+          "take": {
+            "kind": "pulse"
+          }
+        },
+        "out": {
+          "taken": {
+            "kind": "pulse"
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "taken"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "shutter-lens",
+        "title": "Capture",
+        "job": "take",
+        "feel": {
+          "v": 0.8,
+          "a": 0.9,
+          "w": 0.2
+        },
+        "container": "inset",
+        "station": 55,
+        "material": "clay",
+        "parts": [
+          {
+            "id": "body",
+            "part": "bezel",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body",
+            "params": {
+              "width": 22,
+              "face": "glass-face"
+            }
+          },
+          {
+            "id": "face",
+            "part": "glass-face",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              276,
+              276
+            ],
+            "role": "trim"
+          },
+          {
+            "id": "light",
+            "part": "backlight",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              276,
+              276
+            ],
+            "role": "trim",
+            "params": {
+              "shape": "glow",
+              "color": "glass"
+            }
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "lens",
+            "part": "lens",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              184,
+              184
+            ],
+            "role": "actor",
+            "material": "accent",
+            "params": {
+              "ticks": 24,
+              "iris": 0.55
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "turn",
+          "bind": {
+            "ring": "lens",
+            "lamp": "lamp"
+          },
+          "drive": "zoom"
+        },
+        "ports": {
+          "in": {
+            "zoom": {
+              "kind": "number",
+              "min": 0,
+              "max": 1,
+              "default": 0.5
+            },
+            "take": {
+              "kind": "pulse"
+            }
+          },
+          "out": {
+            "taken": {
+              "kind": "pulse"
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ],
+            "form": {
+              "light": {
+                "param": "alpha",
+                "value": 0.15
+              }
+            }
+          },
+          "taken": {
+            "lamp": [
+              "live",
+              "rise"
+            ],
+            "enter": "act",
+            "form": {
+              "light": {
+                "param": "alpha",
+                "value": 0.9
+              }
+            }
+          }
+        },
+        "describe": "{title}: {state}"
+      }
+    },
+    {
+      "name": "counter-drum",
+      "title": "Streak",
+      "description": "A gadget for a streak: three numbered drums in a window sunk into a clay slab, the units drum in orange, and a lamp. The count turns the drums like an odometer, the lowest first, ticking past each digit and settling with a small knock. Drawn at runtime from its spec.",
+      "job": "keep",
+      "container": "slab",
+      "mechanism": "roll",
+      "ports": {
+        "in": {
+          "count": {
+            "kind": "count",
+            "max": 999,
+            "default": 12
+          }
+        },
+        "out": {
+          "rolled": {
+            "kind": "pulse"
+          },
+          "count": {
+            "kind": "count",
+            "max": 999
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "counting",
+        "rolled-over"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "counter-drum",
+        "title": "Streak",
+        "job": "keep",
+        "feel": {
+          "v": 0.8,
+          "a": 0.3,
+          "w": 0.55
+        },
+        "container": "slab",
+        "station": 140,
+        "material": "clay",
+        "parts": [
+          {
+            "id": "body",
+            "part": "slab",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body"
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "window",
+            "part": "slab",
+            "at": [
+              200,
+              200
+            ],
+            "size": [
+              204,
+              88
+            ],
+            "role": "cut",
+            "params": {
+              "cut": "tray",
+              "depth": 14
+            }
+          },
+          {
+            "id": "d2",
+            "part": "drum",
+            "at": [
+              136,
+              200
+            ],
+            "role": "actor",
+            "params": {
+              "digits": 10,
+              "face": "ceramic"
+            }
+          },
+          {
+            "id": "d1",
+            "part": "drum",
+            "at": [
+              200,
+              200
+            ],
+            "role": "actor",
+            "params": {
+              "digits": 10,
+              "face": "ceramic"
+            }
+          },
+          {
+            "id": "d0",
+            "part": "drum",
+            "at": [
+              264,
+              200
+            ],
+            "role": "actor",
+            "params": {
+              "digits": 10,
+              "face": "ceramic"
+            },
+            "material": "accent"
+          }
+        ],
+        "mechanism": {
+          "name": "roll",
+          "bind": {
+            "drums": [
+              "d2",
+              "d1",
+              "d0"
+            ],
+            "window": "window",
+            "lamp": "lamp"
+          },
+          "drive": "count"
+        },
+        "ports": {
+          "in": {
+            "count": {
+              "kind": "count",
+              "max": 999,
+              "default": 12
+            }
+          },
+          "out": {
+            "rolled": {
+              "kind": "pulse"
+            },
+            "count": {
+              "kind": "count",
+              "max": 999
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ]
+          },
+          "counting": {
+            "lamp": [
+              "live",
+              "steady"
+            ]
+          },
+          "rolled-over": {
+            "lamp": [
+              "live",
+              "blink2"
+            ],
+            "beep": "done"
+          }
+        },
+        "initial": "counting",
+        "describe": "{title}: {value} days"
+      }
+    },
+    {
+      "name": "cell-grid",
+      "title": "Memory",
+      "description": "A gadget for something kept that fills: sixteen translucent resin cells in a tray sunk into a resin slab, lit from behind, and a lamp. A share lights the cells in turn from the bottom row up and the light behind them brightens with them; on a first run the whole grid rises. Drawn at runtime from its spec.",
+      "job": "keep",
+      "container": "slab",
+      "mechanism": "glow",
+      "ports": {
+        "in": {
+          "fill": {
+            "kind": "number",
+            "min": 0,
+            "max": 1,
+            "default": 0.4
+          },
+          "first-run": {
+            "kind": "pulse"
+          }
+        },
+        "out": {
+          "full": {
+            "kind": "boolean"
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "filling",
+        "full",
+        "first-run"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "cell-grid",
+        "title": "Memory",
+        "job": "keep",
+        "feel": {
+          "v": 0.7,
+          "a": 0.3,
+          "w": 0.3
+        },
+        "container": "slab",
+        "station": 300,
+        "material": "resin",
+        "parts": [
+          {
+            "id": "body",
+            "part": "slab",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body"
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "tray",
+            "part": "slab",
+            "at": [
+              200,
+              214
+            ],
+            "size": [
+              236,
+              236
+            ],
+            "role": "cut",
+            "params": {
+              "cut": "tray",
+              "depth": 12,
+              "radius": 40
+            }
+          },
+          {
+            "id": "light",
+            "part": "backlight",
+            "at": [
+              200,
+              214
+            ],
+            "size": [
+              236,
+              236
+            ],
+            "role": "trim",
+            "params": {
+              "shape": "glow",
+              "color": "glass"
+            }
+          },
+          {
+            "id": "cells",
+            "part": "cell",
+            "at": [
+              200,
+              214
+            ],
+            "size": [
+              46,
+              46
+            ],
+            "role": "actor",
+            "params": {
+              "cols": 4,
+              "rows": 4,
+              "gap": 8
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "glow",
+          "bind": {
+            "cells": "cells",
+            "light": "light",
+            "lamp": "lamp"
+          },
+          "drive": "fill"
+        },
+        "ports": {
+          "in": {
+            "fill": {
+              "kind": "number",
+              "min": 0,
+              "max": 1,
+              "default": 0.4
+            },
+            "first-run": {
+              "kind": "pulse"
+            }
+          },
+          "out": {
+            "full": {
+              "kind": "boolean"
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ],
+            "hint": "dark"
+          },
+          "filling": {
+            "lamp": [
+              "live",
+              "steady"
+            ]
+          },
+          "full": {
+            "lamp": [
+              "live",
+              "steady"
+            ],
+            "hint": "full"
+          },
+          "first-run": {
+            "feel": {
+              "v": 0.8
+            },
+            "lamp": [
+              "live",
+              "rise"
+            ],
+            "beep": "ready"
+          }
+        },
+        "initial": "filling",
+        "describe": "{title}: {share} kept"
+      }
+    },
+    {
+      "name": "needle-gauge",
+      "title": "Today",
+      "description": "A gadget for a level: a needle over a printed scale in peach glass, sunk in a copper metal bezel, with a lamp and a beeper on its frame. A value swings the needle, which overshoots a little and settles; past the threshold the gauge is over and says so. Drawn at runtime from its spec.",
+      "job": "signal",
+      "container": "inset",
+      "mechanism": "swing",
+      "ports": {
+        "in": {
+          "value": {
+            "kind": "number",
+            "min": 0,
+            "max": 40,
+            "unit": "min",
+            "default": 24
+          }
+        },
+        "out": {
+          "over": {
+            "kind": "pulse"
+          },
+          "above": {
+            "kind": "boolean"
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "over"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "needle-gauge",
+        "title": "Today",
+        "job": "signal",
+        "feel": {
+          "v": 0.6,
+          "a": 0.5,
+          "w": 0.45
+        },
+        "container": "inset",
+        "station": 55,
+        "material": "metal",
+        "parts": [
+          {
+            "id": "body",
+            "part": "bezel",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body",
+            "params": {
+              "width": 22,
+              "face": "glass-face"
+            }
+          },
+          {
+            "id": "face",
+            "part": "glass-face",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              276,
+              276
+            ],
+            "role": "trim"
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "needle",
+            "part": "needle",
+            "at": [
+              200,
+              220
+            ],
+            "role": "actor",
+            "params": {
+              "arc": 120,
+              "ticks": 9,
+              "threshold": 0.75
+            }
+          },
+          {
+            "id": "beeper",
+            "part": "beeper",
+            "at": [
+              84,
+              322
+            ],
+            "role": "trim",
+            "params": {
+              "slots": 3
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "swing",
+          "bind": {
+            "needle": "needle",
+            "face": "face",
+            "lamp": "lamp",
+            "beeper": "beeper"
+          },
+          "drive": "value"
+        },
+        "ports": {
+          "in": {
+            "value": {
+              "kind": "number",
+              "min": 0,
+              "max": 40,
+              "unit": "min",
+              "default": 24
+            }
+          },
+          "out": {
+            "over": {
+              "kind": "pulse"
+            },
+            "above": {
+              "kind": "boolean"
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ]
+          },
+          "over": {
+            "lamp": [
+              "waiting",
+              "steady"
+            ],
+            "beep": "waiting"
+          }
+        },
+        "describe": "{title}: {value} of {max} {unit}"
+      }
+    },
+    {
+      "name": "rocker",
+      "title": "Sound",
+      "description": "A gadget for one setting: a rocker in the accent sunk in a well in a pale clay slab, and a lamp. On, its upper end (I) is pressed and the lamp lit; off, its lower end (O). It rocks on the hinge spring and clicks each way. Drawn at runtime from its spec.",
+      "job": "tune",
+      "container": "slab",
+      "mechanism": "flip",
+      "ports": {
+        "in": {
+          "on": {
+            "kind": "boolean",
+            "default": false
+          }
+        },
+        "out": {
+          "on": {
+            "kind": "boolean"
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "on"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "rocker",
+        "title": "Sound",
+        "job": "tune",
+        "feel": {
+          "v": 0.6,
+          "a": 0.4,
+          "w": 0.2
+        },
+        "container": "slab",
+        "station": 80,
+        "parts": [
+          {
+            "id": "body",
+            "part": "slab",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body"
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "well",
+            "part": "slab",
+            "at": [
+              200,
+              206
+            ],
+            "size": [
+              132,
+              180
+            ],
+            "role": "cut",
+            "params": {
+              "cut": "well",
+              "depth": 10,
+              "radius": 30
+            }
+          },
+          {
+            "id": "rocker",
+            "part": "cap",
+            "at": [
+              200,
+              206
+            ],
+            "size": [
+              100,
+              150
+            ],
+            "role": "actor",
+            "material": "accent",
+            "params": {
+              "shape": "rocker"
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "flip",
+          "bind": {
+            "lid": "rocker",
+            "lamp": "lamp"
+          },
+          "drive": "on"
+        },
+        "ports": {
+          "in": {
+            "on": {
+              "kind": "boolean",
+              "default": false
+            }
+          },
+          "out": {
+            "on": {
+              "kind": "boolean"
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ],
+            "hint": "off"
+          },
+          "on": {
+            "lamp": [
+              "live",
+              "steady"
+            ],
+            "hint": "on"
+          }
+        },
+        "describe": "{title}"
+      }
+    },
+    {
+      "name": "ink-well",
+      "title": "Draw",
+      "description": "A gadget for making: a brass nib over a well of ink in a pale ceramic slab, and a lamp. Drawing starts and the nib dips into the ink with a soft tap, then rests a little lower, writing. Drawn at runtime from its spec.",
+      "job": "make",
+      "container": "slab",
+      "mechanism": "dip",
+      "ports": {
+        "in": {
+          "writing": {
+            "kind": "boolean",
+            "default": false
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "writing"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "ink-well",
+        "title": "Draw",
+        "job": "make",
+        "feel": {
+          "v": 0.9,
+          "a": 0.9,
+          "w": 0.1
+        },
+        "container": "slab",
+        "station": 330,
+        "material": "ceramic",
+        "parts": [
+          {
+            "id": "body",
+            "part": "slab",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body"
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "well",
+            "part": "slab",
+            "at": [
+              200,
+              244
+            ],
+            "size": [
+              96,
+              96
+            ],
+            "role": "cut",
+            "material": "ceramic",
+            "params": {
+              "cut": "hole",
+              "depth": 18,
+              "ink": true
+            }
+          },
+          {
+            "id": "nib",
+            "part": "nib",
+            "at": [
+              200,
+              236
+            ],
+            "size": [
+              150,
+              44
+            ],
+            "role": "actor",
+            "params": {
+              "angle": -16
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "dip",
+          "bind": {
+            "nib": "nib",
+            "well": "well",
+            "lamp": "lamp"
+          },
+          "drive": "writing"
+        },
+        "ports": {
+          "in": {
+            "writing": {
+              "kind": "boolean",
+              "default": false
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ],
+            "hint": "ready"
+          },
+          "writing": {
+            "lamp": [
+              "live",
+              "steady"
+            ],
+            "enter": "act",
+            "form": {
+              "nib": {
+                "pose": {
+                  "y": 6
+                }
+              }
+            },
+            "hint": "writing"
+          }
+        },
+        "describe": "{title}"
+      }
+    },
+    {
+      "name": "thumbwheel",
+      "title": "When",
+      "description": "A gadget for the past: a knurled wheel seen edge-on in a slot in a stone slab, under an engraved NOW, and a lamp. Rolled back it clicks once a day; off now the lamp goes amber, and more than a week back it breathes. Drawn at runtime from its spec.",
+      "job": "keep",
+      "container": "slab",
+      "mechanism": "turn",
+      "ports": {
+        "in": {
+          "offset": {
+            "kind": "number",
+            "min": -30,
+            "max": 0,
+            "unit": "days",
+            "default": 0
+          }
+        },
+        "out": {
+          "in-past": {
+            "kind": "boolean"
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "past",
+        "far"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "thumbwheel",
+        "title": "When",
+        "job": "keep",
+        "feel": {
+          "v": 0.6,
+          "a": 0.3,
+          "w": 0.5
+        },
+        "container": "slab",
+        "station": 300,
+        "parts": [
+          {
+            "id": "body",
+            "part": "slab",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body"
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          },
+          {
+            "id": "now",
+            "part": "label",
+            "at": [
+              200,
+              96
+            ],
+            "size": [
+              120,
+              30
+            ],
+            "role": "trim",
+            "params": {
+              "text": "NOW"
+            }
+          },
+          {
+            "id": "slot",
+            "part": "slab",
+            "at": [
+              200,
+              222
+            ],
+            "size": [
+              76,
+              196
+            ],
+            "role": "cut",
+            "params": {
+              "cut": "tray",
+              "depth": 16,
+              "radius": 22
+            }
+          },
+          {
+            "id": "wheel",
+            "part": "drum",
+            "at": [
+              200,
+              222
+            ],
+            "size": [
+              56,
+              176
+            ],
+            "role": "actor",
+            "params": {
+              "glyphs": "ticks",
+              "face": "clay"
+            }
+          }
+        ],
+        "mechanism": {
+          "name": "turn",
+          "bind": {
+            "ring": "wheel",
+            "lamp": "lamp"
+          },
+          "drive": "offset",
+          "detents": 30
+        },
+        "ports": {
+          "in": {
+            "offset": {
+              "kind": "number",
+              "min": -30,
+              "max": 0,
+              "unit": "days",
+              "default": 0
+            }
+          },
+          "out": {
+            "in-past": {
+              "kind": "boolean"
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ],
+            "hint": "now"
+          },
+          "past": {
+            "lamp": [
+              "waiting",
+              "steady"
+            ],
+            "hint": "in the past"
+          },
+          "far": {
+            "lamp": [
+              "waiting",
+              "breathe"
+            ],
+            "hint": "long ago"
+          }
+        },
+        "describe": "{title}"
+      }
+    },
+    {
+      "name": "glass-badge",
+      "title": "Account",
+      "description": "A gadget for who you are: a person printed on a square of cool glass in a heavy steel bezel, lit from behind, and a lamp. Signed in, the light rises and the lamp rises green; expired, the lamp turns amber. Silent. Drawn at runtime from its spec.",
+      "job": "identify",
+      "container": "inset",
+      "mechanism": "glow",
+      "ports": {
+        "in": {
+          "signed-in": {
+            "kind": "boolean",
+            "default": false
+          }
+        }
+      },
+      "states": [
+        "rest",
+        "signed-in",
+        "expired"
+      ],
+      "spec": {
+        "$schema": "metalui/gadget@1",
+        "name": "glass-badge",
+        "title": "Account",
+        "job": "identify",
+        "feel": {
+          "v": 0.6,
+          "a": 0.2,
+          "w": 0.9
+        },
+        "container": "inset",
+        "station": 260,
+        "material": "metal",
+        "parts": [
+          {
+            "id": "body",
+            "part": "bezel",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              320,
+              320
+            ],
+            "role": "body",
+            "params": {
+              "width": 22,
+              "face": "glass-face",
+              "opening": "square"
+            }
+          },
+          {
+            "id": "face",
+            "part": "glass-face",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              276,
+              276
+            ],
+            "role": "trim"
+          },
+          {
+            "id": "light",
+            "part": "backlight",
+            "at": [
+              200,
+              196
+            ],
+            "size": [
+              276,
+              276
+            ],
+            "role": "trim",
+            "params": {
+              "shape": "glow",
+              "color": "glass"
+            }
+          },
+          {
+            "id": "mark",
+            "part": "glyph",
+            "at": [
+              200,
+              204
+            ],
+            "size": [
+              132,
+              132
+            ],
+            "role": "trim",
+            "params": {
+              "name": "friend"
+            }
+          },
+          {
+            "id": "lamp",
+            "part": "led",
+            "at": [
+              313,
+              78
+            ],
+            "role": "lamp"
+          }
+        ],
+        "mechanism": {
+          "name": "glow",
+          "bind": {
+            "light": "light",
+            "lamp": "lamp"
+          },
+          "drive": "signed-in"
+        },
+        "ports": {
+          "in": {
+            "signed-in": {
+              "kind": "boolean",
+              "default": false
+            }
+          }
+        },
+        "states": {
+          "rest": {
+            "lamp": [
+              "off",
+              "steady"
+            ],
+            "hint": "signed out"
+          },
+          "signed-in": {
+            "lamp": [
+              "live",
+              "rise"
+            ],
+            "hint": "signed in"
+          },
+          "expired": {
+            "lamp": [
+              "waiting",
+              "steady"
+            ],
+            "hint": "sign in again"
+          }
+        },
+        "describe": "{title}"
+      }
+    }
+  ],
+  "rigs": [
+    {
+      "name": "canvas-status",
+      "title": "Canvas status",
+      "grid": [
+        3,
+        1
+      ],
+      "gadgets": {
+        "find": "scope",
+        "blocks": "counter-drum",
+        "when": "thumbwheel"
+      },
+      "cables": [
+        {
+          "from": "find.found",
+          "to": "blocks.count"
+        },
+        {
+          "from": "when.in-past",
+          "to": "find.query",
+          "map": {
+            "kind": "select",
+            "table": {
+              "true": false,
+              "false": true
+            }
+          }
+        }
+      ],
+      "spec": {
+        "$schema": "metalui/rig@1",
+        "name": "canvas-status",
+        "title": "Canvas status",
+        "job": "find",
+        "feel": {
+          "v": 0.6,
+          "a": 0.5,
+          "w": 0.3
+        },
+        "grid": [
+          3,
+          1
+        ],
+        "gadgets": {
+          "find": {
+            "gadget": "scope",
+            "at": [
+              1,
+              0
+            ]
+          },
+          "blocks": {
+            "gadget": "counter-drum",
+            "at": [
+              2,
+              0
+            ]
+          },
+          "when": {
+            "gadget": "thumbwheel",
+            "at": [
+              0,
+              0
+            ]
+          }
+        },
+        "cables": [
+          {
+            "from": "find.found",
+            "to": "blocks.count"
+          },
+          {
+            "from": "when.in-past",
+            "to": "find.query",
+            "map": {
+              "kind": "select",
+              "table": {
+                "true": false,
+                "false": true
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "capture",
+      "title": "Capture",
+      "grid": [
+        3,
+        1
+      ],
+      "gadgets": {
+        "take": "shutter-lens",
+        "today": "counter-drum",
+        "memory": "cell-grid"
+      },
+      "cables": [
+        {
+          "from": "take.taken",
+          "to": "today.count",
+          "map": {
+            "kind": "count",
+            "step": 1
+          }
+        },
+        {
+          "from": "today.count",
+          "to": "memory.fill",
+          "map": {
+            "kind": "scale",
+            "from": [
+              0,
+              20
+            ],
+            "to": [
+              0,
+              1
+            ]
+          }
+        }
+      ],
+      "spec": {
+        "$schema": "metalui/rig@1",
+        "name": "capture",
+        "title": "Capture",
+        "job": "take",
+        "feel": {
+          "v": 0.8,
+          "a": 0.6,
+          "w": 0.3
+        },
+        "grid": [
+          3,
+          1
+        ],
+        "gadgets": {
+          "take": {
+            "gadget": "shutter-lens",
+            "at": [
+              0,
+              0
+            ]
+          },
+          "today": {
+            "gadget": "counter-drum",
+            "at": [
+              1,
+              0
+            ]
+          },
+          "memory": {
+            "gadget": "cell-grid",
+            "at": [
+              2,
+              0
+            ]
+          }
+        },
+        "cables": [
+          {
+            "from": "take.taken",
+            "to": "today.count",
+            "map": {
+              "kind": "count",
+              "step": 1
+            }
+          },
+          {
+            "from": "today.count",
+            "to": "memory.fill",
+            "map": {
+              "kind": "scale",
+              "from": [
+                0,
+                20
+              ],
+              "to": [
+                0,
+                1
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "reading",
+      "title": "Reading",
+      "grid": [
+        2,
+        1
+      ],
+      "gadgets": {
+        "today": "needle-gauge",
+        "streak": "counter-drum"
+      },
+      "cables": [
+        {
+          "from": "today.over",
+          "to": "streak.count",
+          "map": {
+            "kind": "count",
+            "step": 1
+          }
+        }
+      ],
+      "spec": {
+        "$schema": "metalui/rig@1",
+        "name": "reading",
+        "title": "Reading",
+        "job": "keep",
+        "feel": {
+          "v": 0.8,
+          "a": 0.3,
+          "w": 0.3
+        },
+        "grid": [
+          2,
+          1
+        ],
+        "gadgets": {
+          "today": {
+            "gadget": "needle-gauge",
+            "at": [
+              0,
+              0
+            ]
+          },
+          "streak": {
+            "gadget": "counter-drum",
+            "at": [
+              1,
+              0
+            ]
+          }
+        },
+        "cables": [
+          {
+            "from": "today.over",
+            "to": "streak.count",
+            "map": {
+              "kind": "count",
+              "step": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "settings",
+      "title": "Settings",
+      "grid": [
+        2,
+        2
+      ],
+      "gadgets": {
+        "prefs": "fader-bank",
+        "sound": "rocker",
+        "keys": "keycap-chord"
+      },
+      "cables": [
+        {
+          "from": "sound.on",
+          "to": "prefs.mix",
+          "map": {
+            "kind": "select",
+            "table": {
+              "false": 0.2,
+              "true": 0.8
+            }
+          }
+        }
+      ],
+      "spec": {
+        "$schema": "metalui/rig@1",
+        "name": "settings",
+        "title": "Settings",
+        "job": "tune",
+        "feel": {
+          "v": 0.6,
+          "a": 0.4,
+          "w": 0.3
+        },
+        "grid": [
+          2,
+          2
+        ],
+        "gadgets": {
+          "prefs": {
+            "gadget": "fader-bank",
+            "at": [
+              1,
+              0
+            ]
+          },
+          "sound": {
+            "gadget": "rocker",
+            "at": [
+              0,
+              0
+            ]
+          },
+          "keys": {
+            "gadget": "keycap-chord",
+            "at": [
+              0,
+              1
+            ]
+          }
+        },
+        "cables": [
+          {
+            "from": "sound.on",
+            "to": "prefs.mix",
+            "map": {
+              "kind": "select",
+              "table": {
+                "false": 0.2,
+                "true": 0.8
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "storage",
+      "title": "Storage",
+      "grid": [
+        3,
+        1
+      ],
+      "gadgets": {
+        "local": "drawer",
+        "used": "inline: used-gauge",
+        "trash": "lidded-bin"
+      },
+      "cables": [
+        {
+          "from": "local.fill",
+          "to": "used.value",
+          "map": {
+            "kind": "scale",
+            "from": [
+              0,
+              1
+            ],
+            "to": [
+              0,
+              100
+            ]
+          }
+        },
+        {
+          "from": "used.above",
+          "to": "trash.armed"
+        }
+      ],
+      "spec": {
+        "$schema": "metalui/rig@1",
+        "name": "storage",
+        "title": "Storage",
+        "job": "keep",
+        "feel": {
+          "v": 0.6,
+          "a": 0.2,
+          "w": 0.4
+        },
+        "grid": [
+          3,
+          1
+        ],
+        "gadgets": {
+          "local": {
+            "gadget": "drawer",
+            "at": [
+              0,
+              0
+            ]
+          },
+          "used": {
+            "gadget": {
+              "$schema": "metalui/gadget@1",
+              "name": "used-gauge",
+              "title": "Used",
+              "job": "signal",
+              "feel": {
+                "v": 0.6,
+                "a": 0.5,
+                "w": 0.45
+              },
+              "container": "inset",
+              "station": 55,
+              "material": "metal",
+              "parts": [
+                {
+                  "id": "body",
+                  "part": "bezel",
+                  "at": [
+                    200,
+                    196
+                  ],
+                  "size": [
+                    320,
+                    320
+                  ],
+                  "role": "body",
+                  "params": {
+                    "width": 22,
+                    "face": "glass-face"
+                  }
+                },
+                {
+                  "id": "face",
+                  "part": "glass-face",
+                  "at": [
+                    200,
+                    196
+                  ],
+                  "size": [
+                    276,
+                    276
+                  ],
+                  "role": "trim"
+                },
+                {
+                  "id": "lamp",
+                  "part": "led",
+                  "at": [
+                    313,
+                    78
+                  ],
+                  "role": "lamp"
+                },
+                {
+                  "id": "needle",
+                  "part": "needle",
+                  "at": [
+                    200,
+                    220
+                  ],
+                  "role": "actor",
+                  "params": {
+                    "arc": 120,
+                    "ticks": 9,
+                    "threshold": 0.9
+                  }
+                },
+                {
+                  "id": "beeper",
+                  "part": "beeper",
+                  "at": [
+                    84,
+                    322
+                  ],
+                  "role": "trim",
+                  "params": {
+                    "slots": 3
+                  }
+                }
+              ],
+              "mechanism": {
+                "name": "swing",
+                "bind": {
+                  "needle": "needle",
+                  "face": "face",
+                  "lamp": "lamp",
+                  "beeper": "beeper"
+                },
+                "drive": "value"
+              },
+              "ports": {
+                "in": {
+                  "value": {
+                    "kind": "number",
+                    "min": 0,
+                    "max": 100,
+                    "unit": "%",
+                    "default": 50
+                  }
+                },
+                "out": {
+                  "over": {
+                    "kind": "pulse"
+                  },
+                  "above": {
+                    "kind": "boolean"
+                  }
+                }
+              },
+              "states": {
+                "rest": {
+                  "lamp": [
+                    "off",
+                    "steady"
+                  ]
+                },
+                "over": {
+                  "lamp": [
+                    "waiting",
+                    "steady"
+                  ],
+                  "beep": "waiting"
+                }
+              },
+              "describe": "{title}: {value}{unit}"
+            },
+            "at": [
+              1,
+              0
+            ]
+          },
+          "trash": {
+            "gadget": "lidded-bin",
+            "at": [
+              2,
+              0
+            ]
+          }
+        },
+        "cables": [
+          {
+            "from": "local.fill",
+            "to": "used.value",
+            "map": {
+              "kind": "scale",
+              "from": [
+                0,
+                1
+              ],
+              "to": [
+                0,
+                100
+              ]
+            }
+          },
+          {
+            "from": "used.above",
+            "to": "trash.armed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "sync-health",
+      "title": "Sync health",
+      "grid": [
+        2,
+        2
+      ],
+      "gadgets": {
+        "sync": "patch-bay",
+        "health": "inline: health-gauge",
+        "pending": "counter-drum"
+      },
+      "cables": [
+        {
+          "from": "sync.healthy",
+          "to": "health.value",
+          "map": {
+            "kind": "select",
+            "table": {
+              "false": 10,
+              "true": 90
+            }
+          }
+        },
+        {
+          "from": "sync.done",
+          "to": "pending.count",
+          "map": {
+            "kind": "count",
+            "step": -1
+          }
+        }
+      ],
+      "spec": {
+        "$schema": "metalui/rig@1",
+        "name": "sync-health",
+        "title": "Sync health",
+        "job": "link",
+        "feel": {
+          "v": 0.7,
+          "a": 0.5,
+          "w": 0.4
+        },
+        "grid": [
+          2,
+          2
+        ],
+        "gadgets": {
+          "sync": {
+            "gadget": "patch-bay",
+            "at": [
+              0,
+              0
+            ]
+          },
+          "health": {
+            "gadget": {
+              "$schema": "metalui/gadget@1",
+              "name": "health-gauge",
+              "title": "Health",
+              "job": "signal",
+              "feel": {
+                "v": 0.6,
+                "a": 0.5,
+                "w": 0.45
+              },
+              "container": "inset",
+              "station": 55,
+              "material": "metal",
+              "parts": [
+                {
+                  "id": "body",
+                  "part": "bezel",
+                  "at": [
+                    200,
+                    196
+                  ],
+                  "size": [
+                    320,
+                    320
+                  ],
+                  "role": "body",
+                  "params": {
+                    "width": 22,
+                    "face": "glass-face"
+                  }
+                },
+                {
+                  "id": "face",
+                  "part": "glass-face",
+                  "at": [
+                    200,
+                    196
+                  ],
+                  "size": [
+                    276,
+                    276
+                  ],
+                  "role": "trim"
+                },
+                {
+                  "id": "lamp",
+                  "part": "led",
+                  "at": [
+                    313,
+                    78
+                  ],
+                  "role": "lamp"
+                },
+                {
+                  "id": "needle",
+                  "part": "needle",
+                  "at": [
+                    200,
+                    220
+                  ],
+                  "role": "actor",
+                  "params": {
+                    "arc": 120,
+                    "ticks": 9
+                  }
+                },
+                {
+                  "id": "beeper",
+                  "part": "beeper",
+                  "at": [
+                    84,
+                    322
+                  ],
+                  "role": "trim",
+                  "params": {
+                    "slots": 3
+                  }
+                }
+              ],
+              "mechanism": {
+                "name": "swing",
+                "bind": {
+                  "needle": "needle",
+                  "face": "face",
+                  "lamp": "lamp",
+                  "beeper": "beeper"
+                },
+                "drive": "value"
+              },
+              "ports": {
+                "in": {
+                  "value": {
+                    "kind": "number",
+                    "min": 0,
+                    "max": 100,
+                    "unit": "%",
+                    "default": 50
+                  }
+                }
+              },
+              "states": {
+                "rest": {
+                  "lamp": [
+                    "off",
+                    "steady"
+                  ]
+                }
+              },
+              "describe": "{title}: {value}{unit}"
+            },
+            "at": [
+              1,
+              0
+            ]
+          },
+          "pending": {
+            "gadget": "counter-drum",
+            "at": [
+              1,
+              1
+            ]
+          }
+        },
+        "cables": [
+          {
+            "from": "sync.healthy",
+            "to": "health.value",
+            "map": {
+              "kind": "select",
+              "table": {
+                "false": 10,
+                "true": 90
+              }
+            }
+          },
+          {
+            "from": "sync.done",
+            "to": "pending.count",
+            "map": {
+              "kind": "count",
+              "step": -1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -79,11 +79,19 @@ public struct MetalGadget: View {
                     MetalBezel(r.material, color: body(r), glass: r.face, opening: p.params?["opening"]?.text == "square" ? .square : .round,
                                rings: spec.parts.first { $0.part == "glass-face" }?.params?["rings"].map { if case .flag(let on) = $0 { on } else { false } } ?? false, size: size) {
                         ZStack(alignment: .topLeading) {
+                            // Glass lit only by a glow greys when its light is out.
+                            if glows {
+                                let u = MetalGadgetTokens.backlightUnlit
+                                Rectangle().fill(MetalPigment.color(lightness: u.L, chroma: r.face.C, hue: r.face.H)).opacity(u.alpha * (1 - glowShare))
+                            }
                             ForEach(spec.parts.filter { $0.part == "backlight" }, id: \.id) { q in light(q, r: r, at: timeline.date) }
+                            ForEach(spec.parts.filter { $0.part == "glyph" }, id: \.id) { q in glyph(q, r: r) }
                             ForEach(spec.parts.filter { $0.part == "needle" }, id: \.id) { q in needle(q, r: r) }
                         }
                     }
                 }
+                ForEach(spec.parts.filter { $0.part == "lens" }, id: \.id) { p in lens(p, r: r) }
+                ForEach(spec.parts.filter { $0.part == "label" }, id: \.id) { p in label(p, r: r) }
                 ForEach(spec.parts.filter { $0.part == "jack" }, id: \.id) { p in
                     let s = footprint(p).0 * unit * MetalGadgetTokens.canvas / MetalGadgetTokens.jackNut
                     MetalJack(size: s).position(x: p.at[0] * unit, y: p.at[1] * unit)
@@ -106,6 +114,8 @@ public struct MetalGadget: View {
                                    sag: p.params?["sag"]?.number, length: p.params?["length"]?.number, size: size, followEnds: true)
                     }
                 }
+                ForEach(spec.parts.filter { $0.part == "slab" && $0.role == "cut" && $0.params?["ink"] == .flag(true) }, id: \.id) { p in ink(p, r: r) }
+                ForEach(spec.parts.filter { $0.part == "nib" }, id: \.id) { p in nib(p, r: r, at: timeline.date) }
                 ForEach(spec.parts.filter { $0.part == "slab" && $0.role == "actor" }, id: \.id) { p in
                     tray(p, r: r, at: timeline.date)
                 }
@@ -140,10 +150,12 @@ public struct MetalGadget: View {
             }
             if let m, let held = m.held, !held.roll, drive == nil {
                 // Light is silent: a glow has no knock and no scrape.
-                let lidPart = spec.parts.first { $0.part == "lid" }
+                let lidPart = spec.parts.first { $0.part == "lid" }, lensPart = spec.parts.first { $0.part == "lens" }
+                let wheelPart = spec.parts.first { $0.part == "drum" && (spec.mechanism.bind["ring"]?.contains($0.id) ?? false) }
                 let d = MetalDrive(m, start: spec.driveTargets(value ?? spec.driveDefault, state: state), sound: lit ? nil : sound,
-                                   material: lidPart != nil ? (r.material == .clay ? .clay : .rubber) : driveMaterial,
-                                   partSize: lidPart.map { let f = footprint($0); return max(f.0, f.1) } ?? MetalGadgetTokens.partSizes["cap"]?.0 ?? 60, weight: spec.feel.w)
+                                   material: lidPart != nil ? (r.material == .clay ? .clay : .rubber) : lensPart != nil ? .resin : wheelPart != nil ? (r.material == .stone ? .stone : .clay) : driveMaterial,
+                                   partSize: (lidPart ?? lensPart ?? wheelPart).map { let f = footprint($0); return max(f.0, f.1) } ?? MetalGadgetTokens.partSizes["cap"]?.0 ?? 60, weight: spec.feel.w,
+                                   detents: spec.mechanism.detents)
                 d?.reduced = reduceMotion
                 drive = d
             }
@@ -189,14 +201,29 @@ public struct MetalGadget: View {
         guard let held = MetalMechanism.all.first(where: { $0.name == spec.mechanism.name })?.held else { return [] }
         let slot = MetalGadgetTokens.capSlot
         return (spec.mechanism.bind[held.slot] ?? []).compactMap { id in
-            part(id).flatMap { $0.part == "cap" ? $0 : nil }.map { p in
+            part(id).flatMap { $0.part == "cap" && $0.params?["shape"]?.text != "rocker" ? $0 : nil }.map { p in
                 MetalSlabCut(.slot, at: (p.at[0], p.at[1] + (held.from.y + held.to.y) / 2), size: (slot.width, abs(held.to.y - held.from.y) + slot.pad))
             }
         }
     }
 
-    /// Whether the gadget's drive lights cells rather than moving parts.
-    private var lit: Bool { spec.parts.contains { $0.part == "cell" } }
+    /// Whether the gadget's drive lights cells (or a light) rather than moving parts: light is silent.
+    private var lit: Bool { spec.mechanism.name == "glow" }
+    /// A glow with no cells: its light alone, lit to the value (a badge).
+    private var glows: Bool { spec.mechanism.name == "glow" && !spec.parts.contains { $0.part == "cell" } }
+    private var glowShare: Double { drive?.model.x.first ?? spec.driveTargets(value ?? spec.driveDefault, state: state).first ?? 0 }
+
+    /// A catalog icon printed on the glass in the glass's own ink: dark against the light behind it.
+    @ViewBuilder private func glyph(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        if let icon = MetalLifeIconName(rawValue: p.params?["name"]?.text ?? "") {
+            let gi = MetalGadgetTokens.capGrooveInk, f = r.face
+            let ink = MetalPigment.color(lightness: max(gi.floor, f.L - gi.drop), chroma: min(gi.max, f.C * gi.gain + gi.add), hue: f.H)
+            MetalLifeIcon(icon, size: footprint(p).0 * unit, tint: nil)
+                .foregroundStyle(ink).opacity(MetalGadgetTokens.glyphAlpha)
+                .position(x: p.at[0] * unit, y: p.at[1] * unit)
+                .accessibilityHidden(true)
+        }
+    }
 
     /// The share the cells are lit to: where the glow has carried them, or the value's before it runs.
     private var litShare: Double { drive?.model.x.first ?? spec.driveTargets(value ?? spec.driveDefault, state: state).first ?? 0 }
@@ -207,6 +234,29 @@ public struct MetalGadget: View {
         MetalBacklight(.glow, color: .glass(r.face), at: CGPoint(x: p.at[0], y: p.at[1]), diameter: footprint(p).0, size: size)
             .opacity(lv.empty + (lv.full - lv.empty) * min(1, max(0, litShare)))
             .mask { if let cut { Path(cut.path).applying(CGAffineTransform(scaleX: unit, y: unit)).fill(.black) } else { Rectangle() } }
+    }
+
+    /// Ink in a well: a pool in the accent, darker at its meniscus, with a glint. The same as draw.ts.
+    @ViewBuilder private func ink(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let k = MetalGadgetTokens.holeInk, a = r.accent, f = footprint(p), R = min(f.0, f.1) / 2 * (1 - k.inset)
+        let across = (R + R) * unit, glint = across * k.radius
+        ZStack(alignment: .topLeading) {
+            Circle().fill(RadialGradient(stops: [.init(color: MetalPigment.color(lightness: a.L, chroma: a.C, hue: a.H), location: 0.7),
+                                                 .init(color: MetalPigment.color(lightness: a.L - k.meniscus, chroma: a.C, hue: a.H), location: 1)],
+                                         center: .center, startRadius: 0, endRadius: R * unit))
+                .frame(width: across, height: across).position(x: p.at[0] * unit, y: p.at[1] * unit)
+            Circle().fill(.white.opacity(k.alpha)).frame(width: glint, height: glint)
+                .position(x: (p.at[0] - R + 2 * R * k.x) * unit, y: (p.at[1] - R + 2 * R * k.y) * unit)
+        }
+        .frame(width: size, height: size, alignment: .topLeading)
+    }
+
+    /// A nib over its well, its origin at its tip: where the dip carries it (or its state holds it).
+    @ViewBuilder private func nib(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved, at date: Date) -> some View {
+        let slot = spec.mechanism.bind.first { $0.value.contains(p.id) }?.key
+        let pose = slot.map { player?.pose($0, at: date).pose ?? .rest } ?? .rest
+        MetalNib(angle: p.params?["angle"]?.number ?? 0, ink: r.accent, tip: CGPoint(x: p.at[0], y: p.at[1]), dims: footprint(p), size: size)
+            .offset(x: pose.x * unit, y: pose.y * unit)
     }
 
     /// A drawer's tray, run under the body's front edge: only what is out past the edge shows, and the
@@ -234,6 +284,30 @@ public struct MetalGadget: View {
         MetalPullShape(style: p.params?["style"]?.text == "recess" ? .recess : .bar, at: CGPoint(x: p.at[0], y: p.at[1]), width: f.0, height: f.1, unit: unit)
             .frame(width: size, height: size, alignment: .topLeading)
             .offset(y: y * unit)
+    }
+
+    /// A word engraved in the body: its ink, and a lit lower edge. The same as draw.ts.
+    @ViewBuilder private func label(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let b = body(r), gi = MetalGadgetTokens.capGrooveInk, ei = MetalGadgetTokens.capEdgeInk, a = MetalGadgetTokens.labelAlpha
+        let ink = MetalPigment.color(lightness: max(gi.floor, b.L - gi.drop), chroma: min(gi.max, b.C * gi.gain + gi.add), hue: b.H)
+        let lit = MetalPigment.color(lightness: min(1, b.L + ei.lift), chroma: b.C * ei.chroma, hue: b.H)
+        let fs = footprint(p).1 * MetalGadgetTokens.labelSize * unit, text = p.params?["text"]?.text ?? ""
+        let word = { (c: Color) in Text(text).font(.system(size: fs, weight: .semibold)).tracking(fs * MetalGadgetTokens.labelTracking).foregroundStyle(c) }
+        ZStack {
+            word(lit.opacity(a.edge)).offset(y: MetalGadgetTokens.labelEdge * unit)
+            word(ink.opacity(a.ink))
+        }
+        .position(x: p.at[0] * unit, y: p.at[1] * unit)
+        .accessibilityHidden(true)
+    }
+
+    /// A lens over the glass, its ring turned where the turn has carried it (or at the value before it runs).
+    @ViewBuilder private func lens(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
+        let held = MetalMechanism.all.first { $0.name == spec.mechanism.name }?.held
+        let u = drive?.model.x.first ?? spec.driveTargets(value ?? spec.driveDefault, state: state).first ?? 0.5
+        let turn = held.map { $0.from.r + ($0.to.r - $0.from.r) * u } ?? 0
+        MetalLens(iris: p.params?["iris"]?.number ?? 0.6, turn: turn, ticks: Int(p.params?["ticks"]?.number ?? 24), color: r.accent,
+                  diameter: footprint(p).0, center: CGPoint(x: p.at[0], y: p.at[1]), size: size)
     }
 
     /// A lid on its mouth, turned where the flip has carried it (or where the state holds it before it runs).
@@ -267,7 +341,9 @@ public struct MetalGadget: View {
         let playing = player?.playing ?? false
         let posed = slot.flatMap { player?.pose($0.key, actor: index, at: date) }
         let form = spec.states[state]?.form?[p.id]?.alpha
-        let alpha = playing ? posed?.opacity ?? (shape == .dot ? 0 : 1) : form ?? (shape == .dot ? 0 : 1)
+        // A glow's light burns as bright as its value (a badge lit when signed in).
+        let glowing = glows && (spec.mechanism.bind["light"]?.contains(p.id) ?? false), lv = MetalGadgetTokens.cellBacklight
+        let alpha = glowing ? lv.empty + (lv.full - lv.empty) * glowShare : playing ? posed?.opacity ?? (shape == .dot ? 0 : 1) : form ?? (shape == .dot ? 0 : 1)
         let heading = playing ? posed?.pose.r ?? 0 : frozen[p.id] ?? 0
         MetalBacklight(shape, color: tint, heading: heading, at: CGPoint(x: p.at[0], y: p.at[1]), diameter: footprint(p).0, size: size)
             .opacity(alpha)
@@ -290,10 +366,13 @@ public struct MetalGadget: View {
     /// A drum, showing its digit of the count (turned by the roll once it runs).
     @ViewBuilder private func drum(_ p: MetalGadgetSpec.Part, r: MetalGadgetResolved) -> some View {
         let ids = spec.mechanism.bind["drums"] ?? [], i = ids.firstIndex(of: p.id) ?? 0
-        let digit = roll.map { $0.value(i) } ?? Double(MetalRollModel.digit(Int(value ?? spec.driveDefault), actor: i, actors: ids.count))
-        let accent = p.material == "accent"
+        // A wheel of ticks on a held drive (a thumbwheel) stands at the value itself: one tick a unit.
+        let wheel = spec.mechanism.bind["ring"]?.contains(p.id) ?? false, range = spec.driveRange
+        let digit = wheel ? range.min + (range.max - range.min) * (drive?.model.x.first ?? spec.driveShare(value ?? spec.driveDefault))
+            : roll.map { $0.value(i) } ?? Double(MetalRollModel.digit(Int(value ?? spec.driveDefault), actor: i, actors: ids.count))
+        let accent = p.material == "accent", f = footprint(p)
         MetalDrum(value: digit, accent: accent, face: p.params?["face"]?.text == "clay" ? .clay : .ceramic, color: accent ? r.accent : nil,
-                  width: footprint(p).0, size: size)
+                  ticks: p.params?["glyphs"]?.text == "ticks", width: f.0, height: f.1, size: size)
             .position(x: p.at[0] * unit, y: p.at[1] * unit)
             .accessibilityHidden(true)
     }
@@ -329,9 +408,11 @@ public struct MetalGadget: View {
         let index = held.flatMap { spec.mechanism.bind[$0.slot]?.firstIndex(of: p.id) }
         // Before the drive exists (the first frame, a capture) a cap sits at its start place, as the web draws it.
         let start = spec.driveTargets(value ?? spec.driveDefault)
-        let y = index.flatMap { i in drive?.pose(i).y ?? held.map { $0.from.y + ($0.to.y - $0.from.y) * start[i] } } ?? 0
-        MetalCap(shape: p.params?["shape"]?.text == "knob" ? .knob : .fader, ribs: Int(p.params?["ribs"]?.number ?? Double(MetalGadgetTokens.capRibs)),
-                 accent: accent, material: ceramic ? .ceramic : .clay, color: accent ? r.accent : nil, size: s)
+        let y = p.params?["shape"]?.text == "rocker" ? 0 : index.flatMap { i in drive?.pose(i).y ?? held.map { $0.from.y + ($0.to.y - $0.from.y) * start[i] } } ?? 0
+        // A rocker tilts where the flip has carried it (off at 0, on at 1).
+        let tilt = 2 * (index.flatMap { i in drive?.model.x[safe: i] ?? start[safe: i] } ?? 0) - 1
+        MetalCap(shape: MetalCap.Shape(rawValue: p.params?["shape"]?.text ?? "fader") ?? .fader, ribs: Int(p.params?["ribs"]?.number ?? Double(MetalGadgetTokens.capRibs)),
+                 accent: accent, material: ceramic ? .ceramic : .clay, color: accent ? r.accent : nil, tilt: tilt, size: s)
             .frame(width: s, height: s)
             .position(x: p.at[0] * unit, y: (p.at[1] + y) * unit)
             .accessibilityHidden(true)
@@ -400,7 +481,7 @@ public struct MetalGadget: View {
             drive.reduced = reduceMotion
             let back = spec.driveTargets(value ?? spec.driveDefault, state: next), pulse = drive.model.held.pulse
             if pulse > 0, spec.states[next]?.enter == "act", !reduceMotion {
-                drive.set(back.map { _ in 1 })
+                drive.set(back.map { min(1, $0 + drive.model.held.pulseBy) })
                 DispatchQueue.main.asyncAfter(deadline: .now() + pulse / 2000) { if shown == next { drive.set(back) } }
             } else { drive.set(back) }
         }

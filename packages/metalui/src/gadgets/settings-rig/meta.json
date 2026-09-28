@@ -1,0 +1,19 @@
+{
+  "name": "settings-rig",
+  "title": "Settings rig",
+  "status": "alpha",
+  "description": "A rig: the rocker sets the mood of the fader bank, a low mix off and a high one on, with the keycap chord beside them. Composed at runtime from a rig spec naming catalog gadgets.",
+  "layer": "object",
+  "role": "emblem",
+  "kind": "composed",
+  "spec": "packages/metalui/src/gadgets/fixtures/settings.rig.json",
+  "uses": [
+    "fader-bank",
+    "rocker",
+    "keycap-chord",
+    "jack",
+    "plug",
+    "cable"
+  ],
+  "page": "/gadgets/rigs#settings"
+}

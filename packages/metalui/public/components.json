@@ -124,7 +124,7 @@
       "name": "cap",
       "title": "Cap",
       "status": "alpha",
-      "description": "The fader or knob cap a person moves: a face on its darker side wall, grip ribs or a pointer groove, and its own shadow. Pressed, it sinks toward the body. The cap you would touch wears the accent.",
+      "description": "The fader, knob or rocker cap a person moves: a face on its darker side wall, grip ribs, a pointer groove or I and O, and its own shadow. Pressed, it sinks toward the body; a rocker tilts about its middle. The cap you would touch wears the accent.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Cap",
@@ -274,6 +274,23 @@
       "agent": "https://metalui.dev/r/dialog.md"
     },
     {
+      "name": "dot-display",
+      "title": "Dot display",
+      "status": "alpha",
+      "description": "Square dots on one pitch, printed into a well: each dot one px colour or unlit. A slow display that steps six times a second and never tweens. The picture (a sky, a sticker) is the caller's.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "DotDisplay",
+        "base": "none (decorative)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalDotDisplay"
+      },
+      "registry": "https://metalui.dev/r/dot-display.json",
+      "agent": "https://metalui.dev/r/dot-display.md"
+    },
+    {
       "name": "draw-picks",
       "title": "Draw picks",
       "status": "alpha",
@@ -323,6 +340,22 @@
       },
       "registry": "https://metalui.dev/r/drum.json",
       "agent": "https://metalui.dev/r/drum.md"
+    },
+    {
+      "name": "fan",
+      "title": "Fan",
+      "status": "alpha",
+      "description": "A compact control bar whose cells open in place: a label, the current choice that fans its siblings out along one axis, and an options cap that stretches sideways into more controls. One open at a time; nothing hides in a menu.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Fan"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalFan"
+      },
+      "registry": "https://metalui.dev/r/fan.json",
+      "agent": "https://metalui.dev/r/fan.md"
     },
     {
       "name": "field",
@@ -546,6 +579,23 @@
       "agent": "https://metalui.dev/r/led.md"
     },
     {
+      "name": "lens",
+      "title": "Lens",
+      "status": "alpha",
+      "description": "A camera lens seen head-on: a knurled ring in the accent that turns, a domed glass dark at its centre and coated toward its rim, and an iris behind it closing to a polygon.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Lens",
+        "base": "none (SVG)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalLens"
+      },
+      "registry": "https://metalui.dev/r/lens.json",
+      "agent": "https://metalui.dev/r/lens.md"
+    },
+    {
       "name": "lid",
       "title": "Lid",
       "status": "alpha",
@@ -646,6 +696,23 @@
       },
       "registry": "https://metalui.dev/r/needle.json",
       "agent": "https://metalui.dev/r/needle.md"
+    },
+    {
+      "name": "nib",
+      "title": "Nib",
+      "status": "alpha",
+      "description": "A pen nib seen from above: brass, narrowing to its tip, with a slit and a breather hole, its tip wet with ink in the accent. In a gadget it dips into its well.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Nib",
+        "base": "none (SVG)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalNib"
+      },
+      "registry": "https://metalui.dev/r/nib.json",
+      "agent": "https://metalui.dev/r/nib.md"
     },
     {
       "name": "past-banner",
@@ -918,6 +985,23 @@
       },
       "registry": "https://metalui.dev/r/sparkline.json",
       "agent": "https://metalui.dev/r/sparkline.md"
+    },
+    {
+      "name": "spatial-field",
+      "title": "Spatial field",
+      "status": "alpha",
+      "description": "One quiet, content-aware dot field for a Place. It yields to object footprints and reinforces the host-selected Region while the host retains placement authority.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "SpatialFieldCanvas",
+        "base": "none (decorative Canvas2D output)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSpatialFieldView"
+      },
+      "registry": "https://metalui.dev/r/spatial-field.json",
+      "agent": "https://metalui.dev/r/spatial-field.md"
     },
     {
       "name": "status",

@@ -23,7 +23,8 @@
     "motion": "^13.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^8.4.0"
+    "react-router": "^8.4.0",
+    "surface-field": "git+https://github.com/angelolibero/surface-field.git#89fbf61440a03f057652383bd78aa597d9b41e25"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

@@ -11,10 +11,13 @@ const SAMPLES: Record<TypeRole, string> = {
   ui: 'Arrange as Timeline',
   body: 'grotesk vs. neo-grotesk for the header, and whether the caps need more room',
   meta: 'Edited today at 8:52 · 11 words',
+  figure: 'Today   14°   24°',
   label: 'Stack · 3 blocks',
   readout: '⌘K   320 × 214   #FF6B3D   100%',
+  tick: '10°   20°   30°',
   code: 'if l && r { panel.toggle() }',
   pixel: '08:52',
+  'pixel-small': '24°',
 };
 
 const USES: Record<TypeRole, string> = {
@@ -25,10 +28,13 @@ const USES: Record<TypeRole, string> = {
   ui: 'Buttons, rows, segments, fields',
   body: 'Multi-line secondary text',
   meta: 'Timestamps, footnotes',
+  figure: 'Numbers in a row of a table (a day\'s low and high)',
   label: 'Engravings, section headers',
   readout: 'Keycaps, counts, sizes, hex',
+  tick: 'Scale ticks above a dot range',
   code: 'Code screens',
   pixel: 'Widget displays only',
+  'pixel-small': 'A widget\'s smaller readings (an hour\'s temperature)',
 };
 
 const FAMILY = { sans: 'var(--mu-sans)', mono: 'var(--mu-mono)', pixel: 'var(--mu-pixel)' } as const;

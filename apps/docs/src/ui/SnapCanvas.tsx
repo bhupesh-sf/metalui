@@ -79,7 +79,7 @@ export function SnapCanvas({ height = 360, lasso = false }: { height?: number; l
   );
 
   return (
-    <div className="flex w-full flex-col items-center gap-14">
+    <div className="flex w-full min-w-0 flex-col items-center gap-14">
       <div className="snap-canvas" style={{ height }}>
         <div ref={world} className="snap-world" style={{ transform: `scale(${scale})` }} onPointerDown={worldDown} onPointerMove={worldMove} onPointerUp={worldUp} onPointerCancel={worldUp}>
           {FIXED.map((b) => card(b))}
@@ -89,8 +89,8 @@ export function SnapCanvas({ height = 360, lasso = false }: { height?: number; l
         </div>
       </div>
       {lasso
-        ? <span className="eng">{picked.length ? `selected · ${picked.length}` : 'drag on empty space to draw a box'}</span>
-        : <span className="eng">haptic taps · {taps} <span className="text-ink3">(on a Mac trackpad in the app; the browser cannot)</span></span>}
+        ? <span className="eng snap-caption">{picked.length ? `selected · ${picked.length}` : 'drag on empty space to draw a box'}</span>
+        : <span className="eng snap-caption">haptic taps · {taps} <span className="text-ink3">(on a Mac trackpad in the app; the browser cannot)</span></span>}
       <Switcher size="compact" aria-label="Zoom" value={zoom} onValueChange={setZoom} options={[{ value: '0.5', label: '50 %' }, { value: '1', label: '100 %' }, { value: '2', label: '200 %' }]} />
     </div>
   );

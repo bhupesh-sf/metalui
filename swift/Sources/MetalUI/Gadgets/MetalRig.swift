@@ -2,23 +2,28 @@ import SwiftUI
 
 /// Gadgets on a grid in one panel, wired by patch cables: the SwiftUI twin of `<Rig>`. Each gadget sits
 /// in a tray and is drawn by `MetalGadget`; every wired port has a jack with a plug in it and a rubber
-/// cord hangs between them. Set a gadget's input (`values`) and the rig carries it: a bead of light runs
-/// along each cord it crosses, and the gadget at the far end answers when it arrives. Never a control.
+/// cord hangs between them. Set a gadget's input (`values`) or its state (`states`) and the rig carries
+/// it: a bead of light runs along each cord it crosses, and the gadget at the far end answers when it
+/// arrives. Never a control.
 public struct MetalRig: View {
     let width: Double
-    let values: [String: [String: Double]]
+    let values: [String: [String: MetalGadgetValue]]
+    let states: [String: String]
     let sound: MetalSound?
     @State private var engine: MetalRigEngine
     @State private var shown: [String: [String: MetalGadgetValue]]
+    /// Each gadget's state as it has arrived.
+    @State private var shownStates: [String: String]
     @State private var beads: [(id: UUID, cable: Int, start: Date)] = []
     @Environment(\.metalColorway) private var colorway
     @Environment(\.displayScale) private var displayScale
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    public init(spec: MetalRigSpec, catalog: [String: MetalGadgetSpec] = [:], values: [String: [String: Double]] = [:], sound: MetalSound? = nil, width: Double = 560) {
+    public init(spec: MetalRigSpec, catalog: [String: MetalGadgetSpec] = [:], values: [String: [String: MetalGadgetValue]] = [:], states: [String: String] = [:],
+                sound: MetalSound? = nil, width: Double = 560) {
         let e = MetalRigEngine(spec, catalog: catalog)
-        self.width = width; self.values = values; self.sound = sound
-        _engine = State(initialValue: e); _shown = State(initialValue: e.inputs)
+        self.width = width; self.values = values; self.states = states; self.sound = sound
+        _engine = State(initialValue: e); _shown = State(initialValue: e.inputs); _shownStates = State(initialValue: e.states)
     }
 
     public var body: some View {
@@ -45,7 +50,8 @@ public struct MetalRig: View {
                 }
                 ForEach(engine.modules, id: \.inst) { m in
                     let drive = m.spec.mechanism.drive ?? m.spec.ports?.in?.keys.sorted().first ?? ""
-                    MetalGadget(spec: m.spec, value: shown[m.inst]?[drive]?.number, sound: engine.modules.prefix(t.rigVoices).contains { $0.inst == m.inst } ? sound : nil,
+                    let v: Double? = switch shown[m.inst]?[drive] { case .number(let n): n; case .bool(let b): b ? 1 : 0; default: nil }
+                    MetalGadget(spec: m.spec, state: shownStates[m.inst], value: v, sound: engine.modules.prefix(t.rigVoices).contains { $0.inst == m.inst } ? sound : nil,
                                 size: t.canvas * unit)
                         .position(x: (m.at.x + t.canvas / 2) * unit, y: (m.at.y + t.canvas / 2) * unit)
                 }
@@ -71,6 +77,9 @@ public struct MetalRig: View {
         .accessibilityElement(children: .contain)
         .accessibilityLabel(engine.spec.title)
         .onChange(of: values) { before, after in carry(before: before, after: after) }
+        .onChange(of: states) { before, after in
+            for (inst, st) in after where before[inst] != st { shownStates[inst] = st; travel(engine.setState(inst, st)) }
+        }
     }
 
     /// The panel's outline on the 400-unit canvas: the rig scaled to fit, with a tray hole per gadget.
@@ -113,19 +122,29 @@ public struct MetalRig: View {
     }
 
     /// A change from outside: carry it along the cables; each hop's bead runs, then its value arrives.
-    private func carry(before: [String: [String: Double]], after: [String: [String: Double]]) {
+    private func carry(before: [String: [String: MetalGadgetValue]], after: [String: [String: MetalGadgetValue]]) {
         for (inst, ports) in after { for (port, v) in ports where before[inst]?[port] != v {
-            shown[inst, default: [:]][port] = .number(v)
-            for hop in engine.set(inst, port, .number(v)) {
-                let to = hop.to.split(separator: ".").map(String.init)
-                let deliver = { if !hop.value.isPulse { shown[to[0], default: [:]][to[1]] = hop.value } }
-                if reduceMotion { deliver(); continue }
-                let id = UUID(), travel = MetalGadgetTokens.rigTravel / 1000
-                DispatchQueue.main.asyncAfter(deadline: .now() + Double(hop.hop - 1) * travel) {
-                    beads.append((id, hop.cable, Date()))
-                    DispatchQueue.main.asyncAfter(deadline: .now() + travel) { beads.removeAll { $0.id == id }; deliver() }
-                }
-            }
+            if !v.isPulse { shown[inst, default: [:]][port] = v }
+            let hops = engine.set(inst, port, v)
+            shownStates[inst] = engine.states[inst]
+            travel(hops)
         } }
+    }
+
+    /// Each hop's bead runs along its cord, then its value and the state it leaves arrive.
+    private func travel(_ hops: [MetalRigEngine.Hop]) {
+        for hop in hops {
+            let to = hop.to.split(separator: ".").map(String.init)
+            let deliver = {
+                if !hop.value.isPulse { shown[to[0], default: [:]][to[1]] = hop.value }
+                shownStates[to[0]] = hop.state
+            }
+            if reduceMotion { deliver(); continue }
+            let id = UUID(), travel = MetalGadgetTokens.rigTravel / 1000
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(hop.hop - 1) * travel) {
+                beads.append((id, hop.cable, Date()))
+                DispatchQueue.main.asyncAfter(deadline: .now() + travel) { beads.removeAll { $0.id == id }; deliver() }
+            }
+        }
     }
 }
