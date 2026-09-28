@@ -1,0 +1,1293 @@
+{
+ "$generated": "music/pipeline.py analyze. Do not edit.",
+ "source": {
+  "file": "source.wav",
+  "sha": "d137ba25d6125127",
+  "seconds": 144.846
+ },
+ "bpm": 141.974,
+ "beatSeconds": 0.422612,
+ "barSeconds": 1.690448,
+ "firstDownbeat": 0.6656,
+ "gridScore": 3.59,
+ "driftMs": [
+  {
+   "t": 0.24,
+   "ms": -2
+  },
+  {
+   "t": 13.77,
+   "ms": 6
+  },
+  {
+   "t": 27.29,
+   "ms": 10
+  },
+  {
+   "t": 40.81,
+   "ms": 6
+  },
+  {
+   "t": 54.34,
+   "ms": -2
+  },
+  {
+   "t": 67.86,
+   "ms": 4
+  },
+  {
+   "t": 81.38,
+   "ms": 2
+  },
+  {
+   "t": 94.91,
+   "ms": 0
+  },
+  {
+   "t": 108.43,
+   "ms": -4
+  },
+  {
+   "t": 121.96,
+   "ms": -6
+  },
+  {
+   "t": 135.48,
+   "ms": -10
+  }
+ ],
+ "key": {
+  "best": "F# minor",
+  "confidence": 0.38,
+  "runnersUp": [
+   "F# major",
+   "D# minor"
+  ]
+ },
+ "textureChanges": [
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  9,
+  17,
+  25,
+  32,
+  53,
+  54,
+  77,
+  78,
+  81,
+  84,
+  85,
+  86
+ ],
+ "bars": [
+  {
+   "n": 1,
+   "t": 0.666,
+   "loud": 31.3,
+   "sub": 37.3,
+   "low": 11.6,
+   "mid": -16.2,
+   "high": -37.2,
+   "drums": {
+    "kick": "x···x···x--xx·-·",
+    "snare": "x---x---x---x---",
+    "hat": "x---x---x---x---"
+   }
+  },
+  {
+   "n": 2,
+   "t": 2.356,
+   "loud": 31.3,
+   "sub": 37.3,
+   "low": 11.8,
+   "mid": -16.0,
+   "high": -34.0,
+   "drums": {
+    "kick": "x·x-x·x·x··xx--x",
+    "snare": "x---x---x---x---",
+    "hat": "x---x---x---x---"
+   }
+  },
+  {
+   "n": 3,
+   "t": 4.047,
+   "loud": 31.3,
+   "sub": 37.3,
+   "low": 13.5,
+   "mid": -3.3,
+   "high": -13.5,
+   "drums": {
+    "kick": "x·x-x-·-xxx·x·-·",
+    "snare": "x·······x---x---",
+    "hat": "x···x--xx---x---"
+   }
+  },
+  {
+   "n": 4,
+   "t": 5.737,
+   "loud": 31.3,
+   "sub": 37.2,
+   "low": 13.4,
+   "mid": -2.5,
+   "high": -13.6,
+   "drums": {
+    "kick": "x·-xx·x·x···x···",
+    "snare": "x···x·x-x---x---",
+    "hat": "xxx·x---x---x---"
+   }
+  },
+  {
+   "n": 5,
+   "t": 7.427,
+   "loud": 31.5,
+   "sub": 37.4,
+   "low": 20.0,
+   "mid": 8.6,
+   "high": -7.1,
+   "drums": {
+    "kick": "x·--x··-xx··x-·x",
+    "snare": "xx·x-xxxxxxxx---",
+    "hat": "xx·xxxxx·xxxx---"
+   }
+  },
+  {
+   "n": 6,
+   "t": 9.118,
+   "loud": 31.5,
+   "sub": 37.4,
+   "low": 19.8,
+   "mid": 8.5,
+   "high": -7.2,
+   "drums": {
+    "kick": "x--·xx--x··-x-xx",
+    "snare": "xxx··xxxxxxxx---",
+    "hat": "xx·x·xxx·xxxx---"
+   }
+  },
+  {
+   "n": 7,
+   "t": 10.808,
+   "loud": 23.6,
+   "sub": 29.2,
+   "low": 17.8,
+   "mid": 8.3,
+   "high": -6.6,
+   "drums": {
+    "kick": "·xx···x·-xxxx··-",
+    "snare": "xxxx-xxx-xxxx---",
+    "hat": "xxxx-xxx-xxxx---"
+   }
+  },
+  {
+   "n": 8,
+   "t": 12.499,
+   "loud": 19.0,
+   "sub": 23.8,
+   "low": 18.1,
+   "mid": 8.6,
+   "high": -6.8,
+   "drums": {
+    "kick": "·--x-·xxxxxxxx·-",
+    "snare": "xx···xxx-xxxx---",
+    "hat": "xx·--xxx-xxxx---"
+   }
+  },
+  {
+   "n": 9,
+   "t": 14.189,
+   "loud": 32.3,
+   "sub": 37.9,
+   "low": 26.4,
+   "mid": 12.2,
+   "high": -3.7,
+   "drums": {
+    "kick": "x-·xxxx·xxxxxxxx",
+    "snare": "xxxxxxxx·xxxx-xx",
+    "hat": "xxx·xxxx-xxxx-··"
+   }
+  },
+  {
+   "n": 10,
+   "t": 15.88,
+   "loud": 32.1,
+   "sub": 37.7,
+   "low": 26.0,
+   "mid": 11.7,
+   "high": -3.8,
+   "drums": {
+    "kick": "x·-xx-x·x·-xx·xx",
+    "snare": "x·xx·xxx-xxxx-x-",
+    "hat": "x···xxxx-xxxx-·-"
+   }
+  },
+  {
+   "n": 11,
+   "t": 17.57,
+   "loud": 31.7,
+   "sub": 37.4,
+   "low": 24.0,
+   "mid": 12.8,
+   "high": -3.5,
+   "drums": {
+    "kick": "x·xxx·x·xx··x-x·",
+    "snare": "xxxxxxxx-xxxx-xx",
+    "hat": "xx···xxx-xxxx-··"
+   }
+  },
+  {
+   "n": 12,
+   "t": 19.261,
+   "loud": 31.7,
+   "sub": 37.6,
+   "low": 21.8,
+   "mid": 11.8,
+   "high": -3.5,
+   "drums": {
+    "kick": "xxx·x···x·-xx·xx",
+    "snare": "xxxxxxxx·xxxx-xx",
+    "hat": "x···xxxx-xxxx-·x"
+   }
+  },
+  {
+   "n": 13,
+   "t": 20.951,
+   "loud": 31.8,
+   "sub": 37.6,
+   "low": 23.7,
+   "mid": 12.2,
+   "high": -4.3,
+   "drums": {
+    "kick": "xx-xxxxxxx-xxxxx",
+    "snare": "xxxxxxxx·xxxx·xx",
+    "hat": "xxx··xxx-xxxx···"
+   }
+  },
+  {
+   "n": 14,
+   "t": 22.641,
+   "loud": 32.1,
+   "sub": 37.8,
+   "low": 25.8,
+   "mid": 11.4,
+   "high": -4.3,
+   "drums": {
+    "kick": "xx·xxxxxxx-xx·xx",
+    "snare": "xxxxxxxx·xxxx-xx",
+    "hat": "xxxxxxxx-xx·x-·x"
+   }
+  },
+  {
+   "n": 15,
+   "t": 24.332,
+   "loud": 32.3,
+   "sub": 37.9,
+   "low": 25.3,
+   "mid": 9.7,
+   "high": -6.6,
+   "drums": {
+    "kick": "xx·xx·xxxxxxxxxx",
+    "snare": "x·xxxxxx·xx·xxxx",
+    "hat": "x·x·x-xx·xx-x·x·"
+   }
+  },
+  {
+   "n": 16,
+   "t": 26.022,
+   "loud": 30.6,
+   "sub": 36.3,
+   "low": 22.7,
+   "mid": 6.3,
+   "high": -7.1,
+   "drums": {
+    "kick": "x-·xx·xxx··-x--·",
+    "snare": "x·xxx·xxx---x-·-",
+    "hat": "x-x·x·xx·---x-x-"
+   }
+  },
+  {
+   "n": 17,
+   "t": 27.713,
+   "loud": 32.9,
+   "sub": 38.4,
+   "low": 27.9,
+   "mid": 14.5,
+   "high": 2.2,
+   "drums": {
+    "kick": "x-·xx-xxxxxxx-xx",
+    "snare": "x-··x-x·-xx·x-x-",
+    "hat": "x-·-·-x--·x-·-x-"
+   }
+  },
+  {
+   "n": 18,
+   "t": 29.403,
+   "loud": 32.4,
+   "sub": 38.0,
+   "low": 26.8,
+   "mid": 14.5,
+   "high": 2.5,
+   "drums": {
+    "kick": "·-x-x-··x·xxx··-",
+    "snare": "···-x-x·-xx·x-x·",
+    "hat": "-··---x--·x-·-x-"
+   }
+  },
+  {
+   "n": 19,
+   "t": 31.094,
+   "loud": 32.9,
+   "sub": 38.5,
+   "low": 28.2,
+   "mid": 14.2,
+   "high": 1.6,
+   "drums": {
+    "kick": "x-·xx-xxx·-·x-x-",
+    "snare": "···-x-x··xx·x-x·",
+    "hat": "-··-·-x--·x-·-x·"
+   }
+  },
+  {
+   "n": 20,
+   "t": 32.784,
+   "loud": 32.5,
+   "sub": 37.9,
+   "low": 29.2,
+   "mid": 14.2,
+   "high": 2.4,
+   "drums": {
+    "kick": "x·x-x-·xx·x·xxx·",
+    "snare": "--··x-x·-xxxx-x·",
+    "hat": "--x-·-x--xx-·-x-"
+   }
+  },
+  {
+   "n": 21,
+   "t": 34.475,
+   "loud": 32.7,
+   "sub": 38.1,
+   "low": 28.4,
+   "mid": 14.0,
+   "high": 2.2,
+   "drums": {
+    "kick": "x-·xx-x·xx·xxx··",
+    "snare": "·-x·x·x··xx·x-x-",
+    "hat": "--·-·-x--·x-·-x-"
+   }
+  },
+  {
+   "n": 22,
+   "t": 36.165,
+   "loud": 32.5,
+   "sub": 38.2,
+   "low": 26.1,
+   "mid": 14.1,
+   "high": 2.5,
+   "drums": {
+    "kick": "····x--·x-xxxxx·",
+    "snare": "····x-x·-xx·x-x·",
+    "hat": "-·x-·-x--·x---x-"
+   }
+  },
+  {
+   "n": 23,
+   "t": 37.855,
+   "loud": 33.0,
+   "sub": 38.6,
+   "low": 27.6,
+   "mid": 14.4,
+   "high": 1.9,
+   "drums": {
+    "kick": "x-xxx-·xxxxxx-x-",
+    "snare": "···-··x·-xx·x-x·",
+    "hat": "··--·-x--·x-·-x-"
+   }
+  },
+  {
+   "n": 24,
+   "t": 39.546,
+   "loud": 32.5,
+   "sub": 37.9,
+   "low": 29.5,
+   "mid": 14.3,
+   "high": 2.2,
+   "drums": {
+    "kick": "x--·x···x·xxxxx-",
+    "snare": "·-··x-x··xx·x-x·",
+    "hat": "···-·-x--·x---x-"
+   }
+  },
+  {
+   "n": 25,
+   "t": 41.236,
+   "loud": 31.5,
+   "sub": 37.4,
+   "low": 20.5,
+   "mid": 9.8,
+   "high": -5.0,
+   "drums": {
+    "kick": "x·x-x-x-xxx·x-·x",
+    "snare": "-··xxxxx·xxxx---",
+    "hat": "-···xxxx·xxxx---"
+   }
+  },
+  {
+   "n": 26,
+   "t": 42.927,
+   "loud": 31.5,
+   "sub": 37.4,
+   "low": 20.7,
+   "mid": 10.5,
+   "high": -5.2,
+   "drums": {
+    "kick": "x·-·xxxxxx-·x··-",
+    "snare": "xxxxxxxx·xxxx---",
+    "hat": "x·x··xxx-xxxx---"
+   }
+  },
+  {
+   "n": 27,
+   "t": 44.617,
+   "loud": 31.6,
+   "sub": 37.4,
+   "low": 21.9,
+   "mid": 10.3,
+   "high": -5.0,
+   "drums": {
+    "kick": "xxxxx-x-xxx·x-·-",
+    "snare": "xxxxxxxx·xxxx---",
+    "hat": "xxxx·xxx-xxxx---"
+   }
+  },
+  {
+   "n": 28,
+   "t": 46.308,
+   "loud": 31.5,
+   "sub": 37.4,
+   "low": 20.9,
+   "mid": 9.8,
+   "high": -4.8,
+   "drums": {
+    "kick": "x·-·xx-xxx··x·-x",
+    "snare": "xxxxxxxx·xxxx---",
+    "hat": "x·x··xxx-xxxx---"
+   }
+  },
+  {
+   "n": 29,
+   "t": 47.998,
+   "loud": 32.5,
+   "sub": 38.3,
+   "low": 24.7,
+   "mid": 11.8,
+   "high": 1.4,
+   "drums": {
+    "kick": "x-xxx-x·xx-xx-xx",
+    "snare": "x-x·x-xx-xxxx-x·",
+    "hat": "x-·-·-x·-·x-·-x-"
+   }
+  },
+  {
+   "n": 30,
+   "t": 49.689,
+   "loud": 32.6,
+   "sub": 38.4,
+   "low": 25.0,
+   "mid": 12.6,
+   "high": 1.2,
+   "drums": {
+    "kick": "x·xxx-x·xx-·xxx·",
+    "snare": "x·x·x·xx-xx·x-x·",
+    "hat": "·-·-·-x--·x-·-x-"
+   }
+  },
+  {
+   "n": 31,
+   "t": 51.379,
+   "loud": 32.4,
+   "sub": 38.2,
+   "low": 24.8,
+   "mid": 12.1,
+   "high": 1.2,
+   "drums": {
+    "kick": "x·x·xxx·x--xx-xx",
+    "snare": "x·x·x-x··xx·x-x·",
+    "hat": "·-·-·-x--·x-·-x-"
+   }
+  },
+  {
+   "n": 32,
+   "t": 53.07,
+   "loud": 31.5,
+   "sub": 37.4,
+   "low": 17.0,
+   "mid": 4.4,
+   "high": -6.7,
+   "drums": {
+    "kick": "x··xxxx·x-x-x-·-",
+    "snare": "-···x·-xx-x-x---",
+    "hat": "-·x-x-·xx-x·x---"
+   }
+  },
+  {
+   "n": 33,
+   "t": 54.76,
+   "loud": 30.4,
+   "sub": 36.3,
+   "low": 19.4,
+   "mid": 12.0,
+   "high": -0.9,
+   "drums": {
+    "kick": "x-xxxx-xx-xxx---",
+    "snare": "x--xx--xx--·x--x",
+    "hat": "x--·x--xx--·x--·"
+   }
+  },
+  {
+   "n": 34,
+   "t": 56.45,
+   "loud": 30.5,
+   "sub": 36.3,
+   "low": 21.7,
+   "mid": 10.4,
+   "high": -2.5,
+   "drums": {
+    "kick": "x-·-x··xx·xxx--·",
+    "snare": "x--xx--xx--xx-·-",
+    "hat": "x·-·x--xx--xx-·-"
+   }
+  },
+  {
+   "n": 35,
+   "t": 58.141,
+   "loud": 30.4,
+   "sub": 36.3,
+   "low": 20.7,
+   "mid": 11.9,
+   "high": -1.1,
+   "drums": {
+    "kick": "x-x-xx··x-·xx--·",
+    "snare": "x--xx--·x--xx--x",
+    "hat": "x--·x--xx--xx--x"
+   }
+  },
+  {
+   "n": 36,
+   "t": 59.831,
+   "loud": 30.5,
+   "sub": 36.3,
+   "low": 21.7,
+   "mid": 10.5,
+   "high": -2.3,
+   "drums": {
+    "kick": "x-·-xx--x-x-x--·",
+    "snare": "x--xx--xx--xx-·-",
+    "hat": "x--·x--xx--xx-·-"
+   }
+  },
+  {
+   "n": 37,
+   "t": 61.522,
+   "loud": 30.5,
+   "sub": 36.1,
+   "low": 23.8,
+   "mid": 12.7,
+   "high": -1.5,
+   "drums": {
+    "kick": "x·x·x-x-x-·xx-·-",
+    "snare": "x--xx--·x---x--x",
+    "hat": "x--·x--xx---x--·"
+   }
+  },
+  {
+   "n": 38,
+   "t": 63.212,
+   "loud": 30.5,
+   "sub": 36.1,
+   "low": 24.4,
+   "mid": 14.6,
+   "high": -2.2,
+   "drums": {
+    "kick": "x-x-x--·x·x-x---",
+    "snare": "x--xx--xx--xx---",
+    "hat": "x--·x--xx--xx-·-"
+   }
+  },
+  {
+   "n": 39,
+   "t": 64.903,
+   "loud": 30.5,
+   "sub": 36.1,
+   "low": 23.4,
+   "mid": 13.6,
+   "high": -1.4,
+   "drums": {
+    "kick": "x·xxx·-·x·-xx-·x",
+    "snare": "x--xx--·x--·x--x",
+    "hat": "x·-·x--·x--·x--·"
+   }
+  },
+  {
+   "n": 40,
+   "t": 66.593,
+   "loud": 30.6,
+   "sub": 36.1,
+   "low": 24.4,
+   "mid": 15.7,
+   "high": -2.4,
+   "drums": {
+    "kick": "x-·-x-··x-x·x---",
+    "snare": "x--xx--xx--xx--·",
+    "hat": "x--·x--xx--xx---"
+   }
+  },
+  {
+   "n": 41,
+   "t": 68.284,
+   "loud": 30.9,
+   "sub": 36.4,
+   "low": 24.8,
+   "mid": 16.2,
+   "high": -0.9,
+   "drums": {
+    "kick": "x·xx···-x··xx---",
+    "snare": "x--xx---x--·x--·",
+    "hat": "x--·x--·x---x--·"
+   }
+  },
+  {
+   "n": 42,
+   "t": 69.974,
+   "loud": 30.9,
+   "sub": 36.4,
+   "low": 24.9,
+   "mid": 17.4,
+   "high": -1.1,
+   "drums": {
+    "kick": "x-·-x·-xx-·-x-·-",
+    "snare": "x·-xx--·x--·x--·",
+    "hat": "x--·x--xx--·x-·-"
+   }
+  },
+  {
+   "n": 43,
+   "t": 71.664,
+   "loud": 30.7,
+   "sub": 36.1,
+   "low": 25.2,
+   "mid": 15.8,
+   "high": -1.0,
+   "drums": {
+    "kick": "x·xx·---x-·xx--·",
+    "snare": "x--xx--·x--·x--·",
+    "hat": "x--·x--·x--·x--·"
+   }
+  },
+  {
+   "n": 44,
+   "t": 73.355,
+   "loud": 30.6,
+   "sub": 36.0,
+   "low": 24.9,
+   "mid": 16.0,
+   "high": -1.5,
+   "drums": {
+    "kick": "x-x-x---x-·xx---",
+    "snare": "x--xx--·x--·x---",
+    "hat": "x--·x--xx--·x-·-"
+   }
+  },
+  {
+   "n": 45,
+   "t": 75.045,
+   "loud": 26.9,
+   "sub": 31.9,
+   "low": 23.9,
+   "mid": 14.6,
+   "high": -1.5,
+   "drums": {
+    "kick": "xxx·x···x-xxx··-",
+    "snare": "x-x·x-x·x-x·x-x·",
+    "hat": "x-x-x·x-x-x-x-x-"
+   }
+  },
+  {
+   "n": 46,
+   "t": 76.736,
+   "loud": 26.3,
+   "sub": 30.8,
+   "low": 25.3,
+   "mid": 15.3,
+   "high": -1.6,
+   "drums": {
+    "kick": "x·-xx---x·-·x···",
+    "snare": "x-x·x-x-x-x·x-x-",
+    "hat": "x-x·x-x-x-x-x-x-"
+   }
+  },
+  {
+   "n": 47,
+   "t": 78.426,
+   "loud": 25.9,
+   "sub": 30.0,
+   "low": 25.0,
+   "mid": 14.0,
+   "high": -1.5,
+   "drums": {
+    "kick": "x·xxx-x-x-xxx---",
+    "snare": "x-x·x-x-x-x·x·x·",
+    "hat": "x-x-x-x-x-x-x-x-"
+   }
+  },
+  {
+   "n": 48,
+   "t": 80.117,
+   "loud": 26.2,
+   "sub": 30.6,
+   "low": 25.2,
+   "mid": 16.1,
+   "high": -1.7,
+   "drums": {
+    "kick": "x·-xx---x-··x-·-",
+    "snare": "x-x·x·x·x-x·x-x-",
+    "hat": "x-x·x-x-x-x-x-x-"
+   }
+  },
+  {
+   "n": 49,
+   "t": 81.807,
+   "loud": 27.0,
+   "sub": 31.4,
+   "low": 25.5,
+   "mid": 15.8,
+   "high": 0.7,
+   "drums": {
+    "kick": "xxxxxxx-x-x·xxx-",
+    "snare": "x-x·xxx-x-x-xxx·",
+    "hat": "x-x-··x-·-x-xxx-"
+   }
+  },
+  {
+   "n": 50,
+   "t": 83.498,
+   "loud": 27.0,
+   "sub": 31.4,
+   "low": 25.5,
+   "mid": 17.5,
+   "high": 1.0,
+   "drums": {
+    "kick": "xx·xxx-xx··-x·x-",
+    "snare": "x-x·xxx-x-x·xxx-",
+    "hat": "x-x-xxx-x-x-··x-"
+   }
+  },
+  {
+   "n": 51,
+   "t": 85.188,
+   "loud": 29.3,
+   "sub": 34.6,
+   "low": 25.2,
+   "mid": 17.6,
+   "high": 4.2,
+   "drums": {
+    "kick": "xxx·x-x·xxx·xxxx",
+    "snare": "x-x-x-x-xxxxx···",
+    "hat": "·-x-x-x-x···x···"
+   }
+  },
+  {
+   "n": 52,
+   "t": 86.878,
+   "loud": 20.2,
+   "sub": 21.2,
+   "low": 22.7,
+   "mid": 15.0,
+   "high": -3.4,
+   "drums": {
+    "kick": "··--x·x-·x··----",
+    "snare": "---xx-··x---x--·",
+    "hat": "----x-···---··-·"
+   }
+  },
+  {
+   "n": 53,
+   "t": 88.569,
+   "loud": 31.2,
+   "sub": 35.9,
+   "low": 30.0,
+   "mid": 17.7,
+   "high": 0.9,
+   "drums": {
+    "kick": "x·x--·--x-··x-x-",
+    "snare": "x---·--··---x---",
+    "hat": "x--·x---x---x-·-"
+   }
+  },
+  {
+   "n": 54,
+   "t": 90.259,
+   "loud": 30.9,
+   "sub": 35.7,
+   "low": 29.7,
+   "mid": 15.5,
+   "high": -0.8,
+   "drums": {
+    "kick": "x-x-·---x-x·x--·",
+    "snare": "·--·x--·x--·x---",
+    "hat": "x·-·x--·x---x-·-"
+   }
+  },
+  {
+   "n": 55,
+   "t": 91.95,
+   "loud": 30.8,
+   "sub": 35.5,
+   "low": 29.9,
+   "mid": 16.6,
+   "high": 0.7,
+   "drums": {
+    "kick": "x-x-x-··x··-x---",
+    "snare": "x---x---·---x---",
+    "hat": "x---x--·x---x---"
+   }
+  },
+  {
+   "n": 56,
+   "t": 93.64,
+   "loud": 30.7,
+   "sub": 35.8,
+   "low": 27.3,
+   "mid": 15.8,
+   "high": -0.9,
+   "drums": {
+    "kick": "x-x-x--·x-x-x-··",
+    "snare": "··-xx---x---x---",
+    "hat": "x--·x--·x·-·x-··"
+   }
+  },
+  {
+   "n": 57,
+   "t": 95.331,
+   "loud": 31.0,
+   "sub": 35.8,
+   "low": 29.9,
+   "mid": 16.7,
+   "high": 0.9,
+   "drums": {
+    "kick": "x--x·-·-x·x-x-·-",
+    "snare": "·---x--·x---x---",
+    "hat": "x---x--·x·--x--·"
+   }
+  },
+  {
+   "n": 58,
+   "t": 97.021,
+   "loud": 31.0,
+   "sub": 35.9,
+   "low": 29.5,
+   "mid": 16.7,
+   "high": -1.0,
+   "drums": {
+    "kick": "x·x-··--x·x-x-··",
+    "snare": "x·-·x--·x--·x---",
+    "hat": "x--·x--·x--·x--·"
+   }
+  },
+  {
+   "n": 59,
+   "t": 98.712,
+   "loud": 31.0,
+   "sub": 35.7,
+   "low": 30.1,
+   "mid": 18.1,
+   "high": 0.9,
+   "drums": {
+    "kick": "x··-x---x-··x---",
+    "snare": "·---x---·---x---",
+    "hat": "x---x--·x--·x---"
+   }
+  },
+  {
+   "n": 60,
+   "t": 100.402,
+   "loud": 30.9,
+   "sub": 35.9,
+   "low": 27.8,
+   "mid": 17.3,
+   "high": -0.7,
+   "drums": {
+    "kick": "x-x-·---x···x·--",
+    "snare": "·--·x--·x---x---",
+    "hat": "x·-·x--·x--·x-··"
+   }
+  },
+  {
+   "n": 61,
+   "t": 102.093,
+   "loud": 32.1,
+   "sub": 37.2,
+   "low": 30.0,
+   "mid": 17.9,
+   "high": 2.1,
+   "drums": {
+    "kick": "x··-x-·-x-x·x·x·",
+    "snare": "x---·---·-·-x-x-",
+    "hat": "x-·-·-x-·-x-·-x-"
+   }
+  },
+  {
+   "n": 62,
+   "t": 103.783,
+   "loud": 31.9,
+   "sub": 37.0,
+   "low": 29.7,
+   "mid": 15.7,
+   "high": 1.4,
+   "drums": {
+    "kick": "x·x·x--·xx··x·-x",
+    "snare": "·-··x-·-x-·-x---",
+    "hat": "·-·-x-x-·-x-·-x-"
+   }
+  },
+  {
+   "n": 63,
+   "t": 105.473,
+   "loud": 31.9,
+   "sub": 37.0,
+   "low": 29.9,
+   "mid": 16.6,
+   "high": 2.1,
+   "drums": {
+    "kick": "x-xxx-··x-··xx·x",
+    "snare": "x---·---·-·-·-··",
+    "hat": "x-·-·-x-·-x-·-x-"
+   }
+  },
+  {
+   "n": 64,
+   "t": 107.164,
+   "loud": 31.9,
+   "sub": 37.3,
+   "low": 27.7,
+   "mid": 15.8,
+   "high": 1.6,
+   "drums": {
+    "kick": "x-x·xx--x·xxx-·x",
+    "snare": "·---x-·-x-·-x-·-",
+    "hat": "x-·-x-x-x-x-x-x-"
+   }
+  },
+  {
+   "n": 65,
+   "t": 108.854,
+   "loud": 32.1,
+   "sub": 37.1,
+   "low": 30.9,
+   "mid": 17.1,
+   "high": 2.3,
+   "drums": {
+    "kick": "x--xx-x-xxxxxxxx",
+    "snare": "·---·---···-·-x-",
+    "hat": "·-·-·-x-·-x-·-x-"
+   }
+  },
+  {
+   "n": 66,
+   "t": 110.545,
+   "loud": 31.7,
+   "sub": 36.6,
+   "low": 30.4,
+   "mid": 16.6,
+   "high": 1.3,
+   "drums": {
+    "kick": "x-x·x-·-xx·-x-xx",
+    "snare": "·-··x-·-x··-x-·-",
+    "hat": "·-·-x-x-x-x-·-x-"
+   }
+  },
+  {
+   "n": 67,
+   "t": 112.235,
+   "loud": 31.6,
+   "sub": 36.6,
+   "low": 29.8,
+   "mid": 18.6,
+   "high": -0.6,
+   "drums": {
+    "kick": "x···x·--x-·-x-·x",
+    "snare": "·---------·-·---",
+    "hat": "--···---·-·-----"
+   }
+  },
+  {
+   "n": 68,
+   "t": 113.926,
+   "loud": 30.7,
+   "sub": 36.1,
+   "low": 26.9,
+   "mid": 13.4,
+   "high": -4.7,
+   "drums": {
+    "kick": "x-xxx-x·x·-·x·--",
+    "snare": "···xx-x·x---x-·-",
+    "hat": "-·x·x-x-·---x-·-"
+   }
+  },
+  {
+   "n": 69,
+   "t": 115.616,
+   "loud": 32.9,
+   "sub": 38.3,
+   "low": 29.0,
+   "mid": 17.7,
+   "high": 3.3,
+   "drums": {
+    "kick": "x·xxx-·xxxxxx·x·",
+    "snare": "x---x-x·-·x·x-x·",
+    "hat": "x-···-x·-·x-·-x·"
+   }
+  },
+  {
+   "n": 70,
+   "t": 117.307,
+   "loud": 32.5,
+   "sub": 37.8,
+   "low": 29.4,
+   "mid": 18.0,
+   "high": 4.1,
+   "drums": {
+    "kick": "x··xx-·-x·x·x·x-",
+    "snare": "x-··x-x·-·x-x-·-",
+    "hat": "···-·-x--·x-·-x·"
+   }
+  },
+  {
+   "n": 71,
+   "t": 118.997,
+   "loud": 32.5,
+   "sub": 37.8,
+   "low": 28.9,
+   "mid": 17.6,
+   "high": 3.1,
+   "drums": {
+    "kick": "x·xxx-x·xxxxx-xx",
+    "snare": "x-····x--·x··-x·",
+    "hat": "·-·-·-x---x-x-x·"
+   }
+  },
+  {
+   "n": 72,
+   "t": 120.687,
+   "loud": 32.1,
+   "sub": 37.6,
+   "low": 27.3,
+   "mid": 18.7,
+   "high": 3.4,
+   "drums": {
+    "kick": "x·xxxx-·xxx-x-x·",
+    "snare": "···-·-x·-··-x-x·",
+    "hat": "-··-·-x--·x---x-"
+   }
+  },
+  {
+   "n": 73,
+   "t": 122.378,
+   "loud": 32.6,
+   "sub": 38.0,
+   "low": 28.7,
+   "mid": 18.0,
+   "high": 3.3,
+   "drums": {
+    "kick": "x--xx-·-xxx·x-x-",
+    "snare": "x-····x·-·x·x-x·",
+    "hat": "x-·-·-x--·x-·-x-"
+   }
+  },
+  {
+   "n": 74,
+   "t": 124.068,
+   "loud": 32.3,
+   "sub": 37.6,
+   "low": 28.9,
+   "mid": 17.4,
+   "high": 3.9,
+   "drums": {
+    "kick": "x·x·x--·xxx·x·x·",
+    "snare": "··-··-x··xx-x-··",
+    "hat": "x-··--x·-·x-·-x·"
+   }
+  },
+  {
+   "n": 75,
+   "t": 125.759,
+   "loud": 32.4,
+   "sub": 37.7,
+   "low": 29.4,
+   "mid": 17.3,
+   "high": 3.0,
+   "drums": {
+    "kick": "x--xx-··x·xxx-x·",
+    "snare": "x··-···--·x-·-x-",
+    "hat": "·-·-·-x--·x-·-x-"
+   }
+  },
+  {
+   "n": 76,
+   "t": 127.449,
+   "loud": 32.2,
+   "sub": 37.6,
+   "low": 28.3,
+   "mid": 19.1,
+   "high": 3.7,
+   "drums": {
+    "kick": "·x··xx-·xxx-x-x·",
+    "snare": "·····-··x-·-x-x·",
+    "hat": "·-·-·-x--·x-·-x-"
+   }
+  },
+  {
+   "n": 77,
+   "t": 129.14,
+   "loud": 31.4,
+   "sub": 37.3,
+   "low": 22.1,
+   "mid": 10.7,
+   "high": -5.1,
+   "drums": {
+    "kick": "x-··xxxxxx··x-·x",
+    "snare": "··xx·xxx·xxxx---",
+    "hat": "·····xxx·xxxx---"
+   }
+  },
+  {
+   "n": 78,
+   "t": 130.83,
+   "loud": 31.6,
+   "sub": 37.5,
+   "low": 20.7,
+   "mid": 9.2,
+   "high": -5.2,
+   "drums": {
+    "kick": "xxx-x·x·xx··x-·-",
+    "snare": "xxxx·xxx·xxxx---",
+    "hat": "x·xxxxxx·xx·x---"
+   }
+  },
+  {
+   "n": 79,
+   "t": 132.521,
+   "loud": 31.5,
+   "sub": 37.4,
+   "low": 20.2,
+   "mid": 10.2,
+   "high": -5.0,
+   "drums": {
+    "kick": "x·xxx·x-xx·xx-x·",
+    "snare": "xxxxxxxx·xxxx---",
+    "hat": "xxxxxxxx·xxxx---"
+   }
+  },
+  {
+   "n": 80,
+   "t": 134.211,
+   "loud": 31.5,
+   "sub": 37.4,
+   "low": 20.2,
+   "mid": 10.1,
+   "high": -4.2,
+   "drums": {
+    "kick": "xx--x·x-xxx·x·xx",
+    "snare": "xxxxxxxx·xxxx---",
+    "hat": "xxxxxxxx·xxxx---"
+   }
+  },
+  {
+   "n": 81,
+   "t": 135.901,
+   "loud": 32.5,
+   "sub": 38.3,
+   "low": 24.6,
+   "mid": 12.2,
+   "high": 1.4,
+   "drums": {
+    "kick": "x-x·x-xxx··xx-x·",
+    "snare": "x·x·x·xx·xx·x-x·",
+    "hat": "x-x··-x--·x··-x-"
+   }
+  },
+  {
+   "n": 82,
+   "t": 137.592,
+   "loud": 32.6,
+   "sub": 38.4,
+   "low": 24.6,
+   "mid": 11.5,
+   "high": 1.5,
+   "drums": {
+    "kick": "x·x·x·x·x·-xx-xx",
+    "snare": "x-x·x·xx·xx·x-x·",
+    "hat": "x-x··-x·-·x··-x·"
+   }
+  },
+  {
+   "n": 83,
+   "t": 139.282,
+   "loud": 32.6,
+   "sub": 38.4,
+   "low": 24.7,
+   "mid": 11.4,
+   "high": 1.2,
+   "drums": {
+    "kick": "x·x·x-xxx··xx·xx",
+    "snare": "x-x·x·xx-xx·x-x·",
+    "hat": "x-···-x--·x-·-x·"
+   }
+  },
+  {
+   "n": 84,
+   "t": 140.973,
+   "loud": 31.3,
+   "sub": 37.3,
+   "low": 17.6,
+   "mid": 5.1,
+   "high": -7.8,
+   "drums": {
+    "kick": "xxx-x-··x-x·x-··",
+    "snare": "-··-xx-xx-x-x---",
+    "hat": "··--x-·xx-x-x---"
+   }
+  },
+  {
+   "n": 85,
+   "t": 142.663,
+   "loud": 15.1,
+   "sub": 21.2,
+   "low": -21.0,
+   "mid": -37.6,
+   "high": -54.6,
+   "drums": {
+    "kick": "··-··-·---------",
+    "snare": "----------------",
+    "hat": "----------------"
+   }
+  },
+  {
+   "n": 86,
+   "t": 144.354,
+   "loud": -15.9,
+   "sub": -9.9,
+   "low": -55.8,
+   "mid": -70.0,
+   "high": -71.4,
+   "drums": {
+    "kick": "----------------",
+    "snare": "----------------",
+    "hat": "----------------"
+   }
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@metalui/launch-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "music:fetch": "cd music && uv run python pipeline.py fetch",
+    "music:analyze": "cd music && uv run python pipeline.py analyze",
+    "music:edit": "cd music && uv run python pipeline.py edit",
+    "music:check": "cd music && uv run python pipeline.py check",
+    "music:spectrogram": "cd music && uv run python pipeline.py spectrogram",
+    "music": "npm run music:analyze && npm run music:edit && npm run music:check"
+  }
+}

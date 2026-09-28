@@ -1,0 +1,6 @@
+# The track isn't ours to redistribute: fetch it with `npm run music:fetch`.
+music/out/
+music/.venv/
+public/launch.m4a
+out/
+__pycache__/

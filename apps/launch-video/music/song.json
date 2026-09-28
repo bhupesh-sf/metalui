@@ -1,0 +1,26 @@
+{
+  "$description": "Authored. The track, and what each stretch of it is, in song bars (bar 1 is the first downbeat the analysis finds). The analysis never writes this file; it reads the labels to annotate spectrograms and cues.",
+  "title": "PartyInvaders (original)",
+  "artist": "ミドリノピザ",
+  "source": "https://www.youtube.com/watch?v=vMGtRtUreSs",
+  "license": "Not cleared. Confirm permission from the artist before the video is published.",
+  "sections": [
+    { "id": "intro-bass", "bars": [1, 2], "what": "Four-on-the-floor kick and a held low drone" },
+    { "id": "intro-blips", "bars": [3, 4], "what": "Arcade blips scatter over the kick" },
+    { "id": "intro-pump", "bars": [5, 6], "what": "Sidechained synths pump on every kick; zaps up top" },
+    { "id": "dropout", "bars": [7, 8], "what": "The bass filters out over bar 7; bar 8 is near silent" },
+    { "id": "verse-1", "bars": [9, 16], "what": "Full groove and a square-wave melody; bar 16 stops and starts, then a hole and a swoosh" },
+    { "id": "drop-1", "bars": [17, 24], "what": "First drop: the biggest single hit lands on bar 17" },
+    { "id": "post-chorus", "bars": [25, 28], "what": "The pump texture again, lighter" },
+    { "id": "lift", "bars": [29, 32], "what": "Lifts; bar 32 is a fill" },
+    { "id": "half-time", "bars": [33, 44], "what": "Kick on 1 and 3, a 3-3-2 snare, mids build for twelve bars" },
+    { "id": "breakdown", "bars": [45, 50], "what": "The sub drops away, highs rise; bar 50 stutters" },
+    { "id": "pre-drop", "bars": [51, 52], "what": "Bar 51 is a noise riser; bar 52 is the gap" },
+    { "id": "drop-2", "bars": [53, 60], "what": "Held bass notes, a backbeat on 2 and 4" },
+    { "id": "chorus-2", "bars": [61, 68], "what": "Brighter; bar 68 pulls back in its second half" },
+    { "id": "final-chorus", "bars": [69, 76], "what": "The peak: the loudest, brightest bars" },
+    { "id": "outro-groove", "bars": [77, 80], "what": "The post-chorus again" },
+    { "id": "outro-lift", "bars": [81, 84], "what": "The last lift" },
+    { "id": "final-hit", "bars": [85, 85], "what": "One hit, and its decay to silence" }
+  ]
+}
