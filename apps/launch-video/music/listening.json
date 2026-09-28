@@ -1,0 +1,12 @@
+{
+  "$description": "Authored. What a person heard at each splice; the analysis can't hear. A splice is keyed by the last song bar before it and the first after it. check fails on 'abrupt' and lists splices nobody has heard yet.",
+  "verdicts": [
+    {
+      "splice": "24→51",
+      "verdict": "abrupt",
+      "by": "owner",
+      "date": "2026-09-29",
+      "note": "Drop 1 straight into the riser: the peak goes up again with no release. Bar-level and beat-level measures both rated it smooth."
+    }
+  ]
+}

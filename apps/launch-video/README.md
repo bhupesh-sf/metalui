@@ -19,20 +19,21 @@ npm run music:spectrogram -- edit   # images of the edit with bars, sections and
 | `fetch` | `music/song.json` (source) | `music/out/source.wav` |
 | `analyze` | the source | `music/analysis.json`: tempo, bar 1, per-bar loudness and bands, 16-step drum grids, key, texture changes |
 | `edit` | `analysis.json`, `music/edit.json` | `public/launch.m4a`, `src/cues.generated.json` (video bars, beats, splices), `src/meters.generated.json` (per-frame loudness, bands, drum hits at 60 fps) |
-| `check` | all of it | pass/fail: one tempo fits the source and the edit straight through the splices, the edit's beats sit on the cue grid, no splice clicks louder than the song itself does there, the edit is under the cap, the cues are fresh |
+| `check` | all of it | pass/fail: one tempo fits the source; every run of the edit is the song's own samples exactly where the cues say (sample-exact, so time is kept through every splice); every splice is on a bar line; no splice clicks louder than the song itself does there; no splice a person heard as abrupt; under the cap; cues fresh. It also lists splices nobody has listened to yet |
 | `spectrogram` | the source or the edit | `music/out/spectrograms/*.png` |
 
-Two files are authored; everything else is generated, so don't hand-edit it.
+Three files are authored; everything else is generated, so don't hand-edit it.
 
 - **`music/song.json`**: the source, and what each stretch of the song is, in song bars. Use `textureChanges` in `analysis.json` and the source spectrograms to find where sections turn.
-- **`music/edit.json`**: the cut, as runs of song bars. Every splice is on a bar line by construction; `check` proves the groove survives it.
+- **`music/edit.json`**: the cut, as runs of song bars, counted in whole samples. Every splice is on a bar line by construction; `check` proves time is kept through it.
+- **`music/listening.json`**: what a person heard at each splice (`"24→51": "abrupt"`). The measures can't hear whether a cut lands musically: drop 1 cut straight into the riser measured smoother than 90% of the song's own bar lines and sounded wrong, because a riser needs a dip to climb from. `check` fails on a splice heard as abrupt and lists the ones nobody has heard.
 
 ### How it reads the track
 
 - **Tempo** is one fixed grid, the BPM and phase whose beats sit on the most onset energy. Step-sequenced music doesn't change tempo, and a beat tracker slips wherever off-beat accents are loud. `driftMs` reports how well the grid fits, 32 beats at a time.
 - **Bar 1** is the beat of four where bar boundaries line up with the most change (arrangements turn on the one), then the first audible bar.
 - **Drums** come from the percussive half of the mix (HPSS), split into kick, snare and hat bands, and sampled on sixteenths. `x` is a clear hit, `·` a weak one.
-- **What it can't do**: it doesn't hear. Instrument names in `song.json` are a reading of the spectrograms, so a person should listen to the splices before a cut is locked.
+- **What it can't do**: it doesn't hear. Instrument names in `song.json` are a reading of the spectrograms, and whether a splice lands musically is a person's call: log it in `listening.json`.
 
 ### Using another track
 

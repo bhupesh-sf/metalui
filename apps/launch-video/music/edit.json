@@ -9,7 +9,7 @@
     { "bars": [9, 11], "why": "the verse slam, three bars" },
     { "bars": [16, 16], "why": "the stop-start fill that sets up the drop" },
     { "bars": [17, 24], "why": "drop 1" },
-    { "bars": [51, 52], "why": "the riser and the gap" },
+    { "bars": [49, 52], "why": "the end of the breakdown for a breath, then the riser and the gap: a riser needs a dip to climb from" },
     { "bars": [69, 76], "why": "the final chorus, landed from the gap" },
     { "bars": [84, 84], "why": "the last lift" },
     { "bars": [85, "end"], "why": "the final hit and its decay" }

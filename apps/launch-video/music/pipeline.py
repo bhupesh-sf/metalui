@@ -14,7 +14,8 @@ A person can't hand the track to the video by ear, so this reads it into facts t
   spectrogram   images of the track and the edit with bar lines and section names, for a
             reviewer (person or model) to read what the numbers can't say
 
-Authored inputs: song.json (source and section labels), edit.json (the cut).
+Authored inputs: song.json (source and section labels), edit.json (the cut), listening.json (what a
+person heard at each splice).
 Everything else is generated; never hand-edit it.
 """
 
@@ -38,6 +39,7 @@ EDIT_WAV = OUT / "launch.wav"
 ANALYSIS = MUSIC / "analysis.json"
 SONG = MUSIC / "song.json"
 EDIT = MUSIC / "edit.json"
+LISTENING = MUSIC / "listening.json"
 PUBLIC_AUDIO = APP / "public" / "launch.m4a"
 CUES = APP / "src" / "cues.generated.json"
 METERS = APP / "src" / "meters.generated.json"
@@ -297,22 +299,25 @@ def cmd_edit(_args) -> None:
     xf = int(plan["crossfadeMs"] / 1000 * sr)
     bar = an["barSeconds"]
 
+    # Counted in whole samples, so every run sits exactly where the cues say it does.
     pieces, runs = [], []
-    t_video = 0.0
+    at = 0
     for i, p in enumerate(plan["pieces"]):
         a, b = p["bars"]
-        start = 0.0 if (i == 0 and a == 1) else song_bar_start(an, a)
-        end = min(total, song_bar_start(an, a) + plan["tailSeconds"]) if b == "end" else song_bar_start(an, b + 1)
-        pieces.append(audio[:, int(start * sr): int(end * sr) + xf].copy())
-        runs.append({"songBars": [a, b], "why": p.get("why"), "videoStart": round(t_video, 4), "songStart": round(start, 4), "seconds": round(end - start, 4)})
-        t_video += end - start
+        s = 0 if (i == 0 and a == 1) else round(song_bar_start(an, a) * sr)
+        e = min(audio.shape[1], round((song_bar_start(an, a) + plan["tailSeconds"]) * sr)) if b == "end" else round(song_bar_start(an, b + 1) * sr)
+        pieces.append(audio[:, s: e + xf].copy())
+        runs.append({"songBars": [a, b], "why": p.get("why"), "videoStart": round(at / sr, 6), "songStart": round(s / sr, 6),
+                     "seconds": round((e - s) / sr, 6), "videoStartSample": at, "songStartSample": s, "samples": e - s})
+        at += e - s
+    t_video = at / sr
 
     out = pieces[0]
     for p in pieces[1:]:
         ramp = np.linspace(0, 1, xf)
         out[:, -xf:] = out[:, -xf:] * (1 - ramp) + p[:, :xf] * ramp
         out = np.concatenate([out, p[:, xf:]], axis=1)
-    out = out[:, : int(t_video * sr)]
+    out = out[:, :at]
     fade = int(plan["tailFadeMs"] / 1000 * sr)
     out[:, -fade:] *= np.linspace(1, 0, fade)
     OUT.mkdir(parents=True, exist_ok=True)
@@ -336,7 +341,7 @@ def cmd_edit(_args) -> None:
             vbars.append({"n": len(vbars) + 1, "t": round(t, 4), "songBar": sn, "section": section_of(song, sn), "loud": src["loud"], "drums": src["drums"]})
     # A splice is a jump in the song. Runs that simply continue (bar 16 then bar 17) aren't one.
     splices = [
-        {"t": r["videoStart"], "from": runs[i - 1]["songBars"], "to": r["songBars"], "songLanding": r["songStart"]}
+        {"t": r["videoStart"], "sample": r["videoStartSample"], "from": runs[i - 1]["songBars"], "to": r["songBars"], "songLanding": r["songStart"]}
         for i, r in enumerate(runs)
         if i > 0 and r["songBars"][0] != runs[i - 1]["songBars"][1] + 1
     ]
@@ -345,6 +350,7 @@ def cmd_edit(_args) -> None:
         "$generated": "music/pipeline.py edit. Do not edit; change music/edit.json and re-run.",
         "inputs": {"source": an["source"]["sha"], "edit": sha(EDIT), "song": sha(SONG)},
         "audio": PUBLIC_AUDIO.name,
+        "sampleRate": sr,
         "seconds": round(duration, 4),
         "bpm": an["bpm"],
         "beatSeconds": an["beatSeconds"],
@@ -406,8 +412,28 @@ def cmd_check(_args) -> None:
     y = load_mono(EDIT_WAV)
     grid = fit_grid(y, an["bpm"])
     expect(abs(grid["bpm"] - an["bpm"]) < 0.05, f"edit tempo {grid['bpm']} matches the source {an['bpm']}")
-    worst = max(abs(d["ms"]) for d in grid["drift"])
-    expect(worst <= 15, f"one tempo fits the edit straight through the splices: drift within ±{worst} ms")
+    # Kept time, exactly: after a splice the edit is the song's own samples, so the first and last
+    # second of every run must equal the source at the place the cues say (clear of crossfades and
+    # the tail fade). Onset statistics can't prove this: a downbeat after a silence reads earlier
+    # than the same downbeat after a fill.
+    edit_full, esr = sf.read(EDIT_WAV, always_2d=True)
+    src_full, _ = sf.read(SOURCE_WAV, always_2d=True)
+    fade_from = cues["seconds"] - plan["tailFadeMs"] / 1000
+    worst, where = 0.0, ""
+    for r in cues["runs"]:
+        for at in (0.05, r["seconds"] - 1.05):
+            end = r["videoStart"] + at + 1
+            if at < 0 or end > fade_from:
+                continue
+            k = round(at * esr)
+            a, b = r["videoStartSample"] + k, r["songStartSample"] + k
+            probe, ref = edit_full[a: a + esr], src_full[b: b + esr]
+            err = float(np.sqrt(((probe - ref) ** 2).mean()) / (np.sqrt((ref ** 2).mean()) + 1e-9))
+            if err > worst:
+                worst, where = err, f" (run {r['songBars']}, {at:.2f}s in)"
+    expect(worst <= 1e-3, f"every run is the song's own samples, exactly where the cues say (worst residual {worst:.1e}{where})")
+    splits = [abs(((s["t"] - cues["firstDownbeat"]) / cues["barSeconds"] + 0.5) % 1 - 0.5) * cues["barSeconds"] * 1000 for s in cues["splices"]]
+    expect(max(splits, default=0) <= 1, f"every splice falls on a bar line (worst {max(splits, default=0):.2f} ms off)")
     beat = cues["beatSeconds"]
     off = ((grid["phase"] - cues["firstDownbeat"]) / beat) % 1 * beat
     off = min(off, beat - off) * 1000
@@ -426,6 +452,20 @@ def cmd_check(_args) -> None:
     for s in cues["splices"]:
         j, natural = jump(edit, s["t"]), jump(source, s["songLanding"])
         expect(j <= natural * 1.25 + 0.01, f"no click at the {s['from']}→{s['to']} splice ({s['t']:.2f}s): jump {j:.3f}, the song's own {natural:.3f}")
+
+    # The ear: whether a splice lands musically is a person's call (a peak cut straight into a riser
+    # measures smooth and sounds wrong). listening.json holds what was heard.
+    heard = {v["splice"]: v for v in load_json(LISTENING)["verdicts"]} if LISTENING.exists() else {}
+    unheard = []
+    for s in cues["splices"]:
+        key = f"{s['from'][1]}→{s['to'][0]}"
+        v = heard.get(key)
+        if v is None:
+            unheard.append(f"{key} at {s['t']:.2f}s")
+        else:
+            expect(v["verdict"] != "abrupt", f"the {key} splice was heard as {v['verdict']} ({v['by']}, {v['date']})")
+    if unheard:
+        print(f"  listen  not yet heard by a person: {', '.join(unheard)}; log a verdict in music/listening.json")
 
     if fails:
         sys.exit(f"{len(fails)} check(s) failed")

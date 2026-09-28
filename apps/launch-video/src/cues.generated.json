@@ -2,11 +2,12 @@
  "$generated": "music/pipeline.py edit. Do not edit; change music/edit.json and re-run.",
  "inputs": {
   "source": "d137ba25d6125127",
-  "edit": "3b93c5cd3c7a1c90",
+  "edit": "d2cb5e6c27fa1467",
   "song": "cfe7a5828a42b864"
  },
  "audio": "launch.m4a",
- "seconds": 54.9695,
+ "sampleRate": 44100,
+ "seconds": 58.3504,
  "bpm": 141.974,
  "beatSeconds": 0.422612,
  "barSeconds": 1.690448,
@@ -21,7 +22,10 @@
    "why": "intro and dropout, whole",
    "videoStart": 0.0,
    "songStart": 0.0,
-   "seconds": 14.1892
+   "seconds": 14.189184,
+   "videoStartSample": 0,
+   "songStartSample": 0,
+   "samples": 625743
   },
   {
    "songBars": [
@@ -29,9 +33,12 @@
     11
    ],
    "why": "the verse slam, three bars",
-   "videoStart": 14.1892,
-   "songStart": 14.1892,
-   "seconds": 5.0713
+   "videoStart": 14.189184,
+   "songStart": 14.189184,
+   "seconds": 5.071338,
+   "videoStartSample": 625743,
+   "songStartSample": 625743,
+   "samples": 223646
   },
   {
    "songBars": [
@@ -39,9 +46,12 @@
     16
    ],
    "why": "the stop-start fill that sets up the drop",
-   "videoStart": 19.2605,
-   "songStart": 26.0223,
-   "seconds": 1.6904
+   "videoStart": 19.260522,
+   "songStart": 26.022313,
+   "seconds": 1.690454,
+   "videoStartSample": 849389,
+   "songStartSample": 1147584,
+   "samples": 74549
   },
   {
    "songBars": [
@@ -49,19 +59,25 @@
     24
    ],
    "why": "drop 1",
-   "videoStart": 20.951,
-   "songStart": 27.7128,
-   "seconds": 13.5236
+   "videoStart": 20.950975,
+   "songStart": 27.712766,
+   "seconds": 13.523583,
+   "videoStartSample": 923938,
+   "songStartSample": 1222133,
+   "samples": 596390
   },
   {
    "songBars": [
-    51,
+    49,
     52
    ],
-   "why": "the riser and the gap",
-   "videoStart": 34.4746,
-   "songStart": 85.188,
-   "seconds": 3.3809
+   "why": "the end of the breakdown for a breath, then the riser and the gap: a riser needs a dip to climb from",
+   "videoStart": 34.474558,
+   "songStart": 81.807098,
+   "seconds": 6.761791,
+   "videoStartSample": 1520328,
+   "songStartSample": 3607693,
+   "samples": 298195
   },
   {
    "songBars": [
@@ -69,9 +85,12 @@
     76
    ],
    "why": "the final chorus, landed from the gap",
-   "videoStart": 37.8555,
-   "songStart": 115.6161,
-   "seconds": 13.5236
+   "videoStart": 41.236349,
+   "songStart": 115.616054,
+   "seconds": 13.523583,
+   "videoStartSample": 1818523,
+   "songStartSample": 5098668,
+   "samples": 596390
   },
   {
    "songBars": [
@@ -79,9 +98,12 @@
     84
    ],
    "why": "the last lift",
-   "videoStart": 51.379,
-   "songStart": 140.9728,
-   "seconds": 1.6904
+   "videoStart": 54.759932,
+   "songStart": 140.972789,
+   "seconds": 1.690454,
+   "videoStartSample": 2414913,
+   "songStartSample": 6216900,
+   "samples": 74549
   },
   {
    "songBars": [
@@ -89,14 +111,18 @@
     "end"
    ],
    "why": "the final hit and its decay",
-   "videoStart": 53.0695,
-   "songStart": 142.6632,
-   "seconds": 1.9
+   "videoStart": 56.450385,
+   "songStart": 142.663243,
+   "seconds": 1.9,
+   "videoStartSample": 2489462,
+   "songStartSample": 6291449,
+   "samples": 83790
   }
  ],
  "splices": [
   {
-   "t": 19.2605,
+   "t": 19.260522,
+   "sample": 849389,
    "from": [
     9,
     11
@@ -105,34 +131,37 @@
     16,
     16
    ],
-   "songLanding": 26.0223
+   "songLanding": 26.022313
   },
   {
-   "t": 34.4746,
+   "t": 34.474558,
+   "sample": 1520328,
    "from": [
     17,
     24
    ],
    "to": [
-    51,
+    49,
     52
    ],
-   "songLanding": 85.188
+   "songLanding": 81.807098
   },
   {
-   "t": 37.8555,
+   "t": 41.236349,
+   "sample": 1818523,
    "from": [
-    51,
+    49,
     52
    ],
    "to": [
     69,
     76
    ],
-   "songLanding": 115.6161
+   "songLanding": 115.616054
   },
   {
-   "t": 51.379,
+   "t": 54.759932,
+   "sample": 2414913,
    "from": [
     69,
     76
@@ -141,7 +170,7 @@
     84,
     84
    ],
-   "songLanding": 140.9728
+   "songLanding": 140.972789
   }
  ],
  "bars": [
@@ -388,6 +417,30 @@
   {
    "n": 21,
    "t": 34.4746,
+   "songBar": 49,
+   "section": "breakdown",
+   "loud": 27.0,
+   "drums": {
+    "kick": "xxxxxxx-x-x·xxx-",
+    "snare": "x-x·xxx-x-x-xxx·",
+    "hat": "x-x-··x-·-x-xxx-"
+   }
+  },
+  {
+   "n": 22,
+   "t": 36.165,
+   "songBar": 50,
+   "section": "breakdown",
+   "loud": 27.0,
+   "drums": {
+    "kick": "xx·xxx-xx··-x·x-",
+    "snare": "x-x·xxx-x-x·xxx-",
+    "hat": "x-x-xxx-x-x-··x-"
+   }
+  },
+  {
+   "n": 23,
+   "t": 37.8555,
    "songBar": 51,
    "section": "pre-drop",
    "loud": 29.3,
@@ -398,8 +451,8 @@
    }
   },
   {
-   "n": 22,
-   "t": 36.165,
+   "n": 24,
+   "t": 39.5459,
    "songBar": 52,
    "section": "pre-drop",
    "loud": 20.2,
@@ -410,8 +463,8 @@
    }
   },
   {
-   "n": 23,
-   "t": 37.8555,
+   "n": 25,
+   "t": 41.2364,
    "songBar": 69,
    "section": "final-chorus",
    "loud": 32.9,
@@ -422,8 +475,8 @@
    }
   },
   {
-   "n": 24,
-   "t": 39.5459,
+   "n": 26,
+   "t": 42.9268,
    "songBar": 70,
    "section": "final-chorus",
    "loud": 32.5,
@@ -434,8 +487,8 @@
    }
   },
   {
-   "n": 25,
-   "t": 41.2364,
+   "n": 27,
+   "t": 44.6172,
    "songBar": 71,
    "section": "final-chorus",
    "loud": 32.5,
@@ -446,8 +499,8 @@
    }
   },
   {
-   "n": 26,
-   "t": 42.9268,
+   "n": 28,
+   "t": 46.3077,
    "songBar": 72,
    "section": "final-chorus",
    "loud": 32.1,
@@ -458,8 +511,8 @@
    }
   },
   {
-   "n": 27,
-   "t": 44.6172,
+   "n": 29,
+   "t": 47.9981,
    "songBar": 73,
    "section": "final-chorus",
    "loud": 32.6,
@@ -470,8 +523,8 @@
    }
   },
   {
-   "n": 28,
-   "t": 46.3077,
+   "n": 30,
+   "t": 49.6886,
    "songBar": 74,
    "section": "final-chorus",
    "loud": 32.3,
@@ -482,8 +535,8 @@
    }
   },
   {
-   "n": 29,
-   "t": 47.9981,
+   "n": 31,
+   "t": 51.379,
    "songBar": 75,
    "section": "final-chorus",
    "loud": 32.4,
@@ -494,8 +547,8 @@
    }
   },
   {
-   "n": 30,
-   "t": 49.6886,
+   "n": 32,
+   "t": 53.0695,
    "songBar": 76,
    "section": "final-chorus",
    "loud": 32.2,
@@ -506,8 +559,8 @@
    }
   },
   {
-   "n": 31,
-   "t": 51.379,
+   "n": 33,
+   "t": 54.7599,
    "songBar": 84,
    "section": "outro-lift",
    "loud": 31.3,
@@ -518,8 +571,8 @@
    }
   },
   {
-   "n": 32,
-   "t": 53.0695,
+   "n": 34,
+   "t": 56.4504,
    "songBar": 85,
    "section": "final-hit",
    "loud": 15.1,
@@ -530,8 +583,8 @@
    }
   },
   {
-   "n": 33,
-   "t": 54.7599,
+   "n": 35,
+   "t": 58.1408,
    "songBar": 86,
    "section": null,
    "loud": -15.9,
