@@ -4,6 +4,7 @@ import reactSource from '../../../../../packages/metalui/src/components/folder/f
 import agentSource from '../../../../../packages/metalui/src/components/folder/folder.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
 import { FolderUnfold } from '../../ui/FolderUnfold';
+import { FolderXray } from '../../ui/xray/FolderXray';
 
 /* ─────────────────────────────────────────────────────────
  * PUTTING A THING IN A FOLDER
@@ -169,6 +170,7 @@ export default function FolderPage() {
     <ComponentPage
       title="Folder"
       lede="A folder on the canvas holds blocks and takes little space. Unfold it to work with what is inside."
+      xray={<FolderXray />}
       play={{ lede: 'Drag a photo, a link or a note onto the folder: it opens as you come over it, the thing goes into the pocket, and the flap swings shut. Try the colours.', node: <Play />, wide: true, on: 'canvas' }}
       more={[{ id: 'unfold', title: 'Unfold', lede: 'Double-click the folder: it opens into a region in its own colour and its blocks lay themselves out. Fold it back from the region\'s head.', node: <FolderUnfold /> }]}
       sources={[

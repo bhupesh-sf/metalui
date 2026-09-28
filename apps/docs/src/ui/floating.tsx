@@ -10,6 +10,7 @@ import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
 import { PaletteStill } from './xray/PaletteXray';
+import { FolderStill } from './xray/FolderXray';
 
 export type { XrayKind };
 
@@ -149,6 +150,7 @@ const ITEMS: Item[] = [
     id: 'gauge', table: ['78.3%', '65.7%'], space: ['89%', '34%', -220, -14], dur: '35s', drift: ['-16px', '20px'],
     node: () => <Link to="/gadgets/needle-gauge" aria-label="Needle gauge" style={{ display: 'block' }}><FloatGauge /></Link>,
   },
+  { id: 'folder', table: ['39.3%', '65.7%'], space: ['31%', '53%', -200, 8], dur: '37s', drift: ['14px', '-12px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('folder')}><FolderStill /></div> },
   {
     id: 'toolbar', table: ['4%', '88%'], space: ['12%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
     // a tool cap opens the icon button's x-ray; the strip opens the toolbar's

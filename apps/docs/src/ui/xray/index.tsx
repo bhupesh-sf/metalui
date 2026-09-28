@@ -5,6 +5,7 @@ import { CheckboxXray } from './CheckboxXray';
 import { ChipXray } from './ChipXray';
 import { DialogXray } from './DialogXray';
 import { FieldXray } from './FieldXray';
+import { FolderXray } from './FolderXray';
 import { IconButtonXray } from './IconButtonXray';
 import { KbdXray } from './KbdXray';
 import { LinkCardXray } from './LinkCardXray';
@@ -40,6 +41,7 @@ export const XRAYS = {
   dialog: { title: 'Dialog', View: DialogXray },
   palette: { title: 'Command palette', View: PaletteXray },
   link: { title: 'Link card', View: LinkCardXray },
+  folder: { title: 'Folder', View: FolderXray },
 } satisfies Record<string, { title: string; View: React.ComponentType<{ startOpen?: boolean }> }>;
 
 export type XrayKind = keyof typeof XRAYS;

@@ -1,0 +1,54 @@
+/* The folder x-ray: the real folder in the specimen well, its handles, and the bench model. */
+
+/* The folder rests while you tune it: only the Drop in card lets a pointer pose it. */
+.ed-folder.is-still .mu-folder { pointer-events: none; }
+/* Nothing moves under the finger: while a value is dragged the folder has no transitions. */
+.ed-folder.is-live :is(.mu-folder, .mu-folder *) { transition: none !important; }
+
+/* Layers switched off. */
+.ed-folder[data-off~="shadow"] :is(.folder-shade, .folder-flap-shade) { display: none; }
+.ed-folder[data-off~="back-paper"] .folder-back { opacity: 0; }
+.ed-folder[data-off~="edge"] :is(.folder-edge-line, .folder-edge-light) { display: none; }
+.ed-folder[data-off~="blocks"] .folder-card { display: none; }
+.ed-folder[data-off~="frost"] .folder-frost { display: none; }
+.ed-folder[data-off~="flap-tint"] .folder-flap-fill { display: none; }
+.ed-folder[data-off~="count"] .folder-count { visibility: hidden; }
+
+/* Room above the folder for the blocks to rise into. */
+.ed-folder-well > div { padding-top: 64px; }
+.ed-folder-box { position: relative; display: inline-flex; }
+
+/* Handles: hairlines in the presence guide, faint at rest, full where pointed at. */
+.ed-folder-box :is(.ed-folder-tab, .ed-folder-front, .ed-folder-edge, .ed-folder-glass) {
+  position: absolute; outline: none; touch-action: none; box-sizing: border-box;
+  border: .6px solid var(--mu-presence-guide); opacity: .4;
+  transition: opacity var(--spring-part-d) var(--spring-part);
+}
+.ed-folder-box:is(:hover, :focus-within, [data-live], [data-peek]) :is(.ed-folder-tab, .ed-folder-front, .ed-folder-edge, .ed-folder-glass) { opacity: .7; }
+.ed-folder-box :is(.ed-folder-tab, .ed-folder-front, .ed-folder-edge, .ed-folder-glass):is(:hover, :focus-visible) { opacity: 1; border-width: 1.2px; }
+.ed-folder-tab { left: -4px; border-radius: 14px; cursor: ew-resize; }
+.ed-folder-ghost { position: absolute; left: calc(100% + 6px); top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 50%; box-shadow: 0 0 0 .5px rgba(0,0,0,.2); pointer-events: none; }
+.ed-folder-front { border-radius: 14px 14px 4px 4px; border-bottom-style: dashed; cursor: move; transform-origin: 50% 100%; }
+.ed-folder-edge { left: 8px; right: 8px; height: 10px; border-width: 0; border-top-width: .6px; border-radius: 0; cursor: ns-resize; z-index: 30; }
+.ed-folder-box .ed-folder-edge:is(:hover, :focus-visible) { border-top-width: 1.6px; }
+.ed-folder-glass { left: 18px; right: 18px; border-radius: 16px; border-style: dashed; cursor: move; z-index: 30; }
+[data-mu-colorway="graphite"] .ed-folder-box :is(.ed-folder-tab, .ed-folder-front, .ed-folder-edge, .ed-folder-glass) { border-color: var(--green-deep); }
+
+/* Drop in: a block beside the folder, dragged onto it. */
+.ed-folder-drop { display: flex; align-items: flex-end; gap: 28px; }
+.ed-folder-block { padding: 0; border: 0; background: none; cursor: grab; touch-action: none; position: relative; z-index: 40;
+  transition: translate var(--spring-object-d) var(--spring-object), scale var(--spring-part-d) var(--spring-part); }
+.ed-folder-block[data-held] { cursor: grabbing; scale: 1.04; transition: scale var(--spring-part-d) var(--spring-part); }
+.ed-folder-block:focus-visible { outline: 2px solid var(--green-deep); outline-offset: 4px; border-radius: 18px; }
+.ed-folder-block-card { position: relative !important; display: block; left: 0 !important; bottom: auto !important; transform: none !important; transition: none !important; }
+.ed-folder-block-card .folder-thumb { display: block; }
+@media (prefers-reduced-motion: reduce) { .ed-folder-block { transition: none; } }
+
+/* The bench model's parts. */
+.xr-face.xr-folder-part { place-items: start; }
+.xr-folder-card { display: flex !important; flex-direction: column; padding: 16px; box-sizing: border-box; }
+.xr-folder-card > i { display: block; width: 100%; flex: none; }
+.xr-folder-card > .xr-folder-line { border-radius: 99px; margin-top: 12px; }
+.xr-folder-name { position: absolute; left: 26px; bottom: 22px; display: flex; flex-direction: column; gap: 6px; font: 600 22px/1 var(--sans); color: var(--mu-ink); }
+.xr-folder-name em { font: 500 13px/1 var(--mono); font-style: normal; letter-spacing: .08em; text-transform: uppercase; color: var(--mu-ink3); }
+.xr-folder-count { display: grid !important; place-items: center !important; border-radius: 999px !important; background: var(--mu-r-folder-count-background); box-shadow: var(--mu-r-folder-count-shadow); font: 600 17px/1 var(--mono); color: var(--mu-ink); }
