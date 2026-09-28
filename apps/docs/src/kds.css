@@ -614,7 +614,7 @@ html.rm .xr-iso, html.rm .xr-cap, html.rm .xr-face, html.rm .xr-hot .xr-bill, ht
 @media (max-width: 900px) { .xr { grid-template-columns: minmax(0, 1fr); } .xr-scene { zoom: .6; } }
 
 /* ============================================================ FLOATING TABLE: real components drifting on the home hero */
-.drift { position: relative; height: 920px; border-radius: 36px; overflow: hidden;
+.drift { position: relative; height: 1000px; border-radius: 36px; overflow: hidden;
   background: linear-gradient(color-mix(in srgb, var(--ink) 1.6%, transparent), color-mix(in srgb, var(--ink) .6%, transparent));
   box-shadow: inset 0 2px 6px -1px rgba(60,55,40,.06), inset 0 0 0 .5px rgba(0,0,0,.03), inset 0 -2px 4px -2px var(--rule-lip); }
 [data-mu-colorway="graphite"] .drift { background: rgba(255,255,255,.012); box-shadow: inset 0 2px 6px -1px rgba(0,0,0,.5), inset 0 0 0 .5px rgba(0,0,0,.4); }
@@ -645,7 +645,7 @@ html.rm .drift-item { animation: none; }
 .space-camera { position: absolute; inset: 0; transform-style: preserve-3d;
   transform: rotateX(var(--lean-x, 0deg)) rotateY(var(--lean-y, 0deg));
   transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
-.drift-item.in-space { transform-style: preserve-3d; animation-name: drift-space; filter: blur(var(--blur, 0px)); }
+.drift-item.in-space { width: max-content; transform-style: preserve-3d; animation-name: drift-space; filter: blur(var(--blur, 0px)); }
 .drift-item.in-space:hover, .drift-item.in-space:focus-within { filter: none; }
 @keyframes drift-space {
   from { transform: translate3d(0, 0, var(--z, 0px)) rotateY(var(--turn, 0deg)) rotateX(2deg); }
