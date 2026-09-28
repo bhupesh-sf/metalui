@@ -1,7 +1,7 @@
 {
   "$description": "Authored. The launch edit, as runs of song bars played in order. Every splice is on a bar line. 'end' plays to the end of the track. The first run starting at bar 1 keeps the silence before it.",
   "maxSeconds": 60,
-  "gainDb": -3.5,
+  "gainDb": -6,
   "master": {"lufs": -13, "ceilingDb": -1},
   "crossfadeMs": 8,
   "tailFadeMs": 300,
@@ -10,35 +10,39 @@
     {"bars": [1, 8], "why": "intro and dropout, whole"},
     {"bars": [9, 11], "why": "the verse slam, three bars"},
     {"bars": [16, 16], "why": "the stop-start fill that sets up the drop"},
-    {"bars": [17, 24], "why": "drop 1"},
+    {"bars": [17, 20], "why": "drop 1, its first phrase"},
     {
       "bars": [21, 24],
-      "section": "transition",
-      "why": "a built transition: drop 1's last four bars again, closed down to a breath, opened back up under a riser and a snare roll, then a beat of silence that swells into the final chorus. Same chords as the chorus it lands on, so nothing can clash.",
+      "times": 2,
+      "section": "build",
+      "why": "an eight-bar build on drop 1's own second phrase, run on from it and looped once: it cuts to a muffle on the bar line and opens steadily for eight bars as its bass drains away; a snare roll doubles every two bars, the song's kick doubles under it and falls away, noise and a pitched riser climb to the note the drop lands on (F); its loudness climbs steadily from 7 LU under the chorus to 3 LU under it, so the drop can slam; one beat of true silence",
+      "expect": {"climb": {"beats": [0, 31], "rise": 3.5}},
       "fx": [
-        {"type": "lowpass", "path": [[0, 18000], [1, 18000], [8, 320], [10, 320], [15, 12000]]},
-        {"type": "highpass", "path": [[0, 10], [8, 10], [9, 120], [11, 400], [15, 1200]]},
-        {"type": "gain", "path": [[0, 0], [7, -4], [9, -4], [15, 0]]},
-        {"type": "mute", "beats": [15, 16]}
+        {"type": "lowpass", "path": [[0, 700], [30, 14000]]},
+        {"type": "highpass", "path": [[0, 10], [16, 10], [22, 150], [28, 500], [31, 1200]]},
+        {"type": "gain", "path": [[0, 0], [31, -4]]},
+        {"type": "level", "path": [[0, -7], [31, -3]]},
+        {"type": "mute", "beats": [31, 32]}
       ],
-      "expect": {"dip": {"beats": [6, 8], "below": -4}, "climb": {"beats": [8, 15], "rise": 5, "toWithin": 3}},
       "layers": [
-        {"type": "riser", "beats": [8, 15], "hz": [250, 5000], "db": [-32, -5]},
-        {"type": "roll", "beats": [8, 15], "hit": {"bar": 34, "step": 3}, "rate": [2, 8], "db": [-18, -2]},
-        {"type": "reverse", "beats": [15, 16], "of": {"bar": 69}, "db": -7}
+        {"type": "roll", "beats": [0, 31], "hit": {"bar": 34, "step": 3}, "rate": [1, 8], "db": [-24, -6]},
+        {"type": "roll", "beats": [16, 24], "hit": {"bar": 1, "step": 0, "decayMs": 120}, "rate": [2, 4], "db": [-14, -10]},
+        {"type": "riser", "beats": [8, 31], "hz": [200, 6000], "db": [-40, -10]},
+        {"type": "sweep", "beats": [16, 31], "hz": [174.6, 698.5], "db": [-36, -13]}
       ]
     },
     {
       "bars": [69, 76],
-      "why": "the final chorus, the climax: the build emptied the low end, so the weight crashing back is the hit; an impact the song doesn't have (a sub drop, a noise wash, the song's own snare) lands on it, the music ducks under it and swells to sit louder than drop 1",
+      "why": "the final chorus, the slam: the whole band at full level on an impact the song doesn't have (a crash wash, the song's own snare and kick, a sub drop), 2.5 dB hotter than drop 1, straight out of silence",
+      "expect": {"payoff": {"weight": 18, "slam": 5, "lift": {"over": [17, 20], "by": 2.5}}},
       "fx": [
-        {"type": "gain", "path": [[0, -6], [0.75, 2.5]]}
+        {"type": "gain", "path": [[0, 2.5]]}
       ],
-      "expect": {"payoff": {"weight": 18, "stand": 1.5, "lift": {"over": [17, 24], "by": 2.5}}},
       "layers": [
-        {"type": "boom", "at": 0, "hz": [80, 38], "ms": 1600, "db": 0},
-        {"type": "crash", "at": 0, "hz": 2500, "ms": 2200, "db": -6},
-        {"type": "hit", "at": 0, "hit": {"bar": 34, "step": 3}, "db": -2}
+        {"type": "crash", "at": 0, "hz": 1200, "ms": 2500, "db": -6},
+        {"type": "hit", "at": 0, "hit": {"bar": 34, "step": 3}, "db": -4},
+        {"type": "hit", "at": 0, "hit": {"bar": 1, "step": 0, "decayMs": 140}, "db": -4},
+        {"type": "boom", "at": 0, "hz": [80, 38], "ms": 1600, "db": -8}
       ]
     },
     {"bars": [84, 84], "why": "the last lift"},

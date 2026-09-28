@@ -10,6 +10,10 @@ the landing bar's first hit reversed. Only the noise of a riser is generated.
                                can close and open again
           gain                 {"path": [[beat, db], ...]}
           mute                 {"beats": [a, b]}              a gap
+          level                {"path": [[beat, lu], ...]}    loudness automation, applied after the
+                               layers: each beat is brought to the path, in LU against the run's own
+                               unprocessed loudness (K-weighted), with the gain smoothed between beat
+                               centres. The design says how loud the build is, not each layer.
   layers  riser                {"beats": [a, b], "hz": [from, to], "db": [from, to]}
           roll                 {"beats": [a, b], "hit": {"bar", "step"}, "rate": [from, to], "db": [from, to]}
                                hits per beat from `rate[0]` to `rate[1]`, doubling in steps
@@ -19,8 +23,10 @@ the landing bar's first hit reversed. Only the noise of a riser is generated.
                                sine gliding down, the weight of an impact
           crash                {"at": beat, "hz": cutoff, "ms": decay, "db": g}  a noise wash above
                                `hz`, the air of an impact
-          hit                  {"at": beat, "hit": {"bar", "step"}, "db": g}  one drum hit lifted
-                               from the song, the song's own snap in an impact
+          hit                  {"at": beat, "hit": {"bar", "step", "decayMs"?}, "db": g}  one drum hit
+                               lifted from the song, the song's own snap (or thump) in an impact
+          sweep                {"beats": [a, b], "hz": [from, to], "db": [from, to]}  a pitched riser:
+                               a soft saw gliding up (end it on the note the drop lands on)
 The song has no impact hits of its own (every section downbeat stands under 1 dB above an ordinary
 one), so a drop that pays off a build is made of these three, stacked on the downbeat.
 """
@@ -116,6 +122,32 @@ def limit(x: np.ndarray, sr: int, ceiling_db: float = -0.3, lookahead_ms: float 
     return x * g[None, :], float(-20 * np.log10(g.min()))
 
 
+def level_to(x: np.ndarray, ref: np.ndarray, sr: int, beat_n: float, path: list[list[float]], mutes: list[list[float]] = ()) -> np.ndarray:
+    """Bring each beat of `x` to `path` (LU against `ref`'s mean loudness, K-weighted). Beats inside
+    a mute are the design's silence: they are never measured or lifted, and the gain holds across
+    them (a level threshold can't tell a gap from the tail of the fade into it)."""
+    from pipeline import k_weight
+
+    def lu(y):
+        return -0.691 + 10 * np.log10((k_weight(y.mean(0), sr) ** 2).mean() + 1e-12)
+
+    base = lu(ref)
+    beats = round(x.shape[1] / beat_n)  # a run is whole beats; floor would drop the last to rounding
+    centres, gains = [], []
+    for i in range(beats):
+        if any(m[0] <= i + 0.5 < m[1] for m in mutes):
+            continue
+        a, b = round(i * beat_n), min(x.shape[1], round((i + 1) * beat_n))
+        now = lu(x[:, a:b])
+        want = base + float(np.interp(i + 0.5, [p[0] for p in path], [p[1] for p in path]))
+        if now < want - 25:
+            continue  # a designed silence (a gap, a mute's fade) stays silent: never lift it
+        centres.append((a + b) / 2)
+        gains.append(np.clip(want - now, -18, 18))
+    g = np.interp(np.arange(x.shape[1]), centres, gains)
+    return x * _db(g)[None, :]
+
+
 def apply(run: np.ndarray, sr: int, beat_s: float, piece: dict, song, bar_start) -> np.ndarray:
     """Process one run (channels × samples) by its piece's fx and layers."""
     beat_n = beat_s * sr
@@ -127,6 +159,8 @@ def apply(run: np.ndarray, sr: int, beat_s: float, piece: dict, song, bar_start)
             out = sweep_filter(out, sr, t.replace("pass", ""), path_curve(fx["path"], beat_n, n, log=True))
         elif t == "gain":
             out *= _db(path_curve(fx["path"], beat_n, n, log=False))[None, :]
+        elif t == "level":
+            continue  # after the layers, below
         elif t == "mute":
             a, b = _span(fx, beat_n, n)
             ramp = min(int(0.004 * sr), b - a)
@@ -149,7 +183,7 @@ def apply(run: np.ndarray, sr: int, beat_s: float, piece: dict, song, bar_start)
             band /= np.abs(band).max() + 1e-9
             add[a:b] = band * _db(np.linspace(layer["db"][0], layer["db"][1], b - a)) ** 1
         elif t == "roll":
-            hit = lift_hit(song, sr, bar_start(layer["hit"]["bar"]) + layer["hit"]["step"] * beat_s / 4)
+            hit = lift_hit(song, sr, bar_start(layer["hit"]["bar"]) + layer["hit"]["step"] * beat_s / 4, decay_ms=layer["hit"].get("decayMs", 55))
             r0, r1 = layer["rate"]
             beats = layer["beats"][1] - layer["beats"][0]
             levels = [r0 * 2 ** k for k in range(int(np.log2(r1 / r0)) + 1)]
@@ -182,10 +216,18 @@ def apply(run: np.ndarray, sr: int, beat_s: float, piece: dict, song, bar_start)
             env = np.minimum(1, tt / 0.002) * np.exp(-tt / (layer["ms"] / 1000 / 5))
             add[s: s + m] = wash * env * _db(layer["db"])
         elif t == "hit":
-            h = lift_hit(song, sr, bar_start(layer["hit"]["bar"]) + layer["hit"]["step"] * beat_s / 4)
+            h = lift_hit(song, sr, bar_start(layer["hit"]["bar"]) + layer["hit"]["step"] * beat_s / 4, length_ms=layer["hit"].get("decayMs", 55) * 4, decay_ms=layer["hit"].get("decayMs", 55))
             s = round(layer["at"] * beat_n)
             e = min(n, s + len(h))
             add[s:e] = h[: e - s] * _db(layer["db"])
+        elif t == "sweep":
+            m = b - a
+            f = _exp_path(layer["hz"][0], layer["hz"][1], m)
+            ph = 2 * np.pi * np.cumsum(f) / sr
+            saw = signal.sawtooth(ph) + 0.5 * signal.sawtooth(ph * 1.005)  # two saws, a hair apart
+            saw = signal.sosfilt(signal.butter(2, 3500, btype="low", fs=sr, output="sos"), saw)
+            saw /= np.abs(saw).max() + 1e-9
+            add[a:b] = saw * _db(np.linspace(layer["db"][0], layer["db"][1], m))
         elif t == "reverse":
             land = bar_start(layer["of"]["bar"])
             length = b - a
@@ -195,6 +237,10 @@ def apply(run: np.ndarray, sr: int, beat_s: float, piece: dict, song, bar_start)
         else:
             raise ValueError(f"unknown layer {t}")
         out += add[None, :]
+    for fx in piece.get("fx", []):
+        if fx["type"] == "level":
+            mutes = [f["beats"] for f in piece.get("fx", []) if f["type"] == "mute"]
+            out = level_to(out, run, sr, beat_n, fx["path"], mutes)
     out, reduced = limit(out, sr)
     apply.last_reduction_db = reduced
     return out

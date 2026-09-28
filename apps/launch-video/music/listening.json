@@ -29,6 +29,14 @@
       "by": "owner",
       "date": "2026-09-29",
       "note": "After the gap, no climax: 'just a normal beat'. The build kept its bass and nearly the drop's level, so the drop brought nothing new; the song has no impact hit of its own."
+    },
+    {
+      "splice": "24→69",
+      "verdict": "no slam",
+      "edit": "7c80509362c82d3c",
+      "by": "owner",
+      "date": "2026-09-29",
+      "note": "'There is no slam and the buildup is so fast, no anticipation.' The build lasted 1.75 bars and ended 1.5 LU under the drop; the bass return (+27.7 dB) is below what laptop and phone speakers play."
     }
   ]
 }

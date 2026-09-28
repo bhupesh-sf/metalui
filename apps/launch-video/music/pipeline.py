@@ -309,7 +309,15 @@ def cmd_edit(_args) -> None:
         a, b = p["bars"]
         s = 0 if (i == 0 and a == 1) else round(song_bar_start(an, a) * sr)
         e = min(audio.shape[1], round((song_bar_start(an, a) + plan["tailSeconds"]) * sr)) if b == "end" else round(song_bar_start(an, b + 1) * sr)
+        times = p.get("times", 1)
         run = audio[:, s: e + xf].copy()
+        for _ in range(times - 1):
+            # The run again from its start, crossfaded on the bar line: a loop, for a build.
+            again = audio[:, s: e + xf]
+            ramp = np.linspace(0, 1, xf)
+            run[:, -xf:] = run[:, -xf:] * (1 - ramp) + again[:, :xf] * ramp
+            run = np.concatenate([run, again[:, xf:]], axis=1)
+        e = s + (e - s) * times
         processed = bool(p.get("fx") or p.get("layers"))
         if processed:
             from transitions import apply
@@ -317,7 +325,7 @@ def cmd_edit(_args) -> None:
             run = apply(run, sr, an["beatSeconds"], p, audio, lambda n: song_bar_start(an, n))
             print(f"  transition {a}-{b}: the limiter turned it down at most {apply.last_reduction_db:.1f} dB")
         pieces.append(run)
-        runs.append({"songBars": [a, b], "why": p.get("why"), "section": p.get("section"), "processed": processed,
+        runs.append({"songBars": [a, b], "times": times, "why": p.get("why"), "section": p.get("section"), "processed": processed,
                      "videoStart": round(at / sr, 6), "songStart": round(s / sr, 6),
                      "seconds": round((e - s) / sr, 6), "videoStartSample": at, "songStartSample": s, "samples": e - s})
         at += e - s
@@ -349,7 +357,7 @@ def cmd_edit(_args) -> None:
     for run in runs:
         a, b = run["songBars"]
         last = an["bars"][-1]["n"] if b == "end" else b
-        for sn in range(a, last + 1):
+        for sn in list(range(a, last + 1)) * run.get("times", 1):
             t = pickup + len(vbars) * bar
             if t >= duration:
                 break
@@ -361,6 +369,12 @@ def cmd_edit(_args) -> None:
         for i, r in enumerate(runs)
         if i > 0 and r["songBars"][0] != runs[i - 1]["songBars"][1] + 1
     ]
+    # A looped run jumps back to its own start: that's a splice too, to hear and to check for clicks.
+    for r in runs:
+        for k in range(1, r["times"]):
+            at_s = r["videoStartSample"] + k * r["samples"] // r["times"]
+            splices.append({"t": round(at_s / sr, 6), "sample": at_s, "from": r["songBars"], "to": r["songBars"], "songLanding": r["songStart"], "loop": True})
+    splices.sort(key=lambda s: s["t"])
 
     cues = {
         "$generated": "music/pipeline.py edit. Do not edit; change music/edit.json and re-run.",
@@ -517,18 +531,14 @@ def cmd_check(_args) -> None:
             a, b = exp["climb"]["beats"]
             rise = lk[b - 1] - min(lk[a:a + 2])
             expect(rise >= exp["climb"]["rise"], f"{name} climbs {rise:+.1f} LU through its build (wants +{exp['climb']['rise']})")
-            if i + 1 < len(cues["runs"]):
-                landing = beat_loudness(y_edit, esr, cues["runs"][i + 1]["videoStart"], cues["beatSeconds"], 1)[0]
-                gap = landing - lk[b - 1]
-                expect(gap <= exp["climb"]["toWithin"], f"{name} arrives {gap:.1f} LU under the bar it lands on (wants within {exp['climb']['toWithin']})")
 
     # A gap needs a payoff. A run that ends in silence builds anticipation; the run after it must
     # declare a payoff and meet it. What makes a drop hit, measured:
     #   weight  the low end (30-250 Hz) crashes back: the landing's first beat against the build's
     #           last two beats. A build that keeps its bass leaves the drop nothing to bring.
-    #   stand   the downbeat stands out from the ordinary downbeats after it, unweighted so a sub
-    #           drop counts. (The song has none of its own, and it is mastered to the ceiling, so
-    #           this is a few dB, not many.)
+    #   slam    the drop's first beat against the build's last sounding beat, K-weighted: what a
+    #           laptop or a phone plays. (A bass return alone doesn't reach small speakers.)
+    #   build   the rising layers run at least four bars: anticipation takes time
     #   lift    the landing section sits louder than the drop it answers, K-weighted.
     from scipy import signal as _sig
 
@@ -558,8 +568,16 @@ def cmd_check(_args) -> None:
         t0 = land["videoStart"]
         weight = level(low, t0, bs) - level(low, t0 - 3 * bs, 2 * bs)
         expect(weight >= pay["weight"], f"{name} brings the weight back {weight:+.1f} dB over the end of the build (wants +{pay['weight']})")
-        stand = level(y_edit, t0, 0.15) - float(np.median([level(y_edit, t0 + k * cues["barSeconds"], 0.15) for k in range(1, 8)]))
-        expect(stand >= pay["stand"], f"{name} hits {stand:+.1f} dB over an ordinary downbeat (wants +{pay['stand']})")
+        # Slam: what a laptop or a phone plays (K-weighted, which drops the sub): the drop's first beat
+        # against the build's last sounding beat. A build that ends as loud as the drop has none.
+        gap_beats = sum(f["beats"][1] - f["beats"][0] for f in piece.get("fx", []) if f["type"] == "mute")
+        before = beat_loudness(y_edit, esr, t0 - (gap_beats + 1) * bs, bs, 1)[0]
+        slam = beat_loudness(y_edit, esr, t0, bs, 1)[0] - before
+        expect(slam >= pay["slam"], f"{name} slams {slam:+.1f} LU over the build's last beat (wants +{pay['slam']})")
+        # Anticipation takes time: the build's rising layers must run at least four bars into the gap.
+        rising = [l for l in piece.get("layers", []) if l["type"] in ("riser", "roll", "sweep") and "beats" in l]
+        span = (max(l["beats"][1] for l in rising) - min(l["beats"][0] for l in rising)) if rising else 0
+        expect(span >= 16, f"{name} is anticipated by a {span / 4:g}-bar build (wants 4 or more)")
         over = run_of(pay["lift"]["over"])
         if over:
             mine = np.mean(beat_loudness(y_edit, esr, t0, bs, 16))

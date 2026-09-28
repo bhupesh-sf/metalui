@@ -2,7 +2,7 @@
  "$generated": "music/pipeline.py edit. Do not edit; change music/edit.json and re-run.",
  "inputs": {
   "source": "d137ba25d6125127",
-  "edit": "7c80509362c82d3c",
+  "edit": "9901d98193fa3695",
   "song": "cfe7a5828a42b864"
  },
  "audio": "launch.m4a",
@@ -19,6 +19,7 @@
     1,
     8
    ],
+   "times": 1,
    "why": "intro and dropout, whole",
    "section": null,
    "processed": false,
@@ -34,6 +35,7 @@
     9,
     11
    ],
+   "times": 1,
    "why": "the verse slam, three bars",
    "section": null,
    "processed": false,
@@ -49,6 +51,7 @@
     16,
     16
    ],
+   "times": 1,
    "why": "the stop-start fill that sets up the drop",
    "section": null,
    "processed": false,
@@ -62,39 +65,42 @@
   {
    "songBars": [
     17,
-    24
+    20
    ],
-   "why": "drop 1",
+   "times": 1,
+   "why": "drop 1, its first phrase",
    "section": null,
    "processed": false,
    "videoStart": 20.950975,
    "songStart": 27.712766,
-   "seconds": 13.523583,
+   "seconds": 6.761791,
    "videoStartSample": 923938,
    "songStartSample": 1222133,
-   "samples": 596390
+   "samples": 298195
   },
   {
    "songBars": [
     21,
     24
    ],
-   "why": "a built transition: drop 1's last four bars again, closed down to a breath, opened back up under a riser and a snare roll, then a beat of silence that swells into the final chorus. Same chords as the chorus it lands on, so nothing can clash.",
-   "section": "transition",
+   "times": 2,
+   "why": "an eight-bar build on drop 1's own second phrase, run on from it and looped once: it cuts to a muffle on the bar line and opens steadily for eight bars as its bass drains away; a snare roll doubles every two bars, the song's kick doubles under it and falls away, noise and a pitched riser climb to the note the drop lands on (F); its loudness climbs steadily from 7 LU under the chorus to 3 LU under it, so the drop can slam; one beat of true silence",
+   "section": "build",
    "processed": true,
-   "videoStart": 34.474558,
+   "videoStart": 27.712766,
    "songStart": 34.474558,
-   "seconds": 6.761791,
-   "videoStartSample": 1520328,
+   "seconds": 13.523583,
+   "videoStartSample": 1222133,
    "songStartSample": 1520328,
-   "samples": 298195
+   "samples": 596390
   },
   {
    "songBars": [
     69,
     76
    ],
-   "why": "the final chorus, the climax: the build emptied the low end, so the weight crashing back is the hit; an impact the song doesn't have (a sub drop, a noise wash, the song's own snare) lands on it, the music ducks under it and swells to sit louder than drop 1",
+   "times": 1,
+   "why": "the final chorus, the slam: the whole band at full level on an impact the song doesn't have (a crash wash, the song's own snare and kick, a sub drop), 2.5 dB hotter than drop 1, straight out of silence",
    "section": null,
    "processed": true,
    "videoStart": 41.236349,
@@ -109,6 +115,7 @@
     84,
     84
    ],
+   "times": 1,
    "why": "the last lift",
    "section": null,
    "processed": false,
@@ -124,6 +131,7 @@
     85,
     "end"
    ],
+   "times": 1,
    "why": "the final hit and its decay",
    "section": null,
    "processed": false,
@@ -153,14 +161,15 @@
    "t": 34.474558,
    "sample": 1520328,
    "from": [
-    17,
+    21,
     24
    ],
    "to": [
     21,
     24
    ],
-   "songLanding": 34.474558
+   "songLanding": 34.474558,
+   "loop": true
   },
   {
    "t": 41.236349,
@@ -386,7 +395,7 @@
    "n": 17,
    "t": 27.7128,
    "songBar": 21,
-   "section": "drop-1",
+   "section": "build",
    "loud": 32.7,
    "drums": {
     "kick": "x-·xx-x·xx·xxx··",
@@ -398,7 +407,7 @@
    "n": 18,
    "t": 29.4032,
    "songBar": 22,
-   "section": "drop-1",
+   "section": "build",
    "loud": 32.5,
    "drums": {
     "kick": "····x--·x-xxxxx·",
@@ -410,7 +419,7 @@
    "n": 19,
    "t": 31.0937,
    "songBar": 23,
-   "section": "drop-1",
+   "section": "build",
    "loud": 33.0,
    "drums": {
     "kick": "x-xxx-·xxxxxx-x-",
@@ -422,7 +431,7 @@
    "n": 20,
    "t": 32.7841,
    "songBar": 24,
-   "section": "drop-1",
+   "section": "build",
    "loud": 32.5,
    "drums": {
     "kick": "x--·x···x·xxxxx-",
@@ -434,7 +443,7 @@
    "n": 21,
    "t": 34.4746,
    "songBar": 21,
-   "section": "transition",
+   "section": "build",
    "loud": 32.7,
    "drums": {
     "kick": "x-·xx-x·xx·xxx··",
@@ -446,7 +455,7 @@
    "n": 22,
    "t": 36.165,
    "songBar": 22,
-   "section": "transition",
+   "section": "build",
    "loud": 32.5,
    "drums": {
     "kick": "····x--·x-xxxxx·",
@@ -458,7 +467,7 @@
    "n": 23,
    "t": 37.8555,
    "songBar": 23,
-   "section": "transition",
+   "section": "build",
    "loud": 33.0,
    "drums": {
     "kick": "x-xxx-·xxxxxx-x-",
@@ -470,7 +479,7 @@
    "n": 24,
    "t": 39.5459,
    "songBar": 24,
-   "section": "transition",
+   "section": "build",
    "loud": 32.5,
    "drums": {
     "kick": "x--·x···x·xxxxx-",
