@@ -2,7 +2,7 @@ import * as React from 'react';
 import { IconButton, Tooltip, TooltipProvider } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
-import { Exploded, IsoCap, XrayFrame, capTop, scalePx, type LayerDef, type SpotDef } from './kit';
+import { Exploded, IsoCap, XrayFrame, capTop, scalePx, useRecipeLayers, type LayerDef, type SpotDef } from './kit';
 import { HintLayer } from '../edit';
 import { TooltipSpecimenCard } from './TooltipSpecimens';
 
@@ -10,7 +10,7 @@ import { TooltipSpecimenCard } from './TooltipSpecimens';
  * X-RAY · TOOLTIP
  *
  *   solid     a tool cap; point at it and its tooltip shows
- *   x-ray     the cap on the page, and the dark label floating above it, high over everything
+ *   x-ray     the cap on the page, and the label floating above it, high over everything
  *   card      the real tooltip beside a real tool, changed by handling it (TooltipSpecimens):
  *             Timing   point at the tools; the wait is a readout (its tokens: a name, a note)
  *             Type     show the key (switch)
@@ -20,11 +20,9 @@ import { TooltipSpecimenCard } from './TooltipSpecimens';
  *             Layers   a switch per layer
  * ───────────────────────────────────────────────────────── */
 
-type RL = { part: string; prop: string; value: string }[];
-const R = tokens.recipes.tooltip as { props: { self: { 'max-width': number; 'pad-y': number; 'pad-x': number; radius: number; ink: string }; key: { ink: string } }; layers: RL };
+type Ink = { bone: string; graphite: string };
+const R = tokens.recipes.tooltip as { props: { self: { 'max-width': number; 'pad-y': number; 'pad-x': number; radius: number; ink: Ink }; key: { ink: Ink } } };
 const P = R.props;
-const BG = R.layers.find((l) => l.prop === 'background')!.value;
-const SH = R.layers.filter((l) => l.prop === 'shadow').map((l) => l.value);
 const TL = tokens.recipes['icon-button'].layers as { part: string; prop: string; value: string; state?: string }[];
 const TOOL_BG = TL.find((l) => l.part === 'tool' && l.prop === 'background' && !l.state)!.value;
 const TOOL_SH = TL.filter((l) => l.part === 'tool' && l.prop === 'shadow' && !l.state).map((l) => l.value);
@@ -63,6 +61,7 @@ export function TooltipXray({ startOpen = false }: { startOpen?: boolean }) {
   const [xray, setXray] = React.useState(startOpen);
   const [spot, setSpot] = React.useState<Spot>('states');
   const [m, setM] = React.useState<Model>(INITIAL);
+  const { fill: BG, shadows: SH, colorway } = useRecipeLayers('tooltip');
   // is the specimen's tooltip showing? The Timing card reports its real one; every other card holds it open
   const [shown, setShown] = React.useState(true);
   const [focus, setFocus] = React.useState<string | null>(null);
@@ -93,8 +92,8 @@ export function TooltipXray({ startOpen = false }: { startOpen?: boolean }) {
   const shadow = scalePx(SH.slice(0, 4).filter((_, i) => m.on[i + 1]).join(', ') || 'none', S);
 
   const label = (
-    <span className="xr-tipface" style={{ padding: `0 ${m.padX * S}px`, fontSize: 10 * S, lineHeight: 1.45, color: P.self.ink, whiteSpace: lines > 1 ? 'normal' : 'nowrap' }}>
-      {text}{m.showKey && !m.long && <span style={{ color: P.key.ink }}> · V</span>}
+    <span className="xr-tipface" style={{ padding: `0 ${m.padX * S}px`, fontSize: 10 * S, lineHeight: 1.45, color: P.self.ink[colorway], whiteSpace: lines > 1 ? 'normal' : 'nowrap' }}>
+      {text}{m.showKey && !m.long && <span style={{ color: P.key.ink[colorway] }}> · V</span>}
     </span>
   );
 

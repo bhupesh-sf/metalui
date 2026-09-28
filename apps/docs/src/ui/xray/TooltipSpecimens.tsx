@@ -2,7 +2,7 @@ import * as React from 'react';
 import { IconButton, Row, Switch, Tooltip, TooltipProvider } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { tokens } from '../../lib/tokens';
-import { scalePx } from './kit';
+import { scalePx, useRecipeLayers } from './kit';
 import { LAYERS, type Model, type Side } from './TooltipXray';
 import { STEP_AT, CornerArc, Outline, Readout, blip, clamp, snapTo, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg } from '../edit';
 import './tooltip-specimens.css';
@@ -23,8 +23,6 @@ import './tooltip-specimens.css';
 
 // every number from the recipe and the tooltip's tokens (read here, never from TooltipXray at load)
 const R = tokens.recipes.tooltip as { props: { self: { 'pad-x': number; radius: number } }; layers: { prop: string; value: string }[] };
-const BG = R.layers.find((l) => l.prop === 'background')!.value;
-const SH = R.layers.filter((l) => l.prop === 'shadow').map((l) => l.value);
 const PAD = R.props.self['pad-x'];
 const RADIUS = R.props.self.radius;
 const GAP = tokens.tooltip.gap;
@@ -41,7 +39,7 @@ const round = (v: number, places = 1) => Number(v.toFixed(places));
 const token = (v: number, at: number, name = 'token') => (v === at ? { at, name } : undefined);
 
 /** The label's fill and shadow stack from the model: layers switched off drop out, lift scales the drop shadows. */
-function face(m: Model) {
+function face(m: Model, BG: string, SH: string[]) {
   const shadow = SH.map((v, i) => (m.on[i + 1] ? (/^inset/.test(v) ? v : scalePx(v, m.lift)) : null)).filter(Boolean).join(', ') || 'none';
   return { background: m.on[0] ? BG : 'transparent', shadow };
 }
@@ -51,7 +49,8 @@ function face(m: Model) {
  * While a handle is held nothing on the label moves by itself.
  */
 function TipRule({ cls, m, zoom, live, lifted }: { cls: string; m: Model; zoom: number; live: boolean; lifted?: boolean }) {
-  const f = face(m);
+  const { fill, shadows } = useRecipeLayers('tooltip');
+  const f = face(m, fill, shadows);
   const css = `.${cls}{zoom:${zoom};--mu-r-tooltip-self-pad-x:${m.padX}px;--mu-r-tooltip-self-radius:${m.radius}px;--mu-r-tooltip-self-background:${f.background};--mu-r-tooltip-self-shadow:${f.shadow};${lifted ? `translate:0 ${round(-(m.lift - LIFT) * 3, 2)}px;` : ''}${live ? 'transition:none;' : ''}}`;
   return <style>{css}</style>;
 }

@@ -435,8 +435,6 @@
   --mu-tooltip-pad-y: 5px;
   --mu-tooltip-pad-x: 9px;
   --mu-tooltip-max-width: 280px;
-  --mu-tooltip-ink: #E9E9EB;
-  --mu-tooltip-key-ink: #8E8E93;
   --mu-menu-min-width: 200px;
   --mu-menu-pad: 6px;
   --mu-menu-offset: 6px;
@@ -1450,26 +1448,14 @@
   --mu-r-switcher-option-focus-width: 1.5px;
   --mu-r-switcher-option-transition: color var(--mu-r-switcher-option-fade);
   /* tooltip: reference style.css #tip, #tip .dim, .tb-tip */
-  --mu-r-tooltip-self-background:
-    /* mu-recipe:tooltip:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
-  --mu-r-tooltip-self-shadow:
-    /* mu-recipe:tooltip:1 */ inset 0 0 6px 2px rgba(255,255,255,.055),
-    /* mu-recipe:tooltip:2 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
-    /* mu-recipe:tooltip:3 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
-    /* mu-recipe:tooltip:4 */ 0 0 0 .5px rgba(0,0,0,.45),
-    /* mu-recipe:tooltip:5 */ 0 1px 2px rgba(0,0,0,.2),
-    /* mu-recipe:tooltip:6 */ 0 12px 28px -10px rgba(0,0,0,.34),
-    /* mu-recipe:tooltip:7 */ 0 30px 60px -24px rgba(0,0,0,.30);
   --mu-r-tooltip-self-max-width: 280px;
   --mu-r-tooltip-self-pad-y: 6px;
   --mu-r-tooltip-self-pad-x: 10px;
   --mu-r-tooltip-self-radius: 11px;
   --mu-r-tooltip-self-font: 500 10px/1.45 var(--mu-mono);
   --mu-r-tooltip-self-tracking: 0.05em;
-  --mu-r-tooltip-self-ink: #E9E9EB;
   --mu-r-tooltip-self-z: 70;
   --mu-r-tooltip-self-transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
-  --mu-r-tooltip-key-ink: #8E8E93;
   /* menu: reference style.css #pop, #pop .ph, #pop button, #pop button:hover */
   --mu-r-menu-self-min-width: 200px;
   --mu-r-menu-self-pad: 6px;
@@ -2148,6 +2134,18 @@
     /* mu-recipe:switcher:14 */ 0 5px 12px -4px rgba(24,22,16,.09);
   --mu-r-switcher-option-ink: #5C5C60;
   --mu-r-switcher-option-ink-on: #1B1B1D;
+  --mu-r-tooltip-self-background:
+    /* mu-recipe:tooltip:0 */ linear-gradient(180deg, rgba(253,252,250,.97), rgba(243,242,239,.97));
+  --mu-r-tooltip-self-shadow:
+    /* mu-recipe:tooltip:2 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:tooltip:3 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:tooltip:4 */ inset -1px -3px 5px -2px rgba(110,100,80,.08),
+    /* mu-recipe:tooltip:5 */ 0 0 0 .5px rgba(24,22,16,.08),
+    /* mu-recipe:tooltip:6 */ 0 1px 2px rgba(24,22,16,.07),
+    /* mu-recipe:tooltip:7 */ 0 12px 28px -10px rgba(24,22,16,.14),
+    /* mu-recipe:tooltip:8 */ 0 30px 60px -24px rgba(24,22,16,.12);
+  --mu-r-tooltip-self-ink: #1B1B1D;
+  --mu-r-tooltip-key-ink: #6E6E72;
   --mu-r-menu-self-background:
     /* mu-recipe:menu:0 */ rgba(251,250,248,.92);
   --mu-r-menu-self-shadow:
@@ -2560,6 +2558,18 @@
     /* mu-recipe:switcher:19 */ 0 5px 12px -4px rgba(0,0,0,.3);
   --mu-r-switcher-option-ink: #A6A6A9;
   --mu-r-switcher-option-ink-on: #F2F2F0;
+  --mu-r-tooltip-self-background:
+    /* mu-recipe:tooltip:1 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
+  --mu-r-tooltip-self-shadow:
+    /* mu-recipe:tooltip:9 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:tooltip:10 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:tooltip:11 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:tooltip:12 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:tooltip:13 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:tooltip:14 */ 0 12px 28px -10px rgba(0,0,0,.34),
+    /* mu-recipe:tooltip:15 */ 0 30px 60px -24px rgba(0,0,0,.30);
+  --mu-r-tooltip-self-ink: #E9E9EB;
+  --mu-r-tooltip-key-ink: #8E8E93;
   --mu-r-menu-self-background:
     /* mu-recipe:menu:1 */ rgba(34,34,37,.92);
   --mu-r-menu-self-shadow:
@@ -2973,6 +2983,18 @@
       0 5px 12px -4px rgba(0,0,0,.3);
     --mu-r-switcher-option-ink: #A6A6A9;
     --mu-r-switcher-option-ink-on: #F2F2F0;
+    --mu-r-tooltip-self-background:
+      linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
+    --mu-r-tooltip-self-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.055),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+      inset -1px -3px 5px -2px rgba(0,0,0,.35),
+      0 0 0 .5px rgba(0,0,0,.45),
+      0 1px 2px rgba(0,0,0,.2),
+      0 12px 28px -10px rgba(0,0,0,.34),
+      0 30px 60px -24px rgba(0,0,0,.30);
+    --mu-r-tooltip-self-ink: #E9E9EB;
+    --mu-r-tooltip-key-ink: #8E8E93;
     --mu-r-menu-self-background:
       rgba(34,34,37,.92);
     --mu-r-menu-self-shadow:

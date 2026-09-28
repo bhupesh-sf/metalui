@@ -1,6 +1,6 @@
 import SwiftUI
 
-// Tooltip (Kamui 04 §2, §8). Mirrors components/tooltip from MetalTooltipMetrics: a graphite label chip,
+// Tooltip. Mirrors components/tooltip from MetalTooltipMetrics: a label chip in the colorway,
 // "SELECT · V", 10 from its trigger after 120 ms, a fade on settle. It takes no hits.
 
 private struct MetalTooltipModifier: ViewModifier {
@@ -41,21 +41,24 @@ private struct MetalTooltipModifier: ViewModifier {
     }
 }
 
-/// The graphite chip: the name, then the key dimmed.
+/// The chip in the colorway: the name, then the key dimmed.
 struct MetalTooltipChip: View {
     let label: String
     let shortcut: String?
+    @Environment(\.metalColorway) private var colorway
 
     var body: some View {
-        (Text(label.uppercased()).foregroundColor(MetalTooltipMetrics.ink.color)
-            + Text(shortcut.map { " · \($0)" } ?? "").foregroundColor(MetalTooltipMetrics.keyInk.color))
+        let recipe = MetalRecipes.tooltip
+        let cw = MetalRecipeColorway(colorway)
+        return (Text(label.uppercased()).foregroundColor((recipe.color("self.ink", colorway: cw) ?? colorway.tokens.ink).color)
+            + Text(shortcut.map { " · \($0)" } ?? "").foregroundColor((recipe.color("key.ink", colorway: cw) ?? colorway.tokens.ink3).color))
             .font(.metal(MetalType.label))
             .tracking(MetalType.label.trackingPoints)
             .lineLimit(1)
             .fixedSize()
             .padding(.vertical, MetalTooltipMetrics.padY)
             .padding(.horizontal, MetalTooltipMetrics.padX)
-            .metalFrost(.graphite, in: Capsule(style: .continuous))
+            .metalObjectRecipe(recipe, part: "self", in: Capsule(style: .continuous))
             .accessibilityHidden(true)
     }
 }

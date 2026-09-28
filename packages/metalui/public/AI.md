@@ -2773,8 +2773,8 @@ Names an icon-only control and its key, one hover away. React: `Tooltip`, `Toolt
 
 ## Anatomy
 
-- **Chip**: the graphite fill and shadow with no backdrop, radius 11, padding 6 × 10, 10 mono at 1.45, tracked .05em, ink `#E9E9EB`.
-- **Key**: after a middle dot, dimmed (`#8E8E93`): `SELECT · V`.
+- **Chip**: the colorway's fill and shadow with no backdrop, radius 11, padding 6 × 10, 10 mono at 1.45, tracked .05em. Bone: a bone chip, ink `#1B1B1D`. Graphite: a graphite chip, ink `#E9E9EB`.
+- **Key**: after a middle dot, dimmed (`#6E6E72` on bone, `#8E8E93` on graphite): `SELECT · V`.
 - **Dim** (`Tooltip.Dim`): the same dimmed ink for any detail in a `label` node.
 - **Wrap** (`wrap`): a longer note wraps at 280 instead of one line.
 - **Delay and offset** (`delay`, `offset`): a note waits longer than a name (380 against 120) and can sit clear of a chip its trigger shows.

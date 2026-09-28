@@ -6,7 +6,7 @@ import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 /* ─────────────────────────────────────────────────────────
  * TOOLTIP (the brief; the reference design's #tip and .tb[data-tip]) on Base UI Tooltip
  *   rest      nothing
- *   120 ms    hovered or focused: a graphite label chip fades in on settle, 10 from the trigger
+ *   120 ms    hovered or focused: a label chip in the colorway fades in on settle, 10 from the trigger
  *   group     inside one TooltipProvider, moving to the next trigger shows the next at once
  *   edge      flips to the other side near the edge (Base UI collision avoidance)
  *   leave     fades out on settle; a press hides it
@@ -44,7 +44,7 @@ export interface TooltipProps {
   className?: string;
 }
 
-/* Styled with the theme's utilities (the tooltip recipe): the graphite chip fades in and out on settle. */
+/* Styled with the theme's utilities (the tooltip recipe): the chip fades in and out on settle. */
 const POSITIONER = 'mu-tooltip-positioner z-tooltip-z';
 const POPUP = 'mu-tooltip max-w-tooltip-max-width py-tooltip-pad-y px-tooltip-pad-x rounded-tooltip-radius pointer-events-none type-tooltip text-tooltip-ink recipe-tooltip transition-tooltip data-starting-style:opacity-0 data-ending-style:opacity-0 data-instant:transition-none';
 const KEY = 'mu-tooltip-key text-tooltip-key-ink';

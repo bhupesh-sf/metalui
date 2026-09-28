@@ -1646,18 +1646,26 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A graphite label that names what is under the pointer, with its key; no backdrop, as the reference #tip. (reference style.css #tip, #tip .dim, .tb-tip)
+    /// A label chip that names what is under the pointer, with its key; no backdrop, as the reference #tip. It follows the colorway: a bone chip with ink on bone, a graphite chip with light ink on graphite. (reference style.css #tip, #tip .dim, .tb-tip)
     public static let tooltip = MetalObjectRecipe(
         name: "tooltip",
         layers: [
-            .init(part: "self", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(40.0, 40.0, 43.0, 0.94)), 0.0), .init(.color(MetalRGBA(27.0, 27.0, 29.0, 0.96)), 1.0)])), // mu-recipe:tooltip:0 linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96))
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:tooltip:1 inset 0 0 6px 2px rgba(255,255,255,.055)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:tooltip:2 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:tooltip:3 inset -1px -3px 5px -2px rgba(0,0,0,.35)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:tooltip:4 0 0 0 .5px rgba(0,0,0,.45)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:tooltip:5 0 1px 2px rgba(0,0,0,.2)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:tooltip:6 0 12px 28px -10px rgba(0,0,0,.34)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:tooltip:7 0 30px 60px -24px rgba(0,0,0,.30)
+            .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(253.0, 252.0, 250.0, 0.97)), 0.0), .init(.color(MetalRGBA(243.0, 242.0, 239.0, 0.97)), 1.0)])), // mu-recipe:tooltip:0 linear-gradient(180deg, rgba(253,252,250,.97), rgba(243,242,239,.97))
+            .init(part: "self", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(40.0, 40.0, 43.0, 0.94)), 0.0), .init(.color(MetalRGBA(27.0, 27.0, 29.0, 0.96)), 1.0)])), // mu-recipe:tooltip:1 linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96))
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.75)))), // mu-recipe:tooltip:2 inset 0 0 6px 2px rgba(255,255,255,.75)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.95)))), // mu-recipe:tooltip:3 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.95)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(110.0, 100.0, 80.0, 0.08)))), // mu-recipe:tooltip:4 inset -1px -3px 5px -2px rgba(110,100,80,.08)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.08)))), // mu-recipe:tooltip:5 0 0 0 .5px rgba(24,22,16,.08)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:tooltip:6 0 1px 2px rgba(24,22,16,.07)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.14)))), // mu-recipe:tooltip:7 0 12px 28px -10px rgba(24,22,16,.14)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.12)))), // mu-recipe:tooltip:8 0 30px 60px -24px rgba(24,22,16,.12)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:tooltip:9 inset 0 0 6px 2px rgba(255,255,255,.055)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:tooltip:10 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:tooltip:11 inset -1px -3px 5px -2px rgba(0,0,0,.35)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:tooltip:12 0 0 0 .5px rgba(0,0,0,.45)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:tooltip:13 0 1px 2px rgba(0,0,0,.2)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:tooltip:14 0 12px 28px -10px rgba(0,0,0,.34)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:tooltip:15 0 30px 60px -24px rgba(0,0,0,.30)
         ],
         props: [
             "self.max-width": .number(280.0),
@@ -1666,10 +1674,10 @@ public enum MetalRecipes {
             "self.radius": .number(11.0),
             "self.font": .text("500 10px/1.45 mono"),
             "self.tracking": .text("0.05em"),
-            "self.ink": .text("#E9E9EB"),
+            "self.ink": .perColorway(bone: "#1B1B1D", graphite: "#E9E9EB"),
             "self.z": .text("70"),
             "self.transition": .text("opacity var(--mu-spring-settle-d) var(--mu-spring-settle)"),
-            "key.ink": .text("#8E8E93"),
+            "key.ink": .perColorway(bone: "#6E6E72", graphite: "#8E8E93"),
         ]
     )
 
@@ -2675,15 +2683,13 @@ public enum MetalMenuMetrics {
     public static let sepInsetX: Double = 8.0
 }
 
-/// The tooltip: every icon-only control names itself and its key, one hover away. A graphite chip in the label role (uppercase mono), the key dimmed after a middle dot: SELECT · V. 10 above its trigger after 120 ms (moving to the next trigger shows the next at once), flipping below near the top edge; a fade on settle. Information, never an action: it takes no pointer and holds nothing to click.
+/// The tooltip: every icon-only control names itself and its key, one hover away. A chip in the colorway in the label role (uppercase mono), the key dimmed after a middle dot: SELECT · V. 10 above its trigger after 120 ms (moving to the next trigger shows the next at once), flipping below near the top edge; a fade on settle. Information, never an action: it takes no pointer and holds nothing to click.
 public enum MetalTooltipMetrics {
     public static let delayMs: Double = 120.0
     public static let gap: Double = 10.0
     public static let padY: Double = 5.0
     public static let padX: Double = 9.0
     public static let maxWidth: Double = 280.0
-    public static let ink: MetalRGBA = MetalRGBA(233, 233, 235, 1.0)
-    public static let keyInk: MetalRGBA = MetalRGBA(142, 142, 147, 1.0)
 }
 
 /// The command palette (object sheet): a 560 wide frost plate at the card radius, raise, padding 6, 16 % down the window over a page scrim at .25. A 44 tall field well (content role 15, caret green-deep, a 15 search glyph in ink3); sections as label engravings with a count (LENS, LENSES, BLOCKS, ACTIONS); rows 36 tall at the row radius in the ui role with a 14 glyph and keycaps or a readout on the right. Matches weigh 650 with a 1.5 green underline. The selected row is a raised cap (row-on-bg, raise-sm) with a 2.5 green-deep bar at the left; hover moves the selection; destructive rows are red. A footer of keycaps above an engraved rule. It rises one nest (y −6, scale .985) on the surface spring and closes on release.
