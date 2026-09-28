@@ -1,14 +1,17 @@
-// The timing contract every shot relies on, checked through the real clock (src/time.ts):
-// each sixteenth of the edit lands on its own frame, that frame reads back as that sixteenth,
-// and the frame before it doesn't. Run: npm run check:timing
+// The timing contract every shot relies on, checked through the real clock and motion
+// (src/time.ts, src/motion.ts): each sixteenth of the edit lands on its own frame, that frame
+// reads back as that sixteenth and the frame before doesn't; and a spring told to land on a
+// beat first touches its target on exactly that frame. Run: npm run check:timing
 import { build } from 'esbuild';
-import { mkdtempSync } from 'node:fs';
+import { mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 
 const out = join(mkdtempSync(join(tmpdir(), 'launch-timing-')), 'time.mjs');
-await build({ entryPoints: [new URL('../src/time.ts', import.meta.url).pathname], bundle: true, format: 'esm', outfile: out, logLevel: 'error' });
-const { frameAt, position, BARS, DURATION } = await import(out);
+const entry = join(dirname(out), 'entry.ts');
+writeFileSync(entry, `export * from ${JSON.stringify(new URL('../src/time.ts', import.meta.url).pathname)};\nexport * from ${JSON.stringify(new URL('../src/motion.ts', import.meta.url).pathname)};\n`);
+await build({ entryPoints: [entry], bundle: true, format: 'esm', outfile: out, logLevel: 'error' });
+const { frameAt, position, BARS, DURATION, land, contactFrames, CONTACT } = await import(out);
 
 const wrong = [];
 let checked = 0;
@@ -23,8 +26,14 @@ for (let bar = 1; bar <= BARS; bar++)
       if (p.bar !== bar || p.beat !== beat || p.step !== step) wrong.push(`${bar}.${beat}.${step + 1} at f${f} reads ${p.bar}.${p.beat}.${p.step + 1}`);
       if (q.bar === bar && q.beat === beat && q.step === step) wrong.push(`${bar}.${beat}.${step + 1} already reads at f${f - 1}`);
     }
+const masses = ['part', 'object', 'hinge', 'surface', 'settle', 'release', 'chrome'];
+for (const mass of masses) {
+  const at = frameAt(13);
+  if (!(land(at, at, mass) >= CONTACT && land(at - 1, at, mass) < CONTACT && land(at - contactFrames(mass), at, mass) === 0))
+    wrong.push(`${mass} spring doesn't touch down exactly on its beat`);
+}
 if (wrong.length) {
   console.error(wrong.slice(0, 20).join('\n'));
   process.exit(1);
 }
-console.log(`timing: ${checked} sixteenths each land on their own frame`);
+console.log(`timing: ${checked} sixteenths each land on their own frame; ${masses.map((m) => `${m} ${contactFrames(m)}f`).join(', ')} to contact, each touching down on its beat`);

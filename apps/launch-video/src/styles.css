@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/martian-mono/standard.css";
+@import "@unlocalhosted/metalui/tokens.css";
+@import "@unlocalhosted/metalui/theme.css";
+
+/* The library's components carry their utilities in their sources; the shots carry theirs here. */
+@source "../../../packages/metalui/src";
+@source "./";
+
+/* Every frame renders on its own, so nothing may move by the clock: motion comes from the frame. */
+*, *::before, *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* A gadget's light alone: its cells' glow and halo, its backlight and its lamp. Laid over the same
+   gadget drawn in the room's light, so lamps burn at full strength while the surfaces around them
+   are dim. (Children can be visible inside a hidden parent; that's what makes this work.) */
+.emissive svg * { visibility: hidden; }
+.emissive svg :is([data-part="cell.glow"], [data-part="cell.halo"], [data-part="lamp"], [data-part="backlight"]),
+.emissive svg :is([data-part="cell.glow"], [data-part="cell.halo"], [data-part="lamp"], [data-part="backlight"]) * { visibility: visible; }

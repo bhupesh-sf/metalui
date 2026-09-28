@@ -8,6 +8,15 @@ import { DURATION, FPS, audioFile, bars, frameAt, meter, position, splices, type
  * judged at full speed and scrubbed frame by frame.
  */
 // Flat inks only: the --mu-led-* tokens are the LED's radial gradients, for LEDs.
+export function Animatic() {
+  return (
+    <>
+      <AnimaticCard />
+      <Audio src={staticFile(audioFile)} />
+    </>
+  );
+}
+
 const ACT_TONE: Record<Act, string> = {
   build: 'var(--mu-blue)',
   play: 'var(--mu-green)',
@@ -20,7 +29,8 @@ const ACT_TONE: Record<Act, string> = {
 const mono = '"Martian Mono Variable", ui-monospace, monospace';
 const sans = '"Geist Variable", system-ui, sans-serif';
 
-export function Animatic() {
+/** The storyboard card for the current frame, without sound: what Film shows for a shot not built yet. */
+export function AnimaticCard() {
   const frame = useCurrentFrame();
   const pos = position(frame);
   const bar = Math.max(1, Math.min(bars.length, pos.bar));
@@ -30,8 +40,6 @@ export function Animatic() {
 
   return (
     <AbsoluteFill data-mu-colorway="graphite" style={{ background: 'var(--mu-s-lo)', color: 'var(--mu-ink)', fontFamily: sans, padding: 72 }}>
-      <Audio src={staticFile(audioFile)} />
-
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
           <div style={{ fontFamily: mono, fontSize: 22, letterSpacing: 2, color: ACT_TONE[shot.act], textTransform: 'uppercase' }}>

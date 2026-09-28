@@ -51,6 +51,18 @@ npm run check:timing                    # every sixteenth lands on its own frame
 - **`src/time.ts` is the one clock.** Shots place events in musical time, `frameAt(bar, beat, step)`, never in frames or seconds. Each event is rounded to a frame on its own: a beat is 25.35 frames at 60 fps, so adding frame counts drifts. `position(frame)` reads the music back, and `meter(name, frame)` gives loudness, a band or a drum hit, 0..1, for meters in the picture.
 - **`src/storyboard.ts` is the storyboard**, authored in video bars: what the music does, what the picture does, and what lands on which count.
 - **`Animatic`** plays the storyboard against the edit before any shot is built: the shot, bar.beat.16th, the beat LEDs, two seconds of kick, snare, hat and loudness either side of now, and every shot on a timeline with the splices marked.
+- **`src/motion.ts` is the library's motion.** The same mass-class springs as the components (`tokens.json` springs), stepped by frame. `land(frame, at, mass)` launches a move early by its spring's time to contact, so it touches down on the beat (part 13 frames, object 15, hinge 16); `react` starts on the hit; `sweep` is for things the music sweeps, like a riser or the light. `check:timing` proves every spring touches down on its beat.
+- **`src/Film.tsx` is the film.** Each storyboard shot in order over the edit: a built shot plays (registered in `SHOTS`), a shot not built yet shows its animatic card, so the minute is watchable at every stage.
+- **Shots use the real library.** Styles come from the same `tokens.css` and `theme.css` through Tailwind (`remotion.config.ts`), with every CSS transition and animation off: a frame renders on its own, so motion comes from the frame. Gadgets are drawn with `renderGadgetSvg` at each frame's pose (never `<Gadget>`, which animates itself on a clock). The `emissive` class keeps only a gadget's light (cell glow, halo, backlight, lamp), to lay over the same gadget drawn in a dim room.
+
+### Designing a gadget for a shot
+
+```bash
+node scripts/gadget-sheet.mjs src/gadgets/step-row.gadget.json \
+  '{"_":{"value":3.5}}' '{"material":"clay","_":{"value":8,"host":"bone"}}'
+```
+
+Every variant (JSON merged over the spec, draw options under `_`) goes through the library's validator and renderer into one contact sheet, `out/<name>-sheet.png`. The validator holds the library's rules (a job's hue stations, for one), so a look chosen here is a look the library allows.
 - **Rendering**: Remotion's own AAC mux lays the sound 2048 samples (42.7 ms at 48 kHz) late, because it doesn't record the encoder's priming. `npm run render` renders the picture muted and `music/pipeline.py master` adds the edit with ffmpeg, then measures the offset and fails above 1 ms.
 
 ## Licensing
