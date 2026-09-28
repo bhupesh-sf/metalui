@@ -73,20 +73,20 @@ export const storyboard: Shot[] = [
   },
   {
     id: 'breakdown', act: 'gap', bars: [21, 22], title: 'Breakdown',
-    music: 'The sub drops away for two bars; bar 22 stutters',
-    picture: 'The gadgets wind down: meters fall, lamps drop to standby, the camera eases back',
-    sync: 'Meters follow the sub down; each stutter holds a frame',
+    music: 'The chorus again, closing down to a muffled breath: the kick keeps pulsing under a falling low-pass',
+    picture: 'The gadgets wind down: meters fall with the filter, lamps drop to standby, the camera eases back',
+    sync: 'Meters follow the filter down; the light dims with it',
   },
   {
     id: 'riser', act: 'gap', bars: [23, 23], title: 'Riser',
-    music: 'A white-noise riser',
+    music: 'The filter opens again under a noise riser; a snare roll speeds up from eighths to sixteenths',
     picture: 'A colorway sweep, bone to graphite',
-    sync: 'The sweep follows the riser to the bar line',
+    sync: 'The sweep follows the riser; a tick per roll hit',
   },
   {
     id: 'gap', act: 'gap', bars: [24, 24], title: 'The gap', layer: 'Instruments',
-    music: 'Near silence',
-    picture: 'Everything stops; a lasso draws a selection frame around nothing',
+    music: 'The roll hits thirty-seconds and peaks for three beats, then one beat of silence swells in reverse into the drop',
+    picture: 'A lasso draws a selection frame around nothing as the roll peaks; on the silent beat everything stops',
     sync: 'The frame snaps shut on the downbeat of bar 25',
   },
   {

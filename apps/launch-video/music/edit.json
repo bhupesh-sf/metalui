@@ -1,17 +1,34 @@
 {
   "$description": "Authored. The launch edit, as runs of song bars played in order. Every splice is on a bar line. 'end' plays to the end of the track. The first run starting at bar 1 keeps the silence before it.",
   "maxSeconds": 60,
+  "gainDb": -1,
   "crossfadeMs": 8,
   "tailFadeMs": 300,
   "tailSeconds": 1.9,
   "pieces": [
-    { "bars": [1, 8], "why": "intro and dropout, whole" },
-    { "bars": [9, 11], "why": "the verse slam, three bars" },
-    { "bars": [16, 16], "why": "the stop-start fill that sets up the drop" },
-    { "bars": [17, 24], "why": "drop 1" },
-    { "bars": [49, 52], "why": "the end of the breakdown for a breath, then the riser and the gap: a riser needs a dip to climb from" },
-    { "bars": [69, 76], "why": "the final chorus, landed from the gap" },
-    { "bars": [84, 84], "why": "the last lift" },
-    { "bars": [85, "end"], "why": "the final hit and its decay" }
+    {"bars": [1, 8], "why": "intro and dropout, whole"},
+    {"bars": [9, 11], "why": "the verse slam, three bars"},
+    {"bars": [16, 16], "why": "the stop-start fill that sets up the drop"},
+    {"bars": [17, 24], "why": "drop 1"},
+    {
+      "bars": [21, 24],
+      "section": "transition",
+      "why": "a built transition: drop 1's last four bars again, closed down to a breath, opened back up under a riser and a snare roll, then a beat of silence that swells into the final chorus. Same chords as the chorus it lands on, so nothing can clash.",
+      "fx": [
+        {"type": "lowpass", "path": [[0, 18000], [1, 18000], [8, 320], [10, 320], [15, 12000]]},
+        {"type": "highpass", "path": [[0, 10], [8, 10], [15, 380]]},
+        {"type": "gain", "path": [[0, 0], [7, -4], [9, -4], [15, 0]]},
+        {"type": "mute", "beats": [15, 16]}
+      ],
+      "expect": {"dip": {"beats": [6, 8], "below": -4}, "climb": {"beats": [8, 15], "rise": 5, "toWithin": 3}},
+      "layers": [
+        {"type": "riser", "beats": [8, 15], "hz": [250, 5000], "db": [-32, -5]},
+        {"type": "roll", "beats": [8, 15], "hit": {"bar": 34, "step": 3}, "rate": [2, 8], "db": [-18, -2]},
+        {"type": "reverse", "beats": [15, 16], "of": {"bar": 69}, "db": -7}
+      ]
+    },
+    {"bars": [69, 76], "why": "the final chorus, landed from the gap"},
+    {"bars": [84, 84], "why": "the last lift"},
+    {"bars": [85, "end"], "why": "the final hit and its decay"}
   ]
 }

@@ -7,6 +7,20 @@
       "by": "owner",
       "date": "2026-09-29",
       "note": "Drop 1 straight into the riser: the peak goes up again with no release. Bar-level and beat-level measures both rated it smooth."
+    },
+    {
+      "splice": "24→49",
+      "verdict": "abrupt",
+      "by": "owner",
+      "date": "2026-09-29",
+      "note": "Breakdown, riser and gap borrowed from the drop-2 build: 'all fucked up'. The breakdown is mid-section in other chords, and bar 52's gap is written to lead into drop 2, not the final chorus."
+    },
+    {
+      "splice": "52→69",
+      "verdict": "abrupt",
+      "by": "owner",
+      "date": "2026-09-29",
+      "note": "Breakdown, riser and gap borrowed from the drop-2 build: 'all fucked up'. The breakdown is mid-section in other chords, and bar 52's gap is written to lead into drop 2, not the final chorus."
     }
   ]
 }

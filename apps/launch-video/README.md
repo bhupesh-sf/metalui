@@ -20,6 +20,7 @@ npm run music:spectrogram -- edit   # images of the edit with bars, sections and
 | `analyze` | the source | `music/analysis.json`: tempo, bar 1, per-bar loudness and bands, 16-step drum grids, key, texture changes |
 | `edit` | `analysis.json`, `music/edit.json` | `public/launch.m4a`, `src/cues.generated.json` (video bars, beats, splices), `src/meters.generated.json` (per-frame loudness, bands, drum hits at 60 fps) |
 | `check` | all of it | pass/fail: one tempo fits the source; every run of the edit is the song's own samples exactly where the cues say (sample-exact, so time is kept through every splice); every splice is on a bar line; no splice clicks louder than the song itself does there; no splice a person heard as abrupt; under the cap; cues fresh. It also lists splices nobody has listened to yet |
+| `contour <from> <to>` | the edit | how loud it sounds beat by beat between two video bars, K-weighted (the ear's weighting behind LUFS); raw RMS reads the sub, not what you hear |
 | `spectrogram` | the source or the edit | `music/out/spectrograms/*.png` |
 
 Three files are authored; everything else is generated, so don't hand-edit it.
@@ -34,6 +35,12 @@ Three files are authored; everything else is generated, so don't hand-edit it.
 - **Bar 1** is the beat of four where bar boundaries line up with the most change (arrangements turn on the one), then the first audible bar.
 - **Drums** come from the percussive half of the mix (HPSS), split into kick, snare and hat bands, and sampled on sixteenths. `x` is a clear hit, `·` a weak one.
 - **What it can't do**: it doesn't hear. Instrument names in `song.json` are a reading of the spectrograms, and whether a splice lands musically is a person's call: log it in `listening.json`.
+
+### Built transitions
+
+Where a straight splice can't go, a run can be processed into a transition (`music/transitions.py`): `fx` over its own audio (`lowpass`/`highpass` along a `path` of `[beat, Hz]` points, so one filter can close and open again; `gain` along `[beat, dB]`; `mute` for a gap) and `layers` over it (`riser`, generated noise; `roll`, a snare hit lifted from the mix and gated, accelerating in doublings; `reverse`, the landing bar's first beat swelling into the downbeat). Positions are beats from the start of the run. A look-ahead limiter holds the run under -0.3 dBFS and reports how much it had to turn down; `gainDb` gives the whole edit headroom, since the track is mastered to full scale.
+
+A run can declare the shape it must have, in `expect`: `dip` (how far below its start it falls) and `climb` (how much its build rises, and how close it arrives to the bar it lands on). `check` measures both K-weighted. The current transition replays drop 1's last four bars: the same chords as the final chorus it lands on, so nothing can clash. Borrowing the song's own breakdown and riser didn't work: they belong to a different section, in other chords, and their gap is written to lead into drop 2.
 
 ### Using another track
 

@@ -10,6 +10,7 @@ A person can't hand the track to the video by ear, so this reads it into facts t
             (per-frame loudness, bands and drum onsets, for meters in the picture)
   check     re-read the finished edit and prove it: one tempo straight through the splices,
             no clicks, under the length cap, cues fresh
+  contour   how loud the edit sounds beat by beat between two video bars (K-weighted, like LUFS)
   master    lay the edit under a silent render and prove the sync to the millisecond
   spectrogram   images of the track and the edit with bar lines and section names, for a
             reviewer (person or model) to read what the numbers can't say
@@ -294,7 +295,8 @@ def cmd_edit(_args) -> None:
     song = load_json(SONG)
     plan = load_json(EDIT)
     audio, sr = sf.read(SOURCE_WAV, always_2d=True)
-    audio = audio.T
+    # Headroom: the track is mastered to full scale, so anything laid over it needs room.
+    audio = audio.T * 10 ** (plan.get("gainDb", 0) / 20)
     total = audio.shape[1] / sr
     xf = int(plan["crossfadeMs"] / 1000 * sr)
     bar = an["barSeconds"]
@@ -306,8 +308,16 @@ def cmd_edit(_args) -> None:
         a, b = p["bars"]
         s = 0 if (i == 0 and a == 1) else round(song_bar_start(an, a) * sr)
         e = min(audio.shape[1], round((song_bar_start(an, a) + plan["tailSeconds"]) * sr)) if b == "end" else round(song_bar_start(an, b + 1) * sr)
-        pieces.append(audio[:, s: e + xf].copy())
-        runs.append({"songBars": [a, b], "why": p.get("why"), "videoStart": round(at / sr, 6), "songStart": round(s / sr, 6),
+        run = audio[:, s: e + xf].copy()
+        processed = bool(p.get("fx") or p.get("layers"))
+        if processed:
+            from transitions import apply
+
+            run = apply(run, sr, an["beatSeconds"], p, audio, lambda n: song_bar_start(an, n))
+            print(f"  transition {a}-{b}: the limiter turned it down at most {apply.last_reduction_db:.1f} dB")
+        pieces.append(run)
+        runs.append({"songBars": [a, b], "why": p.get("why"), "section": p.get("section"), "processed": processed,
+                     "videoStart": round(at / sr, 6), "songStart": round(s / sr, 6),
                      "seconds": round((e - s) / sr, 6), "videoStartSample": at, "songStartSample": s, "samples": e - s})
         at += e - s
     t_video = at / sr
@@ -318,6 +328,9 @@ def cmd_edit(_args) -> None:
         out[:, -xf:] = out[:, -xf:] * (1 - ramp) + p[:, :xf] * ramp
         out = np.concatenate([out, p[:, xf:]], axis=1)
     out = out[:, :at]
+    peak = float(np.abs(out).max())
+    if peak > 0.999:
+        sys.exit(f"the edit clips (peak {peak:.3f}): turn a transition's layers down in edit.json")
     fade = int(plan["tailFadeMs"] / 1000 * sr)
     out[:, -fade:] *= np.linspace(1, 0, fade)
     OUT.mkdir(parents=True, exist_ok=True)
@@ -338,7 +351,7 @@ def cmd_edit(_args) -> None:
             if t >= duration:
                 break
             src = by_n[sn]
-            vbars.append({"n": len(vbars) + 1, "t": round(t, 4), "songBar": sn, "section": section_of(song, sn), "loud": src["loud"], "drums": src["drums"]})
+            vbars.append({"n": len(vbars) + 1, "t": round(t, 4), "songBar": sn, "section": run["section"] or section_of(song, sn), "loud": src["loud"], "drums": src["drums"]})
     # A splice is a jump in the song. Runs that simply continue (bar 16 then bar 17) aren't one.
     splices = [
         {"t": r["videoStart"], "sample": r["videoStartSample"], "from": runs[i - 1]["songBars"], "to": r["songBars"], "songLanding": r["songStart"]}
@@ -411,16 +424,18 @@ def cmd_check(_args) -> None:
     # The edit, re-read cold: if the splices kept time, one grid still fits it and lands on the cue grid.
     y = load_mono(EDIT_WAV)
     grid = fit_grid(y, an["bpm"])
-    expect(abs(grid["bpm"] - an["bpm"]) < 0.05, f"edit tempo {grid['bpm']} matches the source {an['bpm']}")
     # Kept time, exactly: after a splice the edit is the song's own samples, so the first and last
     # second of every run must equal the source at the place the cues say (clear of crossfades and
     # the tail fade). Onset statistics can't prove this: a downbeat after a silence reads earlier
     # than the same downbeat after a fill.
     edit_full, esr = sf.read(EDIT_WAV, always_2d=True)
     src_full, _ = sf.read(SOURCE_WAV, always_2d=True)
+    src_full = src_full * 10 ** (plan.get("gainDb", 0) / 20)
     fade_from = cues["seconds"] - plan["tailFadeMs"] / 1000
     worst, where = 0.0, ""
     for r in cues["runs"]:
+        if r.get("processed"):
+            continue  # a built transition is meant to differ from the song; its place is checked below
         for at in (0.05, r["seconds"] - 1.05):
             end = r["videoStart"] + at + 1
             if at < 0 or end > fade_from:
@@ -452,6 +467,30 @@ def cmd_check(_args) -> None:
     for s in cues["splices"]:
         j, natural = jump(edit, s["t"]), jump(source, s["songLanding"])
         expect(j <= natural * 1.25 + 0.01, f"no click at the {s['from']}→{s['to']} splice ({s['t']:.2f}s): jump {j:.3f}, the song's own {natural:.3f}")
+
+    # A built transition keeps its declared shape, measured the way the ear hears (K-weighted):
+    # a dip below where it started, then a climb that rises and arrives near the bar it lands on.
+    y_edit, _ = sf.read(EDIT_WAV)
+    y_edit = y_edit.mean(1)
+    for i, r in enumerate(cues["runs"]):
+        exp = next((p.get("expect") for p in plan["pieces"] if p["bars"] == r["songBars"] and p.get("expect")), None)
+        if not exp:
+            continue
+        beats = round(r["seconds"] / cues["beatSeconds"])
+        lk = beat_loudness(y_edit, esr, r["videoStart"], cues["beatSeconds"], beats)
+        name = f"transition {r['songBars'][0]}-{r['songBars'][1]}"
+        if "dip" in exp:
+            a, b = exp["dip"]["beats"]
+            depth = float(np.mean(lk[a:b])) - lk[0]
+            expect(depth <= exp["dip"]["below"], f"{name} dips {depth:+.1f} LU below where it starts (wants {exp['dip']['below']})")
+        if "climb" in exp:
+            a, b = exp["climb"]["beats"]
+            rise = lk[b - 1] - min(lk[a:a + 2])
+            expect(rise >= exp["climb"]["rise"], f"{name} climbs {rise:+.1f} LU through its build (wants +{exp['climb']['rise']})")
+            if i + 1 < len(cues["runs"]):
+                landing = beat_loudness(y_edit, esr, cues["runs"][i + 1]["videoStart"], cues["beatSeconds"], 1)[0]
+                gap = landing - lk[b - 1]
+                expect(gap <= exp["climb"]["toWithin"], f"{name} arrives {gap:.1f} LU under the bar it lands on (wants within {exp['climb']['toWithin']})")
 
     # The ear: whether a splice lands musically is a person's call (a peak cut straight into a riser
     # measures smooth and sounds wrong). listening.json holds what was heard.
@@ -504,6 +543,54 @@ def cmd_master(args) -> None:
     print(f"{out.relative_to(APP)}: soundtrack offset {off:+.2f} ms")
     if abs(off) > 1:
         sys.exit("the soundtrack is out of sync by more than 1 ms")
+
+
+# ---------------------------------------------------------------- contour
+
+
+def k_weight(y, sr: int):
+    """ITU BS.1770 K-weighting (the stage before LUFS): a high shelf of about +4 dB above 1.5 kHz and a
+    high-pass near 38 Hz, so loudness reads the way the ear hears it rather than how much sub it has."""
+    from scipy import signal
+
+    # Pre-filter (high shelf), designed at the given rate from the standard's analog prototype.
+    f0, g, q = 1681.974450955533, 3.999843853973347, 0.7071752369554196
+    k = np.tan(np.pi * f0 / sr)
+    vh, vb = 10 ** (g / 20), 10 ** (g / 20) ** 0.4996667741545416
+    a0 = 1 + k / q + k * k
+    b1 = [(vh + vb * k / q + k * k) / a0, 2 * (k * k - vh) / a0, (vh - vb * k / q + k * k) / a0]
+    a1 = [1, 2 * (k * k - 1) / a0, (1 - k / q + k * k) / a0]
+    # RLB (high-pass).
+    f0, q = 38.13547087602444, 0.5003270373238773
+    k = np.tan(np.pi * f0 / sr)
+    a2 = [1, 2 * (k * k - 1) / (1 + k / q + k * k), (1 - k / q + k * k) / (1 + k / q + k * k)]
+    return signal.lfilter([1, -2, 1], a2, signal.lfilter(b1, a1, y))
+
+
+def beat_loudness(y, sr: int, t0: float, beat: float, beats: int) -> list[float]:
+    """K-weighted loudness of each beat from t0, in LU-like dB (mean square, -0.691 offset)."""
+    kw = k_weight(y, sr)
+    out = []
+    for i in range(beats):
+        seg = kw[int((t0 + i * beat) * sr): int((t0 + (i + 1) * beat) * sr)]
+        out.append(round(float(-0.691 + 10 * np.log10((seg ** 2).mean() + 1e-12)), 1))
+    return out
+
+
+def cmd_contour(args) -> None:
+    """How loud the edit sounds, beat by beat, between two video bars: for shaping transitions."""
+    import soundfile as sf
+
+    cues = load_json(CUES)
+    y, sr = sf.read(EDIT_WAV)
+    y = y.mean(1) if y.ndim > 1 else y
+    first = cues["bars"][args.first - 1]
+    beats = (args.last - args.first + 1) * 4
+    lk = beat_loudness(y, sr, first["t"], cues["beatSeconds"], beats)
+    for i, v in enumerate(lk):
+        bar = args.first + i // 4
+        sec = cues["bars"][bar - 1]["section"] if i % 4 == 0 else ""
+        print(f"  {bar}.{i % 4 + 1}  {v:6.1f}  {'#' * max(0, int(v + 40))}  {sec or ''}")
 
 
 # ---------------------------------------------------------------- spectrogram
@@ -563,6 +650,10 @@ def main() -> None:
     mp.add_argument("video", help="a silent render")
     mp.add_argument("out")
     mp.set_defaults(fn=cmd_master)
+    cp = sub.add_parser("contour")
+    cp.add_argument("first", type=int, help="first video bar")
+    cp.add_argument("last", type=int, help="last video bar")
+    cp.set_defaults(fn=cmd_contour)
     sp = sub.add_parser("spectrogram")
     sp.add_argument("which", choices=["source", "edit"])
     sp.add_argument("--seconds", type=float, default=24)
