@@ -15,6 +15,14 @@ the landing bar's first hit reversed. Only the noise of a riser is generated.
                                hits per beat from `rate[0]` to `rate[1]`, doubling in steps
           reverse              {"beats": [a, b], "of": {"bar"}, "db": g}  the landing bar's first
                                beats reversed, so they swell into the downbeat
+          boom                 {"at": beat, "hz": [from, to], "ms": decay, "db": g}  a sub drop: a
+                               sine gliding down, the weight of an impact
+          crash                {"at": beat, "hz": cutoff, "ms": decay, "db": g}  a noise wash above
+                               `hz`, the air of an impact
+          hit                  {"at": beat, "hit": {"bar", "step"}, "db": g}  one drum hit lifted
+                               from the song, the song's own snap in an impact
+The song has no impact hits of its own (every section downbeat stands under 1 dB above an ordinary
+one), so a drop that pays off a build is made of these three, stacked on the downbeat.
 """
 
 from __future__ import annotations
@@ -129,7 +137,7 @@ def apply(run: np.ndarray, sr: int, beat_s: float, piece: dict, song, bar_start)
 
     rng = np.random.default_rng(142)  # the same noise every run: the edit is reproducible
     for layer in piece.get("layers", []):
-        a, b = _span(layer, beat_n, n)
+        a, b = _span(layer, beat_n, n) if "beats" in layer else (0, n)
         t = layer["type"]
         add = np.zeros(n)
         if t == "riser":
@@ -157,6 +165,27 @@ def apply(run: np.ndarray, sr: int, beat_s: float, piece: dict, song, bar_start)
                 s = round(p * beat_n)
                 e = min(n, s + len(hit))
                 add[s:e] += hit[: e - s] * g
+        elif t == "boom":
+            s = round(layer["at"] * beat_n)
+            m = min(n - s, int(layer["ms"] / 1000 * sr))
+            tt = np.arange(m) / sr
+            f = layer["hz"][1] + (layer["hz"][0] - layer["hz"][1]) * np.exp(-tt / 0.09)
+            phase = 2 * np.pi * np.cumsum(f) / sr
+            env = np.minimum(1, tt / 0.003) * np.exp(-tt / (layer["ms"] / 1000 / 5))
+            add[s: s + m] = np.sin(phase) * env * _db(layer["db"])
+        elif t == "crash":
+            s = round(layer["at"] * beat_n)
+            m = min(n - s, int(layer["ms"] / 1000 * sr))
+            tt = np.arange(m) / sr
+            wash = signal.sosfilt(signal.butter(2, layer["hz"], btype="high", fs=sr, output="sos"), rng.standard_normal(m))
+            wash /= np.abs(wash).max() + 1e-9
+            env = np.minimum(1, tt / 0.002) * np.exp(-tt / (layer["ms"] / 1000 / 5))
+            add[s: s + m] = wash * env * _db(layer["db"])
+        elif t == "hit":
+            h = lift_hit(song, sr, bar_start(layer["hit"]["bar"]) + layer["hit"]["step"] * beat_s / 4)
+            s = round(layer["at"] * beat_n)
+            e = min(n, s + len(h))
+            add[s:e] = h[: e - s] * _db(layer["db"])
         elif t == "reverse":
             land = bar_start(layer["of"]["bar"])
             length = b - a

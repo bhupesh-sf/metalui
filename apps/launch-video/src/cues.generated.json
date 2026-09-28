@@ -2,7 +2,7 @@
  "$generated": "music/pipeline.py edit. Do not edit; change music/edit.json and re-run.",
  "inputs": {
   "source": "d137ba25d6125127",
-  "edit": "e46c70d6886ff227",
+  "edit": "7c80509362c82d3c",
   "song": "cfe7a5828a42b864"
  },
  "audio": "launch.m4a",
@@ -94,9 +94,9 @@
     69,
     76
    ],
-   "why": "the final chorus, landed from the gap",
+   "why": "the final chorus, the climax: the build emptied the low end, so the weight crashing back is the hit; an impact the song doesn't have (a sub drop, a noise wash, the song's own snare) lands on it, the music ducks under it and swells to sit louder than drop 1",
    "section": null,
-   "processed": false,
+   "processed": true,
    "videoStart": 41.236349,
    "songStart": 115.616054,
    "seconds": 13.523583,

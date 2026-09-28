@@ -1,7 +1,8 @@
 {
   "$description": "Authored. The launch edit, as runs of song bars played in order. Every splice is on a bar line. 'end' plays to the end of the track. The first run starting at bar 1 keeps the silence before it.",
   "maxSeconds": 60,
-  "gainDb": -1,
+  "gainDb": -3.5,
+  "master": {"lufs": -13, "ceilingDb": -1},
   "crossfadeMs": 8,
   "tailFadeMs": 300,
   "tailSeconds": 1.9,
@@ -16,7 +17,7 @@
       "why": "a built transition: drop 1's last four bars again, closed down to a breath, opened back up under a riser and a snare roll, then a beat of silence that swells into the final chorus. Same chords as the chorus it lands on, so nothing can clash.",
       "fx": [
         {"type": "lowpass", "path": [[0, 18000], [1, 18000], [8, 320], [10, 320], [15, 12000]]},
-        {"type": "highpass", "path": [[0, 10], [8, 10], [15, 380]]},
+        {"type": "highpass", "path": [[0, 10], [8, 10], [9, 120], [11, 400], [15, 1200]]},
         {"type": "gain", "path": [[0, 0], [7, -4], [9, -4], [15, 0]]},
         {"type": "mute", "beats": [15, 16]}
       ],
@@ -27,7 +28,19 @@
         {"type": "reverse", "beats": [15, 16], "of": {"bar": 69}, "db": -7}
       ]
     },
-    {"bars": [69, 76], "why": "the final chorus, landed from the gap"},
+    {
+      "bars": [69, 76],
+      "why": "the final chorus, the climax: the build emptied the low end, so the weight crashing back is the hit; an impact the song doesn't have (a sub drop, a noise wash, the song's own snare) lands on it, the music ducks under it and swells to sit louder than drop 1",
+      "fx": [
+        {"type": "gain", "path": [[0, -6], [0.75, 2.5]]}
+      ],
+      "expect": {"payoff": {"weight": 18, "stand": 1.5, "lift": {"over": [17, 24], "by": 2.5}}},
+      "layers": [
+        {"type": "boom", "at": 0, "hz": [80, 38], "ms": 1600, "db": 0},
+        {"type": "crash", "at": 0, "hz": 2500, "ms": 2200, "db": -6},
+        {"type": "hit", "at": 0, "hit": {"bar": 34, "step": 3}, "db": -2}
+      ]
+    },
     {"bars": [84, 84], "why": "the last lift"},
     {"bars": [85, "end"], "why": "the final hit and its decay"}
   ]

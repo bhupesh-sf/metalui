@@ -27,7 +27,7 @@ Three files are authored; everything else is generated, so don't hand-edit it.
 
 - **`music/song.json`**: the source, and what each stretch of the song is, in song bars. Use `textureChanges` in `analysis.json` and the source spectrograms to find where sections turn.
 - **`music/edit.json`**: the cut, as runs of song bars, counted in whole samples. Every splice is on a bar line by construction; `check` proves time is kept through it.
-- **`music/listening.json`**: what a person heard at each splice (`"24→51": "abrupt"`). The measures can't hear whether a cut lands musically: drop 1 cut straight into the riser measured smoother than 90% of the song's own bar lines and sounded wrong, because a riser needs a dip to climb from. `check` fails on a splice heard as abrupt and lists the ones nobody has heard.
+- **`music/listening.json`**: what a person heard at each splice, and in which edit (`"24→51": "abrupt"`). The measures can't hear whether a cut lands musically: drop 1 cut straight into the riser measured smoother than 90% of the song's own bar lines and sounded wrong, because a riser needs a dip to climb from. `check` fails on a negative verdict given for the current edit, asks for a re-listen once the edit changes, and lists splices nobody has heard.
 
 ### How it reads the track
 
@@ -39,6 +39,8 @@ Three files are authored; everything else is generated, so don't hand-edit it.
 ### Built transitions
 
 Where a straight splice can't go, a run can be processed into a transition (`music/transitions.py`): `fx` over its own audio (`lowpass`/`highpass` along a `path` of `[beat, Hz]` points, so one filter can close and open again; `gain` along `[beat, dB]`; `mute` for a gap) and `layers` over it (`riser`, generated noise; `roll`, a snare hit lifted from the mix and gated, accelerating in doublings; `reverse`, the landing bar's first beat swelling into the downbeat). Positions are beats from the start of the run. A look-ahead limiter holds the run under -0.3 dBFS and reports how much it had to turn down; `gainDb` gives the whole edit headroom, since the track is mastered to full scale.
+
+A gap needs a payoff. A run that ends in silence builds anticipation, and the run it lands on must declare `expect.payoff` and meet it: `weight`, the low end (30-250 Hz) crashing back against the build's last two beats (a build that keeps its bass leaves the drop nothing to bring); `stand`, the downbeat over an ordinary one, unweighted so a sub drop counts; and `lift`, K-weighted loudness over the drop it answers. This track has no impact hits of its own and is mastered to the ceiling, so the climax is built: the build drains its low end, the landing ducks the music under an impact (`boom`, `crash`, `hit`) and swells back louder. The whole edit is then mastered (`master`: a loudness target and a ceiling), so that lift is kept in the design and the level is set once.
 
 A run can declare the shape it must have, in `expect`: `dip` (how far below its start it falls) and `climb` (how much its build rises, and how close it arrives to the bar it lands on). `check` measures both K-weighted. The current transition replays drop 1's last four bars: the same chords as the final chorus it lands on, so nothing can clash. Borrowing the song's own breakdown and riser didn't work: they belong to a different section, in other chords, and their gap is written to lead into drop 2.
 

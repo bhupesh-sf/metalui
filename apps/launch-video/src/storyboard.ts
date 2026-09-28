@@ -79,7 +79,7 @@ export const storyboard: Shot[] = [
   },
   {
     id: 'riser', act: 'gap', bars: [23, 23], title: 'Riser',
-    music: 'The filter opens again under a noise riser; a snare roll speeds up from eighths to sixteenths',
+    music: 'The kick and bass drain away while the highs open under a noise riser; a snare roll speeds up from eighths to sixteenths',
     picture: 'A colorway sweep, bone to graphite',
     sync: 'The sweep follows the riser; a tick per roll hit',
   },
@@ -91,9 +91,9 @@ export const storyboard: Shot[] = [
   },
   {
     id: 'everywhere', act: 'peak', bars: [25, 28], title: 'Final chorus: everywhere',
-    music: 'The peak, the loudest bars',
+    music: 'The climax: the weight crashes back on an impact (sub drop, noise wash, snare), the loudest bars of the film',
     picture: 'React and SwiftUI side by side, then the agent guides',
-    sync: 'Both platforms land together on the same spring',
+    sync: 'Everything slams in on the impact frame; both platforms land together on the same spring',
   },
   {
     id: 'install', act: 'peak', bars: [29, 32], title: 'Install',

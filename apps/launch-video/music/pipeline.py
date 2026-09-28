@@ -36,7 +36,8 @@ MUSIC = Path(__file__).resolve().parent
 APP = MUSIC.parent
 OUT = MUSIC / "out"
 SOURCE_WAV = OUT / "source.wav"
-EDIT_WAV = OUT / "launch.wav"
+EDIT_WAV = OUT / "launch.wav"  # before mastering: sample-exact against the source, for checks
+MASTER_WAV = OUT / "launch-master.wav"  # what is heard: loudness-normalised and limited
 ANALYSIS = MUSIC / "analysis.json"
 SONG = MUSIC / "song.json"
 EDIT = MUSIC / "edit.json"
@@ -335,8 +336,10 @@ def cmd_edit(_args) -> None:
     out[:, -fade:] *= np.linspace(1, 0, fade)
     OUT.mkdir(parents=True, exist_ok=True)
     sf.write(EDIT_WAV, out.T, sr)
+    mastered = master(out, sr, plan.get("master"))
+    sf.write(MASTER_WAV, mastered.T, sr)
     PUBLIC_AUDIO.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(EDIT_WAV), "-c:a", "aac", "-b:a", "192k", str(PUBLIC_AUDIO)], check=True)
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(MASTER_WAV), "-c:a", "aac", "-b:a", "192k", str(PUBLIC_AUDIO)], check=True)
     duration = out.shape[1] / sr
 
     # Video bars: the first run keeps its pickup, so video bar 1 sits where song bar 1 did.
@@ -375,7 +378,7 @@ def cmd_edit(_args) -> None:
         "bars": vbars,
     }
     write_json(CUES, cues)
-    write_json(METERS, meters(out.mean(0), sr, duration), indent=None)
+    write_json(METERS, meters(mastered.mean(0), sr, duration), indent=None)
     print(f"edit {duration:.2f}s, {len(vbars)} bars, {len(splices)} splices -> {PUBLIC_AUDIO.relative_to(APP)}, {CUES.relative_to(APP)}, {METERS.relative_to(APP)}")
 
 
@@ -398,6 +401,33 @@ def meters(mono, sr: int, duration: float) -> dict:
         samples = [x[min(len(x) - 1, int(f / METER_FPS * fr)): min(len(x), int((f + 1) / METER_FPS * fr) + 1)].max() for f in range(frames)]
         out[k] = [round(float(np.clip((s - lo) / (hi - lo), 0, 1)), 3) for s in samples]
     return out
+
+
+def integrated_lufs(x, sr: int) -> float:
+    """Integrated loudness per ITU BS.1770: K-weighted 400 ms blocks (75% overlap), gated at -70 LUFS
+    and then 10 LU under the ungated mean."""
+    kw = np.stack([k_weight(c, sr) for c in np.atleast_2d(x)])
+    size, hop = int(0.4 * sr), int(0.1 * sr)
+    z = np.array([(kw[:, i: i + size] ** 2).mean(1).sum() for i in range(0, kw.shape[1] - size, hop)])
+    lk = -0.691 + 10 * np.log10(z + 1e-12)
+    z = z[lk > -70]
+    rel = -0.691 + 10 * np.log10(z.mean()) - 10
+    z = z[-0.691 + 10 * np.log10(z) > rel]
+    return float(-0.691 + 10 * np.log10(z.mean()))
+
+
+def master(x, sr: int, spec: dict | None):
+    """The last stage: bring the whole edit to a loudness target and hold its peaks under a ceiling.
+    The design (the lift of a climax over what came before) lives in the edit; this only sets the
+    level it is played at."""
+    if not spec:
+        return x
+    from transitions import limit
+
+    gain = spec["lufs"] - integrated_lufs(x, sr)
+    y, reduced = limit(x * 10 ** (gain / 20), sr, ceiling_db=spec["ceilingDb"], lookahead_ms=5, release_ms=120)
+    print(f"  master: {gain:+.1f} dB to {spec['lufs']} LUFS, the limiter turned it down at most {reduced:.1f} dB (ceiling {spec['ceilingDb']} dBFS)")
+    return y
 
 
 # ---------------------------------------------------------------- check
@@ -492,17 +522,69 @@ def cmd_check(_args) -> None:
                 gap = landing - lk[b - 1]
                 expect(gap <= exp["climb"]["toWithin"], f"{name} arrives {gap:.1f} LU under the bar it lands on (wants within {exp['climb']['toWithin']})")
 
+    # A gap needs a payoff. A run that ends in silence builds anticipation; the run after it must
+    # declare a payoff and meet it. What makes a drop hit, measured:
+    #   weight  the low end (30-250 Hz) crashes back: the landing's first beat against the build's
+    #           last two beats. A build that keeps its bass leaves the drop nothing to bring.
+    #   stand   the downbeat stands out from the ordinary downbeats after it, unweighted so a sub
+    #           drop counts. (The song has none of its own, and it is mastered to the ceiling, so
+    #           this is a few dB, not many.)
+    #   lift    the landing section sits louder than the drop it answers, K-weighted.
+    from scipy import signal as _sig
+
+    low = _sig.sosfilt(_sig.butter(4, [30, 250], btype="band", fs=esr, output="sos"), y_edit)
+    kw = k_weight(y_edit, esr)
+
+    def level(x, t: float, dur: float) -> float:
+        s = x[int(t * esr): int((t + dur) * esr)]
+        return float(10 * np.log10((s ** 2).mean() + 1e-12))
+
+    def run_of(bars):
+        return next((r for r in cues["runs"] if r["songBars"] == bars), None)
+
+    bs = cues["beatSeconds"]
+    for i, r in enumerate(cues["runs"]):
+        piece = next(p for p in plan["pieces"] if p["bars"] == r["songBars"])
+        beats = round(r["seconds"] / bs)
+        gap = any(f["type"] == "mute" and f["beats"][1] >= beats for f in piece.get("fx", []))
+        if not gap or i + 1 >= len(cues["runs"]):
+            continue
+        land = cues["runs"][i + 1]
+        pay = next((p.get("expect", {}).get("payoff") for p in plan["pieces"] if p["bars"] == land["songBars"]), None)
+        name = f"the landing after the {r['songBars'][0]}-{r['songBars'][1]} gap"
+        expect(pay is not None, f"{name} declares a payoff (a gap needs one)")
+        if not pay:
+            continue
+        t0 = land["videoStart"]
+        weight = level(low, t0, bs) - level(low, t0 - 3 * bs, 2 * bs)
+        expect(weight >= pay["weight"], f"{name} brings the weight back {weight:+.1f} dB over the end of the build (wants +{pay['weight']})")
+        stand = level(y_edit, t0, 0.15) - float(np.median([level(y_edit, t0 + k * cues["barSeconds"], 0.15) for k in range(1, 8)]))
+        expect(stand >= pay["stand"], f"{name} hits {stand:+.1f} dB over an ordinary downbeat (wants +{pay['stand']})")
+        over = run_of(pay["lift"]["over"])
+        if over:
+            mine = np.mean(beat_loudness(y_edit, esr, t0, bs, 16))
+            theirs = np.mean(beat_loudness(y_edit, esr, over["videoStart"], bs, 16))
+            expect(mine - theirs >= pay["lift"]["by"], f"{name} sits {mine - theirs:+.1f} LU over the drop it answers (wants +{pay['lift']['by']})")
+
     # The ear: whether a splice lands musically is a person's call (a peak cut straight into a riser
     # measures smooth and sounds wrong). listening.json holds what was heard.
-    heard = {v["splice"]: v for v in load_json(LISTENING)["verdicts"]} if LISTENING.exists() else {}
+    verdicts = load_json(LISTENING)["verdicts"] if LISTENING.exists() else []
+    now = sha(EDIT)
     unheard = []
     for s in cues["splices"]:
         key = f"{s['from'][1]}→{s['to'][0]}"
-        v = heard.get(key)
-        if v is None:
+        mine = [v for v in verdicts if v["splice"] == key]
+        if not mine:
             unheard.append(f"{key} at {s['t']:.2f}s")
-        else:
-            expect(v["verdict"] != "abrupt", f"the {key} splice was heard as {v['verdict']} ({v['by']}, {v['date']})")
+            continue
+        for v in mine:
+            bad = v["verdict"] != "ok"
+            if bad and v.get("edit") in (None, now):
+                expect(False, f"the {key} splice was heard as {v['verdict']} in this very edit ({v['by']}, {v['date']})")
+            elif bad:
+                unheard.append(f"{key} at {s['t']:.2f}s (heard as {v['verdict']} before the last change)")
+            else:
+                print(f"  ok    the {key} splice was heard as ok ({v['by']}, {v['date']})")
     if unheard:
         print(f"  listen  not yet heard by a person: {', '.join(unheard)}; log a verdict in music/listening.json")
 
@@ -523,7 +605,7 @@ def av_offset_ms(video: Path) -> float:
     """How late the video's soundtrack runs against the edit, by cross-correlation (0.125 ms steps)."""
     import scipy.signal as sig
 
-    a, b = decode(EDIT_WAV), decode(video)
+    a, b = decode(MASTER_WAV), decode(video)
     n = min(len(a), len(b))
     c = sig.correlate(b[:n], a[:n], mode="full", method="fft")
     return (int(c.argmax()) - (n - 1)) / 8.0
@@ -535,7 +617,7 @@ def cmd_master(args) -> None:
     sound, writing the priming into the file where players skip it. Then prove the sync."""
     video, out = Path(args.video).resolve(), Path(args.out).resolve()
     subprocess.run(
-        ["ffmpeg", "-loglevel", "error", "-y", "-i", str(video), "-i", str(EDIT_WAV), "-map", "0:v:0", "-map", "1:a:0",
+        ["ffmpeg", "-loglevel", "error", "-y", "-i", str(video), "-i", str(MASTER_WAV), "-map", "0:v:0", "-map", "1:a:0",
          "-c:v", "copy", "-c:a", "aac", "-b:a", "256k", "-shortest", "-movflags", "+faststart", str(out)],
         check=True,
     )

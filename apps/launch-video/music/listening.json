@@ -1,5 +1,5 @@
 {
-  "$description": "Authored. What a person heard at each splice; the analysis can't hear. A splice is keyed by the last song bar before it and the first after it. check fails on 'abrupt' and lists splices nobody has heard yet.",
+  "$description": "Authored. What a person heard at each splice; the analysis can't hear. A splice is keyed by the last song bar before it and the first after it; `edit` is the edit.json it was heard in. check fails on a negative verdict for the edit it was heard in, and asks for a re-listen once the edit has changed, or where nobody has listened yet.",
   "verdicts": [
     {
       "splice": "24→51",
@@ -21,6 +21,14 @@
       "by": "owner",
       "date": "2026-09-29",
       "note": "Breakdown, riser and gap borrowed from the drop-2 build: 'all fucked up'. The breakdown is mid-section in other chords, and bar 52's gap is written to lead into drop 2, not the final chorus."
+    },
+    {
+      "splice": "24→69",
+      "verdict": "no payoff",
+      "edit": "e46c70d6886ff227",
+      "by": "owner",
+      "date": "2026-09-29",
+      "note": "After the gap, no climax: 'just a normal beat'. The build kept its bass and nearly the drop's level, so the drop brought nothing new; the song has no impact hit of its own."
     }
   ]
 }
