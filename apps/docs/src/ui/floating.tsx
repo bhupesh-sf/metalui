@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
-import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
+import { Link } from 'react-router';
+import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import type { XrayKind } from './xray';
 import { ToastStill } from './xray/ToastXray';
@@ -57,7 +58,7 @@ interface Item {
 
 const ITEMS: Item[] = [
   {
-    id: 'lines', table: ['2%', '3%'], space: ['8%', '20%', -260, 14], dur: '26s', drift: ['30px', '18px'], live: true,
+    id: 'lines', table: ['2%', '2.2%'], space: ['8%', '20%', -260, 14], dur: '26s', drift: ['30px', '18px'], live: true,
     // a checkbox opens its x-ray
     node: ({ openXray }) => (
       <div className="hero-frags" style={{ gap: 12, maxWidth: 270 }} onClick={(e) => { if ((e.target as HTMLElement).closest('.mu-dimple')) openXray('checkbox'); }}>
@@ -67,20 +68,20 @@ const ITEMS: Item[] = [
       </div>
     ),
   },
-  { id: 'link', table: ['46%', '3.5%'], space: ['56%', '14%', -420, -12], dur: '30s', drift: ['-30px', '26px'], live: true, node: ({ openXray }) => <div onClickCapture={(e) => { e.preventDefault(); openXray('link'); }}><LinkCard href="https://lanterns.photo/night-market" /></div> },
-  { id: 'swatch', table: ['84.5%', '4%'], space: ['82%', '34%', -140, -18], dur: '24s', drift: ['-18px', '30px'], live: true, node: ({ openXray }) => <Swatch hex="#FF6B3D" label="Colour" onClick={() => openXray('swatch')} /> },
+  { id: 'link', table: ['46%', '2.6%'], space: ['56%', '14%', -420, -12], dur: '30s', drift: ['-30px', '26px'], live: true, node: ({ openXray }) => <div onClickCapture={(e) => { e.preventDefault(); openXray('link'); }}><LinkCard href="https://lanterns.photo/night-market" /></div> },
+  { id: 'swatch', table: ['84.5%', '3%'], space: ['82%', '34%', -140, -18], dur: '24s', drift: ['-18px', '30px'], live: true, node: ({ openXray }) => <Swatch hex="#FF6B3D" label="Colour" onClick={() => openXray('swatch')} /> },
   {
     // hung back in the scene like its neighbours: at the front and centre, the camera's lean barely moved it
-    id: 'button', table: ['36%', '24%'], space: ['42%', '48%', -180, -10], dur: '21s', drift: ['38px', '-22px'], live: true,
+    id: 'button', table: ['36%', '17.7%'], space: ['42%', '48%', -180, -10], dur: '21s', drift: ['38px', '-22px'], live: true,
     node: ({ openXray }) => <div style={{ zoom: 1.6 }}><Button cap="primary" onClick={() => openXray('button')}>New Canvas</Button></div>,
   },
   {
-    id: 'chip', table: ['2%', '62%'], space: ['14%', '62%', -60, 10], dur: '28s', drift: ['22px', '-22px'], live: true,
+    id: 'chip', table: ['2%', '45.8%'], space: ['14%', '62%', -60, 10], dur: '28s', drift: ['22px', '-22px'], live: true,
     // the words open the x-ray; ✓ and × still answer
     node: ({ chip, setChip, openXray }) => chip ? <span onClick={(e) => { if (!(e.target as HTMLElement).closest('button')) openXray('chip'); }}><SuggestionChip label="Track as mood?" confidence={0.8} onAccept={() => setChip(false)} onDismiss={() => setChip(false)} /></span> : null,
   },
   {
-    id: 'seg', table: ['5%', '51%'], space: ['70%', '60%', -200, -14], dur: '23s', drift: ['-26px', '-20px'], live: true,
+    id: 'seg', table: ['5%', '37.7%'], space: ['70%', '60%', -200, -14], dur: '23s', drift: ['-26px', '-20px'], live: true,
     // a click picks the option and opens the x-ray, like the button
     node: ({ openXray }) => (
       <div style={{ zoom: 1.3 }} onClick={() => openXray('switcher')}>
@@ -88,10 +89,10 @@ const ITEMS: Item[] = [
       </div>
     ),
   },
-  { id: 'key', table: ['82%', '52%'], space: ['86%', '66%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, node: ({ openXray }) => <div style={{ zoom: 1.4 }} onClick={() => openXray('kbd')}><Kbd>⌘K</Kbd></div> },
-  { id: 'slider', table: ['37%', '73%'], space: ['30%', '30%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('slider')}><FloatSlider /></div> },
+  { id: 'key', table: ['82%', '38.4%'], space: ['86%', '66%', 40, -20], dur: '19s', drift: ['-14px', '-26px'], live: true, node: ({ openXray }) => <div style={{ zoom: 1.4 }} onClick={() => openXray('kbd')}><Kbd>⌘K</Kbd></div> },
+  { id: 'slider', table: ['37%', '54%'], space: ['30%', '30%', -340, 8], dur: '27s', drift: ['24px', '16px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('slider')}><FloatSlider /></div> },
   {
-    id: 'field', table: ['38%', '50%'], space: ['60%', '80%', -180, -10], dur: '29s', drift: ['-20px', '12px'], live: true,
+    id: 'field', table: ['38%', '37%'], space: ['60%', '80%', -180, -10], dur: '29s', drift: ['-20px', '12px'], live: true,
     node: ({ openXray }) => (
       <div style={{ width: 230 }} onClick={() => openXray('field')}>
         <Field style={{ width: '100%' }}>
@@ -102,22 +103,31 @@ const ITEMS: Item[] = [
       </div>
     ),
   },
-  { id: 'status', table: ['68%', '22%'], space: ['40%', '8%', -220, -6], dur: '25s', drift: ['18px', '14px'], live: true, node: ({ openXray }) => <span onClick={() => openXray('status')}><StatusBadge led="live">Sync live</StatusBadge></span> },
+  { id: 'status', table: ['68%', '16.3%'], space: ['40%', '8%', -220, -6], dur: '25s', drift: ['18px', '14px'], live: true, node: ({ openXray }) => <span onClick={() => openXray('status')}><StatusBadge led="live">Sync live</StatusBadge></span> },
   {
     // a still of the tooltip, drawn with its own recipe classes (the real one lives in a portal)
-    id: 'tooltip', table: ['36%', '62%'], space: ['7%', '65%', -60, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
+    id: 'tooltip', table: ['36%', '45.8%'], space: ['7%', '65%', -60, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
     node: ({ openXray }) => (
       <span onClick={() => openXray('tooltip')} className="mu-tooltip inline-block py-tooltip-pad-y px-tooltip-pad-x rounded-tooltip-radius type-tooltip text-tooltip-ink recipe-tooltip whitespace-nowrap">
         Select<span className="mu-tooltip-key text-tooltip-key-ink"> · V</span>
       </span>
     ),
   },
-  { id: 'toast', table: ['20%', '85%'], space: ['58%', '30%', -300, -8], dur: '31s', drift: ['16px', '-8px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('toast')}><ToastStill /></div> },
-  { id: 'menu', table: ['2%', '22%'], space: ['74%', '4%', -380, -16], dur: '34s', drift: ['12px', '20px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('menu')}><MenuStill /></div> },
-  { id: 'dialog', table: ['66%', '28.5%'], space: ['20%', '40%', -480, 12], dur: '36s', drift: ['-14px', '18px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('dialog')}><DialogStill /></div> },
-  { id: 'palette', table: ['69%', '71%'], space: ['80%', '78%', -520, -16], dur: '38s', drift: ['-10px', '-14px'], live: true, node: ({ openXray }) => <div style={{ zoom: 0.7 }} onClick={() => openXray('palette')}><PaletteStill /></div> },
+  { id: 'toast', table: ['20%', '62.8%'], space: ['58%', '30%', -300, -8], dur: '31s', drift: ['16px', '-8px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('toast')}><ToastStill /></div> },
+  { id: 'menu', table: ['2%', '16.3%'], space: ['74%', '4%', -380, -16], dur: '34s', drift: ['12px', '20px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('menu')}><MenuStill /></div> },
+  { id: 'dialog', table: ['66%', '21.1%'], space: ['20%', '40%', -480, 12], dur: '36s', drift: ['-14px', '18px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('dialog')}><DialogStill /></div> },
+  { id: 'palette', table: ['69%', '52.5%'], space: ['80%', '78%', -520, -16], dur: '38s', drift: ['-10px', '-14px'], live: true, node: ({ openXray }) => <div style={{ zoom: 0.7 }} onClick={() => openXray('palette')}><PaletteStill /></div> },
   {
-    id: 'toolbar', table: ['2%', '71%'], space: ['6%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
+    // a widget with no x-ray yet: it opens its own page
+    id: 'weather', table: ['3%', '75.5%'], space: ['2%', '33%', -260, 12], dur: '33s', drift: ['20px', '14px'],
+    node: () => (
+      <Link to="/components/weather" aria-label="Weather" style={{ display: 'block' }}>
+        <WeatherTile kind="partly" temp="21°" name="Partly" meta="Rain 10%" clock={10.5} aria-label="Partly cloudy, 21° at 10:30" />
+      </Link>
+    ),
+  },
+  {
+    id: 'toolbar', table: ['2%', '52.5%'], space: ['6%', '72%', -120, 8], dur: '32s', drift: ['40px', '-10px'], live: true,
     // a tool cap opens the icon button's x-ray; the strip opens the toolbar's
     node: ({ openXray }) => (
       <div onClick={(e) => { openXray((e.target as HTMLElement).closest('.mu-tool') ? 'icon-button' : 'toolbar'); }}>
