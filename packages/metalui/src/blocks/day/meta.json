@@ -1,0 +1,34 @@
+{
+  "name": "day",
+  "title": "Day",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "custom",
+  "reason": "The tear-off page (the date in dots at 3×, perforations, the seconds along the foot, the tear that drops the dots) and the year in dots are drawn by no part. The slab and the page's well are still Surface and Well.",
+  "uses": [
+    "surface",
+    "well"
+  ],
+  "description": "The day as an object: a tear-off page with the date in dots, the month, weekday and clock in the pixel face, the minute filling along its foot; the year so far one dot a day, the days left and the moon; one line for the day. Tap the page to tear it off. And a small tile of the date.",
+  "base": "none (a region; tearing is one real button)",
+  "react": {
+    "export": "Day, DayTile, DAY_LINES",
+    "files": [
+      "day.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalDay, MetalDayTile",
+    "file": "swift/Sources/MetalUI/Blocks/MetalDay.swift"
+  },
+  "agent": "day.agent.md",
+  "page": "/components/day",
+  "slots": {
+    "Day": [
+      "Root",
+      "Page",
+      "Year",
+      "Line"
+    ]
+  }
+}

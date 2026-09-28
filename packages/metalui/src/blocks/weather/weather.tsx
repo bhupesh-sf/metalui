@@ -335,7 +335,7 @@ const MINI: Record<string, string[]> = {
   windy: ['WWWWW..', '.....W.', 'WWWWW..', '.......', 'WWWWWW.', '......W', 'WWWW...'],
   heat: ['.SSS...', 'SSSSS..', '.SSS...', '.......', 'S.S.S.S', '.S.S.S.', '.......'],
 };
-const MINI_LAYER: Record<string, GlyphLayer> = { S: 'sun', M: 'moon', C: 'cloud', D: 'cloudDark', R: 'rain', Z: 'bolt', F: 'fog', N: 'snow', W: 'wind' };
+const miniLayer: Record<string, GlyphLayer> = { S: 'sun', M: 'moon', C: 'cloud', D: 'cloudDark', R: 'rain', Z: 'bolt', F: 'fog', N: 'snow', W: 'wind' };
 
 const isDay = (hour: number) => {
   const h = wrap(hour, 24);
@@ -354,7 +354,7 @@ export function WeatherGlyph({ kind, hour = 12, className, ...props }: WeatherGl
   const key = kind === 'clear' ? (day ? 'sun' : 'moon') : kind === 'partly' && !day ? 'partlyNight' : kind;
   const paths = Object.fromEntries(GLYPH_LAYERS.map((l) => [l, ''])) as Record<GlyphLayer, string>;
   (MINI[key] ?? MINI.cloud).forEach((row, y) => [...row].forEach((c, x) => {
-    const l = MINI_LAYER[c];
+    const l = miniLayer[c];
     if (l) paths[l] += `M${x * 3 + 0.3} ${y * 3 + 0.3}h2.4v2.4h-2.4Z`;
   }));
   const own = 'mu-weather-glyph block flex-none';
