@@ -121,7 +121,7 @@ const ITEMS: Item[] = [
     // a tool cap opens the icon button's x-ray; the strip opens the toolbar's
     node: ({ openXray }) => (
       <div onClick={(e) => { openXray((e.target as HTMLElement).closest('.mu-tool') ? 'icon-button' : 'toolbar'); }}>
-      <Toolbar variant="graphite" aria-label="Tools">
+      <Toolbar aria-label="Tools">
         <ToolButton label="Select" icon={<Icon name="select" size={16} />} pressed />
         <ToolButton label="Note" icon={<Icon name="note" size={16} />} />
         <ToolButton label="Draw" icon={<Icon name="draw" size={16} />} />
