@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Kbd, Row, Switch, toastParts as T } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { scalePx, type LayerDef } from './kit';
+import { scalePx, useRecipeLayers, type LayerDef } from './kit';
 import { PILL, UNDO, type Model, type Spot } from './ToastXray';
 import { CornerArc, Outline, Readout, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom, type Hint, type Seg } from '../edit';
 import './toast-specimens.css';
@@ -33,16 +33,11 @@ type Props = {
 
 const RECIPE = tokens.recipes.toast;
 const P = RECIPE.props;
-const layer = (part: string, prop: string) => RECIPE.layers.filter((l) => l.part === part && l.prop === prop).map((l) => l.value);
-const BG = layer('self', 'background')[0], SH = layer('self', 'shadow');
-const CAP_BG = layer('undo', 'background')[0], CAP_SH = layer('undo', 'shadow');
 const RISE = P.self.rise, SCALE = Number(P.self.scale);
 const PAD_L = P.self['pad-left'], PAD_R = P.self['pad-right'], TEXT_GAP = P.text.gap;
 const HEIGHT = P.self.height, CAP_H = P.undo.height;
 const PRESS = parseFloat(tokens.motion.press.value);
 const STAYS = { undo: tokens.toast['undo-ms'] / 1000, plain: tokens.toast['plain-ms'] / 1000 };
-// the outer shadows (contact, near, far) follow the lift; the insets and the rim are the glass itself
-const OUTER_FROM = SH.findIndex((v) => !v.startsWith('inset') && !/^0 0 0 /.test(v));
 
 const round = (v: number) => Math.round(v * 10) / 10;
 const token = (v: number, at: number) => (v === at ? { at, name: 'toast recipe token' } : undefined);
@@ -52,7 +47,10 @@ const quiet = () => document.documentElement.classList.contains('rm') || matchMe
 const pulse = (el: HTMLElement | null) => { if (el && !quiet()) el.animate([{ opacity: 0.8 }, { opacity: 1, borderWidth: '1.6px', offset: 0.3 }, { opacity: 0.8 }], { duration: 380, easing: 'cubic-bezier(.3,.7,.3,1)' }); };
 
 /** The recipe's layers from the model: a layer that is off is gone, and the outer shadows scale with the lift. */
-function look(m: Model): React.CSSProperties {
+function look(m: Model, pill: { fill: string; shadows: string[] }, cap: { fill: string; shadows: string[] }): React.CSSProperties {
+  const BG = pill.fill, SH = pill.shadows, CAP_BG = cap.fill, CAP_SH = cap.shadows;
+  // the outer shadows (contact, near, far) follow the lift; the insets and the rim are the glass itself
+  const OUTER_FROM = SH.findIndex((v) => !v.startsWith('inset') && !/^0 0 0 /.test(v));
   const shadow = SH.map((v, i) => (!m.pill[i + 1] ? null : i >= OUTER_FROM ? (m.lift > 0 ? scalePx(v, m.lift) : null) : v)).filter(Boolean).join(', ') || 'none';
   return {
     ['--mu-r-toast-self-pad-left' as string]: `${m.padL}px`,
@@ -70,8 +68,9 @@ function look(m: Model): React.CSSProperties {
 /** The real toast, drawn with its own part classes (the live one lives in a portal). */
 const Face = React.forwardRef<HTMLDivElement, { m: Model; gap?: React.ReactNode; cap?: React.HTMLAttributes<HTMLSpanElement> & { ref?: React.Ref<HTMLSpanElement> }; down?: boolean }>(
   function Face({ m, gap, cap, down }, ref) {
+    const pill = useRecipeLayers('toast'), undo = useRecipeLayers('toast', 'undo');
     return (
-      <div ref={ref} className={`${T.TOAST} ed-toast`} style={look(m)}>
+      <div ref={ref} className={`${T.TOAST} ed-toast`} style={look(m, pill, undo)}>
         <span className={T.TEXT}>
           <span>Moved 3 blocks</span>
           {m.sub && <span className={`${T.SUB} ed-toast-sub`}>{gap}· undo it any time</span>}

@@ -21,10 +21,11 @@ public struct MetalToastModel: Identifiable, Equatable {
     public static func == (a: Self, b: Self) -> Bool { a.id == b.id }
 }
 
-/// The toast pill: smoked glass, the result with its Undo cap.
+/// The toast pill: glass in the colorway, the result with its Undo cap.
 public struct MetalToast: View {
     let model: MetalToastModel
     let onUndo: () -> Void
+    @Environment(\.metalColorway) private var colorway
 
     public init(_ model: MetalToastModel, onUndo: @escaping () -> Void = {}) {
         self.model = model
@@ -33,12 +34,13 @@ public struct MetalToast: View {
 
     public var body: some View {
         let recipe = MetalRecipes.toast
-        HStack(spacing: recipe.points("self.gap")) {
+        let cw = MetalRecipeColorway(colorway)
+        return HStack(spacing: recipe.points("self.gap")) {
             HStack(spacing: recipe.points("text.gap")) {
                 if model.tone == .success { Text("✓").foregroundColor(MetalShared.success.color).accessibilityLabel("Done") }
                 if model.tone == .error { Text("!").foregroundColor(MetalShared.red.color).accessibilityLabel("Error") }
                 Text(model.title)
-                if let sub = model.sub { Text("· \(sub)").foregroundColor((recipe.color("sub.ink") ?? MetalToastMetrics.sub).color) }
+                if let sub = model.sub { Text("· \(sub)").foregroundColor((recipe.color("sub.ink", colorway: cw) ?? colorway.tokens.ink2).color) }
             }
             .font(recipe.font("self.font"))
             .tracking(recipe.tracking("self.tracking", size: recipe.fontSize("self.font")))
@@ -60,7 +62,7 @@ public struct MetalToast: View {
                 .keyboardShortcut("z", modifiers: .command)
             }
         }
-        .foregroundColor((recipe.color("self.ink") ?? MetalToastMetrics.ink).color)
+        .foregroundColor((recipe.color("self.ink", colorway: cw) ?? colorway.tokens.ink).color)
         .padding(.leading, recipe.points("self.pad-left"))
         .padding(.trailing, model.undo != nil ? recipe.points("self.pad-right") : recipe.points("self.pad-left"))
         .frame(height: recipe.points("self.height"))

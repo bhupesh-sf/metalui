@@ -2539,8 +2539,6 @@
   --spacing-status-badge-pad-end: var(--mu-status-badge-pad-end);
   --spacing-toast-pad-start: var(--mu-toast-pad-start);
   --spacing-toast-pad-end: var(--mu-toast-pad-end);
-  --color-toast-bg: var(--mu-toast-bg);
-  --color-toast-sub: var(--mu-toast-sub);
   --spacing-toast-undo-pad-start: var(--mu-toast-undo-pad-start);
   --spacing-toast-undo-pad-end: var(--mu-toast-undo-pad-end);
   --spacing-toast-enter-rise: var(--mu-toast-enter-rise);

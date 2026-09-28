@@ -384,16 +384,10 @@
   --mu-toast-pad-start: 16px;
   --mu-toast-pad-end: 6px;
   --mu-toast-gap: 12px;
-  --mu-toast-bg: rgba(30,30,33,.92);
-  --mu-toast-sh: inset 0 0 6px 2px rgba(255,255,255,.05), inset 1.5px 2.5px 3px -1px rgba(255,255,255,.12), 0 0 0 .5px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.18), 0 10px 24px -8px rgba(0,0,0,.25), 0 28px 50px -18px rgba(0,0,0,.3);
-  --mu-toast-ink: #F2F2F0;
-  --mu-toast-sub: #9A9AA0;
   --mu-toast-undo-height: 28px;
   --mu-toast-undo-pad-start: 11px;
   --mu-toast-undo-pad-end: 6px;
   --mu-toast-undo-gap: 7px;
-  --mu-toast-undo-bg: linear-gradient(#3A3A3E, #2C2C2F);
-  --mu-toast-undo-sh: inset 0 1px 0 rgba(255,255,255,.1), 0 0 0 .5px rgba(0,0,0,.6);
   --mu-toast-bottom: 92px;
   --mu-toast-enter-rise: 8px;
   --mu-toast-enter-scale: 0.97;
@@ -1478,30 +1472,12 @@
   --mu-r-menu-sep-inset-y: 4px;
   --mu-r-menu-sep-inset-x: 8px;
   /* toast: reference style.css #toast, #toast .sub, #toast button, #toast button kbd */
-  --mu-r-toast-self-background:
-    /* mu-recipe:toast:0 */ rgba(30,30,33,.92);
-  --mu-r-toast-self-shadow:
-    /* mu-recipe:toast:1 */ inset 0 0 6px 2px rgba(255,255,255,.055),
-    /* mu-recipe:toast:2 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
-    /* mu-recipe:toast:3 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
-    /* mu-recipe:toast:4 */ 0 0 0 .5px rgba(0,0,0,.45),
-    /* mu-recipe:toast:5 */ 0 1px 2px rgba(0,0,0,.2),
-    /* mu-recipe:toast:6 */ 0 12px 28px -10px rgba(0,0,0,.34),
-    /* mu-recipe:toast:7 */ 0 30px 60px -24px rgba(0,0,0,.30);
-  --mu-r-toast-undo-background:
-    /* mu-recipe:toast:8 */ linear-gradient(#3A3A3E, #2C2C2F);
-  --mu-r-toast-undo-shadow:
-    /* mu-recipe:toast:9 */ inset 0 1px 0 rgba(255,255,255,.1),
-    /* mu-recipe:toast:10 */ 0 0 0 .5px rgba(0,0,0,.6);
-  --mu-r-toast-kbd-background:
-    /* mu-recipe:toast:11 */ rgba(0,0,0,.3);
   --mu-r-toast-self-height: 40px;
   --mu-r-toast-self-pad-left: 16px;
   --mu-r-toast-self-pad-right: 6px;
   --mu-r-toast-self-gap: 12px;
   --mu-r-toast-self-font: 500 13px/1 var(--mu-sans);
   --mu-r-toast-self-tracking: -0.012em;
-  --mu-r-toast-self-ink: #F2F2F0;
   --mu-r-toast-self-bottom: 92px;
   --mu-r-toast-self-z: 50;
   --mu-r-toast-self-blur: blur(22px);
@@ -1509,14 +1485,12 @@
   --mu-r-toast-self-scale: 0.97;
   --mu-r-toast-self-transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-spring-settle-d) var(--mu-spring-settle);
   --mu-r-toast-text-gap: 6px;
-  --mu-r-toast-sub-ink: #9A9AA0;
   --mu-r-toast-undo-height: 28px;
   --mu-r-toast-undo-pad-left: 11px;
   --mu-r-toast-undo-pad-right: 6px;
   --mu-r-toast-undo-gap: 7px;
   --mu-r-toast-undo-font: 500 12.5px/1 var(--mu-sans);
   --mu-r-toast-undo-press: 50ms;
-  --mu-r-toast-kbd-ink: #BDBDC2;
   /* row: reference style.css .lrow, .lrow:hover, .prow, .prow:hover, .pal-row, .pal-row.on, .pal-row.on::before, .lrow.checked .lt */
   --mu-r-row-list-pad-y: 5px;
   --mu-r-row-list-pad-x: 8px;
@@ -2163,6 +2137,26 @@
     /* mu-recipe:menu:20 */ rgba(0,0,0,.075);
   --mu-r-menu-sep-shadow:
     /* mu-recipe:menu:22 */ 0 1px 0 rgba(255,255,255,.5);
+  --mu-r-toast-self-background:
+    /* mu-recipe:toast:0 */ rgba(251,250,248,.92);
+  --mu-r-toast-self-shadow:
+    /* mu-recipe:toast:2 */ inset 0 0 6px 2px rgba(255,255,255,.75),
+    /* mu-recipe:toast:3 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.95),
+    /* mu-recipe:toast:4 */ inset -1px -3px 5px -2px rgba(110,100,80,.07),
+    /* mu-recipe:toast:5 */ 0 0 0 .5px rgba(24,22,16,.07),
+    /* mu-recipe:toast:6 */ 0 1px 2px rgba(24,22,16,.06),
+    /* mu-recipe:toast:7 */ 0 12px 28px -10px rgba(24,22,16,.14),
+    /* mu-recipe:toast:8 */ 0 30px 60px -24px rgba(24,22,16,.13);
+  --mu-r-toast-undo-background:
+    /* mu-recipe:toast:16 */ linear-gradient(#FFFFFF, #F0EFEB);
+  --mu-r-toast-undo-shadow:
+    /* mu-recipe:toast:18 */ inset 0 1px 0 rgba(255,255,255,.9),
+    /* mu-recipe:toast:19 */ 0 0 0 .5px rgba(24,22,16,.14);
+  --mu-r-toast-kbd-background:
+    /* mu-recipe:toast:22 */ rgba(0,0,0,.06);
+  --mu-r-toast-self-ink: #1B1B1D;
+  --mu-r-toast-sub-ink: #6E6E72;
+  --mu-r-toast-kbd-ink: #5C5C60;
   --mu-r-row-list-hover-background:
     /* mu-recipe:row:0 */ rgba(255,255,255,.7);
   --mu-r-row-list-hover-shadow:
@@ -2587,6 +2581,26 @@
     /* mu-recipe:menu:21 */ rgba(0,0,0,.45);
   --mu-r-menu-sep-shadow:
     /* mu-recipe:menu:23 */ 0 1px 0 rgba(255,255,255,.035);
+  --mu-r-toast-self-background:
+    /* mu-recipe:toast:1 */ rgba(30,30,33,.92);
+  --mu-r-toast-self-shadow:
+    /* mu-recipe:toast:9 */ inset 0 0 6px 2px rgba(255,255,255,.055),
+    /* mu-recipe:toast:10 */ inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+    /* mu-recipe:toast:11 */ inset -1px -3px 5px -2px rgba(0,0,0,.35),
+    /* mu-recipe:toast:12 */ 0 0 0 .5px rgba(0,0,0,.45),
+    /* mu-recipe:toast:13 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:toast:14 */ 0 12px 28px -10px rgba(0,0,0,.34),
+    /* mu-recipe:toast:15 */ 0 30px 60px -24px rgba(0,0,0,.30);
+  --mu-r-toast-undo-background:
+    /* mu-recipe:toast:17 */ linear-gradient(#3A3A3E, #2C2C2F);
+  --mu-r-toast-undo-shadow:
+    /* mu-recipe:toast:20 */ inset 0 1px 0 rgba(255,255,255,.1),
+    /* mu-recipe:toast:21 */ 0 0 0 .5px rgba(0,0,0,.6);
+  --mu-r-toast-kbd-background:
+    /* mu-recipe:toast:23 */ rgba(0,0,0,.3);
+  --mu-r-toast-self-ink: #F2F2F0;
+  --mu-r-toast-sub-ink: #9A9AA0;
+  --mu-r-toast-kbd-ink: #BDBDC2;
   --mu-r-row-list-hover-background:
     /* mu-recipe:row:1 */ rgba(255,255,255,.06);
   --mu-r-row-list-hover-shadow:
@@ -3012,6 +3026,26 @@
       rgba(0,0,0,.45);
     --mu-r-menu-sep-shadow:
       0 1px 0 rgba(255,255,255,.035);
+    --mu-r-toast-self-background:
+      rgba(30,30,33,.92);
+    --mu-r-toast-self-shadow:
+      inset 0 0 6px 2px rgba(255,255,255,.055),
+      inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10),
+      inset -1px -3px 5px -2px rgba(0,0,0,.35),
+      0 0 0 .5px rgba(0,0,0,.45),
+      0 1px 2px rgba(0,0,0,.2),
+      0 12px 28px -10px rgba(0,0,0,.34),
+      0 30px 60px -24px rgba(0,0,0,.30);
+    --mu-r-toast-undo-background:
+      linear-gradient(#3A3A3E, #2C2C2F);
+    --mu-r-toast-undo-shadow:
+      inset 0 1px 0 rgba(255,255,255,.1),
+      0 0 0 .5px rgba(0,0,0,.6);
+    --mu-r-toast-kbd-background:
+      rgba(0,0,0,.3);
+    --mu-r-toast-self-ink: #F2F2F0;
+    --mu-r-toast-sub-ink: #9A9AA0;
+    --mu-r-toast-kbd-ink: #BDBDC2;
     --mu-r-row-list-hover-background:
       rgba(255,255,255,.06);
     --mu-r-row-list-hover-shadow:

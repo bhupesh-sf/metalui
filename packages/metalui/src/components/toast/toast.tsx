@@ -47,10 +47,10 @@ export function useToast() {
   }), [manager]);
 }
 
-/* Styled with the theme's utilities (the toast recipe): a graphite glass pill that rises one nest from
+/* Styled with the theme's utilities (the toast recipe): a glass pill in the colorway that rises one nest from
  * below on settle and leaves the way it came on release; the Undo cap presses by the material's travel. */
 const VIEWPORT = 'mu-toast-viewport fixed left-1/2 bottom-toast-bottom z-toast-z -translate-x-1/2 flex flex-col items-center outline-none';
-const TOAST = 'mu-toast group/toast flex items-center gap-toast-gap h-toast-height pl-toast-pad-left pr-toast-pad-right not-has-[.mu-toast-undo]:pr-toast-pad-left rounded-pill whitespace-nowrap type-toast text-toast-ink recipe-toast backdrop-toast-blur transition-toast data-starting-style:toast-enter data-ending-style:toast-leave reduce-transparency:opaque-frost-graphite';
+const TOAST = 'mu-toast group/toast flex items-center gap-toast-gap h-toast-height pl-toast-pad-left pr-toast-pad-right not-has-[.mu-toast-undo]:pr-toast-pad-left rounded-pill whitespace-nowrap type-toast text-toast-ink recipe-toast backdrop-toast-blur transition-toast data-starting-style:toast-enter data-ending-style:toast-leave reduce-transparency:opaque-frost';
 const TEXT = 'mu-toast-text inline-flex items-center gap-toast-text-gap';
 const SUB = 'mu-toast-sub text-toast-sub-ink';
 const CHECK = 'mu-toast-check text-success';

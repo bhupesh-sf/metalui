@@ -14,7 +14,7 @@ The result of a person's own action, with Undo. React: `ToastProvider` + `useToa
 
 ## Anatomy
 
-A 44 tall smoked pill (`rgba(30,30,33,.92)`, blur 22, its stack), padding 0 6 0 16, gap 12, the `ui` role in `#F2F2F0`; a detail after a middle dot in `#9A9AA0`; an Undo cap (28 tall, `#3A3A3E → #2C2C2F`, a light top lip) with a sunk `⌘Z` keycap. Bottom centre, 92 above the dock. Success carries its check; an error its red mark.
+A 44 tall glass pill in the colorway (blur 22, its stack), padding 0 6 0 16, gap 12, the `ui` role; a detail after a middle dot; an Undo cap (28 tall, a light top lip) with a sunk `⌘Z` keycap. Bone: a bone pill (`rgba(251,250,248,.92)`), ink `#1B1B1D`, detail `#6E6E72`, a bone cap (`#FFFFFF → #F0EFEB`). Graphite: a smoked pill (`rgba(30,30,33,.92)`), ink `#F2F2F0`, detail `#9A9AA0`, a graphite cap (`#3A3A3E → #2C2C2F`). Bottom centre, 92 above the dock. Success carries its check; an error its red mark.
 
 ## States and motion
 

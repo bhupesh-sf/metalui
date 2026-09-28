@@ -1734,22 +1734,34 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A transient notice at the bottom centre: a graphite glass pill with the message, a quieter detail and an Undo cap with its key. (reference style.css #toast, #toast .sub, #toast button, #toast button kbd)
+    /// A transient notice at the bottom centre: a glass pill in the colorway with the message, a quieter detail and an Undo cap with its key. Bone on bone, graphite on graphite. (reference style.css #toast, #toast .sub, #toast button, #toast button kbd)
     public static let toast = MetalObjectRecipe(
         name: "toast",
         layers: [
-            .init(part: "self", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(30.0, 30.0, 33.0, 0.92)))), // mu-recipe:toast:0 rgba(30,30,33,.92)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:toast:1 inset 0 0 6px 2px rgba(255,255,255,.055)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:toast:2 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:toast:3 inset -1px -3px 5px -2px rgba(0,0,0,.35)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:toast:4 0 0 0 .5px rgba(0,0,0,.45)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:toast:5 0 1px 2px rgba(0,0,0,.2)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:toast:6 0 12px 28px -10px rgba(0,0,0,.34)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:toast:7 0 30px 60px -24px rgba(0,0,0,.30)
-            .init(part: "undo", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(58.0, 58.0, 62.0, 1.0)), 0.0), .init(.color(MetalRGBA(44.0, 44.0, 47.0, 1.0)), 1.0)])), // mu-recipe:toast:8 linear-gradient(#3A3A3E, #2C2C2F)
-            .init(part: "undo", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:toast:9 inset 0 1px 0 rgba(255,255,255,.1)
-            .init(part: "undo", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:toast:10 0 0 0 .5px rgba(0,0,0,.6)
-            .init(part: "kbd", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:toast:11 rgba(0,0,0,.3)
+            .init(part: "self", state: nil, colorway: .bone, fill: .solid(.color(MetalRGBA(251.0, 250.0, 248.0, 0.92)))), // mu-recipe:toast:0 rgba(251,250,248,.92)
+            .init(part: "self", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(30.0, 30.0, 33.0, 0.92)))), // mu-recipe:toast:1 rgba(30,30,33,.92)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.75)))), // mu-recipe:toast:2 inset 0 0 6px 2px rgba(255,255,255,.75)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.95)))), // mu-recipe:toast:3 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.95)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(110.0, 100.0, 80.0, 0.07)))), // mu-recipe:toast:4 inset -1px -3px 5px -2px rgba(110,100,80,.07)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:toast:5 0 0 0 .5px rgba(24,22,16,.07)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.06)))), // mu-recipe:toast:6 0 1px 2px rgba(24,22,16,.06)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.14)))), // mu-recipe:toast:7 0 12px 28px -10px rgba(24,22,16,.14)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.13)))), // mu-recipe:toast:8 0 30px 60px -24px rgba(24,22,16,.13)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:toast:9 inset 0 0 6px 2px rgba(255,255,255,.055)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:toast:10 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:toast:11 inset -1px -3px 5px -2px rgba(0,0,0,.35)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:toast:12 0 0 0 .5px rgba(0,0,0,.45)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:toast:13 0 1px 2px rgba(0,0,0,.2)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 12.0, blur: 28.0, spread: -10.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:toast:14 0 12px 28px -10px rgba(0,0,0,.34)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 30.0, blur: 60.0, spread: -24.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:toast:15 0 30px 60px -24px rgba(0,0,0,.30)
+            .init(part: "undo", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 1.0)), 0.0), .init(.color(MetalRGBA(240.0, 239.0, 235.0, 1.0)), 1.0)])), // mu-recipe:toast:16 linear-gradient(#FFFFFF, #F0EFEB)
+            .init(part: "undo", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(58.0, 58.0, 62.0, 1.0)), 0.0), .init(.color(MetalRGBA(44.0, 44.0, 47.0, 1.0)), 1.0)])), // mu-recipe:toast:17 linear-gradient(#3A3A3E, #2C2C2F)
+            .init(part: "undo", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.9)))), // mu-recipe:toast:18 inset 0 1px 0 rgba(255,255,255,.9)
+            .init(part: "undo", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.14)))), // mu-recipe:toast:19 0 0 0 .5px rgba(24,22,16,.14)
+            .init(part: "undo", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:toast:20 inset 0 1px 0 rgba(255,255,255,.1)
+            .init(part: "undo", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:toast:21 0 0 0 .5px rgba(0,0,0,.6)
+            .init(part: "kbd", state: nil, colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.06)))), // mu-recipe:toast:22 rgba(0,0,0,.06)
+            .init(part: "kbd", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:toast:23 rgba(0,0,0,.3)
         ],
         props: [
             "self.height": .number(40.0),
@@ -1758,7 +1770,7 @@ public enum MetalRecipes {
             "self.gap": .number(12.0),
             "self.font": .text("500 13px/1 sans"),
             "self.tracking": .text("-0.012em"),
-            "self.ink": .text("#F2F2F0"),
+            "self.ink": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
             "self.bottom": .number(92.0),
             "self.z": .text("50"),
             "self.blur": .text("blur(22px)"),
@@ -1766,14 +1778,14 @@ public enum MetalRecipes {
             "self.scale": .text("0.97"),
             "self.transition": .text("opacity var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-spring-settle-d) var(--mu-spring-settle)"),
             "text.gap": .number(6.0),
-            "sub.ink": .text("#9A9AA0"),
+            "sub.ink": .perColorway(bone: "#6E6E72", graphite: "#9A9AA0"),
             "undo.height": .number(28.0),
             "undo.pad-left": .number(11.0),
             "undo.pad-right": .number(6.0),
             "undo.gap": .number(7.0),
             "undo.font": .text("500 12.5px/1 sans"),
             "undo.press": .text("50ms"),
-            "kbd.ink": .text("#BDBDC2"),
+            "kbd.ink": .perColorway(bone: "#5C5C60", graphite: "#BDBDC2"),
         ]
     )
 
@@ -2769,32 +2781,16 @@ public enum MetalToolbarMetrics {
     public static let graphiteHint: MetalRGBA = MetalRGBA(142, 142, 147, 1.0)
 }
 
-/// The toast (object sheet): the result of a person's own action, with Undo, never recognition. A 44 tall smoked pill at the bottom centre, 92 above the dock, in the ui role: the result, a dimmed detail after a middle dot, and an Undo cap with its key. One at a time. It arrives one nest from below from .97 on settle and leaves on release. Undoable results stay 5 s, plain ones 2.6 s; errors stay until resolved; success always carries its check.
+/// The toast (object sheet): the result of a person's own action, with Undo, never recognition. A 44 tall glass pill in the colorway at the bottom centre, 92 above the dock, in the ui role: the result, a dimmed detail after a middle dot, and an Undo cap with its key. One at a time. It arrives one nest from below from .97 on settle and leaves on release. Undoable results stay 5 s, plain ones 2.6 s; errors stay until resolved; success always carries its check.
 public enum MetalToastMetrics {
     public static let height: Double = 44.0
     public static let padStart: Double = 16.0
     public static let padEnd: Double = 6.0
     public static let gap: Double = 12.0
-    public static let bg: MetalRGBA = MetalRGBA(30, 30, 33, 0.92)
-    public static let sh: [MetalShadow] = [
-        MetalShadow(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, color: MetalRGBA(255, 255, 255, 0.05)),
-        MetalShadow(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, color: MetalRGBA(255, 255, 255, 0.12)),
-        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.4)),
-        MetalShadow(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, color: MetalRGBA(0, 0, 0, 0.18)),
-        MetalShadow(inset: false, x: 0.0, y: 10.0, blur: 24.0, spread: -8.0, color: MetalRGBA(0, 0, 0, 0.25)),
-        MetalShadow(inset: false, x: 0.0, y: 28.0, blur: 50.0, spread: -18.0, color: MetalRGBA(0, 0, 0, 0.3)),
-    ]
-    public static let ink: MetalRGBA = MetalRGBA(242, 242, 240, 1.0)
-    public static let sub: MetalRGBA = MetalRGBA(154, 154, 160, 1.0)
     public static let undoHeight: Double = 28.0
     public static let undoPadStart: Double = 11.0
     public static let undoPadEnd: Double = 6.0
     public static let undoGap: Double = 7.0
-    public static let undoBg: MetalGradient = MetalGradient(angle: 180.0, stops: [.init(MetalRGBA(58, 58, 62, 1.0), 0.0), .init(MetalRGBA(44, 44, 47, 1.0), 1.0)])
-    public static let undoSh: [MetalShadow] = [
-        MetalShadow(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, color: MetalRGBA(255, 255, 255, 0.1)),
-        MetalShadow(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, color: MetalRGBA(0, 0, 0, 0.6)),
-    ]
     public static let bottom: Double = 92.0
     public static let enterRise: Double = 8.0
     public static let enterScale: Double = 0.97

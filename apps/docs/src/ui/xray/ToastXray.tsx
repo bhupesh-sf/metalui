@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, Kbd, ToastProvider, toastParts as T, useToast } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Exploded, IsoCap, Proof, XrayFrame, capTop, scalePx, type LayerDef, type SpotDef } from './kit';
+import { Exploded, IsoCap, Proof, XrayFrame, capTop, scalePx, tones, useRecipeLayers, type LayerDef, type SpotDef } from './kit';
 import { HintLayer } from '../edit';
 import { ToastSpecimenCard } from './ToastSpecimens';
 
@@ -16,13 +16,9 @@ import { ToastSpecimenCard } from './ToastSpecimens';
  *             for its spacing, lift it; switches for the detail, Undo and each layer
  * ───────────────────────────────────────────────────────── */
 
-type RL = { part: string; prop: string; value: string }[];
-const R = tokens.recipes.toast as { props: { self: { height: number; 'pad-left': number; 'pad-right': number; gap: number; ink: string; rise: number; scale: string }; text: { gap: number }; sub: { ink: string }; undo: { height: number; 'pad-left': number; 'pad-right': number; gap: number }; kbd: { ink: string } }; layers: RL };
+type Ink = { bone: string; graphite: string };
+const R = tokens.recipes.toast as { props: { self: { height: number; 'pad-left': number; 'pad-right': number; gap: number; ink: Ink; rise: number; scale: string }; text: { gap: number }; sub: { ink: Ink }; undo: { height: number; 'pad-left': number; 'pad-right': number; gap: number }; kbd: { ink: Ink } } };
 const P = R.props;
-const pick = (part: string, prop: string) => R.layers.filter((l) => l.part === part && l.prop === prop).map((l) => l.value);
-const BG = pick('self', 'background')[0], SH = pick('self', 'shadow');
-const UNDO_BG = pick('undo', 'background')[0], UNDO_SH = pick('undo', 'shadow');
-const KBD_BG = pick('kbd', 'background')[0];
 const S = 2.4;
 
 export type Spot = 'states' | 'type' | 'press' | 'shape' | 'shadow' | 'layers';
@@ -74,6 +70,9 @@ export function ToastXray({ startOpen = false }: { startOpen?: boolean }) {
   const [xray, setXray] = React.useState(startOpen);
   const [spot, setSpot] = React.useState<Spot>('states');
   const [m, setM] = React.useState<Model>(INITIAL);
+  const { fill: BG, shadows: SH, colorway } = useRecipeLayers('toast');
+  const { fill: UNDO_BG, shadows: UNDO_SH } = useRecipeLayers('toast', 'undo');
+  const { fill: KBD_BG } = useRecipeLayers('toast', 'kbd');
   const [cycle, setCycle] = React.useState(0);
   const [held, setHeld] = React.useState(false); // the toast held where it rises from
   const [pressed, setPressed] = React.useState(false);
@@ -94,7 +93,7 @@ export function ToastXray({ startOpen = false }: { startOpen?: boolean }) {
 
   const text = (
     <span className="xr-toasttext" style={{ fontSize: 13 * S, gap: m.textGap * S }}>
-      Moved 3 blocks{m.sub && <span style={{ color: P.sub.ink }}>· undo it any time</span>}
+      Moved 3 blocks{m.sub && <span style={{ color: P.sub.ink[colorway] }}>· undo it any time</span>}
     </span>
   );
 
@@ -107,14 +106,14 @@ export function ToastXray({ startOpen = false }: { startOpen?: boolean }) {
     <div key={cycle} className={cycle && !held ? 'xr-toastwrap ed-toast-benchin' : 'xr-toastwrap'} data-held={held ? '' : undefined}
       style={{ ['--rise' as string]: `${m.rise * S}px`, ['--from' as string]: m.scale, transform: held ? `translate3d(0, ${m.rise * S}px, 0) scale(${m.scale})` : undefined }}>
       {m.pill[7] && <div className="xr-shadow" style={{ width: W, height: H, borderRadius: H / 2, filter: `blur(${10 + m.lift * 10}px)`, opacity: 0.3, transform: `translate(${m.lift * 8}px, ${m.lift * 18}px)` }} />}
-      <IsoCap w={W} h={H} r={H / 2} z={z} wall={3} fill={m.pill[0] ? BG : 'transparent'} shadow={pillShadow} wallTone="#161618">
-        <span style={{ position: 'absolute', left: m.padL * S, top: 0, height: H, display: 'flex', alignItems: 'center', color: P.self.ink }}>{text}</span>
+      <IsoCap w={W} h={H} r={H / 2} z={z} wall={3} fill={m.pill[0] ? BG : 'transparent'} shadow={pillShadow} wallTone={tones(colorway).wall}>
+        <span style={{ position: 'absolute', left: m.padL * S, top: 0, height: H, display: 'flex', alignItems: 'center', color: P.self.ink[colorway] }}>{text}</span>
       </IsoCap>
       {m.undo && (
         <div className="xr-thumb" style={{ transform: `translateZ(${top}px)` }}>
-          <IsoCap x={ux} y={uy} w={undoW * S} h={P.undo.height * S} r={(P.undo.height * S) / 2} z={pressed ? 0.2 : 1.6} wall={2} fill={m.cap[0] ? UNDO_BG : 'transparent'} shadow={undoShadow} wallTone="#1b1b1d" transition="transform 50ms linear">
-            <span className="xr-undoface" style={{ fontSize: 12.5 * S, gap: P.undo.gap * S, paddingLeft: P.undo['pad-left'] * S, paddingRight: P.undo['pad-right'] * S, color: P.self.ink }}>
-              Undo<i style={{ font: `500 ${10 * S}px/1 var(--mono)`, color: P.kbd.ink, background: KBD_BG, borderRadius: 999, padding: `${3 * S}px ${6 * S}px`, boxShadow: `inset 0 ${S}px ${1.5 * S}px rgba(0,0,0,.5)` }}>⌘Z</i>
+          <IsoCap x={ux} y={uy} w={undoW * S} h={P.undo.height * S} r={(P.undo.height * S) / 2} z={pressed ? 0.2 : 1.6} wall={2} fill={m.cap[0] ? UNDO_BG : 'transparent'} shadow={undoShadow} wallTone={tones(colorway).wall} transition="transform 50ms linear">
+            <span className="xr-undoface" style={{ fontSize: 12.5 * S, gap: P.undo.gap * S, paddingLeft: P.undo['pad-left'] * S, paddingRight: P.undo['pad-right'] * S, color: P.self.ink[colorway] }}>
+              Undo<i style={{ font: `500 ${10 * S}px/1 var(--mono)`, color: P.kbd.ink[colorway], background: KBD_BG, borderRadius: 999, padding: `${3 * S}px ${6 * S}px`, boxShadow: `inset 0 ${S}px ${1.5 * S}px rgba(0,0,0,${colorway === 'graphite' ? 0.5 : 0.14})` }}>⌘Z</i>
             </span>
           </IsoCap>
         </div>
