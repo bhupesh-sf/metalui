@@ -436,7 +436,7 @@ A small pill. React: `Chip` with parts `Chip.Root`, `Chip.Lead`, `Chip.Text`, `C
 ## Variants
 
 - `suggestion`: 20 tall, frosted, a green hairline and a small raise; a question in `Chip.Text`, a confidence `Label`, and `IconButton variant="mini"` actions (✓ accept, × dismiss).
-- `glass`: an 18 tall dark tag on a glass screen, backdrop-blurred; `Chip.Lead led="link" | "code"` for its LED.
+- `glass`: an 18 tall tag on a glass screen in the colorway (light on Bone, dark on Graphite), backdrop-blurred; `Chip.Lead led="link" | "code"` for its LED.
 - `glass-action`: an 18 tall light cap on glass (`as="a"` for a link out), brighter on hover.
 - `tag`: a 15 tall engraved mono tag in a hairline pill (a derived #tag); no fill.
 
@@ -880,7 +880,7 @@ Past six, the oldest slides down into the pocket. Colour: `hue` = neutral (the s
 
 # Glass face
 
-A dark glass object. React: `GlassFace` with parts `GlassFace.Root` (the bezel) and `GlassFace.Screen`. SwiftUI: `MetalGlassFace { screen: … }`.
+A glass object in the colorway: pale glass on Bone, dark glass on Graphite. React: `GlassFace` with parts `GlassFace.Root` (the bezel) and `GlassFace.Screen`. SwiftUI: `MetalGlassFace { screen: … }`.
 
 ## Use it for
 
@@ -888,8 +888,8 @@ A dark glass object. React: `GlassFace` with parts `GlassFace.Root` (the bezel) 
 
 ## Anatomy
 
-- The bezel: radius 22, padding 6, a dark gradient with a bright top edge, an inner glow and a deep drop shadow.
-- The screen: radius 16, near black; the glare is a 115° sheen, a darkening toward the bottom, a bright top rim, a dark inner ring and an inner shadow. The screen's own fill (a hue, a gradient) is the caller's, under the glare.
+- The bezel: radius 22, padding 6, a gradient in the colorway (white to bone on Bone, graphite to near black on Graphite) with a bright top edge, an inner glow and a deep drop shadow.
+- The screen: radius 16, pale bone (`#E8E7E2`) on Bone, near black on Graphite; the glare is a 115° sheen, a darkening toward the bottom, a bright top rim, a dark inner ring and an inner shadow. The screen's own fill (a hue, a gradient) is the caller's, under the glare.
 
 ## Behaviour
 
@@ -1325,7 +1325,7 @@ A link as a glass object. A custom block: `GlassFace` with a screen tinted by th
 
 ## Anatomy
 
-250 wide: `GlassFace` (bezel 6, radius 22; screen radius 16 with its glare). The screen is 92 tall, padding 12 / 14, the host and path set at its foot; its tint is a radial of the host's hue into `#121316`. `Chip variant="glass"` with a link `Led` and LINK at 10 / 10; `Chip variant="glass-action"` OPEN ↗ at 10 from the top right. The host is 620 15 / 1.2 in `#EDEDEF`; the path 9.5 mono uppercase at .5 white, ellipsised.
+250 wide: `GlassFace` (bezel 6, radius 22; screen radius 16 with its glare). The screen is 92 tall, padding 12 / 14, the host and path set at its foot; its tint is a radial of the host's hue into the screen (`#EEEDE9` on Bone, `#121316` on Graphite). `Chip variant="glass"` with a link `Led` and LINK at 10 / 10; `Chip variant="glass-action"` OPEN ↗ at 10 from the top right. The host is 620 15 / 1.2 in ink (`#1B1B1D` on Bone, `#EDEDEF` on Graphite); the path 9.5 mono uppercase at half ink, ellipsised.
 
 ## Why custom
 
@@ -1342,7 +1342,7 @@ The tinted screen and its type are drawn by no component. Everything else is `Gl
 |---|---|---|
 | `href` | `url:` | |
 | `host`, `path` | `host:`, `path:` | default from the URL |
-| `hue` | `hue:` | any colour; default the recipe's tint. The reference tints by host: `hsl(linkHueDegrees(host), 38%, 32%)` (the recipe's tint-saturation and tint-lightness) |
+| `hue` | `hue:` | any colour; default the recipe's tint. The reference tints by host: `hsl(linkHueDegrees(host), 38%, 84%)` on Bone and `hsl(linkHueDegrees(host), 38%, 32%)` on Graphite (the recipe's tint-saturation and the colorway's tint-lightness) |
 | `tag`, `openLabel` | `tag:`, `openLabel:` | the host's words (LINK, OPEN ↗) |
 
 ## Tokens

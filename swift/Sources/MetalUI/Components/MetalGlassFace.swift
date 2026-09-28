@@ -1,6 +1,6 @@
 import SwiftUI
 
-// Glass faces. Mirrors the glass-face recipe (MetalRecipes.glassFace): a dark bezel around a
+// Glass faces. Mirrors the glass-face recipe (MetalRecipes.glassFace): a bezel in the colorway around a
 // screen with a glare and a shaded rim, a tag with an LED. A link face glows in a hue taken from
 // its host; a code face shows numbered lines. Every value is the recipe's.
 
@@ -12,6 +12,7 @@ private struct MetalGlassBody<Content: View>: View {
     let underlay: Image?
     let underlayOpacity: Double
     let content: Content
+    @Environment(\.metalColorway) private var colorway
 
     init(screen: String, own: MetalRGBA? = nil, screenRecipe: MetalObjectRecipe? = nil,
          underlay: Image? = nil, underlayOpacity: Double = .one, @ViewBuilder content: () -> Content) {
@@ -54,7 +55,7 @@ private struct MetalGlassBody<Content: View>: View {
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .opacity(underlayOpacity)
                         .overlay {
-                            let dark = screenRecipe?.fills("screen").last.flatMap { fill -> Color? in
+                            let dark = screenRecipe?.fills("screen", colorway: MetalRecipeColorway(colorway)).last.flatMap { fill -> Color? in
                                 guard case .radial(_, let stops) = fill,
                                       let last = stops.last else { return nil }
                                 return last.paint.resolved(self: own).color
@@ -133,6 +134,7 @@ public struct MetalLinkFace: View {
     let preview: MetalLinkPreview?
     let open: (() -> Void)?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.metalColorway) private var colorway
 
     public init(_ href: String, host: String? = nil, path: String? = nil, hue: MetalRGBA? = nil,
                 tag: String = "LINK", openLabel: String = "OPEN ↗", preview: MetalLinkPreview? = nil,
@@ -156,6 +158,7 @@ public struct MetalLinkFace: View {
 
     public var body: some View {
         let r = MetalRecipes.linkCard
+        let cw = MetalRecipeColorway(colorway)
         let host = suppliedHost ?? Self.host(url, raw: raw)
         let path = suppliedPath ?? Self.path(url)
         let title = preview?.title?.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -167,7 +170,7 @@ public struct MetalLinkFace: View {
         let bezel = glass.points("self.pad")
         let screenHeight = r.points(hasPreview ? "preview.height" : "screen.height")
         let fade = Animation.easeOut(duration: r.durationSeconds("preview.fade"))
-        MetalGlassBody(screen: "link-screen", own: hue ?? Self.hue(for: host), screenRecipe: r,
+        MetalGlassBody(screen: "link-screen", own: hue ?? Self.hue(for: host, colorway: cw), screenRecipe: r,
                        underlay: hasPreview ? preview?.image : nil,
                        underlayOpacity: r.scalar("preview.image-opacity")) {
             ZStack(alignment: .topLeading) {
@@ -185,29 +188,29 @@ public struct MetalLinkFace: View {
                     if hasPreview, let title {
                         Text(title)
                             .font(.metal(titleRole)).tracking(titleRole.trackingPoints)
-                            .foregroundStyle(r.color("title.ink")?.color ?? .clear)
+                            .foregroundStyle(r.color("title.ink", colorway: cw)?.color ?? .clear)
                             .lineLimit(Int(r.scalar("title.lines")))
                             .transition(.opacity.animation(fade))
                         HStack(spacing: r.points("meta.gap")) {
                             if let icon = preview?.icon {
                                 icon.resizable().scaledToFit()
                                     .frame(width: r.points("meta.icon"), height: r.points("meta.icon"))
-                                    .foregroundStyle(r.color("meta.ink")?.color ?? .clear)
+                                    .foregroundStyle(r.color("meta.ink", colorway: cw)?.color ?? .clear)
                                     .clipShape(Circle())
                                     .accessibilityHidden(true)
                             }
                             Text(host + (path == "/" ? "" : " · " + path))
                                 .font(.metal(pathRole)).tracking(pathRole.trackingPoints)
-                                .foregroundStyle(r.color("meta.ink")?.color ?? .clear)
+                                .foregroundStyle(r.color("meta.ink", colorway: cw)?.color ?? .clear)
                                 .textCase(.uppercase)
                                 .lineLimit(1).truncationMode(.tail)
                         }
                         .transition(.opacity.animation(fade))
                     } else {
                         Text(host).font(.metal(hostRole)).tracking(hostRole.trackingPoints)
-                            .foregroundStyle(r.color("host.ink")?.color ?? .clear).lineLimit(1)
+                            .foregroundStyle(r.color("host.ink", colorway: cw)?.color ?? .clear).lineLimit(1)
                         Text(path.uppercased()).font(.metal(pathRole)).tracking(pathRole.trackingPoints)
-                            .foregroundStyle(r.color("path.ink")?.color ?? .clear)
+                            .foregroundStyle(r.color("path.ink", colorway: cw)?.color ?? .clear)
                             .lineLimit(1).truncationMode(.tail)
                     }
                 }
@@ -254,11 +257,14 @@ public struct MetalLinkFace: View {
         return p.isEmpty ? "/" : p
     }
 
-    /// The host's hue: a stable hash of its UTF-16 units into hsl(h 38% 32%).
-    public static func hue(for host: String) -> MetalRGBA {
+    /// The host's hue: a stable hash of its UTF-16 units into hsl(h, tint-saturation, tint-lightness),
+    /// the lightness the colorway's (a pale glow on bone, a deep one on graphite).
+    public static func hue(for host: String, colorway: MetalRecipeColorway = .graphite) -> MetalRGBA {
         var h = 0
         for unit in host.utf16 { h = (h * 31 + Int(unit)) % 360 }
-        let s = 0.38, l = 0.32
+        let recipe = MetalRecipes.linkCard
+        let percent = { (key: String) in (Double(recipe.text(key, colorway: colorway)?.replacingOccurrences(of: "%", with: "") ?? "") ?? .zero) / 100 }
+        let s = percent("screen.tint-saturation"), l = percent("screen.tint-lightness")
         let c = (1 - abs(2 * l - 1)) * s
         let x = c * (1 - abs((Double(h) / 60).truncatingRemainder(dividingBy: 2) - 1))
         let m = l - c / 2

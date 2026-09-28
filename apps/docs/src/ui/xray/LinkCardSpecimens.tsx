@@ -2,6 +2,7 @@ import * as React from 'react';
 import { LinkCard, Row, Switch, linkHueDegrees } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
 import { BEZEL, SCREEN, type Model } from './LinkCardXray';
+import { useColorway, type Colorway } from '../../app/colorway';
 import { STEP_AT, CornerArc, Readout, blip, clamp, summon, useHandle, useOnLand, useSpecimenZoom, type Hint } from '../edit';
 import './link-card-specimens.css';
 
@@ -19,13 +20,21 @@ import './link-card-specimens.css';
  *   Tokens are read here from tokens.json, never from LinkCardXray at load (a circular import).
  * ───────────────────────────────────────────────────────── */
 
-type Layer = { part: string; prop: string; value: string };
-const LC = tokens.recipes['link-card'] as { props: { self: { width: number }; screen: { height: number; tint: string; 'tint-saturation': string; 'tint-lightness': string }; host: { font: string; tracking: string }; path: { font: string; tracking: string }; chip: { inset: number } }; layers: Layer[] };
+type Layer = { part: string; prop: string; value: string; colorway?: string };
+type ByColorway = { bone: string; graphite: string };
+const LC = tokens.recipes['link-card'] as { props: { self: { width: number }; screen: { height: number; tint: ByColorway; 'tint-saturation': string; 'tint-lightness': ByColorway }; host: { font: string; tracking: string; ink: ByColorway }; path: { font: string; tracking: string; ink: ByColorway }; chip: { inset: number } }; layers: Layer[] };
 const GF = tokens.recipes['glass-face'] as { props: { self: { radius: number; pad: number }; screen: { radius: number } }; layers: Layer[] };
-const pick = (r: { layers: Layer[] }, part: string, prop: string) => r.layers.filter((l) => l.part === part && l.prop === prop).map((l) => l.value);
-const BEZEL_BG = pick(GF, 'self', 'background')[0], BEZEL_SH = pick(GF, 'self', 'shadow');
-const GLARE_BG = pick(GF, 'glare', 'background');
-const NO_GLOW = pick(LC, 'screen', 'background')[0].match(/(#[0-9a-f]{6})\s+\d+%\)\s*$/i)?.[1] ?? 'transparent';
+const pick = (r: { layers: Layer[] }, part: string, prop: string, cw: Colorway) => r.layers.filter((l) => l.part === part && l.prop === prop && (!l.colorway || l.colorway === cw)).map((l) => l.value);
+/** The glass face's and the link card's layers and inks in one colorway. */
+export function linkLook(cw: Colorway) {
+  const screenBg = pick(LC, 'screen', 'background', cw)[0];
+  return {
+    bezelBg: pick(GF, 'self', 'background', cw)[0], bezelSh: pick(GF, 'self', 'shadow', cw),
+    glareBg: pick(GF, 'glare', 'background', cw), glareSh: pick(GF, 'glare', 'shadow', cw),
+    screenBg, noGlow: screenBg.match(/(#[0-9a-f]{6})\s+\d+%\)\s*$/i)?.[1] ?? 'transparent',
+    hostInk: P.host.ink[cw], pathInk: P.path.ink[cw],
+  };
+}
 const P = LC.props;
 const W = P.self.width, SCREEN_H = P.screen.height;
 const px = (font: string) => Number(font.match(/([\d.]+)px/)?.[1]);
@@ -37,7 +46,7 @@ export const LINK_TOKENS = {
 };
 /** Sites to try: the first wears the recipe's own tint; the others are tinted from their names, as the reference does. */
 export const HOSTS = ['lanterns.photo', 'github.com', 'maps.apple.com', 'figma.com'];
-export const tintFor = (host: string) => host === HOSTS[0] ? P.screen.tint : `hsl(${linkHueDegrees(host)} ${P.screen['tint-saturation']} ${P.screen['tint-lightness']})`;
+export const tintFor = (host: string, cw: Colorway) => host === HOSTS[0] ? P.screen.tint[cw] : `hsl(${linkHueDegrees(host)} ${P.screen['tint-saturation']} ${P.screen['tint-lightness'][cw]})`;
 /** A font token with its size swapped, in the form the stylesheet writes it. */
 export const fontAt = (font: string, size: number) => font.replace(/[\d.]+px/, `${size}px`).replace(/ (sans|mono)$/, ' var(--mu-$1)');
 export const frameRadius = (m: Model) => m.follow ? m.screenR + m.pad : GF.props.self.radius;
@@ -49,7 +58,7 @@ function hueOfHex(hex: string) {
   const h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
   return Math.round((h * 60 + 360) % 360);
 }
-const hueFor = (host: string) => host === HOSTS[0] ? hueOfHex(P.screen.tint) : linkHueDegrees(host);
+const hueFor = (host: string, cw: Colorway) => host === HOSTS[0] ? hueOfHex(P.screen.tint[cw]) : linkHueDegrees(host);
 
 const half = (v: number) => Math.round(v * 2) / 2;
 const thou = (v: number) => Math.round(v * 1000) / 1000;
@@ -61,6 +70,8 @@ type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus
 
 /** The real link card, its recipe variables set from the model, exactly as the bench draws it. */
 function Card({ m }: { m: Model }) {
+  const { colorway } = useColorway();
+  const { bezelBg: BEZEL_BG, bezelSh: BEZEL_SH, glareBg: GLARE_BG, noGlow: NO_GLOW } = linkLook(colorway);
   const vars: Record<string, string> = {
     '--mu-r-glass-face-self-pad': `${m.pad}px`,
     '--mu-r-glass-face-self-radius': `${frameRadius(m)}px`,
@@ -75,7 +86,7 @@ function Card({ m }: { m: Model }) {
     '--mu-r-link-card-chip-inset': `${m.inset}px`,
     ...(m.screen[0] ? {} : { '--mu-r-link-card-screen-background': NO_GLOW }),
   };
-  return <LinkCard href={`https://${m.host}/night-market`} hue={m.host === HOSTS[0] ? undefined : tintFor(m.host)} style={{ ...vars, transition: 'none' } as React.CSSProperties} />;
+  return <LinkCard href={`https://${m.host}/night-market`} hue={m.host === HOSTS[0] ? undefined : tintFor(m.host, colorway)} style={{ ...vars, transition: 'none' } as React.CSSProperties} />;
 }
 
 /** The well: the card is 250 wide, so it is shown as large as the zoom allows but never wider than the well. */
@@ -155,6 +166,7 @@ function Bezel({ m, set }: Props) {
 
 /** Screen: the glow's source is the handle; drag it sideways and it steps to the next site's colour. */
 function Screen({ m, set }: Props) {
+  const { colorway } = useColorway();
   const [well, zoom] = useCardZoom();
   const [held, setHeld] = React.useState(false);
   const [peek, setPeek] = React.useState(false);
@@ -184,13 +196,13 @@ function Screen({ m, set }: Props) {
         <div className="ed-lc" data-hint-anchor data-lit={held || peek ? '' : undefined}>
           <Card m={m} />
           <div className="ed-lc-over">
-            <span ref={el} className="ed-lc-glow" style={{ left: x - 5, top: m.pad - 5, ['--lean' as string]: lean?.k ?? 0, ['--lean-tint' as string]: lean ? tintFor(lean.host) : 'transparent' }} data-lean={lean ? '' : undefined} role="slider" tabIndex={0} aria-label="Site" aria-valuetext={m.host} aria-valuenow={index + 1} aria-valuemin={1} aria-valuemax={HOSTS.length} {...handle} />
+            <span ref={el} className="ed-lc-glow" style={{ left: x - 5, top: m.pad - 5, ['--lean' as string]: lean?.k ?? 0, ['--lean-tint' as string]: lean ? tintFor(lean.host, colorway) : 'transparent' }} data-lean={lean ? '' : undefined} role="slider" tabIndex={0} aria-label="Site" aria-valuetext={m.host} aria-valuenow={index + 1} aria-valuemin={1} aria-valuemax={HOSTS.length} {...handle} />
           </div>
         </div>
       </Well>
       <div className="ed-readouts">
         <Readout label="Site" value={m.host} unit="" snap={{ at: index, name: m.host }} peek={setPeek} pick={() => summon(el.current)} scrub={choose} />
-        <Readout label="Hue" value={`${hueFor(m.host)}`} unit="°" snap={m.host === HOSTS[0] ? { at: hueFor(m.host), name: 'recipe tint' } : undefined} />
+        <Readout label="Hue" value={`${hueFor(m.host, colorway)}`} unit="°" snap={m.host === HOSTS[0] ? { at: hueFor(m.host, colorway), name: 'recipe tint' } : undefined} />
       </div>
       <div className="ed-layers">
         <Row.Root variant="list" className="ed-layer" data-off={m.glare ? undefined : ''} onClick={(e) => { if (!(e.target as HTMLElement).closest('.mu-switch')) toggle(!m.glare); }}>

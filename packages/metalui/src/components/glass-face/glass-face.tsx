@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-/* GLASS FACE: a dark glass object: a bezel around a screen with a glare, a shaded rim and an inner
+/* GLASS FACE: a glass object in the colorway: a bezel around a screen with a glare, a shaded rim and an inner
  * shadow. What is on the screen is the caller's. Slots: GlassFace.Root, GlassFace.Screen.
  * Styled with the theme's utilities (the glass-face recipe and its glare). */
 

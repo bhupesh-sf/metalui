@@ -767,23 +767,36 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A dark glass object: a bezel around a screen with a glare, a shaded rim and an inner shadow. (reference style.css .glass, .glass .screen, .glass .screen::after)
+    /// A glass object in the colorway (pale glass on bone, dark glass on graphite): a bezel around a screen with a glare, a shaded rim and an inner shadow. (reference style.css .glass, .glass .screen, .glass .screen::after)
     public static let glassFace = MetalObjectRecipe(
         name: "glass-face",
         layers: [
-            .init(part: "self", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(42.0, 42.0, 45.0, 1.0)), 0.0), .init(.color(MetalRGBA(29.0, 29.0, 31.0, 1.0)), 0.4), .init(.color(MetalRGBA(22.0, 22.0, 24.0, 1.0)), 1.0)])), // mu-recipe:glass-face:0 linear-gradient(#2A2A2D, #1D1D1F 40%, #161618)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.13)))), // mu-recipe:glass-face:1 inset 0 1px 0 rgba(255,255,255,.13)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.04)))), // mu-recipe:glass-face:2 inset 0 0 6px 2px rgba(255,255,255,.04)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:glass-face:3 0 0 0 .5px rgba(0,0,0,.6)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:glass-face:4 0 1px 2px rgba(0,0,0,.2)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 16.0, blur: 30.0, spread: -12.0, paint: .color(MetalRGBA(20.0, 20.0, 20.0, 0.35)))), // mu-recipe:glass-face:5 0 16px 30px -12px rgba(20,20,20,.35)
-            .init(part: "self", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 36.0, blur: 70.0, spread: -30.0, paint: .color(MetalRGBA(20.0, 20.0, 20.0, 0.3)))), // mu-recipe:glass-face:6 0 36px 70px -30px rgba(20,20,20,.3)
-            .init(part: "screen", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(11.0, 11.0, 12.0, 1.0)))), // mu-recipe:glass-face:7 #0B0B0C
-            .init(part: "glare", state: nil, colorway: nil, fill: .linear(angle: 115.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.12)), 0.0), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.035)), 0.28), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.0)), 0.285)])), // mu-recipe:glass-face:8 linear-gradient(115deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.035) 28%, rgba(255,255,255,0) 28.5%)
-            .init(part: "glare", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.0)), 0.55), .init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.25)), 1.0)])), // mu-recipe:glass-face:9 linear-gradient(rgba(0,0,0,0) 55%, rgba(0,0,0,.25))
-            .init(part: "glare", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.14)))), // mu-recipe:glass-face:10 inset 0 1px 0 rgba(255,255,255,.14)
-            .init(part: "glare", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:glass-face:11 inset 0 0 0 1px rgba(0,0,0,.5)
-            .init(part: "glare", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 8.0, blur: 18.0, spread: -8.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:glass-face:12 inset 0 8px 18px -8px rgba(0,0,0,.45)
+            .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 1.0)), 0.0), .init(.color(MetalRGBA(245.0, 244.0, 240.0, 1.0)), 0.4), .init(.color(MetalRGBA(236.0, 235.0, 230.0, 1.0)), 1.0)])), // mu-recipe:glass-face:0 linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6)
+            .init(part: "self", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(42.0, 42.0, 45.0, 1.0)), 0.0), .init(.color(MetalRGBA(29.0, 29.0, 31.0, 1.0)), 0.4), .init(.color(MetalRGBA(22.0, 22.0, 24.0, 1.0)), 1.0)])), // mu-recipe:glass-face:1 linear-gradient(#2A2A2D, #1D1D1F 40%, #161618)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.95)))), // mu-recipe:glass-face:2 inset 0 1px 0 rgba(255,255,255,.95)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.5)))), // mu-recipe:glass-face:3 inset 0 0 6px 2px rgba(255,255,255,.5)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.1)))), // mu-recipe:glass-face:4 0 0 0 .5px rgba(24,22,16,.10)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.06)))), // mu-recipe:glass-face:5 0 1px 2px rgba(24,22,16,.06)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 16.0, blur: 30.0, spread: -12.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.16)))), // mu-recipe:glass-face:6 0 16px 30px -12px rgba(24,22,16,.16)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 36.0, blur: 70.0, spread: -30.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.14)))), // mu-recipe:glass-face:7 0 36px 70px -30px rgba(24,22,16,.14)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.13)))), // mu-recipe:glass-face:8 inset 0 1px 0 rgba(255,255,255,.13)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.04)))), // mu-recipe:glass-face:9 inset 0 0 6px 2px rgba(255,255,255,.04)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:glass-face:10 0 0 0 .5px rgba(0,0,0,.6)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:glass-face:11 0 1px 2px rgba(0,0,0,.2)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 16.0, blur: 30.0, spread: -12.0, paint: .color(MetalRGBA(20.0, 20.0, 20.0, 0.35)))), // mu-recipe:glass-face:12 0 16px 30px -12px rgba(20,20,20,.35)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 36.0, blur: 70.0, spread: -30.0, paint: .color(MetalRGBA(20.0, 20.0, 20.0, 0.3)))), // mu-recipe:glass-face:13 0 36px 70px -30px rgba(20,20,20,.3)
+            .init(part: "screen", state: nil, colorway: .bone, fill: .solid(.color(MetalRGBA(232.0, 231.0, 226.0, 1.0)))), // mu-recipe:glass-face:14 #E8E7E2
+            .init(part: "screen", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(11.0, 11.0, 12.0, 1.0)))), // mu-recipe:glass-face:15 #0B0B0C
+            .init(part: "glare", state: nil, colorway: .bone, fill: .linear(angle: 115.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.55)), 0.0), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.18)), 0.28), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.0)), 0.285)])), // mu-recipe:glass-face:16 linear-gradient(115deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.18) 28%, rgba(255,255,255,0) 28.5%)
+            .init(part: "glare", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.0)), 0.55), .init(.color(MetalRGBA(24.0, 22.0, 16.0, 0.05)), 1.0)])), // mu-recipe:glass-face:17 linear-gradient(rgba(0,0,0,0) 55%, rgba(24,22,16,.05))
+            .init(part: "glare", state: nil, colorway: .graphite, fill: .linear(angle: 115.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.12)), 0.0), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.035)), 0.28), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.0)), 0.285)])), // mu-recipe:glass-face:18 linear-gradient(115deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.035) 28%, rgba(255,255,255,0) 28.5%)
+            .init(part: "glare", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.0)), 0.55), .init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.25)), 1.0)])), // mu-recipe:glass-face:19 linear-gradient(rgba(0,0,0,0) 55%, rgba(0,0,0,.25))
+            .init(part: "glare", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.5)))), // mu-recipe:glass-face:20 inset 0 1px 0 rgba(255,255,255,.5)
+            .init(part: "glare", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.1)))), // mu-recipe:glass-face:21 inset 0 0 0 1px rgba(24,22,16,.10)
+            .init(part: "glare", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 8.0, blur: 18.0, spread: -8.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.16)))), // mu-recipe:glass-face:22 inset 0 8px 18px -8px rgba(24,22,16,.16)
+            .init(part: "glare", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.14)))), // mu-recipe:glass-face:23 inset 0 1px 0 rgba(255,255,255,.14)
+            .init(part: "glare", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.5)))), // mu-recipe:glass-face:24 inset 0 0 0 1px rgba(0,0,0,.5)
+            .init(part: "glare", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 8.0, blur: 18.0, spread: -8.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:glass-face:25 inset 0 8px 18px -8px rgba(0,0,0,.45)
         ],
         props: [
             "self.radius": .number(22.0),
@@ -1466,13 +1479,16 @@ public enum MetalRecipes {
             .init(part: "suggestion", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:chip:10 0 0 0 .5px rgba(0,0,0,.55)
             .init(part: "suggestion", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:chip:11 0 1px 2px rgba(0,0,0,.3)
             .init(part: "suggestion", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 5.0, blur: 12.0, spread: -4.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:chip:12 0 5px 12px -4px rgba(0,0,0,.3)
-            .init(part: "glass", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(20.0, 20.0, 22.0, 0.5)))), // mu-recipe:chip:13 rgba(20,20,22,.5)
-            .init(part: "glass-action", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:chip:14 rgba(255,255,255,.08)
-            .init(part: "glass-action", state: "hover", colorway: nil, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:chip:15 rgba(255,255,255,.16)
-            .init(part: "led", state: "link", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(230.0, 238.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(157.0, 185.0, 255.0, 1.0)), 0.45), .init(.color(MetalRGBA(75.0, 120.0, 240.0, 1.0)), 1.0)])), // mu-recipe:chip:16 radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0)
-            .init(part: "led", state: "code", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(246.0, 228.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(212.0, 166.0, 240.0, 1.0)), 0.45), .init(.color(MetalRGBA(155.0, 92.0, 200.0, 1.0)), 1.0)])), // mu-recipe:chip:17 radial-gradient(circle at 40% 35%, #F6E4FF 0 18%, #D4A6F0 45%, #9B5CC8)
-            .init(part: "tag", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(40.0, 38.0, 32.0, 0.2)))), // mu-recipe:chip:18 inset 0 0 0 .5px rgba(40,38,32,.2)
-            .init(part: "tag", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:chip:19 inset 0 0 0 .5px rgba(255,255,255,.16)
+            .init(part: "glass", state: nil, colorway: .bone, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.6)))), // mu-recipe:chip:13 rgba(255,255,255,.6)
+            .init(part: "glass", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(20.0, 20.0, 22.0, 0.5)))), // mu-recipe:chip:14 rgba(20,20,22,.5)
+            .init(part: "glass-action", state: nil, colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.05)))), // mu-recipe:chip:15 rgba(0,0,0,.05)
+            .init(part: "glass-action", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:chip:16 rgba(255,255,255,.08)
+            .init(part: "glass-action", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.09)))), // mu-recipe:chip:17 rgba(0,0,0,.09)
+            .init(part: "glass-action", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:chip:18 rgba(255,255,255,.16)
+            .init(part: "led", state: "link", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(230.0, 238.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(157.0, 185.0, 255.0, 1.0)), 0.45), .init(.color(MetalRGBA(75.0, 120.0, 240.0, 1.0)), 1.0)])), // mu-recipe:chip:19 radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0)
+            .init(part: "led", state: "code", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(246.0, 228.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(212.0, 166.0, 240.0, 1.0)), 0.45), .init(.color(MetalRGBA(155.0, 92.0, 200.0, 1.0)), 1.0)])), // mu-recipe:chip:20 radial-gradient(circle at 40% 35%, #F6E4FF 0 18%, #D4A6F0 45%, #9B5CC8)
+            .init(part: "tag", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(40.0, 38.0, 32.0, 0.2)))), // mu-recipe:chip:21 inset 0 0 0 .5px rgba(40,38,32,.2)
+            .init(part: "tag", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:chip:22 inset 0 0 0 .5px rgba(255,255,255,.16)
         ],
         props: [
             "suggestion.height": .number(20.0),
@@ -1488,9 +1504,9 @@ public enum MetalRecipes {
             "glass.gap": .number(5.0),
             "glass.font": .text("500 9px/1 mono"),
             "glass.tracking": .text("0.1em"),
-            "glass.ink": .text("rgba(255,255,255,.8)"),
+            "glass.ink": .perColorway(bone: "rgba(27,27,29,.72)", graphite: "rgba(255,255,255,.8)"),
             "glass.blur": .text("blur(8px) saturate(1.4)"),
-            "glass-action.ink": .text("rgba(255,255,255,.75)"),
+            "glass-action.ink": .perColorway(bone: "rgba(27,27,29,.7)", graphite: "rgba(255,255,255,.75)"),
             "led.size": .number(5.0),
             "tag.pad-x": .number(6.0),
             "tag.font": .text("400 9px/15px mono"),
@@ -1880,30 +1896,32 @@ public enum MetalRecipes {
     public static let linkCard = MetalObjectRecipe(
         name: "link-card",
         layers: [
-            .init(part: "screen", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.85, y: 0.0), stops: [.init(.selfColor(alpha: 1.0), 0.0), .init(.color(MetalRGBA(18.0, 19.0, 22.0, 1.0)), 0.7)])), // mu-recipe:link-card:0 radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%)
+            .init(part: "screen", state: nil, colorway: .bone, fill: .radial(center: .init(x: 0.85, y: 0.0), stops: [.init(.selfColor(alpha: 1.0), 0.0), .init(.color(MetalRGBA(238.0, 237.0, 233.0, 1.0)), 0.7)])), // mu-recipe:link-card:0 radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #EEEDE9 70%)
+            .init(part: "screen", state: nil, colorway: .graphite, fill: .radial(center: .init(x: 0.85, y: 0.0), stops: [.init(.selfColor(alpha: 1.0), 0.0), .init(.color(MetalRGBA(18.0, 19.0, 22.0, 1.0)), 0.7)])), // mu-recipe:link-card:1 radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%)
         ],
         props: [
             "self.width": .number(250.0),
             "screen.height": .number(92.0),
             "screen.pad-y": .number(12.0),
             "screen.pad-x": .number(14.0),
-            "screen.tint": .text("#36406A"),
+            "screen.tint": .perColorway(bone: "#C3CBEA", graphite: "#36406A"),
             "screen.tint-saturation": .text("38%"),
-            "screen.tint-lightness": .text("32%"),
+            "screen.tint-lightness": .perColorway(bone: "84%", graphite: "32%"),
+            "screen.shade": .perColorway(bone: "#EEEDE9", graphite: "#121316"),
             "host.font": .text("620 15px/1.2 sans"),
             "host.tracking": .text("-0.015em"),
-            "host.ink": .text("#EDEDEF"),
+            "host.ink": .perColorway(bone: "#1B1B1D", graphite: "#EDEDEF"),
             "path.font": .text("400 9.5px/1.4 mono"),
             "path.tracking": .text("0.06em"),
-            "path.ink": .text("rgba(255,255,255,.5)"),
+            "path.ink": .perColorway(bone: "rgba(27,27,29,.55)", graphite: "rgba(255,255,255,.5)"),
             "chip.inset": .number(10.0),
             "title.font": .text("620 14px/1.3 sans"),
             "title.tracking": .text("-0.01em"),
-            "title.ink": .text("#EDEDEF"),
+            "title.ink": .perColorway(bone: "#1B1B1D", graphite: "#EDEDEF"),
             "title.lines": .text("2"),
             "meta.gap": .number(5.0),
             "meta.icon": .number(12.0),
-            "meta.ink": .text("rgba(255,255,255,.6)"),
+            "meta.ink": .perColorway(bone: "rgba(27,27,29,.6)", graphite: "rgba(255,255,255,.6)"),
             "preview.height": .number(128.0),
             "preview.fade": .text("220ms"),
             "preview.image-opacity": .text("0.55"),

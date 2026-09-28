@@ -715,6 +715,7 @@
   --spacing-link-card-screen-pad-y: var(--mu-r-link-card-screen-pad-y);
   --spacing-link-card-screen-pad-x: var(--mu-r-link-card-screen-pad-x);
   --color-link-card-screen-tint: var(--mu-r-link-card-screen-tint);
+  --color-link-card-screen-shade: var(--mu-r-link-card-screen-shade);
   --tracking-link-card-host-tracking: var(--mu-r-link-card-host-tracking);
   --color-link-card-host-ink: var(--mu-r-link-card-host-ink);
   --tracking-link-card-path-tracking: var(--mu-r-link-card-path-tracking);
@@ -1878,7 +1879,7 @@
   --mu-self: var(--mu-r-link-card-screen-tint);
 }
 @utility link-card-image-shade {
-  background: linear-gradient(180deg, rgba(18,19,22,.15) 0%, rgba(18,19,22,.55) 45%, #121316 100%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--mu-r-link-card-screen-shade) 15%, transparent) 0%, color-mix(in srgb, var(--mu-r-link-card-screen-shade) 55%, transparent) 45%, var(--mu-r-link-card-screen-shade) 100%);
 }
 @utility link-card-title-clamp {
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--mu-r-link-card-title-lines); overflow: hidden;

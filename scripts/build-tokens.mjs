@@ -342,6 +342,21 @@ ${RECIPES.css.graphite}
 ${RECIPES.css.graphite.replace(/\/\* mu-recipe:[^*]+\*\/ /g, '').replace(/^/gm, '  ')}
   }
 }
+/* Per-colorway layers in an object's own colour resolve on the object too. */
+:root [data-mu-self],
+[data-mu-colorway="bone"] [data-mu-self],
+[data-mu-self][data-mu-colorway="bone"] {
+${RECIPES.css.selfBone}
+}
+[data-mu-colorway="graphite"] [data-mu-self],
+[data-mu-self][data-mu-colorway="graphite"] {
+${RECIPES.css.selfGraphite}
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mu-colorway="bone"]) [data-mu-self] {
+${RECIPES.css.selfGraphite.replace(/^/gm, '  ')}
+  }
+}
 `;
 emit('packages/metalui/src/components/tokens.css', css);
 

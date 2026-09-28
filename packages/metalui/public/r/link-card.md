@@ -12,7 +12,7 @@ A link as a glass object. A custom block: `GlassFace` with a screen tinted by th
 
 ## Anatomy
 
-250 wide: `GlassFace` (bezel 6, radius 22; screen radius 16 with its glare). The screen is 92 tall, padding 12 / 14, the host and path set at its foot; its tint is a radial of the host's hue into `#121316`. `Chip variant="glass"` with a link `Led` and LINK at 10 / 10; `Chip variant="glass-action"` OPEN ↗ at 10 from the top right. The host is 620 15 / 1.2 in `#EDEDEF`; the path 9.5 mono uppercase at .5 white, ellipsised.
+250 wide: `GlassFace` (bezel 6, radius 22; screen radius 16 with its glare). The screen is 92 tall, padding 12 / 14, the host and path set at its foot; its tint is a radial of the host's hue into the screen (`#EEEDE9` on Bone, `#121316` on Graphite). `Chip variant="glass"` with a link `Led` and LINK at 10 / 10; `Chip variant="glass-action"` OPEN ↗ at 10 from the top right. The host is 620 15 / 1.2 in ink (`#1B1B1D` on Bone, `#EDEDEF` on Graphite); the path 9.5 mono uppercase at half ink, ellipsised.
 
 ## Why custom
 
@@ -29,7 +29,7 @@ The tinted screen and its type are drawn by no component. Everything else is `Gl
 |---|---|---|
 | `href` | `url:` | |
 | `host`, `path` | `host:`, `path:` | default from the URL |
-| `hue` | `hue:` | any colour; default the recipe's tint. The reference tints by host: `hsl(linkHueDegrees(host), 38%, 32%)` (the recipe's tint-saturation and tint-lightness) |
+| `hue` | `hue:` | any colour; default the recipe's tint. The reference tints by host: `hsl(linkHueDegrees(host), 38%, 84%)` on Bone and `hsl(linkHueDegrees(host), 38%, 32%)` on Graphite (the recipe's tint-saturation and the colorway's tint-lightness) |
 | `tag`, `openLabel` | `tag:`, `openLabel:` | the host's words (LINK, OPEN ↗) |
 
 ## Tokens

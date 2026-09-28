@@ -4,7 +4,7 @@ import * as React from 'react';
 
 /* CHIP: a small pill with an optional leading LED or glyph and trailing actions.
  *   suggestion     frosted with a green hairline (a question with its confidence and ✓ ×)
- *   glass          a dark tag on a glass screen (an LED and a kind)
+ *   glass          a tag on a glass screen, in the colorway (an LED and a kind)
  *   glass-action   a light cap on glass (OPEN ↗), brighter on hover
  *   tag            an engraved tag in a hairline pill (a derived #tag)
  * Slots: Chip.Root, Chip.Lead, Chip.Text, Chip.Actions. Styled with the theme's utilities (the chip recipe). */

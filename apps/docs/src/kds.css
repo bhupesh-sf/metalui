@@ -824,10 +824,10 @@ html.rm .xr-dialogwrap { animation: none; }
 .xr-palette-solid { position: relative; overflow: hidden; }
 /* x-ray, link card: the screen set into the bezel, its chips and type */
 .xr-face.xr-linkscreen { display: flex; flex-direction: column; justify-content: flex-end; box-sizing: border-box; overflow: hidden; }
-.xr-linkchip { position: absolute; display: flex; align-items: center; box-sizing: border-box; font-family: var(--mono); font-weight: 500; letter-spacing: .1em; color: rgba(255,255,255,.8); background: rgba(20,20,22,.5); white-space: nowrap; }
+.xr-linkchip { position: absolute; display: flex; align-items: center; box-sizing: border-box; font-family: var(--mono); font-weight: 500; letter-spacing: .1em; color: var(--mu-r-chip-glass-ink); background: var(--mu-r-chip-glass-background); white-space: nowrap; }
 .xr-linkchip > i { display: block; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0); }
-.xr-linkchip.is-action { color: rgba(255,255,255,.75); background: rgba(255,255,255,.08); cursor: pointer; transition: background .16s; }
-.xr-linkchip.is-action:hover { background: rgba(255,255,255,.16); }
+.xr-linkchip.is-action { color: var(--mu-r-chip-glass-action-ink); background: var(--mu-r-chip-glass-action-background); cursor: pointer; transition: background .16s; }
+.xr-linkchip.is-action:hover { background: var(--mu-r-chip-glass-action-hover-background); }
 .xr-linkchip.is-lit { outline: 2px solid var(--green-deep); outline-offset: 2px; }
 /* x-ray on a narrow bench: callouts in a row under the model; overlays scroll and never hide under the header */
 .xr-bench { container-type: inline-size; }

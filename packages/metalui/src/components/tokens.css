@@ -1009,24 +1009,6 @@
   --mu-r-toolbar-search-glyph: 14px;
   --mu-r-toolbar-kbd-ink: #A6A6A9;
   /* glass-face: reference style.css .glass, .glass .screen, .glass .screen::after */
-  --mu-r-glass-face-self-background:
-    /* mu-recipe:glass-face:0 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
-  --mu-r-glass-face-self-shadow:
-    /* mu-recipe:glass-face:1 */ inset 0 1px 0 rgba(255,255,255,.13),
-    /* mu-recipe:glass-face:2 */ inset 0 0 6px 2px rgba(255,255,255,.04),
-    /* mu-recipe:glass-face:3 */ 0 0 0 .5px rgba(0,0,0,.6),
-    /* mu-recipe:glass-face:4 */ 0 1px 2px rgba(0,0,0,.2),
-    /* mu-recipe:glass-face:5 */ 0 16px 30px -12px rgba(20,20,20,.35),
-    /* mu-recipe:glass-face:6 */ 0 36px 70px -30px rgba(20,20,20,.3);
-  --mu-r-glass-face-screen-background:
-    /* mu-recipe:glass-face:7 */ #0B0B0C;
-  --mu-r-glass-face-glare-background:
-    /* mu-recipe:glass-face:8 */ linear-gradient(115deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.035) 28%, rgba(255,255,255,0) 28.5%),
-    /* mu-recipe:glass-face:9 */ linear-gradient(rgba(0,0,0,0) 55%, rgba(0,0,0,.25));
-  --mu-r-glass-face-glare-shadow:
-    /* mu-recipe:glass-face:10 */ inset 0 1px 0 rgba(255,255,255,.14),
-    /* mu-recipe:glass-face:11 */ inset 0 0 0 1px rgba(0,0,0,.5),
-    /* mu-recipe:glass-face:12 */ inset 0 8px 18px -8px rgba(0,0,0,.45);
   --mu-r-glass-face-self-radius: 22px;
   --mu-r-glass-face-self-pad: 6px;
   --mu-r-glass-face-screen-radius: 16px;
@@ -1336,16 +1318,10 @@
   --mu-r-icon-button-self-fade: 160ms;
   --mu-r-icon-button-self-transition: background var(--mu-r-icon-button-self-fade), color var(--mu-r-icon-button-self-fade);
   /* chip: reference style.css .sugg, .sugg .eng, .glass-tag, .glass-tag .led, .linkobj a.open, .meta .derived-tags span */
-  --mu-r-chip-glass-background:
-    /* mu-recipe:chip:13 */ rgba(20,20,22,.5);
-  --mu-r-chip-glass-action-background:
-    /* mu-recipe:chip:14 */ rgba(255,255,255,.08);
-  --mu-r-chip-glass-action-hover-background:
-    /* mu-recipe:chip:15 */ rgba(255,255,255,.16);
   --mu-r-chip-led-link-background:
-    /* mu-recipe:chip:16 */ radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0);
+    /* mu-recipe:chip:19 */ radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0);
   --mu-r-chip-led-code-background:
-    /* mu-recipe:chip:17 */ radial-gradient(circle at 40% 35%, #F6E4FF 0 18%, #D4A6F0 45%, #9B5CC8);
+    /* mu-recipe:chip:20 */ radial-gradient(circle at 40% 35%, #F6E4FF 0 18%, #D4A6F0 45%, #9B5CC8);
   --mu-r-chip-suggestion-height: 20px;
   --mu-r-chip-suggestion-pad-left: 9px;
   --mu-r-chip-suggestion-pad-right: 3px;
@@ -1358,9 +1334,7 @@
   --mu-r-chip-glass-gap: 5px;
   --mu-r-chip-glass-font: 500 9px/1 var(--mu-mono);
   --mu-r-chip-glass-tracking: 0.1em;
-  --mu-r-chip-glass-ink: rgba(255,255,255,.8);
   --mu-r-chip-glass-blur: blur(8px) saturate(1.4);
-  --mu-r-chip-glass-action-ink: rgba(255,255,255,.75);
   --mu-r-chip-led-size: 5px;
   --mu-r-chip-tag-pad-x: 6px;
   --mu-r-chip-tag-font: 400 9px/15px var(--mu-mono);
@@ -1522,29 +1496,21 @@
   --mu-r-glyph-size-tiny: 10px;
   --mu-r-glyph-drop-tiny: -1px;
   /* link-card: reference style.css .linkobj, .linkobj .screen, .dom, .path, .linkobj a.open */
-  --mu-r-link-card-screen-background:
-    /* mu-recipe:link-card:0 */ radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
   --mu-r-link-card-self-width: 250px;
   --mu-r-link-card-screen-height: 92px;
   --mu-r-link-card-screen-pad-y: 12px;
   --mu-r-link-card-screen-pad-x: 14px;
-  --mu-r-link-card-screen-tint: #36406A;
   --mu-r-link-card-screen-tint-saturation: 38%;
-  --mu-r-link-card-screen-tint-lightness: 32%;
   --mu-r-link-card-host-font: 620 15px/1.2 var(--mu-sans);
   --mu-r-link-card-host-tracking: -0.015em;
-  --mu-r-link-card-host-ink: #EDEDEF;
   --mu-r-link-card-path-font: 400 9.5px/1.4 var(--mu-mono);
   --mu-r-link-card-path-tracking: 0.06em;
-  --mu-r-link-card-path-ink: rgba(255,255,255,.5);
   --mu-r-link-card-chip-inset: 10px;
   --mu-r-link-card-title-font: 620 14px/1.3 var(--mu-sans);
   --mu-r-link-card-title-tracking: -0.01em;
-  --mu-r-link-card-title-ink: #EDEDEF;
   --mu-r-link-card-title-lines: 2;
   --mu-r-link-card-meta-gap: 5px;
   --mu-r-link-card-meta-icon: 12px;
-  --mu-r-link-card-meta-ink: rgba(255,255,255,.6);
   --mu-r-link-card-preview-height: 128px;
   --mu-r-link-card-preview-fade: 220ms;
   --mu-r-link-card-preview-image-opacity: 0.55;
@@ -1824,8 +1790,6 @@
     inset 0 0 6px 2px rgba(255,255,255,.12),
     0 1px 2px rgba(0,0,0,.12),
     0 14px 26px -12px color-mix(in srgb, var(--mu-self) 53%, transparent);
-  --mu-r-link-card-screen-background:
-    radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
   --mu-r-silhouette-link-background:
     radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
   --mu-r-silhouette-swatch-background:
@@ -1847,6 +1811,24 @@
   --mu-r-checkbox-self-ghost-shadow:
     /* mu-recipe:checkbox:14 */ inset 0 0 0 1px rgba(40,38,32,.16),
     /* mu-recipe:checkbox:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
+  --mu-r-glass-face-self-background:
+    /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
+  --mu-r-glass-face-self-shadow:
+    /* mu-recipe:glass-face:2 */ inset 0 1px 0 rgba(255,255,255,.95),
+    /* mu-recipe:glass-face:3 */ inset 0 0 6px 2px rgba(255,255,255,.5),
+    /* mu-recipe:glass-face:4 */ 0 0 0 .5px rgba(24,22,16,.10),
+    /* mu-recipe:glass-face:5 */ 0 1px 2px rgba(24,22,16,.06),
+    /* mu-recipe:glass-face:6 */ 0 16px 30px -12px rgba(24,22,16,.16),
+    /* mu-recipe:glass-face:7 */ 0 36px 70px -30px rgba(24,22,16,.14);
+  --mu-r-glass-face-screen-background:
+    /* mu-recipe:glass-face:14 */ #E8E7E2;
+  --mu-r-glass-face-glare-background:
+    /* mu-recipe:glass-face:16 */ linear-gradient(115deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.18) 28%, rgba(255,255,255,0) 28.5%),
+    /* mu-recipe:glass-face:17 */ linear-gradient(rgba(0,0,0,0) 55%, rgba(24,22,16,.05));
+  --mu-r-glass-face-glare-shadow:
+    /* mu-recipe:glass-face:20 */ inset 0 1px 0 rgba(255,255,255,.5),
+    /* mu-recipe:glass-face:21 */ inset 0 0 0 1px rgba(24,22,16,.10),
+    /* mu-recipe:glass-face:22 */ inset 0 8px 18px -8px rgba(24,22,16,.16);
   --mu-r-hover-engraving-self-background:
     /* mu-recipe:hover-engraving:0 */ rgba(252,251,249,.92);
   --mu-r-hover-engraving-self-shadow:
@@ -2079,9 +2061,17 @@
     /* mu-recipe:chip:5 */ 0 0 0 .5px rgba(24,22,16,.05),
     /* mu-recipe:chip:6 */ 0 1px 2px rgba(24,22,16,.07),
     /* mu-recipe:chip:7 */ 0 5px 12px -4px rgba(24,22,16,.09);
+  --mu-r-chip-glass-background:
+    /* mu-recipe:chip:13 */ rgba(255,255,255,.6);
+  --mu-r-chip-glass-action-background:
+    /* mu-recipe:chip:15 */ rgba(0,0,0,.05);
+  --mu-r-chip-glass-action-hover-background:
+    /* mu-recipe:chip:17 */ rgba(0,0,0,.09);
   --mu-r-chip-tag-shadow:
-    /* mu-recipe:chip:18 */ inset 0 0 0 .5px rgba(40,38,32,.2);
+    /* mu-recipe:chip:21 */ inset 0 0 0 .5px rgba(40,38,32,.2);
   --mu-r-chip-suggestion-ink: #5C5C60;
+  --mu-r-chip-glass-ink: rgba(27,27,29,.72);
+  --mu-r-chip-glass-action-ink: rgba(27,27,29,.7);
   --mu-r-chip-tag-ink: rgba(40,38,32,.46);
   --mu-r-field-field-ink: #1B1B1D;
   --mu-r-field-field-hint: #9A9A9D;
@@ -2185,6 +2175,15 @@
   --mu-r-glyph-ink-ink: #1B1B1D;
   --mu-r-glyph-ink-ink2: #5C5C60;
   --mu-r-glyph-ink-ink3: #9A9A9D;
+  --mu-r-link-card-screen-background:
+    /* mu-recipe:link-card:0 */ radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #EEEDE9 70%);
+  --mu-r-link-card-screen-tint: #C3CBEA;
+  --mu-r-link-card-screen-tint-lightness: 84%;
+  --mu-r-link-card-screen-shade: #EEEDE9;
+  --mu-r-link-card-host-ink: #1B1B1D;
+  --mu-r-link-card-path-ink: rgba(27,27,29,.55);
+  --mu-r-link-card-title-ink: #1B1B1D;
+  --mu-r-link-card-meta-ink: rgba(27,27,29,.6);
   --mu-r-silhouette-file-background:
     /* mu-recipe:silhouette:9 */ linear-gradient(#FCFBF9, #F0EFEB);
   --mu-r-silhouette-file-shadow:
@@ -2291,6 +2290,24 @@
   --mu-r-checkbox-self-ghost-shadow:
     /* mu-recipe:checkbox:16 */ inset 0 0 0 1px rgba(255,255,255,.18),
     /* mu-recipe:checkbox:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
+  --mu-r-glass-face-self-background:
+    /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
+  --mu-r-glass-face-self-shadow:
+    /* mu-recipe:glass-face:8 */ inset 0 1px 0 rgba(255,255,255,.13),
+    /* mu-recipe:glass-face:9 */ inset 0 0 6px 2px rgba(255,255,255,.04),
+    /* mu-recipe:glass-face:10 */ 0 0 0 .5px rgba(0,0,0,.6),
+    /* mu-recipe:glass-face:11 */ 0 1px 2px rgba(0,0,0,.2),
+    /* mu-recipe:glass-face:12 */ 0 16px 30px -12px rgba(20,20,20,.35),
+    /* mu-recipe:glass-face:13 */ 0 36px 70px -30px rgba(20,20,20,.3);
+  --mu-r-glass-face-screen-background:
+    /* mu-recipe:glass-face:15 */ #0B0B0C;
+  --mu-r-glass-face-glare-background:
+    /* mu-recipe:glass-face:18 */ linear-gradient(115deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.035) 28%, rgba(255,255,255,0) 28.5%),
+    /* mu-recipe:glass-face:19 */ linear-gradient(rgba(0,0,0,0) 55%, rgba(0,0,0,.25));
+  --mu-r-glass-face-glare-shadow:
+    /* mu-recipe:glass-face:23 */ inset 0 1px 0 rgba(255,255,255,.14),
+    /* mu-recipe:glass-face:24 */ inset 0 0 0 1px rgba(0,0,0,.5),
+    /* mu-recipe:glass-face:25 */ inset 0 8px 18px -8px rgba(0,0,0,.45);
   --mu-r-hover-engraving-self-background:
     /* mu-recipe:hover-engraving:1 */ rgba(34,34,37,.92);
   --mu-r-hover-engraving-self-shadow:
@@ -2523,9 +2540,17 @@
     /* mu-recipe:chip:10 */ 0 0 0 .5px rgba(0,0,0,.55),
     /* mu-recipe:chip:11 */ 0 1px 2px rgba(0,0,0,.3),
     /* mu-recipe:chip:12 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-chip-glass-background:
+    /* mu-recipe:chip:14 */ rgba(20,20,22,.5);
+  --mu-r-chip-glass-action-background:
+    /* mu-recipe:chip:16 */ rgba(255,255,255,.08);
+  --mu-r-chip-glass-action-hover-background:
+    /* mu-recipe:chip:18 */ rgba(255,255,255,.16);
   --mu-r-chip-tag-shadow:
-    /* mu-recipe:chip:19 */ inset 0 0 0 .5px rgba(255,255,255,.16);
+    /* mu-recipe:chip:22 */ inset 0 0 0 .5px rgba(255,255,255,.16);
   --mu-r-chip-suggestion-ink: #A6A6A9;
+  --mu-r-chip-glass-ink: rgba(255,255,255,.8);
+  --mu-r-chip-glass-action-ink: rgba(255,255,255,.75);
   --mu-r-chip-tag-ink: rgba(255,255,255,.38);
   --mu-r-field-field-ink: #F2F2F0;
   --mu-r-field-field-hint: #77777B;
@@ -2629,6 +2654,15 @@
   --mu-r-glyph-ink-ink: #F2F2F0;
   --mu-r-glyph-ink-ink2: #A6A6A9;
   --mu-r-glyph-ink-ink3: #77777B;
+  --mu-r-link-card-screen-background:
+    /* mu-recipe:link-card:1 */ radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
+  --mu-r-link-card-screen-tint: #36406A;
+  --mu-r-link-card-screen-tint-lightness: 32%;
+  --mu-r-link-card-screen-shade: #121316;
+  --mu-r-link-card-host-ink: #EDEDEF;
+  --mu-r-link-card-path-ink: rgba(255,255,255,.5);
+  --mu-r-link-card-title-ink: #EDEDEF;
+  --mu-r-link-card-meta-ink: rgba(255,255,255,.6);
   --mu-r-silhouette-file-background:
     /* mu-recipe:silhouette:10 */ linear-gradient(#2C2C2F, #202022);
   --mu-r-silhouette-file-shadow:
@@ -2736,6 +2770,24 @@
     --mu-r-checkbox-self-ghost-shadow:
       inset 0 0 0 1px rgba(255,255,255,.18),
       inset 0 2px 4px -2px rgba(0,0,0,.4);
+    --mu-r-glass-face-self-background:
+      linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
+    --mu-r-glass-face-self-shadow:
+      inset 0 1px 0 rgba(255,255,255,.13),
+      inset 0 0 6px 2px rgba(255,255,255,.04),
+      0 0 0 .5px rgba(0,0,0,.6),
+      0 1px 2px rgba(0,0,0,.2),
+      0 16px 30px -12px rgba(20,20,20,.35),
+      0 36px 70px -30px rgba(20,20,20,.3);
+    --mu-r-glass-face-screen-background:
+      #0B0B0C;
+    --mu-r-glass-face-glare-background:
+      linear-gradient(115deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.035) 28%, rgba(255,255,255,0) 28.5%),
+      linear-gradient(rgba(0,0,0,0) 55%, rgba(0,0,0,.25));
+    --mu-r-glass-face-glare-shadow:
+      inset 0 1px 0 rgba(255,255,255,.14),
+      inset 0 0 0 1px rgba(0,0,0,.5),
+      inset 0 8px 18px -8px rgba(0,0,0,.45);
     --mu-r-hover-engraving-self-background:
       rgba(34,34,37,.92);
     --mu-r-hover-engraving-self-shadow:
@@ -2968,9 +3020,17 @@
       0 0 0 .5px rgba(0,0,0,.55),
       0 1px 2px rgba(0,0,0,.3),
       0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-chip-glass-background:
+      rgba(20,20,22,.5);
+    --mu-r-chip-glass-action-background:
+      rgba(255,255,255,.08);
+    --mu-r-chip-glass-action-hover-background:
+      rgba(255,255,255,.16);
     --mu-r-chip-tag-shadow:
       inset 0 0 0 .5px rgba(255,255,255,.16);
     --mu-r-chip-suggestion-ink: #A6A6A9;
+    --mu-r-chip-glass-ink: rgba(255,255,255,.8);
+    --mu-r-chip-glass-action-ink: rgba(255,255,255,.75);
     --mu-r-chip-tag-ink: rgba(255,255,255,.38);
     --mu-r-field-field-ink: #F2F2F0;
     --mu-r-field-field-hint: #77777B;
@@ -3074,6 +3134,15 @@
     --mu-r-glyph-ink-ink: #F2F2F0;
     --mu-r-glyph-ink-ink2: #A6A6A9;
     --mu-r-glyph-ink-ink3: #77777B;
+    --mu-r-link-card-screen-background:
+      radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
+    --mu-r-link-card-screen-tint: #36406A;
+    --mu-r-link-card-screen-tint-lightness: 32%;
+    --mu-r-link-card-screen-shade: #121316;
+    --mu-r-link-card-host-ink: #EDEDEF;
+    --mu-r-link-card-path-ink: rgba(255,255,255,.5);
+    --mu-r-link-card-title-ink: #EDEDEF;
+    --mu-r-link-card-meta-ink: rgba(255,255,255,.6);
     --mu-r-silhouette-file-background:
       linear-gradient(#2C2C2F, #202022);
     --mu-r-silhouette-file-shadow:
@@ -3167,5 +3236,23 @@
       0 8px 18px -6px rgba(0,0,0,.2),
       0 26px 50px -16px rgba(0,0,0,.34),
       0 52px 96px -36px rgba(0,0,0,.3);
+  }
+}
+/* Per-colorway layers in an object's own colour resolve on the object too. */
+:root [data-mu-self],
+[data-mu-colorway="bone"] [data-mu-self],
+[data-mu-self][data-mu-colorway="bone"] {
+  --mu-r-link-card-screen-background:
+    radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #EEEDE9 70%);
+}
+[data-mu-colorway="graphite"] [data-mu-self],
+[data-mu-self][data-mu-colorway="graphite"] {
+  --mu-r-link-card-screen-background:
+    radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mu-colorway="bone"]) [data-mu-self] {
+    --mu-r-link-card-screen-background:
+      radial-gradient(120% 90% at 85% 0%, color-mix(in srgb, var(--mu-self) 100%, transparent) 0%, #121316 70%);
   }
 }

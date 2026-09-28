@@ -1,6 +1,6 @@
 # Glass face
 
-A dark glass object. React: `GlassFace` with parts `GlassFace.Root` (the bezel) and `GlassFace.Screen`. SwiftUI: `MetalGlassFace { screen: … }`.
+A glass object in the colorway: pale glass on Bone, dark glass on Graphite. React: `GlassFace` with parts `GlassFace.Root` (the bezel) and `GlassFace.Screen`. SwiftUI: `MetalGlassFace { screen: … }`.
 
 ## Use it for
 
@@ -8,8 +8,8 @@ A dark glass object. React: `GlassFace` with parts `GlassFace.Root` (the bezel) 
 
 ## Anatomy
 
-- The bezel: radius 22, padding 6, a dark gradient with a bright top edge, an inner glow and a deep drop shadow.
-- The screen: radius 16, near black; the glare is a 115° sheen, a darkening toward the bottom, a bright top rim, a dark inner ring and an inner shadow. The screen's own fill (a hue, a gradient) is the caller's, under the glare.
+- The bezel: radius 22, padding 6, a gradient in the colorway (white to bone on Bone, graphite to near black on Graphite) with a bright top edge, an inner glow and a deep drop shadow.
+- The screen: radius 16, pale bone (`#E8E7E2`) on Bone, near black on Graphite; the glare is a 115° sheen, a darkening toward the bottom, a bright top rim, a dark inner ring and an inner shadow. The screen's own fill (a hue, a gradient) is the caller's, under the glare.
 
 ## Behaviour
 

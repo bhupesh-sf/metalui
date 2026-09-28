@@ -27,7 +27,7 @@ export default function LinkCardPage() {
   return (
     <ComponentPage
       title={"Link card"}
-      lede={"A link as a small piece of dark glass: the site's name on a screen tinted by that site, a LINK tag and one OPEN button. Only OPEN opens the link."}
+      lede={"A link as a small piece of glass: the site's name on a screen tinted by that site, a LINK tag and one OPEN button. Only OPEN opens the link."}
       play={{ lede: "Each site gets its own colour from its name. Click OPEN to open the link in a new tab. Load the preview on the right: the page's title and picture fade in and the card grows to fit.", node: (
           <div className="flex flex-wrap justify-center gap-20">
             <LinkCard href="https://lanterns.photo/night-market" />

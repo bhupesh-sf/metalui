@@ -141,12 +141,13 @@ function propValue(v) {
     .replace(SELF, (_, a) => cssColor({ self: a !== undefined ? +a : 1 }));
 }
 
-/** Validates and returns { css: { root, bone, graphite }, swift } for tokens.recipes. */
+/** Validates and returns { css: { root, self, selfBone, selfGraphite, bone, graphite }, swift } for tokens.recipes. */
 export function buildRecipes(recipes) {
   const root = [];
   // groups that paint with the object's own colour (--mu-self) resolve on the element that sets it
   const selfish = [];
   const cw = { bone: [], graphite: [] };
+  const selfCw = { bone: [], graphite: [] };
   const swift = [];
   // Tailwind v4: every recipe as theme values (sizes, inks, tracking) and utilities (its layered looks,
   // its type, durations, opacities), all reading the --mu-r-* variables so they follow the colorway.
@@ -182,7 +183,11 @@ export function buildRecipes(recipes) {
         emitTo(root, list);
         if (usesSelf) emitTo(selfish, list);
       }
-      else for (const c of ['bone', 'graphite']) emitTo(cw[c], list.filter((l) => !l.colorway || l.colorway === c), c);
+      else for (const c of ['bone', 'graphite']) {
+        const layers = list.filter((l) => !l.colorway || l.colorway === c);
+        emitTo(cw[c], layers, c);
+        if (usesSelf) emitTo(selfCw[c], layers, c);
+      }
     }
     const stem = (part) => `${obj}${part === 'self' ? '' : '-' + part}`;
     // the layered looks: recipe-<object>[-<part>][-<state>]
@@ -265,7 +270,7 @@ ${props.join('\n') || '            :'}
   }
   return {
     theme: { vars: themeVars.join('\n'), utilities: utilities.join('\n'), keyframes: keyframes.join('\n') },
-    css: { root: root.join('\n'), self: selfish.join('\n').replace(/\/\* mu-recipe:[^*]+\*\/ /g, ''), bone: cw.bone.join('\n'), graphite: cw.graphite.join('\n') },
+    css: { root: root.join('\n'), self: selfish.join('\n').replace(/\/\* mu-recipe:[^*]+\*\/ /g, ''), selfBone: selfCw.bone.join('\n').replace(/\/\* mu-recipe:[^*]+\*\/ /g, ''), selfGraphite: selfCw.graphite.join('\n').replace(/\/\* mu-recipe:[^*]+\*\/ /g, ''), bone: cw.bone.join('\n'), graphite: cw.graphite.join('\n') },
     swift: `
 /// Object recipes (tokens.json \`recipes\`): every layer of each object's look, per part and state,
 /// from the reference design's CSS. Render with MetalObjectRecipe's helpers (Foundation/MetalObjectRecipe.swift).

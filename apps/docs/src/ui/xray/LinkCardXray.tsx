@@ -1,28 +1,23 @@
 import * as React from 'react';
 import { LinkCard } from '@unlocalhosted/metalui';
 import { tokens } from '../../lib/tokens';
-import { Exploded, IsoCap, XrayFrame, capTop, scalePx, type LayerDef, type SpotDef } from './kit';
+import { Exploded, IsoCap, XrayFrame, capTop, scalePx, tones, type LayerDef, type SpotDef } from './kit';
 import { HintLayer } from '../edit';
-import { HOSTS, LINK_TOKENS, LinkCardSpecimenCard, frameRadius, tintFor } from './LinkCardSpecimens';
+import { HOSTS, LINK_TOKENS, LinkCardSpecimenCard, frameRadius, linkLook, tintFor } from './LinkCardSpecimens';
+import { useColorway } from '../../app/colorway';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · LINK CARD (a block: a glass face, a tinted screen, two chips and two lines of type)
  *
  *   solid     a link card
- *   x-ray     a dark glass bezel standing on the page, a screen set into it, the screen's glow
+ *   x-ray     a glass bezel standing on the page, a screen set into it, the screen's glow
  *             tinted by the website's name, the LINK tag and the OPEN chip on the glass
  *   card      the real link card, handled (LinkCardSpecimens): the frame's side sets its width,
  *             the glow steps through sites, the words set their size and spacing, the LINK tag
  *             its distance from the corner, the screen's corner its corners; layers switch
  * ───────────────────────────────────────────────────────── */
 
-type RL = { part: string; prop: string; value: string }[];
-const LC = tokens.recipes['link-card'] as { props: { self: { width: number }; screen: { height: number; 'pad-y': number; 'pad-x': number }; host: { ink: string }; path: { ink: string } }; layers: RL };
-const GF = tokens.recipes['glass-face'] as { layers: RL };
-const pick = (r: { layers: RL }, part: string, prop: string) => r.layers.filter((l) => l.part === part && l.prop === prop).map((l) => l.value);
-const BEZEL_BG = pick(GF, 'self', 'background')[0], BEZEL_SH = pick(GF, 'self', 'shadow');
-const GLARE_BG = pick(GF, 'glare', 'background'), GLARE_SH = pick(GF, 'glare', 'shadow');
-const SCREEN_BG = pick(LC, 'screen', 'background')[0];
+const LC = tokens.recipes['link-card'] as { props: { self: { width: number }; screen: { height: number; 'pad-y': number; 'pad-x': number } } };
 const P = LC.props;
 const S = 2;
 
@@ -41,18 +36,18 @@ const SIDE: Record<Spot, ['left' | 'right', number]> = {
 };
 
 export const BEZEL: LayerDef[] = [
-  { name: 'Dark glass', why: 'A near-black frame, a little lighter at the top. A link is something that leads out of your page, so it looks like a small screen, not like paper.' },
+  { name: 'Glass', why: 'A glass frame, a little lighter at the top: pale on Bone, near-black on Graphite. A link is something that leads out of your page, so it looks like a small screen, not like paper.' },
   { name: 'Top edge', why: 'A thin bright line along the top edge of the glass.' },
   { name: 'Inner glow', why: 'A faint light just inside the edge.' },
-  { name: 'Rim', why: 'A thin dark outline.' },
+  { name: 'Rim', why: 'A thin outline, a shade darker than the glass.' },
   { name: 'Contact', why: 'A small shadow right under the card.' },
   { name: 'Near shadow', why: 'A soft shadow, a bit bigger.' },
   { name: 'Far shadow', why: 'A big, soft shadow. The card stands up off the page like an object.' },
 ];
 export const SCREEN: LayerDef[] = [
-  { name: 'Tinted glow', why: 'A coloured glow from the top right corner, fading to black. The colour comes from the site\'s name, so the same site always gets the same colour.' },
+  { name: 'Tinted glow', why: 'A coloured glow from the top right corner, fading into the screen. The colour comes from the site\'s name, so the same site always gets the same colour.' },
   { name: 'Glare', why: 'A pale diagonal stripe with a sharp edge, like light caught on a phone screen. It says "this is glass".' },
-  { name: 'Shade', why: 'The bottom of the screen gets a little darker, so the white text there stays easy to read.' },
+  { name: 'Shade', why: 'The bottom of the screen gets a little deeper, so the text there stays easy to read.' },
 ];
 
 export interface Model {
@@ -74,7 +69,9 @@ export function LinkCardXray({ startOpen = false }: { startOpen?: boolean }) {
   const [focus, setFocus] = React.useState<string | null>(null);
   const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
 
-  const hue = tintFor(m.host);
+  const { colorway } = useColorway();
+  const { bezelBg: BEZEL_BG, bezelSh: BEZEL_SH, glareBg: GLARE_BG, glareSh: GLARE_SH, screenBg: SCREEN_BG, noGlow, hostInk, pathInk } = linkLook(colorway);
+  const hue = tintFor(m.host, colorway);
   const Wp = P.self.width, SHp = P.screen.height, Hp = SHp + m.pad * 2;
   const W = Wp * S, H = Hp * S;
   const bezelR = frameRadius(m);
@@ -83,7 +80,7 @@ export function LinkCardXray({ startOpen = false }: { startOpen?: boolean }) {
   const screenBg = [
     ...(m.screen[1] && m.glare ? [GLARE_BG[0]] : []),
     ...(m.screen[2] ? [GLARE_BG[1]] : []),
-    m.screen[0] ? SCREEN_BG.replace('self', hue) : '#121316',
+    m.screen[0] ? SCREEN_BG.replace('self', hue) : noGlow,
   ].join(', ');
   const bezelShadow = scalePx(BEZEL_SH.slice(0, 4).filter((_, i) => m.bezel[i + 1]).join(', ') || 'none', S);
   const sx = m.pad * S, sy = m.pad * S, sw = (Wp - m.pad * 2) * S, sh = SHp * S;
@@ -93,8 +90,8 @@ export function LinkCardXray({ startOpen = false }: { startOpen?: boolean }) {
     <div className="xr-face is-flat xr-linkscreen" style={{ left: sx, top: sy, width: sw, height: sh, borderRadius: m.screenR * S, transform: `translateZ(${top + 0.5}px)`, background: screenBg, boxShadow: scalePx(GLARE_SH.join(', '), S), padding: `${P.screen['pad-y'] * S}px ${P.screen['pad-x'] * S}px` }}>
       <span className="xr-linkchip" style={{ left: inset, top: inset, fontSize: 9 * S, gap: 5 * S, height: 18 * S, padding: `0 ${7 * S}px`, borderRadius: 7 * S }}><i style={{ width: 5 * S, height: 5 * S }} />LINK</span>
       <span className={spot === 'press' ? 'xr-linkchip is-action is-lit' : 'xr-linkchip is-action'} onClick={() => setOpened(m.host)} style={{ right: inset, top: inset, fontSize: 9 * S, height: 18 * S, padding: `0 ${7 * S}px`, borderRadius: 7 * S }}>OPEN ↗</span>
-      <b style={{ font: `620 ${m.hostSize * S}px/1.2 var(--sans)`, letterSpacing: `${m.hostTrack}em`, color: P.host.ink }}>{m.host}</b>
-      <span style={{ font: `400 ${m.pathSize * S}px/1.4 var(--mono)`, letterSpacing: `${m.pathTrack}em`, color: P.path.ink }}>/NIGHT-MARKET</span>
+      <b style={{ font: `620 ${m.hostSize * S}px/1.2 var(--sans)`, letterSpacing: `${m.hostTrack}em`, color: hostInk }}>{m.host}</b>
+      <span style={{ font: `400 ${m.pathSize * S}px/1.4 var(--mono)`, letterSpacing: `${m.pathTrack}em`, color: pathInk }}>/NIGHT-MARKET</span>
     </div>
   );
 
@@ -107,7 +104,7 @@ export function LinkCardXray({ startOpen = false }: { startOpen?: boolean }) {
     <>
       {m.bezel[6] && <div className="xr-shadow" style={{ width: W, height: H, borderRadius: bezelR * S, filter: 'blur(18px)', opacity: 0.28, transform: 'translate(10px, 22px)' }} />}
       {m.bezel[4] && <div className="xr-shadow" style={{ width: W, height: H, borderRadius: bezelR * S, filter: 'blur(2px)', opacity: 0.25 }} />}
-      <IsoCap w={W} h={H} r={bezelR * S} z={z} wall={5} fill={m.bezel[0] ? BEZEL_BG : 'transparent'} shadow={bezelShadow} wallTone="#121214" />
+      <IsoCap w={W} h={H} r={bezelR * S} z={z} wall={5} fill={m.bezel[0] ? BEZEL_BG : 'transparent'} shadow={bezelShadow} wallTone={tones(colorway).wall} />
       {screen}
     </>
   );
