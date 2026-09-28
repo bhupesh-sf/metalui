@@ -38,6 +38,21 @@ Two files are authored; everything else is generated, so don't hand-edit it.
 
 Point `source` in `song.json` at it (or drop a file at `music/out/source.<ext>`), run `fetch` and `analyze`, label the sections, write a cut in `edit.json`, and run `npm run music`. If the tempo lands on half or double time, set `"bpmHint"` in `song.json`.
 
+## The video
+
+Remotion, so the picture is React and the shots use the real MetalUI components.
+
+```bash
+npm run studio                          # Remotion Studio on http://localhost:4196: scrub, play with sound
+npm run render -- Animatic --scale=0.5  # out/Animatic.mp4, soundtrack proven in sync to the millisecond
+npm run check:timing                    # every sixteenth lands on its own frame and reads back as itself
+```
+
+- **`src/time.ts` is the one clock.** Shots place events in musical time, `frameAt(bar, beat, step)`, never in frames or seconds. Each event is rounded to a frame on its own: a beat is 25.35 frames at 60 fps, so adding frame counts drifts. `position(frame)` reads the music back, and `meter(name, frame)` gives loudness, a band or a drum hit, 0..1, for meters in the picture.
+- **`src/storyboard.ts` is the storyboard**, authored in video bars: what the music does, what the picture does, and what lands on which count.
+- **`Animatic`** plays the storyboard against the edit before any shot is built: the shot, bar.beat.16th, the beat LEDs, two seconds of kick, snare, hat and loudness either side of now, and every shot on a timeline with the splices marked.
+- **Rendering**: Remotion's own AAC mux lays the sound 2048 samples (42.7 ms at 48 kHz) late, because it doesn't record the encoder's priming. `npm run render` renders the picture muted and `music/pipeline.py master` adds the edit with ffmpeg, then measures the offset and fails above 1 ms.
+
 ## Licensing
 
 The current track is *PartyInvaders* by ミドリノピザ. It isn't cleared: get the artist's permission before the video is published. The audio stays out of git.

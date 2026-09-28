@@ -10,6 +10,7 @@ A person can't hand the track to the video by ear, so this reads it into facts t
             (per-frame loudness, bands and drum onsets, for meters in the picture)
   check     re-read the finished edit and prove it: one tempo straight through the splices,
             no clicks, under the length cap, cues fresh
+  master    lay the edit under a silent render and prove the sync to the millisecond
   spectrogram   images of the track and the edit with bar lines and section names, for a
             reviewer (person or model) to read what the numbers can't say
 
@@ -431,6 +432,40 @@ def cmd_check(_args) -> None:
     print("all checks pass")
 
 
+# ---------------------------------------------------------------- master
+
+
+def decode(path: Path, rate: int = 8000):
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(path), "-ac", "1", "-ar", str(rate), "-f", "f32le", "-"], capture_output=True, check=True).stdout
+    return np.frombuffer(raw, dtype=np.float32)
+
+
+def av_offset_ms(video: Path) -> float:
+    """How late the video's soundtrack runs against the edit, by cross-correlation (0.125 ms steps)."""
+    import scipy.signal as sig
+
+    a, b = decode(EDIT_WAV), decode(video)
+    n = min(len(a), len(b))
+    c = sig.correlate(b[:n], a[:n], mode="full", method="fft")
+    return (int(c.argmax()) - (n - 1)) / 8.0
+
+
+def cmd_master(args) -> None:
+    """Lay the edit under a silent render. Remotion's own AAC mux runs 2048 samples late (two
+    encoder-priming frames it doesn't record), so the picture renders muted and ffmpeg adds the
+    sound, writing the priming into the file where players skip it. Then prove the sync."""
+    video, out = Path(args.video).resolve(), Path(args.out).resolve()
+    subprocess.run(
+        ["ffmpeg", "-loglevel", "error", "-y", "-i", str(video), "-i", str(EDIT_WAV), "-map", "0:v:0", "-map", "1:a:0",
+         "-c:v", "copy", "-c:a", "aac", "-b:a", "256k", "-shortest", "-movflags", "+faststart", str(out)],
+        check=True,
+    )
+    off = av_offset_ms(out)
+    print(f"{out.relative_to(APP)}: soundtrack offset {off:+.2f} ms")
+    if abs(off) > 1:
+        sys.exit("the soundtrack is out of sync by more than 1 ms")
+
+
 # ---------------------------------------------------------------- spectrogram
 
 
@@ -484,6 +519,10 @@ def main() -> None:
     sub.add_parser("analyze").set_defaults(fn=cmd_analyze)
     sub.add_parser("edit").set_defaults(fn=cmd_edit)
     sub.add_parser("check").set_defaults(fn=cmd_check)
+    mp = sub.add_parser("master")
+    mp.add_argument("video", help="a silent render")
+    mp.add_argument("out")
+    mp.set_defaults(fn=cmd_master)
     sp = sub.add_parser("spectrogram")
     sp.add_argument("which", choices=["source", "edit"])
     sp.add_argument("--seconds", type=float, default=24)
