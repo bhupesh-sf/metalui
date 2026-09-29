@@ -78,6 +78,7 @@ export const routes: RouteObject[] = [
       { path: 'components/checkbox', lazy: lazy(() => import('../pages/components/Checkbox')) },
       { path: 'components/radio', lazy: lazy(() => import('../pages/components/Radio')) },
       { path: 'components/textarea', lazy: lazy(() => import('../pages/components/Textarea')) },
+      { path: 'components/popover', lazy: lazy(() => import('../pages/components/Popover')) },
       { path: 'components/slider', lazy: lazy(() => import('../pages/components/Slider')) },
       { path: 'components/icon-button', lazy: lazy(() => import('../pages/components/IconButton')) },
       { path: 'components/field', lazy: lazy(() => import('../pages/components/Field')) },

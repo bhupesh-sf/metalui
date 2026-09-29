@@ -748,6 +748,25 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A small panel that comes out of its trigger: the menu's frosted plate with a title, a line of description and whatever the task needs (a few fields, a colour, a confirm). Opening, it starts one nest back toward its trigger at a slightly smaller scale, grown from the trigger's side, and rises into place on the surface spring (no stop, so no overshoot) as it fades in. Closing, it fades on the release spring and does not travel back. Reduce Motion: a crossfade. The plate's look is the menu recipe; this recipe adds the padding, width, text and motion. (the menu plate (recipe menu); the surface and release springs; Base UI Popover)
+    public static let popover = MetalObjectRecipe(
+        name: "popover",
+        layers: [
+
+        ],
+        props: [
+            "self.pad": .number(14.0),
+            "self.radius": .number(18.0),
+            "self.min-width": .number(220.0),
+            "self.max-width": .number(320.0),
+            "self.offset": .number(6.0),
+            "self.gap": .number(4.0),
+            "self.body-gap": .number(12.0),
+            "self.enter-scale": .text("0.97"),
+            "self.transition": .text("opacity var(--mu-spring-surface-d) var(--mu-spring-surface), translate var(--mu-spring-surface-d) var(--mu-spring-surface), scale var(--mu-spring-surface-d) var(--mu-spring-surface)"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

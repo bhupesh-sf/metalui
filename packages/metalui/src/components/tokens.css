@@ -966,6 +966,16 @@
   --mu-r-textarea-count-gap: 6px;
   --mu-r-textarea-count-fade: 160ms;
   --mu-r-textarea-error-width: 1px;
+  /* popover: the menu plate (recipe menu); the surface and release springs; Base UI Popover */
+  --mu-r-popover-self-pad: 14px;
+  --mu-r-popover-self-radius: 18px;
+  --mu-r-popover-self-min-width: 220px;
+  --mu-r-popover-self-max-width: 320px;
+  --mu-r-popover-self-offset: 6px;
+  --mu-r-popover-self-gap: 4px;
+  --mu-r-popover-self-body-gap: 12px;
+  --mu-r-popover-self-enter-scale: 0.97;
+  --mu-r-popover-self-transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), translate var(--mu-spring-surface-d) var(--mu-spring-surface), scale var(--mu-spring-surface-d) var(--mu-spring-surface);
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

@@ -975,6 +975,26 @@
       "docs": "Agent guide: https://metalui.dev/r/plug.md. SwiftUI: MetalPlug in the MetalUI Swift package."
     },
     {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "A small panel that comes out of its trigger: the menu's frosted plate rising one nest from the trigger's side on the surface spring, fading out on release without travelling back.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/popover/popover.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/popover/popover.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/popover.md. SwiftUI: MetalPopover in the MetalUI Swift package."
+    },
+    {
       "name": "provenance-tooltip",
       "type": "registry:ui",
       "title": "Provenance tooltip",

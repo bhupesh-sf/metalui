@@ -1,0 +1,24 @@
+{
+  "name": "popover",
+  "title": "Popover",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A small panel that comes out of its trigger: the menu's frosted plate rising one nest from the trigger's side on the surface spring, fading out on release without travelling back.",
+  "base": "@base-ui/react/popover",
+  "react": {
+    "export": "Popover",
+    "files": [
+      "popover.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalPopover",
+    "file": "swift/Sources/MetalUI/Components/MetalPopover.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "Popover": ["Root", "Trigger", "Content", "Title", "Description", "Body", "Close"]
+  },
+  "agent": "popover.agent.md",
+  "page": "/components/popover"
+}
