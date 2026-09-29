@@ -64,9 +64,10 @@ export const PIECES: Piece[] = [
   // Kick 4
   { id: 'button', at: K[3], fall: 'heavy', x: 470, y: 470, zoom: 2.4, size: [260, 100], draw: (f) => <Button cap="primary" className={f >= OFF(3) && f < K[4] ? 'recipe-button-primary-pressed' : undefined}>Ship it</Button> },
   { id: 'key-a', at: K[3], fall: 'key', x: -170, y: -380, zoom: 1, size: [150, 150], draw: (f) => <PressedKey id="k-a" down={press(f, K[4], OFF(4))} glyph="A" size={140} /> },
-  // Kick 5: the title lands, the heaviest thing in the opener; "Introducing" types in over it.
+  // "Introducing" is printed on the canvas from the first frame, under the lone key: a sentence the
+  // opener finishes when the title lands under it on kick 5, the heaviest thing in the opener.
   { id: 'badge', at: K[4], fall: 'heavy', x: 0, y: 290, zoom: 1, size: [700, 150], draw: () => <Wordmark size={78} /> },
-  { id: 'intro', at: null, fall: 'heavy', x: 0, y: 165, zoom: 4, size: [0, 0], draw: (f) => <Typed text="Introducing" from={K[4]} frame={f} /> },
+  { id: 'intro', at: null, fall: 'heavy', x: 0, y: 165, zoom: 4, size: [0, 0], draw: () => <Label variant="engraved">Introducing</Label> },
   { id: 'weather', at: K[4], fall: 'heavy', x: -660, y: 300, zoom: 1.25, size: [230, 230], turn: -12, draw: () => <WeatherTile kind="clear" temp="24°" name="Sunny" meta="Lisbon" clock={10} running={false} aria-label="Lisbon, sunny, 24°" /> },
   { id: 'swatch-green', at: K[4], fall: 'light', x: 620, y: -30, zoom: 1.6, size: [140, 140], turn: 18, spin: -1, draw: () => <Swatch hex={tokens.shared.green} label="LIVE" /> },
   // Kick 6
@@ -80,18 +81,6 @@ export const PIECES: Piece[] = [
   // Small parts rain on the off-beats.
   ...BITS.map((b, n): Piece => ({ id: `bit-${n}`, at: OFF(b.i), fall: 'light', x: b.x, y: b.y, zoom: b.zoom, size: b.size, spin: n % 2 ? 1 : -1, draw: b.draw })),
 ];
-
-/** Text printed on the canvas a letter per sixteenth from `from`, like it's being typed. */
-function Typed({ text, from, frame }: { text: string; from: number; frame: number }) {
-  const sixteenth = (frameAt(2, 2) - frameAt(2, 1)) / 4;
-  const shown = frame < from ? 0 : Math.min(text.length, 1 + Math.floor((frame - from) / sixteenth));
-  return (
-    <Label variant="engraved" style={{ whiteSpace: 'pre', visibility: shown ? 'visible' : 'hidden' }}>
-      {text.slice(0, shown)}
-      <span style={{ opacity: 0 }}>{text.slice(shown)}</span>
-    </Label>
-  );
-}
 
 export const HEAVY = PIECES.filter((p) => p.fall === 'heavy' && p.at !== null);
 

@@ -16,7 +16,7 @@ import { FOUNDATION_PIECES, FOUNDATIONS_AT } from './Foundations';
  * ───────────────────────────────────────────────────────── */
 
 const FX = FOUNDATIONS_AT.x;
-const START: Pose = { x: 0, y: 0, z: 1150, tilt: 34, orbit: -16 };
+const START: Pose = { x: 0, y: 70, z: 1150, tilt: 34, orbit: -16 }; // the key and "Introducing" under it
 const MOVES = [
   { at: K[1] - 16, frames: 56, pose: { x: 0, y: -40, z: 640, orbit: -12 } },
   { at: K[3] - 16, frames: 64, pose: { x: 0, y: 90, z: 200, tilt: 40, orbit: -7 } },
