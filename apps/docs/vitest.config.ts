@@ -1,6 +1,9 @@
 import { defineConfig, mergeConfig } from 'vitest/config';
 import { defineBrowserCommand, webdriverio } from '@vitest/browser-webdriverio';
-import site from './vite.config';
+import type { UserConfig } from 'vite';
+import siteConfig from './vite.config';
+
+const site = siteConfig as UserConfig;
 
 /* Feature slices: each runs inside a real Chrome page with the docs site mounted at a route (the same
  * route table the site uses), so a slice reads real layout, computed styles and running animations,
@@ -49,6 +52,10 @@ export default mergeConfig(
     define: { __CAPTURE__: JSON.stringify(Boolean(process.env.CAPTURE)) },
     test: {
       include: ['slices/**/*.slice.tsx'],
+      // One real mouse, one window: slices take turns. They share one page too, so the site's
+      // modules and stylesheet load once for the whole run (openPage starts each slice clean).
+      fileParallelism: false,
+      isolate: false,
       testTimeout: 30_000,
       browser: {
         enabled: true,
@@ -59,10 +66,6 @@ export default mergeConfig(
         instances: [{ browser: 'chrome' }],
         viewport: { width: 1280, height: 900 },
         commands: { pointer, media },
-        // One real mouse, one window: slices take turns. They share one page too, so the site's
-        // modules and stylesheet load once for the whole run (openPage starts each slice clean).
-        fileParallelism: false,
-        isolate: false,
       },
     },
   }),
