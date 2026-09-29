@@ -17,7 +17,8 @@ for (const colorway of COLORWAYS) {
     await expect(done.locator('.mu-region-rule')).toHaveText('drop to mark tasks done');
     await done.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
     const ring = await done.evaluate((el) => getComputedStyle(el).boxShadow);
-    expect(ring).toContain('rgba(63, 185, 122, 0.45) 0px 0px 0px 1px inset');
+    // the region is a sheet on the canvas: over, a green 1 pt ring round its edge, lifted (recipe region-over)
+    expect(ring).toMatch(/^rgba\(63, 185, 122, 0\.45\) 0px 0px 0px 1px(,|$)/);
     await page.locator('section', { hasText: 'Drop a block' }).first().screenshot({ path: capture(`region-over-${colorway}`) });
     await page.mouse.up();
     await expect(done).not.toHaveAttribute('data-over', '');
