@@ -595,6 +595,8 @@ def cmd_check(_args) -> None:
         if not mine:
             unheard.append(f"{key} at {s['t']:.2f}s")
             continue
+        if any(v["verdict"] == "ok" and v.get("edit") == now for v in mine):
+            mine = [v for v in mine if v.get("edit") == now]  # heard as ok in this edit: older verdicts are history
         for v in mine:
             bad = v["verdict"] != "ok"
             if bad and v.get("edit") in (None, now):
