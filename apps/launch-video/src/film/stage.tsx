@@ -151,15 +151,26 @@ export interface Impact {
 const DOT = { pitch: 40, radius: 2.2, ink: '60 66 78', alpha: 0.26 };
 const WAVE = { speed: 1150, width: 90, life: 1.1, swell: 2.2, push: 12, darken: 0.55 }; // px/s, px, s
 /**
- * Fire: a front runs out at `speed`, ragged by `ragged` (tongues, not a ring). Each dot it reaches
+ * Fire: a front runs out at `speed`, its edge licking in tongues (lick). Each dot it reaches
  * flares over `flare`, then burns down over `life`, through yellow, orange and red to an ember,
  * swelling by `swell`, flickering by `flicker` and rising `rise` px while it burns.
  */
-const FIRE = { start: 250, speed: 2500, ragged: 0.08, flare: 0.06, life: 2.2, swell: 3.6, flicker: 0.35, rise: 18, reach: 14000 }; // starts as a burst; a little faster than a place a bar, so each set is alight as the camera lands
+const FIRE = { start: 250, speed: 2500, flare: 0.06, life: 2.2, swell: 3.6, flicker: 0.35, rise: 18, reach: 14000 }; // starts as a burst; a little faster than a place a bar, so each set is alight as the camera lands
 const HEAT_LEVELS = 8;
+/**
+ * A flame's shape: `tall` how many radii the tongue reaches at full heat, `sway` how far its tip
+ * leans, `core` the heat above which a yellow core burns inside it, and the sparks: the share of
+ * dots that throw one and how far (px) it rises.
+ */
+const FLAME = { base: 2.4, tall: 7, sway: 1.1, min: 0.6, share: 0.32, core: 0.75, sparks: 0.05, lift: 260 };
+/** The yellow cores, cooler to hottest: the colour of the hottest part of a flame on white. */
+const CORE = ['rgb(255 150 10)', 'rgb(255 176 20)', 'rgb(255 200 40)', 'rgb(255 222 90)'];
+/** A teardrop: round at the bottom (the dot), rising to a pointed tip `tall` above it, leaning by `sway`. */
+const tear = (cx: number, cy: number, r: number, tall: number, sway: number) =>
+  `M${(cx - r).toFixed(1)} ${cy.toFixed(1)}A${r.toFixed(2)} ${r.toFixed(2)} 0 0 0 ${(cx + r).toFixed(1)} ${cy.toFixed(1)}Q${(cx + r * 0.75 + sway * 0.4).toFixed(1)} ${(cy - tall * 0.45).toFixed(1)} ${(cx + sway).toFixed(1)} ${(cy - tall).toFixed(1)}Q${(cx - r * 0.75 + sway * 0.4).toFixed(1)} ${(cy - tall * 0.45).toFixed(1)} ${(cx - r).toFixed(1)} ${cy.toFixed(1)}Z`;
 /** Heat (0-1) as a colour: ember red at the bottom, white-yellow at the top. */
 // Saturated, never white-hot: the canvas is white, so the hottest a dot gets is a deep orange.
-const HEAT_STOPS: [number, [number, number, number]][] = [[0, [96, 22, 20]], [0.3, [190, 28, 24]], [0.55, [240, 60, 18]], [0.8, [255, 110, 10]], [1, [255, 158, 0]]];
+const HEAT_STOPS: [number, [number, number, number]][] = [[0, [90, 18, 14]], [0.25, [170, 22, 14]], [0.5, [230, 48, 12]], [0.75, [255, 90, 0]], [1, [255, 128, 0]]];
 function heatColour(h: number) {
   let i = 0;
   while (i < HEAT_STOPS.length - 2 && h > HEAT_STOPS[i + 1][0]) i++;
@@ -178,6 +189,36 @@ function reachedAt(fire: true | [number, number][], d: number) {
   }
   const [ta, ra] = keys[keys.length - 2], [tb, rb] = keys[keys.length - 1];
   return tb + ((d - rb) * (tb - ta)) / (rb - ra);
+}
+
+/** Where a fire's front is (px from its hit) a time after it: the inverse of reachedAt. */
+function frontAt(fire: true | [number, number][], t: number) {
+  if (t <= 0) return 0;
+  if (fire === true) return FIRE.start + t * FIRE.speed;
+  const keys: [number, number][] = [[0, FIRE.start], ...fire];
+  for (let k = 1; k < keys.length; k++) {
+    const [t0, r0] = keys[k - 1], [t1, r1] = keys[k];
+    if (t <= t1) return r0 + ((t - t0) / (t1 - t0)) * (r1 - r0);
+  }
+  const [ta, ra] = keys[keys.length - 2], [tb, rb] = keys[keys.length - 1];
+  return rb + ((t - tb) * (rb - ra)) / (tb - ta);
+}
+/** The burning edge's tongues: how far ahead (+) of the front the fire is in a direction, licking over time. */
+const lick = (a: number, t: number) => 70 * Math.sin(7 * a + t * 2.1) + 45 * Math.sin(13 * a - t * 3.3) + 28 * Math.sin(31 * a + t * 5.2) + 16 * Math.sin(57 * a - t * 7);
+/**
+ * The char: the table burns like paper. Behind the front it goes dark for `life` seconds, its inner
+ * edge soft where the ash blows away and the white comes back; `points` round the edge.
+ */
+const CHAR = { colour: 'rgb(34 22 18)', alpha: 0.9, life: 1.9, points: 900 };
+/** A closed ragged ring round (cx, cy) at radius r, in an area's local units. */
+function ring(cx: number, cy: number, r: number, t: number, k: number) {
+  let d = '';
+  for (let j = 0; j <= CHAR.points; j++) {
+    const a = (j / CHAR.points) * Math.PI * 2;
+    const rr = Math.max(0, r + k * lick(a, t));
+    d += `${j ? 'L' : 'M'}${(cx + Math.cos(a) * rr).toFixed(1)} ${(cy + Math.sin(a) * rr).toFixed(1)}`;
+  }
+  return d + 'Z';
 }
 
 /** A steady hash in [0, 1): the same dot and frame give the same flicker in every render. */
@@ -206,7 +247,9 @@ function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: 
         if (Math.abs(a.x - near) > a.w / 2 + REACH) return null;
         const x0 = a.x - a.w / 2, y0 = a.y - a.h / 2;
         const paths: string[] = Array.from({ length: LEVELS + 1 }, () => '');
-        const burning: string[] = Array.from({ length: HEAT_LEVELS + 1 }, () => '');
+        const outer: string[] = Array.from({ length: HEAT_LEVELS + 1 }, () => '');
+        const core: string[] = ['', '', '', ''];
+        let sparks = '';
         for (let y = y0; y <= a.y + a.h / 2; y += DOT.pitch) {
           for (let x = x0; x <= a.x + a.w / 2; x += DOT.pitch) {
             let g = 0, px = 0, py = 0;
@@ -222,8 +265,9 @@ function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: 
             for (const i of fires) {
               const dx = x - i.x, dy = y - i.y;
               // the front is ragged: tongues by direction, and a little per dot
-              const tongue = 1 + FIRE.ragged * (Math.sin(Math.atan2(dy, dx) * 7 + i.x) * 0.6 + (hash(x, y) - 0.5) * 0.8);
-              const age = i.t - reachedAt(i.fire as true | [number, number][], Math.hypot(dx, dy) * tongue);
+              // the same tongues as the burning edge, so a dot catches as the edge reaches it
+              const edge = lick(Math.atan2(dy, dx), i.t) + (hash(x, y) - 0.5) * 30;
+              const age = i.t - reachedAt(i.fire as true | [number, number][], Math.hypot(dx, dy) - edge);
               if (age <= 0 || age >= FIRE.life) continue;
               const h = age < FIRE.flare ? age / FIRE.flare : (1 - (age - FIRE.flare) / (FIRE.life - FIRE.flare)) ** 1.6;
               heat = Math.max(heat, h * Math.min(1, i.strength / 2));
@@ -231,10 +275,31 @@ function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: 
             const cx = x + px - x0, cy = y + py - y0;
             const arc = (ax: number, ay: number, r: number) => `M${(ax - r).toFixed(1)} ${ay.toFixed(1)}a${r.toFixed(2)} ${r.toFixed(2)} 0 1 0 ${(2 * r).toFixed(2)} 0a${r.toFixed(2)} ${r.toFixed(2)} 0 1 0 ${(-2 * r).toFixed(2)} 0`;
             if (heat > 0.04) {
+              // A flame: a teardrop standing on the dot, its tip away from the camera (up the frame),
+              // swaying and flickering, tall while it's hot and down to an ember as it cools.
               const flick = 1 - FIRE.flicker * hash(x, y, frame);
-              const hl = Math.round(Math.min(1, heat * flick) * HEAT_LEVELS);
-              const r = DOT.radius * (1 + FIRE.swell * heat * flick);
-              burning[hl] += arc(cx, cy - FIRE.rise * heat * flick, r);
+              const hf = Math.min(1, heat * flick);
+              const hl = Math.round(hf * HEAT_LEVELS);
+              const r = DOT.radius * (1 + FLAME.base * hf);
+              // each flame licks on its own: two slow waves at its own phase, never a frame-by-frame jitter
+              const ph = hash(x, y, 3) * 6.28;
+              const lick = 0.35 + 0.65 * (0.5 + 0.25 * Math.sin(frame * 0.31 + ph) + 0.25 * Math.sin(frame * 0.53 + ph * 1.7));
+              const tall = r * (1 + FLAME.tall * hf * lick * (0.5 + hash(x, y, 13)));
+              const sway = r * FLAME.sway * Math.sin(frame * 0.2 + ph) * hf;
+              // only some dots flame, so the fire is irregular, not a pattern; the rest glow as embers
+              if (hf < FLAME.min || hash(x, y, 11) > FLAME.share) { outer[hl] += arc(cx, cy, r * 0.8); continue; }
+              outer[hl] += tear(cx, cy, r, tall, sway);
+              if (hf > FLAME.core) {
+                const k = (hf - FLAME.core) / (1 - FLAME.core);
+                core[Math.round(k * 3)] += tear(cx + sway * 0.2, cy - r * 0.15, r * 0.55, tall * 0.55, sway * 0.6);
+              }
+              // a few dots throw a spark that rises off the flame and fades
+              const age = (1 - heat) * FIRE.life;
+              if (hash(x, y, 7) < FLAME.sparks && age > 0.08 && age < FIRE.life * 0.6) {
+                const u = age / (FIRE.life * 0.6);
+                const sr = 2.6 * (1 - u) + 0.6;
+                sparks += arc(cx + 30 * Math.sin(u * 5 + hash(x, y, 9) * 6), cy - r - FLAME.lift * u, sr);
+              }
               continue;
             }
             const level = Math.round((Math.min(1.5, g) / 1.5) * LEVELS);
@@ -242,18 +307,54 @@ function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: 
             paths[level] += arc(cx, cy, r);
           }
         }
-        const hot = burning.slice(Math.round(HEAT_LEVELS * 0.45)).join('');
+        // the char and the burning edge of each fire, in this area's units
+        let char = '', edge = '';
+        for (const i of fires) {
+          const f = i.fire as true | [number, number][];
+          const cx = i.x - x0, cy = i.y - y0;
+          const outerR = frontAt(f, i.t);
+          if (outerR <= 0) continue;
+          edge += ring(cx, cy, outerR, i.t, 1);
+          const innerR = frontAt(f, i.t - CHAR.life);
+          char += ring(cx, cy, outerR, i.t, 1) + (innerR > 0 ? ring(cx, cy, innerR, i.t, 0.6) : '');
+        }
+        const flames = outer.join('');
+        const hot = outer.slice(Math.round(HEAT_LEVELS * 0.4)).join('') + core.join('');
+        const sheet = { position: 'absolute' as const, left: x0, top: y0, overflow: 'visible' as const, maskImage: EDGE, WebkitMaskImage: EDGE, maskComposite: 'intersect', WebkitMaskComposite: 'source-in' };
         return (
           <div key={n} style={{ position: 'absolute', left: 0, top: 0 }}>
-          {hot && (
-            // the light the burning dots throw on the table round them
-            <svg width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible', filter: 'blur(9px)', opacity: 0.75, maskImage: EDGE, WebkitMaskImage: EDGE, maskComposite: 'intersect', WebkitMaskComposite: 'source-in' }}>
-              <path d={hot} fill="rgb(255 120 20)" />
-            </svg>
+          {char && (
+            // the table burning like paper: dark behind the edge, soft where the white comes back,
+            // and the edge itself glowing, a wide heat and a hot line
+            <>
+              <svg width={a.w + 1} height={a.h + 1} style={{ ...sheet, filter: 'blur(14px)', opacity: CHAR.alpha }}>
+                <path d={char} fill={CHAR.colour} fillRule="evenodd" />
+              </svg>
+              <svg width={a.w + 1} height={a.h + 1} style={{ ...sheet, filter: 'blur(26px)', opacity: 0.8 }}>
+                <path d={edge} fill="none" stroke="rgb(255 90 10)" strokeWidth={70} />
+              </svg>
+              <svg width={a.w + 1} height={a.h + 1} style={{ ...sheet, filter: 'blur(5px)' }}>
+                <path d={edge} fill="none" stroke="rgb(255 150 20)" strokeWidth={22} />
+                <path d={edge} fill="none" stroke="rgb(255 226 120)" strokeWidth={7} />
+              </svg>
+            </>
+          )}
+          {flames && (
+            // the heat: a wide warm haze on the table where it burns, then a tight glow round the flames
+            <>
+              <svg width={a.w + 1} height={a.h + 1} style={{ ...sheet, filter: 'blur(38px)', opacity: 0.4 }}>
+                <path d={flames} fill="rgb(255 96 20)" />
+              </svg>
+              <svg width={a.w + 1} height={a.h + 1} style={{ ...sheet, filter: 'blur(7px)', opacity: 0.85 }}>
+                <path d={hot} fill="rgb(255 140 20)" />
+              </svg>
+            </>
           )}
           <svg width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible', maskImage: EDGE, WebkitMaskImage: EDGE, maskComposite: 'intersect', WebkitMaskComposite: 'source-in' }}>
             {paths.map((d, level) => d && <path key={level} d={d} fill={`rgb(${DOT.ink} / ${Math.min(0.9, DOT.alpha + WAVE.darken * (level / LEVELS) * 1.5)})`} />)}
-            {burning.map((d, hl) => d && <path key={`f${hl}`} d={d} fill={heatColour(hl / HEAT_LEVELS)} />)}
+            {outer.map((d, hl) => d && <path key={`f${hl}`} d={d} fill={heatColour(hl / HEAT_LEVELS)} />)}
+            {core.map((d, k) => d && <path key={`c${k}`} d={d} fill={CORE[k]} />)}
+            {sparks && <path d={sparks} fill="rgb(255 200 60)" />}
           </svg>
           </div>
         );
@@ -279,7 +380,6 @@ export function Table({ children, light = { x: 0, y: 0 }, power = 1, frame = 0, 
       <div style={{ ...plane, background: look.surface ?? `radial-gradient(1500px 1100px at ${at}, ${look.mid} 0%, ${look.far} 70%, ${look.sky} 100%)` }} />
       {look.surface && <div style={{ ...plane, background: `radial-gradient(1700px 1200px at ${at}, transparent 45%, ${look.sky} 100%)` }} />}
       {look.pattern === 'grain' && <div style={{ ...plane, backgroundImage: GRAIN, backgroundSize: '240px', backgroundPosition: `${3500 - light.x}px 0`, opacity: 0.35, mixBlendMode: 'multiply' }} />}
-      {look.pattern === 'dots' && <RippleDots frame={frame} fps={fps} impacts={impacts} areas={areas} near={light.x} />}
       <div style={{ ...plane, opacity: power, background: `radial-gradient(${r}px ${r * 0.72}px at ${at}, ${look.pool} 0%, transparent 100%)`, mixBlendMode: look.surface ? 'soft-light' : 'normal' }} />
       {look.gobo && (
         // A window's six panes, thrown long across the table by a low sun from the upper left.
@@ -287,6 +387,8 @@ export function Table({ children, light = { x: 0, y: 0 }, power = 1, frame = 0, 
           {[0, 1, 2, 3, 4, 5].map((i) => <div key={i} style={{ background: look.gobo }} />)}
         </div>
       )}
+      {/* the grid over the light, so a fire's char is never washed out by the pool */}
+      {look.pattern === 'dots' && <RippleDots frame={frame} fps={fps} impacts={impacts} areas={areas} near={light.x} />}
       {children}
     </div>
   );
