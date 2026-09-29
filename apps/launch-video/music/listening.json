@@ -37,6 +37,22 @@
       "by": "owner",
       "date": "2026-09-29",
       "note": "'There is no slam and the buildup is so fast, no anticipation.' The build lasted 1.75 bars and ended 1.5 LU under the drop; the bass return (+27.7 dB) is below what laptop and phone speakers play."
+    },
+    {
+      "splice": "24→21",
+      "verdict": "ok",
+      "edit": "9901d98193fa3695",
+      "by": "owner",
+      "date": "2026-09-29",
+      "note": "'Seems apt now': the eight-bar build, the silent beat and the slam."
+    },
+    {
+      "splice": "24→69",
+      "verdict": "ok",
+      "edit": "9901d98193fa3695",
+      "by": "owner",
+      "date": "2026-09-29",
+      "note": "'Seems apt now': the eight-bar build, the silent beat and the slam."
     }
   ]
 }
