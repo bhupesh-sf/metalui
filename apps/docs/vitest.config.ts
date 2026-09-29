@@ -30,6 +30,19 @@ const pointer = defineBrowserCommand<[selector: string, steps: Step[]]>(async (c
   await act.perform(true);
 });
 
+/**
+ * A CSS media feature the page should see (prefers-reduced-motion, prefers-contrast, …): Chrome's
+ * DevTools emulation, reached through WebDriver BiDi's goog:cdp extension. Applies to the whole page,
+ * frames included; pass [] to clear.
+ */
+const media = defineBrowserCommand<[features: { name: string; value: string }[]]>(async (ctx, features) => {
+  const b = ctx.browser as unknown as { send: (m: { method: string; params: object }) => Promise<{ result: Record<string, unknown> }> };
+  const tree = await b.send({ method: 'browsingContext.getTree', params: {} });
+  const top = (tree.result.contexts as { context: string }[])[0].context;
+  const { result } = await b.send({ method: 'goog:cdp.getSession', params: { context: top } });
+  await b.send({ method: 'goog:cdp.sendCommand', params: { method: 'Emulation.setEmulatedMedia', params: { features }, session: result.session } });
+});
+
 export default mergeConfig(
   site,
   defineConfig({
@@ -45,7 +58,11 @@ export default mergeConfig(
         }),
         instances: [{ browser: 'chrome' }],
         viewport: { width: 1280, height: 900 },
-        commands: { pointer },
+        commands: { pointer, media },
+        // One real mouse, one window: slices take turns. They share one page too, so the site's
+        // modules and stylesheet load once for the whole run (openPage starts each slice clean).
+        fileParallelism: false,
+        isolate: false,
       },
     },
   }),
