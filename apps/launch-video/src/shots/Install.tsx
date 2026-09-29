@@ -52,8 +52,9 @@ function installAt(frame: number) {
 export const INSTALL_PIECES: InstallPiece[] = [
   { id: 'i-tabs', at: INSTALL, fall: 'heavy', x: 0, y: 480, zoom: 3, size: [420, 120], draw: (f) => <Tabs value={installAt(f).p.value}><TabList aria-label="Platform" items={PLATFORMS.map(({ value, label }) => ({ value, label }))} /></Tabs> },
   {
-    id: 'i-field', at: INSTALL, fall: 'heavy', x: 0, y: 620, zoom: 2.6, size: [620, 120], draw: (f) => (
-      <Field style={{ width: 300 }}>
+    id: 'i-field', at: INSTALL, fall: 'heavy', x: 0, y: 620, zoom: 2.2, size: [880, 110], draw: (f) => (
+      // wide enough for the longest line (the Swift package's 30 characters) with room to spare
+      <Field style={{ width: 400 }}>
         <Field.Input aria-label="Install" readOnly value={installAt(f).text} placeholder="Install" style={{ fontFamily: '"Martian Mono Variable", monospace' }} />
       </Field>
     ),
