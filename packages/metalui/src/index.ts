@@ -18,6 +18,7 @@ export { Row, type RowProps, type RowRootProps } from './components/row/row';
 export { Slider, type SliderRootProps } from './components/slider/slider';
 export { Progress, type ProgressProps } from './components/progress/progress';
 export { Spinner, type SpinnerProps } from './components/spinner/spinner';
+export { Meter, type MeterProps } from './components/meter/meter';
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';
 export { Kbd, type KbdProps } from './components/kbd/kbd';
 export { Toolbar, ToolButton, ToolbarSeparator, ToolbarSearch, type ToolbarProps, type ToolButtonProps, type ToolbarSearchProps } from './components/toolbar/toolbar';

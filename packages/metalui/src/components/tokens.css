@@ -1017,6 +1017,17 @@
   --mu-r-accordion-chevron-turn: 90deg;
   --mu-r-accordion-panel-pad-x: 12px;
   --mu-r-accordion-panel-pad-bottom: 14px;
+  /* meter: the LED part (status recipe lamps); hardware level meters; Base UI Meter */
+  --mu-r-meter-self-height: 10px;
+  --mu-r-meter-self-gap: 2px;
+  --mu-r-meter-self-radius: 2.5px;
+  --mu-r-meter-self-segments: 16px;
+  --mu-r-meter-self-min-width: 160px;
+  --mu-r-meter-self-head-gap: 6px;
+  --mu-r-meter-lamp-fade: 90ms;
+  --mu-r-meter-lamp-stagger: 16ms;
+  --mu-r-meter-zone-warn: 0.75;
+  --mu-r-meter-zone-danger: 0.9;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

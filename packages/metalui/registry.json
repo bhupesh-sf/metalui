@@ -922,6 +922,26 @@
       "docs": "Agent guide: https://metalui.dev/r/menu.md. SwiftUI: MetalMenuPanel, MetalMenuItem, View.metalMenu(isPresented:at:heading:items:) in the MetalUI Swift package."
     },
     {
+      "name": "meter",
+      "type": "registry:ui",
+      "title": "Meter",
+      "description": "A level in a range as a row of LED segments coloured by position (green, amber, red); a change sweeps segment by segment from the old edge to the new.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/meter/meter.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/meter/meter.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/meter.md. SwiftUI: MetalMeter in the MetalUI Swift package."
+    },
+    {
       "name": "needle",
       "type": "registry:ui",
       "title": "Needle",

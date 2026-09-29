@@ -715,6 +715,23 @@
       "agent": "https://metalui.dev/r/menu.md"
     },
     {
+      "name": "meter",
+      "title": "Meter",
+      "status": "alpha",
+      "description": "A level in a range as a row of LED segments coloured by position (green, amber, red); a change sweeps segment by segment from the old edge to the new.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Meter",
+        "base": "@base-ui/react/meter"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalMeter"
+      },
+      "registry": "https://metalui.dev/r/meter.json",
+      "agent": "https://metalui.dev/r/meter.md"
+    },
+    {
       "name": "needle",
       "title": "Needle",
       "status": "alpha",

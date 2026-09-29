@@ -423,6 +423,13 @@
   --spacing-accordion-chevron-size: var(--mu-r-accordion-chevron-size);
   --spacing-accordion-panel-pad-x: var(--mu-r-accordion-panel-pad-x);
   --spacing-accordion-panel-pad-bottom: var(--mu-r-accordion-panel-pad-bottom);
+  --spacing-meter-height: var(--mu-r-meter-self-height);
+  --spacing-meter-gap: var(--mu-r-meter-self-gap);
+  --spacing-meter-radius: var(--mu-r-meter-self-radius);
+  --radius-meter-radius: var(--mu-r-meter-self-radius);
+  --spacing-meter-segments: var(--mu-r-meter-self-segments);
+  --spacing-meter-min-width: var(--mu-r-meter-self-min-width);
+  --spacing-meter-head-gap: var(--mu-r-meter-self-head-gap);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1260,6 +1267,23 @@
 }
 @utility opacity-accordion-trigger-disabled {
   opacity: var(--mu-r-accordion-trigger-disabled);
+}
+@utility meter-lamp {
+  position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity var(--mu-r-meter-lamp-fade) ease-out; transition-delay: calc(var(--mu-meter-step, 0) * var(--mu-r-meter-lamp-stagger) * var(--mu-travel-part)); [data-lit] > & { opacity: 1; }
+}
+@utility duration-meter-lamp-fade {
+  --tw-duration: var(--mu-r-meter-lamp-fade);
+  transition-duration: var(--mu-r-meter-lamp-fade);
+}
+@utility duration-meter-lamp-stagger {
+  --tw-duration: var(--mu-r-meter-lamp-stagger);
+  transition-duration: var(--mu-r-meter-lamp-stagger);
+}
+@utility opacity-meter-zone-warn {
+  opacity: var(--mu-r-meter-zone-warn);
+}
+@utility opacity-meter-zone-danger {
+  opacity: var(--mu-r-meter-zone-danger);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

@@ -1,0 +1,21 @@
+{
+  "name": "meter",
+  "title": "Meter",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A level in a range as a row of LED segments coloured by position (green, amber, red); a change sweeps segment by segment from the old edge to the new.",
+  "base": "@base-ui/react/meter",
+  "react": {
+    "export": "Meter",
+    "files": [
+      "meter.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalMeter",
+    "file": "swift/Sources/MetalUI/Components/MetalMeter.swift",
+    "status": "wip"
+  },
+  "agent": "meter.agent.md",
+  "page": "/components/meter"
+}

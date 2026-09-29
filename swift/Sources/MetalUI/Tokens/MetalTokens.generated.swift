@@ -862,6 +862,26 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A level in a range (storage used, battery, signal), not a task: a row of LED segments like a level meter. A segment's colour comes from where it sits (green through the range, amber near the top, red at the end), the way a level meter is printed. When the value changes the level sweeps from its old edge to its new one, segment by segment (16 ms apart, each lamp fading in 90 ms): rising lights upward, falling darkens downward. Reduce Motion: every segment changes at once. The lamps are the LED part's looks. (the LED part (status recipe lamps); hardware level meters; Base UI Meter)
+    public static let meter = MetalObjectRecipe(
+        name: "meter",
+        layers: [
+
+        ],
+        props: [
+            "self.height": .number(10.0),
+            "self.gap": .number(2.0),
+            "self.radius": .number(2.5),
+            "self.segments": .number(16.0),
+            "self.min-width": .number(160.0),
+            "self.head-gap": .number(6.0),
+            "lamp.fade": .text("90ms"),
+            "lamp.stagger": .text("16ms"),
+            "zone.warn": .text("0.75"),
+            "zone.danger": .text("0.9"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
