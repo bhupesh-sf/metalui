@@ -1,0 +1,21 @@
+{
+  "name": "textarea",
+  "title": "Textarea",
+  "status": "alpha",
+  "layer": "component",
+  "description": "Several lines of text in the field well that grows with what is written on the settle spring; with a limit, a counter fades in near it and shakes on the refusal spring when writing goes past it.",
+  "base": "textarea",
+  "react": {
+    "export": "Textarea",
+    "files": [
+      "textarea.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalTextarea",
+    "file": "swift/Sources/MetalUI/Components/MetalTextarea.swift",
+    "status": "wip"
+  },
+  "agent": "textarea.agent.md",
+  "page": "/components/textarea"
+}

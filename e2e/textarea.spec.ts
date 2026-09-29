@@ -1,0 +1,85 @@
+import { expect, test } from '@playwright/test';
+import { COLORWAYS, capture, open } from './helpers';
+
+// Textarea: the well grows with what is written (settle spring, no overshoot) up to max rows, then
+// scrolls; near a limit a counter shows, and writing past it shakes only the counter.
+for (const colorway of COLORWAYS) {
+  test(`grows with its text, stops at max rows, and refuses past the limit in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/textarea', colorway);
+    const note = page.getByRole('textbox', { name: 'Note', exact: true });
+    const rest = (await note.boundingBox())!.height;
+
+    // Each new line grows the well; the growth settles without overshooting.
+    await note.click();
+    await note.pressSequentially('one\ntwo\nthree\nfour\nfive');
+    const heights = await note.evaluate(async (el) => {
+      const out: number[] = [];
+      const t0 = performance.now();
+      await new Promise<void>((done) => {
+        const frame = () => { out.push(el.getBoundingClientRect().height); if (performance.now() - t0 < 600) requestAnimationFrame(frame); else done(); };
+        requestAnimationFrame(frame);
+      });
+      return out;
+    });
+    const grown = heights.at(-1)!;
+    expect(grown).toBeGreaterThan(rest);
+    expect(Math.max(...heights)).toBeLessThanOrEqual(grown + 0.5);
+    expect(await note.evaluate((el) => el.scrollTop)).toBe(0);
+
+    // Deleting shrinks it back to its rest height.
+    await note.press('ControlOrMeta+a');
+    await note.press('Backspace');
+    await expect.poll(async () => (await note.boundingBox())!.height).toBeCloseTo(rest, 0);
+
+    // The counter shows near the limit and turns red at it; typing past it changes nothing.
+    const counter = page.locator('.mu-textarea-count').first();
+    await expect(counter).toHaveCSS('opacity', '0');
+    await note.fill('x'.repeat(100));
+    await expect(counter).toHaveText(/100\/120/);
+    await expect(counter).toHaveCSS('opacity', '1');
+    await note.fill('x'.repeat(120));
+    await note.press('End');
+    await note.pressSequentially('yz');
+    await expect(note).toHaveValue('x'.repeat(120));
+    await expect(counter).toHaveAttribute('data-refused', '');
+    await expect(counter).toHaveAttribute('data-at-limit', '');
+    await expect(counter.locator('[aria-live]')).toHaveText('Limit reached, 120 characters');
+
+    // Invalid is announced; disabled cannot be edited.
+    await expect(page.getByRole('textbox', { name: 'Invalid note' })).toHaveAttribute('aria-invalid', 'true');
+    await expect(page.getByRole('textbox', { name: 'Disabled note' })).toBeDisabled();
+
+    await page.waitForTimeout(1200);
+    await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`textarea-${colorway}`) });
+  });
+}
+
+test('grows to max rows, then scrolls', async ({ page }) => {
+  await open(page, '/components/textarea', 'bone');
+  const note = page.getByRole('textbox', { name: 'Note', exact: true });
+  await note.fill(Array.from({ length: 5 }, (_, i) => `l${i}`).join('\n'));
+  await page.waitForTimeout(600);
+  const five = (await note.boundingBox())!.height;
+  await note.fill(Array.from({ length: 14 }, (_, i) => `l${i}`).join('\n').slice(0, 120));
+  await page.waitForTimeout(600);
+  const capped = (await note.boundingBox())!.height;
+  // 8 rows of 20 plus padding; beyond that it scrolls.
+  expect(capped).toBeGreaterThan(five);
+  expect(capped).toBeCloseTo(8 * 20 + 22, 0);
+  await expect(note).toHaveCSS('overflow-y', 'auto');
+});
+
+test('Reduce Motion: the height snaps and the counter does not move', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '/components/textarea', 'graphite');
+  const note = page.getByRole('textbox', { name: 'Note', exact: true });
+  await note.fill('a\nb\nc\nd\ne');
+  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+  expect((await note.boundingBox())!.height).toBeCloseTo(5 * 20 + 22, 0);
+  await note.fill('x'.repeat(120));
+  await note.press('End');
+  await note.press('y');
+  const counter = page.locator('.mu-textarea-count').first();
+  await expect(counter).toHaveAttribute('data-at-limit', '');
+  expect(await counter.evaluate((el) => getComputedStyle(el).translate)).toMatch(/^(none|0px)$/);
+});

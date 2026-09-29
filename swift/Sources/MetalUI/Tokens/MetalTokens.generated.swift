@@ -726,6 +726,28 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Several lines of text in the field well that grows with what is written: each new line grows the well on the settle spring (a control growing to new content, no overshoot) until max rows, then it scrolls; deleting shrinks it the same way. Focus: the flush green ring. With a limit, a counter fades in below at 80 % and turns red at the limit; typing or pasting past it shakes only the counter on the refusal spring (a nest's reach) and leaves the text alone. Invalid: a red hairline ring. Disabled: 40 %. Reduce Motion: the height snaps and nothing shakes; the counter still turns red. (the field well (recipe well field); the settle and refusal springs; a native textarea)
+    public static let textarea = MetalObjectRecipe(
+        name: "textarea",
+        layers: [
+
+        ],
+        props: [
+            "self.radius": .number(14.0),
+            "self.pad-x": .number(14.0),
+            "self.pad-y": .number(11.0),
+            "self.line": .number(20.0),
+            "self.min-rows": .number(3.0),
+            "self.max-rows": .number(8.0),
+            "self.disabled": .text("0.4"),
+            "count.show": .text("0.8"),
+            "count.gap": .number(6.0),
+            "count.fade": .text("160ms"),
+            "error.width": .number(1.0),
+            "error.ring": .perColorway(bone: "rgba(216,69,59,.55)", graphite: "rgba(255,122,102,.5)"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

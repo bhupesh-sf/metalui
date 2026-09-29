@@ -381,6 +381,16 @@
   --spacing-radio-group-gap-across: var(--mu-r-radio-group-gap-across);
   --spacing-radio-error-width: var(--mu-r-radio-error-width);
   --color-radio-error-ring: var(--mu-r-radio-error-ring);
+  --spacing-textarea-radius: var(--mu-r-textarea-self-radius);
+  --radius-textarea-radius: var(--mu-r-textarea-self-radius);
+  --spacing-textarea-pad-x: var(--mu-r-textarea-self-pad-x);
+  --spacing-textarea-pad-y: var(--mu-r-textarea-self-pad-y);
+  --spacing-textarea-line: var(--mu-r-textarea-self-line);
+  --spacing-textarea-min-rows: var(--mu-r-textarea-self-min-rows);
+  --spacing-textarea-max-rows: var(--mu-r-textarea-self-max-rows);
+  --spacing-textarea-count-gap: var(--mu-r-textarea-count-gap);
+  --spacing-textarea-error-width: var(--mu-r-textarea-error-width);
+  --color-textarea-error-ring: var(--mu-r-textarea-error-ring);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1112,6 +1122,28 @@
 }
 @utility stroke-width-radio-error-width {
   stroke-width: var(--mu-r-radio-error-width);
+}
+@utility transition-textarea-grow {
+  transition: height calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
+}
+@utility textarea-invalid {
+  box-shadow: var(--mu-r-well-self-field-shadow), inset 0 0 0 var(--mu-r-textarea-error-width) var(--mu-r-textarea-error-ring);
+}
+@utility textarea-refused {
+  animation: mu-textarea-refuse var(--mu-spring-refusal-d) var(--mu-spring-refusal) both;
+}
+@utility opacity-textarea-disabled {
+  opacity: var(--mu-r-textarea-self-disabled);
+}
+@utility opacity-textarea-count-show {
+  opacity: var(--mu-r-textarea-count-show);
+}
+@utility duration-textarea-count-fade {
+  --tw-duration: var(--mu-r-textarea-count-fade);
+  transition-duration: var(--mu-r-textarea-count-fade);
+}
+@utility stroke-width-textarea-error-width {
+  stroke-width: var(--mu-r-textarea-error-width);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);
@@ -2391,6 +2423,9 @@
 }
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
+}
+@keyframes mu-textarea-refuse {
+  from { translate: calc(var(--mu-motion-nest) * var(--mu-travel-refusal)) 0; } to { translate: 0 0; }
 }
 @keyframes mu-toolbar-in {
   from { opacity: 0; transform: translateY(calc(var(--mu-motion-nest) * var(--mu-travel-surface))); }

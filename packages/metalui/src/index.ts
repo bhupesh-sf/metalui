@@ -7,6 +7,7 @@ export { Rule, type RuleProps } from './components/rule/rule';
 export { IconButton, type IconButtonProps } from './components/icon-button/icon-button';
 export { Chip, type ChipProps } from './components/chip/chip';
 export { Field, SearchField, type SearchFieldProps } from './components/field/field';
+export { Textarea, type TextareaProps } from './components/textarea/textarea';
 export { Sparkline, type SparklineProps, type SparklinePoint } from './components/sparkline/sparkline';
 export { Dialog, type DialogRootProps, type DialogPopupProps } from './components/dialog/dialog';
 export { GlassFace } from './components/glass-face/glass-face';

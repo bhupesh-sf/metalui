@@ -75,6 +75,7 @@
 - [Switch](https://metalui.dev/r/switch.md): A setting that is on or off and takes effect at once: a sunk pill track with a raised thumb that slides on the part spring; on, the track fills soft green.
 - [Switcher](https://metalui.dev/r/switcher.md): A pill of pills on Base UI RadioGroup: a well track, options on the height ladder, and a raised thumb that glides to the selection on the part spring.
 - [Tabs](https://metalui.dev/r/tabs.md): Switches which panel is shown: the switcher track and gliding thumb as the tab list, and panels that drift in from the side the thumb went.
+- [Textarea](https://metalui.dev/r/textarea.md): Several lines of text in the field well that grows with what is written on the settle spring; with a limit, a counter fades in near it and shakes on the refusal spring when writing goes past it.
 - [Time scrubber](https://metalui.dev/r/time-scrubber.md): Time as a dimension of the surface: a Slider (track, moment marks, day ticks, knurled knob) under an engraved readout with NOW as Button(link) while in the past. Formerly MemoryScrubber.
 - [Toast](https://metalui.dev/r/toast.md): The result of a person's own action, with Undo: a 44 tall smoked pill at the bottom centre, one at a time, arriving on settle and leaving on release. Built on Base UI Toast.
 - [Tool strip](https://metalui.dev/r/tool-strip.md): Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.

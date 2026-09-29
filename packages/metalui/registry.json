@@ -1371,6 +1371,24 @@
       "docs": "Agent guide: https://metalui.dev/r/tabs.md. SwiftUI: MetalTabs in the MetalUI Swift package."
     },
     {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Several lines of text in the field well that grows with what is written on the settle spring; with a limit, a counter fades in near it and shakes on the refusal spring when writing goes past it.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/textarea/textarea.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/textarea/textarea.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/textarea.md. SwiftUI: MetalTextarea in the MetalUI Swift package."
+    },
+    {
       "name": "time-scrubber",
       "type": "registry:ui",
       "title": "Time scrubber",

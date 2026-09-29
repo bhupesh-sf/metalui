@@ -954,6 +954,18 @@
   --mu-r-radio-group-gap: 4px;
   --mu-r-radio-group-gap-across: 16px;
   --mu-r-radio-error-width: 1px;
+  /* textarea: the field well (recipe well field); the settle and refusal springs; a native textarea */
+  --mu-r-textarea-self-radius: 14px;
+  --mu-r-textarea-self-pad-x: 14px;
+  --mu-r-textarea-self-pad-y: 11px;
+  --mu-r-textarea-self-line: 20px;
+  --mu-r-textarea-self-min-rows: 3px;
+  --mu-r-textarea-self-max-rows: 8px;
+  --mu-r-textarea-self-disabled: 0.4;
+  --mu-r-textarea-count-show: 0.8;
+  --mu-r-textarea-count-gap: 6px;
+  --mu-r-textarea-count-fade: 160ms;
+  --mu-r-textarea-error-width: 1px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
@@ -1849,6 +1861,7 @@
     /* mu-recipe:checkbox:14 */ inset 0 0 0 1px rgba(40,38,32,.16),
     /* mu-recipe:checkbox:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
   --mu-r-radio-error-ring: rgba(216,69,59,.55);
+  --mu-r-textarea-error-ring: rgba(216,69,59,.55);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
   --mu-r-glass-face-self-shadow:
@@ -2335,6 +2348,7 @@
     /* mu-recipe:checkbox:16 */ inset 0 0 0 1px rgba(255,255,255,.18),
     /* mu-recipe:checkbox:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
   --mu-r-radio-error-ring: rgba(255,122,102,.5);
+  --mu-r-textarea-error-ring: rgba(255,122,102,.5);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
   --mu-r-glass-face-self-shadow:
@@ -2822,6 +2836,7 @@
       inset 0 0 0 1px rgba(255,255,255,.18),
       inset 0 2px 4px -2px rgba(0,0,0,.4);
     --mu-r-radio-error-ring: rgba(255,122,102,.5);
+    --mu-r-textarea-error-ring: rgba(255,122,102,.5);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
     --mu-r-glass-face-self-shadow:

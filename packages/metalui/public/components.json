@@ -1123,6 +1123,23 @@
       "agent": "https://metalui.dev/r/tabs.md"
     },
     {
+      "name": "textarea",
+      "title": "Textarea",
+      "status": "alpha",
+      "description": "Several lines of text in the field well that grows with what is written on the settle spring; with a limit, a counter fades in near it and shakes on the refusal spring when writing goes past it.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Textarea",
+        "base": "textarea"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalTextarea"
+      },
+      "registry": "https://metalui.dev/r/textarea.json",
+      "agent": "https://metalui.dev/r/textarea.md"
+    },
+    {
       "name": "time-scrubber",
       "title": "Time scrubber",
       "status": "alpha",
