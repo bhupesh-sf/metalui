@@ -17,15 +17,26 @@ for (const colorway of COLORWAYS) {
     const click = key.locator('[data-part="click"]');
     expect(await transformOf(cursor)).toBe(REST);
 
+    // The accent's brightest moment in the act, sampled every frame in the page: when the act
+    // starts after the hover varies with the machine, so no one instant is the right one to look.
+    const peak = click.evaluate((el) => new Promise<number>((done) => {
+      let max = 0;
+      const start = performance.now();
+      const frame = () => {
+        max = Math.max(max, Number(getComputedStyle(el).opacity));
+        if (performance.now() - start < 900) requestAnimationFrame(frame); else done(max);
+      };
+      requestAnimationFrame(frame);
+    }));
     await key.hover();
     await page.waitForTimeout(320);
     expect(await transformOf(cursor)).not.toBe(REST);
-    expect(Number(await click.evaluate((el) => getComputedStyle(el).opacity))).toBeGreaterThan(0.3);
 
     // Leaving does not cut the act short.
     await page.mouse.move(0, 0);
     await page.waitForTimeout(100);
     expect(await running(cursor)).toBe(1);
+    expect(await peak).toBeGreaterThan(0.3);
 
     // It ends at rest, released, with the accent hidden.
     await expect.poll(() => running(cursor), { timeout: 2000 }).toBe(0);
