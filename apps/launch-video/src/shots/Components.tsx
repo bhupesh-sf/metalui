@@ -30,6 +30,26 @@ const AND = (bar: number, beat: number) => B(bar, beat, 2);
 export const SLAM = B(9, 1);
 /** The fill's moments (bar 12): the stop, the hole, the swoosh. */
 export const FILL = { stop: B(12, 2, 1), hole: B(12, 3), swoosh: B(12, 4) };
+/**
+ * The rave (bars 10.3-11.3): once everything has landed, the set dances on every beat, a hop in a
+ * wave from left to right and a rock that swaps sides, and the theme flips each beat, bone to
+ * graphite and back, the table going dark with it. It lands back on bone for the phrase's jump.
+ */
+export const RAVE_BEATS = [B(10, 3), B(10, 4), B(11, 1), B(11, 2), B(11, 3)];
+const RAVE_END = B(11, 4);
+export const raveTheme = (f: number): 'bone' | 'graphite' => {
+  const k = RAVE_BEATS.filter((b) => f >= b).length;
+  return f < RAVE_END && k % 2 === 1 ? 'graphite' : 'bone';
+};
+/** A piece's dance: the wave reaches it by where it stands, up to a sixteenth late across the set. */
+export const raveOf = (x: number) => {
+  const late = Math.round(((x - CX + 700) / 1400) * SIXTEENTH);
+  return {
+    hops: RAVE_BEATS.map((b) => ({ at: b + late, height: 80, frames: 16 })),
+    sway: RAVE_BEATS.map((b, i) => ({ at: b + late, deg: i % 2 ? -10 : 10, frames: Math.round(BEAT * 0.9) })),
+  };
+};
+
 /** Where the fill's whip goes: drop 1's part of the table. */
 export const DROP1_AT = { x: CX + 3400, y: 0 };
 

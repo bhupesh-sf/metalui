@@ -71,7 +71,7 @@ const RAW: PartPiece[] = [
     draw: (f) => (
       <div style={{ display: 'grid', justifyItems: 'center', gap: 10 }}>
         <IconButton variant="tool" label="Pen" pressed={f >= CLICK && f < B(9, 1)} icon={<IconAct name="pen" t={actTime(f, B(6, 4))} size={20} />} />
-        <Label variant="engraved" style={{ zoom: 3 / 4.2 }}>Component</Label>
+        <Label variant="engraved" style={{ zoom: 3 / 4.2 }}>Icon</Label>
       </div>
     ),
   },

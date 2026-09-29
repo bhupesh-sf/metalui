@@ -2,12 +2,12 @@ import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { Label } from '@unlocalhosted/metalui';
 import { react } from '../motion';
 import { FPS, frameAt } from '../time';
-import { Camera, Drop, Grade, LookProvider, Table, cameraAt, mixLook, punch, useLook, type Impact, type Pose } from '../film/stage';
+import { Camera, Drop, Grade, LOOKS, LookProvider, Table, cameraAt, mixLook, punch, useLook, type Impact, type Pose } from '../film/stage';
 import { END, HEAVY, HOPS, K, PIECES } from './Opener';
 import { FOUNDATION_PIECES, FOUNDATIONS_AT } from './Foundations';
 import { ASSEMBLE, CLICK, PART_PIECES, PARTS_AT, fogAt, pointerAt } from './Parts';
 import { IconAct } from '../film/parts';
-import { COMPONENT_PIECES, DROP1_AT, FILL, SLAM } from './Components';
+import { COMPONENT_PIECES, DROP1_AT, FILL, SLAM, raveOf, raveTheme } from './Components';
 import { DROP1, DROP1_END, OBJECT_PIECES, ObjectsTitle } from './Objects';
 import { BUILD_AT, COLLAPSE_AT, DROP2, SILENT, XRAY_LANDS, Xray, rollIntensity, xrayPointer } from './Build';
 import { DANCE, FIRE_FRONT, TOUR_IMPACTS, TOUR_MOVES } from './Finale';
@@ -144,7 +144,9 @@ export function World() {
   const landed = K.filter((k) => frame >= k).length;
   const sun = frame >= END ? 1 : Math.min(1, landed / 8 + (frame >= K[7] ? 0.2 * (1 - react(frame, K[7], 'surface')) : 0));
   const base = useLook();
-  const look = base.dawn ? mixLook(base.dawn, base, sun) : base;
+  // the rave flips the theme on the beat: the components' colorway and the table with it
+  const theme = raveTheme(frame);
+  const look = theme === 'graphite' ? LOOKS.night : base.dawn ? mixLook(base.dawn, base, sun) : base;
   const power = Math.min(1, 0.5 + 0.5 * sun + 0.05 * jolt);
 
   // Only what the camera can see is drawn: every place is a whip apart (3400), so a piece further
@@ -153,7 +155,7 @@ export function World() {
 
   return (
     <LookProvider value={look}>
-      <AbsoluteFill data-mu-colorway="bone" style={{ background: look.sky }}>
+      <AbsoluteFill data-mu-colorway={theme} style={{ background: look.sky }}>
         <Camera pose={pose} jolt={jolt}>
           <Table light={{ x: pose.x, y: 0 }} power={power} frame={frame} fps={FPS} impacts={IMPACTS} areas={[gridAround(pose)]}>
             {PIECES.filter(seen).map((p) => (
@@ -170,12 +172,12 @@ export function World() {
                 pointer stay clear above it. */}
             {fog > 0 && <div style={{ position: 'absolute', left: PX - 2600, top: -1900, width: 5200, height: 3800, transform: 'translateZ(0.5px)', background: `radial-gradient(420px 380px at 2600px 1900px, rgba(255,255,255,0) 0%, rgba(255,255,255,${fog}) 100%)` }} />}
             {PART_PIECES.filter(seen).map((p) => (
-              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} move={p.move} from={p.from} until={p.until} hops={p.id === 'component' ? [...(p.hops ?? []), ...SET_HOPS(p.x, p.y, null), ...DANCE] : p.hops}>
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} move={p.move} from={p.from} until={p.until} hops={p.id === 'component' ? [...(p.hops ?? []), ...SET_HOPS(p.x, p.y, null), ...raveOf(p.x).hops, ...DANCE] : p.hops} sway={p.id === 'component' ? raveOf(p.x).sway : undefined}>
                 {p.draw(frame)}
               </Drop>
             ))}
             {COMPONENT_PIECES.filter(seen).map((p) => (
-              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={[...SET_HOPS(p.x, p.y, p.at), ...DANCE]}>
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={[...SET_HOPS(p.x, p.y, p.at), ...raveOf(p.x).hops, ...DANCE]} sway={raveOf(p.x).sway}>
                 {p.draw(frame)}
               </Drop>
             ))}

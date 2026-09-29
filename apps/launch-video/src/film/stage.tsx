@@ -86,6 +86,8 @@ export interface Look {
   surface?: string;
   /** The material's texture: a paper grain, or a design canvas's dot grid. */
   pattern?: 'grain' | 'dots';
+  /** The dots' ink (an "r g b" triplet), for a dark table; dark grey dots when unset. */
+  ink?: string;
   /** Light with a shape: a window's panes falling across the table, in this colour. */
   gobo?: string;
   /** The same place before the sun is up, for a sunrise into this look. */
@@ -96,8 +98,10 @@ const workbenchDawn: Look = { sky: '#b98a73', mid: '#e3c3aa', far: '#c29a80', po
 const canvasDawn: Look = { sky: '#c6a58c', mid: '#ead6c2', far: '#cfb29a', pool: '#ffdcb6', shadow: '72 76 120', glow: 'rgba(255,184,124,.28)', vignette: 'rgba(110,70,50,.25)', pattern: 'dots', gobo: 'rgba(255,200,140,.5)' };
 const SWEEP = 'linear-gradient(112deg, #ffe39c 0%, #ffc49a 30%, #f9a5b0 62%, #c7b5f3 100%)';
 
-export const LOOKS: Record<'white' | 'studio' | 'golden' | 'clay' | 'sunlit' | 'dawn' | 'workbench' | 'canvas' | 'sweep', Look> = {
+export const LOOKS: Record<'night' | 'white' | 'studio' | 'golden' | 'clay' | 'sunlit' | 'dawn' | 'workbench' | 'canvas' | 'sweep', Look> = {
   // A white design canvas with a dot grid: the components bring all the colour.
+  // The graphite colorway's table: the white canvas gone dark, its dots light.
+  night: { sky: '#17181b', mid: '#2c2e33', far: '#1d1e22', pool: '#3a3d44', shadow: '0 0 0', glow: 'rgba(0,0,0,0)', vignette: 'rgba(0,0,0,.35)', pattern: 'dots', ink: '205 210 220' },
   white: { sky: '#ececea', mid: '#ffffff', far: '#f1f1ef', pool: '#ffffff', shadow: '64 72 92', glow: 'rgba(255,255,255,0)', vignette: 'rgba(40,44,52,.07)', pattern: 'dots' },
   workbench: { sky: '#e6d7c4', mid: '#f4ece1', far: '#e0cfbb', pool: '#fffaf0', shadow: '64 82 124', glow: 'rgba(255,214,150,.28)', vignette: 'rgba(110,90,70,.16)', pattern: 'grain', gobo: 'rgba(255,228,176,.6)', dawn: workbenchDawn },
   canvas: { sky: '#ece3d5', mid: '#f8f3ea', far: '#e7dccc', pool: '#fffcf5', shadow: '60 76 128', glow: 'rgba(255,210,150,.24)', vignette: 'rgba(100,80,60,.14)', pattern: 'dots', gobo: 'rgba(255,232,186,.5)', dawn: canvasDawn },
@@ -236,7 +240,7 @@ const LEVELS = 12;
 const EDGE = 'linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent), linear-gradient(transparent, #000 12%, #000 88%, transparent)';
 const REACH = 2600; // how far from the camera's x an area can be and still be in frame
 
-function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: number; impacts: Impact[]; areas: { x: number; y: number; w: number; h: number }[]; near: number }) {
+function RippleDots({ frame, fps, impacts, areas, near, ink = DOT.ink }: { frame: number; fps: number; impacts: Impact[]; areas: { x: number; y: number; w: number; h: number }[]; near: number; ink?: string }) {
   const all = impacts.map((i) => ({ ...i, t: (frame - i.at) / fps }));
   const live = all.filter((i) => !i.fire && i.t >= 0 && i.t < WAVE.life);
   // a fire burns for as long as its front takes to cross an area, and its last dots to cool
@@ -351,7 +355,7 @@ function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: 
             </>
           )}
           <svg width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible', maskImage: EDGE, WebkitMaskImage: EDGE, maskComposite: 'intersect', WebkitMaskComposite: 'source-in' }}>
-            {paths.map((d, level) => d && <path key={level} d={d} fill={`rgb(${DOT.ink} / ${Math.min(0.9, DOT.alpha + WAVE.darken * (level / LEVELS) * 1.5)})`} />)}
+            {paths.map((d, level) => d && <path key={level} d={d} fill={`rgb(${ink} / ${Math.min(0.9, DOT.alpha + WAVE.darken * (level / LEVELS) * 1.5)})`} />)}
             {outer.map((d, hl) => d && <path key={`f${hl}`} d={d} fill={heatColour(hl / HEAT_LEVELS)} />)}
             {core.map((d, k) => d && <path key={`c${k}`} d={d} fill={CORE[k]} />)}
             {sparks && <path d={sparks} fill="rgb(255 200 60)" />}
@@ -388,7 +392,7 @@ export function Table({ children, light = { x: 0, y: 0 }, power = 1, frame = 0, 
         </div>
       )}
       {/* the grid over the light, so a fire's char is never washed out by the pool */}
-      {look.pattern === 'dots' && <RippleDots frame={frame} fps={fps} impacts={impacts} areas={areas} near={light.x} />}
+      {look.pattern === 'dots' && <RippleDots frame={frame} fps={fps} impacts={impacts} areas={areas} near={light.x} ink={look.ink} />}
       {children}
     </div>
   );
@@ -443,7 +447,7 @@ function bouncesAfter(frame: number, at: number, heights: number[]): number {
  * down on (null: already there). `hops` are extra lifts on other frames: sympathy with a heavy
  * neighbour's landing, or everything jumping together on a beat.
  */
-export function Drop({ frame, at, x, y, fall = 'heavy', turn = -10, spin = 1, zoom = 1, size = [180, 130], hops = [], move, from, until, children }: {
+export function Drop({ frame, at, x, y, fall = 'heavy', turn = -10, spin = 1, zoom = 1, size = [180, 130], hops = [], sway = [], move, from, until, children }: {
   frame: number; at: number | null; x: number; y: number; fall?: Fall; turn?: number;
   /** Which way a light thing tumbles or a key flips (1 or -1). */
   spin?: number;
@@ -451,6 +455,8 @@ export function Drop({ frame, at, x, y, fall = 'heavy', turn = -10, spin = 1, zo
   /** The object's footprint on the table (px, as drawn), which its contact shadow matches. */
   size?: [number, number];
   hops?: { at: number; height: number; frames: number }[];
+  /** Rocks: a lean of `deg` and back over `frames`, from `at` (a dance). */
+  sway?: { at: number; deg: number; frames: number }[];
   /** A later trip across the table: an arc `arc` px high, touching down at `to` exactly on frame `at`. */
   move?: { to: { x: number; y: number }; at: number; arc?: number };
   /** Only on the table from this frame (a thing that appears, say where parts become one). */
@@ -474,6 +480,7 @@ export function Drop({ frame, at, x, y, fall = 'heavy', turn = -10, spin = 1, zo
   // The table stops the fall: the spring's overshoot past 1 is the impact, a squash, never a sink.
   const falling = f.height * Math.max(0, 1 - v);
   const lift = falling + travel + (at === null ? 0 : bouncesAfter(frame, at, f.bounces)) + hops.reduce((a, h) => a + hop(frame, h.at, h.height, h.frames), 0);
+  const rock = sway.reduce((a, w) => { const p = (frame - w.at) / w.frames; return p > 0 && p < 1 ? a + w.deg * Math.sin(Math.PI * p) : a; }, 0);
   const squash = v > 1 && lift < 1 ? 1 - Math.min(0.08, (v - 1) * 0.9) : 1;
   const air = Math.min(1, lift / f.height);
   const left = 1 - Math.min(1, v); // how much of the fall is still to come
@@ -492,7 +499,7 @@ export function Drop({ frame, at, x, y, fall = 'heavy', turn = -10, spin = 1, zo
       <div
         style={{
           position: 'absolute', left: 0, top: 0, transformStyle: 'preserve-3d',
-          transform: `translate(-50%, -50%) translateZ(${lift + 1}px) rotateZ(${turn * left}deg) ${tumble} scale(${2 - squash}, ${squash})`,
+          transform: `translate(-50%, -50%) translateZ(${lift + 1}px) rotateZ(${turn * left + rock}deg) ${tumble} scale(${2 - squash}, ${squash})`,
         }}
       >
         <div style={{ zoom }}>{children}</div>
