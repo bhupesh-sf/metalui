@@ -2,6 +2,23 @@
   "$description": "MetalUI components. Each has a React export, a SwiftUI symbol, a shadcn registry item and an agent guide.",
   "components": [
     {
+      "name": "accordion",
+      "title": "Accordion",
+      "status": "alpha",
+      "description": "Sections that open in place: row headers with a chevron; the panel grows to its content on the settle spring while the chevron turns on the part spring, and leaves on release.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Accordion",
+        "base": "@base-ui/react/accordion"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalAccordion"
+      },
+      "registry": "https://metalui.dev/r/accordion.json",
+      "agent": "https://metalui.dev/r/accordion.md"
+    },
+    {
       "name": "alert-dialog",
       "title": "Alert dialog",
       "status": "alpha",

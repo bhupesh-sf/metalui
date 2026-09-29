@@ -1007,6 +1007,16 @@
   --mu-r-toggle-self-latch: 1px;
   --mu-r-toggle-self-press: 50ms;
   --mu-r-toggle-self-gap: 4px;
+  /* accordion: the row recipe (panel hover), the rule recipe, the select chevron's drawing; Base UI Accordion */
+  --mu-r-accordion-trigger-height: 40px;
+  --mu-r-accordion-trigger-pad-x: 12px;
+  --mu-r-accordion-trigger-radius: 12px;
+  --mu-r-accordion-trigger-gap: 8px;
+  --mu-r-accordion-trigger-disabled: 0.4;
+  --mu-r-accordion-chevron-size: 12px;
+  --mu-r-accordion-chevron-turn: 90deg;
+  --mu-r-accordion-panel-pad-x: 12px;
+  --mu-r-accordion-panel-pad-bottom: 14px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

@@ -843,6 +843,25 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Sections that open in place: each header is a row (the row recipe's panel hover) with a chevron at the end, sections parted by engraved rules. Opening, the panel grows to its content on the settle spring (a control growing to new content, no overshoot) while its content fades in, and the chevron turns a quarter on the part spring (a part you touch; it may overshoot against its stop). Closing, height and content leave on the release spring and the chevron turns back. Reduce Motion: the height snaps, the content crossfades, the chevron snaps. (the row recipe (panel hover), the rule recipe, the select chevron's drawing; Base UI Accordion)
+    public static let accordion = MetalObjectRecipe(
+        name: "accordion",
+        layers: [
+
+        ],
+        props: [
+            "trigger.height": .number(40.0),
+            "trigger.pad-x": .number(12.0),
+            "trigger.radius": .number(12.0),
+            "trigger.gap": .number(8.0),
+            "trigger.disabled": .text("0.4"),
+            "chevron.size": .number(12.0),
+            "chevron.turn": .text("90deg"),
+            "panel.pad-x": .number(12.0),
+            "panel.pad-bottom": .number(14.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

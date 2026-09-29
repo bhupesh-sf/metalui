@@ -1,0 +1,24 @@
+{
+  "name": "accordion",
+  "title": "Accordion",
+  "status": "alpha",
+  "layer": "component",
+  "description": "Sections that open in place: row headers with a chevron; the panel grows to its content on the settle spring while the chevron turns on the part spring, and leaves on release.",
+  "base": "@base-ui/react/accordion",
+  "react": {
+    "export": "Accordion",
+    "files": [
+      "accordion.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalAccordion",
+    "file": "swift/Sources/MetalUI/Components/MetalAccordion.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "Accordion": ["Root", "Item", "Trigger", "Panel"]
+  },
+  "agent": "accordion.agent.md",
+  "page": "/components/accordion"
+}

@@ -415,6 +415,14 @@
   --spacing-toggle-catch: var(--mu-r-toggle-self-catch);
   --spacing-toggle-latch: var(--mu-r-toggle-self-latch);
   --spacing-toggle-gap: var(--mu-r-toggle-self-gap);
+  --spacing-accordion-trigger-height: var(--mu-r-accordion-trigger-height);
+  --spacing-accordion-trigger-pad-x: var(--mu-r-accordion-trigger-pad-x);
+  --spacing-accordion-trigger-radius: var(--mu-r-accordion-trigger-radius);
+  --radius-accordion-trigger-radius: var(--mu-r-accordion-trigger-radius);
+  --spacing-accordion-trigger-gap: var(--mu-r-accordion-trigger-gap);
+  --spacing-accordion-chevron-size: var(--mu-r-accordion-chevron-size);
+  --spacing-accordion-panel-pad-x: var(--mu-r-accordion-panel-pad-x);
+  --spacing-accordion-panel-pad-bottom: var(--mu-r-accordion-panel-pad-bottom);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1243,6 +1251,15 @@
 @utility duration-toggle-press {
   --tw-duration: var(--mu-r-toggle-self-press);
   transition-duration: var(--mu-r-toggle-self-press);
+}
+@utility accordion-panel {
+  overflow: hidden; height: var(--accordion-panel-height); opacity: 1; transition: height calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-starting-style] { height: 0; opacity: 0; } &[data-ending-style] { height: 0; opacity: 0; transition: height calc(var(--mu-spring-release-d) * var(--mu-travel-settle)) var(--mu-spring-release), opacity var(--mu-spring-release-d) var(--mu-spring-release); }
+}
+@utility accordion-chevron {
+  transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-panel-open] > & { rotate: var(--mu-r-accordion-chevron-turn); }
+}
+@utility opacity-accordion-trigger-disabled {
+  opacity: var(--mu-r-accordion-trigger-disabled);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);
