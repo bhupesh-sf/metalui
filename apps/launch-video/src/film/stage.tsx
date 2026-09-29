@@ -82,9 +82,24 @@ export interface Look {
   /** A warm lift over the whole frame (screen), and the corners' fall-off (multiply). */
   glow: string;
   vignette: string;
+  /** The table's own base, instead of the mid-to-far fall-off (a hue sweep, say). */
+  surface?: string;
+  /** The material's texture: a paper grain, or a design canvas's dot grid. */
+  pattern?: 'grain' | 'dots';
+  /** Light with a shape: a window's panes falling across the table, in this colour. */
+  gobo?: string;
+  /** The same place before the sun is up, for a sunrise into this look. */
+  dawn?: Look;
 }
 
-export const LOOKS: Record<'studio' | 'golden' | 'clay' | 'sunlit' | 'dawn', Look> = {
+const workbenchDawn: Look = { sky: '#b98a73', mid: '#e3c3aa', far: '#c29a80', pool: '#ffd6ad', shadow: '84 74 110', glow: 'rgba(255,180,120,.30)', vignette: 'rgba(110,60,40,.28)', pattern: 'grain', gobo: 'rgba(255,196,130,.55)' };
+const canvasDawn: Look = { sky: '#c6a58c', mid: '#ead6c2', far: '#cfb29a', pool: '#ffdcb6', shadow: '72 76 120', glow: 'rgba(255,184,124,.28)', vignette: 'rgba(110,70,50,.25)', pattern: 'dots', gobo: 'rgba(255,200,140,.5)' };
+const SWEEP = 'linear-gradient(112deg, #ffe39c 0%, #ffc49a 30%, #f9a5b0 62%, #c7b5f3 100%)';
+
+export const LOOKS: Record<'studio' | 'golden' | 'clay' | 'sunlit' | 'dawn' | 'workbench' | 'canvas' | 'sweep', Look> = {
+  workbench: { sky: '#e6d7c4', mid: '#f4ece1', far: '#e0cfbb', pool: '#fffaf0', shadow: '64 82 124', glow: 'rgba(255,214,150,.28)', vignette: 'rgba(110,90,70,.16)', pattern: 'grain', gobo: 'rgba(255,228,176,.6)', dawn: workbenchDawn },
+  canvas: { sky: '#ece3d5', mid: '#f8f3ea', far: '#e7dccc', pool: '#fffcf5', shadow: '60 76 128', glow: 'rgba(255,210,150,.24)', vignette: 'rgba(100,80,60,.14)', pattern: 'dots', gobo: 'rgba(255,232,186,.5)', dawn: canvasDawn },
+  sweep: { sky: '#d6c3ef', mid: '#ffd8b2', far: '#e8b6cb', pool: '#fffaf0', shadow: '92 70 150', glow: 'rgba(255,232,196,.22)', vignette: 'rgba(120,80,140,.16)', pattern: 'grain', surface: SWEEP, dawn: { sky: '#b58fbf', mid: '#f2b996', far: '#cf8fa5', pool: '#ffd1ad', shadow: '92 60 130', glow: 'rgba(255,190,150,.26)', vignette: 'rgba(110,50,90,.24)', pattern: 'grain', surface: SWEEP } },
   studio: { sky: '#120c09', mid: '#3b2a1e', far: '#150e0a', pool: '#9a7048', shadow: '40 20 8', glow: 'rgba(255,170,90,.16)', vignette: 'rgba(40,18,6,.55)' },
   golden: { sky: '#c9a383', mid: '#efdcc4', far: '#caa98a', pool: '#fff5e4', shadow: '130 76 34', glow: 'rgba(255,196,130,.28)', vignette: 'rgba(150,80,30,.35)' },
   dawn: { sky: '#8f4a3e', mid: '#d58a68', far: '#9b5243', pool: '#ffc796', shadow: '120 48 30', glow: 'rgba(255,170,120,.30)', vignette: 'rgba(120,40,24,.40)' },
@@ -100,9 +115,10 @@ const hexMix = (a: string, b: string, t: number) => {
 
 /** A look between two: the hex colours blend, the rest follow the second past halfway. */
 export function mixLook(a: Look, b: Look, t: number): Look {
-  const out = {} as Look;
-  for (const k of Object.keys(a) as (keyof Look)[]) out[k] = a[k].startsWith('#') && b[k].startsWith('#') ? hexMix(a[k], b[k], t) : t < 0.5 ? a[k] : b[k];
-  if (!a.shadow.startsWith('#')) out.shadow = a.shadow.split(' ').map((v, i) => Math.round(+v + (+b.shadow.split(' ')[i] - +v) * t)).join(' ');
+  const out: Look = { ...(t < 0.5 ? a : b), dawn: undefined };
+  const colours = ['sky', 'mid', 'far', 'pool', 'glow', 'vignette'] as const;
+  for (const k of colours) out[k] = a[k].startsWith('#') && b[k].startsWith('#') ? hexMix(a[k], b[k], t) : t < 0.5 ? a[k] : b[k];
+  out.shadow = a.shadow.split(' ').map((v, i) => Math.round(+v + (+b.shadow.split(' ')[i] - +v) * t)).join(' ');
   return out;
 }
 
@@ -114,14 +130,26 @@ export const useLook = () => useContext(LookContext);
  * The table everything lands on. `power` (0..1) is how lit it is: the pool of light widens and
  * brightens with it, so a scene can gather light as it builds. Table units are px.
  */
+const GRAIN = `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .45  0 0 0 0 .38  0 0 0 0 .3  0 0 0 .55 0"/></filter><rect width="240" height="240" filter="url(#n)"/></svg>')}")`;
+
 export function Table({ children, light = { x: 0, y: 0 }, power = 1 }: { children: ReactNode; light?: { x: number; y: number }; power?: number }) {
   const look = useLook();
   const r = 700 + 520 * power;
   const at = `${2400 + light.x}px ${1600 + light.y}px`;
+  const plane = { position: 'absolute' as const, left: -2400, top: -1600, width: 4800, height: 3200 };
   return (
     <div style={{ position: 'absolute', left: 0, top: 0, transformStyle: 'preserve-3d', ['--film-shadow' as string]: look.shadow }}>
-      <div style={{ position: 'absolute', left: -2400, top: -1600, width: 4800, height: 3200, background: `radial-gradient(1500px 1100px at ${at}, ${look.mid} 0%, ${look.far} 70%, ${look.sky} 100%)` }} />
-      <div style={{ position: 'absolute', left: -2400, top: -1600, width: 4800, height: 3200, opacity: power, background: `radial-gradient(${r}px ${r * 0.72}px at ${at}, ${look.pool} 0%, transparent 100%)` }} />
+      <div style={{ ...plane, background: look.surface ?? `radial-gradient(1500px 1100px at ${at}, ${look.mid} 0%, ${look.far} 70%, ${look.sky} 100%)` }} />
+      {look.surface && <div style={{ ...plane, background: `radial-gradient(1700px 1200px at ${at}, transparent 45%, ${look.sky} 100%)` }} />}
+      {look.pattern === 'grain' && <div style={{ ...plane, backgroundImage: GRAIN, backgroundSize: '240px', opacity: 0.35, mixBlendMode: 'multiply' }} />}
+      {look.pattern === 'dots' && <div style={{ ...plane, backgroundImage: 'radial-gradient(circle, rgba(96,78,58,.22) 2px, transparent 2.6px)', backgroundSize: '40px 40px' }} />}
+      <div style={{ ...plane, opacity: power, background: `radial-gradient(${r}px ${r * 0.72}px at ${at}, ${look.pool} 0%, transparent 100%)`, mixBlendMode: look.surface ? 'soft-light' : 'normal' }} />
+      {look.gobo && (
+        // A window's four panes, thrown long across the table by a low sun from the upper left.
+        <div style={{ position: 'absolute', left: -1180 + light.x, top: -820 + light.y, width: 2100, height: 1500, transform: 'rotate(-24deg) skewX(-18deg)', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 70, filter: 'blur(14px)', mixBlendMode: 'screen', opacity: 0.35 + 0.65 * power }}>
+          {[0, 1, 2, 3].map((i) => <div key={i} style={{ background: look.gobo }} />)}
+        </div>
+      )}
       {children}
     </div>
   );

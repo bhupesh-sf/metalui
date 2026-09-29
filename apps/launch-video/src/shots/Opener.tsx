@@ -5,7 +5,7 @@ import { GADGETS } from '@unlocalhosted/metalui/gadgets';
 import tokens from '../../../../tokens/tokens.json';
 import { frameAt } from '../time';
 import { land, react } from '../motion';
-import { Camera, Drop, Grade, LOOKS, LookProvider, Motes, Ring, Table, cameraAt, mixLook, punch, type Fall, type Pose } from '../film/stage';
+import { Camera, Drop, Grade, LookProvider, Motes, Ring, Table, cameraAt, mixLook, punch, useLook, type Fall, type Pose } from '../film/stage';
 
 /* ─────────────────────────────────────────────────────────
  * SHOT 1 · THE OPENER (video bars 1-2, 142 bpm, a beat is 0.42 s)
@@ -125,7 +125,9 @@ export function Opener() {
   // The sunrise: dawn on the lone key, full sun once the kit is down, a lift on every landing.
   const landed = K.filter((k) => frame >= k).length;
   const sun = Math.min(1, landed / 8 + (frame >= K[7] ? 0.2 * (1 - react(frame, K[7], 'surface')) : 0));
-  const look = mixLook(LOOKS.dawn, LOOKS.sunlit, sun);
+  // The film's look, risen into from its own dawn.
+  const base = useLook();
+  const look = base.dawn ? mixLook(base.dawn, base, sun) : base;
   const power = Math.min(1, 0.5 + 0.5 * sun + 0.05 * jolt);
 
   return (
