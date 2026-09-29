@@ -4,6 +4,7 @@ import * as React from 'react';
 import { AlertDialog as BaseAlertDialog } from '@base-ui/react/alert-dialog';
 import { Surface } from '../surface/surface';
 import { Button } from '../button/button';
+import { refuse } from '../../motion/refuse';
 
 /* ─────────────────────────────────────────────────────────
  * ALERT DIALOG, a question that must be answered, on Base UI AlertDialog
@@ -25,18 +26,6 @@ const DESCRIPTION = 'mu-alert-dialog-description alert-dialog-description type-b
 
 interface Ctx { cancel: React.RefObject<HTMLButtonElement | null>; popup: React.RefObject<HTMLDivElement | null> }
 const AlertCtx = React.createContext<Ctx | null>(null);
-
-/** Shake the plate once on the refusal spring, a nest aside; nothing under Reduce Motion. */
-function refuse(el: HTMLElement | null) {
-  if (!el || typeof el.animate !== 'function') return;
-  const root = getComputedStyle(el);
-  const reach = parseFloat(root.getPropertyValue('--mu-motion-nest')) * (parseFloat(root.getPropertyValue('--mu-travel-refusal')) || 0);
-  const duration = parseFloat(root.getPropertyValue('--mu-spring-refusal-d')) * 1000;
-  if (!reach || !duration) return;
-  el.getAnimations().filter((a) => a.id === 'mu-refusal').forEach((a) => a.cancel());
-  const easing = root.getPropertyValue('--mu-spring-refusal').trim() || 'ease-out';
-  el.animate([{ transform: `translateX(${reach}px)` }, { transform: 'translateX(0)' }], { duration, easing, id: 'mu-refusal' });
-}
 
 export interface AlertDialogRootProps {
   open: boolean;
