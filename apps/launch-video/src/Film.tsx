@@ -4,6 +4,7 @@ import { AnimaticCard } from './Animatic';
 import { shotAt } from './storyboard';
 import { BARS, audioFile, position } from './time';
 import { Opener } from './shots/Opener';
+import { LOOKS, LookProvider } from './film/stage';
 import { Foundations } from './shots/Foundations';
 
 /**
@@ -15,14 +16,16 @@ const SHOTS: Partial<Record<string, ComponentType>> = {
   foundations: Foundations,
 };
 
-export function Film() {
+export function Film({ look = 'studio' }: { look?: keyof typeof LOOKS }) {
   const frame = useCurrentFrame();
   const shot = shotAt(Math.min(BARS, position(frame).bar));
   const Shot = SHOTS[shot.id];
   return (
+    <LookProvider value={LOOKS[look]}>
     <AbsoluteFill>
       {Shot ? <Shot /> : <AnimaticCard />}
       <Audio src={staticFile(audioFile)} />
     </AbsoluteFill>
+    </LookProvider>
   );
 }

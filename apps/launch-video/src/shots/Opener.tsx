@@ -4,7 +4,7 @@ import { GADGETS } from '@unlocalhosted/metalui/gadgets';
 import tokens from '../../../../tokens/tokens.json';
 import { frameAt } from '../time';
 import { land, react } from '../motion';
-import { Camera, Drop, Table, cameraAt, punch, type Pose } from '../film/stage';
+import { Camera, Drop, Grade, Table, cameraAt, punch, useLook, type Pose } from '../film/stage';
 
 /**
  * Shot 1, the opener (video bars 1-2). The kick plays alone under a drone: eight hits.
@@ -47,6 +47,11 @@ export function Opener() {
   const frame = useCurrentFrame();
   const pose = cameraAt(frame, START, MOVES);
   const jolt = punch(frame, K);
+  const look = useLook();
+  // The light gathers as the kit does: a glimmer on the lone key, full once all eight have landed,
+  // and a lift on each landing.
+  const landed = K.filter((k) => frame >= k).length;
+  const power = Math.min(1, 0.45 + 0.55 * (landed / 8) + 0.06 * jolt);
 
   // The first key: down on kick 1, up on the off-beat. The last: down on the downbeat of bar 3.
   const key1 = Math.max(0, land(frame, K[0], 'part') - (frame >= OFF(0) ? react(frame, OFF(0), 'release') : 0));
@@ -55,9 +60,9 @@ export function Opener() {
   const pressed = frame >= OFF(4) && frame < K[5];
 
   return (
-    <AbsoluteFill data-mu-colorway="bone" style={{ background: '#0e0e0d' }}>
+    <AbsoluteFill data-mu-colorway="bone" style={{ background: look.sky }}>
       <Camera pose={pose} jolt={jolt}>
-        <Table light={{ x: 60, y: 0 }}>
+        <Table light={{ x: 60, y: 0 }} power={power}>
           <Drop frame={frame} at={null} x={0} y={0} zoom={1.7} size={[250, 250]}>
             <PressedKey id="k1" down={key1} glyph="⌘" />
           </Drop>
@@ -84,6 +89,7 @@ export function Opener() {
           </Drop>
         </Table>
       </Camera>
+      <Grade power={power} />
     </AbsoluteFill>
   );
 }

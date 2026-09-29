@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import { createContext, useContext, type CSSProperties, type ReactNode } from 'react';
 import { AbsoluteFill } from 'remotion';
 import { land, react, type Mass } from '../motion';
 
@@ -68,18 +68,57 @@ export function Camera({ pose, jolt = 0, children, style }: { pose: Pose; jolt?:
   );
 }
 
-/** The table: a dark mat under a pool of light, the ground everything lands on. Table units are px. */
-export function Table({ children, light = { x: 0, y: 0 } }: { children: ReactNode; light?: { x: number; y: number } }) {
+/** A look: the table's light and colour, the tint of its shadows and the grade over the frame. */
+export interface Look {
+  /** Behind the table, where the frame runs past it. */
+  sky: string;
+  /** The table unlit: near, far. */
+  mid: string;
+  far: string;
+  /** The pool of light at full power. */
+  pool: string;
+  /** Shadows take the light's colour (r g b), never black. */
+  shadow: string;
+  /** A warm lift over the whole frame (screen), and the corners' fall-off (multiply). */
+  glow: string;
+  vignette: string;
+}
+
+export const LOOKS: Record<'studio' | 'golden' | 'clay', Look> = {
+  studio: { sky: '#120c09', mid: '#3b2a1e', far: '#150e0a', pool: '#9a7048', shadow: '40 20 8', glow: 'rgba(255,170,90,.16)', vignette: 'rgba(40,18,6,.55)' },
+  golden: { sky: '#c9a383', mid: '#efdcc4', far: '#caa98a', pool: '#fff5e4', shadow: '130 76 34', glow: 'rgba(255,196,130,.28)', vignette: 'rgba(150,80,30,.35)' },
+  clay: { sky: '#5e2f2a', mid: '#e39a73', far: '#86463a', pool: '#ffd1a8', shadow: '120 44 20', glow: 'rgba(255,150,100,.24)', vignette: 'rgba(90,30,15,.45)' },
+};
+
+const LookContext = createContext<Look>(LOOKS.studio);
+export const LookProvider = LookContext.Provider;
+export const useLook = () => useContext(LookContext);
+
+/**
+ * The table everything lands on. `power` (0..1) is how lit it is: the pool of light widens and
+ * brightens with it, so a scene can gather light as it builds. Table units are px.
+ */
+export function Table({ children, light = { x: 0, y: 0 }, power = 1 }: { children: ReactNode; light?: { x: number; y: number }; power?: number }) {
+  const look = useLook();
+  const r = 700 + 520 * power;
+  const at = `${2400 + light.x}px ${1600 + light.y}px`;
   return (
-    <div style={{ position: 'absolute', left: 0, top: 0, transformStyle: 'preserve-3d' }}>
-      <div
-        style={{
-          position: 'absolute', left: -2400, top: -1600, width: 4800, height: 3200,
-          background: `radial-gradient(900px 640px at ${2400 + light.x}px ${1600 + light.y}px, #4a4741 0%, #2b2a27 45%, #161615 80%, #0e0e0d 100%)`,
-        }}
-      />
+    <div style={{ position: 'absolute', left: 0, top: 0, transformStyle: 'preserve-3d', ['--film-shadow' as string]: look.shadow }}>
+      <div style={{ position: 'absolute', left: -2400, top: -1600, width: 4800, height: 3200, background: `radial-gradient(1500px 1100px at ${at}, ${look.mid} 0%, ${look.far} 70%, ${look.sky} 100%)` }} />
+      <div style={{ position: 'absolute', left: -2400, top: -1600, width: 4800, height: 3200, opacity: power, background: `radial-gradient(${r}px ${r * 0.72}px at ${at}, ${look.pool} 0%, transparent 100%)` }} />
       {children}
     </div>
+  );
+}
+
+/** The grade over the whole frame: a warm lift from the light's side and the corners falling off. */
+export function Grade({ power = 1 }: { power?: number }) {
+  const look = useLook();
+  return (
+    <>
+      <AbsoluteFill style={{ background: `radial-gradient(90% 80% at 30% 20%, ${look.glow}, transparent 70%)`, mixBlendMode: 'screen', opacity: 0.6 + 0.4 * power }} />
+      <AbsoluteFill style={{ background: `radial-gradient(75% 70% at 50% 48%, transparent 55%, ${look.vignette})`, mixBlendMode: 'multiply' }} />
+    </>
   );
 }
 
@@ -107,7 +146,7 @@ export function Drop({ frame, at, x, y, height = 900, turn = -10, mass = 'object
         style={{
           position: 'absolute', left: '50%', top: '50%', width: size[0], height: size[1], borderRadius: '30%',
           transform: `translate(-50%, -50%) scale(${1 + 0.5 * (1 - near)})`,
-          background: 'radial-gradient(closest-side, rgba(0,0,0,.55), rgba(0,0,0,0))',
+          background: 'radial-gradient(closest-side, rgb(var(--film-shadow) / .6), rgb(var(--film-shadow) / 0))',
           opacity: 0.7 * near ** 3, filter: `blur(${4 + 20 * (1 - near)}px)`, // no shadow before its object is near
         }}
       />
