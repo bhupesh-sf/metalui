@@ -9,9 +9,24 @@ for (const colorway of COLORWAYS) {
     // the playground's tooltips, not the x-ray's specimen (a real tooltip held open in its card)
     const tip = page.locator('.mu-tooltip:not([class*="ed-tip"])');
     const play = page.locator('section', { hasText: 'Playground' }).first();
-    await play.getByRole('button', { name: 'Select', exact: true }).hover();
-    await page.waitForTimeout(40);
+    // It waits its delay before naming the control: timed in the page, from the pointer arriving to
+    // the tip appearing, so a slow machine can only make the wait longer, never fail it.
+    const select = play.getByRole('button', { name: 'Select', exact: true });
+    await select.evaluate((el) => {
+      const w = window as unknown as { tipWait: number | null };
+      w.tipWait = null;
+      let arrived = 0;
+      el.addEventListener('pointerenter', () => { arrived = performance.now(); }, { once: true });
+      const seen = new MutationObserver(() => {
+        if (arrived && document.querySelector('.mu-tooltip:not([class*="ed-tip"])')) { w.tipWait = performance.now() - arrived; seen.disconnect(); }
+      });
+      seen.observe(document.body, { childList: true, subtree: true });
+    });
     await expect(tip).toHaveCount(0);
+    await select.hover();
+    await expect.poll(() => page.evaluate(() => (window as unknown as { tipWait: number | null }).tipWait)).not.toBeNull();
+    const delay = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-tooltip-delay-ms')) || 120);
+    expect(await page.evaluate(() => (window as unknown as { tipWait: number }).tipWait)).toBeGreaterThanOrEqual(delay - 16);
     await expect(tip).toHaveText('Select · V');
     await expect(tip.locator('.mu-tooltip-key')).toHaveText(' · V');
     expect(await tip.evaluate((el) => getComputedStyle(el).pointerEvents)).toBe('none');
