@@ -5,9 +5,10 @@ import { SlidingIndicator } from '@unlocalhosted/metalui';
 import { NAV } from './nav';
 import { useColorway, type Colorway } from './colorway';
 import { Wordmark } from '../ui/Wordmark';
+import { SocialLinks } from '../ui/SocialLinks';
 
 /* The shell, ported one to one from the reference design-language site (kds.css):
- *   masthead   brand · search well (⌘K) · colorway pill of pills · MOTION switch
+ *   masthead   brand · search well (⌘K) · colorway pill of pills · MOTION switch · GitHub, X, LinkedIn
  *   side       engraved groups, rows with readout counts, the current row sunk with a green bar
  *   main       the page
  *   toc        ON THIS PAGE, built from the page's h2 ids, the section in view lit */
@@ -123,6 +124,7 @@ export function Shell() {
         <div className="ctl">
           <ColorwaySeg />
           <MotionToggle />
+          <SocialLinks />
         </div>
       </header>
 
@@ -141,6 +143,8 @@ export function Shell() {
               ))}
             </div>
           ))}
+          {/* on a phone the masthead has no room for them: they live at the foot of the menu, named */}
+          <SocialLinks labelled />
         </aside>
         <main id="main" tabIndex={-1}>
           <Outlet />
