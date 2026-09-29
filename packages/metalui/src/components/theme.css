@@ -444,6 +444,10 @@
   --spacing-scroll-area-thumb-hover: var(--mu-r-scroll-area-thumb-hover);
   --color-scroll-area-thumb-ink: var(--mu-r-scroll-area-thumb-ink);
   --spacing-scroll-area-fade-size: var(--mu-r-scroll-area-fade-size);
+  --spacing-checkbox-group-row-height: var(--mu-r-checkbox-group-row-height);
+  --spacing-checkbox-group-row-gap: var(--mu-r-checkbox-group-row-gap);
+  --spacing-checkbox-group-gap: var(--mu-r-checkbox-group-self-gap);
+  --spacing-checkbox-group-indent: var(--mu-r-checkbox-group-self-indent);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1332,6 +1336,16 @@
 }
 @utility stroke-width-scroll-area-thumb-width {
   stroke-width: var(--mu-r-scroll-area-thumb-width);
+}
+@utility checkbox-group-cascade {
+  & .mu-dimple { transition-delay: calc(var(--mu-cascade-step, 0) * var(--mu-r-checkbox-group-self-cascade) * var(--mu-travel-part)); } & .mu-dimple-tick { animation-delay: calc(var(--mu-r-checkbox-tick-delay) + var(--mu-cascade-step, 0) * var(--mu-r-checkbox-group-self-cascade) * var(--mu-travel-part)); }
+}
+@utility duration-checkbox-group-cascade {
+  --tw-duration: var(--mu-r-checkbox-group-self-cascade);
+  transition-duration: var(--mu-r-checkbox-group-self-cascade);
+}
+@utility opacity-checkbox-group-disabled {
+  opacity: var(--mu-r-checkbox-group-self-disabled);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

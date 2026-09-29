@@ -917,6 +917,22 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Several independent choices in a form: rows of the row-size checkbox beside their labels, with an optional parent that ticks or clears them all. Ticking the parent ticks its children in a cascade from the top, one row every 30 ms, each drawing the checkbox's own tick; clearing it clears them at once (letting go is quicker than taking). Some ticked: the parent shows the checkbox's half (mixed) look. Reduce Motion: no cascade. The checkboxes are the checkbox recipe; this recipe adds the rows and the cascade. (the checkbox (recipe checkbox, row size); Base UI CheckboxGroup and its parent checkbox)
+    public static let checkboxGroup = MetalObjectRecipe(
+        name: "checkbox-group",
+        layers: [
+
+        ],
+        props: [
+            "row.height": .number(28.0),
+            "row.gap": .number(8.0),
+            "self.gap": .number(2.0),
+            "self.indent": .number(22.0),
+            "self.cascade": .text("30ms"),
+            "self.disabled": .text("0.4"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

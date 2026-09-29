@@ -206,6 +206,23 @@
       "agent": "https://metalui.dev/r/checkbox.md"
     },
     {
+      "name": "checkbox-group",
+      "title": "Checkbox group",
+      "status": "alpha",
+      "description": "Several independent choices in a form: row-size checkboxes with labels and an optional parent; ticking the parent ticks its rows in a cascade from the top, clearing clears them at once.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "CheckboxGroup",
+        "base": "@base-ui/react/checkbox-group"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCheckboxGroup"
+      },
+      "registry": "https://metalui.dev/r/checkbox-group.json",
+      "agent": "https://metalui.dev/r/checkbox-group.md"
+    },
+    {
       "name": "chip",
       "title": "Chip",
       "status": "alpha",

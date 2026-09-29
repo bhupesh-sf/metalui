@@ -1044,6 +1044,13 @@
   --mu-r-scroll-area-thumb-width: 4px;
   --mu-r-scroll-area-thumb-hover: 8px;
   --mu-r-scroll-area-fade-size: 20px;
+  /* checkbox-group: the checkbox (recipe checkbox, row size); Base UI CheckboxGroup and its parent checkbox */
+  --mu-r-checkbox-group-row-height: 28px;
+  --mu-r-checkbox-group-row-gap: 8px;
+  --mu-r-checkbox-group-self-gap: 2px;
+  --mu-r-checkbox-group-self-indent: 22px;
+  --mu-r-checkbox-group-self-cascade: 30ms;
+  --mu-r-checkbox-group-self-disabled: 0.4;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

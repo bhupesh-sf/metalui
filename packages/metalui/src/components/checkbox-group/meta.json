@@ -1,0 +1,24 @@
+{
+  "name": "checkbox-group",
+  "title": "Checkbox group",
+  "status": "alpha",
+  "layer": "component",
+  "description": "Several independent choices in a form: row-size checkboxes with labels and an optional parent; ticking the parent ticks its rows in a cascade from the top, clearing clears them at once.",
+  "base": "@base-ui/react/checkbox-group",
+  "react": {
+    "export": "CheckboxGroup",
+    "files": [
+      "checkbox-group.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalCheckboxGroup",
+    "file": "swift/Sources/MetalUI/Components/MetalCheckboxGroup.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "CheckboxGroup": ["Root", "Parent", "Item"]
+  },
+  "agent": "checkbox-group.agent.md",
+  "page": "/components/checkbox-group"
+}

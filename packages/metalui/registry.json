@@ -365,6 +365,26 @@
       "docs": "Agent guide: https://metalui.dev/r/checkbox.md. SwiftUI: MetalCheckbox in the MetalUI Swift package."
     },
     {
+      "name": "checkbox-group",
+      "type": "registry:ui",
+      "title": "Checkbox group",
+      "description": "Several independent choices in a form: row-size checkboxes with labels and an optional parent; ticking the parent ticks its rows in a cascade from the top, clearing clears them at once.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/checkbox-group/checkbox-group.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/checkbox-group/checkbox-group.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/checkbox-group.md. SwiftUI: MetalCheckboxGroup in the MetalUI Swift package."
+    },
+    {
       "name": "chip",
       "type": "registry:ui",
       "title": "Chip",
