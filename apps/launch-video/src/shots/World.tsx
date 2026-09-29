@@ -9,7 +9,7 @@ import { ASSEMBLE, CLICK, PART_PIECES, PARTS_AT, fogAt, pointerAt } from './Part
 import { IconAct } from '../film/parts';
 import { COMPONENT_PIECES, DROP1_AT, FILL, SLAM } from './Components';
 import { DROP1, DROP1_END, OBJECT_PIECES, ObjectsTitle } from './Objects';
-import { BUILD_AT, BUILD_PIECES, DROP2, SILENT, Selection, rollIntensity } from './Build';
+import { BUILD_AT, DROP2, SILENT, XRAY_LANDS, Xray, rollIntensity, xrayPointer } from './Build';
 import { DANCE, TOUR_IMPACTS, TOUR_MOVES } from './Finale';
 import { Address, COLLAPSE, FINAL_HIT, INSTALL, INSTALL_PIECES } from './Install';
 
@@ -97,7 +97,7 @@ const IMPACTS: Impact[] = [
   { x: DROP1_AT.x, y: 0, at: DROP1, strength: 2.4 },
   ...OBJECT_PIECES.filter((p) => p.at !== DROP1).map((p) => ({ x: p.x, y: p.y, at: p.at, strength: 0.4 })),
   ...OBJECT_PIECES.filter((p) => p.move).map((p) => ({ x: p.move!.to.x, y: p.move!.to.y, at: p.move!.at, strength: 0.7 })),
-  ...BUILD_PIECES.map((p) => ({ x: p.x, y: p.y, at: p.at, strength: 1 })),
+  ...XRAY_LANDS.map((at) => ({ x: BUILD_AT.x, y: 0, at, strength: 1.2 })),
   { x: BUILD_AT.x, y: 0, at: DROP2, strength: 2.4 },
   ...TOUR_IMPACTS,
   ...INSTALL_PIECES.map((p) => ({ x: p.x, y: p.y, at: p.at, strength: 1 })),
@@ -135,8 +135,9 @@ export function World() {
   const pose = { ...still, x: still.x + 7 * shake * Math.sin(frame * 1.9), y: still.y + 5 * shake * Math.cos(frame * 2.3) };
   const breathe = punch(frame, PUMP);
   const pointer = pointerAt(frame);
+  const xray = xrayPointer(frame);
   const fog = fogAt(frame);
-  const jolt = punch(frame, [...HEAVY.map((h) => h.at!), ...F_HEAVY.map((h) => h.at)]) + 1.2 * punch(frame, [K[4]]) + 1.4 * punch(frame, [K[7]]) + punch(frame, [ASSEMBLE]) + 1.3 * punch(frame, [SLAM]) + 2 * punch(frame, [DROP1]) + punch(frame, BUILD_PIECES.map((p) => p.at)) + 2 * punch(frame, [DROP2]) + punch(frame, INSTALL_PIECES.map((p) => p.at)) + 2.4 * punch(frame, [FINAL_HIT]) + punch(frame, COMPONENT_PIECES.filter((p) => p.fall === 'heavy').map((p) => p.at)) - 0.9 * breathe;
+  const jolt = punch(frame, [...HEAVY.map((h) => h.at!), ...F_HEAVY.map((h) => h.at)]) + 1.2 * punch(frame, [K[4]]) + 1.4 * punch(frame, [K[7]]) + punch(frame, [ASSEMBLE]) + 1.3 * punch(frame, [SLAM]) + 2 * punch(frame, [DROP1]) + punch(frame, XRAY_LANDS) + 2 * punch(frame, [DROP2]) + punch(frame, INSTALL_PIECES.map((p) => p.at)) + 2.4 * punch(frame, [FINAL_HIT]) + punch(frame, COMPONENT_PIECES.filter((p) => p.fall === 'heavy').map((p) => p.at)) - 0.9 * breathe;
   // The sunrise: dawn on the lone key, full sun once the kit is down, and full sun from bar 3 on.
   const landed = K.filter((k) => frame >= k).length;
   const sun = frame >= END ? 1 : Math.min(1, landed / 8 + (frame >= K[7] ? 0.2 * (1 - react(frame, K[7], 'surface')) : 0));
@@ -186,16 +187,7 @@ export function World() {
                 {p.draw(frame)}
               </Drop>
             ))}
-            {BUILD_PIECES.filter(seen).map((p) => (
-              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={[...BUILD_PIECES.filter((h) => h.at > p.at).map((h) => ({ at: h.at, height: 22, frames: 13 })), ...DANCE]}>
-                <div style={{ display: 'grid', justifyItems: 'center' }}>
-                  <div dangerouslySetInnerHTML={{ __html: p.svg(frame) }} />
-                  {/* Named like everything else: at this layer, the gadget's kind. */}
-                  <Label variant="engraved" style={{ zoom: 3.2, marginTop: -6 }}>{p.name}</Label>
-                </div>
-              </Drop>
-            ))}
-            <Selection frame={frame} />
+            {seen(BUILD_AT) && <Xray frame={frame} hops={DANCE} />}
             {INSTALL_PIECES.filter(seen).map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} move={{ to: { x: p.x, y: p.y + 1500 }, at: COLLAPSE, arc: 200 }}>
                 {p.draw(frame)}
@@ -204,6 +196,13 @@ export function World() {
             {frame >= FINAL_HIT && (
               <div style={{ position: 'absolute', left: 0, top: 420, transform: 'translate(-50%, -50%)' }}>
                 <div style={{ zoom: 4 }}><Address /></div>
+              </div>
+            )}
+            {xray.visible && (
+              <div style={{ position: 'absolute', left: xray.x, top: xray.y, transform: 'translateZ(90px)' }}>
+                <div style={{ zoom: 5, color: '#fff', filter: 'drop-shadow(0 0 0.6px #111) drop-shadow(0 0 0.6px #111) drop-shadow(0 4px 4px rgba(0,0,0,.25))' }}>
+                  <IconAct name="select" t={xray.act} size={28} />
+                </div>
               </div>
             )}
             {pointer.visible && now < SLAM && (

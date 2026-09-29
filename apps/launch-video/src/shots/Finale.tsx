@@ -8,9 +8,9 @@ import { PARTS_AT } from './Parts';
 /* ─────────────────────────────────────────────────────────
  * SHOT 10 · THE FINAL CHORUS: A TOUR OF EVERYTHING (video bars 25-28)
  *
- *   bar 25.1   the selection snaps shut round the gadgets: the drop, the loudest bars of the film
+ *   bar 25.1   the selection snaps shut round the x-ray bench: the drop, the loudest bars of the film
  *   each bar   the camera travels back across the whole table, one place a bar, landing on the
- *              downbeat: the gadgets, the objects, the components, the foundations, and on the
+ *              downbeat: the x-ray, the objects, the components, the foundations, and on the
  *              downbeat of bar 29 the opener's kit, where the install happens
  *   downbeats  everything on the table jumps together, all of it at once, and the grid ripples
  *              where the camera lands; a smaller jump on every beat 3

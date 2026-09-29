@@ -19,7 +19,7 @@ const SHOTS: Partial<Record<string, ComponentType>> = {
   components: World,
   fill: World,
   objects: World,
-  gadgets: World,
+  xray: World,
   gap: World,
   everywhere: World,
   install: World,

@@ -66,15 +66,15 @@ export const storyboard: Shot[] = [
     sync: 'Everything lands on beat 1 of bar 13 with the object spring',
   },
   {
-    id: 'gadgets', act: 'gap', bars: [17, 22], title: 'The gadgets measure the build',
+    id: 'xray', act: 'gap', bars: [17, 22], title: 'X-ray: tune it by hand',
     music: 'An eight-bar build: a muffle that opens, a snare roll doubling every two bars, the bass draining, a riser',
-    picture: 'A counter drum, a needle gauge, a cell grid and a glass badge land and read the build as it climbs',
-    sync: 'The counter counts every roll hit, the needle reads the loudness, the cells fill with the build, the badge glows with the riser; the roll shakes the camera',
+    picture: 'One real Button on the x-ray bench; the pointer handles it: pulls the right end for padding, pushes the corner square and back, scrubs its kind, presses it',
+    sync: 'Each act takes one rate of the roll (quarters, eighths, eighths, sixteenths), so the handling speeds up with it; values catch on their tokens, kinds snap; the roll shakes the camera',
   },
   {
     id: 'gap', act: 'gap', bars: [23, 24], title: 'The gap', layer: 'Instruments',
     music: 'The roll at thirty-seconds, then one beat of true silence',
-    picture: 'A lasso draws a box round the set, counting it; on the silent beat everything holds still',
+    picture: 'The pointer drags a lasso round the bench; on the silent beat everything holds still',
     sync: 'The box covers the set by the silent beat and snaps into a selection on the downbeat of bar 25',
   },
   {
