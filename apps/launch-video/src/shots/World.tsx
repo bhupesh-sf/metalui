@@ -115,6 +115,8 @@ const SET_HOPS = (x: number, y: number, at: number | null) => [
 // The pumping synths of bars 5-6: the table breathes in on every kick and out over the beat.
 const PUMP = [5, 6].flatMap((bar) => [1, 2, 3, 4].map((beat) => frameAt(bar, beat)));
 // Dots only where the camera looks: around the kit, and around the foundations.
+const SEEN = 3600;
+
 const AREAS = [
   { x: 0, y: 40, w: 3000, h: 2000 },
   { x: FX, y: 220, w: 2600, h: 1900 },
@@ -142,17 +144,21 @@ export function World() {
   const look = base.dawn ? mixLook(base.dawn, base, sun) : base;
   const power = Math.min(1, 0.5 + 0.5 * sun + 0.05 * jolt);
 
+  // Only what the camera can see is drawn: every place is a whip apart (3400), so a piece further
+  // than SEEN from where the camera looks is off the frame, and drawing it costs a frame for nothing.
+  const seen = (p: { x: number }) => Math.abs(p.x - pose.x) < SEEN;
+
   return (
     <LookProvider value={look}>
       <AbsoluteFill data-mu-colorway="bone" style={{ background: look.sky }}>
         <Camera pose={pose} jolt={jolt}>
           <Table light={{ x: pose.x, y: 0 }} power={power} frame={frame} fps={FPS} impacts={IMPACTS} areas={AREAS}>
-            {PIECES.map((p) => (
+            {PIECES.filter(seen).map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} turn={p.turn} spin={p.spin} move={collapseOf(p)} hops={[...(HOPS[p.id] ?? []), ...DANCE, ...(p.id === 'badge' ? [{ at: FINAL_HIT, height: 70, frames: 18 }] : [])]}>
                 {p.draw(frame)}
               </Drop>
             ))}
-            {FOUNDATION_PIECES.map((p) => (
+            {FOUNDATION_PIECES.filter(seen).map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={[...(F_HOPS[p.id] ?? []), ...DANCE]}>
                 {p.draw(frame)}
               </Drop>
@@ -160,12 +166,12 @@ export function World() {
             {/* The dropout: the canvas fogs out around the button, on the table, so the button and the
                 pointer stay clear above it. */}
             {fog > 0 && <div style={{ position: 'absolute', left: PX - 2600, top: -1900, width: 5200, height: 3800, transform: 'translateZ(0.5px)', background: `radial-gradient(420px 380px at 2600px 1900px, rgba(255,255,255,0) 0%, rgba(255,255,255,${fog}) 100%)` }} />}
-            {PART_PIECES.map((p) => (
+            {PART_PIECES.filter(seen).map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} move={p.move} from={p.from} until={p.until} hops={p.id === 'component' ? [...(p.hops ?? []), ...SET_HOPS(p.x, p.y, null), ...DANCE] : p.hops}>
                 {p.draw(frame)}
               </Drop>
             ))}
-            {COMPONENT_PIECES.map((p) => (
+            {COMPONENT_PIECES.filter(seen).map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={[...SET_HOPS(p.x, p.y, p.at), ...DANCE]}>
                 {p.draw(frame)}
               </Drop>
@@ -175,12 +181,12 @@ export function World() {
                 <div style={{ zoom: 5.5 }}><ObjectsTitle /></div>
               </div>
             )}
-            {OBJECT_PIECES.map((p) => (
+            {OBJECT_PIECES.filter(seen).map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} turn={p.turn} move={p.move} until={p.until} hops={[{ at: DROP1_END, height: 70, frames: 20 }, ...DANCE]}>
                 {p.draw(frame)}
               </Drop>
             ))}
-            {BUILD_PIECES.map((p) => (
+            {BUILD_PIECES.filter(seen).map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={[...BUILD_PIECES.filter((h) => h.at > p.at).map((h) => ({ at: h.at, height: 22, frames: 13 })), ...DANCE]}>
                 <div style={{ display: 'grid', justifyItems: 'center' }}>
                   <div dangerouslySetInnerHTML={{ __html: p.svg(frame) }} />
@@ -190,7 +196,7 @@ export function World() {
               </Drop>
             ))}
             <Selection frame={frame} />
-            {INSTALL_PIECES.map((p) => (
+            {INSTALL_PIECES.filter(seen).map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} move={{ to: { x: p.x, y: p.y + 1500 }, at: COLLAPSE, arc: 200 }}>
                 {p.draw(frame)}
               </Drop>

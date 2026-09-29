@@ -148,18 +148,25 @@ const WAVE = { speed: 1150, width: 90, life: 1.1, swell: 2.2, push: 12, darken: 
 /**
  * The dot grid, and the ripple a landing sends through it: a ring runs out from the impact at WAVE.speed,
  * and as it passes a dot, the dot swells, darkens and is pushed outward, then settles as the ring
- * fades over WAVE.life. Drawn only in the areas the camera visits, so the dots stay affordable.
+ * fades over WAVE.life. Drawn only in the areas near the camera, and as a few paths rather than a
+ * node per dot: dots are grouped by how hard the ring is on them (LEVELS steps, too fine to see), and
+ * each group is one path, so a frame costs a dozen nodes, not thousands.
  */
-function RippleDots({ frame, fps, impacts, areas }: { frame: number; fps: number; impacts: Impact[]; areas: { x: number; y: number; w: number; h: number }[] }) {
+const LEVELS = 12;
+const REACH = 2600; // how far from the camera's x an area can be and still be in frame
+
+function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: number; impacts: Impact[]; areas: { x: number; y: number; w: number; h: number }[]; near: number }) {
   const live = impacts
     .map((i) => ({ ...i, t: (frame - i.at) / fps }))
     .filter((i) => i.t >= 0 && i.t < WAVE.life);
   return (
     <>
       {areas.map((a, n) => {
-        const dots: ReactNode[] = [];
-        for (let y = a.y - a.h / 2; y <= a.y + a.h / 2; y += DOT.pitch) {
-          for (let x = a.x - a.w / 2; x <= a.x + a.w / 2; x += DOT.pitch) {
+        if (Math.abs(a.x - near) > a.w / 2 + REACH) return null;
+        const x0 = a.x - a.w / 2, y0 = a.y - a.h / 2;
+        const paths: string[] = Array.from({ length: LEVELS + 1 }, () => '');
+        for (let y = y0; y <= a.y + a.h / 2; y += DOT.pitch) {
+          for (let x = x0; x <= a.x + a.w / 2; x += DOT.pitch) {
             let g = 0, px = 0, py = 0;
             for (const i of live) {
               const dx = x - i.x, dy = y - i.y, d = Math.hypot(dx, dy) || 1;
@@ -169,13 +176,15 @@ function RippleDots({ frame, fps, impacts, areas }: { frame: number; fps: number
               px += (dx / d) * WAVE.push * k;
               py += (dy / d) * WAVE.push * k;
             }
-            const r = DOT.radius * (1 + WAVE.swell * Math.min(1.5, g));
-            dots.push(<circle key={`${x},${y}`} cx={x + px - (a.x - a.w / 2)} cy={y + py - (a.y - a.h / 2)} r={r} fill={`rgb(${DOT.ink} / ${Math.min(0.9, DOT.alpha + WAVE.darken * g)})`} />);
+            const level = Math.round((Math.min(1.5, g) / 1.5) * LEVELS);
+            const r = DOT.radius * (1 + WAVE.swell * (level / LEVELS) * 1.5);
+            const cx = x + px - x0, cy = y + py - y0;
+            paths[level] += `M${(cx - r).toFixed(1)} ${cy.toFixed(1)}a${r.toFixed(2)} ${r.toFixed(2)} 0 1 0 ${(2 * r).toFixed(2)} 0a${r.toFixed(2)} ${r.toFixed(2)} 0 1 0 ${(-2 * r).toFixed(2)} 0`;
           }
         }
         return (
-          <svg key={n} width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: a.x - a.w / 2, top: a.y - a.h / 2, overflow: 'visible' }}>
-            {dots}
+          <svg key={n} width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible' }}>
+            {paths.map((d, level) => d && <path key={level} d={d} fill={`rgb(${DOT.ink} / ${Math.min(0.9, DOT.alpha + WAVE.darken * (level / LEVELS) * 1.5)})`} />)}
           </svg>
         );
       })}
@@ -190,14 +199,17 @@ export function Table({ children, light = { x: 0, y: 0 }, power = 1, frame = 0, 
 }) {
   const look = useLook();
   const r = 700 + 520 * power;
-  const at = `${3000 + light.x}px ${2000 + light.y}px`;
-  const plane = { position: 'absolute' as const, left: -3000, top: -2000, width: 20000, height: 4000 }; // wide enough for every set on it
+  // The lit planes follow the light (the camera's x): their edges fall off to the sky colour long
+  // before they end, so they only need to cover the frame, and a plane the width of the whole table
+  // costs every frame a huge layer to paint.
+  const plane = { position: 'absolute' as const, left: light.x - 3500, top: -2000, width: 7000, height: 4000 };
+  const at = `3500px ${2000 + light.y}px`;
   return (
     <div style={{ position: 'absolute', left: 0, top: 0, transformStyle: 'preserve-3d', ['--film-shadow' as string]: look.shadow }}>
       <div style={{ ...plane, background: look.surface ?? `radial-gradient(1500px 1100px at ${at}, ${look.mid} 0%, ${look.far} 70%, ${look.sky} 100%)` }} />
       {look.surface && <div style={{ ...plane, background: `radial-gradient(1700px 1200px at ${at}, transparent 45%, ${look.sky} 100%)` }} />}
-      {look.pattern === 'grain' && <div style={{ ...plane, backgroundImage: GRAIN, backgroundSize: '240px', opacity: 0.35, mixBlendMode: 'multiply' }} />}
-      {look.pattern === 'dots' && <RippleDots frame={frame} fps={fps} impacts={impacts} areas={areas} />}
+      {look.pattern === 'grain' && <div style={{ ...plane, backgroundImage: GRAIN, backgroundSize: '240px', backgroundPosition: `${3500 - light.x}px 0`, opacity: 0.35, mixBlendMode: 'multiply' }} />}
+      {look.pattern === 'dots' && <RippleDots frame={frame} fps={fps} impacts={impacts} areas={areas} near={light.x} />}
       <div style={{ ...plane, opacity: power, background: `radial-gradient(${r}px ${r * 0.72}px at ${at}, ${look.pool} 0%, transparent 100%)`, mixBlendMode: look.surface ? 'soft-light' : 'normal' }} />
       {look.gobo && (
         // A window's six panes, thrown long across the table by a low sun from the upper left.
