@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { COLORWAYS, capture, open } from './helpers';
 
-// Selection frame (KAMUI-14): hover shows the corner dots, a click selects (ring + handles + readout
+// Selection frame: hover shows the corner dots, a click selects (ring + handles + readout
 // at the measured size), a second click writes and the ring tracks every keystroke, ⎋ finishes quietly.
 for (const colorway of COLORWAYS) {
   test(`select, write and finish a block in ${colorway}`, async ({ page }) => {
@@ -28,7 +28,11 @@ for (const colorway of COLORWAYS) {
     expect(r!.x).toBeCloseTo(b!.x - 6, 0);
     expect(r!.width).toBeCloseTo(b!.width + 12, 0);
     const readout = block.locator('.mu-readout');
-    const size = () => block.evaluate((el) => `${Math.round(el.getBoundingClientRect().width)} × ${Math.round(el.getBoundingClientRect().height)}`);
+    // W × H: the × is its own dimmed label, spaced by layout, so the text may have no spaces round it
+    const size = async () => {
+      const [w, h] = await block.evaluate((el) => [Math.round(el.getBoundingClientRect().width), Math.round(el.getBoundingClientRect().height)]);
+      return new RegExp(`^${w}\\s*×\\s*${h}$`);
+    };
     await expect(readout).toHaveText(await size());
     await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`selection-frame-${colorway}`) });
 
@@ -64,6 +68,8 @@ test('the ring appears without its entrance under reduced motion', async ({ page
   await block.click();
   const ring = block.locator('.mu-sf-ring');
   // part resolves instant: the entrance has no duration, so the ring is at rest immediately.
-  expect(await ring.evaluate((el) => getComputedStyle(el).animationDuration)).toBe('0s');
+  // instant: no duration, or one too short to see (so animationend still fires)
+  expect(parseFloat(await ring.evaluate((el) => getComputedStyle(el).animationDuration))).toBeLessThan(0.001);
+  await ring.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished))); // a frame, not a motion
   expect(await ring.evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
 });
