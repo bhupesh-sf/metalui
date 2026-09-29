@@ -103,7 +103,7 @@ const IMPACTS: Impact[] = [
   ...OBJECT_PIECES.filter((p) => p.at !== DROP1).map((p) => ({ x: p.x, y: p.y, at: p.at, strength: 0.4 })),
   ...OBJECT_PIECES.filter((p) => p.move).map((p) => ({ x: p.move!.to.x, y: p.move!.to.y, at: p.move!.at, strength: 0.7 })),
   ...XRAY_LANDS.map((at) => ({ x: BUILD_AT.x, y: 0, at, strength: 1.2 })),
-  { x: BUILD_AT.x, y: 0, at: DROP2, strength: 2.4 },
+  { x: BUILD_AT.x, y: 0, at: DROP2, strength: 2.4, fire: true }, // the drop sets the grid alight
   ...TOUR_IMPACTS,
   ...INSTALL_PIECES.map((p) => ({ x: p.x, y: p.y, at: p.at, strength: 1 })),
   { x: 0, y: 290, at: FINAL_HIT, strength: 3 },

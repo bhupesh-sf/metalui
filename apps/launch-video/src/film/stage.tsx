@@ -140,10 +140,31 @@ export interface Impact {
   y: number;
   at: number;
   strength: number;
+  /** A drop that sets the grid alight: a burning front runs out from here instead of a ripple. */
+  fire?: boolean;
 }
 
 const DOT = { pitch: 40, radius: 2.2, ink: '60 66 78', alpha: 0.26 };
 const WAVE = { speed: 1150, width: 90, life: 1.1, swell: 2.2, push: 12, darken: 0.55 }; // px/s, px, s
+/**
+ * Fire: a front runs out at `speed`, ragged by `ragged` (tongues, not a ring). Each dot it reaches
+ * flares over `flare`, then burns down over `life`, through yellow, orange and red to an ember,
+ * swelling by `swell`, flickering by `flicker` and rising `rise` px while it burns.
+ */
+const FIRE = { start: 250, speed: 2300, ragged: 0.12, flare: 0.06, life: 1.3, swell: 3.6, flicker: 0.35, rise: 18, reach: 14000 }; // starts as a burst; a little faster than a place a bar, so each set is alight as the camera lands
+const HEAT_LEVELS = 8;
+/** Heat (0-1) as a colour: ember red at the bottom, white-yellow at the top. */
+// Saturated, never white-hot: the canvas is white, so the hottest a dot gets is a deep orange.
+const HEAT_STOPS: [number, [number, number, number]][] = [[0, [96, 22, 20]], [0.3, [190, 28, 24]], [0.55, [240, 60, 18]], [0.8, [255, 110, 10]], [1, [255, 158, 0]]];
+function heatColour(h: number) {
+  let i = 0;
+  while (i < HEAT_STOPS.length - 2 && h > HEAT_STOPS[i + 1][0]) i++;
+  const [h0, c0] = HEAT_STOPS[i], [h1, c1] = HEAT_STOPS[i + 1];
+  const t = Math.min(1, Math.max(0, (h - h0) / (h1 - h0)));
+  return `rgb(${c0.map((v, k) => Math.round(v + (c1[k] - v) * t)).join(' ')})`;
+}
+/** A steady hash in [0, 1): the same dot and frame give the same flicker in every render. */
+const hash = (a: number, b: number, c = 0) => { const v = Math.sin(a * 12.9898 + b * 78.233 + c * 37.719) * 43758.5453; return v - Math.floor(v); };
 
 /**
  * The dot grid, and the ripple a landing sends through it: a ring runs out from the impact at WAVE.speed,
@@ -156,15 +177,17 @@ const LEVELS = 12;
 const REACH = 2600; // how far from the camera's x an area can be and still be in frame
 
 function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: number; impacts: Impact[]; areas: { x: number; y: number; w: number; h: number }[]; near: number }) {
-  const live = impacts
-    .map((i) => ({ ...i, t: (frame - i.at) / fps }))
-    .filter((i) => i.t >= 0 && i.t < WAVE.life);
+  const all = impacts.map((i) => ({ ...i, t: (frame - i.at) / fps }));
+  const live = all.filter((i) => !i.fire && i.t >= 0 && i.t < WAVE.life);
+  // a fire burns for as long as its front takes to cross an area, and its last dots to cool
+  const fires = all.filter((i) => i.fire && i.t >= 0 && i.t < FIRE.reach / FIRE.speed + FIRE.life);
   return (
     <>
       {areas.map((a, n) => {
         if (Math.abs(a.x - near) > a.w / 2 + REACH) return null;
         const x0 = a.x - a.w / 2, y0 = a.y - a.h / 2;
         const paths: string[] = Array.from({ length: LEVELS + 1 }, () => '');
+        const burning: string[] = Array.from({ length: HEAT_LEVELS + 1 }, () => '');
         for (let y = y0; y <= a.y + a.h / 2; y += DOT.pitch) {
           for (let x = x0; x <= a.x + a.w / 2; x += DOT.pitch) {
             let g = 0, px = 0, py = 0;
@@ -176,16 +199,44 @@ function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: 
               px += (dx / d) * WAVE.push * k;
               py += (dy / d) * WAVE.push * k;
             }
+            let heat = 0;
+            for (const i of fires) {
+              const dx = x - i.x, dy = y - i.y;
+              // the front is ragged: tongues by direction, and a little per dot
+              const tongue = 1 + FIRE.ragged * (Math.sin(Math.atan2(dy, dx) * 7 + i.x) * 0.6 + (hash(x, y) - 0.5) * 0.8);
+              const age = i.t - Math.max(0, Math.hypot(dx, dy) * tongue - FIRE.start) / FIRE.speed;
+              if (age <= 0 || age >= FIRE.life) continue;
+              const h = age < FIRE.flare ? age / FIRE.flare : (1 - (age - FIRE.flare) / (FIRE.life - FIRE.flare)) ** 1.6;
+              heat = Math.max(heat, h * Math.min(1, i.strength / 2));
+            }
+            const cx = x + px - x0, cy = y + py - y0;
+            const arc = (ax: number, ay: number, r: number) => `M${(ax - r).toFixed(1)} ${ay.toFixed(1)}a${r.toFixed(2)} ${r.toFixed(2)} 0 1 0 ${(2 * r).toFixed(2)} 0a${r.toFixed(2)} ${r.toFixed(2)} 0 1 0 ${(-2 * r).toFixed(2)} 0`;
+            if (heat > 0.04) {
+              const flick = 1 - FIRE.flicker * hash(x, y, frame);
+              const hl = Math.round(Math.min(1, heat * flick) * HEAT_LEVELS);
+              const r = DOT.radius * (1 + FIRE.swell * heat * flick);
+              burning[hl] += arc(cx, cy - FIRE.rise * heat * flick, r);
+              continue;
+            }
             const level = Math.round((Math.min(1.5, g) / 1.5) * LEVELS);
             const r = DOT.radius * (1 + WAVE.swell * (level / LEVELS) * 1.5);
-            const cx = x + px - x0, cy = y + py - y0;
-            paths[level] += `M${(cx - r).toFixed(1)} ${cy.toFixed(1)}a${r.toFixed(2)} ${r.toFixed(2)} 0 1 0 ${(2 * r).toFixed(2)} 0a${r.toFixed(2)} ${r.toFixed(2)} 0 1 0 ${(-2 * r).toFixed(2)} 0`;
+            paths[level] += arc(cx, cy, r);
           }
         }
+        const hot = burning.slice(Math.round(HEAT_LEVELS * 0.45)).join('');
         return (
-          <svg key={n} width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible' }}>
+          <div key={n} style={{ position: 'absolute', left: 0, top: 0 }}>
+          {hot && (
+            // the light the burning dots throw on the table round them
+            <svg width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible', filter: 'blur(9px)', opacity: 0.75 }}>
+              <path d={hot} fill="rgb(255 120 20)" />
+            </svg>
+          )}
+          <svg width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible' }}>
             {paths.map((d, level) => d && <path key={level} d={d} fill={`rgb(${DOT.ink} / ${Math.min(0.9, DOT.alpha + WAVE.darken * (level / LEVELS) * 1.5)})`} />)}
+            {burning.map((d, hl) => d && <path key={`f${hl}`} d={d} fill={heatColour(hl / HEAT_LEVELS)} />)}
           </svg>
+          </div>
         );
       })}
     </>
