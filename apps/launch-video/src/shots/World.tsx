@@ -9,7 +9,7 @@ import { ASSEMBLE, CLICK, PART_PIECES, PARTS_AT, fogAt, pointerAt } from './Part
 import { IconAct } from '../film/parts';
 import { COMPONENT_PIECES, DROP1_AT, FILL, SLAM } from './Components';
 import { DROP1, DROP1_END, OBJECT_PIECES, ObjectsTitle } from './Objects';
-import { BUILD_AT, DROP2, SILENT, XRAY_LANDS, Xray, rollIntensity, xrayPointer } from './Build';
+import { BUILD_AT, COLLAPSE_AT, DROP2, SILENT, XRAY_LANDS, Xray, rollIntensity, xrayPointer } from './Build';
 import { DANCE, TOUR_IMPACTS, TOUR_MOVES } from './Finale';
 import { Address, COLLAPSE, FINAL_HIT, INSTALL, INSTALL_PIECES } from './Install';
 
@@ -50,7 +50,12 @@ const MOVES = [
   { at: B(14, 1), frames: B(17, 1) - B(14, 1) - 16, pose: { x: DROP1_AT.x + 20, y: 0, z: 300, tilt: 41, orbit: 6 } },
   // On to the build, then in slowly through eight bars of it.
   { at: B(17, 1) - 16, frames: 16, pose: { x: BUILD_AT.x, y: 30, z: 130, tilt: 42, orbit: -3 } },
-  { at: B(17, 2), frames: SILENT - B(17, 2), pose: { x: BUILD_AT.x, y: 70, z: 380, tilt: 40, orbit: 4 } },
+  { at: B(17, 2), frames: B(21, 1) - B(17, 2), pose: { x: BUILD_AT.x, y: 70, z: 320, tilt: 40, orbit: 4 } },
+  // The layers: up and back, to see the button come apart into a stack.
+  { at: B(21, 1), frames: 24, pose: { x: BUILD_AT.x, y: -40, z: 110, tilt: 47, orbit: 9 } },
+  // The stack slams down, and in again through the gap.
+  { at: COLLAPSE_AT, frames: 10, pose: { x: BUILD_AT.x, y: 60, z: 300, tilt: 41, orbit: 4 } },
+  { at: COLLAPSE_AT + 10, frames: SILENT - COLLAPSE_AT - 10, pose: { x: BUILD_AT.x, y: 70, z: 380, tilt: 40, orbit: 4 } },
   // The drop: the selection snaps shut and the camera kicks back.
   { at: DROP2, frames: 6, pose: { x: BUILD_AT.x, y: 20, z: 200, tilt: 44, orbit: 0 } },
   // The final chorus: back across the whole table, a place a bar, landing on the downbeats.

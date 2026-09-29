@@ -1,11 +1,11 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { Button, Label, Lasso, Led, SelectionFrame, type ButtonCap } from '@unlocalhosted/metalui';
+import { Button, Label, Lasso, Led, SelectionFrame, Switch, type ButtonCap } from '@unlocalhosted/metalui';
 import { CornerArc, GestureGlyph, type Gesture } from '../../../docs/src/ui/edit';
 import tokens from '../../../../tokens/tokens.json';
 import edit from '../../music/edit.json';
 import cues from '../cues.generated.json';
 import { FPS, frameAt } from '../time';
-import { react, sweep } from '../motion';
+import { contactFrames, land, react, sweep } from '../motion';
 import { Drop } from '../film/stage';
 import { actTime } from '../film/parts';
 import { DROP1_AT } from './Components';
@@ -22,9 +22,12 @@ import { DROP1_AT } from './Components';
  *              (compact, then out, then back to the default): the LED lights on each catch
  *   bars 19-20 eighths: the top-left corner. Pushed in, the pill squares off a step a hit, lands
  *              square, then pulls back round to the pill
- *   bar 21     eighths: it scrubs the kind readout; the button snaps through its real caps
- *              (standard, primary, destructive), never between them
- *   bar 22     sixteenths: it presses the button on every hit; down on the hit, up on the release
+ *   bar 21     eighths: it clicks the x-ray's Layers callout, and the button comes apart into the six
+ *              layers it is made of, one lifting off the bench an eighth: drop shadow, contact shadow,
+ *              rim, fill, inner glow, top light, each named
+ *   bar 22     eighths: the readouts become the layers' switches, and it flicks them off one an eighth;
+ *              each slab goes to a ghost as its switch goes off, then they all come back on
+ *   bar 23.1   the stack slams back down into one button, and the gap starts
  *   bars 23-24 the gap: the pointer drags a lasso round the whole bench as the roll peaks;
  *              on the silent last beat everything holds still
  *   bar 25     the box snaps shut into a selection round it: the drop
@@ -65,9 +68,27 @@ const PAD = Number(P.self.pad); // 15: the default padding, half the height less
 const PAD_COMPACT = Number(P.compact.pad); // 11
 const PAD_TOKENS = [PAD_COMPACT, PAD];
 const PILL = H / 2;
-const CAPS: ButtonCap[] = ['primary', 'destructive', 'standard']; // the dark cap first: it reads on the white canvas
-/** The caps the kind scrub steps through, a hit each: round all three twice, ending on the dark cap for the press. */
-const KIND_SEQ: ButtonCap[] = ['destructive', 'standard', 'primary', 'destructive', 'standard', 'primary', 'destructive', 'primary'];
+const CAP: ButtonCap = 'primary'; // the dark cap: it reads on the white canvas
+
+/**
+ * The layers the button is made of, bottom to top, from its recipe (the primary cap in bone): the
+ * two outer shadows and the rim under the fill, the two inner lights over it. `k` brightens a
+ * layer on its own slab, where it has no button around it to be seen against.
+ */
+const RECIPE = (tokens.recipes.button.layers as { part: string; prop: string; value: string; colorway?: string; state?: string }[])
+  .filter((l) => l.part === 'primary' && (l.colorway ?? 'bone') === 'bone' && !l.state);
+const FILL = RECIPE.find((l) => l.prop === 'background')!.value;
+const SH = RECIPE.filter((l) => l.prop === 'shadow').map((l) => l.value);
+const LAYERS: { name: string; fill?: string; shadow?: string; k: number; glass: 'clear' | 'dark' }[] = [
+  { name: 'Drop shadow', shadow: SH[4], k: 2.2, glass: 'clear' },
+  { name: 'Contact shadow', shadow: SH[3], k: 2.5, glass: 'clear' },
+  { name: 'Rim', shadow: SH[2], k: 1.4, glass: 'clear' },
+  { name: 'Fill', fill: FILL, k: 1, glass: 'clear' },
+  { name: 'Inner glow', shadow: SH[0], k: 5, glass: 'dark' },
+  { name: 'Top light', shadow: SH[1], k: 3, glass: 'dark' },
+];
+const scalePx = (v: string, k: number) => v.replace(/(-?[\d.]+)px/g, (_, n) => `${(Number(n) * k).toFixed(2)}px`);
+const alphaK = (v: string, k: number) => v.replace(/rgba\(([^)]*),\s*([\d.]+)\)/g, (_, rgb, a) => `rgba(${rgb},${Math.min(1, Number(a) * k).toFixed(3)})`);
 const LABEL = 'Launch';
 const LABEL_W = 44; // the label's width at the button's size, for where its ends are
 
@@ -94,26 +115,42 @@ const PAD_HITS = hitsIn(B(18, 1), B(19, 1)); // quarters
 const PAD_VALUES = [PAD_COMPACT, 18, 24, PAD]; // in to compact, out, further, back to the default
 const CORNER_HITS = hitsIn(B(19, 2), B(21, 1)); // eighths, after a beat to grab
 const CORNER_VALUES = [14, 12, 10, 8, 6, 4, 2, 0, 3, 6, 9, 12, PILL];
-const KIND_HITS = hitsIn(B(21, 1), B(22, 1)).filter((_, i) => i % 2 === 0); // every other sixteenth: eighths
-const PRESS_HITS = hitsIn(B(22, 1), B(23, 1)); // sixteenths
+const EXPLODE_HITS = hitsIn(B(21, 1), B(22, 1)).filter((_, i) => i % 2 === 0).slice(0, LAYERS.length); // eighths
+const SWITCH_HITS = hitsIn(B(22, 1), B(23, 1)).filter((_, i) => i % 2 === 0); // eighths: six off, then all on
+/** The order the switches go off in: top to bottom, as the list reads. */
+const OFF_ORDER = [5, 4, 3, 2, 1, 0];
+const ALL_ON = SWITCH_HITS[LAYERS.length];
+export const COLLAPSE_AT = B(23, 1);
 
-type Act = 'rest' | 'pad' | 'corners' | 'kind' | 'press' | 'lasso';
-const actAt = (f: number): Act => (f < B(17, 4) ? 'rest' : f < B(19, 1) ? 'pad' : f < B(21, 1) ? 'corners' : f < B(22, 1) ? 'kind' : f < B(23, 1) ? 'press' : 'lasso');
+type Act = 'rest' | 'pad' | 'corners' | 'layers' | 'lasso';
+const actAt = (f: number): Act => (f < B(17, 4) ? 'rest' : f < B(19, 1) ? 'pad' : f < B(21, 1) ? 'corners' : f < COLLAPSE_AT ? 'layers' : 'lasso');
+
+/** Which layers are switched on at a frame. */
+const layersOn = (f: number) => LAYERS.map((_, i) => {
+  if (ALL_ON !== undefined && f >= ALL_ON) return true;
+  const k = OFF_ORDER.indexOf(i);
+  return SWITCH_HITS[k] === undefined || f < SWITCH_HITS[k];
+});
+/** How far each layer has lifted off the bench (table px), up on its hit, down together on the collapse. */
+const liftOf = (f: number, i: number) => {
+  const at = EXPLODE_HITS[LAYERS.length - 1 - i]; // the top layer first
+  if (at === undefined || f < at) return 0;
+  const up = Math.min(1.06, react(f, at, 'part')) * (55 + i * 70);
+  return f < COLLAPSE_AT ? up : up * Math.max(0, 1 - land(f, COLLAPSE_AT, 'object'));
+};
+/** Whether the button is shown as its layers (from the first lift until the stack has landed). */
+const exploded = (f: number) => EXPLODE_HITS[0] !== undefined && f >= EXPLODE_HITS[0] && f < COLLAPSE_AT + contactFrames('object');
 
 /** Everything the bench shows at a frame. */
 export function xrayAt(frame: number) {
   const act = actAt(frame);
   const pad = stepped(frame, PAD_HITS, PAD_VALUES, PAD);
   const radius = stepped(frame, CORNER_HITS, CORNER_VALUES, PILL);
-  const kinds = KIND_HITS.filter((h) => frame >= h).length;
-  const cap = kinds === 0 ? CAPS[0] : KIND_SEQ[Math.min(kinds, KIND_SEQ.length) - 1];
-  const pressHit = lastHit(frame, PRESS_HITS);
-  // down on a hit, up on the next sixteenth: the press, then the release spring
-  const pressed = act === 'press' && pressHit !== undefined && PRESS_HITS.indexOf(pressHit) % 2 === 0;
+  const cap = CAP;
   const padShown = Math.round(pad);
   const radShown = Math.round(radius);
   return {
-    act, cap, pressed,
+    act, cap,
     pad, radius,
     padShown, radShown,
     padOnToken: PAD_TOKENS.includes(padShown) && Math.abs(pad - padShown) < 0.3,
@@ -124,6 +161,10 @@ export function xrayAt(frame: number) {
 }
 
 /* ───────────────────────── the pointer ───────────────────────── */
+
+/** The Layers callout, left of the button, and where each layer's switch sits in the list under it. */
+const CALLOUT = { x: X - 700, y: 0 };
+const switchAt = (i: number) => { const row = LAYERS.length - 1 - i; return { x: X - 400 + (row % 3) * 400, y: READOUTS_Y - 70 + Math.floor(row / 3) * 105 }; };
 
 /** The lasso's box round the bench, in table units. */
 const BOX = { x: X - 820, y: -470, w: 1640, h: 1010 };
@@ -137,24 +178,32 @@ function targetOf(f: number): { x: number; y: number } {
     case 'rest': return { x: X + 760, y: 520 };
     case 'pad': return { x: X + s.half - 10, y: 8 };
     case 'corners': { const k = s.radius * ZOOM * 0.3; return { x: X - s.half + k + 6, y: -(H / 2) * ZOOM + k + 6 }; }
-    case 'kind': return { x: X + 250, y: READOUTS_Y - 6 - 14 * ((KIND_HITS.filter((h) => f >= h).length % 2)) };
-    case 'press': return { x: X + 30, y: 10 + (s.pressed ? 10 : 0) };
+    case 'layers': {
+      // the callout first, then each switch as it goes off
+      const k = SWITCH_HITS.filter((h) => f >= h).length;
+      if (k === 0) return { x: CALLOUT.x + 10, y: CALLOUT.y + 10 };
+      const at = switchAt(OFF_ORDER[Math.min(k, LAYERS.length) - 1]);
+      return { x: at.x + 70, y: at.y + 8 };
+    }
     case 'lasso': { const e = lassoGrow(f); return { x: BOX.x + 40 + (BOX.w - 40) * e, y: BOX.y + 40 + (BOX.h - 40) * e }; }
   }
 }
-const GRABS = [B(17, 4), B(19, 1), B(21, 1), B(22, 1), B(23, 1)];
+const GRABS = [B(17, 4), B(19, 1), B(21, 1), ...SWITCH_HITS.slice(0, LAYERS.length), B(23, 1)];
 
 /** The select pointer: it glides to each act's handle over a beat, then works it. */
 export function xrayPointer(frame: number) {
   const BEAT = B(17, 2) - B(17, 1);
   const start = B(17, 3);
-  const move = GRABS.filter((g) => g <= frame + BEAT).pop();
+  // the next grab, and how long the glide to it takes: a beat, or less when grabs come faster
+  const i = GRABS.findIndex((g) => g > frame);
+  const move = i < 0 ? undefined : GRABS[i];
+  const glide = move === undefined ? BEAT : Math.min(BEAT, i > 0 ? move - GRABS[i - 1] : BEAT);
   let at = targetOf(frame);
-  if (move !== undefined && frame < move) {
-    // gliding in to the next handle: from where it was a beat before the grab
-    const from = targetOf(move - BEAT - 1);
+  if (move !== undefined && frame >= move - glide) {
+    // gliding in to the next handle from where it was when the glide began
+    const from = targetOf(move - glide - 1);
     const to = targetOf(move);
-    const t = (frame - (move - BEAT)) / BEAT;
+    const t = (frame - (move - glide)) / glide;
     const e = 1 - (1 - t) ** 3;
     at = { x: from.x + (to.x - from.x) * e, y: from.y + (to.y - from.y) * e };
   }
@@ -209,14 +258,10 @@ function Tag({ gesture, title, value }: { gesture: Gesture; title: string; value
 function Specimen({ frame }: { frame: number }) {
   const s = xrayAt(frame);
   const lean = s.act === 'pad' ? 'right' : s.act === 'corners' ? 'corner' : null;
-  // the press: down on its hit, back up on the release spring on the next one
-  const hit = lastHit(frame, PRESS_HITS);
-  const sink = s.act !== 'press' || hit === undefined ? 0 : s.pressed ? Math.min(1, react(frame, hit, 'part')) : 1 - react(frame, hit, 'release');
   return (
-    <div style={{ position: 'relative', transform: `translateY(${2.2 * sink}px) scale(${1 - 0.03 * sink})` }}>
+    <div style={{ position: 'relative', opacity: exploded(frame) ? 0 : 1 }}>
       <Button
         cap={s.cap}
-        className={s.pressed ? `recipe-button-${s.cap}-pressed` : undefined}
         style={{ paddingLeft: s.pad, paddingRight: s.pad, borderRadius: s.radius, width: 2 * s.pad + LABEL_W, justifyContent: 'center' }}
       >
         {LABEL}
@@ -229,6 +274,81 @@ function Specimen({ frame }: { frame: number }) {
         </span>
       )}
     </div>
+  );
+}
+
+/**
+ * The button as its layers: each a slab at the button's own size and shape, lifted off the bench,
+ * showing only what that layer adds, named beside it. A layer switched off is a ghost.
+ */
+function Layers({ frame }: { frame: number }) {
+  if (!exploded(frame)) return null;
+  const s = xrayAt(frame);
+  const on = layersOn(frame);
+  const W = (2 * s.pad + LABEL_W) * ZOOM, Hh = H * ZOOM, R = s.radius * ZOOM;
+  return (
+    <div style={{ position: 'absolute', left: X, top: 0, transformStyle: 'preserve-3d' }}>
+      {LAYERS.map((l, i) => {
+        const z = 1 + liftOf(frame, i);
+        const lit = on[i];
+        const glass = l.glass === 'dark' ? 'rgba(37,37,40,.5)' : 'rgba(255,255,255,.14)';
+        return (
+          <div key={l.name} style={{ position: 'absolute', left: -W / 2, top: -Hh / 2, width: W, height: Hh, transform: `translateZ(${z}px)`, opacity: lit ? 1 : 0.22 }}>
+            <div
+              style={{
+                position: 'absolute', inset: 0, borderRadius: R,
+                background: l.fill ?? glass,
+                boxShadow: l.shadow ? alphaK(scalePx(l.shadow, ZOOM), l.k) : undefined,
+                outline: `3px ${lit ? 'solid' : 'dashed'} rgb(46 160 110 / ${l.fill ? 0.5 : 0.85})`, outlineOffset: -1.5,
+                display: 'grid', placeItems: 'center', color: '#fff', font: `500 ${12.5 * ZOOM}px/1 var(--mu-sans, system-ui)`,
+              }}
+            >
+              {l.fill ? LABEL : null}
+            </div>
+            {liftOf(frame, i) > 30 && frame < COLLAPSE_AT && <div style={{ position: 'absolute', left: W + 40, top: Hh / 2, transform: 'translateY(-50%)', whiteSpace: 'nowrap' }}>
+              <div style={{ zoom: 3.6 }}><Label variant="engraved">{l.name}</Label></div>
+            </div>}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/** The x-ray's Layers callout: a round plate with the layers glyph, lit green once it is clicked. */
+function Callout({ frame }: { frame: number }) {
+  const lit = frame >= B(21, 1) && frame < COLLAPSE_AT;
+  const pop = frame >= B(21, 1) ? react(frame, B(21, 1), 'part') : 0;
+  return (
+    <div style={{ position: 'absolute', left: CALLOUT.x, top: CALLOUT.y, transform: `translate(-50%, -50%) scale(${1 + 0.08 * Math.sin(Math.PI * Math.min(1, pop))})` }}>
+      <div style={{ width: 150, height: 150, borderRadius: '50%', display: 'grid', placeItems: 'center', background: lit ? '#3fb97a' : '#fbfbf9', color: lit ? '#fff' : '#2a2c30', boxShadow: '0 10px 30px -8px rgba(40,50,70,.35), inset 0 1px 0 rgba(255,255,255,.8)' }}>
+        <svg width="62" height="62" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="m12 4 8 4-8 4-8-4 8-4Z" /><path d="m4 12 8 4 8-4" /><path d="m4 16 8 4 8-4" />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+/** The layers' switches, in the readouts' place while the button is apart: a row and a switch a layer. */
+function Switches({ frame }: { frame: number }) {
+  const on = layersOn(frame);
+  return (
+    <>
+      {LAYERS.map((l, i) => {
+        const at = switchAt(i);
+        return (
+          <div key={l.name} style={{ position: 'absolute', left: at.x, top: at.y, transform: 'translate(-50%, -50%)' }}>
+            <div style={{ zoom: 2.3 }}>
+              <span className="ed-readout" style={{ gap: 12, boxShadow: !on[i] ? `var(--well), 0 0 0 1.5px ${GUIDE}` : undefined }}>
+                <b className="eng" style={{ whiteSpace: 'nowrap' }}>{l.name}</b>
+                <Switch size="small" checked={on[i]} aria-label={l.name} />
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </>
   );
 }
 
@@ -254,7 +374,7 @@ function XrayTitle() {
   return <Label variant="engraved">X-ray · tune it by hand</Label>;
 }
 
-export const XRAY_LANDS = [B(17, 1), B(17, 3)];
+export const XRAY_LANDS = [B(17, 1), B(17, 3), COLLAPSE_AT];
 
 /** The whole bench: the grid, the button, its readouts, the tag, the title, and the lasso. */
 export function Xray({ frame, hops }: { frame: number; hops: { at: number; height: number; frames: number }[] }) {
@@ -264,27 +384,26 @@ export function Xray({ frame, hops }: { frame: number; hops: { at: number; heigh
   const tag: { g: Gesture; title: string; value: string } | null =
     s.act === 'pad' ? { g: 'sides', title: 'Padding', value: `${s.padShown}pt` }
     : s.act === 'corners' ? { g: 'corner', title: 'Corners', value: `${s.radShown}pt` }
-    : s.act === 'kind' ? { g: 'steps', title: 'Kind', value: s.cap }
-    : s.act === 'press' ? { g: 'press', title: 'Press', value: s.pressed ? 'down' : 'up' }
     : null;
   return (
-    <div style={EDIT_VARS}>
+    <div style={{ ...EDIT_VARS, transformStyle: 'preserve-3d' }}>
       <Bench frame={frame} />
       {frame >= BUILD && (
-        <div style={{ position: 'absolute', left: X, top: -560, transform: 'translate(-50%, -50%)' }}>
+        <div style={{ position: 'absolute', left: X, top: -560, transform: 'translate(-50%, -50%)', opacity: s.act === 'layers' ? 0 : 1 }}>
           <div style={{ zoom: 5.5 }}><XrayTitle /></div>
         </div>
       )}
       <Drop frame={frame} at={B(17, 1)} x={X} y={0} fall="heavy" zoom={ZOOM} size={[2 * s.half + 40, H * ZOOM]} turn={0} hops={hops}>
         <Specimen frame={frame} />
       </Drop>
-      <Drop frame={frame} at={B(17, 3)} x={X} y={READOUTS_Y} fall="heavy" zoom={SMALL} size={[900, 120]} turn={0} hops={hops}>
+      {s.act === 'layers' ? <Switches frame={frame} /> : <Drop frame={frame} at={B(17, 3)} x={X} y={READOUTS_Y} fall="heavy" zoom={SMALL} size={[900, 120]} turn={0} hops={hops}>
         <div className="ed-readouts" style={{ flexWrap: 'nowrap' }}>
           <Readout label="padding" value={`${s.padShown}`} before={`${was.padShown}`} since={hitOf(PAD_HITS)} lit={s.padOnToken} live={s.act === 'pad'} />
           <Readout label="corners" value={`${s.radShown}`} before={`${was.radShown}`} since={hitOf(CORNER_HITS)} lit={s.radOnToken} live={s.act === 'corners'} />
-          <Readout label="kind" value={s.cap} before={was.cap} since={hitOf(KIND_HITS)} unit="" lit live={s.act === 'kind'} />
         </div>
-      </Drop>
+      </Drop>}
+      <Layers frame={frame} />
+      {frame >= B(20, 3) && frame < COLLAPSE_AT + 30 && <Callout frame={frame} />}
       {tag && (
         <div style={{ position: 'absolute', left: X, top: TAG_Y, transform: 'translateZ(40px)' }}>
           <div style={{ zoom: 4.4 }}><Tag gesture={tag.g} title={tag.title} value={tag.value} /></div>
