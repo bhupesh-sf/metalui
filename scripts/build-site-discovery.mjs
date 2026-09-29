@@ -64,7 +64,7 @@ const descriptions = {
 const pageOf = (to) => to.split('#')[0];
 const labelOf = (path) => path === '/' ? 'MetalUI' : NAV.flatMap((group) => group.items).find((item) => pageOf(item.to) === path)?.label;
 const paths = ['/', ...new Set(NAV.flatMap((group) => group.items.map((item) => pageOf(item.to))))];
-const routerSource = readFileSync(resolve(root, 'apps/docs/src/main.tsx'), 'utf8');
+const routerSource = readFileSync(resolve(root, 'apps/docs/src/app/routes.tsx'), 'utf8');
 const routerPaths = [...routerSource.matchAll(/\bpath:\s*'([^']+)'/g)]
   .map((match) => match[1] === '/' ? '/' : `/${match[1]}`)
   .filter((path) => path !== '/*');

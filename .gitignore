@@ -10,3 +10,6 @@ playwright-report/
 
 # Local review captures (apps/docs/scripts/capture.mjs)
 docs/captures/review/
+
+# vitest browser mode: attachments and cache
+apps/docs/.vitest/
