@@ -191,7 +191,7 @@ export function Table({ children, light = { x: 0, y: 0 }, power = 1, frame = 0, 
   const look = useLook();
   const r = 700 + 520 * power;
   const at = `${3000 + light.x}px ${2000 + light.y}px`;
-  const plane = { position: 'absolute' as const, left: -3000, top: -2000, width: 9000, height: 4000 }; // wide enough for every set on it
+  const plane = { position: 'absolute' as const, left: -3000, top: -2000, width: 12000, height: 4000 }; // wide enough for every set on it
   return (
     <div style={{ position: 'absolute', left: 0, top: 0, transformStyle: 'preserve-3d', ['--film-shadow' as string]: look.shadow }}>
       <div style={{ ...plane, background: look.surface ?? `radial-gradient(1500px 1100px at ${at}, ${look.mid} 0%, ${look.far} 70%, ${look.sky} 100%)` }} />
@@ -259,7 +259,7 @@ function bouncesAfter(frame: number, at: number, heights: number[]): number {
  * down on (null: already there). `hops` are extra lifts on other frames: sympathy with a heavy
  * neighbour's landing, or everything jumping together on a beat.
  */
-export function Drop({ frame, at, x, y, fall = 'heavy', turn = -10, spin = 1, zoom = 1, size = [180, 130], hops = [], children }: {
+export function Drop({ frame, at, x, y, fall = 'heavy', turn = -10, spin = 1, zoom = 1, size = [180, 130], hops = [], move, from, until, children }: {
   frame: number; at: number | null; x: number; y: number; fall?: Fall; turn?: number;
   /** Which way a light thing tumbles or a key flips (1 or -1). */
   spin?: number;
@@ -267,14 +267,29 @@ export function Drop({ frame, at, x, y, fall = 'heavy', turn = -10, spin = 1, zo
   /** The object's footprint on the table (px, as drawn), which its contact shadow matches. */
   size?: [number, number];
   hops?: { at: number; height: number; frames: number }[];
+  /** A later trip across the table: an arc `arc` px high, touching down at `to` exactly on frame `at`. */
+  move?: { to: { x: number; y: number }; at: number; arc?: number };
+  /** Only on the table from this frame (a thing that appears, say where parts become one). */
+  from?: number;
+  /** Gone from this frame on (the parts, once they are one). */
+  until?: number;
   children: ReactNode;
 }) {
+  if ((from !== undefined && frame < from) || (until !== undefined && frame >= until)) return null;
   const f = FALLS[fall];
   const v = at === null ? 1 : land(frame, at, f.mass);
   if (v <= 0) return null;
+  let travel = 0;
+  if (move) {
+    // The trip: launched early by the spring's time to contact, so it lands on its frame.
+    const t = Math.min(1, Math.max(0, land(frame, move.at, 'object')));
+    x += (move.to.x - x) * t;
+    y += (move.to.y - y) * t;
+    travel = (move.arc ?? 120) * 4 * t * (1 - t);
+  }
   // The table stops the fall: the spring's overshoot past 1 is the impact, a squash, never a sink.
   const falling = f.height * Math.max(0, 1 - v);
-  const lift = falling + (at === null ? 0 : bouncesAfter(frame, at, f.bounces)) + hops.reduce((a, h) => a + hop(frame, h.at, h.height, h.frames), 0);
+  const lift = falling + travel + (at === null ? 0 : bouncesAfter(frame, at, f.bounces)) + hops.reduce((a, h) => a + hop(frame, h.at, h.height, h.frames), 0);
   const squash = v > 1 && lift < 1 ? 1 - Math.min(0.08, (v - 1) * 0.9) : 1;
   const air = Math.min(1, lift / f.height);
   const left = 1 - Math.min(1, v); // how much of the fall is still to come

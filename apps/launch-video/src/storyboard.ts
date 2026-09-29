@@ -36,16 +36,16 @@ export const storyboard: Shot[] = [
     sync: 'A pixel per blip; a token per sixteenth',
   },
   {
-    id: 'parts', act: 'build', bars: [5, 6], title: 'Parts', layer: 'Parts',
+    id: 'parts', act: 'build', bars: [5, 6], title: 'Parts become a component', layer: 'Parts',
     music: 'Sidechained synths pump on every kick',
-    picture: 'Well, plate, keycap, LED, glyph land one by one; the whole frame breathes',
-    sync: 'One part lands per beat; scale 0.985 on the kick, back over the beat',
+    picture: 'A well, a keycap, a glyph, an LED and a label land a beat apart, named; then hop into one place and snap together as a real tool button',
+    sync: 'A part per beat, the table breathing on every kick; the snap on bar 6 beat 3; the pen glyph acts on beat 4',
   },
   {
     id: 'dropout', act: 'build', bars: [7, 8], title: 'Dropout',
     music: 'The bass filters out; bar 8 is near silent',
-    picture: 'Light dims with the filter to one Button; a cursor arrives',
-    sync: 'The button goes down on the last sixteenth of bar 8 and holds',
+    picture: 'The canvas fogs out around the new button as the camera closes in; the select pointer glides in',
+    sync: "The pointer's act clicks on the last sixteenth of bar 8: the button latches, its LED lights, and holds for the verse",
   },
   {
     id: 'components', act: 'play', bars: [9, 11], title: 'Components', layer: 'Components',

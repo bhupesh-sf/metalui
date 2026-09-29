@@ -3,7 +3,7 @@ import { AbsoluteFill, Audio, staticFile, useCurrentFrame } from 'remotion';
 import { AnimaticCard } from './Animatic';
 import { shotAt } from './storyboard';
 import { BARS, audioFile, position } from './time';
-import { Opening } from './shots/Opening';
+import { World } from './shots/World';
 import { LOOKS, LookProvider } from './film/stage';
 
 /**
@@ -12,8 +12,10 @@ import { LOOKS, LookProvider } from './film/stage';
  */
 const SHOTS: Partial<Record<string, ComponentType>> = {
   // One scene, one camera, across both shots.
-  'count-in': Opening,
-  foundations: Opening,
+  'count-in': World,
+  foundations: World,
+  parts: World,
+  dropout: World,
 };
 
 export function Film({ look = 'white' }: { look?: keyof typeof LOOKS }) {
