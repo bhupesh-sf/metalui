@@ -2795,6 +2795,7 @@ public enum MetalPaletteMetrics {
     public static let caretWidth: Double = 1.5
     public static let lipY: Double = 0.5
     public static let screenFallbackHeight: Double = 900.0
+    public static let z: Double = 40.0
 }
 
 /// The filter bar's layout: a floating pill at the top centre, 38 tall, padding 0 6 0 14, gap 8, the query ellipsised at 340; it drops 8 from above, from .98, on the surface spring. Its look is Surface(frost), Glyph, Label, Switcher and IconButton(ghost).

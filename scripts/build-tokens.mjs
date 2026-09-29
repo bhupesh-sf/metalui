@@ -246,7 +246,7 @@ const menuVars = MN_KEYS.map((k) => `  --mu-menu-${k}: ${MN[k]}px;`).join("\n");
 // ---------- palette (tokens.json palette): the command palette ----------
 const PL = T.palette;
 const PL_KEYS = Object.keys(PL).filter((k) => !k.startsWith("$"));
-const PL_RAW = new Set(["top", "list-max", "mark-weight", "enter-scale"]);
+const PL_RAW = new Set(["top", "list-max", "mark-weight", "enter-scale", "z"]); // z is a layer, not a length
 const paletteVars = PL_KEYS.map((k) => `  --mu-palette-${k}: ${typeof PL[k] === "number" ? (PL_RAW.has(k) ? PL[k] : `${PL[k]}px`) : PL[k]};`).join("\n");
 
 const typeVars = Object.entries(F.type).map(([role, r]) => [

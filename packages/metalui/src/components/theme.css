@@ -2809,10 +2809,10 @@
   transition: background var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle);
 }
 @utility palette-scrim {
-  background: var(--mu-scrim);
+  z-index: var(--mu-palette-z); background: var(--mu-scrim);
 }
 @utility palette-at {
-  top: calc(var(--mu-palette-top) * 100vh); left: 50%; width: min(var(--mu-palette-width), calc(100vw - 32px)); translate: -50% 0;
+  z-index: var(--mu-palette-z); top: calc(var(--mu-palette-top) * 100vh); left: 50%; width: min(var(--mu-palette-width), calc(100vw - 32px)); translate: -50% 0;
 }
 @utility palette-motion {
   transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface);

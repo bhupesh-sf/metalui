@@ -46,7 +46,8 @@ test('nothing matches, and the palette rises in place under reduced motion', asy
   await open(page, '/components/command-palette', 'bone');
   await page.getByRole('button', { name: /Lenses and actions/ }).click();
   const plate = page.locator('.mu-palette');
-  expect(await plate.evaluate((el) => getComputedStyle(el).transform)).toBe('none');
+  // no rise: no transform, or the identity one
+  expect(await plate.evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).isIdentity)).toBe(true);
   await page.keyboard.type('zzqx');
   // The lens row for the words is always there; nothing else matches.
   await expect(page.locator('.mu-palette-row')).toHaveCount(1);
