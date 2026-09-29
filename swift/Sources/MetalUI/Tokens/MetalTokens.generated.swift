@@ -778,6 +778,23 @@ public enum MetalRecipes {
         ]
     )
 
+    /// How far a task has come: the switch's sunk track with the switch's green on look as the fill, a label and the value above it. The fill's width follows the value on the settle spring (no overshoot: progress never claims more than is done). Unknown amount: a short lit segment sweeps across the track and loops, ease-in-out. Reduce Motion: the width snaps and the segment breathes in place instead of sweeping. The look is the switch recipe (one recipe per look); this recipe adds the size, the text and the motion. (the switch track and on fill (recipe switch); the settle spring; Base UI Progress)
+    public static let progress = MetalObjectRecipe(
+        name: "progress",
+        layers: [
+
+        ],
+        props: [
+            "self.height": .number(8.0),
+            "self.gap": .number(6.0),
+            "self.min-width": .number(160.0),
+            "segment.ratio": .text("0.32"),
+            "segment.sweep": .text("1400ms"),
+            "segment.breathe": .text("1600ms"),
+            "segment.dim": .text("0.35"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

@@ -800,6 +800,23 @@
       "agent": "https://metalui.dev/r/popover.md"
     },
     {
+      "name": "progress",
+      "title": "Progress",
+      "status": "alpha",
+      "description": "How far a task has come: the switch's sunk track and green fill; the fill follows the value on the settle spring, and an unknown amount is a lit segment sweeping across.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Progress",
+        "base": "@base-ui/react/progress"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalProgress"
+      },
+      "registry": "https://metalui.dev/r/progress.json",
+      "agent": "https://metalui.dev/r/progress.md"
+    },
+    {
       "name": "provenance-tooltip",
       "title": "Provenance tooltip",
       "status": "alpha",

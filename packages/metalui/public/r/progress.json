@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "progress",
+  "type": "registry:ui",
+  "title": "Progress",
+  "description": "How far a task has come: the switch's sunk track and green fill; the fill follows the value on the settle spring, and an unknown amount is a lit segment sweeping across.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/progress/progress.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/progress/progress.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { Progress as BaseProgress } from '@base-ui/react/progress';\n\n/* ─────────────────────────────────────────────────────────\n * PROGRESS, how far a task has come, on Base UI Progress\n *\n *   known     the switch's sunk track fills with the switch's green; each new value moves the\n *             fill's edge on the settle spring (no overshoot: it never claims more than is done)\n *   unknown   value null: a short lit segment sweeps across the track and loops (1.4 s,\n *             ease-in-out): working, amount unknown\n *   complete  full; the value reads 100 %\n *   text      an optional label at the left above the track, the value at the right\n * Reduce Motion: the fill's edge snaps; the unknown segment breathes in place instead of sweeping.\n * The look is the switch recipe; the progress recipe adds the size, text and motion.\n * Slots: Progress.Root, Progress.Label, Progress.Value, Progress.Track.\n * ───────────────────────────────────────────────────────── */\n\nconst ROOT = 'mu-progress grid min-w-progress-min-width gap-progress-gap';\nconst HEAD = 'mu-progress-head flex items-baseline justify-between gap-progress-gap';\nconst LABEL = 'mu-progress-label type-ui text-ink';\nconst VALUE = 'mu-progress-value type-meta tabular-nums text-ink2';\nconst TRACK = 'mu-progress-track relative block h-progress-height rounded-pill overflow-hidden recipe-switch';\nconst FILL = 'mu-progress-fill block h-full rounded-pill recipe-switch-on transition-progress-fill data-indeterminate:progress-segment';\n\nexport interface ProgressProps extends Omit<BaseProgress.Root.Props, 'className' | 'children'> {\n  /** Your own arrangement of Progress.Label, Progress.Value and Progress.Track, in place of the default. */\n  children?: React.ReactNode;\n  /** What is in progress: \"Uploading 12 photos\". Shown above the track, and names it. */\n  label?: React.ReactNode;\n  /** Show the value (a percentage by default) at the right above the track. */\n  showValue?: boolean;\n  className?: string;\n}\n\nfunction Track() {\n  return (\n    <BaseProgress.Track className={TRACK}>\n      <BaseProgress.Indicator className={FILL} />\n    </BaseProgress.Track>\n  );\n}\n\nfunction Label({ className, ...props }: BaseProgress.Label.Props & { className?: string }) {\n  return <BaseProgress.Label className={className ? `${LABEL} ${className}` : LABEL} {...props} />;\n}\n\nfunction Value({ className, ...props }: BaseProgress.Value.Props & { className?: string }) {\n  return <BaseProgress.Value className={className ? `${VALUE} ${className}` : VALUE} {...props} />;\n}\n\n/** A task's progress. `value` from 0 to `max` (100); `null` when the amount is unknown. */\nfunction Root({ label, showValue, className, children, ...props }: ProgressProps) {\n  return (\n    <BaseProgress.Root className={className ? `${ROOT} ${className}` : ROOT} {...props}>\n      {children ?? ((label != null || showValue) && (\n        <span className={HEAD}>\n          {label != null ? <Label>{label}</Label> : <span />}\n          {showValue && props.value != null && <Value />}\n        </span>\n      ))}\n      {children == null && <Track />}\n    </BaseProgress.Root>\n  );\n}\n\nexport const Progress = Object.assign(Root, { Label, Value, Track, Root });\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/progress.md. SwiftUI: MetalProgress in the MetalUI Swift package."
+}

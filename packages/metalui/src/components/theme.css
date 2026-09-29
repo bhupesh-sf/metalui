@@ -400,6 +400,9 @@
   --spacing-popover-gap: var(--mu-r-popover-self-gap);
   --spacing-popover-body-gap: var(--mu-r-popover-self-body-gap);
   --spacing-alert-dialog-text-gap: var(--mu-r-alert-dialog-self-text-gap);
+  --spacing-progress-height: var(--mu-r-progress-self-height);
+  --spacing-progress-gap: var(--mu-r-progress-self-gap);
+  --spacing-progress-min-width: var(--mu-r-progress-self-min-width);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1171,6 +1174,26 @@
 }
 @utility alert-dialog-description {
   margin: calc(var(--mu-r-alert-dialog-self-text-gap) - var(--mu-r-dialog-self-gap)) 0 0;
+}
+@utility transition-progress-fill {
+  transition: width calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
+}
+@utility progress-segment {
+  position: absolute; inset-block: 0; left: 0; width: calc(var(--mu-r-progress-segment-ratio) * 100%); animation: mu-progress-sweep var(--mu-r-progress-segment-sweep) ease-in-out infinite; @media (prefers-reduced-motion: reduce) { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] & { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+}
+@utility opacity-progress-segment-ratio {
+  opacity: var(--mu-r-progress-segment-ratio);
+}
+@utility duration-progress-segment-sweep {
+  --tw-duration: var(--mu-r-progress-segment-sweep);
+  transition-duration: var(--mu-r-progress-segment-sweep);
+}
+@utility duration-progress-segment-breathe {
+  --tw-duration: var(--mu-r-progress-segment-breathe);
+  transition-duration: var(--mu-r-progress-segment-breathe);
+}
+@utility opacity-progress-segment-dim {
+  opacity: var(--mu-r-progress-segment-dim);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);
@@ -2453,6 +2476,12 @@
 }
 @keyframes mu-textarea-refuse {
   from { translate: calc(var(--mu-motion-nest) * var(--mu-travel-refusal)) 0; } to { translate: 0 0; }
+}
+@keyframes mu-progress-sweep {
+  from { translate: -100% 0; } to { translate: calc(100% / var(--mu-r-progress-segment-ratio)) 0; }
+}
+@keyframes mu-progress-breathe {
+  from { opacity: var(--mu-r-progress-segment-dim); } to { opacity: 1; }
 }
 @keyframes mu-toolbar-in {
   from { opacity: 0; transform: translateY(calc(var(--mu-motion-nest) * var(--mu-travel-surface))); }

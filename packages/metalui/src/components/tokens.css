@@ -978,6 +978,14 @@
   --mu-r-popover-self-transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), translate var(--mu-spring-surface-d) var(--mu-spring-surface), scale var(--mu-spring-surface-d) var(--mu-spring-surface);
   /* alert-dialog: the dialog recipe; the refusal spring; Base UI AlertDialog */
   --mu-r-alert-dialog-self-text-gap: 4px;
+  /* progress: the switch track and on fill (recipe switch); the settle spring; Base UI Progress */
+  --mu-r-progress-self-height: 8px;
+  --mu-r-progress-self-gap: 6px;
+  --mu-r-progress-self-min-width: 160px;
+  --mu-r-progress-segment-ratio: 0.32;
+  --mu-r-progress-segment-sweep: 1400ms;
+  --mu-r-progress-segment-breathe: 1600ms;
+  --mu-r-progress-segment-dim: 0.35;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

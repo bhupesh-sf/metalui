@@ -1,0 +1,24 @@
+{
+  "name": "progress",
+  "title": "Progress",
+  "status": "alpha",
+  "layer": "component",
+  "description": "How far a task has come: the switch's sunk track and green fill; the fill follows the value on the settle spring, and an unknown amount is a lit segment sweeping across.",
+  "base": "@base-ui/react/progress",
+  "react": {
+    "export": "Progress",
+    "files": [
+      "progress.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalProgress",
+    "file": "swift/Sources/MetalUI/Components/MetalProgress.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "Progress": ["Root", "Label", "Value", "Track"]
+  },
+  "agent": "progress.agent.md",
+  "page": "/components/progress"
+}
