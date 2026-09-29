@@ -35,6 +35,9 @@ const CAPS: Record<ButtonCap, string> = {
 };
 const COMPACT = `gap-button-compact-gap h-button-compact-height px-button-compact-pad rounded-pill type-button-compact text-ink2 hover:text-ink recipe-button-compact transition-button-compact [&>svg]:size-button-compact-glyph ${PRESS} not-data-disabled:active:recipe-button-compact-pressed`;
 
+/** The cap's frame and regular size without its press, for keys that travel their own way (Toggle). */
+export const buttonParts = { FRAME, REGULAR } as const;
+
 /** The utilities for a cap and size: the caps that set their own size ignore `size`. */
 export function buttonClasses(cap: ButtonCap = 'standard', size: 'default' | 'compact' = 'default') {
   return `${FRAME} ${size === 'compact' && cap === 'standard' ? COMPACT : CAPS[cap]}`;

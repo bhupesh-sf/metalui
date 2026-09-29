@@ -412,6 +412,9 @@
   --spacing-number-field-gap: var(--mu-r-number-field-self-gap);
   --spacing-number-field-key-size: var(--mu-r-number-field-key-size);
   --spacing-number-field-key-glyph: var(--mu-r-number-field-key-glyph);
+  --spacing-toggle-catch: var(--mu-r-toggle-self-catch);
+  --spacing-toggle-latch: var(--mu-r-toggle-self-latch);
+  --spacing-toggle-gap: var(--mu-r-toggle-self-gap);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1233,6 +1236,13 @@
 }
 @utility opacity-number-field-disabled {
   opacity: var(--mu-r-number-field-self-disabled);
+}
+@utility toggle-travel {
+  translate: 0 0; transition: translate var(--mu-spring-release-d) var(--mu-spring-release), background var(--mu-r-button-self-fade), box-shadow var(--mu-r-button-self-fade), color var(--mu-r-button-self-fade); &[data-pressed] { translate: 0 var(--mu-r-toggle-self-latch); transition: translate var(--mu-spring-part-d) var(--mu-spring-part), background var(--mu-r-button-self-fade), box-shadow var(--mu-r-button-self-fade), color var(--mu-r-button-self-fade); } &:active:not([data-disabled]) { translate: 0 var(--mu-r-toggle-self-catch); transition: translate var(--mu-r-toggle-self-press) linear; }
+}
+@utility duration-toggle-press {
+  --tw-duration: var(--mu-r-toggle-self-press);
+  transition-duration: var(--mu-r-toggle-self-press);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

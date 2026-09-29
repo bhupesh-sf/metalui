@@ -1527,6 +1527,26 @@
       "docs": "Agent guide: https://metalui.dev/r/toast.md. SwiftUI: MetalToast, .metalToast(_:) in the MetalUI Swift package."
     },
     {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "A latching push button: the button cap with a lamp; pressing sinks it past the catch, releasing into on settles it at the latch on the part spring with the lamp lit. Toggle group puts the keys in a row.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/toggle/toggle.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/toggle/toggle.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/toggle.md. SwiftUI: MetalToggle in the MetalUI Swift package."
+    },
+    {
       "name": "tool-strip",
       "type": "registry:ui",
       "title": "Tool strip",

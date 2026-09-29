@@ -1002,6 +1002,11 @@
   --mu-r-number-field-self-disabled: 0.4;
   --mu-r-number-field-key-size: 26px;
   --mu-r-number-field-key-glyph: 12px;
+  /* toggle: the button cap (recipe button); the LED part; latching push buttons; Base UI Toggle and ToggleGroup */
+  --mu-r-toggle-self-catch: 2px;
+  --mu-r-toggle-self-latch: 1px;
+  --mu-r-toggle-self-press: 50ms;
+  --mu-r-toggle-self-gap: 4px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

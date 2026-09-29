@@ -1259,6 +1259,23 @@
       "agent": "https://metalui.dev/r/toast.md"
     },
     {
+      "name": "toggle",
+      "title": "Toggle",
+      "status": "alpha",
+      "description": "A latching push button: the button cap with a lamp; pressing sinks it past the catch, releasing into on settles it at the latch on the part spring with the lamp lit. Toggle group puts the keys in a row.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Toggle, ToggleGroup",
+        "base": "@base-ui/react/toggle"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalToggle"
+      },
+      "registry": "https://metalui.dev/r/toggle.json",
+      "agent": "https://metalui.dev/r/toggle.md"
+    },
+    {
       "name": "tool-strip",
       "title": "Tool strip",
       "status": "alpha",

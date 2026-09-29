@@ -829,6 +829,20 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A latching push button: the button cap with a lamp at the start of its label (unlit, it says the button latches). Pressing sinks it past the catch; releasing into on it rises to the latch depth on the part spring (it may overshoot against the catch) in the button's pressed look and the lamp lights; releasing into off it rises all the way on the release spring and the lamp goes dark. A toggle group is the same key in a row. The look is the button recipe and the lamp is the LED part; this recipe adds the depths and the motion. (the button cap (recipe button); the LED part; latching push buttons; Base UI Toggle and ToggleGroup)
+    public static let toggle = MetalObjectRecipe(
+        name: "toggle",
+        layers: [
+
+        ],
+        props: [
+            "self.catch": .number(2.0),
+            "self.latch": .number(1.0),
+            "self.press": .text("50ms"),
+            "self.gap": .number(4.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
