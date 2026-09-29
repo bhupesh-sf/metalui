@@ -151,7 +151,7 @@ const WAVE = { speed: 1150, width: 90, life: 1.1, swell: 2.2, push: 12, darken: 
  * flares over `flare`, then burns down over `life`, through yellow, orange and red to an ember,
  * swelling by `swell`, flickering by `flicker` and rising `rise` px while it burns.
  */
-const FIRE = { start: 250, speed: 2300, ragged: 0.12, flare: 0.06, life: 1.3, swell: 3.6, flicker: 0.35, rise: 18, reach: 14000 }; // starts as a burst; a little faster than a place a bar, so each set is alight as the camera lands
+const FIRE = { start: 250, speed: 2500, ragged: 0.08, flare: 0.06, life: 2.2, swell: 3.6, flicker: 0.35, rise: 18, reach: 14000 }; // starts as a burst; a little faster than a place a bar, so each set is alight as the camera lands
 const HEAT_LEVELS = 8;
 /** Heat (0-1) as a colour: ember red at the bottom, white-yellow at the top. */
 // Saturated, never white-hot: the canvas is white, so the hottest a dot gets is a deep orange.
@@ -174,6 +174,8 @@ const hash = (a: number, b: number, c = 0) => { const v = Math.sin(a * 12.9898 +
  * each group is one path, so a frame costs a dozen nodes, not thousands.
  */
 const LEVELS = 12;
+/** The grid's edges fade out, so a sheet of dots never ends in a hard line. */
+const EDGE = 'linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent), linear-gradient(transparent, #000 12%, #000 88%, transparent)';
 const REACH = 2600; // how far from the camera's x an area can be and still be in frame
 
 function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: number; impacts: Impact[]; areas: { x: number; y: number; w: number; h: number }[]; near: number }) {
@@ -228,11 +230,11 @@ function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: 
           <div key={n} style={{ position: 'absolute', left: 0, top: 0 }}>
           {hot && (
             // the light the burning dots throw on the table round them
-            <svg width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible', filter: 'blur(9px)', opacity: 0.75 }}>
+            <svg width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible', filter: 'blur(9px)', opacity: 0.75, maskImage: EDGE, WebkitMaskImage: EDGE, maskComposite: 'intersect', WebkitMaskComposite: 'source-in' }}>
               <path d={hot} fill="rgb(255 120 20)" />
             </svg>
           )}
-          <svg width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible' }}>
+          <svg width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: x0, top: y0, overflow: 'visible', maskImage: EDGE, WebkitMaskImage: EDGE, maskComposite: 'intersect', WebkitMaskComposite: 'source-in' }}>
             {paths.map((d, level) => d && <path key={level} d={d} fill={`rgb(${DOT.ink} / ${Math.min(0.9, DOT.alpha + WAVE.darken * (level / LEVELS) * 1.5)})`} />)}
             {burning.map((d, hl) => d && <path key={`f${hl}`} d={d} fill={heatColour(hl / HEAT_LEVELS)} />)}
           </svg>

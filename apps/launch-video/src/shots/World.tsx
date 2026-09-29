@@ -122,13 +122,10 @@ const PUMP = [5, 6].flatMap((bar) => [1, 2, 3, 4].map((beat) => frameAt(bar, bea
 // Dots only where the camera looks: around the kit, and around the foundations.
 const SEEN = 3600;
 
-const AREAS = [
-  { x: 0, y: 40, w: 3000, h: 2000 },
-  { x: FX, y: 220, w: 2600, h: 1900 },
-  { x: PX, y: 0, w: 2800, h: 1900 },
-  { x: DROP1_AT.x, y: 0, w: 2600, h: 1800 },
-  { x: BUILD_AT.x, y: 20, w: 2800, h: 1900 },
-];
+// The dot grid: one continuous sheet round where the camera looks, on the table's own lattice (40 px),
+// so it never ends between places, its dots never slide, and a fire can run the whole table.
+const GRID = { w: 5600, h: 3200 };
+const gridAround = (p: { x: number; y: number }) => ({ x: Math.round(p.x / 80) * 80, y: Math.round((p.y - 200) / 80) * 80, ...GRID });
 
 export function World() {
   const now = useCurrentFrame();
@@ -158,7 +155,7 @@ export function World() {
     <LookProvider value={look}>
       <AbsoluteFill data-mu-colorway="bone" style={{ background: look.sky }}>
         <Camera pose={pose} jolt={jolt}>
-          <Table light={{ x: pose.x, y: 0 }} power={power} frame={frame} fps={FPS} impacts={IMPACTS} areas={AREAS}>
+          <Table light={{ x: pose.x, y: 0 }} power={power} frame={frame} fps={FPS} impacts={IMPACTS} areas={[gridAround(pose)]}>
             {PIECES.filter(seen).map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} turn={p.turn} spin={p.spin} move={collapseOf(p)} hops={[...(HOPS[p.id] ?? []), ...DANCE, ...(p.id === 'badge' ? [{ at: FINAL_HIT, height: 70, frames: 18 }] : [])]}>
                 {p.draw(frame)}
