@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
-import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
+import { Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { Gadget, driveRange, type GadgetSpec } from '@unlocalhosted/metalui/gadgets';
 import needleGauge from '../../../../packages/metalui/src/gadgets/fixtures/needle-gauge.gadget.json';
@@ -11,6 +11,7 @@ import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
 import { PaletteStill } from './xray/PaletteXray';
 import { FolderStill } from './xray/FolderXray';
+import { Wordmark } from './Wordmark';
 
 export type { XrayKind };
 
@@ -91,9 +92,10 @@ const ITEMS: Item[] = [
   { id: 'link', table: ['66.5%', '4.1%'], space: ['50%', '14%', -420, -12], dur: '30s', drift: ['-30px', '26px'], live: true, node: ({ openXray }) => <div onClickCapture={(e) => { e.preventDefault(); openXray('link'); }}><LinkCard href="https://lanterns.photo/night-market" /></div> },
   { id: 'swatch', table: ['87%', '21.6%'], space: ['70%', '33%', -140, -18], dur: '24s', drift: ['-18px', '30px'], live: true, node: ({ openXray }) => <Swatch hex="#FF6B3D" label="Colour" onClick={() => openXray('swatch')} /> },
   {
-    // hung back in the scene like its neighbours: at the front and centre, the camera's lean barely moved it
-    id: 'button', table: ['48.8%', '22.9%'], space: ['50%', '53%', -180, -10], dur: '21s', drift: ['38px', '-22px'], live: true,
-    node: ({ openXray }) => <div style={{ zoom: 1.6 }}><Button cap="primary" onClick={() => openXray('button')}>New Canvas</Button></div>,
+    // the brand, front and centre among the things it makes; hung back in the scene like its neighbours.
+    // It isn't a library component, so it opens no x-ray.
+    id: 'wordmark', table: ['48.8%', '22.9%'], space: ['50%', '53%', -180, -10], dur: '21s', drift: ['38px', '-22px'], live: true,
+    node: () => <Wordmark size={21} />,
   },
   {
     id: 'chip', table: ['4%', '72%'], space: ['11%', '55%', -60, 10], dur: '28s', drift: ['22px', '-22px'], live: true,

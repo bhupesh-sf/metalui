@@ -1,15 +1,16 @@
 import type { CSSProperties } from 'react';
 
 /* ─────────────────────────────────────────────────────────
- * THE WORDMARK: a badge, after appliance lettering
+ * THE WORDMARK: one enamel pill in two colours, after appliance lettering
  *
- *   METAL   polished chrome capitals, tracked wide, raised off a glossy red enamel plate
- *   UI      the same chrome on a graphite key beside it
- *   chrome  banded like a curved mirror: a bright top, a dark horizon at the middle, a lit
- *           lower edge; a hairline highlight over each letter and a short cast shadow under it
- *   enamel  deep and glossy: a window highlight along the top, deepening toward the base
- * Sized in em: set font-size to the cap height you want (13 in the masthead, 72 in the film).
- * One source for the site's logo and the launch film.
+ *   the pill   a single glossy capsule: red enamel under METAL, meeting graphite under UI at a
+ *              clean seam, one window highlight running along the whole top
+ *   chrome     both words in polished chrome capitals, tracked wide, banded like a curved mirror:
+ *              a bright top, a dark horizon at the middle, a lit lower edge, a hairline highlight
+ *              over each letter and a short cast shadow under it
+ *   rim        a faint light rim round the capsule, so it holds on a graphite page
+ * Sized in em: set font-size to the cap height you want (12 in the masthead, 78 in the film).
+ * One source for the site's logo, the home page and the launch film.
  * ───────────────────────────────────────────────────────── */
 
 const CHROME: CSSProperties = {
@@ -18,38 +19,19 @@ const CHROME: CSSProperties = {
   backgroundClip: 'text',
   color: 'transparent',
   filter: 'drop-shadow(0 0.018em 0 rgba(255,255,255,.55)) drop-shadow(0 0.035em 0.02em rgba(0,0,0,.45))',
-};
-
-const PLATE: CSSProperties = {
+  fontWeight: 560,
+  lineHeight: 1,
   position: 'relative',
-  display: 'inline-flex',
-  alignItems: 'center',
-  height: '1.62em',
-  borderRadius: '0.3em',
-  overflow: 'hidden',
-};
-
-const SHEEN: CSSProperties = {
-  position: 'absolute',
-  left: '0.1em',
-  right: '0.1em',
-  top: '0.06em',
-  height: '42%',
-  borderRadius: '0.24em',
-  background: 'linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,0))',
-  pointerEvents: 'none',
 };
 
 const RED = 'linear-gradient(180deg, #e2362b 0%, #c41e17 55%, #9e140f 100%)';
 const GRAPHITE = 'linear-gradient(180deg, #3a3a3e 0%, #232326 60%, #161618 100%)';
-const DEPTH = 'inset 0 0.02em 0 rgba(255,255,255,.35), inset 0 -0.09em 0.2em rgba(0,0,0,.3)';
 
-function Plate({ text, fill, glow, track, rim = '' }: { text: string; fill: string; glow: string; track: number; rim?: string }) {
+/** One word's half of the pill, its tracking taken back after the last letter. */
+function Half({ text, fill, track, left, right }: { text: string; fill: string; track: number; left: number; right: number }) {
   return (
-    <span style={{ ...PLATE, background: fill, boxShadow: `${rim}${DEPTH}, 0 0.16em 0.34em ${glow}, 0 0.03em 0.07em rgba(0,0,0,.2)`, padding: `0 ${0.36 - track / 2}em 0 0.36em` }}>
-      <span style={SHEEN} />
-      {/* Tracking adds space after the last letter too; the right padding takes it back. */}
-      <span style={{ ...CHROME, position: 'relative', fontWeight: 560, letterSpacing: `${track}em`, lineHeight: 1 }}>{text}</span>
+    <span style={{ display: 'inline-flex', alignItems: 'center', height: '100%', background: fill, padding: `0 ${right - track}em 0 ${left}em` }}>
+      <span style={{ ...CHROME, letterSpacing: `${track}em` }}>{text}</span>
     </span>
   );
 }
@@ -60,11 +42,24 @@ export function Wordmark({ size = 13, style, className }: { size?: number; style
       role="img"
       aria-label="MetalUI"
       className={className}
-      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.14em', fontFamily: '"Geist Variable", "Geist", system-ui, sans-serif', fontSize: size, textTransform: 'uppercase', ...style }}
+      style={{
+        position: 'relative',
+        display: 'inline-flex',
+        alignItems: 'stretch',
+        height: '1.62em',
+        borderRadius: '999px',
+        overflow: 'hidden',
+        fontFamily: '"Geist Variable", "Geist", system-ui, sans-serif',
+        fontSize: size,
+        textTransform: 'uppercase',
+        boxShadow: '0 0 0 0.045em rgba(255,255,255,.16), inset 0 0.02em 0 rgba(255,255,255,.35), inset 0 -0.09em 0.2em rgba(0,0,0,.3), 0 0.16em 0.34em rgba(90,20,14,.26), 0 0.03em 0.07em rgba(0,0,0,.2)',
+        ...style,
+      }}
     >
-      <Plate text="Metal" fill={RED} glow="rgba(140,20,10,.28)" track={0.42} />
-      {/* A faint light rim keeps the graphite key apart from a graphite page. */}
-      <Plate text="UI" fill={GRAPHITE} glow="rgba(0,0,0,.24)" track={0.3} rim="0 0 0 0.045em rgba(255,255,255,.16), " />
+      <Half text="Metal" fill={RED} track={0.42} left={0.62} right={0.44} />
+      <Half text="UI" fill={GRAPHITE} track={0.3} left={0.4} right={0.58} />
+      {/* One window highlight along the whole top, over both colours. */}
+      <span aria-hidden style={{ position: 'absolute', left: '0.5em', right: '0.5em', top: '0.07em', height: '40%', borderRadius: '999px', background: 'linear-gradient(180deg, rgba(255,255,255,.32), rgba(255,255,255,0))', pointerEvents: 'none' }} />
     </span>
   );
 }
