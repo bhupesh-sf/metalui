@@ -94,8 +94,28 @@ export const mouse = {
     at = [x, y];
     await pointer(document.documentElement, steps);
   },
-  down: () => pointer(document.documentElement, [{ down: true }]),
-  up: () => pointer(document.documentElement, [{ up: true }]),
+  // a WebDriver action chain starts at the page's corner: press and release where the mouse is
+  down: () => pointer(document.documentElement, [{ to: fromMiddle(...at) }, { down: true }]),
+  up: () => pointer(document.documentElement, [{ to: fromMiddle(...at) }, { up: true }]),
+  /**
+   * A whole drag in one go: press at `from`, move to `to` in `steps`, hold `hold` ms, let go. Use it
+   * whenever the page captures the pointer: Chrome drops pointer capture at the end of every WebDriver
+   * call (the button stays held, the capture does not), so a drag split across calls loses it.
+   * To look at the page mid-drag, don't await it at once: check during the hold, then await it.
+   *
+   *   const done = mouse.drag([x0, y0], [x1, y1], { hold: 600 });
+   *   await until(() => target.hasAttribute('data-over'));
+   *   await done;
+   */
+  drag(from: [number, number], to: [number, number], opts: { steps?: number; hold?: number } = {}) {
+    const n = Math.max(1, opts.steps ?? 8);
+    const steps: Step[] = [{ to: fromMiddle(...from) }, { down: true }];
+    for (let i = 1; i <= n; i++) steps.push({ to: fromMiddle(from[0] + ((to[0] - from[0]) * i) / n, from[1] + ((to[1] - from[1]) * i) / n) });
+    if (opts.hold) steps.push({ pause: opts.hold });
+    steps.push({ up: true });
+    at = to;
+    return pointer(document.documentElement, steps);
+  },
 };
 
 /** Writes a docs capture (docs/captures/web/<name>.png), only when CAPTURE=1: captures are for the docs, not every run. */

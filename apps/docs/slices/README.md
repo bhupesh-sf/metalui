@@ -36,8 +36,9 @@ for (const colorway of COLORWAYS) {
 |---|---|
 | `openPage(path, colorway, { media, viewport })` | Mount the site at a route. `media: { 'prefers-reduced-motion': 'reduce' }`, `viewport: [375, 812]`. |
 | `press(el, [dx, dy])`, `release(el)` | A real held press at an element's centre (or an offset from it): CSS `:active`, pointer capture. |
-| `pointer(el, steps)` | Real mouse steps relative to an element's centre: `{ to: [dx, dy], ms }`, `{ down: true }`, `{ up: true }`, `{ pause: ms }`. |
-| `mouse.move(x, y, { steps })`, `mouse.down()`, `mouse.up()` | The mouse in page coordinates (clientX/clientY). |
+| `pointer(el, steps)` | Real mouse steps relative to an element's centre, in one call: `{ to: [dx, dy], ms }`, `{ down: true }`, `{ up: true }`, `{ pause: ms }`. |
+| `mouse.move(x, y, { steps })`, `mouse.down()`, `mouse.up()` | The mouse in page coordinates (clientX/clientY). The button stays held between calls. |
+| `mouse.drag(from, to, { steps, hold })` | A whole drag in one call. Use it whenever the page captures the pointer: Chrome drops pointer capture at the end of every WebDriver call (the button stays held, the capture does not). To look mid-drag, start it, check during `hold`, then await it. |
 | `until(read)` | Wait for something the page reaches on its own. |
 | `sleep(ms)` | Only for a real duration a slice is about (a delay, a hold). |
 | `capture(name, el)` | A docs capture, written only with `CAPTURE=1`. |
@@ -63,7 +64,7 @@ A slice runs inside the page, so read the page directly: `el.getBoundingClientRe
 | `locator.click()` / `.hover()` | `await userEvent.click(locator)` / `await userEvent.hover(locator)` |
 | `page.keyboard.press('ArrowUp')` | `await userEvent.keyboard('{ArrowUp}')` (`'{Shift>}{Enter}{/Shift}'` for chords) |
 | `page.keyboard.type('abc')` | `await userEvent.keyboard('abc')` |
-| `page.mouse.move/down/up` | `mouse.move(x, y, { steps })`, `mouse.down()`, `mouse.up()` (or `pointer(el, …)` relative to an element) |
+| `page.mouse.move/down/up` | `mouse.move(x, y, { steps })`, `mouse.down()`, `mouse.up()`; a drag the page captures (a handle, a block, a slider thumb) is one `mouse.drag(from, to, { hold })` |
 | `page.waitForTimeout(ms)` | `await sleep(ms)` only when the wait is the point; otherwise `until`/`expect.poll` |
 | `page.clock.install()` / `runFor(ms)` | `vi.useFakeTimers({ toFake: [...] })` / `vi.advanceTimersByTime(ms)` |
 | `page.screenshot({ path: capture(name) })` | `await capture(name, el)` |

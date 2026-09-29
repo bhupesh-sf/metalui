@@ -23,7 +23,9 @@ type Step = { to: [number, number]; ms?: number } | { down: true } | { up: true 
  */
 const pointer = defineBrowserCommand<[selector: string, steps: Step[]]>(async (ctx, selector, steps) => {
   const b = ctx.browser;
-  let act = b.action('pointer', { parameters: { pointerType: 'mouse' } });
+  // one input source for the whole run: a new id would be a second mouse, and the page would lose the
+  // press (and its pointer capture) the first one still holds
+  let act = b.action('pointer', { id: 'slice-mouse', parameters: { pointerType: 'mouse' } });
   for (const s of steps) {
     if ('to' in s) act = act.move({ duration: s.ms ?? 0, origin: b.$(selector), x: Math.round(s.to[0]), y: Math.round(s.to[1]) });
     else if ('down' in s) act = act.down({ button: 0 });
