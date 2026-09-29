@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
-import { Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
+import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 import { Gadget, driveRange, type GadgetSpec } from '@unlocalhosted/metalui/gadgets';
 import needleGauge from '../../../../packages/metalui/src/gadgets/fixtures/needle-gauge.gadget.json';
-import type { XrayKind } from './xray';
+import { BUTTON_LABEL, type XrayKind } from './xray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
 import { DialogStill } from './xray/DialogXray';
@@ -96,6 +96,11 @@ const ITEMS: Item[] = [
     // It isn't a library component, so it opens no x-ray.
     id: 'wordmark', table: ['48.8%', '22.9%'], space: ['50%', '53%', -180, -10], dur: '21s', drift: ['38px', '-22px'], live: true,
     node: () => <Wordmark size={21} />,
+  },
+  {
+    // the button, beside the brand: click it and it flies onto its x-ray, the reference one
+    id: 'button', table: ['44%', '32%'], space: ['60%', '42%', -160, -8], dur: '22s', drift: ['30px', '-18px'], live: true,
+    node: ({ openXray }) => <div style={{ zoom: 1.4 }}><Button cap="primary" onClick={() => openXray('button')}>{BUTTON_LABEL}</Button></div>,
   },
   {
     id: 'chip', table: ['4%', '72%'], space: ['11%', '55%', -60, 10], dur: '28s', drift: ['22px', '-22px'], live: true,
