@@ -80,26 +80,26 @@ export const storyboard: Shot[] = [
   {
     id: 'everywhere', act: 'peak', bars: [25, 28], title: 'Final chorus: everywhere',
     music: 'The climax: the weight crashes back on an impact (sub drop, noise wash, snare), the loudest bars of the film',
-    picture: 'React and SwiftUI side by side, then the agent guides',
-    sync: 'Everything slams in on the impact frame; both platforms land together on the same spring',
+    picture: 'The lasso snaps into a selection round the gadgets, then a tour back across the whole table: objects, components, foundations, home',
+    sync: 'The selection snaps on the drop; the camera lands on each downbeat; everything jumps on beats 1 and 3',
   },
   {
     id: 'install', act: 'peak', bars: [29, 32], title: 'Install',
     music: 'The peak continues',
-    picture: 'npx shadcn add types out; the colorway flips',
-    sync: 'A character per sixteenth; a colorway flip on each backbeat',
+    picture: 'Under the title, platform tabs and a field: npm i @unlocalhosted/metalui, the Swift package, metalui.dev/AI.md; a Ready badge',
+    sync: 'The tab switches on each downbeat; two characters a sixteenth; Ready lands on bar 32',
   },
   {
     id: 'collapse', act: 'end', bars: [33, 33], title: 'Collapse',
     music: 'The last lift',
-    picture: 'Everything folds back into one keycap',
-    sync: 'Folds on each beat, landing by the bar line',
+    picture: 'The kit is thrown clear of the title, outer ring first; the install drops off the front of the table',
+    sync: 'One ring a beat, the last one clearing by the bar line',
   },
   {
     id: 'final-hit', act: 'end', bars: [34, 35], title: 'MetalUI',
     music: 'The final hit and its decay',
-    picture: 'The keycap presses: MetalUI, metalui.dev',
-    sync: 'Press on the hit; the LED fades with the decay',
+    picture: 'The title alone on the grid, close; metalui.dev printed under it',
+    sync: 'The title hops on the hit with the biggest ripple of the film; the camera pushes in and holds through the decay',
   },
 ];
 

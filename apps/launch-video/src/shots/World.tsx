@@ -10,6 +10,8 @@ import { IconAct } from '../film/parts';
 import { COMPONENT_PIECES, DROP1_AT, FILL, SLAM } from './Components';
 import { DROP1, DROP1_END, OBJECT_PIECES, ObjectsTitle } from './Objects';
 import { BUILD_AT, BUILD_PIECES, DROP2, SILENT, Selection, rollIntensity } from './Build';
+import { DANCE, TOUR_IMPACTS, TOUR_MOVES } from './Finale';
+import { Address, COLLAPSE, FINAL_HIT, INSTALL, INSTALL_PIECES } from './Install';
 
 /* ─────────────────────────────────────────────────────────
  * THE OPENING (video bars 1-4): one table, one camera
@@ -50,8 +52,26 @@ const MOVES = [
   { at: B(17, 1) - 16, frames: 16, pose: { x: BUILD_AT.x, y: 30, z: 130, tilt: 42, orbit: -3 } },
   { at: B(17, 2), frames: SILENT - B(17, 2), pose: { x: BUILD_AT.x, y: 70, z: 380, tilt: 40, orbit: 4 } },
   // The drop: the selection snaps shut and the camera kicks back.
-  { at: DROP2, frames: 14, pose: { x: BUILD_AT.x, y: 20, z: 200, tilt: 44, orbit: 0 } },
+  { at: DROP2, frames: 6, pose: { x: BUILD_AT.x, y: 20, z: 200, tilt: 44, orbit: 0 } },
+  // The final chorus: back across the whole table, a place a bar, landing on the downbeats.
+  ...TOUR_MOVES,
+  // Install: the title and the tabs and field under it.
+  { at: INSTALL + 4, frames: 30, pose: { x: 0, y: 430, z: 170, tilt: 42, orbit: -2 } },
+  { at: COLLAPSE, frames: FINAL_HIT - COLLAPSE, pose: { x: 0, y: 310, z: 520, tilt: 40, orbit: 0 } },
+  // The final hit: in on the title, and hold.
+  { at: FINAL_HIT, frames: 40, pose: { x: 0, y: 330, z: 900, tilt: 30, orbit: -3 } },
 ];
+
+// The collapse: on the last lift the kit is thrown clear of the title, outer ring first, a beat
+// a ring, so the final hit lands on the title alone on the grid.
+const TITLE = { x: 0, y: 290 };
+const collapseOf = (p: { x: number; y: number; id: string }) => {
+  if (p.id === 'badge' || p.id === 'intro') return undefined;
+  const d = Math.hypot(p.x - TITLE.x, p.y - TITLE.y) || 1;
+  const ring = Math.min(3, Math.floor(d / 260));
+  const out = 1 + 1400 / d;
+  return { to: { x: TITLE.x + (p.x - TITLE.x) * out, y: TITLE.y + (p.y - TITLE.y) * out }, at: frameAt(33, 4 - ring), arc: 220 };
+};
 
 // The foundations hop with their heavy neighbours, like the kit does.
 const F_HEAVY = FOUNDATION_PIECES.filter((p) => p.fall === 'heavy');
@@ -79,6 +99,9 @@ const IMPACTS: Impact[] = [
   ...OBJECT_PIECES.filter((p) => p.move).map((p) => ({ x: p.move!.to.x, y: p.move!.to.y, at: p.move!.at, strength: 0.7 })),
   ...BUILD_PIECES.map((p) => ({ x: p.x, y: p.y, at: p.at, strength: 1 })),
   { x: BUILD_AT.x, y: 0, at: DROP2, strength: 2.4 },
+  ...TOUR_IMPACTS,
+  ...INSTALL_PIECES.map((p) => ({ x: p.x, y: p.y, at: p.at, strength: 1 })),
+  { x: 0, y: 290, at: FINAL_HIT, strength: 3 },
 ];
 
 // The set around the button: heavy landings make neighbours hop, everything jumps at the end of the
@@ -111,7 +134,7 @@ export function World() {
   const breathe = punch(frame, PUMP);
   const pointer = pointerAt(frame);
   const fog = fogAt(frame);
-  const jolt = punch(frame, [...HEAVY.map((h) => h.at!), ...F_HEAVY.map((h) => h.at)]) + 1.2 * punch(frame, [K[4]]) + 1.4 * punch(frame, [K[7]]) + punch(frame, [ASSEMBLE]) + 1.3 * punch(frame, [SLAM]) + 2 * punch(frame, [DROP1]) + punch(frame, BUILD_PIECES.map((p) => p.at)) + 2 * punch(frame, [DROP2]) + punch(frame, COMPONENT_PIECES.filter((p) => p.fall === 'heavy').map((p) => p.at)) - 0.9 * breathe;
+  const jolt = punch(frame, [...HEAVY.map((h) => h.at!), ...F_HEAVY.map((h) => h.at)]) + 1.2 * punch(frame, [K[4]]) + 1.4 * punch(frame, [K[7]]) + punch(frame, [ASSEMBLE]) + 1.3 * punch(frame, [SLAM]) + 2 * punch(frame, [DROP1]) + punch(frame, BUILD_PIECES.map((p) => p.at)) + 2 * punch(frame, [DROP2]) + punch(frame, INSTALL_PIECES.map((p) => p.at)) + 2.4 * punch(frame, [FINAL_HIT]) + punch(frame, COMPONENT_PIECES.filter((p) => p.fall === 'heavy').map((p) => p.at)) - 0.9 * breathe;
   // The sunrise: dawn on the lone key, full sun once the kit is down, and full sun from bar 3 on.
   const landed = K.filter((k) => frame >= k).length;
   const sun = frame >= END ? 1 : Math.min(1, landed / 8 + (frame >= K[7] ? 0.2 * (1 - react(frame, K[7], 'surface')) : 0));
@@ -125,12 +148,12 @@ export function World() {
         <Camera pose={pose} jolt={jolt}>
           <Table light={{ x: pose.x, y: 0 }} power={power} frame={frame} fps={FPS} impacts={IMPACTS} areas={AREAS}>
             {PIECES.map((p) => (
-              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} turn={p.turn} spin={p.spin} hops={HOPS[p.id]}>
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} turn={p.turn} spin={p.spin} move={collapseOf(p)} hops={[...(HOPS[p.id] ?? []), ...DANCE, ...(p.id === 'badge' ? [{ at: FINAL_HIT, height: 70, frames: 18 }] : [])]}>
                 {p.draw(frame)}
               </Drop>
             ))}
             {FOUNDATION_PIECES.map((p) => (
-              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={F_HOPS[p.id]}>
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={[...(F_HOPS[p.id] ?? []), ...DANCE]}>
                 {p.draw(frame)}
               </Drop>
             ))}
@@ -138,12 +161,12 @@ export function World() {
                 pointer stay clear above it. */}
             {fog > 0 && <div style={{ position: 'absolute', left: PX - 2600, top: -1900, width: 5200, height: 3800, transform: 'translateZ(0.5px)', background: `radial-gradient(420px 380px at 2600px 1900px, rgba(255,255,255,0) 0%, rgba(255,255,255,${fog}) 100%)` }} />}
             {PART_PIECES.map((p) => (
-              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} move={p.move} from={p.from} until={p.until} hops={p.id === 'component' ? [...(p.hops ?? []), ...SET_HOPS(p.x, p.y, null)] : p.hops}>
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} move={p.move} from={p.from} until={p.until} hops={p.id === 'component' ? [...(p.hops ?? []), ...SET_HOPS(p.x, p.y, null), ...DANCE] : p.hops}>
                 {p.draw(frame)}
               </Drop>
             ))}
             {COMPONENT_PIECES.map((p) => (
-              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={SET_HOPS(p.x, p.y, p.at)}>
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={[...SET_HOPS(p.x, p.y, p.at), ...DANCE]}>
                 {p.draw(frame)}
               </Drop>
             ))}
@@ -153,12 +176,12 @@ export function World() {
               </div>
             )}
             {OBJECT_PIECES.map((p) => (
-              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} turn={p.turn} move={p.move} until={p.until} hops={[{ at: DROP1_END, height: 70, frames: 20 }]}>
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} turn={p.turn} move={p.move} until={p.until} hops={[{ at: DROP1_END, height: 70, frames: 20 }, ...DANCE]}>
                 {p.draw(frame)}
               </Drop>
             ))}
             {BUILD_PIECES.map((p) => (
-              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={BUILD_PIECES.filter((h) => h.at > p.at).map((h) => ({ at: h.at, height: 22, frames: 13 }))}>
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={[...BUILD_PIECES.filter((h) => h.at > p.at).map((h) => ({ at: h.at, height: 22, frames: 13 })), ...DANCE]}>
                 <div style={{ display: 'grid', justifyItems: 'center' }}>
                   <div dangerouslySetInnerHTML={{ __html: p.svg(frame) }} />
                   {/* Named like everything else: at this layer, the gadget's kind. */}
@@ -167,6 +190,16 @@ export function World() {
               </Drop>
             ))}
             <Selection frame={frame} />
+            {INSTALL_PIECES.map((p) => (
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} move={{ to: { x: p.x, y: p.y + 1500 }, at: COLLAPSE, arc: 200 }}>
+                {p.draw(frame)}
+              </Drop>
+            ))}
+            {frame >= FINAL_HIT && (
+              <div style={{ position: 'absolute', left: 0, top: 420, transform: 'translate(-50%, -50%)' }}>
+                <div style={{ zoom: 4 }}><Address /></div>
+              </div>
+            )}
             {pointer.visible && now < SLAM && (
               // The select pointer, hovering over the table, playing its act into the click.
               // (Positioned outside the zoom: zoom scales an element's own left and top too.)
