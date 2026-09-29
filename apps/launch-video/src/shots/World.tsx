@@ -1,4 +1,5 @@
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
+import { Label } from '@unlocalhosted/metalui';
 import { react } from '../motion';
 import { FPS, frameAt } from '../time';
 import { Camera, Drop, Grade, LookProvider, Table, cameraAt, mixLook, punch, useLook, type Impact, type Pose } from '../film/stage';
@@ -8,6 +9,7 @@ import { ASSEMBLE, CLICK, PART_PIECES, PARTS_AT, fogAt, pointerAt } from './Part
 import { IconAct } from '../film/parts';
 import { COMPONENT_PIECES, DROP1_AT, FILL, SLAM } from './Components';
 import { DROP1, DROP1_END, OBJECT_PIECES, ObjectsTitle } from './Objects';
+import { BUILD_AT, BUILD_PIECES, DROP2, SILENT, Selection, rollIntensity } from './Build';
 
 /* ─────────────────────────────────────────────────────────
  * THE OPENING (video bars 1-4): one table, one camera
@@ -43,7 +45,12 @@ const MOVES = [
   { at: FILL.swoosh, frames: B(13, 1) - FILL.swoosh, pose: { x: DROP1_AT.x, y: 0, z: 200, tilt: 40, orbit: 0 } },
   // Drop 1: in hard on the slam, then round the set as the cards fly home.
   { at: DROP1 + 2, frames: 28, pose: { x: DROP1_AT.x, y: 0, z: 240, tilt: 44, orbit: -5 } },
-  { at: B(14, 1), frames: B(17, 1) - B(14, 1), pose: { x: DROP1_AT.x + 20, y: 0, z: 300, tilt: 41, orbit: 6 } },
+  { at: B(14, 1), frames: B(17, 1) - B(14, 1) - 16, pose: { x: DROP1_AT.x + 20, y: 0, z: 300, tilt: 41, orbit: 6 } },
+  // On to the build, then in slowly through eight bars of it.
+  { at: B(17, 1) - 16, frames: 16, pose: { x: BUILD_AT.x, y: 30, z: 130, tilt: 42, orbit: -3 } },
+  { at: B(17, 2), frames: SILENT - B(17, 2), pose: { x: BUILD_AT.x, y: 70, z: 380, tilt: 40, orbit: 4 } },
+  // The drop: the selection snaps shut and the camera kicks back.
+  { at: DROP2, frames: 14, pose: { x: BUILD_AT.x, y: 20, z: 200, tilt: 44, orbit: 0 } },
 ];
 
 // The foundations hop with their heavy neighbours, like the kit does.
@@ -70,6 +77,8 @@ const IMPACTS: Impact[] = [
   { x: DROP1_AT.x, y: 0, at: DROP1, strength: 2.4 },
   ...OBJECT_PIECES.filter((p) => p.at !== DROP1).map((p) => ({ x: p.x, y: p.y, at: p.at, strength: 0.4 })),
   ...OBJECT_PIECES.filter((p) => p.move).map((p) => ({ x: p.move!.to.x, y: p.move!.to.y, at: p.move!.at, strength: 0.7 })),
+  ...BUILD_PIECES.map((p) => ({ x: p.x, y: p.y, at: p.at, strength: 1 })),
+  { x: BUILD_AT.x, y: 0, at: DROP2, strength: 2.4 },
 ];
 
 // The set around the button: heavy landings make neighbours hop, everything jumps at the end of the
@@ -88,17 +97,21 @@ const AREAS = [
   { x: FX, y: 220, w: 2600, h: 1900 },
   { x: PX, y: 0, w: 2800, h: 1900 },
   { x: DROP1_AT.x, y: 0, w: 2600, h: 1800 },
+  { x: BUILD_AT.x, y: 20, w: 2800, h: 1900 },
 ];
 
 export function World() {
   const now = useCurrentFrame();
   // The fill's stop: the picture holds for a sixteenth, like the music.
-  const frame = now >= FILL.stop && now < FILL.stop + Math.round((frameAt(12, 3) - frameAt(12, 2)) / 4) ? FILL.stop : now;
-  const pose = cameraAt(frame, START, MOVES);
+  const frame = now >= FILL.stop && now < FILL.stop + Math.round((frameAt(12, 3) - frameAt(12, 2)) / 4) ? FILL.stop : now >= SILENT && now < DROP2 ? SILENT : now;
+  const still = cameraAt(frame, START, MOVES);
+  // The roll's last bars shake the camera a little, more as it peaks.
+  const shake = rollIntensity(frame);
+  const pose = { ...still, x: still.x + 7 * shake * Math.sin(frame * 1.9), y: still.y + 5 * shake * Math.cos(frame * 2.3) };
   const breathe = punch(frame, PUMP);
   const pointer = pointerAt(frame);
   const fog = fogAt(frame);
-  const jolt = punch(frame, [...HEAVY.map((h) => h.at!), ...F_HEAVY.map((h) => h.at)]) + 1.2 * punch(frame, [K[4]]) + 1.4 * punch(frame, [K[7]]) + punch(frame, [ASSEMBLE]) + 1.3 * punch(frame, [SLAM]) + 2 * punch(frame, [DROP1]) + punch(frame, COMPONENT_PIECES.filter((p) => p.fall === 'heavy').map((p) => p.at)) - 0.9 * breathe;
+  const jolt = punch(frame, [...HEAVY.map((h) => h.at!), ...F_HEAVY.map((h) => h.at)]) + 1.2 * punch(frame, [K[4]]) + 1.4 * punch(frame, [K[7]]) + punch(frame, [ASSEMBLE]) + 1.3 * punch(frame, [SLAM]) + 2 * punch(frame, [DROP1]) + punch(frame, BUILD_PIECES.map((p) => p.at)) + 2 * punch(frame, [DROP2]) + punch(frame, COMPONENT_PIECES.filter((p) => p.fall === 'heavy').map((p) => p.at)) - 0.9 * breathe;
   // The sunrise: dawn on the lone key, full sun once the kit is down, and full sun from bar 3 on.
   const landed = K.filter((k) => frame >= k).length;
   const sun = frame >= END ? 1 : Math.min(1, landed / 8 + (frame >= K[7] ? 0.2 * (1 - react(frame, K[7], 'surface')) : 0));
@@ -144,6 +157,16 @@ export function World() {
                 {p.draw(frame)}
               </Drop>
             ))}
+            {BUILD_PIECES.map((p) => (
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={BUILD_PIECES.filter((h) => h.at > p.at).map((h) => ({ at: h.at, height: 22, frames: 13 }))}>
+                <div style={{ display: 'grid', justifyItems: 'center' }}>
+                  <div dangerouslySetInnerHTML={{ __html: p.svg(frame) }} />
+                  {/* Named like everything else: at this layer, the gadget's kind. */}
+                  <Label variant="engraved" style={{ zoom: 3.2, marginTop: -6 }}>{p.name}</Label>
+                </div>
+              </Drop>
+            ))}
+            <Selection frame={frame} />
             {pointer.visible && now < SLAM && (
               // The select pointer, hovering over the table, playing its act into the click.
               // (Positioned outside the zoom: zoom scales an element's own left and top too.)

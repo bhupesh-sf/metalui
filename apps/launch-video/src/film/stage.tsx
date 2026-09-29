@@ -191,7 +191,7 @@ export function Table({ children, light = { x: 0, y: 0 }, power = 1, frame = 0, 
   const look = useLook();
   const r = 700 + 520 * power;
   const at = `${3000 + light.x}px ${2000 + light.y}px`;
-  const plane = { position: 'absolute' as const, left: -3000, top: -2000, width: 16000, height: 4000 }; // wide enough for every set on it
+  const plane = { position: 'absolute' as const, left: -3000, top: -2000, width: 20000, height: 4000 }; // wide enough for every set on it
   return (
     <div style={{ position: 'absolute', left: 0, top: 0, transformStyle: 'preserve-3d', ['--film-shadow' as string]: look.shadow }}>
       <div style={{ ...plane, background: look.surface ?? `radial-gradient(1500px 1100px at ${at}, ${look.mid} 0%, ${look.far} 70%, ${look.sky} 100%)` }} />

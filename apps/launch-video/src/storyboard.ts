@@ -66,16 +66,16 @@ export const storyboard: Shot[] = [
     sync: 'Everything lands on beat 1 of bar 13 with the object spring',
   },
   {
-    id: 'gadgets', act: 'gap', bars: [17, 22], title: 'The gadgets wind up the build',
-    music: 'An eight-bar build: the chorus cuts to a muffle and opens steadily, a snare roll doubles every two bars, the kick doubles under it, noise and a pitched riser climb',
-    picture: 'Fader bank, patch bay, needle gauge and scope wind up the build: faders ride the filter open, lamps tick with every roll hit, needles climb',
-    sync: 'A tick per roll hit, so the picture speeds up with the roll; the light opens with the filter',
+    id: 'gadgets', act: 'gap', bars: [17, 22], title: 'The gadgets measure the build',
+    music: 'An eight-bar build: a muffle that opens, a snare roll doubling every two bars, the bass draining, a riser',
+    picture: 'A counter drum, a needle gauge, a cell grid and a glass badge land and read the build as it climbs',
+    sync: 'The counter counts every roll hit, the needle reads the loudness, the cells fill with the build, the badge glows with the riser; the roll shakes the camera',
   },
   {
     id: 'gap', act: 'gap', bars: [23, 24], title: 'The gap', layer: 'Instruments',
-    music: 'The roll hits thirty-seconds, the bass is gone, the riser peaks; then one beat of true silence',
-    picture: 'A lasso draws a selection frame around nothing as the roll peaks; on the silent beat everything freezes',
-    sync: 'The lasso closes its loop on the last roll hit; the frame snaps shut on the downbeat of bar 25',
+    music: 'The roll at thirty-seconds, then one beat of true silence',
+    picture: 'A lasso draws a box round the set, counting it; on the silent beat everything holds still',
+    sync: 'The box covers the set by the silent beat and snaps into a selection on the downbeat of bar 25',
   },
   {
     id: 'everywhere', act: 'peak', bars: [25, 28], title: 'Final chorus: everywhere',
