@@ -812,6 +812,23 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A number you step, scrub or type: the field well as a pill with a compact keycap at each end (minus, plus) and the value between them. Each step turns the value one drum step on the settle spring (the swap drum): plus rolls up, minus rolls down. Dragging the label sideways scrubs it, on the same drum. At a limit the keycap disables, and an arrow key past it shakes only the digits on the refusal spring. Typing is plain text and commits on blur. Reduce Motion: the drum crossfades and nothing shakes. (the field well (recipe well field); compact button caps; the swap drum; the refusal; Base UI NumberField)
+    public static let numberField = MetalObjectRecipe(
+        name: "number-field",
+        layers: [
+
+        ],
+        props: [
+            "self.height": .number(32.0),
+            "self.width": .number(132.0),
+            "self.pad": .number(3.0),
+            "self.gap": .number(6.0),
+            "self.disabled": .text("0.4"),
+            "key.size": .number(26.0),
+            "key.glyph": .number(12.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

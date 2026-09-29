@@ -406,6 +406,12 @@
   --spacing-spinner-size: var(--mu-r-spinner-self-size);
   --spacing-spinner-small: var(--mu-r-spinner-self-small);
   --spacing-spinner-ring: var(--mu-r-spinner-self-ring);
+  --spacing-number-field-height: var(--mu-r-number-field-self-height);
+  --spacing-number-field-width: var(--mu-r-number-field-self-width);
+  --spacing-number-field-pad: var(--mu-r-number-field-self-pad);
+  --spacing-number-field-gap: var(--mu-r-number-field-self-gap);
+  --spacing-number-field-key-size: var(--mu-r-number-field-key-size);
+  --spacing-number-field-key-glyph: var(--mu-r-number-field-key-glyph);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1218,6 +1224,15 @@
 }
 @utility opacity-spinner-tail {
   opacity: var(--mu-r-spinner-self-tail);
+}
+@utility number-field-down {
+  --mu-swap-turn: calc(var(--mu-motion-step) * -1);
+}
+@utility stroke-width-number-field-width {
+  stroke-width: var(--mu-r-number-field-self-width);
+}
+@utility opacity-number-field-disabled {
+  opacity: var(--mu-r-number-field-self-disabled);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

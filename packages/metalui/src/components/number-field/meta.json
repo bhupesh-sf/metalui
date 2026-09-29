@@ -1,0 +1,24 @@
+{
+  "name": "number-field",
+  "title": "Number field",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A number you step, scrub or type: keycaps at each end of a pill well; each step turns the value one drum step (plus up, minus down) and an arrow past a limit shakes only the digits.",
+  "base": "@base-ui/react/number-field",
+  "react": {
+    "export": "NumberField",
+    "files": [
+      "number-field.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalNumberField",
+    "file": "swift/Sources/MetalUI/Components/MetalNumberField.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "NumberField": ["Root", "Label", "Group", "Decrement", "Input", "Increment"]
+  },
+  "agent": "number-field.agent.md",
+  "page": "/components/number-field"
+}

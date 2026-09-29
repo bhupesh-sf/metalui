@@ -8,6 +8,7 @@ export { IconButton, type IconButtonProps } from './components/icon-button/icon-
 export { Chip, type ChipProps } from './components/chip/chip';
 export { Field, SearchField, type SearchFieldProps } from './components/field/field';
 export { Textarea, type TextareaProps } from './components/textarea/textarea';
+export { NumberField, type NumberFieldProps } from './components/number-field/number-field';
 export { Sparkline, type SparklineProps, type SparklinePoint } from './components/sparkline/sparkline';
 export { Dialog, type DialogRootProps, type DialogPopupProps } from './components/dialog/dialog';
 export { AlertDialog, type AlertDialogRootProps, type AlertDialogConfirmProps } from './components/alert-dialog/alert-dialog';

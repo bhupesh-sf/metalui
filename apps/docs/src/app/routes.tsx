@@ -82,6 +82,7 @@ export const routes: RouteObject[] = [
       { path: 'components/alert-dialog', lazy: lazy(() => import('../pages/components/AlertDialog')) },
       { path: 'components/progress', lazy: lazy(() => import('../pages/components/Progress')) },
       { path: 'components/spinner', lazy: lazy(() => import('../pages/components/Spinner')) },
+      { path: 'components/number-field', lazy: lazy(() => import('../pages/components/NumberField')) },
       { path: 'components/slider', lazy: lazy(() => import('../pages/components/Slider')) },
       { path: 'components/icon-button', lazy: lazy(() => import('../pages/components/IconButton')) },
       { path: 'components/field', lazy: lazy(() => import('../pages/components/Field')) },

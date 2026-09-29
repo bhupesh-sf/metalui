@@ -994,6 +994,14 @@
   --mu-r-spinner-self-delay: 400ms;
   --mu-r-spinner-self-fade: 160ms;
   --mu-r-spinner-self-tail: 0.72;
+  /* number-field: the field well (recipe well field); compact button caps; the swap drum; the refusal; Base UI NumberField */
+  --mu-r-number-field-self-height: 32px;
+  --mu-r-number-field-self-width: 132px;
+  --mu-r-number-field-self-pad: 3px;
+  --mu-r-number-field-self-gap: 6px;
+  --mu-r-number-field-self-disabled: 0.4;
+  --mu-r-number-field-key-size: 26px;
+  --mu-r-number-field-key-glyph: 12px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

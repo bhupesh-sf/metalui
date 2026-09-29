@@ -940,6 +940,26 @@
       "docs": "Agent guide: https://metalui.dev/r/nib.md. SwiftUI: MetalNib in the MetalUI Swift package."
     },
     {
+      "name": "number-field",
+      "type": "registry:ui",
+      "title": "Number field",
+      "description": "A number you step, scrub or type: keycaps at each end of a pill well; each step turns the value one drum step (plus up, minus down) and an arrow past a limit shakes only the digits.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/number-field/number-field.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/number-field/number-field.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/number-field.md. SwiftUI: MetalNumberField in the MetalUI Swift package."
+    },
+    {
       "name": "past-banner",
       "type": "registry:ui",
       "title": "Past banner",

@@ -732,6 +732,23 @@
       "agent": "https://metalui.dev/r/nib.md"
     },
     {
+      "name": "number-field",
+      "title": "Number field",
+      "status": "alpha",
+      "description": "A number you step, scrub or type: keycaps at each end of a pill well; each step turns the value one drum step (plus up, minus down) and an arrow past a limit shakes only the digits.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "NumberField",
+        "base": "@base-ui/react/number-field"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalNumberField"
+      },
+      "registry": "https://metalui.dev/r/number-field.json",
+      "agent": "https://metalui.dev/r/number-field.md"
+    },
+    {
       "name": "past-banner",
       "title": "Past banner",
       "status": "alpha",
