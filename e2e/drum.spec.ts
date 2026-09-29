@@ -48,11 +48,15 @@ test('dragged, it follows the hand; let go, it settles on a whole digit', async 
   await page.waitForTimeout(150);                                        // the hand stops, then lets go
   await page.mouse.up();
   await expect.poll(() => valueOf(page)).toBe(9);                       // no flick: the nearest digit
-  // A flick carries on past where the hand let go.
+  // A flick carries on past where the hand let go. A flick is a matter of time (a fast hand, let go
+  // while still moving), so it runs on the page's controlled clock: the hand moves and lets go in the
+  // same instant however busy the machine is, then the clock runs for the drum to settle.
+  await page.clock.install();
   await page.mouse.move(x, y);
   await page.mouse.down();
   await page.mouse.move(x, y - PITCH, { steps: 2 });
   await page.mouse.up();
+  await page.clock.runFor(2000);
   await expect.poll(async () => Number.isInteger(await valueOf(page))).toBe(true);
   expect(await valueOf(page)).toBeGreaterThan(10);
 });
