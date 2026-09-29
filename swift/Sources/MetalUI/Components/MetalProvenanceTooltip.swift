@@ -2,7 +2,7 @@ import SwiftUI
 
 // Provenance tooltip. Mirrors components/provenance-tooltip from MetalProvenance and the graphite frost.
 
-/// The provenance tag: "JEV · 0.82", source in ink, detail dimmed, in the readout role, uppercase.
+/// The provenance tag: "RECOGNIZER · 0.82", source in ink, detail dimmed, in the readout role, uppercase.
 public struct MetalProvenanceTooltip: View {
     let source: String
     let detail: [String]
@@ -52,14 +52,14 @@ private struct MetalProvenanceModifier: ViewModifier {
             .overlay(alignment: .top) {
                 MetalProvenanceTooltip(source: source, detail: detail)
                     .alignmentGuide(.top) { d in d[.bottom] + (clearsChip ? MetalProvenance.chipOffset : MetalProvenance.offset) }
-                    .opacity(shown ? 1 : 0)
+                    .opacity(shown ? .one : .zero)
             }
             .accessibilityHint([source, detail.joined(separator: ", ")].filter { !$0.isEmpty }.joined(separator: ", "))
     }
 }
 
 extension View {
-    /// Says where this cue came from after a 380 ms hover: "Jev · 0.82". Show the number whenever the app guessed.
+    /// Says where this cue came from after a 380 ms hover: "Recognizer · 0.82". Show the number whenever the app guessed.
     public func metalProvenance(_ source: String, detail: [String] = [], clearsChip: Bool = false) -> some View {
         modifier(MetalProvenanceModifier(source: source, detail: detail, clearsChip: clearsChip))
     }

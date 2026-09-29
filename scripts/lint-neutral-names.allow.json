@@ -184,5 +184,12 @@
     "match": "medium",
     "lineIncludes": ".fontWeight(index == .zero ? .semibold : .medium)",
     "reason": "SwiftUI's medium is the React weather row's font-medium weight."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalPerfectPreview.swift",
+    "word": "medium",
+    "match": "medium",
+    "lineIncludes": "weight: .medium",
+    "reason": "SwiftUI's Font.Weight.medium is framework syntax."
   }
 ]

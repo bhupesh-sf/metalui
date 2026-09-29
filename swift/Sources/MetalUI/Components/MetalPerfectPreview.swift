@@ -49,9 +49,10 @@ public struct MetalPerfectPreview: View {
                 outline.trimmedPath(from: 0, to: reduceMotion ? 1 : trace)
                     .stroke(ink.opacity(recipe.scalar("self.opacity")),
                             style: StrokeStyle(lineWidth: recipe.points("self.line") / zoom, lineCap: .round))
-                    .opacity(phase == .done ? 0 : 1)
+                    .opacity(phase == .done ? .zero : .one)
             }
             if phase == .tuning, let tune {
+                let centreDiameter = recipe.points("tune.centre") + recipe.points("tune.centre")
                 Path { path in
                     path.move(to: tune.centre)
                     path.addLine(to: tune.pointer)
@@ -59,11 +60,10 @@ public struct MetalPerfectPreview: View {
                 .stroke(ink, style: StrokeStyle(lineWidth: recipe.points("self.line") / zoom,
                                                 dash: [3 / zoom, 3 / zoom]))
                 Circle().fill(ink)
-                    .frame(width: recipe.points("tune.centre") * 2 / zoom,
-                           height: recipe.points("tune.centre") * 2 / zoom)
+                    .frame(width: centreDiameter / zoom, height: centreDiameter / zoom)
                     .position(tune.centre)
                 Text("\(Int(tune.angle.rounded()))° · \(Int((tune.scale * 100).rounded())) %")
-                    .font(.system(size: 11 / zoom, weight: .medium, design: .rounded))
+                    .font(.system(size: CGFloat(MetalType.meta.size) / zoom, weight: .medium, design: .rounded))
                     .foregroundStyle(ink)
                     .position(x: tune.pointer.x, y: tune.pointer.y - recipe.points("tune.readout-gap") / zoom)
             }
