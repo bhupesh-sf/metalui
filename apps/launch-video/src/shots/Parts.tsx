@@ -26,7 +26,7 @@ const B = (bar: number, beat: number, step = 0) => frameAt(bar, beat, step);
 
 /** The five parts meet here, on the third beat of bar 6. */
 export const ASSEMBLE = B(6, 3);
-/** The pointer's click: the last sixteenth of bar 8. */
+/** The pointer's click: the last sixteenth of bar 8; the button springs up on the verse's downbeat. */
 export const CLICK = B(8, 4, 3);
 /** The select act's click comes this far into it (the icon catalog: its click track peaks at 340 ms). */
 const CLICK_IN_ACT = Math.round(0.34 * 60);
@@ -67,10 +67,10 @@ const RAW: PartPiece[] = [
   { id: 'part-label', at: B(6, 1), fall: 'light', x: PX + 620, y: 20, zoom: 4.6, size: [200, 150], move: into(100), until: ASSEMBLE, draw: () => <Part zoom={4.6} caption="Label"><Label variant="engraved" style={{ fontSize: 14 }}>Pen</Label></Part> },
   {
     // The parts are one: a real tool button, popping as they snap; latched on the click.
-    id: 'component', at: null, fall: 'heavy', x: PX, y: 0, zoom: 4.2, size: [260, 260], from: ASSEMBLE, hops: [{ at: ASSEMBLE, height: 46, frames: 16 }],
+    id: 'component', at: null, fall: 'heavy', x: PX, y: 0, zoom: 4.2, size: [260, 260], from: ASSEMBLE, hops: [{ at: ASSEMBLE, height: 46, frames: 16 }, { at: B(9, 1), height: 90, frames: 20 }],
     draw: (f) => (
       <div style={{ display: 'grid', justifyItems: 'center', gap: 10 }}>
-        <IconButton variant="tool" label="Pen" pressed={f >= CLICK} icon={<IconAct name="pen" t={actTime(f, B(6, 4))} size={20} />} />
+        <IconButton variant="tool" label="Pen" pressed={f >= CLICK && f < B(9, 1)} icon={<IconAct name="pen" t={actTime(f, B(6, 4))} size={20} />} />
         <Label variant="engraved" style={{ zoom: 3 / 4.2 }}>Component</Label>
       </div>
     ),
@@ -102,4 +102,4 @@ export function pointerAt(frame: number) {
 }
 
 /** How fogged the rest of the canvas is: nothing until the bass drains in bar 7, most of it by bar 8. */
-export const fogAt = (frame: number) => Math.max(0, Math.min(1, (frame - B(7, 1)) / (B(8, 1) - B(7, 1)))) * 0.88;
+export const fogAt = (frame: number) => (frame >= B(9, 1) ? 0 : Math.max(0, Math.min(1, (frame - B(7, 1)) / (B(8, 1) - B(7, 1)))) * 0.88); // gone on the verse's slam

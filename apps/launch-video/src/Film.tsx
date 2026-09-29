@@ -16,6 +16,8 @@ const SHOTS: Partial<Record<string, ComponentType>> = {
   foundations: World,
   parts: World,
   dropout: World,
+  components: World,
+  fill: World,
 };
 
 export function Film({ look = 'white' }: { look?: keyof typeof LOOKS }) {

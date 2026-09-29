@@ -50,14 +50,14 @@ export const storyboard: Shot[] = [
   {
     id: 'components', act: 'play', bars: [9, 11], title: 'Components', layer: 'Components',
     music: 'The full groove slams in',
-    picture: 'Switch, slider, tabs, select, toast: each operated in turn',
-    sync: 'The button releases on the downbeat; one component every two beats',
+    picture: 'The latched button springs up and eleven real components rain down around it, named, each doing its job',
+    sync: 'Two a kick; each acts on its off-beat (switch, checkbox, slider on sixteenths, tabs and switcher on beats, a field typing, tools latching); all jump on bar 11 beat 4',
   },
   {
     id: 'fill', act: 'play', bars: [12, 12], title: 'Fill',
-    music: 'Stop-start, then a hole and a swoosh',
-    picture: 'Freeze frames on the stops, black on the hole, a wipe on the swoosh',
-    sync: 'Freeze on each stop; the wipe rides the swoosh',
+    music: 'Stop-start, then a hole on beat 3 and a swoosh on beat 4',
+    picture: 'Everything freezes on the stop; the set lifts off the table through the hole; the swoosh whips the camera to drop 1',
+    sync: 'Freeze a sixteenth on the stop; lift across beat 3; the whip lands on bar 13',
   },
   {
     id: 'objects', act: 'drop', bars: [13, 16], title: 'Drop 1: Objects', layer: 'Objects',
