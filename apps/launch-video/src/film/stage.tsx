@@ -84,11 +84,27 @@ export interface Look {
   vignette: string;
 }
 
-export const LOOKS: Record<'studio' | 'golden' | 'clay', Look> = {
+export const LOOKS: Record<'studio' | 'golden' | 'clay' | 'sunlit' | 'dawn', Look> = {
   studio: { sky: '#120c09', mid: '#3b2a1e', far: '#150e0a', pool: '#9a7048', shadow: '40 20 8', glow: 'rgba(255,170,90,.16)', vignette: 'rgba(40,18,6,.55)' },
   golden: { sky: '#c9a383', mid: '#efdcc4', far: '#caa98a', pool: '#fff5e4', shadow: '130 76 34', glow: 'rgba(255,196,130,.28)', vignette: 'rgba(150,80,30,.35)' },
+  dawn: { sky: '#8f4a3e', mid: '#d58a68', far: '#9b5243', pool: '#ffc796', shadow: '120 48 30', glow: 'rgba(255,170,120,.30)', vignette: 'rgba(120,40,24,.40)' },
+  sunlit: { sky: '#f3a877', mid: '#f7c49b', far: '#ec9a6c', pool: '#fff3dc', shadow: '176 78 36', glow: 'rgba(255,226,170,.38)', vignette: 'rgba(214,96,44,.22)' },
   clay: { sky: '#5e2f2a', mid: '#e39a73', far: '#86463a', pool: '#ffd1a8', shadow: '120 44 20', glow: 'rgba(255,150,100,.24)', vignette: 'rgba(90,30,15,.45)' },
 };
+
+const hexMix = (a: string, b: string, t: number) => {
+  const p = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const [x, y] = [p(a), p(b)];
+  return `#${x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, '0')).join('')}`;
+};
+
+/** A look between two: the hex colours blend, the rest follow the second past halfway. */
+export function mixLook(a: Look, b: Look, t: number): Look {
+  const out = {} as Look;
+  for (const k of Object.keys(a) as (keyof Look)[]) out[k] = a[k].startsWith('#') && b[k].startsWith('#') ? hexMix(a[k], b[k], t) : t < 0.5 ? a[k] : b[k];
+  if (!a.shadow.startsWith('#')) out.shadow = a.shadow.split(' ').map((v, i) => Math.round(+v + (+b.shadow.split(' ')[i] - +v) * t)).join(' ');
+  return out;
+}
 
 const LookContext = createContext<Look>(LOOKS.studio);
 export const LookProvider = LookContext.Provider;
@@ -123,41 +139,111 @@ export function Grade({ power = 1 }: { power?: number }) {
 }
 
 /**
- * An object on the table at (x, y), standing up toward the camera. `at` is the frame it touches
- * down on; before that it falls from `height`, turning a little, and isn't drawn before it launches.
+ * How a thing falls, by what it is. Every fall touches down on its frame; they differ in character.
+ *   heavy   drops straight on the object spring, squashes on impact and jolts the camera; its
+ *           neighbours hop when it lands
+ *   light   tumbles as it falls (the part spring) and bounces twice before it rests
+ *   key     flips end over end on the way down and lands face up
  */
-export function Drop({ frame, at, x, y, height = 900, turn = -10, mass = 'object', zoom = 1, size = [180, 130], children }: {
-  frame: number; at: number | null; x: number; y: number; height?: number; turn?: number; mass?: Mass; zoom?: number;
+export type Fall = 'heavy' | 'light' | 'key';
+
+const FALLS: Record<Fall, { height: number; mass: Mass; bounces: number[] }> = {
+  heavy: { height: 1050, mass: 'object', bounces: [] },
+  light: { height: 760, mass: 'part', bounces: [46, 14] },
+  key: { height: 950, mass: 'object', bounces: [22] },
+};
+
+/** A hop: up and down on a parabola, `height` px over `frames`, starting at `at`. 0 outside it. */
+export function hop(frame: number, at: number, height: number, frames: number): number {
+  const t = (frame - at) / frames;
+  return t <= 0 || t >= 1 ? 0 : height * 4 * t * (1 - t);
+}
+
+/** Bounces after a landing: each the height given, each shorter, one straight after the other. */
+function bouncesAfter(frame: number, at: number, heights: number[]): number {
+  let start = at;
+  for (const h of heights) {
+    const frames = Math.round(13 * Math.sqrt(h / 46));
+    const v = hop(frame, start, h, frames);
+    if (frame < start + frames) return v;
+    start += frames;
+  }
+  return 0;
+}
+
+/**
+ * An object on the table at (x, y), standing up toward the camera. `at` is the frame it touches
+ * down on (null: already there). `hops` are extra lifts on other frames: sympathy with a heavy
+ * neighbour's landing, or everything jumping together on a beat.
+ */
+export function Drop({ frame, at, x, y, fall = 'heavy', turn = -10, spin = 1, zoom = 1, size = [180, 130], hops = [], children }: {
+  frame: number; at: number | null; x: number; y: number; fall?: Fall; turn?: number;
+  /** Which way a light thing tumbles or a key flips (1 or -1). */
+  spin?: number;
+  zoom?: number;
   /** The object's footprint on the table (px, as drawn), which its contact shadow matches. */
   size?: [number, number];
+  hops?: { at: number; height: number; frames: number }[];
   children: ReactNode;
 }) {
-  const v = at === null ? 1 : land(frame, at, mass);
+  const f = FALLS[fall];
+  const v = at === null ? 1 : land(frame, at, f.mass);
   if (v <= 0) return null;
-  // The table stops the fall: height never goes below zero. The spring's overshoot past 1 is the
-  // impact instead, a brief squash that recovers as the spring settles.
-  const h = height * Math.max(0, 1 - v);
-  const squash = v > 1 ? 1 - Math.min(0.08, (v - 1) * 0.9) : 1;
-  const near = Math.max(0, Math.min(1, 1 - h / height));
+  // The table stops the fall: the spring's overshoot past 1 is the impact, a squash, never a sink.
+  const falling = f.height * Math.max(0, 1 - v);
+  const lift = falling + (at === null ? 0 : bouncesAfter(frame, at, f.bounces)) + hops.reduce((a, h) => a + hop(frame, h.at, h.height, h.frames), 0);
+  const squash = v > 1 && lift < 1 ? 1 - Math.min(0.08, (v - 1) * 0.9) : 1;
+  const air = Math.min(1, lift / f.height);
+  const left = 1 - Math.min(1, v); // how much of the fall is still to come
+  const tumble = fall === 'light' ? `rotateX(${spin * 300 * left}deg) rotateY(${spin * 200 * left}deg)` : fall === 'key' ? `rotateX(${spin * 360 * left}deg)` : '';
   return (
     <div style={{ position: 'absolute', left: x, top: y, transformStyle: 'preserve-3d' }}>
-      {/* The contact shadow, on the table: wide and faint while it's high, tight and dark as it lands. */}
+      {/* The contact shadow: wide and faint while it's high, tight and dark on the table. */}
       <div
         style={{
           position: 'absolute', left: '50%', top: '50%', width: size[0], height: size[1], borderRadius: '30%',
-          transform: `translate(-50%, -50%) scale(${1 + 0.5 * (1 - near)})`,
+          transform: `translate(-50%, -50%) scale(${1 + 0.5 * air})`,
           background: 'radial-gradient(closest-side, rgb(var(--film-shadow) / .6), rgb(var(--film-shadow) / 0))',
-          opacity: 0.7 * near ** 3, filter: `blur(${4 + 20 * (1 - near)}px)`, // no shadow before its object is near
+          opacity: 0.7 * (1 - air) ** 3, filter: `blur(${4 + 20 * air}px)`,
         }}
       />
       <div
         style={{
           position: 'absolute', left: 0, top: 0, transformStyle: 'preserve-3d',
-          transform: `translate(-50%, -50%) translateZ(${h + 1}px) rotateZ(${turn * (1 - Math.min(1, v))}deg) scale(${2 - squash}, ${squash})`,
+          transform: `translate(-50%, -50%) translateZ(${lift + 1}px) rotateZ(${turn * left}deg) ${tumble} scale(${2 - squash}, ${squash})`,
         }}
       >
         <div style={{ zoom }}>{children}</div>
       </div>
     </div>
+  );
+}
+
+/** A ring of light pulsing out across the table from (x, y) at a hit. */
+export function Ring({ frame, at, x, y, colour = 'rgba(255,236,200,.9)', reach = 900 }: { frame: number; at: number; x: number; y: number; colour?: string; reach?: number }) {
+  const t = (frame - at) / 34;
+  if (t < 0 || t > 1) return null;
+  const r = reach * (1 - (1 - t) ** 3);
+  return (
+    <div style={{ position: 'absolute', left: x - r, top: y - r, width: 2 * r, height: 2 * r, borderRadius: '50%', border: `${10 * (1 - t) + 2}px solid ${colour}`, opacity: 0.8 * (1 - t), filter: 'blur(3px)' }} />
+  );
+}
+
+/** Dust in a sunbeam: motes drifting up and across the light, twinkling. Screen space, seeded. */
+export function Motes({ frame, count = 46, beam = 1 }: { frame: number; count?: number; beam?: number }) {
+  const rand = (i: number, k: number) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
+  return (
+    <AbsoluteFill style={{ pointerEvents: 'none' }}>
+      <AbsoluteFill style={{ background: 'linear-gradient(118deg, transparent 18%, rgba(255,236,196,.20) 34%, rgba(255,236,196,.08) 52%, transparent 64%)', mixBlendMode: 'screen', opacity: beam }} />
+      {Array.from({ length: count }, (_, i) => {
+        const x = (rand(i, 1) * 1.2 - 0.1 + frame * (0.0006 + rand(i, 2) * 0.0008)) % 1.1;
+        const y = (1.05 - ((rand(i, 3) + frame * (0.0005 + rand(i, 4) * 0.0007)) % 1.1));
+        const size = 2 + rand(i, 5) * 5;
+        const twinkle = 0.35 + 0.65 * Math.abs(Math.sin(frame * (0.05 + rand(i, 6) * 0.08) + i));
+        // Motes show where the beam is: brightest along its diagonal.
+        const inBeam = Math.max(0, 1 - Math.abs(x * 1920 * 0.55 - y * 1080 * 0.85 + 180 - 420) / 520);
+        return <div key={i} style={{ position: 'absolute', left: `${x * 100}%`, top: `${y * 100}%`, width: size, height: size, borderRadius: '50%', background: 'rgba(255,244,222,.95)', filter: `blur(${size > 5 ? 1.5 : 0.5}px)`, opacity: beam * twinkle * (0.25 + 0.75 * inBeam) }} />;
+      })}
+    </AbsoluteFill>
   );
 }

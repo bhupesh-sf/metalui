@@ -26,8 +26,8 @@ export const storyboard: Shot[] = [
   {
     id: 'count-in', act: 'build', bars: [1, 2], title: 'Opener: eight hits',
     music: 'Four-on-the-floor kick under a held drone',
-    picture: 'A lit key, close; then a real component falls onto the table on every kick as the camera pulls back and round',
-    sync: 'The key goes down on kick 1; each object touches down on its kick (object spring) and acts on the off-beat after',
+    picture: 'Sunrise on a lone key; then two components rain onto the table per kick, small parts on the off-beats, and the light blooms to full sun',
+    sync: 'Heavy things land on the kick and make neighbours hop, light things tumble and bounce, keys flip; each acts on the off-beat; all jump on kick 8',
   },
   {
     id: 'foundations', act: 'build', bars: [3, 4], title: 'Foundations', layer: 'Foundations',
