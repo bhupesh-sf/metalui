@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/martian-mono/standard.css";
+@import "@fontsource-variable/doto";
 @import "@unlocalhosted/metalui/tokens.css";
 @import "@unlocalhosted/metalui/theme.css";
 

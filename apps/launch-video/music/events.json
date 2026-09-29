@@ -1,0 +1,6 @@
+{
+  "$description": "Authored. Sounds the picture answers one by one, found in the finished edit: each is a band of the mix over a span of video bars, split to its harmonic (pitched) or percussive half. The edit step writes every onset, its pitch and strength, in video time, to src/events.generated.json.",
+  "events": [
+    { "name": "blips", "bars": [3, 4], "band": [1200, 8000], "part": "harmonic", "why": "the arcade blips of the intro: shot 2 lights a dot for each, at its pitch" }
+  ]
+}

@@ -6,8 +6,9 @@ A person can't hand the track to the video by ear, so this reads it into facts t
   analyze   one fixed tempo grid, bar 1, per-bar loudness and bands, 16-step drum grids,
             the key, and where the texture changes -> music/analysis.json
   edit      cut the bar runs in edit.json into the launch edit -> public/launch.m4a,
-            src/cues.generated.json (bars, beats, splices) and src/meters.generated.json
-            (per-frame loudness, bands and drum onsets, for meters in the picture)
+            src/cues.generated.json (bars, beats, splices), src/meters.generated.json
+            (per-frame loudness, bands and drum onsets, for meters in the picture) and
+            src/events.generated.json (each sound named in events.json, onset by onset)
   check     re-read the finished edit and prove it: one tempo straight through the splices,
             no clicks, under the length cap, cues fresh
   contour   how loud the edit sounds beat by beat between two video bars (K-weighted, like LUFS)
@@ -16,7 +17,7 @@ A person can't hand the track to the video by ear, so this reads it into facts t
             reviewer (person or model) to read what the numbers can't say
 
 Authored inputs: song.json (source and section labels), edit.json (the cut), listening.json (what a
-person heard at each splice).
+person heard at each splice), events.json (sounds the picture answers one by one).
 Everything else is generated; never hand-edit it.
 """
 
@@ -45,6 +46,8 @@ LISTENING = MUSIC / "listening.json"
 PUBLIC_AUDIO = APP / "public" / "launch.m4a"
 CUES = APP / "src" / "cues.generated.json"
 METERS = APP / "src" / "meters.generated.json"
+EVENTS_SPEC = MUSIC / "events.json"
+EVENTS = APP / "src" / "events.generated.json"
 
 SR = 22050  # analysis rate; the edit is cut from the source at its own rate
 BANDS = {"sub": (20, 120), "low": (120, 500), "mid": (500, 2500), "high": (2500, 11000)}
@@ -393,7 +396,48 @@ def cmd_edit(_args) -> None:
     }
     write_json(CUES, cues)
     write_json(METERS, meters(mastered.mean(0), sr, duration), indent=None)
+    if EVENTS_SPEC.exists():
+        write_json(EVENTS, find_events(mastered.mean(0), sr, cues), indent=1)
     print(f"edit {duration:.2f}s, {len(vbars)} bars, {len(splices)} splices -> {PUBLIC_AUDIO.relative_to(APP)}, {CUES.relative_to(APP)}, {METERS.relative_to(APP)}")
+
+
+def find_events(mono, sr: int, cues: dict) -> dict:
+    """Each sound in events.json, found in the finished edit: its onsets in video time, the sixteenth
+    each sits nearest (and how far off it is), its pitch and its strength (0..1 within the event)."""
+    import librosa
+
+    spec = load_json(EVENTS_SPEC)
+    y = librosa.resample(mono.astype(np.float32), orig_sr=sr, target_sr=SR)
+    hop = 128
+    fr = SR / hop
+    beat = cues["beatSeconds"]
+    out = {"$generated": "music/pipeline.py edit, from music/events.json. Do not edit.", "inputs": sha(EVENTS_SPEC)}
+    for ev in spec["events"]:
+        a, b = ev["bars"]
+        t0 = cues["bars"][a - 1]["t"]
+        t1 = cues["bars"][b]["t"] if b < len(cues["bars"]) else cues["seconds"]
+        seg = y[int(t0 * SR): int(t1 * SR)]
+        H, P = librosa.effects.hpss(seg, margin=2.0)
+        part = H if ev.get("part") == "harmonic" else P if ev.get("part") == "percussive" else seg
+        S = np.abs(librosa.stft(part, n_fft=1024, hop_length=hop))
+        f = librosa.fft_frequencies(sr=SR, n_fft=1024)
+        lo, hi = ev["band"]
+        on = librosa.onset.onset_strength(S=librosa.amplitude_to_db(S[(f >= lo) & (f < hi)]), sr=SR, hop_length=hop)
+        peaks = librosa.util.peak_pick(on, pre_max=3, post_max=3, pre_avg=8, post_avg=8, delta=float(on.std()) * ev.get("sensitivity", 0.8), wait=4)
+        top = float(on[peaks].max()) if len(peaks) else 1.0
+        hits = []
+        for k in peaks:
+            t = t0 + k / fr
+            col = S[:, k: k + 6].mean(1)
+            m = (f >= lo * 0.5) & (f < hi)
+            pitch = float(f[m][col[m].argmax()])
+            steps = (t - cues["firstDownbeat"]) / (beat / 4)
+            hits.append({"t": round(t, 4), "bar": int(steps // 16) + 1, "step": int(round(steps)) % 16,
+                         "offMs": round((steps - round(steps)) * beat / 4 * 1000, 1), "hz": round(pitch, 1),
+                         "note": librosa.hz_to_note(pitch), "strength": round(float(on[k]) / top, 3)})
+        out[ev["name"]] = hits
+        print(f"  events: {ev['name']}: {len(hits)} in bars {a}-{b}")
+    return out
 
 
 def meters(mono, sr: int, duration: float) -> dict:

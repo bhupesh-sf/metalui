@@ -1,0 +1,321 @@
+{
+ "$generated": "music/pipeline.py edit, from music/events.json. Do not edit.",
+ "inputs": "f89265ffbb17a3b4",
+ "blips": [
+  {
+   "t": 4.1278,
+   "bar": 3,
+   "step": 1,
+   "offMs": -24.4,
+   "hz": 1313.5,
+   "note": "E6",
+   "strength": 0.341
+  },
+  {
+   "t": 4.1684,
+   "bar": 3,
+   "step": 1,
+   "offMs": 16.3,
+   "hz": 1636.5,
+   "note": "G♯6",
+   "strength": 0.549
+  },
+  {
+   "t": 4.2148,
+   "bar": 3,
+   "step": 2,
+   "offMs": -43.0,
+   "hz": 2304.1,
+   "note": "D7",
+   "strength": 0.547
+  },
+  {
+   "t": 4.2671,
+   "bar": 3,
+   "step": 2,
+   "offMs": 9.3,
+   "hz": 732.1,
+   "note": "F♯5",
+   "strength": 0.56
+  },
+  {
+   "t": 4.3135,
+   "bar": 3,
+   "step": 3,
+   "offMs": -49.9,
+   "hz": 861.3,
+   "note": "A5",
+   "strength": 0.502
+  },
+  {
+   "t": 4.3658,
+   "bar": 3,
+   "step": 3,
+   "offMs": 2.3,
+   "hz": 882.9,
+   "note": "A5",
+   "strength": 0.437
+  },
+  {
+   "t": 4.4412,
+   "bar": 3,
+   "step": 4,
+   "offMs": -27.9,
+   "hz": 2756.2,
+   "note": "F7",
+   "strength": 0.507
+  },
+  {
+   "t": 4.4935,
+   "bar": 3,
+   "step": 4,
+   "offMs": 24.4,
+   "hz": 818.3,
+   "note": "G♯5",
+   "strength": 0.833
+  },
+  {
+   "t": 4.5283,
+   "bar": 3,
+   "step": 5,
+   "offMs": -46.4,
+   "hz": 818.3,
+   "note": "G♯5",
+   "strength": 0.507
+  },
+  {
+   "t": 4.5806,
+   "bar": 3,
+   "step": 5,
+   "offMs": 5.8,
+   "hz": 689.1,
+   "note": "F5",
+   "strength": 0.494
+  },
+  {
+   "t": 4.6676,
+   "bar": 3,
+   "step": 6,
+   "offMs": -12.8,
+   "hz": 689.1,
+   "note": "F5",
+   "strength": 0.456
+  },
+  {
+   "t": 4.7721,
+   "bar": 3,
+   "step": 7,
+   "offMs": -13.9,
+   "hz": 796.7,
+   "note": "G5",
+   "strength": 0.461
+  },
+  {
+   "t": 4.9172,
+   "bar": 3,
+   "step": 8,
+   "offMs": 25.5,
+   "hz": 689.1,
+   "note": "F5",
+   "strength": 0.57
+  },
+  {
+   "t": 4.9521,
+   "bar": 3,
+   "step": 9,
+   "offMs": -45.3,
+   "hz": 689.1,
+   "note": "F5",
+   "strength": 0.754
+  },
+  {
+   "t": 5.0972,
+   "bar": 3,
+   "step": 10,
+   "offMs": -5.8,
+   "hz": 646.0,
+   "note": "E5",
+   "strength": 0.396
+  },
+  {
+   "t": 5.1901,
+   "bar": 3,
+   "step": 11,
+   "offMs": -18.6,
+   "hz": 732.1,
+   "note": "F♯5",
+   "strength": 0.358
+  },
+  {
+   "t": 5.2307,
+   "bar": 3,
+   "step": 11,
+   "offMs": 22.0,
+   "hz": 732.1,
+   "note": "F♯5",
+   "strength": 0.378
+  },
+  {
+   "t": 5.2946,
+   "bar": 3,
+   "step": 12,
+   "offMs": -19.8,
+   "hz": 646.0,
+   "note": "E5",
+   "strength": 0.284
+  },
+  {
+   "t": 5.3758,
+   "bar": 3,
+   "step": 13,
+   "offMs": -44.1,
+   "hz": 732.1,
+   "note": "F♯5",
+   "strength": 0.516
+  },
+  {
+   "t": 5.759,
+   "bar": 4,
+   "step": 0,
+   "offMs": 22.0,
+   "hz": 624.5,
+   "note": "D♯5",
+   "strength": 1.0
+  },
+  {
+   "t": 5.8925,
+   "bar": 4,
+   "step": 1,
+   "offMs": 49.9,
+   "hz": 882.9,
+   "note": "A5",
+   "strength": 0.464
+  },
+  {
+   "t": 5.9331,
+   "bar": 4,
+   "step": 2,
+   "offMs": -15.1,
+   "hz": 1012.1,
+   "note": "B5",
+   "strength": 0.495
+  },
+  {
+   "t": 5.9738,
+   "bar": 4,
+   "step": 2,
+   "offMs": 25.5,
+   "hz": 1507.3,
+   "note": "F♯6",
+   "strength": 0.537
+  },
+  {
+   "t": 6.0202,
+   "bar": 4,
+   "step": 3,
+   "offMs": -33.7,
+   "hz": 861.3,
+   "note": "A5",
+   "strength": 0.503
+  },
+  {
+   "t": 6.2292,
+   "bar": 4,
+   "step": 5,
+   "offMs": -36.0,
+   "hz": 1033.6,
+   "note": "C6",
+   "strength": 0.473
+  },
+  {
+   "t": 6.2988,
+   "bar": 4,
+   "step": 5,
+   "offMs": 33.6,
+   "hz": 1055.1,
+   "note": "C6",
+   "strength": 0.549
+  },
+  {
+   "t": 6.4265,
+   "bar": 4,
+   "step": 7,
+   "offMs": -50.0,
+   "hz": 882.9,
+   "note": "A5",
+   "strength": 0.411
+  },
+  {
+   "t": 6.4904,
+   "bar": 4,
+   "step": 7,
+   "offMs": 13.9,
+   "hz": 753.7,
+   "note": "F♯5",
+   "strength": 0.63
+  },
+  {
+   "t": 6.531,
+   "bar": 4,
+   "step": 8,
+   "offMs": -51.1,
+   "hz": 990.5,
+   "note": "B5",
+   "strength": 0.477
+  },
+  {
+   "t": 6.6123,
+   "bar": 4,
+   "step": 8,
+   "offMs": 30.1,
+   "hz": 882.9,
+   "note": "A5",
+   "strength": 0.481
+  },
+  {
+   "t": 6.6413,
+   "bar": 4,
+   "step": 9,
+   "offMs": -46.5,
+   "hz": 646.0,
+   "note": "E5",
+   "strength": 0.526
+  },
+  {
+   "t": 6.711,
+   "bar": 4,
+   "step": 9,
+   "offMs": 23.2,
+   "hz": 646.0,
+   "note": "E5",
+   "strength": 0.435
+  },
+  {
+   "t": 6.769,
+   "bar": 4,
+   "step": 10,
+   "offMs": -24.4,
+   "hz": 732.1,
+   "note": "F♯5",
+   "strength": 0.442
+  },
+  {
+   "t": 6.8097,
+   "bar": 4,
+   "step": 10,
+   "offMs": 16.2,
+   "hz": 732.1,
+   "note": "F♯5",
+   "strength": 0.412
+  },
+  {
+   "t": 7.0593,
+   "bar": 4,
+   "step": 13,
+   "offMs": -51.1,
+   "hz": 732.1,
+   "note": "F♯5",
+   "strength": 0.485
+  }
+ ]
+}

@@ -18,7 +18,7 @@ npm run music:spectrogram -- edit   # images of the edit with bars, sections and
 |---|---|---|
 | `fetch` | `music/song.json` (source) | `music/out/source.wav` |
 | `analyze` | the source | `music/analysis.json`: tempo, bar 1, per-bar loudness and bands, 16-step drum grids, key, texture changes |
-| `edit` | `analysis.json`, `music/edit.json` | `public/launch.m4a`, `src/cues.generated.json` (video bars, beats, splices), `src/meters.generated.json` (per-frame loudness, bands, drum hits at 60 fps) |
+| `edit` | `analysis.json`, `music/edit.json`, `music/events.json` | `public/launch.m4a`, `src/cues.generated.json` (video bars, beats, splices), `src/meters.generated.json` (per-frame loudness, bands, drum hits at 60 fps), `src/events.generated.json` (each named sound, onset by onset: time, nearest sixteenth and how far off, pitch, strength) |
 | `check` | all of it | pass/fail: one tempo fits the source; every run of the edit is the song's own samples exactly where the cues say (sample-exact, so time is kept through every splice); every splice is on a bar line; no splice clicks louder than the song itself does there; no splice a person heard as abrupt; under the cap; cues fresh. It also lists splices nobody has listened to yet |
 | `contour <from> <to>` | the edit | how loud it sounds beat by beat between two video bars, K-weighted (the ear's weighting behind LUFS); raw RMS reads the sub, not what you hear |
 | `spectrogram` | the source or the edit | `music/out/spectrograms/*.png` |
@@ -27,6 +27,7 @@ Three files are authored; everything else is generated, so don't hand-edit it.
 
 - **`music/song.json`**: the source, and what each stretch of the song is, in song bars. Use `textureChanges` in `analysis.json` and the source spectrograms to find where sections turn.
 - **`music/edit.json`**: the cut, as runs of song bars, counted in whole samples. Every splice is on a bar line by construction; `check` proves time is kept through it.
+- **`music/events.json`**: sounds the picture answers one at a time (the intro's arcade blips, say): a span of video bars, a band, and the harmonic or percussive half of the mix. Shots read their onsets from `src/events.generated.json`; the blips turned out to be two per sixteenth and up to 50 ms off the grid, which a shot timed to the grid would have missed.
 - **`music/listening.json`**: what a person heard at each splice, and in which edit (`"24→51": "abrupt"`). The measures can't hear whether a cut lands musically: drop 1 cut straight into the riser measured smoother than 90% of the song's own bar lines and sounded wrong, because a riser needs a dip to climb from. `check` fails on a negative verdict given for the current edit, asks for a re-listen once the edit changes, and lists splices nobody has heard.
 
 ### How it reads the track

@@ -4,6 +4,7 @@ import { AnimaticCard } from './Animatic';
 import { shotAt } from './storyboard';
 import { BARS, audioFile, position } from './time';
 import { CountIn } from './shots/CountIn';
+import { Foundations } from './shots/Foundations';
 
 /**
  * The film: every storyboard shot in order over the edit. A built shot plays; a shot not built yet
@@ -11,6 +12,7 @@ import { CountIn } from './shots/CountIn';
  */
 const SHOTS: Partial<Record<string, ComponentType>> = {
   'count-in': CountIn,
+  foundations: Foundations,
 };
 
 export function Film() {
