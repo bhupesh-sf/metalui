@@ -900,6 +900,23 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A region that scrolls with the system's own scrollbar: a slim pill thumb that fades in on the settle spring while you scroll or the pointer is over the region, and fades out on the release spring 600 ms after you stop. Hovering the bar widens the thumb (4 to 8) on the part spring, a bigger target just when you reach for it. Content fades out at an edge only when there is more beyond it, and the fade grows as you scroll away from that edge. Reduce Motion: the thumb's width snaps; the fades stay. (Base UI ScrollArea (overflow distances as CSS variables); the settle, release and part springs)
+    public static let scrollArea = MetalObjectRecipe(
+        name: "scroll-area",
+        layers: [
+
+        ],
+        props: [
+            "bar.size": .number(12.0),
+            "bar.inset": .number(2.0),
+            "bar.idle": .text("600ms"),
+            "thumb.width": .number(4.0),
+            "thumb.hover": .number(8.0),
+            "thumb.ink": .perColorway(bone: "rgba(27,27,29,.28)", graphite: "rgba(255,255,255,.28)"),
+            "fade.size": .number(20.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

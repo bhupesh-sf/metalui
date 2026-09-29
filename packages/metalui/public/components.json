@@ -970,6 +970,23 @@
       "agent": "https://metalui.dev/r/rule.md"
     },
     {
+      "name": "scroll-area",
+      "title": "Scroll area",
+      "status": "alpha",
+      "description": "A region that scrolls with the system's own scrollbar: a slim thumb that fades in while scrolling and widens when reached for, and edge fades that show there is more.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "ScrollArea",
+        "base": "@base-ui/react/scroll-area"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalScrollArea"
+      },
+      "registry": "https://metalui.dev/r/scroll-area.json",
+      "agent": "https://metalui.dev/r/scroll-area.md"
+    },
+    {
       "name": "select",
       "title": "Select",
       "status": "alpha",

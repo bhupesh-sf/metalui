@@ -1208,6 +1208,26 @@
       "docs": "Agent guide: https://metalui.dev/r/rule.md. SwiftUI: MetalRule in the MetalUI Swift package."
     },
     {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll area",
+      "description": "A region that scrolls with the system's own scrollbar: a slim thumb that fades in while scrolling and widens when reached for, and edge fades that show there is more.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/scroll-area/scroll-area.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/scroll-area/scroll-area.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/scroll-area.md. SwiftUI: MetalScrollArea in the MetalUI Swift package."
+    },
+    {
       "name": "select",
       "type": "registry:ui",
       "title": "Select",

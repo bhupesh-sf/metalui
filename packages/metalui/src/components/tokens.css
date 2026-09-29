@@ -1037,6 +1037,13 @@
   --mu-r-sheet-grip-width: 36px;
   --mu-r-sheet-grip-height: 4px;
   --mu-r-sheet-grip-gap: 10px;
+  /* scroll-area: Base UI ScrollArea (overflow distances as CSS variables); the settle, release and part springs */
+  --mu-r-scroll-area-bar-size: 12px;
+  --mu-r-scroll-area-bar-inset: 2px;
+  --mu-r-scroll-area-bar-idle: 600ms;
+  --mu-r-scroll-area-thumb-width: 4px;
+  --mu-r-scroll-area-thumb-hover: 8px;
+  --mu-r-scroll-area-fade-size: 20px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
@@ -1933,6 +1940,7 @@
     /* mu-recipe:checkbox:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
   --mu-r-radio-error-ring: rgba(216,69,59,.55);
   --mu-r-textarea-error-ring: rgba(216,69,59,.55);
+  --mu-r-scroll-area-thumb-ink: rgba(27,27,29,.28);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
   --mu-r-glass-face-self-shadow:
@@ -2420,6 +2428,7 @@
     /* mu-recipe:checkbox:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
   --mu-r-radio-error-ring: rgba(255,122,102,.5);
   --mu-r-textarea-error-ring: rgba(255,122,102,.5);
+  --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
   --mu-r-glass-face-self-shadow:
@@ -2908,6 +2917,7 @@
       inset 0 2px 4px -2px rgba(0,0,0,.4);
     --mu-r-radio-error-ring: rgba(255,122,102,.5);
     --mu-r-textarea-error-ring: rgba(255,122,102,.5);
+    --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
     --mu-r-glass-face-self-shadow:

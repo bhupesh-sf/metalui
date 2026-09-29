@@ -1,0 +1,21 @@
+{
+  "name": "scroll-area",
+  "title": "Scroll area",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A region that scrolls with the system's own scrollbar: a slim thumb that fades in while scrolling and widens when reached for, and edge fades that show there is more.",
+  "base": "@base-ui/react/scroll-area",
+  "react": {
+    "export": "ScrollArea",
+    "files": [
+      "scroll-area.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalScrollArea",
+    "file": "swift/Sources/MetalUI/Components/MetalScrollArea.swift",
+    "status": "wip"
+  },
+  "agent": "scroll-area.agent.md",
+  "page": "/components/scroll-area"
+}

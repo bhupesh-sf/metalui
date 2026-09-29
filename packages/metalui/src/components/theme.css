@@ -438,6 +438,12 @@
   --spacing-sheet-grip-width: var(--mu-r-sheet-grip-width);
   --spacing-sheet-grip-height: var(--mu-r-sheet-grip-height);
   --spacing-sheet-grip-gap: var(--mu-r-sheet-grip-gap);
+  --spacing-scroll-area-bar-size: var(--mu-r-scroll-area-bar-size);
+  --spacing-scroll-area-bar-inset: var(--mu-r-scroll-area-bar-inset);
+  --spacing-scroll-area-thumb-width: var(--mu-r-scroll-area-thumb-width);
+  --spacing-scroll-area-thumb-hover: var(--mu-r-scroll-area-thumb-hover);
+  --color-scroll-area-thumb-ink: var(--mu-r-scroll-area-thumb-ink);
+  --spacing-scroll-area-fade-size: var(--mu-r-scroll-area-fade-size);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1307,6 +1313,25 @@
 }
 @utility stroke-width-sheet-grip-width {
   stroke-width: var(--mu-r-sheet-grip-width);
+}
+@utility scroll-area-fill {
+  height: 100%; max-height: inherit; border-radius: inherit;
+}
+@utility scroll-area-fade {
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0, #000 min(var(--mu-r-scroll-area-fade-size), var(--scroll-area-overflow-y-start, 0px)), #000 calc(100% - min(var(--mu-r-scroll-area-fade-size), var(--scroll-area-overflow-y-end, 0px))), rgba(0,0,0,0) 100%);
+}
+@utility scroll-area-bar {
+  opacity: 0; transition: opacity var(--mu-spring-release-d) var(--mu-spring-release) var(--mu-r-scroll-area-bar-idle); &[data-scrolling], &[data-hovering] { opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); }
+}
+@utility scroll-area-thumb {
+  width: var(--mu-r-scroll-area-thumb-width); border-radius: 999px; background: var(--mu-r-scroll-area-thumb-ink); transition: width var(--mu-spring-part-d) var(--mu-spring-part); :hover > & { width: var(--mu-r-scroll-area-thumb-hover); }
+}
+@utility duration-scroll-area-bar-idle {
+  --tw-duration: var(--mu-r-scroll-area-bar-idle);
+  transition-duration: var(--mu-r-scroll-area-bar-idle);
+}
+@utility stroke-width-scroll-area-thumb-width {
+  stroke-width: var(--mu-r-scroll-area-thumb-width);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);
