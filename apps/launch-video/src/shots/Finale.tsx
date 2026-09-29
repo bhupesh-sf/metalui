@@ -1,4 +1,4 @@
-import { frameAt } from '../time';
+import { FPS, frameAt } from '../time';
 import type { Pose } from '../film/stage';
 import { BUILD_AT } from './Build';
 import { DROP1_AT } from './Components';
@@ -41,3 +41,14 @@ export const DANCE = [25, 26, 27, 28].flatMap((bar) => [
 
 /** The grid ripples where the camera is on each downbeat of the tour. */
 export const TOUR_IMPACTS = [{ x: BUILD_AT.x, y: 0, at: B(25, 1), strength: 2.4 }, ...TOUR.slice(0, 3).map((s) => ({ x: s.at.x, y: s.at.y, at: B(s.bar, 1), strength: 1.6 }))];
+
+/**
+ * The drop's fire, keyed to the tour: its front reaches each place LEAD frames before the camera lands
+ * there, so every set is alight on its downbeat, however far apart the places are. [seconds, px] from
+ * the drop at the x-ray bench.
+ */
+const LEAD = 24;
+export const FIRE_FRONT: [number, number][] = TOUR.map((stop) => [
+  (B(stop.bar, 1) - LEAD - B(25, 1)) / FPS,
+  Math.hypot(stop.at.x - BUILD_AT.x, stop.at.y),
+]);

@@ -140,8 +140,12 @@ export interface Impact {
   y: number;
   at: number;
   strength: number;
-  /** A drop that sets the grid alight: a burning front runs out from here instead of a ripple. */
-  fire?: boolean;
+  /**
+   * A drop that sets the grid alight: a burning front runs out from here instead of a ripple. `true`
+   * runs it at FIRE.speed; a list of [seconds, px] keys where the front is when, so it can keep pace
+   * with a camera (it holds the last segment's speed after the last key).
+   */
+  fire?: boolean | [number, number][];
 }
 
 const DOT = { pitch: 40, radius: 2.2, ink: '60 66 78', alpha: 0.26 };
@@ -163,6 +167,19 @@ function heatColour(h: number) {
   const t = Math.min(1, Math.max(0, (h - h0) / (h1 - h0)));
   return `rgb(${c0.map((v, k) => Math.round(v + (c1[k] - v) * t)).join(' ')})`;
 }
+/** When the front of a fire reached a distance (seconds after its hit). */
+function reachedAt(fire: true | [number, number][], d: number) {
+  if (fire === true) return Math.max(0, d - FIRE.start) / FIRE.speed;
+  const keys: [number, number][] = [[0, FIRE.start], ...fire];
+  if (d <= FIRE.start) return 0;
+  for (let k = 1; k < keys.length; k++) {
+    const [t0, r0] = keys[k - 1], [t1, r1] = keys[k];
+    if (d <= r1) return t0 + ((d - r0) / (r1 - r0)) * (t1 - t0);
+  }
+  const [ta, ra] = keys[keys.length - 2], [tb, rb] = keys[keys.length - 1];
+  return tb + ((d - rb) * (tb - ta)) / (rb - ra);
+}
+
 /** A steady hash in [0, 1): the same dot and frame give the same flicker in every render. */
 const hash = (a: number, b: number, c = 0) => { const v = Math.sin(a * 12.9898 + b * 78.233 + c * 37.719) * 43758.5453; return v - Math.floor(v); };
 
@@ -182,7 +199,7 @@ function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: 
   const all = impacts.map((i) => ({ ...i, t: (frame - i.at) / fps }));
   const live = all.filter((i) => !i.fire && i.t >= 0 && i.t < WAVE.life);
   // a fire burns for as long as its front takes to cross an area, and its last dots to cool
-  const fires = all.filter((i) => i.fire && i.t >= 0 && i.t < FIRE.reach / FIRE.speed + FIRE.life);
+  const fires = all.filter((i) => i.fire && i.t >= 0 && i.t < reachedAt(i.fire as true | [number, number][], FIRE.reach) + FIRE.life);
   return (
     <>
       {areas.map((a, n) => {
@@ -206,7 +223,7 @@ function RippleDots({ frame, fps, impacts, areas, near }: { frame: number; fps: 
               const dx = x - i.x, dy = y - i.y;
               // the front is ragged: tongues by direction, and a little per dot
               const tongue = 1 + FIRE.ragged * (Math.sin(Math.atan2(dy, dx) * 7 + i.x) * 0.6 + (hash(x, y) - 0.5) * 0.8);
-              const age = i.t - Math.max(0, Math.hypot(dx, dy) * tongue - FIRE.start) / FIRE.speed;
+              const age = i.t - reachedAt(i.fire as true | [number, number][], Math.hypot(dx, dy) * tongue);
               if (age <= 0 || age >= FIRE.life) continue;
               const h = age < FIRE.flare ? age / FIRE.flare : (1 - (age - FIRE.flare) / (FIRE.life - FIRE.flare)) ** 1.6;
               heat = Math.max(heat, h * Math.min(1, i.strength / 2));
