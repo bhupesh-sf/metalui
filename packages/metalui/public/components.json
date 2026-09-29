@@ -2,6 +2,23 @@
   "$description": "MetalUI components. Each has a React export, a SwiftUI symbol, a shadcn registry item and an agent guide.",
   "components": [
     {
+      "name": "alert-dialog",
+      "title": "Alert dialog",
+      "status": "alpha",
+      "description": "A question that must be answered: the dialog's plate and motion; a click outside shakes it once on the refusal spring instead of closing it, and focus starts on Cancel.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "AlertDialog",
+        "base": "@base-ui/react/alert-dialog"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalAlertDialog"
+      },
+      "registry": "https://metalui.dev/r/alert-dialog.json",
+      "agent": "https://metalui.dev/r/alert-dialog.md"
+    },
+    {
       "name": "backlight",
       "title": "Backlight",
       "status": "alpha",

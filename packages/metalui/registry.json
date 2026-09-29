@@ -135,6 +135,26 @@
       ]
     },
     {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert dialog",
+      "description": "A question that must be answered: the dialog's plate and motion; a click outside shakes it once on the refusal spring instead of closing it, and focus starts on Cancel.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/alert-dialog/alert-dialog.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/alert-dialog/alert-dialog.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/alert-dialog.md. SwiftUI: MetalAlertDialog in the MetalUI Swift package."
+    },
+    {
       "name": "backlight",
       "type": "registry:ui",
       "title": "Backlight",

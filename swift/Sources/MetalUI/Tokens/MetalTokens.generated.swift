@@ -767,6 +767,17 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A question that must be answered: the dialog's plate, scrim and motion, with the question as the title, what happens if you agree 4 below it, then Cancel and the confirm button. A click outside does not close it: the plate shakes once on the refusal spring, one nest aside. Focus starts on Cancel; Esc is Cancel. Reduce Motion: no shake. (the dialog recipe; the refusal spring; Base UI AlertDialog)
+    public static let alertDialog = MetalObjectRecipe(
+        name: "alert-dialog",
+        layers: [
+
+        ],
+        props: [
+            "self.text-gap": .number(4.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

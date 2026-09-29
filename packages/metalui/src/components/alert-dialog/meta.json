@@ -1,0 +1,24 @@
+{
+  "name": "alert-dialog",
+  "title": "Alert dialog",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A question that must be answered: the dialog's plate and motion; a click outside shakes it once on the refusal spring instead of closing it, and focus starts on Cancel.",
+  "base": "@base-ui/react/alert-dialog",
+  "react": {
+    "export": "AlertDialog",
+    "files": [
+      "alert-dialog.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalAlertDialog",
+    "file": "swift/Sources/MetalUI/Components/MetalAlertDialog.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "AlertDialog": ["Root", "Popup", "Title", "Description", "Actions", "Cancel", "Confirm"]
+  },
+  "agent": "alert-dialog.agent.md",
+  "page": "/components/alert-dialog"
+}

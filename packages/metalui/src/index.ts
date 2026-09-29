@@ -10,6 +10,7 @@ export { Field, SearchField, type SearchFieldProps } from './components/field/fi
 export { Textarea, type TextareaProps } from './components/textarea/textarea';
 export { Sparkline, type SparklineProps, type SparklinePoint } from './components/sparkline/sparkline';
 export { Dialog, type DialogRootProps, type DialogPopupProps } from './components/dialog/dialog';
+export { AlertDialog, type AlertDialogRootProps, type AlertDialogConfirmProps } from './components/alert-dialog/alert-dialog';
 export { GlassFace } from './components/glass-face/glass-face';
 export { Glyph, type GlyphProps } from './components/glyph/glyph';
 export { Row, type RowProps, type RowRootProps } from './components/row/row';
