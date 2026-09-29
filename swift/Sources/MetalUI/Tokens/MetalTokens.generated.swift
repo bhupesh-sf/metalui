@@ -2314,82 +2314,112 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Weather: a slim raised slab with a dot-display sky sunk into it. The large widget (400 × 560) has a header, a 46 × 28 sky, the next hours as 7 × 7 dot glyphs and a seven-day range on one dot scale; a tile (180) is a 21 × 21 sky with a 6 rim. One sky for each weather, drawn for the clock and stepped by the dot display. (the weather widget and tiles design (Bone and Graphite), Main.dc.html)
+    /// A weather object: a slab with a dot-matrix sky sunk into it. The sky is drawn on an 8 pitch: the sun rides its arc to the time of day (dawn and dusk warm the horizon), the moon and stars take the night, and clouds, rain, thunder, snow, mist, wind and heat move in stepped frames. The large widget adds the next hours (a dot glyph and the temperature in the pixel face) and the week (each day's low to high as lit dots on one shared scale, one dot a degree, coloured by that day's weather). The tile is the sky alone with the temperature on its ground. Reduced motion holds a single frame. (metalui weather design (canvas Weather widget and tiles, 2026-09-26))
     public static let weather = MetalObjectRecipe(
         name: "weather",
         layers: [
-            .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(252.0, 251.0, 249.0, 1.0)), 0.0), .init(.color(MetalRGBA(246.0, 245.0, 242.0, 1.0)), 1.0)])), // mu-recipe:weather:0 linear-gradient(#FCFBF9, #F6F5F2)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.75)))), // mu-recipe:weather:1 inset 0 0 6px 2px rgba(255,255,255,.75)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 2.0, y: 3.0, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.95)))), // mu-recipe:weather:2 inset 2px 3px 3px -1px rgba(255,255,255,.95)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(110.0, 100.0, 80.0, 0.07)))), // mu-recipe:weather:3 inset -1px -3px 5px -2px rgba(110,100,80,.07)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.045)))), // mu-recipe:weather:4 0 0 0 .5px rgba(24,22,16,.045)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.05)))), // mu-recipe:weather:5 0 1px 2px rgba(24,22,16,.05)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 8.0, blur: 18.0, spread: -6.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.08)))), // mu-recipe:weather:6 0 8px 18px -6px rgba(24,22,16,.08)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 26.0, blur: 50.0, spread: -16.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.13)))), // mu-recipe:weather:7 0 26px 50px -16px rgba(24,22,16,.13)
-            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 52.0, blur: 96.0, spread: -36.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.13)))), // mu-recipe:weather:8 0 52px 96px -36px rgba(24,22,16,.13)
-            .init(part: "self", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(44.0, 44.0, 47.0, 1.0)), 0.0), .init(.color(MetalRGBA(37.0, 37.0, 39.0, 1.0)), 1.0)])), // mu-recipe:weather:9 linear-gradient(#2C2C2F, #252527)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:weather:10 inset 0 0 6px 2px rgba(255,255,255,.055)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.5, y: 2.5, blur: 3.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.1)))), // mu-recipe:weather:11 inset 1.5px 2.5px 3px -1px rgba(255,255,255,.10)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: -1.0, y: -3.0, blur: 5.0, spread: -2.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.35)))), // mu-recipe:weather:12 inset -1px -3px 5px -2px rgba(0,0,0,.35)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:weather:13 0 0 0 .5px rgba(0,0,0,.45)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.22)))), // mu-recipe:weather:14 0 1px 2px rgba(0,0,0,.22)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 8.0, blur: 18.0, spread: -6.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:weather:15 0 8px 18px -6px rgba(0,0,0,.2)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 26.0, blur: 50.0, spread: -16.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.34)))), // mu-recipe:weather:16 0 26px 50px -16px rgba(0,0,0,.34)
-            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 52.0, blur: 96.0, spread: -36.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:weather:17 0 52px 96px -36px rgba(0,0,0,.3)
+
         ],
         props: [
             "self.width": .number(400.0),
             "self.height": .number(560.0),
             "self.pad": .number(16.0),
-            "self.radius": .number(24.0),
             "self.gap": .number(12.0),
-            "header.gap": .number(12.0),
-            "header.pad-top": .number(2.0),
-            "header.pad-x": .number(4.0),
-            "header.title-gap": .number(2.0),
-            "header.status-gap": .number(6.0),
-            "header.status-height": .number(24.0),
-            "header.led": .number(6.0),
-            "sky.height": .number(224.0),
-            "sky.radius": .number(18.0),
-            "sky.cols": .number(46.0),
-            "sky.rows": .number(28.0),
-            "sky.horizon": .number(21.0),
-            "sky.text-x": .number(14.0),
-            "sky.text-y": .number(6.0),
-            "sky.text-gap": .number(12.0),
-            "sky.meta-gap": .number(2.0),
-            "sky.meta-pad": .number(4.0),
-            "hours.height": .number(72.0),
-            "hours.gap": .number(4.0),
-            "hours.count": .number(6.0),
-            "hours.mini": .number(21.0),
+            "header.inset": .number(4.0),
+            "header.top": .number(2.0),
+            "header.gap": .number(2.0),
+            "header.led-gap": .number(6.0),
+            "header.height": .number(24.0),
+            "screen.height": .number(224.0),
+            "screen.radius": .number(18.0),
+            "screen.inset": .number(14.0),
+            "screen.foot": .number(6.0),
+            "screen.lift": .number(4.0),
+            "dot.pitch": .number(8.0),
+            "dot.size": .number(6.0),
+            "dot.frame": .text("166ms"),
+            "hour.height": .number(72.0),
+            "hour.font": .text("700 24px/28px pixel"),
+            "hour.glyph": .number(21.0),
+            "hour.gap": .number(4.0),
             "week.height": .number(140.0),
-            "week.gap": .number(4.0),
-            "week.pad-x": .number(4.0),
             "week.row": .number(14.0),
-            "week.col-gap": .number(10.0),
+            "week.gap": .number(4.0),
             "week.day": .number(40.0),
             "week.glyph": .number(14.0),
-            "week.lo": .number(30.0),
+            "week.value": .number(30.0),
             "week.bar": .number(168.0),
-            "week.hi": .number(30.0),
-            "week.stroke": .number(1.7),
-            "week.scale-min": .number(10.0),
-            "week.scale-max": .number(30.0),
-            "rule.inset": .number(4.0),
+            "week.bar-height": .number(6.0),
+            "week.col": .number(10.0),
             "tile.size": .number(180.0),
             "tile.pad": .number(6.0),
-            "tile.radius": .number(24.0),
-            "tile.well-radius": .number(18.0),
-            "tile.well": .number(168.0),
-            "tile.cols": .number(21.0),
-            "tile.rows": .number(21.0),
-            "tile.horizon": .number(13.0),
-            "tile.text-x": .number(12.0),
-            "tile.text-y": .number(6.0),
-            "tile.meta-gap": .number(2.0),
-            "tile.meta-pad": .number(6.0),
+            "tile.screen": .number(168.0),
+            "tile.inset": .number(12.0),
+            "tile.lift": .number(6.0),
+            "ink.off": .perColorway(bone: "rgba(40,38,32,.06)", graphite: "rgba(255,255,255,.05)"),
+            "ink.hz": .perColorway(bone: "#9A9A9D", graphite: "#5C5C60"),
+            "ink.hill": .perColorway(bone: "#5C5C60", graphite: "#77777B"),
+            "ink.sun": .perColorway(bone: "#C98A18", graphite: "#E4B25E"),
+            "ink.moon": .perColorway(bone: "#8A6212", graphite: "#F3D9A4"),
+            "ink.star": .perColorway(bone: "#C7A76B", graphite: "#C7A76B"),
+            "ink.cloud": .perColorway(bone: "#9A9A9D", graphite: "#A6A6A9"),
+            "ink.cloud-dark": .perColorway(bone: "#5C5C60", graphite: "#77777B"),
+            "ink.rain": .perColorway(bone: "#3558C9", graphite: "#8FB0FF"),
+            "ink.snow": .perColorway(bone: "#5C5C60", graphite: "#F2F2F0"),
+            "ink.glow-opacity": .text("0.32"),
+            "ink.heat-opacity": .text("0.5"),
+            "ink.fog-opacity": .text("0.7"),
+            "ink.moon-dark-opacity": .text("0.22"),
+        ]
+    )
+
+    /// A day object: a tear-off page sunk into a slab. The date is drawn in dots at 3× (Saturday in blue, Sunday in amber), the month and weekday and the clock stand in the pixel face beside it with a colon that blinks each second, and sixty small dots along the foot of the page fill with the minute. Below: the year so far, one dot a day (today pulses), the days left, the moon's phase, and one line for the day. Tapping the page tears it off: the number's dots fall away and the next day's settle in. The tile is the page alone with the weekday, month, days left and the moon. (metalui day design (canvas Day widget, 2026-09-26))
+    public static let day = MetalObjectRecipe(
+        name: "day",
+        layers: [
+
+        ],
+        props: [
+            "self.width": .number(364.0),
+            "self.height": .number(382.0),
+            "self.pad": .number(16.0),
+            "self.gap": .number(12.0),
+            "self.text-gap": .number(2.0),
+            "self.left-gap": .number(6.0),
+            "page.height": .number(196.0),
+            "page.radius": .number(18.0),
+            "page.side": .number(48.0),
+            "page.tear": .text("55ms"),
+            "page.tear-top": .number(10.0),
+            "page.tear-left": .number(8.0),
+            "page.tear-width": .number(264.0),
+            "page.tear-height": .number(172.0),
+            "page.tear-radius": .number(12.0),
+            "page.side-top": .number(12.0),
+            "page.side-right": .number(10.0),
+            "clock.font": .text("700 24px/28px pixel"),
+            "clock.colon": .number(12.0),
+            "clock.colon-dim": .text("0.2"),
+            "clock.gap": .number(14.0),
+            "clock.colon-gap": .number(1.0),
+            "year.height": .number(70.0),
+            "year.gap": .number(16.0),
+            "year.width": .number(135.0),
+            "left.font": .text("700 40px/44px pixel"),
+            "tile.size": .number(180.0),
+            "tile.pad": .number(6.0),
+            "tile.screen": .number(168.0),
+            "tile.inset": .number(12.0),
+            "tile.moon": .number(21.0),
+            "tile.foot": .number(10.0),
+            "ink.off": .perColorway(bone: "rgba(40,38,32,.06)", graphite: "rgba(255,255,255,.05)"),
+            "ink.left": .perColorway(bone: "rgba(40,38,32,.16)", graphite: "rgba(255,255,255,.14)"),
+            "ink.hole": .perColorway(bone: "#9A9A9D", graphite: "#5C5C60"),
+            "ink.date": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
+            "ink.saturday": .perColorway(bone: "#3558C9", graphite: "#8FB0FF"),
+            "ink.sunday": .perColorway(bone: "#C98A18", graphite: "#E4B25E"),
+            "ink.moon": .perColorway(bone: "#8A6212", graphite: "#F3D9A4"),
+            "ink.fall-opacity": .text("0.35"),
         ]
     )
 }
@@ -2762,6 +2792,8 @@ public enum MetalPaletteMetrics {
     public static let edge: Double = 1.0
     public static let barOutset: Double = 2.0
     public static let caretHeight: Double = 18.0
+    public static let caretWidth: Double = 1.5
+    public static let lipY: Double = 0.5
     public static let screenFallbackHeight: Double = 900.0
 }
 

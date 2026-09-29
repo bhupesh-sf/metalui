@@ -2,8 +2,6 @@
 export { Surface, type SurfaceProps, type SurfaceMaterial, type SurfaceRadius } from './components/surface/surface';
 export { Well, type WellProps, type WellVariant, type WellRadius } from './components/well/well';
 export { DotDisplay, useDotTick, type DotDisplayProps, type DotColour, type DotInk } from './components/dot-display/dot-display';
-export { Weather, WeatherTile, type WeatherProps, type WeatherTileProps, type WeatherHour, type WeatherDay, type WeatherDayKind, type WeatherKind, type SunHours } from './components/weather/weather';
-export { sky, mini, SKY_INKS, MINI_INKS, DEFAULT_SUN } from './components/weather/sky';
 export { Label, type LabelProps, type LabelVariant } from './components/label/label';
 export { Rule, type RuleProps } from './components/rule/rule';
 export { IconButton, type IconButtonProps } from './components/icon-button/icon-button';
@@ -75,3 +73,29 @@ export { hop, hopPoint, type HopPoint, type HopOptions } from './motion/hop';
 export { LinkCard, linkHueDegrees, type LinkCardProps, type LinkPreview } from './blocks/link-card/link-card';
 export { Settings, type SettingsRowProps } from './blocks/settings/settings';
 export { CodeCard, tintCode, diffClasses, type CodeCardProps, type DiffClass } from './blocks/code-card/code-card';
+export {
+  Weather,
+  WeatherTile,
+  WeatherGlyph,
+  WEATHER_SKIES,
+  weatherScene,
+  moonAge,
+  moonPhaseName,
+  type WeatherKind,
+  type WeatherSky,
+  type WeatherCloud,
+  type WeatherHour,
+  type WeatherDay,
+  type WeatherProps,
+  type WeatherTileProps,
+  type WeatherRootProps,
+  type WeatherHeaderProps,
+  type WeatherSkyProps,
+  type WeatherNowProps,
+  type WeatherHoursProps,
+  type WeatherWeekProps,
+  type WeatherGlyphProps,
+  type WeatherSkyLayer,
+  type WeatherSceneOptions,
+} from './blocks/weather/weather';
+export { Day, DayTile, DAY_LINES, type DayLine, type DayProps, type DayRootProps, type DayPageProps, type DayLineProps, type DayTileProps } from './blocks/day/day';

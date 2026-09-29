@@ -37,7 +37,8 @@ const ROW = 'mu-fan relative inline-flex items-end gap-toolbar-gap';
 const CAP = 'mu-icon-trigger box-border inline-grid place-items-center flex-none p-0 border-0 cursor-pointer tap-highlight-none size-icon-button-tool-size rounded-icon-button-tool-radius text-icon-button-tool-ink recipe-icon-button-tool transition-icon-button-tool [&>svg]:size-icon-button-tool-glyph active:translate-y-icon-button-tool-press active:recipe-icon-button-tool-pressed focus-visible:focus-ring-flush';
 const LABEL = 'mu-fan-label box-border inline-flex items-center h-icon-button-tool-size px-toolbar-pad rounded-icon-button-tool-radius recipe-icon-button-tool type-toolbar-search text-icon-button-tool-ink whitespace-nowrap';
 const TRAY = 'mu-fan-tray relative box-border inline-flex items-center h-icon-button-tool-size overflow-hidden rounded-icon-button-tool-radius recipe-icon-button-tool';
-const SPRING = 'var(--mu-spring-part-d) var(--mu-spring-part)';
+/** The part spring, from the theme (duration and curve). */
+const SPRING = 'duration-part ease-part';
 
 export interface FanProps {
   'aria-label': string;
@@ -138,14 +139,12 @@ function FanPicker<V extends string>({ label, value, options, onValueChange, dir
               aria-label={o.shortcut ? `${o.label} · ${o.shortcut}` : o.label}
               title={o.shortcut ? `${o.label} · ${o.shortcut}` : o.label}
               tabIndex={isOpen ? 0 : -1}
-              className={`${CAP} absolute inset-0`}
+              className={`${CAP} absolute inset-0 ${SPRING}`}
               style={{
                 transform: `translateY(${y}px)`,
                 opacity: isOpen ? 1 : 0,
                 pointerEvents: isOpen ? 'auto' : 'none',
                 transitionProperty: still ? 'opacity' : 'transform, opacity',
-                transitionDuration: 'var(--mu-spring-part-d)',
-                transitionTimingFunction: 'var(--mu-spring-part)',
                 transitionDelay: !still && isOpen ? `calc(${k} * var(--mu-motion-fan-stagger))` : undefined,
               }}
               onClick={() => choose(o.value)}
@@ -207,8 +206,8 @@ function FanTray({ label, icon, children }: FanTrayProps) {
   return (
     <div
       ref={shell}
-      className={isOpen ? TRAY : `${TRAY} w-icon-button-tool-size`}
-      style={{ width: isOpen && width ? width : undefined, transition: still ? undefined : `width ${SPRING}` }}
+      className={`${isOpen ? TRAY : `${TRAY} w-icon-button-tool-size`} ${SPRING}`}
+      style={{ width: isOpen && width ? width : undefined, transitionProperty: still ? 'none' : 'width' }}
     >
       <button
         ref={cap}
@@ -216,8 +215,8 @@ function FanTray({ label, icon, children }: FanTrayProps) {
         aria-expanded={isOpen}
         aria-label={label}
         title={label}
-        className={`${CAP} absolute left-0 top-0`}
-        style={{ opacity: isOpen ? 0 : 1, pointerEvents: isOpen ? 'none' : 'auto', transition: `opacity ${SPRING}` }}
+        className={`${CAP} absolute left-0 top-0 ${SPRING}`}
+        style={{ opacity: isOpen ? 0 : 1, pointerEvents: isOpen ? 'none' : 'auto', transitionProperty: 'opacity' }}
         tabIndex={isOpen ? -1 : 0}
         onClick={toggle}
       >
@@ -227,8 +226,8 @@ function FanTray({ label, icon, children }: FanTrayProps) {
         ref={inner}
         aria-label={label}
         aria-hidden={!isOpen}
-        className="mu-fan-tray-inner inline-flex items-center gap-toolbar-gap px-toolbar-pad whitespace-nowrap"
-        style={{ opacity: isOpen ? 1 : 0, visibility: isOpen ? 'visible' : 'hidden', transition: `opacity ${SPRING}` }}
+        className={`mu-fan-tray-inner inline-flex items-center gap-toolbar-gap px-toolbar-pad whitespace-nowrap ${SPRING}`}
+        style={{ opacity: isOpen ? 1 : 0, visibility: isOpen ? 'visible' : 'hidden', transitionProperty: 'opacity' }}
       >
         {children}
         <BaseToolbar.Button aria-label={`Fold ${label}`} title="Fold" className={`${CAP} mu-fan-fold`} onClick={fold}>

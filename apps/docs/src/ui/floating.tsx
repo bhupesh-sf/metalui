@@ -144,7 +144,7 @@ const ITEMS: Item[] = [
     id: 'weather', table: ['4%', '36%'], space: ['10%', '35%', -260, 12], dur: '33s', drift: ['20px', '14px'],
     node: () => (
       <Link to="/components/weather" aria-label="Weather" style={{ display: 'block' }}>
-        <WeatherTile kind="partly" temp="21°" name="Partly" meta="Rain 10%" clock={10.5} aria-label="Partly cloudy, 21° at 10:30" />
+        <WeatherTile sky="partly" hour={10.5} temp={21} name="Partly" meta="Rain 10%" aria-label="Partly cloudy, 21° at 10:30" />
       </Link>
     ),
   },

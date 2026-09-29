@@ -30,6 +30,7 @@ const PLOT = {
 };
 const BASE = 'mu-sparkline-base stroke-sparkline-base-color dash-sparkline-base-dash stroke-width-sparkline-base-width';
 const LINE = 'mu-sparkline-line fill-none stroke-sparkline-line-color stroke-width-sparkline-line-width';
+const BRIDGE = 'mu-sparkline-bridge fill-none stroke-sparkline-line-color dash-sparkline-base-dash stroke-width-sparkline-base-width';
 const DOT = 'mu-sparkline-dot r-sparkline-dot-r fill-sparkline-dot-fill stroke-sparkline-dot-ring stroke-width-sparkline-dot-stroke cursor-pointer';
 const LAST = 'mu-sparkline-dot r-sparkline-dot-r-last fill-sparkline-dot-last-fill stroke-sparkline-dot-last-ring stroke-width-sparkline-dot-stroke cursor-pointer';
 
@@ -54,11 +55,23 @@ export function Sparkline({ points, width = 300, height, size = 'regular', class
     d += `${pen ? 'L' : 'M'}${X(i).toFixed(1)} ${Y(p.value).toFixed(1)}`;
     pen = true;
   });
+  // Missing days stay visible as a dashed bridge, so a sparse series still reads as one line.
+  let bridge = '';
+  let prev: [number, number] | null = null;
+  let gap = false;
+  points.forEach((p, i) => {
+    if (!p) return void (gap = true);
+    const at: [number, number] = [X(i), Y(p.value)];
+    if (gap && prev) bridge += `M${prev[0].toFixed(1)} ${prev[1].toFixed(1)}L${at[0].toFixed(1)} ${at[1].toFixed(1)}`;
+    prev = at;
+    gap = false;
+  });
   const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
   const dots = points.map((p, i) => [p, i] as const).filter(([p]) => p) as [SparklinePoint, number][];
   return (
     <svg data-size={size} className={cls} viewBox={`0 0 ${width} ${h}`} preserveAspectRatio="none" {...props}>
       <line className={BASE} x1="0" x2={width} y1={Y(avg).toFixed(1)} y2={Y(avg).toFixed(1)} />
+      {bridge && <path className={BRIDGE} strokeLinecap="round" d={bridge} />}
       <path className={LINE} strokeLinecap="round" strokeLinejoin="round" d={d} />
       {dots.map(([p, i], k) => (
         <circle

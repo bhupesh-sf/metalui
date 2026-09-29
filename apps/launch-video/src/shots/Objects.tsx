@@ -96,7 +96,7 @@ export const OBJECT_PIECES: ObjectPiece[] = [
       return <Folder name={h.name} count={s.count} hue={h.hue} peeks={s.peeks} open={s.open} />;
     },
   })),
-  { id: 'o-weather', at: DROP1, fall: 'heavy', x: DX, y: -330, zoom: 1.4, size: [260, 260], draw: () => <WeatherTile kind="clear" temp="24°" name="Sunny" meta="Launch day" clock={11} running={false} aria-label="Launch day, sunny, 24°" /> },
+  { id: 'o-weather', at: DROP1, fall: 'heavy', x: DX, y: -330, zoom: 1.4, size: [260, 260], draw: () => <WeatherTile sky="clear" hour={11} temp={24} name="Sunny" meta="Launch day" animate={false} aria-label="Launch day, sunny, 24°" /> },
   { id: 'o-link', at: DROP1, fall: 'heavy', x: DX, y: 360, zoom: 1.2, size: [360, 200], draw: () => <LinkCard href="https://metalui.dev/components" /> },
   ...CARDS.map((c): ObjectPiece => ({
     id: c.id, at: c.at, fall: 'light', x: c.x, y: c.y, zoom: 2.4, size: [170, 130], turn: (c.x - DX) / 6,

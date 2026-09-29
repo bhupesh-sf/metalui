@@ -9,13 +9,28 @@ public struct MetalToastModel: Identifiable, Equatable {
     public let title: String
     public let sub: String?
     public let tone: Tone
+    /// The toast's one action (Undo unless named otherwise).
     public let undo: (() -> Void)?
+    /// The action cap's label; only Undo carries ⌘Z.
+    public let actionLabel: String
+    var isUndo: Bool { actionLabel == Self.undoLabel }
+    static let undoLabel = "Undo"
 
     public init(_ title: String, sub: String? = nil, tone: Tone = .default, undo: (() -> Void)? = nil) {
         self.title = title
         self.sub = sub
         self.tone = tone
         self.undo = undo
+        self.actionLabel = Self.undoLabel
+    }
+
+    /// A toast whose action is not Undo ("Back to Now").
+    public init(_ title: String, sub: String? = nil, tone: Tone = .default, action: String, perform: @escaping () -> Void) {
+        self.title = title
+        self.sub = sub
+        self.tone = tone
+        self.undo = perform
+        self.actionLabel = action
     }
 
     public static func == (a: Self, b: Self) -> Bool { a.id == b.id }
@@ -50,8 +65,8 @@ public struct MetalToast: View {
                     onUndo()
                 } label: {
                     HStack(spacing: recipe.points("undo.gap")) {
-                        Text("Undo").font(recipe.font("undo.font"))
-                        MetalKbd("⌘Z", surface: .sunk)
+                        Text(model.actionLabel).font(recipe.font("undo.font"))
+                        if model.isUndo { MetalKbd("⌘Z", surface: .sunk) }
                     }
                     .padding(.leading, recipe.points("undo.pad-left"))
                     .padding(.trailing, recipe.points("undo.pad-right"))
@@ -59,7 +74,7 @@ public struct MetalToast: View {
                     .metalObjectRecipe(recipe, part: "undo", in: Capsule(style: .continuous))
                 }
                 .buttonStyle(.plain)
-                .keyboardShortcut("z", modifiers: .command)
+                .keyboardShortcut(model.isUndo ? KeyboardShortcut("z", modifiers: .command) : nil)
             }
         }
         .foregroundColor((recipe.color("self.ink", colorway: cw) ?? colorway.tokens.ink).color)
@@ -75,6 +90,7 @@ public struct MetalToast: View {
 
 private struct MetalToastHost: ViewModifier {
     @Binding var toast: MetalToastModel?
+    @State private var hovering = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     func body(content: Content) -> some View {
@@ -84,13 +100,24 @@ private struct MetalToastHost: ViewModifier {
                 if let t = toast {
                     MetalToast(t) { dismiss() }
                         .id(t.id)
+                        // A host that passes presses through (a canvas under its chrome)
+                        // must know an actionable toast is there.
+                        .metalHitRegion(t.undo != nil)
+                        .onHover { hovering = $0 }
                         .transition(.asymmetric(
                             insertion: .opacity.combined(with: travel ? .offset(y: MetalRecipes.toast.points("self.rise")).combined(with: .scale(scale: MetalRecipes.toast.scalar("self.scale"))) : .identity),
                             removal: .opacity.combined(with: travel ? .offset(y: MetalRecipes.toast.points("self.rise")) : .identity)))
                         .task(id: t.id) {
                             guard t.tone != .error else { return }
-                            let ms = t.undo != nil ? MetalToastMetrics.undoMs : MetalToastMetrics.plainMs
-                            try? await Task.sleep(nanoseconds: UInt64(ms * 1_000_000))
+                            // The clock stops while the pointer is on the toast, so its
+                            // Undo is never pulled away mid-reach.
+                            var remaining = t.undo != nil ? MetalToastMetrics.undoMs : MetalToastMetrics.plainMs
+                            let step = 100.0
+                            while remaining > 0 {
+                                try? await Task.sleep(nanoseconds: UInt64(step * 1_000_000))
+                                if Task.isCancelled { return }
+                                if !hovering { remaining -= step }
+                            }
                             if toast?.id == t.id { dismiss() }
                         }
                 }
@@ -107,7 +134,7 @@ private struct MetalToastHost: ViewModifier {
 
 extension View {
     /// Shows one toast at the bottom centre: arrives on settle, leaves on release; undoable toasts stay 5 s,
-    /// plain ones 2.6 s, errors until dismissed.
+    /// plain ones 2.6 s, errors until dismissed. The clock pauses while the pointer is on the toast.
     public func metalToast(_ toast: Binding<MetalToastModel?>) -> some View {
         modifier(MetalToastHost(toast: toast))
     }

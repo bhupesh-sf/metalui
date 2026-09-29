@@ -933,59 +933,84 @@
   --spacing-weather-width: var(--mu-r-weather-self-width);
   --spacing-weather-height: var(--mu-r-weather-self-height);
   --spacing-weather-pad: var(--mu-r-weather-self-pad);
-  --spacing-weather-radius: var(--mu-r-weather-self-radius);
-  --radius-weather-radius: var(--mu-r-weather-self-radius);
   --spacing-weather-gap: var(--mu-r-weather-self-gap);
+  --spacing-weather-header-inset: var(--mu-r-weather-header-inset);
+  --spacing-weather-header-top: var(--mu-r-weather-header-top);
   --spacing-weather-header-gap: var(--mu-r-weather-header-gap);
-  --spacing-weather-header-pad-top: var(--mu-r-weather-header-pad-top);
-  --spacing-weather-header-pad-x: var(--mu-r-weather-header-pad-x);
-  --spacing-weather-header-title-gap: var(--mu-r-weather-header-title-gap);
-  --spacing-weather-header-status-gap: var(--mu-r-weather-header-status-gap);
-  --spacing-weather-header-status-height: var(--mu-r-weather-header-status-height);
-  --spacing-weather-header-led: var(--mu-r-weather-header-led);
-  --spacing-weather-sky-height: var(--mu-r-weather-sky-height);
-  --spacing-weather-sky-radius: var(--mu-r-weather-sky-radius);
-  --radius-weather-sky-radius: var(--mu-r-weather-sky-radius);
-  --spacing-weather-sky-cols: var(--mu-r-weather-sky-cols);
-  --spacing-weather-sky-rows: var(--mu-r-weather-sky-rows);
-  --spacing-weather-sky-horizon: var(--mu-r-weather-sky-horizon);
-  --spacing-weather-sky-text-x: var(--mu-r-weather-sky-text-x);
-  --spacing-weather-sky-text-y: var(--mu-r-weather-sky-text-y);
-  --spacing-weather-sky-text-gap: var(--mu-r-weather-sky-text-gap);
-  --spacing-weather-sky-meta-gap: var(--mu-r-weather-sky-meta-gap);
-  --spacing-weather-sky-meta-pad: var(--mu-r-weather-sky-meta-pad);
-  --spacing-weather-hours-height: var(--mu-r-weather-hours-height);
-  --spacing-weather-hours-gap: var(--mu-r-weather-hours-gap);
-  --spacing-weather-hours-count: var(--mu-r-weather-hours-count);
-  --spacing-weather-hours-mini: var(--mu-r-weather-hours-mini);
+  --spacing-weather-header-led-gap: var(--mu-r-weather-header-led-gap);
+  --spacing-weather-header-height: var(--mu-r-weather-header-height);
+  --spacing-weather-screen-height: var(--mu-r-weather-screen-height);
+  --spacing-weather-screen-radius: var(--mu-r-weather-screen-radius);
+  --radius-weather-screen-radius: var(--mu-r-weather-screen-radius);
+  --spacing-weather-screen-inset: var(--mu-r-weather-screen-inset);
+  --spacing-weather-screen-foot: var(--mu-r-weather-screen-foot);
+  --spacing-weather-screen-lift: var(--mu-r-weather-screen-lift);
+  --spacing-weather-dot-pitch: var(--mu-r-weather-dot-pitch);
+  --spacing-weather-dot-size: var(--mu-r-weather-dot-size);
+  --spacing-weather-hour-height: var(--mu-r-weather-hour-height);
+  --spacing-weather-hour-glyph: var(--mu-r-weather-hour-glyph);
+  --spacing-weather-hour-gap: var(--mu-r-weather-hour-gap);
   --spacing-weather-week-height: var(--mu-r-weather-week-height);
-  --spacing-weather-week-gap: var(--mu-r-weather-week-gap);
-  --spacing-weather-week-pad-x: var(--mu-r-weather-week-pad-x);
   --spacing-weather-week-row: var(--mu-r-weather-week-row);
-  --spacing-weather-week-col-gap: var(--mu-r-weather-week-col-gap);
+  --spacing-weather-week-gap: var(--mu-r-weather-week-gap);
   --spacing-weather-week-day: var(--mu-r-weather-week-day);
   --spacing-weather-week-glyph: var(--mu-r-weather-week-glyph);
-  --spacing-weather-week-lo: var(--mu-r-weather-week-lo);
+  --spacing-weather-week-value: var(--mu-r-weather-week-value);
   --spacing-weather-week-bar: var(--mu-r-weather-week-bar);
-  --spacing-weather-week-hi: var(--mu-r-weather-week-hi);
-  --spacing-weather-week-stroke: var(--mu-r-weather-week-stroke);
-  --spacing-weather-week-scale-min: var(--mu-r-weather-week-scale-min);
-  --spacing-weather-week-scale-max: var(--mu-r-weather-week-scale-max);
-  --spacing-weather-rule-inset: var(--mu-r-weather-rule-inset);
+  --spacing-weather-week-bar-height: var(--mu-r-weather-week-bar-height);
+  --spacing-weather-week-col: var(--mu-r-weather-week-col);
   --spacing-weather-tile-size: var(--mu-r-weather-tile-size);
   --spacing-weather-tile-pad: var(--mu-r-weather-tile-pad);
-  --spacing-weather-tile-radius: var(--mu-r-weather-tile-radius);
-  --radius-weather-tile-radius: var(--mu-r-weather-tile-radius);
-  --spacing-weather-tile-well-radius: var(--mu-r-weather-tile-well-radius);
-  --radius-weather-tile-well-radius: var(--mu-r-weather-tile-well-radius);
-  --spacing-weather-tile-well: var(--mu-r-weather-tile-well);
-  --spacing-weather-tile-cols: var(--mu-r-weather-tile-cols);
-  --spacing-weather-tile-rows: var(--mu-r-weather-tile-rows);
-  --spacing-weather-tile-horizon: var(--mu-r-weather-tile-horizon);
-  --spacing-weather-tile-text-x: var(--mu-r-weather-tile-text-x);
-  --spacing-weather-tile-text-y: var(--mu-r-weather-tile-text-y);
-  --spacing-weather-tile-meta-gap: var(--mu-r-weather-tile-meta-gap);
-  --spacing-weather-tile-meta-pad: var(--mu-r-weather-tile-meta-pad);
+  --spacing-weather-tile-screen: var(--mu-r-weather-tile-screen);
+  --spacing-weather-tile-inset: var(--mu-r-weather-tile-inset);
+  --spacing-weather-tile-lift: var(--mu-r-weather-tile-lift);
+  --color-weather-ink-off: var(--mu-r-weather-ink-off);
+  --color-weather-ink-hz: var(--mu-r-weather-ink-hz);
+  --color-weather-ink-hill: var(--mu-r-weather-ink-hill);
+  --color-weather-ink-sun: var(--mu-r-weather-ink-sun);
+  --color-weather-ink-moon: var(--mu-r-weather-ink-moon);
+  --color-weather-ink-star: var(--mu-r-weather-ink-star);
+  --color-weather-ink-cloud: var(--mu-r-weather-ink-cloud);
+  --color-weather-ink-cloud-dark: var(--mu-r-weather-ink-cloud-dark);
+  --color-weather-ink-rain: var(--mu-r-weather-ink-rain);
+  --color-weather-ink-snow: var(--mu-r-weather-ink-snow);
+  --spacing-day-width: var(--mu-r-day-self-width);
+  --spacing-day-height: var(--mu-r-day-self-height);
+  --spacing-day-pad: var(--mu-r-day-self-pad);
+  --spacing-day-gap: var(--mu-r-day-self-gap);
+  --spacing-day-text-gap: var(--mu-r-day-self-text-gap);
+  --spacing-day-left-gap: var(--mu-r-day-self-left-gap);
+  --spacing-day-page-height: var(--mu-r-day-page-height);
+  --spacing-day-page-radius: var(--mu-r-day-page-radius);
+  --radius-day-page-radius: var(--mu-r-day-page-radius);
+  --spacing-day-page-side: var(--mu-r-day-page-side);
+  --spacing-day-page-tear-top: var(--mu-r-day-page-tear-top);
+  --spacing-day-page-tear-left: var(--mu-r-day-page-tear-left);
+  --spacing-day-page-tear-width: var(--mu-r-day-page-tear-width);
+  --spacing-day-page-tear-height: var(--mu-r-day-page-tear-height);
+  --spacing-day-page-tear-radius: var(--mu-r-day-page-tear-radius);
+  --radius-day-page-tear-radius: var(--mu-r-day-page-tear-radius);
+  --spacing-day-page-side-top: var(--mu-r-day-page-side-top);
+  --spacing-day-page-side-right: var(--mu-r-day-page-side-right);
+  --spacing-day-clock-colon: var(--mu-r-day-clock-colon);
+  --spacing-day-clock-gap: var(--mu-r-day-clock-gap);
+  --spacing-day-clock-colon-gap: var(--mu-r-day-clock-colon-gap);
+  --spacing-day-year-height: var(--mu-r-day-year-height);
+  --spacing-day-year-gap: var(--mu-r-day-year-gap);
+  --spacing-day-year-width: var(--mu-r-day-year-width);
+  --spacing-day-tile-size: var(--mu-r-day-tile-size);
+  --spacing-day-tile-pad: var(--mu-r-day-tile-pad);
+  --spacing-day-tile-screen: var(--mu-r-day-tile-screen);
+  --spacing-day-tile-inset: var(--mu-r-day-tile-inset);
+  --spacing-day-tile-moon: var(--mu-r-day-tile-moon);
+  --spacing-day-tile-foot: var(--mu-r-day-tile-foot);
+  --color-day-ink-off: var(--mu-r-day-ink-off);
+  --color-day-ink-left: var(--mu-r-day-ink-left);
+  --color-day-ink-hole: var(--mu-r-day-ink-hole);
+  --color-day-ink-date: var(--mu-r-day-ink-date);
+  --color-day-ink-saturday: var(--mu-r-day-ink-saturday);
+  --color-day-ink-sunday: var(--mu-r-day-ink-sunday);
+  --color-day-ink-moon: var(--mu-r-day-ink-moon);
 }
 @utility recipe-swatch {
   background: var(--mu-r-swatch-self-background);
@@ -2285,15 +2310,49 @@
   --tw-duration: var(--mu-r-dot-display-self-step);
   transition-duration: var(--mu-r-dot-display-self-step);
 }
-@utility recipe-weather {
-  background: var(--mu-r-weather-self-background);
-  box-shadow: var(--mu-r-weather-self-shadow);
-}
 @utility stroke-width-weather-width {
   stroke-width: var(--mu-r-weather-self-width);
 }
-@utility stroke-width-weather-week-stroke {
-  stroke-width: var(--mu-r-weather-week-stroke);
+@utility duration-weather-dot-frame {
+  --tw-duration: var(--mu-r-weather-dot-frame);
+  transition-duration: var(--mu-r-weather-dot-frame);
+}
+@utility type-weather-hour {
+  font: var(--mu-r-weather-hour-font);
+}
+@utility opacity-weather-ink-glow-opacity {
+  opacity: var(--mu-r-weather-ink-glow-opacity);
+}
+@utility opacity-weather-ink-heat-opacity {
+  opacity: var(--mu-r-weather-ink-heat-opacity);
+}
+@utility opacity-weather-ink-fog-opacity {
+  opacity: var(--mu-r-weather-ink-fog-opacity);
+}
+@utility opacity-weather-ink-moon-dark-opacity {
+  opacity: var(--mu-r-weather-ink-moon-dark-opacity);
+}
+@utility stroke-width-day-width {
+  stroke-width: var(--mu-r-day-self-width);
+}
+@utility duration-day-page-tear {
+  --tw-duration: var(--mu-r-day-page-tear);
+  transition-duration: var(--mu-r-day-page-tear);
+}
+@utility type-day-clock {
+  font: var(--mu-r-day-clock-font);
+}
+@utility opacity-day-clock-colon-dim {
+  opacity: var(--mu-r-day-clock-colon-dim);
+}
+@utility stroke-width-day-year-width {
+  stroke-width: var(--mu-r-day-year-width);
+}
+@utility type-day-left {
+  font: var(--mu-r-day-left-font);
+}
+@utility opacity-day-ink-fall-opacity {
+  opacity: var(--mu-r-day-ink-fall-opacity);
 }
 @keyframes mu-checkbox-tick {
   from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
@@ -2588,6 +2647,8 @@
   --spacing-palette-edge: var(--mu-palette-edge);
   --spacing-palette-bar-outset: var(--mu-palette-bar-outset);
   --spacing-palette-caret-height: var(--mu-palette-caret-height);
+  --spacing-palette-caret-width: var(--mu-palette-caret-width);
+  --spacing-palette-lip-y: var(--mu-palette-lip-y);
   --spacing-palette-screen-fallback-height: var(--mu-palette-screen-fallback-height);
   --color-presence-dot: var(--mu-presence-dot);
   --color-cue-quiet: var(--mu-cue-quiet);

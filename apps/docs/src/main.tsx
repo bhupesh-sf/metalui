@@ -5,8 +5,12 @@ import './styles.css';
 import { ColorwayProvider } from './app/colorway';
 import { Shell } from './app/Shell';
 import { NotFound } from './pages/NotFound';
+import { syncSiteMetadata } from './app/site-metadata';
 
 const lazy = (load: () => Promise<{ default: React.ComponentType }>) => async () => ({ Component: (await load()).default });
+const DevAgentation = import.meta.env.DEV
+  ? React.lazy(() => import('agentation').then(({ Agentation }) => ({ default: Agentation })))
+  : null;
 
 const router = createBrowserRouter([
   { path: '/', lazy: lazy(() => import('./pages/Landing')), errorElement: <NotFound /> },
@@ -71,7 +75,6 @@ const router = createBrowserRouter([
       { path: 'components/slab', lazy: lazy(() => import('./pages/components/Slab')) },
       { path: 'components/led', lazy: lazy(() => import('./pages/components/Led')) },
       { path: 'components/dot-display', lazy: lazy(() => import('./pages/components/DotDisplay')) },
-      { path: 'components/weather', lazy: lazy(() => import('./pages/components/Weather')) },
       { path: 'components/status', lazy: lazy(() => import('./pages/components/Status')) },
       { path: 'components/kbd', lazy: lazy(() => import('./pages/components/Kbd')) },
       { path: 'components/switcher', lazy: lazy(() => import('./pages/components/Switcher')) },
@@ -83,6 +86,8 @@ const router = createBrowserRouter([
       { path: 'components/field', lazy: lazy(() => import('./pages/components/Field')) },
       { path: 'components/dialog', lazy: lazy(() => import('./pages/components/Dialog')) },
       { path: 'components/link-card', lazy: lazy(() => import('./pages/components/LinkCard')) },
+      { path: 'components/weather', lazy: lazy(() => import('./pages/components/Weather')) },
+      { path: 'components/day', lazy: lazy(() => import('./pages/components/Day')) },
       { path: 'components/size-readout', lazy: lazy(() => import('./pages/components/SizeReadout')) },
       { path: 'components/tool-strip', lazy: lazy(() => import('./pages/components/ToolStrip')) },
       { path: 'components/past-banner', lazy: lazy(() => import('./pages/components/PastBanner')) },
@@ -115,10 +120,13 @@ const router = createBrowserRouter([
   },
 ]);
 
+router.subscribe(({ location }) => { void syncSiteMetadata(location.pathname); });
+
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ColorwayProvider>
       <RouterProvider router={router} />
+      {DevAgentation && <React.Suspense fallback={null}><DevAgentation appName="MetalUI docs" /></React.Suspense>}
     </ColorwayProvider>
   </React.StrictMode>,
 );

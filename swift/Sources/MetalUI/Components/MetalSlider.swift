@@ -113,11 +113,16 @@ public struct MetalSlider: View {
                 Circle()
                     .metalObjectRecipe(recipe, part: "knob", in: Circle())
                     .frame(width: knob, height: knob)
+                    // At either end the knob hangs half outside the control: a host that
+                    // passes presses through must know where it is drawn.
+                    .metalHitRegion()
                     .position(x: x, y: centre)
                     .accessibilityHidden(true)
             }
             .frame(width: width, height: geometry.size.height)
-            .contentShape(Rectangle())
+            // The drag surface reaches half a knob past each end, so the knob's outer half
+            // takes the press at Now and at the start.
+            .contentShape(Rectangle().inset(by: -knob / 2))
             // The web slider's cursors: a pointing hand over the track, an open hand on the
             // knob, a closed hand while dragging.
             .onContinuousHover { phase in
@@ -149,7 +154,9 @@ public struct MetalSlider: View {
             .animation(dragging || isExternallyDragging ? nil : MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation,
                        value: value)
         }
-        .focusable()
+        // Focus by keyboard navigation only, like NSSlider: a click or a host
+        // taking the keyboard never parks typing here.
+        .focusable(interactions: .activate)
         // No system ring: MetalUI's own ring, and only for keyboard focus.
         .focusEffectDisabled()
         .focused($focused)

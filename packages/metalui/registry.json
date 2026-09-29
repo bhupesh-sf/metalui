@@ -399,6 +399,24 @@
       "docs": "Agent guide: https://metalui.dev/r/connector.md. SwiftUI: MetalConnector in the MetalUI Swift package."
     },
     {
+      "name": "day",
+      "type": "registry:ui",
+      "title": "Day",
+      "description": "The day as an object: a tear-off page with the date in dots, the month, weekday and clock in the pixel face, the minute filling along its foot; the year so far one dot a day, the days left and the moon; one line for the day. Tap the page to tear it off. And a small tile of the date.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/blocks/day/day.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/blocks/day/day.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/day.md. SwiftUI: MetalDay, MetalDayTile in the MetalUI Swift package."
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
@@ -1436,24 +1454,19 @@
       "name": "weather",
       "type": "registry:ui",
       "title": "Weather",
-      "description": "A slim raised slab with a dot sky sunk into it. The tile (180) is a 21 × 21 sky with the temperature; the large widget (400 × 560) adds the place, the next hours as dot glyphs and seven days as lit dots on one scale. One sky for each weather, drawn for the clock.",
+      "description": "Weather as an object: a slab with a dot-matrix sky sunk into it that follows the time of day, the temperature in the pixel face on its ground, the next hours and the week as dot ranges on one scale; and a small tile of one sky.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
-          "path": "packages/metalui/src/components/weather/weather.tsx",
+          "path": "packages/metalui/src/blocks/weather/weather.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/weather/weather.tsx"
-        },
-        {
-          "path": "packages/metalui/src/components/weather/sky.ts",
-          "type": "registry:ui",
-          "target": "components/metalui/weather/sky.ts"
+          "target": "components/metalui/blocks/weather/weather.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/weather.md. SwiftUI: MetalWeather in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/weather.md. SwiftUI: MetalWeather, MetalWeatherTile in the MetalUI Swift package."
     },
     {
       "name": "well",

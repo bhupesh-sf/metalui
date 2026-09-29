@@ -68,7 +68,7 @@ export const PIECES: Piece[] = [
   // opener finishes when the title lands under it on kick 5, the heaviest thing in the opener.
   { id: 'badge', at: K[4], fall: 'heavy', x: 0, y: 290, zoom: 1, size: [700, 150], draw: () => <Wordmark size={78} /> },
   { id: 'intro', at: null, fall: 'heavy', x: 0, y: 165, zoom: 4, size: [0, 0], draw: () => <Label variant="engraved">Introducing</Label> },
-  { id: 'weather', at: K[4], fall: 'heavy', x: -660, y: 300, zoom: 1.25, size: [230, 230], turn: -12, draw: () => <WeatherTile kind="clear" temp="24°" name="Sunny" meta="Lisbon" clock={10} running={false} aria-label="Lisbon, sunny, 24°" /> },
+  { id: 'weather', at: K[4], fall: 'heavy', x: -660, y: 300, zoom: 1.25, size: [230, 230], turn: -12, draw: () => <WeatherTile sky="clear" hour={10} temp={24} name="Sunny" meta="Lisbon" animate={false} aria-label="Lisbon, sunny, 24°" /> },
   { id: 'swatch-green', at: K[4], fall: 'light', x: 620, y: -30, zoom: 1.6, size: [140, 140], turn: 18, spin: -1, draw: () => <Swatch hex={tokens.shared.green} label="LIVE" /> },
   // Kick 6
   { id: 'folder-blue', at: K[5], fall: 'heavy', x: 250, y: -400, zoom: 1.15, size: [250, 170], turn: -8, draw: () => <Folder name="Launch" count={12} hue="blue" /> },

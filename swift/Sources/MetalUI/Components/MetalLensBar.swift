@@ -17,8 +17,16 @@ public enum MetalLensMode: String, CaseIterable, Sendable {
     }
 }
 
-/// Where a lens's answer came from.
-public enum MetalLensSource: Sendable { case asking, jev, local }
+/// Where a lens's matches came from, in the host's words ("VIA …", "KEYWORDS ONLY").
+/// `waiting` lights the amber LED while an answer is on its way.
+public struct MetalLensSource: Sendable, Equatable {
+    public let label: String
+    public let waiting: Bool
+    public init(_ label: String, waiting: Bool = false) {
+        self.label = label
+        self.waiting = waiting
+    }
+}
 
 /// Names the question a lens asks, counts its matches and switches views; pin and close at the end.
 public struct MetalLensBar: View {
@@ -56,11 +64,12 @@ public struct MetalLensBar: View {
                 Text("\(count) \(count == 1 ? "MATCH" : "MATCHES")").font(.metal(label)).tracking(label.trackingPoints).foregroundColor(t.engrave.color)
             }
             if let source {
-                HStack(spacing: 5) {
-                    if source == .asking {
-                        Circle().fill(MetalShared.ledAmber.gradient(diameter: 5)).frame(width: 5, height: 5)
+                HStack(spacing: MetalLensBarMetrics.noteLedGap) {
+                    if source.waiting {
+                        Circle().fill(MetalShared.ledAmber.gradient(diameter: MetalCue.urgencyLed))
+                            .frame(width: MetalCue.urgencyLed, height: MetalCue.urgencyLed)
                     }
-                    Text(source == .asking ? "ASKING JEV" : source == .jev ? "VIA JEV" : "LOCAL")
+                    Text(source.label)
                         .font(.metal(label)).tracking(label.trackingPoints).foregroundColor(t.engrave.color)
                 }
             }
@@ -75,7 +84,7 @@ public struct MetalLensBar: View {
         .frame(height: MetalLensBarMetrics.height)
         .fixedSize()
         .metalFrost(.plate, in: Capsule(style: .continuous))
-        .opacity(arrived ? 1 : 0)
+        .opacity(arrived ? .one : .zero)
         .offset(y: arrived || !travel ? 0 : -MetalLensBarMetrics.enterDrop)
         .scaleEffect(arrived || !travel ? 1 : MetalLensBarMetrics.enterScale)
         .onAppear { withMetalAnimation(.surface, reduceMotion: reduceMotion) { arrived = true } }
@@ -97,7 +106,7 @@ private struct MetalLensBarButton: View {
             MetalIcon(icon, size: MetalLensBarMetrics.glyph, interaction: MetalIconInteraction(isHovered: hovering))
                 .foregroundStyle((hovering ? t.ink : t.ink2).color)
                 .frame(width: MetalLensBarMetrics.iconButton, height: MetalLensBarMetrics.iconButton)
-                .background(Circle().fill(t.ink.color.opacity(hovering ? 0.05 : 0)))
+                .background(Circle().fill(t.ink.color.opacity(hovering ? MetalLensBarMetrics.iconHoverOpacity : .zero)))
                 .contentShape(Circle())
         }
         .buttonStyle(.plain)

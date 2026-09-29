@@ -16,7 +16,7 @@ const swiftName = (n) => (SWIFT_KEYWORDS.has(n) ? `\`${n}\`` : n);
 // as the demo wrote it; a color may be `self/<alpha>` (the object's own color, --mu-self, at alpha).
 // A group (part, state, prop) with any colorway-specific layer is emitted per colorway.
 // Props: { <part>: { <key>: number (px) | string } }, emitted as --mu-r-<object>-<part>-<key>;
-// strings may name the families `sans` / `mono` in a font shorthand.
+// strings may name the families `sans` / `mono` / `pixel` in a font shorthand.
 
 const PROP_CSS = { background: 'background', shadow: 'shadow', 'text-shadow': 'text-shadow' };
 
@@ -138,6 +138,7 @@ function propValue(v) {
   return String(v)
     .replace(/\bsans\b/, 'var(--mu-sans)')
     .replace(/\bmono\b/, 'var(--mu-mono)')
+    .replace(/\bpixel\b/, 'var(--mu-pixel)')
     .replace(SELF, (_, a) => cssColor({ self: a !== undefined ? +a : 1 }));
 }
 

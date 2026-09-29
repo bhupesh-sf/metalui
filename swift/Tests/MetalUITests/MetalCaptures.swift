@@ -939,8 +939,8 @@ final class MetalCaptures: XCTestCase {
     func testLensBar() {
         for colorway in MetalColorway.allCases {
             let view = VStack(spacing: 20) {
-                MetalLensBar(query: "open tasks about the poster", count: 6, source: .local, mode: .constant(.list), onPin: {}, onClose: {})
-                MetalLensBar(query: "lunch this week", source: .asking, mode: .constant(.place), onPin: {}, onClose: {})
+                MetalLensBar(query: "open tasks about the poster", count: 6, source: MetalLensSource("LOCAL"), mode: .constant(.list), onPin: {}, onClose: {})
+                MetalLensBar(query: "lunch this week", source: MetalLensSource("ASKING", waiting: true), mode: .constant(.place), onPin: {}, onClose: {})
             }
             .padding(28)
             .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
@@ -1164,42 +1164,40 @@ final class MetalCaptures: XCTestCase {
 
     func testWeather() {
         let hours: [MetalWeatherHour] = [
-            .init(label: "Now", kind: .clear, day: true, temp: "19°", accessibilityLabel: "Now, Sunny, 19°"),
-            .init(label: "12", kind: .partly, day: true, temp: "24°", accessibilityLabel: "12:00, Partly cloudy, 24°"),
-            .init(label: "15", kind: .rain, day: true, temp: "22°", accessibilityLabel: "15:00, Light rain, 22°"),
-            .init(label: "18", kind: .cloud, day: true, temp: "20°", accessibilityLabel: "18:00, Cloudy, 20°"),
-            .init(label: "21", kind: .clear, day: false, temp: "17°", accessibilityLabel: "21:00, Clear night, 17°"),
-            .init(label: "00", kind: .clear, day: false, temp: "15°", accessibilityLabel: "00:00, Clear night, 15°")
+            .init(label: "Now", hour: 9, kind: .clear, temp: "19°", accessibilityLabel: "Now, 19°"),
+            .init(label: "12", hour: 12, kind: .partly, temp: "24°", accessibilityLabel: "12, 24°"),
+            .init(label: "15", hour: 15, kind: .drizzle, temp: "22°", accessibilityLabel: "15, 22°"),
+            .init(label: "18", hour: 18, kind: .cloud, temp: "20°", accessibilityLabel: "18, 20°"),
+            .init(label: "21", hour: 21, kind: .clear, temp: "17°", accessibilityLabel: "21, 17°"),
+            .init(label: "00", hour: 0, kind: .partly, temp: "15°", accessibilityLabel: "00, 15°")
         ]
         let days: [MetalWeatherDay] = [
-            .init(name: "Today", kind: .rain, lo: 14, hi: 24, accessibilityLabel: "Today: rain, low 14°, high 24°"),
-            .init(name: "Sun", kind: .partly, lo: 15, hi: 23, accessibilityLabel: "Sun: partly, low 15°, high 23°"),
-            .init(name: "Mon", kind: .sun, lo: 16, hi: 26, accessibilityLabel: "Mon: sun, low 16°, high 26°"),
-            .init(name: "Tue", kind: .sun, lo: 17, hi: 28, accessibilityLabel: "Tue: sun, low 17°, high 28°"),
-            .init(name: "Wed", kind: .cloud, lo: 16, hi: 25, accessibilityLabel: "Wed: cloud, low 16°, high 25°"),
-            .init(name: "Thu", kind: .rain, lo: 14, hi: 20, accessibilityLabel: "Thu: rain, low 14°, high 20°"),
-            .init(name: "Fri", kind: .partly, lo: 13, hi: 21, accessibilityLabel: "Fri: partly, low 13°, high 21°")
+            .init(name: "Today", kind: .rain, low: 14, high: 24, accessibilityLabel: "Today: low 14°, high 24°"),
+            .init(name: "Sun", kind: .partly, low: 15, high: 23, accessibilityLabel: "Sun: low 15°, high 23°"),
+            .init(name: "Mon", kind: .clear, low: 16, high: 26, accessibilityLabel: "Mon: low 16°, high 26°"),
+            .init(name: "Tue", kind: .heat, low: 17, high: 28, accessibilityLabel: "Tue: low 17°, high 28°"),
+            .init(name: "Wed", kind: .cloud, low: 16, high: 25, accessibilityLabel: "Wed: low 16°, high 25°"),
+            .init(name: "Thu", kind: .storm, low: 14, high: 20, accessibilityLabel: "Thu: low 14°, high 20°"),
+            .init(name: "Fri", kind: .snow, low: 10, high: 15, accessibilityLabel: "Fri: low 10°, high 15°")
         ]
-        let tiles: [(MetalWeatherKind, String, String, String)] = [
-            (.clear, "Clear", "21°", "Dry"), (.partly, "Partly", "20°", "Rain 10%"),
-            (.cloud, "Cloudy", "17°", "Rain 20%"), (.rain, "Rain", "14°", "Rain 80%"),
-            (.storm, "Thunder", "16°", "Rain 90%"), (.snow, "Snow", "-3°", "Snow 60%"),
-            (.mist, "Mist", "9°", "Vis 800 m"), (.windy, "Windy", "15°", "42 km/h"),
-            (.heat, "Heat", "38°", "UV 10")
+        let tiles: [(MetalWeatherKind, String, String, String, Double)] = [
+            (.clear, "Clear", "21°", "Dry", 9), (.partly, "Partly", "20°", "Rain 10%", 13),
+            (.rain, "Rain", "14°", "Rain 80%", 10), (.storm, "Thunder", "16°", "Rain 90%", 16),
+            (.snow, "Snow", "-3°", "Snow 60%", 11), (.sleet, "Sleet", "1°", "Rain 70%", 8),
+            (.mist, "Mist", "9°", "Vis 800 m", 7.6), (.windy, "Windy", "15°", "42 km/h", 14),
+            (.clear, "Clear", "12°", "Moon", 23)
         ]
         for colorway in MetalColorway.allCases {
             let view = HStack(alignment: .top, spacing: 32) {
-                MetalWeather(place: "Lisbon", summary: "Sunny now · partly cloudy from 11:00",
-                             status: "Live", clockText: "09:00", clock: 9, kind: .clear,
-                             temp: "19°", condition: "Sunny", detail: "Feels 18° · Rain 0% · 9 km/h",
-                             skyLabel: "Lisbon at 09:00: Sunny, 19°", hours: hours, days: days,
-                             now: 19, tick: 0)
+                MetalWeather(place: "Lisbon", summary: "Sunny now · partly cloudy from 11:00", clock: "09:00",
+                             hour: 9, sky: .of(.clear), condition: "Sunny", temp: "19°",
+                             readout: "Feels 18° · Rain 0% · 9 km/h", skyLabel: "Lisbon: Sunny, 19°",
+                             hours: hours, days: days, now: 19, tick: 0)
                 LazyVGrid(columns: Array(repeating: GridItem(.fixed(MetalRecipes.weather.points("tile.size")), spacing: 10), count: 3), spacing: 10) {
                     ForEach(tiles.indices, id: \.self) { i in
                         let tile = tiles[i]
-                        MetalWeatherTile(kind: tile.0, temp: tile.2, name: tile.1, meta: tile.3,
-                                         clock: 9, phase: i * 5, tick: 0,
-                                         accessibilityLabel: "\(tile.1), \(tile.2) at 09:00")
+                        MetalWeatherTile(sky: .of(tile.0), hour: tile.4, temp: tile.2, name: tile.1, meta: tile.3,
+                                         tick: i * 5, accessibilityLabel: "\(tile.1), \(tile.2)")
                     }
                 }
             }
@@ -1210,28 +1208,39 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
-    func testSkyMatchesWeb() throws {
+    /// The Swift sky draws the web's weatherScene dot for dot (scripts/weather-fixtures.mjs).
+    func testWeatherSkyMatchesWeb() throws {
         struct Fixture: Decodable {
+            struct Cloud: Decodable { let x: Double, y: Double, size: Double, dark: Bool? }
             struct Sky: Decodable {
-                let kind: String, clock: Double, tick: Int, cols: Int, rows: Int, hz: Int
+                let clouds: [Cloud]?, overcast: Bool?, rain: Double?, snow: Double?, thunder: Bool?
+                let mist: Double?, wind: Double?, windFrom: Int?, heat: Double?, birds: Int?, moonPhase: Double?
+            }
+            struct Frame: Decodable {
+                let kind: String, sky: Sky?, hour: Double, tick: Int, cols: Int, rows: Int, horizon: Int
                 let dots: [UInt8]
             }
-            struct Mini: Decodable { let kind: String, day: Bool, dots: [UInt8] }
-            let cases: [Sky]
-            let minis: [Mini]
+            let layers: [String]
+            let cases: [Frame]
         }
-        let file = try XCTUnwrap(Bundle.module.url(forResource: "sky", withExtension: "json", subdirectory: "Fixtures"))
+        let file = try XCTUnwrap(Bundle.module.url(forResource: "weather", withExtension: "json", subdirectory: "Fixtures"))
         let fixture = try JSONDecoder().decode(Fixture.self, from: Data(contentsOf: file))
-        for sample in fixture.cases {
-            let kind = try XCTUnwrap(MetalWeatherKind(rawValue: sample.kind))
-            let actual = MetalSky.sky(cols: sample.cols, rows: sample.rows, hz: sample.hz,
-                                      kind: kind, clock: sample.clock, tick: sample.tick)
-            XCTAssertEqual(actual, sample.dots, "\(sample.kind), \(sample.clock), tick \(sample.tick), \(sample.cols) × \(sample.rows)")
-        }
-        for sample in fixture.minis {
-            let kind = try XCTUnwrap(MetalWeatherKind(rawValue: sample.kind))
-            XCTAssertEqual(MetalSky.mini(kind: kind, day: sample.day), sample.dots,
-                           "mini \(sample.kind), day \(sample.day)")
+        XCTAssertEqual(fixture.layers.count, MetalWeatherScene.Layer.allCases.count)
+        XCTAssertEqual(fixture.cases.count, 128)
+        for frame in fixture.cases {
+            let sky: MetalWeatherSky
+            if let own = frame.sky {
+                sky = MetalWeatherSky(clouds: (own.clouds ?? []).map { .init(x: $0.x, y: $0.y, size: $0.size, dark: $0.dark ?? false) },
+                                      overcast: own.overcast ?? false, rain: own.rain ?? 0, snow: own.snow ?? 0,
+                                      thunder: own.thunder ?? false, mist: own.mist ?? 0, wind: own.wind ?? 0,
+                                      windFrom: own.windFrom ?? 1, heat: own.heat ?? 0, birds: own.birds ?? 0,
+                                      moonPhase: own.moonPhase)
+            } else {
+                sky = .of(try XCTUnwrap(MetalWeatherKind(rawValue: frame.kind)))
+            }
+            let actual = MetalWeatherScene.dots(cols: frame.cols, rows: frame.rows, horizon: frame.horizon,
+                                                hour: frame.hour, sky: sky, tick: frame.tick)
+            XCTAssertEqual(actual, frame.dots, "\(frame.kind) at \(frame.hour), tick \(frame.tick), \(frame.cols) × \(frame.rows)")
         }
     }
 }
