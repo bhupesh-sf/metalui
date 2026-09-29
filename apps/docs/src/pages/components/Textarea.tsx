@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Textarea } from '@unlocalhosted/metalui';
-import { SPRINGS, type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
+import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
+import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/textarea/textarea.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentSource from '../../../../../packages/metalui/src/components/textarea/textarea.agent.md?raw';
@@ -16,7 +17,6 @@ import { ComponentPage } from '../../ui/ComponentPage';
  * Springs are the system's classes; slow stretches every duration.
  * ───────────────────────────────────────────────────────── */
 
-const SPRING_NAMES = Object.keys(SPRINGS) as SpringName[];
 const LINES = ['Pick up the prints on Thursday.', 'Ask about the matte paper.', 'Two copies of the plan, one folded.', 'Bring the old negatives back.'];
 
 function GrowthTuner() {
@@ -45,10 +45,8 @@ function GrowthTuner() {
   const grow = d.grow as SpringName;
   const refusal = d.refusal as SpringName;
   const vars = {
-    '--mu-spring-settle': `var(--mu-spring-${grow})`,
-    '--mu-spring-settle-d': `${SPRINGS[grow].duration * d.slow}s`,
-    '--mu-spring-refusal': `var(--mu-spring-${refusal})`,
-    '--mu-spring-refusal-d': `${SPRINGS[refusal].duration * d.slow}s`,
+    ...springVars('settle', grow, d.slow),
+    ...springVars('refusal', refusal, d.slow),
   } as React.CSSProperties;
   return (
     <div data-testid="textarea-growth-tuner" className="w-full max-w-[420px]" style={vars}>

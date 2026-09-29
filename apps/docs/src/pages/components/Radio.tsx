@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { RadioGroup, Radio } from '@unlocalhosted/metalui';
-import { SPRINGS, type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
+import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
+import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/radio/radio.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentSource from '../../../../../packages/metalui/src/components/radio/radio.agent.md?raw';
@@ -17,7 +18,6 @@ import { ComponentPage } from '../../ui/ComponentPage';
  * stretches every duration so the interlock can be read by eye.
  * ───────────────────────────────────────────────────────── */
 
-const SPRING_NAMES = Object.keys(SPRINGS) as SpringName[];
 const OPTIONS = ['png', 'svg', 'pdf'] as const;
 
 function LatchTuner() {
@@ -36,10 +36,8 @@ function LatchTuner() {
   const latch = d.latch as SpringName;
   const drop = d.drop as SpringName;
   const vars = {
-    '--mu-spring-part': `var(--mu-spring-${latch})`,
-    '--mu-spring-part-d': `${SPRINGS[latch].duration * d.slow}s`,
-    '--mu-spring-release': `var(--mu-spring-${drop})`,
-    '--mu-spring-release-d': `${SPRINGS[drop].duration * d.slow}s`,
+    ...springVars('part', latch, d.slow),
+    ...springVars('release', drop, d.slow),
     '--mu-r-radio-self-press': `${d.press * d.slow}ms`,
     '--mu-r-radio-self-fade': `${d.fade * d.slow}ms`,
     '--mu-r-radio-pip-size': `${d.pip}px`,

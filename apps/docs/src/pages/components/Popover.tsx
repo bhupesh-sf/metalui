@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, Field, Popover } from '@unlocalhosted/metalui';
-import { SPRINGS, type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
+import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
+import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/popover/popover.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentSource from '../../../../../packages/metalui/src/components/popover/popover.agent.md?raw';
@@ -15,7 +16,6 @@ import { ComponentPage } from '../../ui/ComponentPage';
  * Springs are the system's classes; slow stretches every duration.
  * ───────────────────────────────────────────────────────── */
 
-const SPRING_NAMES = Object.keys(SPRINGS) as SpringName[];
 const SIDES = ['bottom', 'top', 'right', 'left'] as const;
 
 function Rename({ label }: { label: string }) {
@@ -52,10 +52,8 @@ function RiseTuner() {
   const o = d.open as SpringName;
   const c = d.close as SpringName;
   const vars = {
-    '--mu-spring-surface': `var(--mu-spring-${o})`,
-    '--mu-spring-surface-d': `${SPRINGS[o].duration * d.slow}s`,
-    '--mu-spring-release': `var(--mu-spring-${c})`,
-    '--mu-spring-release-d': `${SPRINGS[c].duration * d.slow}s`,
+    ...springVars('surface', o, d.slow),
+    ...springVars('release', c, d.slow),
     '--mu-motion-nest': `${d.reach}px`,
     '--mu-r-popover-self-enter-scale': String(d.scale),
   } as React.CSSProperties;
