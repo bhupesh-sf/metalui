@@ -1,0 +1,21 @@
+{
+  "name": "combobox",
+  "title": "Combobox",
+  "status": "alpha",
+  "layer": "component",
+  "description": "Type to find one of many: a field well that opens the menu's frosted plate; rows filter at once while the plate's height settles to the new count, and the highlight glides row to row.",
+  "base": "@base-ui/react/combobox",
+  "react": {
+    "export": "Combobox",
+    "files": [
+      "combobox.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalCombobox",
+    "file": "swift/Sources/MetalUI/Components/MetalCombobox.swift",
+    "status": "wip"
+  },
+  "agent": "combobox.agent.md",
+  "page": "/components/combobox"
+}

@@ -257,6 +257,23 @@
       "agent": "https://metalui.dev/r/code-card.md"
     },
     {
+      "name": "combobox",
+      "title": "Combobox",
+      "status": "alpha",
+      "description": "Type to find one of many: a field well that opens the menu's frosted plate; rows filter at once while the plate's height settles to the new count, and the highlight glides row to row.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Combobox",
+        "base": "@base-ui/react/combobox"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCombobox"
+      },
+      "registry": "https://metalui.dev/r/combobox.json",
+      "agent": "https://metalui.dev/r/combobox.md"
+    },
+    {
       "name": "command-palette",
       "title": "Command palette",
       "status": "alpha",

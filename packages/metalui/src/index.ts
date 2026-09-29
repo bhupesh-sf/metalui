@@ -57,6 +57,7 @@ export { Connector, type ConnectorProps, type ConnectorEnd, type ConnectorLook, 
 export { Tabs, TabList, TabPanel, type TabsProps, type TabListProps, type TabPanelProps, type TabItem } from './components/tabs/tabs';
 export { Accordion } from './components/accordion/accordion';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
+export { Combobox, type ComboboxProps } from './components/combobox/combobox';
 export { Folder, type FolderProps, type FolderHue, type FolderPeek } from './components/folder/folder';
 export { LineHandles, type LineHandlesProps } from './components/line-handles/line-handles';
 export { PerfectPreview, type PerfectPreviewProps } from './components/perfect-preview/perfect-preview';

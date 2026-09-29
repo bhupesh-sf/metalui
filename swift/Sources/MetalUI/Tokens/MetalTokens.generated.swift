@@ -933,6 +933,26 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Type to find one of many: a field well you type into, which opens the menu's frosted plate of rows (the menu recipe, with the gliding highlight). Typing filters the rows at once (rows never lag the fingers) while the plate's height settles to the new count on the settle spring, so it never snaps size. A clear mark fades in once a value is chosen, and takes it away. Choosing fills the field and the plate fades on release. Nothing found: one quiet row says so. Reduce Motion: the height snaps. (the field well (recipe well field); the menu plate and rows (menuParts, ListGlide); Base UI Combobox)
+    public static let combobox = MetalObjectRecipe(
+        name: "combobox",
+        layers: [
+
+        ],
+        props: [
+            "self.height": .number(32.0),
+            "self.radius": .number(11.0),
+            "self.pad-left": .number(12.0),
+            "self.pad-right": .number(4.0),
+            "self.min-width": .number(220.0),
+            "self.gap": .number(6.0),
+            "self.max-rows": .number(7.0),
+            "self.disabled": .text("0.4"),
+            "clear.size": .number(24.0),
+            "clear.glyph": .number(10.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
