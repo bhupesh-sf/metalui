@@ -7,6 +7,7 @@ import { FOUNDATION_PIECES, FOUNDATIONS_AT } from './Foundations';
 import { ASSEMBLE, CLICK, PART_PIECES, PARTS_AT, fogAt, pointerAt } from './Parts';
 import { IconAct } from '../film/parts';
 import { COMPONENT_PIECES, DROP1_AT, FILL, SLAM } from './Components';
+import { DROP1, DROP1_END, OBJECT_PIECES, ObjectsTitle } from './Objects';
 
 /* ─────────────────────────────────────────────────────────
  * THE OPENING (video bars 1-4): one table, one camera
@@ -40,6 +41,9 @@ const MOVES = [
   { at: B(10, 1), frames: FILL.swoosh - B(10, 1), pose: { x: PX + 10, y: 10, z: 150, tilt: 42, orbit: 3 } },
   // The fill's swoosh: away to drop 1, arriving on the downbeat of bar 13.
   { at: FILL.swoosh, frames: B(13, 1) - FILL.swoosh, pose: { x: DROP1_AT.x, y: 0, z: 200, tilt: 40, orbit: 0 } },
+  // Drop 1: in hard on the slam, then round the set as the cards fly home.
+  { at: DROP1 + 2, frames: 28, pose: { x: DROP1_AT.x, y: 0, z: 240, tilt: 44, orbit: -5 } },
+  { at: B(14, 1), frames: B(17, 1) - B(14, 1), pose: { x: DROP1_AT.x + 20, y: 0, z: 300, tilt: 41, orbit: 6 } },
 ];
 
 // The foundations hop with their heavy neighbours, like the kit does.
@@ -63,6 +67,9 @@ const IMPACTS: Impact[] = [
   { x: PX, y: 0, at: CLICK, strength: 0.6 },
   { x: PX, y: 0, at: SLAM, strength: 1.8 },
   ...COMPONENT_PIECES.map((p) => ({ x: p.x, y: p.y, at: p.at, strength: WEIGHT[p.fall] })),
+  { x: DROP1_AT.x, y: 0, at: DROP1, strength: 2.4 },
+  ...OBJECT_PIECES.filter((p) => p.at !== DROP1).map((p) => ({ x: p.x, y: p.y, at: p.at, strength: 0.4 })),
+  ...OBJECT_PIECES.filter((p) => p.move).map((p) => ({ x: p.move!.to.x, y: p.move!.to.y, at: p.move!.at, strength: 0.7 })),
 ];
 
 // The set around the button: heavy landings make neighbours hop, everything jumps at the end of the
@@ -91,7 +98,7 @@ export function World() {
   const breathe = punch(frame, PUMP);
   const pointer = pointerAt(frame);
   const fog = fogAt(frame);
-  const jolt = punch(frame, [...HEAVY.map((h) => h.at!), ...F_HEAVY.map((h) => h.at)]) + 1.2 * punch(frame, [K[4]]) + 1.4 * punch(frame, [K[7]]) + punch(frame, [ASSEMBLE]) + 1.3 * punch(frame, [SLAM]) + punch(frame, COMPONENT_PIECES.filter((p) => p.fall === 'heavy').map((p) => p.at)) - 0.9 * breathe;
+  const jolt = punch(frame, [...HEAVY.map((h) => h.at!), ...F_HEAVY.map((h) => h.at)]) + 1.2 * punch(frame, [K[4]]) + 1.4 * punch(frame, [K[7]]) + punch(frame, [ASSEMBLE]) + 1.3 * punch(frame, [SLAM]) + 2 * punch(frame, [DROP1]) + punch(frame, COMPONENT_PIECES.filter((p) => p.fall === 'heavy').map((p) => p.at)) - 0.9 * breathe;
   // The sunrise: dawn on the lone key, full sun once the kit is down, and full sun from bar 3 on.
   const landed = K.filter((k) => frame >= k).length;
   const sun = frame >= END ? 1 : Math.min(1, landed / 8 + (frame >= K[7] ? 0.2 * (1 - react(frame, K[7], 'surface')) : 0));
@@ -124,6 +131,16 @@ export function World() {
             ))}
             {COMPONENT_PIECES.map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} hops={SET_HOPS(p.x, p.y, p.at)}>
+                {p.draw(frame)}
+              </Drop>
+            ))}
+            {frame >= DROP1 && (
+              <div style={{ position: 'absolute', left: DROP1_AT.x, top: -540, transform: 'translate(-50%, -50%)' }}>
+                <div style={{ zoom: 5.5 }}><ObjectsTitle /></div>
+              </div>
+            )}
+            {OBJECT_PIECES.map((p) => (
+              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} turn={p.turn} move={p.move} until={p.until} hops={[{ at: DROP1_END, height: 70, frames: 20 }]}>
                 {p.draw(frame)}
               </Drop>
             ))}
