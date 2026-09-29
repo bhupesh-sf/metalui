@@ -14,10 +14,3 @@
   transition: none !important;
   animation: none !important;
 }
-
-/* A gadget's light alone: its cells' glow and halo, its backlight and its lamp. Laid over the same
-   gadget drawn in the room's light, so lamps burn at full strength while the surfaces around them
-   are dim. (Children can be visible inside a hidden parent; that's what makes this work.) */
-.emissive svg * { visibility: hidden; }
-.emissive svg :is([data-part="cell.glow"], [data-part="cell.halo"], [data-part="lamp"], [data-part="backlight"]),
-.emissive svg :is([data-part="cell.glow"], [data-part="cell.halo"], [data-part="lamp"], [data-part="backlight"]) * { visibility: visible; }

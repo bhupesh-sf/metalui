@@ -64,12 +64,13 @@ npm run check:timing                    # every sixteenth lands on its own frame
 - **`Animatic`** plays the storyboard against the edit before any shot is built: the shot, bar.beat.16th, the beat LEDs, two seconds of kick, snare, hat and loudness either side of now, and every shot on a timeline with the splices marked.
 - **`src/motion.ts` is the library's motion.** The same mass-class springs as the components (`tokens.json` springs), stepped by frame. `land(frame, at, mass)` launches a move early by its spring's time to contact, so it touches down on the beat (part 13 frames, object 15, hinge 16); `react` starts on the hit; `sweep` is for things the music sweeps, like a riser or the light. `check:timing` proves every spring touches down on its beat.
 - **`src/Film.tsx` is the film.** Each storyboard shot in order over the edit: a built shot plays (registered in `SHOTS`), a shot not built yet shows its animatic card, so the minute is watchable at every stage.
-- **Shots use the real library.** Styles come from the same `tokens.css` and `theme.css` through Tailwind (`remotion.config.ts`), with every CSS transition and animation off: a frame renders on its own, so motion comes from the frame. Gadgets are drawn with `renderGadgetSvg` at each frame's pose (never `<Gadget>`, which animates itself on a clock). The `emissive` class keeps only a gadget's light (cell glow, halo, backlight, lamp), to lay over the same gadget drawn in a dim room.
+- **`src/film/stage.tsx` is motion at film scale.** The library's motion is interface-sized (a 1 px press); a frame of video needs visible mass. A look-at `Camera` eases between poses in real perspective and takes a jolt (`punch`) from heavy landings; a `Table` is the lit ground; a `Drop` falls onto it with the object spring and touches down on its frame, its contact shadow sized to its footprint and tightening as it lands. The table stops the fall: the spring's overshoot becomes a squash, never a sink through the surface.
+- **Shots use the real library.** Styles come from the same `tokens.css` and `theme.css` through Tailwind (`remotion.config.ts`), with every CSS transition and animation off: a frame renders on its own, so motion comes from the frame. Gadgets are drawn with `renderGadgetSvg` at each frame's pose (never `<Gadget>`, which animates itself on a clock).
 
 ### Designing a gadget for a shot
 
 ```bash
-node scripts/gadget-sheet.mjs src/gadgets/step-row.gadget.json \
+node scripts/gadget-sheet.mjs ../../packages/metalui/src/gadgets/fixtures/cell-grid.gadget.json \
   '{"_":{"value":3.5}}' '{"material":"clay","_":{"value":8,"host":"bone"}}'
 ```
 

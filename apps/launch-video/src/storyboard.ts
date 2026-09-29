@@ -24,10 +24,10 @@ export interface Shot {
 
 export const storyboard: Shot[] = [
   {
-    id: 'count-in', act: 'build', bars: [1, 2], title: 'Count-in',
+    id: 'count-in', act: 'build', bars: [1, 2], title: 'Opener: eight hits',
     music: 'Four-on-the-floor kick under a held drone',
-    picture: 'Black. A row of eight LEDs on a bone plate; the backlight warms with the drone',
-    sync: 'One LED lights per kick, eight kicks',
+    picture: 'A lit key, close; then a real component falls onto the table on every kick as the camera pulls back and round',
+    sync: 'The key goes down on kick 1; each object touches down on its kick (object spring) and acts on the off-beat after',
   },
   {
     id: 'foundations', act: 'build', bars: [3, 4], title: 'Foundations', layer: 'Foundations',

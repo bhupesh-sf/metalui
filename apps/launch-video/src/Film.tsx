@@ -3,7 +3,7 @@ import { AbsoluteFill, Audio, staticFile, useCurrentFrame } from 'remotion';
 import { AnimaticCard } from './Animatic';
 import { shotAt } from './storyboard';
 import { BARS, audioFile, position } from './time';
-import { CountIn } from './shots/CountIn';
+import { Opener } from './shots/Opener';
 import { Foundations } from './shots/Foundations';
 
 /**
@@ -11,7 +11,7 @@ import { Foundations } from './shots/Foundations';
  * shows its animatic card, so the whole minute can be watched at every stage of the build.
  */
 const SHOTS: Partial<Record<string, ComponentType>> = {
-  'count-in': CountIn,
+  'count-in': Opener,
   foundations: Foundations,
 };
 
