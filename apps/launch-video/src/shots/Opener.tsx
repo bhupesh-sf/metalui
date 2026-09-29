@@ -49,7 +49,7 @@ const BITS: { x: number; y: number; i: number; zoom: number; size: [number, numb
   { x: 780, y: 520, i: 3, zoom: 7, size: [60, 60], draw: () => <Led kind="waiting" /> },
   { x: -620, y: -420, i: 4, zoom: 2.4, size: [110, 110], draw: (f) => <IconButton variant="tool" label="Search" icon={<IconAct name="search" t={actTime(f, OFF(4))} size={20} />} /> },
   { x: 480, y: -320, i: 5, zoom: 7, size: [60, 60], draw: () => <Led kind="link" /> },
-  { x: -120, y: 600, i: 6, zoom: 2.4, size: [110, 110], draw: (f) => <IconButton variant="tool" label="Pen" icon={<IconAct name="pen" t={actTime(f, OFF(6))} size={20} />} /> },
+  { x: 860, y: -150, i: 6, zoom: 2.4, size: [110, 110], draw: (f) => <IconButton variant="tool" label="Pen" icon={<IconAct name="pen" t={actTime(f, OFF(6))} size={20} />} /> },
 ];
 
 export const PIECES: Piece[] = [
