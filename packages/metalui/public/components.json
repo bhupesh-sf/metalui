@@ -1021,6 +1021,23 @@
       "agent": "https://metalui.dev/r/settings.md"
     },
     {
+      "name": "sheet",
+      "title": "Sheet",
+      "status": "alpha",
+      "description": "A panel that slides in from an edge (right or bottom) on the surface spring, follows a drag one to one, and leaves on release, sooner for a harder flick.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Sheet",
+        "base": "@base-ui/react/drawer"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSheet"
+      },
+      "registry": "https://metalui.dev/r/sheet.json",
+      "agent": "https://metalui.dev/r/sheet.md"
+    },
+    {
       "name": "size-readout",
       "title": "Size readout",
       "status": "alpha",

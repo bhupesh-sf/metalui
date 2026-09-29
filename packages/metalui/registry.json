@@ -1264,6 +1264,26 @@
       "docs": "Agent guide: https://metalui.dev/r/settings.md. SwiftUI: MetalSettings in the MetalUI Swift package."
     },
     {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "A panel that slides in from an edge (right or bottom) on the surface spring, follows a drag one to one, and leaves on release, sooner for a harder flick.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/sheet/sheet.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/sheet/sheet.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/sheet.md. SwiftUI: MetalSheet in the MetalUI Swift package."
+    },
+    {
       "name": "size-readout",
       "type": "registry:ui",
       "title": "Size readout",

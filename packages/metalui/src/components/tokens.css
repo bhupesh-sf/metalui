@@ -1028,6 +1028,15 @@
   --mu-r-meter-lamp-stagger: 16ms;
   --mu-r-meter-zone-warn: 0.75;
   --mu-r-meter-zone-danger: 0.9;
+  /* sheet: the dialog scrim and plate surface; the surface, settle and release springs; Base UI Drawer */
+  --mu-r-sheet-self-width: 380px;
+  --mu-r-sheet-self-max-height: 85vh;
+  --mu-r-sheet-self-pad: 20px;
+  --mu-r-sheet-self-gap: 14px;
+  --mu-r-sheet-self-radius: 22px;
+  --mu-r-sheet-grip-width: 36px;
+  --mu-r-sheet-grip-height: 4px;
+  --mu-r-sheet-grip-gap: 10px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
@@ -1461,7 +1470,7 @@
   --mu-r-sparkline-self-height: 40px;
   --mu-r-sparkline-self-height-mini: 24px;
   /* dialog: reference style.css #palette */
-  --mu-r-dialog-scrim-z: 30;
+  --mu-r-dialog-scrim-z: 50;
   --mu-r-dialog-self-top: 16vh;
   --mu-r-dialog-self-enter-y: -6px;
   --mu-r-dialog-self-enter-scale: 0.985;

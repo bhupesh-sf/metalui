@@ -430,6 +430,14 @@
   --spacing-meter-segments: var(--mu-r-meter-self-segments);
   --spacing-meter-min-width: var(--mu-r-meter-self-min-width);
   --spacing-meter-head-gap: var(--mu-r-meter-self-head-gap);
+  --spacing-sheet-width: var(--mu-r-sheet-self-width);
+  --spacing-sheet-pad: var(--mu-r-sheet-self-pad);
+  --spacing-sheet-gap: var(--mu-r-sheet-self-gap);
+  --spacing-sheet-radius: var(--mu-r-sheet-self-radius);
+  --radius-sheet-radius: var(--mu-r-sheet-self-radius);
+  --spacing-sheet-grip-width: var(--mu-r-sheet-grip-width);
+  --spacing-sheet-grip-height: var(--mu-r-sheet-grip-height);
+  --spacing-sheet-grip-gap: var(--mu-r-sheet-grip-gap);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1284,6 +1292,21 @@
 }
 @utility opacity-meter-zone-danger {
   opacity: var(--mu-r-meter-zone-danger);
+}
+@utility sheet-width {
+  width: min(var(--mu-r-sheet-self-width), 100vw);
+}
+@utility sheet-max-height {
+  max-height: var(--mu-r-sheet-self-max-height);
+}
+@utility sheet-motion {
+  translate: var(--drawer-swipe-movement-x, 0px) var(--drawer-swipe-movement-y, 0px); opacity: 1; transition: translate var(--mu-spring-settle-d) var(--mu-spring-settle), opacity var(--mu-spring-surface-d) var(--mu-spring-surface); &[data-starting-style] { transition: translate var(--mu-spring-surface-d) var(--mu-spring-surface), opacity var(--mu-spring-surface-d) var(--mu-spring-surface); } &[data-swiping] { transition: none; } &[data-ending-style] { transition: translate calc(var(--mu-spring-release-d) * var(--drawer-swipe-strength, 1)) var(--mu-spring-release), opacity calc(var(--mu-spring-release-d) * var(--drawer-swipe-strength, 1)) var(--mu-spring-release); } &[data-side=right][data-starting-style], &[data-side=right][data-ending-style] { translate: calc(100% * var(--mu-travel-surface)) 0; opacity: var(--mu-travel-surface); } &[data-side=bottom][data-starting-style], &[data-side=bottom][data-ending-style] { translate: 0 calc(100% * var(--mu-travel-surface)); opacity: var(--mu-travel-surface); }
+}
+@utility stroke-width-sheet-width {
+  stroke-width: var(--mu-r-sheet-self-width);
+}
+@utility stroke-width-sheet-grip-width {
+  stroke-width: var(--mu-r-sheet-grip-width);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

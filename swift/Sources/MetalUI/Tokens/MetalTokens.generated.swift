@@ -882,6 +882,24 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A panel that slides in from an edge of the window (right for an inspector, bottom for a phone sheet) over the dialog's scrim: the plate surface, rounded only on its inner edge, with a grip on a bottom sheet. Opening, it slides its whole size in on the surface spring (no stop, no overshoot). Dragged, it follows the finger one to one; let go past the threshold it leaves on the release spring (a harder flick leaves faster), short of it it settles home on the settle spring. Closing, it leaves on the release spring. Reduce Motion: it fades, with no slide. (the dialog scrim and plate surface; the surface, settle and release springs; Base UI Drawer)
+    public static let sheet = MetalObjectRecipe(
+        name: "sheet",
+        layers: [
+
+        ],
+        props: [
+            "self.width": .number(380.0),
+            "self.max-height": .text("85vh"),
+            "self.pad": .number(20.0),
+            "self.gap": .number(14.0),
+            "self.radius": .number(22.0),
+            "grip.width": .number(36.0),
+            "grip.height": .number(4.0),
+            "grip.gap": .number(10.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
@@ -1757,7 +1775,7 @@ public enum MetalRecipes {
         ],
         props: [
             "scrim.color": .perColorway(bone: "rgba(243,243,241,.25)", graphite: "rgba(14,14,15,.25)"),
-            "scrim.z": .text("30"),
+            "scrim.z": .text("50"),
             "self.top": .text("16vh"),
             "self.enter-y": .number(-6.0),
             "self.enter-scale": .text("0.985"),

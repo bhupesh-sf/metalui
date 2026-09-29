@@ -86,6 +86,7 @@ export const routes: RouteObject[] = [
       { path: 'components/toggle', lazy: lazy(() => import('../pages/components/Toggle')) },
       { path: 'components/accordion', lazy: lazy(() => import('../pages/components/Accordion')) },
       { path: 'components/meter', lazy: lazy(() => import('../pages/components/Meter')) },
+      { path: 'components/sheet', lazy: lazy(() => import('../pages/components/Sheet')) },
       { path: 'components/slider', lazy: lazy(() => import('../pages/components/Slider')) },
       { path: 'components/icon-button', lazy: lazy(() => import('../pages/components/IconButton')) },
       { path: 'components/field', lazy: lazy(() => import('../pages/components/Field')) },

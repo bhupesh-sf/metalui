@@ -1,0 +1,24 @@
+{
+  "name": "sheet",
+  "title": "Sheet",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A panel that slides in from an edge (right or bottom) on the surface spring, follows a drag one to one, and leaves on release, sooner for a harder flick.",
+  "base": "@base-ui/react/drawer",
+  "react": {
+    "export": "Sheet",
+    "files": [
+      "sheet.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSheet",
+    "file": "swift/Sources/MetalUI/Components/MetalSheet.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "Sheet": ["Root", "Trigger", "Popup", "Title", "Description", "Close"]
+  },
+  "agent": "sheet.agent.md",
+  "page": "/components/sheet"
+}

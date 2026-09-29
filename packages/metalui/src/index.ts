@@ -12,6 +12,7 @@ export { NumberField, type NumberFieldProps } from './components/number-field/nu
 export { Sparkline, type SparklineProps, type SparklinePoint } from './components/sparkline/sparkline';
 export { Dialog, type DialogRootProps, type DialogPopupProps } from './components/dialog/dialog';
 export { AlertDialog, type AlertDialogRootProps, type AlertDialogConfirmProps } from './components/alert-dialog/alert-dialog';
+export { Sheet, type SheetRootProps } from './components/sheet/sheet';
 export { GlassFace } from './components/glass-face/glass-face';
 export { Glyph, type GlyphProps } from './components/glyph/glyph';
 export { Row, type RowProps, type RowRootProps } from './components/row/row';
