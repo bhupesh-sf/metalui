@@ -1315,6 +1315,24 @@
       "docs": "Agent guide: https://metalui.dev/r/spatial-field.md. SwiftUI: MetalSpatialFieldView in the MetalUI Swift package."
     },
     {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "Steady work in a small space: a sunk round well with a lit green arc turning at a constant speed; it shows only after a beat so quick actions never flash it.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/spinner/spinner.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/spinner/spinner.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/spinner.md. SwiftUI: MetalSpinner in the MetalUI Swift package."
+    },
+    {
       "name": "status",
       "type": "registry:ui",
       "title": "Status badge",

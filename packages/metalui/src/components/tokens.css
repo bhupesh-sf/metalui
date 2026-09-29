@@ -986,6 +986,14 @@
   --mu-r-progress-segment-sweep: 1400ms;
   --mu-r-progress-segment-breathe: 1600ms;
   --mu-r-progress-segment-dim: 0.35;
+  /* spinner: the switch track (recipe switch); a conic arc masked to a ring */
+  --mu-r-spinner-self-size: 16px;
+  --mu-r-spinner-self-small: 12px;
+  --mu-r-spinner-self-ring: 2.5px;
+  --mu-r-spinner-self-turn: 900ms;
+  --mu-r-spinner-self-delay: 400ms;
+  --mu-r-spinner-self-fade: 160ms;
+  --mu-r-spinner-self-tail: 0.72;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

@@ -1072,6 +1072,23 @@
       "agent": "https://metalui.dev/r/spatial-field.md"
     },
     {
+      "name": "spinner",
+      "title": "Spinner",
+      "status": "alpha",
+      "description": "Steady work in a small space: a sunk round well with a lit green arc turning at a constant speed; it shows only after a beat so quick actions never flash it.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Spinner",
+        "base": "span role=status"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSpinner"
+      },
+      "registry": "https://metalui.dev/r/spinner.json",
+      "agent": "https://metalui.dev/r/spinner.md"
+    },
+    {
       "name": "status",
       "title": "Status badge",
       "status": "alpha",

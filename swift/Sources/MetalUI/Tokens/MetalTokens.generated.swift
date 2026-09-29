@@ -795,6 +795,23 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Something is working and will be done soon, in a small space (inside a button, beside a row): a sunk round well (the switch track's look) with a lit green arc fading into a tail, turning at a constant speed (linear: steady work has no spring). It appears only after a beat, so a quick action never flashes it. Reduce Motion: the arc stands still and breathes. The well is the switch recipe; this adds the arc and its motion. (the switch track (recipe switch); a conic arc masked to a ring)
+    public static let spinner = MetalObjectRecipe(
+        name: "spinner",
+        layers: [
+
+        ],
+        props: [
+            "self.size": .number(16.0),
+            "self.small": .number(12.0),
+            "self.ring": .number(2.5),
+            "self.turn": .text("900ms"),
+            "self.delay": .text("400ms"),
+            "self.fade": .text("160ms"),
+            "self.tail": .text("0.72"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

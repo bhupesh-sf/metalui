@@ -1,0 +1,21 @@
+{
+  "name": "spinner",
+  "title": "Spinner",
+  "status": "alpha",
+  "layer": "component",
+  "description": "Steady work in a small space: a sunk round well with a lit green arc turning at a constant speed; it shows only after a beat so quick actions never flash it.",
+  "base": "span role=status",
+  "react": {
+    "export": "Spinner",
+    "files": [
+      "spinner.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalSpinner",
+    "file": "swift/Sources/MetalUI/Components/MetalSpinner.swift",
+    "status": "wip"
+  },
+  "agent": "spinner.agent.md",
+  "page": "/components/spinner"
+}
