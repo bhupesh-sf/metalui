@@ -19,9 +19,9 @@ const FX = FOUNDATIONS_AT.x;
 const START: Pose = { x: 0, y: 0, z: 1150, tilt: 34, orbit: -16 };
 const MOVES = [
   { at: K[1] - 16, frames: 56, pose: { x: 0, y: -40, z: 640, orbit: -12 } },
-  { at: K[3] - 16, frames: 64, pose: { x: 0, y: 0, z: 240, tilt: 40, orbit: -7 } },
-  { at: K[5] - 16, frames: 70, pose: { x: 0, y: 0, z: 40, tilt: 44, orbit: -2 } },
-  { at: K[7] - 12, frames: END - K[7] - 6, pose: { x: 20, y: 30, z: 110, tilt: 47, orbit: 3 } },
+  { at: K[3] - 16, frames: 64, pose: { x: 0, y: 90, z: 200, tilt: 40, orbit: -7 } },
+  { at: K[5] - 16, frames: 70, pose: { x: 0, y: 140, z: 60, tilt: 44, orbit: -2 } },
+  { at: K[7] - 12, frames: END - K[7] - 6, pose: { x: 20, y: 150, z: 90, tilt: 47, orbit: 3 } },
   // The whip: across the table in 16 frames, arriving on the downbeat of bar 3.
   { at: END - 16, frames: 16, pose: { x: FX, y: 260, z: -120, tilt: 42, orbit: 0 } },
   { at: END + 2, frames: frameAt(5) - END - 2, pose: { x: FX + 20, y: 280, z: -10, tilt: 40, orbit: -3 } },
@@ -41,7 +41,7 @@ const F_HOPS = Object.fromEntries(
 const WEIGHT = { heavy: 1, key: 0.8, light: 0.5 } as const;
 const IMPACTS: Impact[] = [
   { x: 0, y: 0, at: K[0], strength: 0.8 },
-  ...PIECES.filter((p) => p.at !== null).map((p) => ({ x: p.x, y: p.y, at: p.at!, strength: p.id.startsWith('bit') ? 0.3 : WEIGHT[p.fall] })),
+  ...PIECES.filter((p) => p.at !== null).map((p) => ({ x: p.x, y: p.y, at: p.at!, strength: p.id === 'badge' ? 1.6 : p.id.startsWith('bit') ? 0.3 : WEIGHT[p.fall] })),
   ...FOUNDATION_PIECES.map((p) => ({ x: p.x, y: p.y, at: p.at, strength: WEIGHT[p.fall] })),
 ];
 // Dots only where the camera looks: around the kit, and around the foundations.
@@ -53,7 +53,7 @@ const AREAS = [
 export function Opening() {
   const frame = useCurrentFrame();
   const pose = cameraAt(frame, START, MOVES);
-  const jolt = punch(frame, [...HEAVY.map((h) => h.at!), ...F_HEAVY.map((h) => h.at)]) + 1.4 * punch(frame, [K[7]]);
+  const jolt = punch(frame, [...HEAVY.map((h) => h.at!), ...F_HEAVY.map((h) => h.at)]) + 1.2 * punch(frame, [K[4]]) + 1.4 * punch(frame, [K[7]]);
   // The sunrise: dawn on the lone key, full sun once the kit is down, and full sun from bar 3 on.
   const landed = K.filter((k) => frame >= k).length;
   const sun = frame >= END ? 1 : Math.min(1, landed / 8 + (frame >= K[7] ? 0.2 * (1 - react(frame, K[7], 'surface')) : 0));

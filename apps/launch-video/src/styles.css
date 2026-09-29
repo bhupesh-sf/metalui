@@ -3,6 +3,7 @@
 @import "@fontsource-variable/martian-mono/standard.css";
 @import "@fontsource-variable/doto";
 @import "@unlocalhosted/metalui/tokens.css";
+@import "@unlocalhosted/metalui/icons.css";
 @import "@unlocalhosted/metalui/theme.css";
 
 /* The library's components carry their utilities in their sources; the shots carry theirs here. */

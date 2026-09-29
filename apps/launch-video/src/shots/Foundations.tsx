@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
-import { Button, DotDisplay, Kbd, Label, SelectionFrame, SizeReadout, StatusBadge, Surface, Switch, type DotInk } from '@unlocalhosted/metalui';
+import { Button, DotDisplay, IconButton, Kbd, Label, SelectionFrame, SizeReadout, StatusBadge, Surface, Switch, type DotInk } from '@unlocalhosted/metalui';
 import events from '../events.generated.json';
 import { FPS, at, frameAt } from '../time';
 import type { Fall } from '../film/stage';
-import { PressedKey, press } from '../film/parts';
+import { IconAct, actTime } from '../film/parts';
 
 /* ─────────────────────────────────────────────────────────
  * SHOT 2 · FOUNDATIONS (video bars 3-4), on the same table as the opener
@@ -130,7 +130,18 @@ export const FOUNDATION_PIECES: FoundationPiece[] = [
   { id: 'readout', at: K2[0], fall: 'heavy', x: X, y: -170, zoom: 1.5, size: [820, 330], draw: (f) => <ReadoutPlate frame={f} /> },
   { id: 'bone', at: K2[0], fall: 'light', x: X - 600, y: 230, zoom: 3.0, size: [200, 120], draw: () => <Specimen zoom={3.0} caption="Buttons"><Button cap="standard">Continue</Button></Specimen> },
   { id: 'graphite', at: K2[1], fall: 'light', x: X - 200, y: 230, zoom: 2.4, size: [320, 120], draw: () => <Specimen zoom={2.4} caption="Colour"><div style={{ display: 'flex', gap: 8 }}><Button cap="standard">Bone</Button><div data-mu-colorway="graphite"><Button cap="standard">Graphite</Button></div></div></Specimen> },
-  { id: 'accent', at: K2[2], fall: 'key', x: X + 200, y: 230, zoom: 2.4, size: [180, 180], draw: (f) => <Specimen zoom={2.4} caption="Keys"><PressedKey id="k-accent" down={press(f, AND(2), K2[3])} glyph="↩" accent size={96} /></Specimen> },
+  {
+    // Three tools, each playing its act on the beat after the one before.
+    id: 'icons', at: K2[2], fall: 'light', x: X + 200, y: 230, zoom: 2.4, size: [300, 150], draw: (f) => (
+      <Specimen zoom={2.4} caption="Icons">
+        <div style={{ display: 'flex', gap: 6 }}>
+          {(['select', 'pen', 'rectangle'] as const).map((name, k) => (
+            <IconButton key={name} variant="tool" label={name} icon={<IconAct name={name} t={actTime(f, K2[3 + k])} size={20} />} />
+          ))}
+        </div>
+      </Specimen>
+    ),
+  },
   { id: 'live', at: K2[3], fall: 'light', x: X + 600, y: 230, zoom: 3.0, size: [200, 110], draw: () => <Specimen zoom={3.0} caption="Status"><StatusBadge led="live">Live</StatusBadge></Specimen> },
   {
     id: 'space', at: K2[4], fall: 'light', x: X - 600, y: 580, zoom: 2.7, size: [260, 130], draw: () => (

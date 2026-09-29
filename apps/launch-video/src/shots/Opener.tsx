@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react';
-import { Button, Checkbox, Folder, Kbd, Led, Swatch, Switch, WeatherTile } from '@unlocalhosted/metalui';
-import { PressedKey, press } from '../film/parts';
+import { Button, Checkbox, Folder, IconButton, Led, Swatch, Switch, WeatherTile } from '@unlocalhosted/metalui';
+import { IconAct, PressedKey, actTime, press } from '../film/parts';
 import tokens from '../../../../tokens/tokens.json';
 import { frameAt } from '../time';
+import { Label } from '@unlocalhosted/metalui';
+import { Wordmark } from '../../../docs/src/ui/Wordmark';
 import type { Fall } from '../film/stage';
 
 /* ─────────────────────────────────────────────────────────
@@ -41,13 +43,13 @@ export interface Piece {
   draw: (frame: number) => ReactNode;
 }
 
-const BITS: { x: number; y: number; i: number; zoom: number; size: [number, number]; draw: () => ReactNode }[] = [
+const BITS: { x: number; y: number; i: number; zoom: number; size: [number, number]; draw: (frame: number) => ReactNode }[] = [
   { x: 150, y: -170, i: 1, zoom: 7, size: [60, 60], draw: () => <Led kind="live" /> },
-  { x: -300, y: -60, i: 2, zoom: 2.6, size: [80, 80], draw: () => <Kbd>⌥</Kbd> },
-  { x: 520, y: 470, i: 3, zoom: 7, size: [60, 60], draw: () => <Led kind="waiting" /> },
-  { x: -620, y: -420, i: 4, zoom: 2.6, size: [80, 80], draw: () => <Kbd>⎋</Kbd> },
+  { x: -300, y: -60, i: 2, zoom: 2.4, size: [110, 110], draw: (f) => <IconButton variant="tool" label="Synced" icon={<IconAct name="synced" t={actTime(f, OFF(2))} size={20} />} /> },
+  { x: 780, y: 520, i: 3, zoom: 7, size: [60, 60], draw: () => <Led kind="waiting" /> },
+  { x: -620, y: -420, i: 4, zoom: 2.4, size: [110, 110], draw: (f) => <IconButton variant="tool" label="Search" icon={<IconAct name="search" t={actTime(f, OFF(4))} size={20} />} /> },
   { x: 480, y: -320, i: 5, zoom: 7, size: [60, 60], draw: () => <Led kind="link" /> },
-  { x: -380, y: 480, i: 6, zoom: 2.6, size: [80, 80], draw: () => <Kbd>⌫</Kbd> },
+  { x: -120, y: 600, i: 6, zoom: 2.4, size: [110, 110], draw: (f) => <IconButton variant="tool" label="Pen" icon={<IconAct name="pen" t={actTime(f, OFF(6))} size={20} />} /> },
 ];
 
 export const PIECES: Piece[] = [
@@ -60,22 +62,36 @@ export const PIECES: Piece[] = [
   { id: 'check', at: K[2], fall: 'light', x: 400, y: 160, zoom: 3.8, size: [100, 100], spin: -1, draw: (f) => <Checkbox checked={f >= OFF(2)} aria-label="checkbox" /> },
   { id: 'swatch-blue', at: K[2], fall: 'light', x: -380, y: 80, zoom: 1.7, size: [150, 150], turn: -16, draw: () => <Swatch hex={tokens.shared.blue} label="BLUE" /> },
   // Kick 4
-  { id: 'button', at: K[3], fall: 'heavy', x: 40, y: 330, zoom: 2.4, size: [260, 100], draw: (f) => <Button cap="primary" className={f >= OFF(3) && f < K[4] ? 'recipe-button-primary-pressed' : undefined}>Ship it</Button> },
+  { id: 'button', at: K[3], fall: 'heavy', x: 470, y: 470, zoom: 2.4, size: [260, 100], draw: (f) => <Button cap="primary" className={f >= OFF(3) && f < K[4] ? 'recipe-button-primary-pressed' : undefined}>Ship it</Button> },
   { id: 'key-a', at: K[3], fall: 'key', x: -170, y: -380, zoom: 1, size: [150, 150], draw: (f) => <PressedKey id="k-a" down={press(f, K[4], OFF(4))} glyph="A" size={140} /> },
-  // Kick 5
-  { id: 'weather', at: K[4], fall: 'heavy', x: -560, y: 330, zoom: 1.25, size: [230, 230], turn: -12, draw: () => <WeatherTile kind="clear" temp="24°" name="Sunny" meta="Lisbon" clock={10} running={false} aria-label="Lisbon, sunny, 24°" /> },
+  // Kick 5: the title lands, the heaviest thing in the opener; "Introducing" types in over it.
+  { id: 'badge', at: K[4], fall: 'heavy', x: 0, y: 290, zoom: 1, size: [700, 150], draw: () => <Wordmark size={78} /> },
+  { id: 'intro', at: null, fall: 'heavy', x: 0, y: 165, zoom: 4, size: [0, 0], draw: (f) => <Typed text="Introducing" from={K[4]} frame={f} /> },
+  { id: 'weather', at: K[4], fall: 'heavy', x: -660, y: 300, zoom: 1.25, size: [230, 230], turn: -12, draw: () => <WeatherTile kind="clear" temp="24°" name="Sunny" meta="Lisbon" clock={10} running={false} aria-label="Lisbon, sunny, 24°" /> },
   { id: 'swatch-green', at: K[4], fall: 'light', x: 620, y: -30, zoom: 1.6, size: [140, 140], turn: 18, spin: -1, draw: () => <Swatch hex={tokens.shared.green} label="LIVE" /> },
   // Kick 6
   { id: 'folder-blue', at: K[5], fall: 'heavy', x: 250, y: -400, zoom: 1.15, size: [250, 170], turn: -8, draw: () => <Folder name="Launch" count={12} hue="blue" /> },
   { id: 'switch-2', at: K[5], fall: 'light', x: -700, y: -40, zoom: 2.4, size: [130, 80], draw: (f) => <Switch checked={f >= OFF(5)} aria-label="switch" /> },
   // Kick 7
   { id: 'folder-violet', at: K[6], fall: 'heavy', x: 660, y: 320, zoom: 1.1, size: [240, 160], turn: 10, draw: () => <Folder name="Play" count={4} hue="violet" /> },
-  { id: 'key-shift', at: K[6], fall: 'key', x: -200, y: 190, zoom: 1, size: [150, 150], spin: -1, draw: (f) => <PressedKey id="k-shift" down={press(f, K[7], OFF(7))} glyph="⇧" size={140} /> },
+  { id: 'key-shift', at: K[6], fall: 'key', x: -480, y: 480, zoom: 1, size: [150, 150], spin: -1, draw: (f) => <PressedKey id="k-shift" down={press(f, K[7], OFF(7))} glyph="⇧" size={140} /> },
   // Kick 8: the hero lands.
   { id: 'return', at: K[7], fall: 'heavy', x: 230, y: 90, zoom: 1.35, size: [240, 240], draw: (f) => <PressedKey id="k-ret" down={press(f, END - 6, END + 20)} glyph="↩" accent /> },
   // Small parts rain on the off-beats.
   ...BITS.map((b, n): Piece => ({ id: `bit-${n}`, at: OFF(b.i), fall: 'light', x: b.x, y: b.y, zoom: b.zoom, size: b.size, spin: n % 2 ? 1 : -1, draw: b.draw })),
 ];
+
+/** Text printed on the canvas a letter per sixteenth from `from`, like it's being typed. */
+function Typed({ text, from, frame }: { text: string; from: number; frame: number }) {
+  const sixteenth = (frameAt(2, 2) - frameAt(2, 1)) / 4;
+  const shown = frame < from ? 0 : Math.min(text.length, 1 + Math.floor((frame - from) / sixteenth));
+  return (
+    <Label variant="engraved" style={{ whiteSpace: 'pre', visibility: shown ? 'visible' : 'hidden' }}>
+      {text.slice(0, shown)}
+      <span style={{ opacity: 0 }}>{text.slice(shown)}</span>
+    </Label>
+  );
+}
 
 export const HEAVY = PIECES.filter((p) => p.fall === 'heavy' && p.at !== null);
 
@@ -83,6 +99,7 @@ export const HEAVY = PIECES.filter((p) => p.fall === 'heavy' && p.at !== null);
  *  already down jumps together when the hero lands. */
 function hopsFor(p: Piece) {
   const out: { at: number; height: number; frames: number }[] = [];
+  if (p.id === 'intro') return out;
   for (const h of HEAVY) {
     if (h === p || (p.at !== null && p.at >= h.at!)) continue;
     const d = Math.hypot(h.x - p.x, h.y - p.y);
