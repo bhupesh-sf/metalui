@@ -372,6 +372,15 @@
   --spacing-checkbox-row-tick-y: var(--mu-r-checkbox-row-tick-y);
   --spacing-checkbox-row-tick-w: var(--mu-r-checkbox-row-tick-w);
   --spacing-checkbox-row-tick-h: var(--mu-r-checkbox-row-tick-h);
+  --spacing-radio-size: var(--mu-r-radio-self-size);
+  --spacing-radio-pip-size: var(--mu-r-radio-pip-size);
+  --color-radio-pip-color: var(--mu-r-radio-pip-color);
+  --spacing-radio-row-height: var(--mu-r-radio-row-height);
+  --spacing-radio-row-gap: var(--mu-r-radio-row-gap);
+  --spacing-radio-group-gap: var(--mu-r-radio-group-gap);
+  --spacing-radio-group-gap-across: var(--mu-r-radio-group-gap-across);
+  --spacing-radio-error-width: var(--mu-r-radio-error-width);
+  --color-radio-error-ring: var(--mu-r-radio-error-ring);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1077,6 +1086,32 @@
 }
 @utility opacity-checkbox-doing-opacity {
   opacity: var(--mu-r-checkbox-doing-opacity);
+}
+@utility radio-pip {
+  display: block; width: var(--mu-r-radio-pip-size); height: var(--mu-r-radio-pip-size); border-radius: 50%; background: var(--mu-r-radio-pip-color); scale: 0; transition: scale var(--mu-spring-release-d) var(--mu-spring-release);
+}
+@utility radio-pip-on {
+  scale: 1; transition: scale var(--mu-spring-part-d) var(--mu-spring-part);
+}
+@utility radio-invalid {
+  box-shadow: inset 0 0 0 var(--mu-r-radio-error-width) var(--mu-r-radio-error-ring);
+}
+@utility duration-radio-fade {
+  --tw-duration: var(--mu-r-radio-self-fade);
+  transition-duration: var(--mu-r-radio-self-fade);
+}
+@utility duration-radio-press {
+  --tw-duration: var(--mu-r-radio-self-press);
+  transition-duration: var(--mu-r-radio-self-press);
+}
+@utility opacity-radio-disabled {
+  opacity: var(--mu-r-radio-self-disabled);
+}
+@utility transition-radio {
+  transition: var(--mu-r-radio-self-transition);
+}
+@utility stroke-width-radio-error-width {
+  stroke-width: var(--mu-r-radio-error-width);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

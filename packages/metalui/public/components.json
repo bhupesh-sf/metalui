@@ -800,6 +800,23 @@
       "agent": "https://metalui.dev/r/pull.md"
     },
     {
+      "name": "radio",
+      "title": "Radio group",
+      "status": "alpha",
+      "description": "One choice from a short list: round wells beside their labels; pressing darkens the well, releasing latches a pip in on the part spring while the old choice's pip drops out (the preset-button interlock).",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "RadioGroup, Radio",
+        "base": "@base-ui/react/radio-group"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalRadioGroup"
+      },
+      "registry": "https://metalui.dev/r/radio.json",
+      "agent": "https://metalui.dev/r/radio.md"
+    },
+    {
       "name": "region",
       "title": "Region",
       "status": "alpha",

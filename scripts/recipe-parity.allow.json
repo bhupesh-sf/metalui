@@ -21,6 +21,7 @@
   "swift/Sources/MetalUI/Components/MetalLensBar.swift: component has no matching component recipe",
   "swift/Sources/MetalUI/Components/MetalPerfectPreview.swift: component has no matching component recipe",
   "swift/Sources/MetalUI/Components/MetalProvenanceTooltip.swift: component has no matching component recipe",
+  "swift/Sources/MetalUI/Components/MetalRadioGroup.swift: component has no matching component recipe",
   "swift/Sources/MetalUI/Components/MetalRegionView.swift: component has no matching component recipe",
   "swift/Sources/MetalUI/Components/MetalSelectionFrame.swift: component has no matching component recipe",
   "swift/Sources/MetalUI/Components/MetalSizeReadout.swift: component has no matching component recipe",

@@ -1,0 +1,24 @@
+{
+  "name": "radio",
+  "title": "Radio group",
+  "status": "alpha",
+  "layer": "component",
+  "description": "One choice from a short list: round wells beside their labels; pressing darkens the well, releasing latches a pip in on the part spring while the old choice's pip drops out (the preset-button interlock).",
+  "base": "@base-ui/react/radio-group",
+  "react": {
+    "export": "RadioGroup, Radio",
+    "files": [
+      "radio.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalRadioGroup",
+    "file": "swift/Sources/MetalUI/Components/MetalRadioGroup.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "RadioGroup": ["Root", "Item"]
+  },
+  "agent": "radio.agent.md",
+  "page": "/components/radio"
+}

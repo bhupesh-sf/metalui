@@ -703,6 +703,29 @@ public enum MetalRecipes {
         ]
     )
 
+    /// One choice from a short list, in a form: each option is the checkbox's round well beside its label. Pressing darkens the well to the on look at once (the key is going down); releasing latches a white pip in on the part spring while the pip of the one chosen before drops out on the release spring, on the same frame (the interlock of preset buttons). Arrow keys choose without the press. Invalid: a red hairline ring. Disabled: 40 %. Reduce Motion: the pip is there or not at once; the well colour still fades. The well's look is the checkbox recipe (one recipe per look); this recipe adds only the pip, the row and the motion. (the checkbox dimple (recipe checkbox) made round; preset-button interlock; Base UI RadioGroup and Radio)
+    public static let radio = MetalObjectRecipe(
+        name: "radio",
+        layers: [
+
+        ],
+        props: [
+            "self.size": .number(16.0),
+            "self.fade": .text("160ms"),
+            "self.press": .text("50ms"),
+            "self.disabled": .text("0.4"),
+            "self.transition": .text("background var(--mu-r-radio-self-fade), box-shadow var(--mu-r-radio-self-fade)"),
+            "pip.size": .number(6.0),
+            "pip.color": .text("#FFFFFF"),
+            "row.height": .number(24.0),
+            "row.gap": .number(8.0),
+            "group.gap": .number(4.0),
+            "group.gap-across": .number(16.0),
+            "error.width": .number(1.0),
+            "error.ring": .perColorway(bone: "rgba(216,69,59,.55)", graphite: "rgba(255,122,102,.5)"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

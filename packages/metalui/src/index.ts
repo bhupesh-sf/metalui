@@ -40,6 +40,7 @@ export { Nib, type NibProps } from './components/nib/nib';
 export { StatusBadge, type StatusBadgeProps } from './components/status/status';
 export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
+export { RadioGroup, Radio, type RadioGroupProps, type RadioProps } from './components/radio/radio';
 export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch';
 export { InkPicks, WidthPicks, INKS, INK_WIDTHS, inkColor, type Ink, type InkWidth, type InkPicksProps, type WidthPicksProps } from './components/draw-picks/draw-picks';
 export { Connector, type ConnectorProps, type ConnectorEnd, type ConnectorLook, type ConnectorFlow } from './components/connector/connector';

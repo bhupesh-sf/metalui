@@ -1014,6 +1014,26 @@
       "docs": "Agent guide: https://metalui.dev/r/pull.md. SwiftUI: MetalPull in the MetalUI Swift package."
     },
     {
+      "name": "radio",
+      "type": "registry:ui",
+      "title": "Radio group",
+      "description": "One choice from a short list: round wells beside their labels; pressing darkens the well, releasing latches a pip in on the part spring while the old choice's pip drops out (the preset-button interlock).",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/radio/radio.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/radio/radio.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/radio.md. SwiftUI: MetalRadioGroup in the MetalUI Swift package."
+    },
+    {
       "name": "region",
       "type": "registry:ui",
       "title": "Region",
