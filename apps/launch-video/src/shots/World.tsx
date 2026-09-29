@@ -7,7 +7,7 @@ import { END, HEAVY, HOPS, K, PIECES } from './Opener';
 import { FOUNDATION_PIECES, FOUNDATIONS_AT } from './Foundations';
 import { ASSEMBLE, CLICK, PART_PIECES, PARTS_AT, fogAt, pointerAt } from './Parts';
 import { IconAct } from '../film/parts';
-import { COMPONENT_PIECES, DROP1_AT, FILL, SLAM, raveOf, raveTheme } from './Components';
+import { COMPONENT_PIECES, ComponentsTitle, DROP1_AT, FILL, SET_AT, SLAM, raveOf, raveTheme } from './Components';
 import { DROP1, DROP1_END, OBJECT_PIECES, ObjectsTitle } from './Objects';
 import { BUILD_AT, COLLAPSE_AT, DROP2, SILENT, XRAY_LANDS, Xray, rollIntensity, xrayPointer } from './Build';
 import { DANCE, FIRE_FRONT, TOUR_IMPACTS, TOUR_MOVES } from './Finale';
@@ -181,6 +181,11 @@ export function World() {
                 {p.draw(frame)}
               </Drop>
             ))}
+            {frame >= SLAM && Math.abs(pose.x - SET_AT.x) < SEEN && (
+              <div style={{ position: 'absolute', left: SET_AT.x, top: -690, transform: 'translate(-50%, -50%)' }}>
+                <div style={{ zoom: 7 }}><ComponentsTitle frame={frame} /></div>
+              </div>
+            )}
             {frame >= DROP1 && (
               <div style={{ position: 'absolute', left: DROP1_AT.x, top: -540, transform: 'translate(-50%, -50%)' }}>
                 <div style={{ zoom: 5.5 }}><ObjectsTitle /></div>

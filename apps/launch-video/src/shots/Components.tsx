@@ -50,6 +50,13 @@ export const raveOf = (x: number) => {
   };
 };
 
+/** The set's name above it; through the rave it names the theme, so every flip says what it is. */
+export function ComponentsTitle({ frame }: { frame: number }) {
+  const rave = frame >= RAVE_BEATS[0] && frame < RAVE_END;
+  const text = !rave ? 'Components · you operate them' : raveTheme(frame) === 'graphite' ? 'Dark theme' : 'Light theme';
+  return <Label variant="engraved">{text}</Label>;
+}
+
 /** Where the fill's whip goes: drop 1's part of the table. */
 export const DROP1_AT = { x: CX + 3400, y: 0 };
 

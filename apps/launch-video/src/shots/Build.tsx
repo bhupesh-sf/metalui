@@ -57,8 +57,8 @@ const ROLL_HITS = (() => {
 })();
 const hitsIn = (from: number, to: number) => ROLL_HITS.filter((h) => h >= from && h < to);
 
-/** How hard the roll is going: 0 until its last level, 1 at its peak (for a little camera shake). */
-export const rollIntensity = (f: number) => sweep(f, B(21, 1), SILENT) ** 2;
+/** How hard the roll is going: 0 until its last level, 1 at its peak (for a little camera shake), 0 again once it stops. */
+export const rollIntensity = (f: number) => (f >= SILENT ? 0 : sweep(f, B(21, 1), SILENT) ** 2); // still from the silent beat on
 
 /* ───────────────────────── the button's real options ───────────────────────── */
 
