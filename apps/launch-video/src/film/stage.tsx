@@ -96,7 +96,9 @@ const workbenchDawn: Look = { sky: '#b98a73', mid: '#e3c3aa', far: '#c29a80', po
 const canvasDawn: Look = { sky: '#c6a58c', mid: '#ead6c2', far: '#cfb29a', pool: '#ffdcb6', shadow: '72 76 120', glow: 'rgba(255,184,124,.28)', vignette: 'rgba(110,70,50,.25)', pattern: 'dots', gobo: 'rgba(255,200,140,.5)' };
 const SWEEP = 'linear-gradient(112deg, #ffe39c 0%, #ffc49a 30%, #f9a5b0 62%, #c7b5f3 100%)';
 
-export const LOOKS: Record<'studio' | 'golden' | 'clay' | 'sunlit' | 'dawn' | 'workbench' | 'canvas' | 'sweep', Look> = {
+export const LOOKS: Record<'white' | 'studio' | 'golden' | 'clay' | 'sunlit' | 'dawn' | 'workbench' | 'canvas' | 'sweep', Look> = {
+  // A white design canvas with a dot grid: the components bring all the colour.
+  white: { sky: '#ececea', mid: '#ffffff', far: '#f1f1ef', pool: '#ffffff', shadow: '64 72 92', glow: 'rgba(255,255,255,0)', vignette: 'rgba(40,44,52,.07)', pattern: 'dots' },
   workbench: { sky: '#e6d7c4', mid: '#f4ece1', far: '#e0cfbb', pool: '#fffaf0', shadow: '64 82 124', glow: 'rgba(255,214,150,.28)', vignette: 'rgba(110,90,70,.16)', pattern: 'grain', gobo: 'rgba(255,228,176,.6)', dawn: workbenchDawn },
   canvas: { sky: '#ece3d5', mid: '#f8f3ea', far: '#e7dccc', pool: '#fffcf5', shadow: '60 76 128', glow: 'rgba(255,210,150,.24)', vignette: 'rgba(100,80,60,.14)', pattern: 'dots', gobo: 'rgba(255,232,186,.5)', dawn: canvasDawn },
   sweep: { sky: '#d6c3ef', mid: '#ffd8b2', far: '#e8b6cb', pool: '#fffaf0', shadow: '92 70 150', glow: 'rgba(255,232,196,.22)', vignette: 'rgba(120,80,140,.16)', pattern: 'grain', surface: SWEEP, dawn: { sky: '#b58fbf', mid: '#f2b996', far: '#cf8fa5', pool: '#ffd1ad', shadow: '92 60 130', glow: 'rgba(255,190,150,.26)', vignette: 'rgba(110,50,90,.24)', pattern: 'grain', surface: SWEEP } },
@@ -132,17 +134,70 @@ export const useLook = () => useContext(LookContext);
  */
 const GRAIN = `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .45  0 0 0 0 .38  0 0 0 0 .3  0 0 0 .55 0"/></filter><rect width="240" height="240" filter="url(#n)"/></svg>')}")`;
 
-export function Table({ children, light = { x: 0, y: 0 }, power = 1 }: { children: ReactNode; light?: { x: number; y: number }; power?: number }) {
+/** Something hitting the table: where, when, and how hard (1 a heavy landing). */
+export interface Impact {
+  x: number;
+  y: number;
+  at: number;
+  strength: number;
+}
+
+const DOT = { pitch: 40, radius: 2.2, ink: '60 66 78', alpha: 0.26 };
+const WAVE = { speed: 1150, width: 90, life: 1.1, swell: 2.2, push: 12, darken: 0.55 }; // px/s, px, s
+
+/**
+ * The dot grid, and the ripple a landing sends through it: a ring runs out from the impact at WAVE.speed,
+ * and as it passes a dot, the dot swells, darkens and is pushed outward, then settles as the ring
+ * fades over WAVE.life. Drawn only in the areas the camera visits, so the dots stay affordable.
+ */
+function RippleDots({ frame, fps, impacts, areas }: { frame: number; fps: number; impacts: Impact[]; areas: { x: number; y: number; w: number; h: number }[] }) {
+  const live = impacts
+    .map((i) => ({ ...i, t: (frame - i.at) / fps }))
+    .filter((i) => i.t >= 0 && i.t < WAVE.life);
+  return (
+    <>
+      {areas.map((a, n) => {
+        const dots: ReactNode[] = [];
+        for (let y = a.y - a.h / 2; y <= a.y + a.h / 2; y += DOT.pitch) {
+          for (let x = a.x - a.w / 2; x <= a.x + a.w / 2; x += DOT.pitch) {
+            let g = 0, px = 0, py = 0;
+            for (const i of live) {
+              const dx = x - i.x, dy = y - i.y, d = Math.hypot(dx, dy) || 1;
+              const ring = WAVE.speed * i.t;
+              const k = Math.exp(-(((d - ring) / WAVE.width) ** 2)) * (1 - i.t / WAVE.life) ** 2 * i.strength;
+              g += k;
+              px += (dx / d) * WAVE.push * k;
+              py += (dy / d) * WAVE.push * k;
+            }
+            const r = DOT.radius * (1 + WAVE.swell * Math.min(1.5, g));
+            dots.push(<circle key={`${x},${y}`} cx={x + px - (a.x - a.w / 2)} cy={y + py - (a.y - a.h / 2)} r={r} fill={`rgb(${DOT.ink} / ${Math.min(0.9, DOT.alpha + WAVE.darken * g)})`} />);
+          }
+        }
+        return (
+          <svg key={n} width={a.w + 1} height={a.h + 1} style={{ position: 'absolute', left: a.x - a.w / 2, top: a.y - a.h / 2, overflow: 'visible' }}>
+            {dots}
+          </svg>
+        );
+      })}
+    </>
+  );
+}
+
+export function Table({ children, light = { x: 0, y: 0 }, power = 1, frame = 0, fps = 60, impacts = [], areas = [{ x: 0, y: 0, w: 2600, h: 1800 }] }: {
+  children: ReactNode; light?: { x: number; y: number }; power?: number;
+  /** For a rippling dot grid: the frame, the impacts, and where to draw dots (table units). */
+  frame?: number; fps?: number; impacts?: Impact[]; areas?: { x: number; y: number; w: number; h: number }[];
+}) {
   const look = useLook();
   const r = 700 + 520 * power;
-  const at = `${2400 + light.x}px ${1600 + light.y}px`;
-  const plane = { position: 'absolute' as const, left: -2400, top: -1600, width: 4800, height: 3200 };
+  const at = `${3000 + light.x}px ${2000 + light.y}px`;
+  const plane = { position: 'absolute' as const, left: -3000, top: -2000, width: 9000, height: 4000 }; // wide enough for every set on it
   return (
     <div style={{ position: 'absolute', left: 0, top: 0, transformStyle: 'preserve-3d', ['--film-shadow' as string]: look.shadow }}>
       <div style={{ ...plane, background: look.surface ?? `radial-gradient(1500px 1100px at ${at}, ${look.mid} 0%, ${look.far} 70%, ${look.sky} 100%)` }} />
       {look.surface && <div style={{ ...plane, background: `radial-gradient(1700px 1200px at ${at}, transparent 45%, ${look.sky} 100%)` }} />}
       {look.pattern === 'grain' && <div style={{ ...plane, backgroundImage: GRAIN, backgroundSize: '240px', opacity: 0.35, mixBlendMode: 'multiply' }} />}
-      {look.pattern === 'dots' && <div style={{ ...plane, backgroundImage: 'radial-gradient(circle, rgba(96,78,58,.22) 2px, transparent 2.6px)', backgroundSize: '40px 40px' }} />}
+      {look.pattern === 'dots' && <RippleDots frame={frame} fps={fps} impacts={impacts} areas={areas} />}
       <div style={{ ...plane, opacity: power, background: `radial-gradient(${r}px ${r * 0.72}px at ${at}, ${look.pool} 0%, transparent 100%)`, mixBlendMode: look.surface ? 'soft-light' : 'normal' }} />
       {look.gobo && (
         // A window's six panes, thrown long across the table by a low sun from the upper left.

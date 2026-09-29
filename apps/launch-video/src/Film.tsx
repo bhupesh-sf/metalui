@@ -16,7 +16,7 @@ const SHOTS: Partial<Record<string, ComponentType>> = {
   foundations: Opening,
 };
 
-export function Film({ look = 'canvas' }: { look?: keyof typeof LOOKS }) {
+export function Film({ look = 'white' }: { look?: keyof typeof LOOKS }) {
   const frame = useCurrentFrame();
   const shot = shotAt(Math.min(BARS, position(frame).bar));
   const Shot = SHOTS[shot.id];

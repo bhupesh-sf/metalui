@@ -98,11 +98,13 @@ export function ReadoutPlate({ frame }: { frame: number }) {
 }
 
 /** A foundation, shown by the component it shapes, its name engraved under it. */
-function Specimen({ caption, children }: { caption: string; children: ReactNode }) {
+/** Captions read at one size across the row whatever the specimen's zoom: pass the piece's zoom. */
+const CAPTION_ZOOM = 3;
+function Specimen({ caption, zoom = CAPTION_ZOOM, children }: { caption: string; zoom?: number; children: ReactNode }) {
   return (
     <div style={{ display: 'grid', justifyItems: 'center', gap: 10 }}>
       <div style={{ minHeight: 64, display: 'grid', placeItems: 'center' }}>{children}</div>
-      <Label variant="engraved">{caption}</Label>
+      <Label variant="engraved" style={{ zoom: CAPTION_ZOOM / zoom }}>{caption}</Label>
     </div>
   );
 }
@@ -126,13 +128,13 @@ const AND = (i: number) => Math.round((K2[i] + (K2[i + 1] ?? frameAt(5))) / 2);
 
 export const FOUNDATION_PIECES: FoundationPiece[] = [
   { id: 'readout', at: K2[0], fall: 'heavy', x: X, y: -170, zoom: 1.5, size: [820, 330], draw: (f) => <ReadoutPlate frame={f} /> },
-  { id: 'bone', at: K2[0], fall: 'light', x: X - 600, y: 230, zoom: 3.0, size: [200, 120], draw: () => <Specimen caption="Bone · soft-touch"><Button cap="standard">Bone</Button></Specimen> },
-  { id: 'graphite', at: K2[1], fall: 'light', x: X - 200, y: 230, zoom: 3.0, size: [200, 120], draw: () => <Specimen caption="Graphite"><div data-mu-colorway="graphite"><Button cap="standard">Graphite</Button></div></Specimen> },
-  { id: 'accent', at: K2[2], fall: 'key', x: X + 200, y: 230, zoom: 2.4, size: [180, 180], draw: (f) => <Specimen caption="Accent"><PressedKey id="k-accent" down={press(f, AND(2), K2[3])} glyph="↩" accent size={96} /></Specimen> },
-  { id: 'live', at: K2[3], fall: 'light', x: X + 600, y: 230, zoom: 3.0, size: [200, 110], draw: () => <Specimen caption="Live · status"><StatusBadge led="live">Live</StatusBadge></Specimen> },
+  { id: 'bone', at: K2[0], fall: 'light', x: X - 600, y: 230, zoom: 3.0, size: [200, 120], draw: () => <Specimen zoom={3.0} caption="Buttons"><Button cap="standard">Continue</Button></Specimen> },
+  { id: 'graphite', at: K2[1], fall: 'light', x: X - 200, y: 230, zoom: 2.4, size: [320, 120], draw: () => <Specimen zoom={2.4} caption="Colour"><div style={{ display: 'flex', gap: 8 }}><Button cap="standard">Bone</Button><div data-mu-colorway="graphite"><Button cap="standard">Graphite</Button></div></div></Specimen> },
+  { id: 'accent', at: K2[2], fall: 'key', x: X + 200, y: 230, zoom: 2.4, size: [180, 180], draw: (f) => <Specimen zoom={2.4} caption="Keys"><PressedKey id="k-accent" down={press(f, AND(2), K2[3])} glyph="↩" accent size={96} /></Specimen> },
+  { id: 'live', at: K2[3], fall: 'light', x: X + 600, y: 230, zoom: 3.0, size: [200, 110], draw: () => <Specimen zoom={3.0} caption="Status"><StatusBadge led="live">Live</StatusBadge></Specimen> },
   {
     id: 'space', at: K2[4], fall: 'light', x: X - 600, y: 580, zoom: 2.7, size: [260, 130], draw: () => (
-      <Specimen caption="Space · 16">
+      <Specimen zoom={2.7} caption="Spacing">
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <Kbd>⌘</Kbd>
           <SizeReadout value="16" unit="px" />
@@ -143,7 +145,7 @@ export const FOUNDATION_PIECES: FoundationPiece[] = [
   },
   {
     id: 'radius', at: K2[5], fall: 'heavy', x: X - 200, y: 580, zoom: 2.7, size: [220, 150], draw: () => (
-      <Specimen caption="Radius · 14">
+      <Specimen zoom={2.7} caption="Radius">
         <div style={{ position: 'relative', width: 96, height: 60 }}>
           <Surface material="raise" style={{ position: 'absolute', inset: 0, borderRadius: 14 }} />
           <SelectionFrame state="selected" radius={14} readout={false} entrance={false} />
@@ -153,7 +155,7 @@ export const FOUNDATION_PIECES: FoundationPiece[] = [
   },
   {
     id: 'type', at: K2[6], fall: 'light', x: X + 200, y: 580, zoom: 2.7, size: [220, 150], draw: () => (
-      <Specimen caption="Type · Geist · Martian · Doto">
+      <Specimen zoom={2.7} caption="Typography">
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, color: 'var(--mu-ink)' }}>
           <span style={{ font: '600 34px/1 "Geist Variable", sans-serif', letterSpacing: -0.8 }}>Aa</span>
           <span style={{ font: '500 22px/1 "Martian Mono Variable", monospace' }}>Aa</span>
@@ -162,5 +164,5 @@ export const FOUNDATION_PIECES: FoundationPiece[] = [
       </Specimen>
     ),
   },
-  { id: 'spring', at: K2[7], fall: 'light', x: X + 600, y: 580, zoom: 3.3, size: [180, 110], draw: (f) => <Specimen caption="Spring · part"><Switch checked={f >= AND(7) - 6} aria-label="spring" /></Specimen> },
+  { id: 'spring', at: K2[7], fall: 'light', x: X + 600, y: 580, zoom: 3.3, size: [180, 110], draw: (f) => <Specimen zoom={3.3} caption="Motion"><Switch checked={f >= AND(7) - 6} aria-label="spring" /></Specimen> },
 ];

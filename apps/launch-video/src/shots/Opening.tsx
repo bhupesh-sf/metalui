@@ -1,7 +1,7 @@
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
-import { frameAt } from '../time';
 import { react } from '../motion';
-import { Camera, Drop, Grade, LookProvider, Motes, Ring, Table, cameraAt, mixLook, punch, useLook, type Pose } from '../film/stage';
+import { FPS, frameAt } from '../time';
+import { Camera, Drop, Grade, LookProvider, Table, cameraAt, mixLook, punch, useLook, type Impact, type Pose } from '../film/stage';
 import { END, HEAVY, HOPS, K, PIECES } from './Opener';
 import { FOUNDATION_PIECES, FOUNDATIONS_AT } from './Foundations';
 
@@ -36,6 +36,20 @@ const F_HOPS = Object.fromEntries(
   ]),
 );
 
+// Every landing ripples the grid, the harder the thing the bigger the wave; the key's press on kick 1
+// sends the first one.
+const WEIGHT = { heavy: 1, key: 0.8, light: 0.5 } as const;
+const IMPACTS: Impact[] = [
+  { x: 0, y: 0, at: K[0], strength: 0.8 },
+  ...PIECES.filter((p) => p.at !== null).map((p) => ({ x: p.x, y: p.y, at: p.at!, strength: p.id.startsWith('bit') ? 0.3 : WEIGHT[p.fall] })),
+  ...FOUNDATION_PIECES.map((p) => ({ x: p.x, y: p.y, at: p.at, strength: WEIGHT[p.fall] })),
+];
+// Dots only where the camera looks: around the kit, and around the foundations.
+const AREAS = [
+  { x: 0, y: 40, w: 3000, h: 2000 },
+  { x: FX, y: 220, w: 2600, h: 1900 },
+];
+
 export function Opening() {
   const frame = useCurrentFrame();
   const pose = cameraAt(frame, START, MOVES);
@@ -51,10 +65,7 @@ export function Opening() {
     <LookProvider value={look}>
       <AbsoluteFill data-mu-colorway="bone" style={{ background: look.sky }}>
         <Camera pose={pose} jolt={jolt}>
-          <Table light={{ x: pose.x, y: 0 }} power={power}>
-            <Ring frame={frame} at={K[0]} x={0} y={0} />
-            <Ring frame={frame} at={K[7]} x={230} y={90} reach={1500} colour="rgba(255,244,214,.95)" />
-            <Ring frame={frame} at={END} x={FX} y={-170} reach={1300} colour="rgba(255,244,214,.9)" />
+          <Table light={{ x: pose.x, y: 0 }} power={power} frame={frame} fps={FPS} impacts={IMPACTS} areas={AREAS}>
             {PIECES.map((p) => (
               <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} turn={p.turn} spin={p.spin} hops={HOPS[p.id]}>
                 {p.draw(frame)}
@@ -67,7 +78,6 @@ export function Opening() {
             ))}
           </Table>
         </Camera>
-        <Motes frame={frame} beam={1 - 0.5 * sun} />
         <Grade power={power} />
       </AbsoluteFill>
     </LookProvider>
