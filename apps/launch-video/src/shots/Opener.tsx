@@ -1,11 +1,9 @@
 import type { ReactNode } from 'react';
-import { AbsoluteFill, useCurrentFrame } from 'remotion';
-import { Button, Checkbox, Folder, Kbd, Key, Led, Swatch, Switch, WeatherTile } from '@unlocalhosted/metalui';
-import { GADGETS } from '@unlocalhosted/metalui/gadgets';
+import { Button, Checkbox, Folder, Kbd, Led, Swatch, Switch, WeatherTile } from '@unlocalhosted/metalui';
+import { PressedKey, press } from '../film/parts';
 import tokens from '../../../../tokens/tokens.json';
 import { frameAt } from '../time';
-import { land, react } from '../motion';
-import { Camera, Drop, Grade, LookProvider, Motes, Ring, Table, cameraAt, mixLook, punch, useLook, type Fall, type Pose } from '../film/stage';
+import type { Fall } from '../film/stage';
 
 /* ─────────────────────────────────────────────────────────
  * SHOT 1 · THE OPENER (video bars 1-2, 142 bpm, a beat is 0.42 s)
@@ -26,11 +24,11 @@ import { Camera, Drop, Grade, LookProvider, Motes, Ring, Table, cameraAt, mixLoo
  * pieces still read against it.
  * ───────────────────────────────────────────────────────── */
 
-const K = [1, 2].flatMap((bar) => [1, 2, 3, 4].map((beat) => frameAt(bar, beat)));
-const END = frameAt(3);
+export const K = [1, 2].flatMap((bar) => [1, 2, 3, 4].map((beat) => frameAt(bar, beat)));
+export const END = frameAt(3);
 const OFF = (i: number) => Math.round((K[i] + (K[i + 1] ?? END)) / 2); // the "and" after kick i
 
-interface Piece {
+export interface Piece {
   id: string;
   at: number | null;
   fall: Fall;
@@ -43,20 +41,6 @@ interface Piece {
   draw: (frame: number) => ReactNode;
 }
 
-/** A key's press, as the library draws it (tokens: gadgets.key.press), stepped by frame. */
-function PressedKey({ id, down, glyph, accent, size = 150 }: { id: string; down: number; glyph: string; accent?: boolean; size?: number }) {
-  const [dy, sx, sy] = GADGETS.key.press as unknown as [number, number, number];
-  return (
-    <div id={id}>
-      <style>{`#${id} [data-part="key.face"]{transform-box:fill-box;transform-origin:center;transform:translateY(${dy * down}px) scale(${1 + (sx - 1) * down},${1 + (sy - 1) * down})}`}</style>
-      <Key glyph={glyph} accent={accent} size={size} />
-    </div>
-  );
-}
-
-/** Down on `at`, back up on `up` (the part spring there, the release spring back). */
-const press = (frame: number, at: number, up: number) => Math.max(0, land(frame, at, 'part') - (frame >= up ? react(frame, up, 'release') : 0));
-
 const BITS: { x: number; y: number; i: number; zoom: number; size: [number, number]; draw: () => ReactNode }[] = [
   { x: 150, y: -170, i: 1, zoom: 7, size: [60, 60], draw: () => <Led kind="live" /> },
   { x: -300, y: -60, i: 2, zoom: 2.6, size: [80, 80], draw: () => <Kbd>⌥</Kbd> },
@@ -66,7 +50,7 @@ const BITS: { x: number; y: number; i: number; zoom: number; size: [number, numb
   { x: -380, y: 480, i: 6, zoom: 2.6, size: [80, 80], draw: () => <Kbd>⌫</Kbd> },
 ];
 
-const PIECES: Piece[] = [
+export const PIECES: Piece[] = [
   // The hero, there from frame one.
   { id: 'cmd', at: null, fall: 'heavy', x: 0, y: 0, zoom: 1.5, size: [230, 230], draw: (f) => <PressedKey id="k-cmd" down={press(f, K[0], OFF(0))} glyph="⌘" /> },
   // Kick 2
@@ -93,7 +77,7 @@ const PIECES: Piece[] = [
   ...BITS.map((b, n): Piece => ({ id: `bit-${n}`, at: OFF(b.i), fall: 'light', x: b.x, y: b.y, zoom: b.zoom, size: b.size, spin: n % 2 ? 1 : -1, draw: b.draw })),
 ];
 
-const HEAVY = PIECES.filter((p) => p.fall === 'heavy' && p.at !== null);
+export const HEAVY = PIECES.filter((p) => p.fall === 'heavy' && p.at !== null);
 
 /** Everything already down within reach of a heavy landing hops, the nearer the higher; everything
  *  already down jumps together when the hero lands. */
@@ -107,46 +91,4 @@ function hopsFor(p: Piece) {
   }
   return out;
 }
-const HOPS = Object.fromEntries(PIECES.map((p) => [p.id, hopsFor(p)]));
-
-// Close on the key, low; then back and round as the kit grows, to hold all of it.
-const START: Pose = { x: 0, y: 0, z: 1150, tilt: 34, orbit: -16 };
-const MOVES = [
-  { at: K[1] - 16, frames: 56, pose: { x: 0, y: -40, z: 640, orbit: -12 } },
-  { at: K[3] - 16, frames: 64, pose: { x: 0, y: 0, z: 240, tilt: 40, orbit: -7 } },
-  { at: K[5] - 16, frames: 70, pose: { x: 0, y: 0, z: 40, tilt: 44, orbit: -2 } },
-  { at: K[7] - 12, frames: END - K[7] + 12, pose: { x: 20, y: 30, z: 110, tilt: 47, orbit: 3 } },
-];
-
-export function Opener() {
-  const frame = useCurrentFrame();
-  const pose = cameraAt(frame, START, MOVES);
-  const jolt = punch(frame, HEAVY.map((h) => h.at!)) + 1.4 * punch(frame, [K[7]]);
-  // The sunrise: dawn on the lone key, full sun once the kit is down, a lift on every landing.
-  const landed = K.filter((k) => frame >= k).length;
-  const sun = Math.min(1, landed / 8 + (frame >= K[7] ? 0.2 * (1 - react(frame, K[7], 'surface')) : 0));
-  // The film's look, risen into from its own dawn.
-  const base = useLook();
-  const look = base.dawn ? mixLook(base.dawn, base, sun) : base;
-  const power = Math.min(1, 0.5 + 0.5 * sun + 0.05 * jolt);
-
-  return (
-    <LookProvider value={look}>
-      <AbsoluteFill data-mu-colorway="bone" style={{ background: look.sky }}>
-        <Camera pose={pose} jolt={jolt}>
-          <Table light={{ x: 0, y: 0 }} power={power}>
-            <Ring frame={frame} at={K[0]} x={0} y={0} />
-            <Ring frame={frame} at={K[7]} x={230} y={90} reach={1500} colour="rgba(255,244,214,.95)" />
-            {PIECES.map((p) => (
-              <Drop key={p.id} frame={frame} at={p.at} x={p.x} y={p.y} fall={p.fall} zoom={p.zoom} size={p.size} turn={p.turn} spin={p.spin} hops={HOPS[p.id]}>
-                {p.draw(frame)}
-              </Drop>
-            ))}
-          </Table>
-        </Camera>
-        <Motes frame={frame} beam={1 - 0.5 * sun} />
-        <Grade power={power} />
-      </AbsoluteFill>
-    </LookProvider>
-  );
-}
+export const HOPS = Object.fromEntries(PIECES.map((p) => [p.id, hopsFor(p)]));

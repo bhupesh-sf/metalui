@@ -145,9 +145,9 @@ export function Table({ children, light = { x: 0, y: 0 }, power = 1 }: { childre
       {look.pattern === 'dots' && <div style={{ ...plane, backgroundImage: 'radial-gradient(circle, rgba(96,78,58,.22) 2px, transparent 2.6px)', backgroundSize: '40px 40px' }} />}
       <div style={{ ...plane, opacity: power, background: `radial-gradient(${r}px ${r * 0.72}px at ${at}, ${look.pool} 0%, transparent 100%)`, mixBlendMode: look.surface ? 'soft-light' : 'normal' }} />
       {look.gobo && (
-        // A window's four panes, thrown long across the table by a low sun from the upper left.
-        <div style={{ position: 'absolute', left: -1180 + light.x, top: -820 + light.y, width: 2100, height: 1500, transform: 'rotate(-24deg) skewX(-18deg)', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 70, filter: 'blur(14px)', mixBlendMode: 'screen', opacity: 0.35 + 0.65 * power }}>
-          {[0, 1, 2, 3].map((i) => <div key={i} style={{ background: look.gobo }} />)}
+        // A window's six panes, thrown long across the table by a low sun from the upper left.
+        <div style={{ position: 'absolute', left: -1180 + light.x, top: -820 + light.y, width: 2100, height: 1500, transform: 'rotate(-24deg) skewX(-18deg)', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 110, filter: 'blur(26px)', mixBlendMode: 'screen', opacity: 0.3 + 0.45 * power }}>
+          {[0, 1, 2, 3, 4, 5].map((i) => <div key={i} style={{ background: look.gobo }} />)}
         </div>
       )}
       {children}
