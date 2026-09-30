@@ -1102,6 +1102,14 @@
   --mu-r-menubar-key-radius: 8px;
   --mu-r-menubar-self-gap: 2px;
   --mu-r-menubar-self-pad: 2px;
+  /* navigation-menu: the menubar's keys; the menu plate; the row recipe; the surface and settle springs; Base UI Navigation Menu */
+  --mu-r-navigation-menu-plate-pad: 8px;
+  --mu-r-navigation-menu-plate-offset: 8px;
+  --mu-r-navigation-menu-link-pad-x: 12px;
+  --mu-r-navigation-menu-link-pad-y: 10px;
+  --mu-r-navigation-menu-link-radius: 12px;
+  --mu-r-navigation-menu-link-gap: 2px;
+  --mu-r-navigation-menu-chevron-size: 10px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

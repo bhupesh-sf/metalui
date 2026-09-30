@@ -1056,6 +1056,23 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A site's sections across the top, with panels of links: the menubar's quiet keys, each with a chevron that turns over on the part spring while its panel is open; the panel is the menu's frosted plate. Opening, the plate rises one nest into place on the surface spring. Moving from one key to the next, the plate slides under the new key and takes the new panel's size on the settle spring, while the content moves two grid steps the way you went and crossfades. Links in a panel are rows with a title and a line of description that lift on hover. Reduce Motion: size and place snap; content crossfades without travel. (the menubar's keys; the menu plate; the row recipe; the surface and settle springs; Base UI Navigation Menu)
+    public static let navigationMenu = MetalObjectRecipe(
+        name: "navigation-menu",
+        layers: [
+
+        ],
+        props: [
+            "plate.pad": .number(8.0),
+            "plate.offset": .number(8.0),
+            "link.pad-x": .number(12.0),
+            "link.pad-y": .number(10.0),
+            "link.radius": .number(12.0),
+            "link.gap": .number(2.0),
+            "chevron.size": .number(10.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

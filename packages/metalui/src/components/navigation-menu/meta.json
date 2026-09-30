@@ -1,0 +1,22 @@
+{
+  "name": "navigation-menu",
+  "title": "Navigation menu",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A site's sections across the top with panels of links: the plate rises on the surface spring, slides and resizes between keys on the settle spring, and its content moves the way you went.",
+  "base": "@base-ui/react/navigation-menu",
+  "react": {
+    "export": "NavigationMenu",
+    "files": ["navigation-menu.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalNavigationMenu",
+    "file": "swift/Sources/MetalUI/Components/MetalNavigationMenu.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "NavigationMenu": ["Root", "Item", "Link"]
+  },
+  "agent": "navigation-menu.agent.md",
+  "page": "/components/navigation-menu"
+}

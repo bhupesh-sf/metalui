@@ -26,6 +26,7 @@ export { ButtonGroup, SplitButton, type ButtonGroupProps, type SplitButtonProps 
 export { Breadcrumbs, type BreadcrumbsProps, type Crumb } from './components/breadcrumbs/breadcrumbs';
 export { Pagination, pageWindow, type PaginationProps } from './components/pagination/pagination';
 export { Menubar, type MenubarProps, type MenubarMenuProps } from './components/menubar/menubar';
+export { NavigationMenu, type NavigationMenuProps, type NavigationMenuItemProps, type NavigationMenuLinkProps } from './components/navigation-menu/navigation-menu';
 export { Meter, type MeterProps } from './components/meter/meter';
 export { ScrollArea, type ScrollAreaProps } from './components/scroll-area/scroll-area';
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';

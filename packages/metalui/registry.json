@@ -751,6 +751,26 @@
       "docs": "Agent guide: https://metalui.dev/r/meter.md. SwiftUI: MetalMeter in the MetalUI Swift package."
     },
     {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation menu",
+      "description": "A site's sections across the top with panels of links: the plate rises on the surface spring, slides and resizes between keys on the settle spring, and its content moves the way you went.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/navigation-menu/navigation-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/navigation-menu/navigation-menu.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/navigation-menu.md. SwiftUI: MetalNavigationMenu in the MetalUI Swift package."
+    },
+    {
       "name": "number-field",
       "type": "registry:ui",
       "title": "Number field",
