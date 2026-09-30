@@ -172,15 +172,16 @@ What's wrong now:
 - The pale green fill against the pale groove has little contrast in bone.
 
 Direction:
-- [ ] **Bounds**: the knob stays inside the groove. Its travel is the groove minus the knob (the fill runs to the knob's centre), so at 0 and 100 the knob sits flush with the rounded ends. Ticks and labels use the same travel so the knob, fill end and tick line up at every value. Check it in Swift too (`MetalSlider`), which must follow the same geometry.
-- [ ] **Readable scale**: labels in the meta type at ink2 (not engraved ink3), with enough size and a plate or clear space so the dotted stage never runs through them. Ticks only where there are labels or steps; drop the loose marks, or make marks a documented prop that draws them as notches in the groove.
-- [ ] **Contrast**: a fill that reads in both colorways (the switch-on green at full strength, or ink for a neutral slider); the groove's edge clear against the surface.
-- [ ] **Icons at the ends**: `startIcon` / `endIcon` (volume low / high, dim / bright), the glyphs from the set, playing their acts at the limits; and an optional glyph in or beside the knob.
-- [ ] **Sizes and width**: `size` (compact, regular, large: groove thickness and knob size together) and a `width` / full-width option, all from the slider recipe.
-- [ ] **Value**: an optional value readout (beside it, or a bubble over the knob while dragging) with the drum; a formatter (%, units).
-- [ ] **More kinds**: a range (two knobs), a vertical slider, a stepped slider that clicks into detents (part spring), and a centred slider (fill grows from the middle, for balance or offsets).
-- [ ] **Every state**: rest, hover (the knob lifts), dragging (the knob presses, the fill follows 1:1), focus, disabled, and at the limits (a small refusal nudge when you push past an end).
-- [ ] Redo the page: examples for each kind, a DialKit panel, the x-ray card; captures in both colorways.
+- [x] **Bounds**: the knob stays inside the groove. Its travel is the groove minus the knob (the fill runs to the knob's centre), so at 0 and 100 the knob sits flush with the rounded ends. Ticks and labels use the same travel so the knob, fill end and tick line up at every value. Check it in Swift too (`MetalSlider`), which must follow the same geometry.
+- [x] **Readable scale**: labels in the meta type at ink2 (not engraved ink3), with enough size and a plate or clear space so the dotted stage never runs through them. Ticks only where there are labels or steps; drop the loose marks, or make marks a documented prop that draws them as notches in the groove.
+- [x] **Contrast**: a fill that reads in both colorways (the switch-on green at full strength, or ink for a neutral slider); the groove's edge clear against the surface.
+- [x] **Icons at the ends**: `startIcon` / `endIcon` (volume low / high, dim / bright), the glyphs from the set, playing their acts at the limits; and an optional glyph in or beside the knob.
+- [x] **Sizes and width**: `size` (compact, regular, large: groove thickness and knob size together) and a `width` / full-width option, all from the slider recipe.
+- [x] **Value**: an optional value readout (beside it, or a bubble over the knob while dragging) with the drum; a formatter (%, units).
+- [ ] **More kinds** (see follow-ups): a range (two knobs), a vertical slider, a stepped slider that clicks into detents (part spring), and a centred slider (fill grows from the middle, for balance or offsets).
+- [x] **Every state**: rest, hover (the knob lifts), dragging (the knob presses, the fill follows 1:1), focus, disabled, and at the limits (a small refusal nudge when you push past an end).
+- [x] Redo the page: examples for each kind, a DialKit panel, the x-ray card; captures in both colorways.
+- [ ] **Follow-ups**: range (two knobs), vertical, stepped detents, centred; a neutral ink fill; a value bubble over the knob while dragging; volume / brightness glyphs (the set has none; the demo uses zoom); RTL refusal direction; Swift drum for the readout. `e2e/slider.spec.ts` "knob stays inside the groove … graphite" failed once under a full parallel run and passed alone twice: make it robust.
 
 ## Spinner: rethink as waiting, by where it happens
 
