@@ -24,6 +24,14 @@ export default function FieldPage() {
           </div>
         ) }}
       xray={<FieldXray />}
+      more={[{ id: 'form', title: 'Form sizes and states', lede: 'In a form, the field comes in the select\'s sizes and shows the focus ring. Invalid draws the one invalid ring every form control shares; disabled dims it.', node: (
+        <div className="grid w-full max-w-[320px] gap-12">
+          <Field size="regular"><Field.Input placeholder="Region name" aria-label="Region name" /></Field>
+          <Field size="compact"><Field.Input placeholder="Tag" aria-label="Tag" /></Field>
+          <Field size="regular" invalid><Field.Input defaultValue="Trip to" aria-label="Invalid region name" /></Field>
+          <Field size="regular" disabled><Field.Input defaultValue="Locked" aria-label="Locked region name" /></Field>
+        </div>
+      ) }]}
       sources={[
         { id: 'react', label: "React", code: reactSource },
         { id: 'css', label: "CSS", code: cssSource },
@@ -31,7 +39,7 @@ export default function FieldPage() {
       ]}
       rules={[
         { id: "FD1", title: "A tray says \"type here\"", body: "The field is sunk into the page, so you know it takes text before you read it.", origin: 'Ours' },
-        { id: "FD2", title: "The caret is the focus", body: "A focused field shows its green caret, not an extra ring.", origin: 'Ours' },
+        { id: "FD2", title: "Focus you can see", body: "In a form the field shows the green ring; only the palette's large field, which always holds focus, lets the caret say it.", origin: 'Ours' },
         { id: "FD3", title: "Keys stand up inside", body: "A key inside the field is raised, so it never looks like text you could type over.", origin: 'Ours' },
       ]}
     />

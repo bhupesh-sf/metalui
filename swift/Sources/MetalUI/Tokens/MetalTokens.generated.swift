@@ -1764,7 +1764,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Text input in a well with a leading glyph and trailing keycaps; SearchField is a button in a well that opens search (light or graphite). (reference style.css .pal-field, .pal-field input, .tb-search)
+    /// Text input in a well with a leading glyph and trailing keycaps, in three sizes: large (44, the palette's field, where the caret is the focus) and the form sizes regular (32) and compact (28), which match the select and show the focus ring. Invalid draws the foundation's invalid ring; disabled is 40 %. SearchField is a button in a well that opens search (light or graphite). (reference style.css .pal-field, .pal-field input, .tb-search)
     public static let field = MetalObjectRecipe(
         name: "field",
         layers: [
@@ -1782,6 +1782,19 @@ public enum MetalRecipes {
             "field.ink": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
             "field.hint": .perColorway(bone: "#9A9A9D", graphite: "#77777B"),
             "field.caret": .text("#3FB97A"),
+            "regular.height": .number(32.0),
+            "regular.radius": .number(11.0),
+            "regular.pad-left": .number(12.0),
+            "regular.pad-right": .number(6.0),
+            "regular.gap": .number(8.0),
+            "regular.glyph": .number(14.0),
+            "compact.height": .number(28.0),
+            "compact.radius": .number(9.0),
+            "compact.pad-left": .number(10.0),
+            "compact.pad-right": .number(4.0),
+            "compact.gap": .number(6.0),
+            "compact.glyph": .number(12.0),
+            "state.disabled": .text("0.4"),
             "search.height": .number(38.0),
             "search.min-width": .number(196.0),
             "search.radius": .number(15.0),

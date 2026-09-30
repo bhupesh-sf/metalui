@@ -674,6 +674,20 @@
   --color-field-field-ink: var(--mu-r-field-field-ink);
   --color-field-field-hint: var(--mu-r-field-field-hint);
   --color-field-field-caret: var(--mu-r-field-field-caret);
+  --spacing-field-regular-height: var(--mu-r-field-regular-height);
+  --spacing-field-regular-radius: var(--mu-r-field-regular-radius);
+  --radius-field-regular-radius: var(--mu-r-field-regular-radius);
+  --spacing-field-regular-pad-left: var(--mu-r-field-regular-pad-left);
+  --spacing-field-regular-pad-right: var(--mu-r-field-regular-pad-right);
+  --spacing-field-regular-gap: var(--mu-r-field-regular-gap);
+  --spacing-field-regular-glyph: var(--mu-r-field-regular-glyph);
+  --spacing-field-compact-height: var(--mu-r-field-compact-height);
+  --spacing-field-compact-radius: var(--mu-r-field-compact-radius);
+  --radius-field-compact-radius: var(--mu-r-field-compact-radius);
+  --spacing-field-compact-pad-left: var(--mu-r-field-compact-pad-left);
+  --spacing-field-compact-pad-right: var(--mu-r-field-compact-pad-right);
+  --spacing-field-compact-gap: var(--mu-r-field-compact-gap);
+  --spacing-field-compact-glyph: var(--mu-r-field-compact-glyph);
   --spacing-field-search-height: var(--mu-r-field-search-height);
   --spacing-field-search-min-width: var(--mu-r-field-search-min-width);
   --spacing-field-search-radius: var(--mu-r-field-search-radius);
@@ -1955,6 +1969,9 @@
 @utility type-field-field {
   font: var(--mu-r-field-field-font);
   letter-spacing: var(--mu-r-field-field-tracking);
+}
+@utility opacity-field-state-disabled {
+  opacity: var(--mu-r-field-state-disabled);
 }
 @utility type-field-search {
   font: var(--mu-r-field-search-font);
