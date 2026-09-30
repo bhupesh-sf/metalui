@@ -3,8 +3,6 @@ import { flushSync } from 'react-dom';
 import { Link } from 'react-router';
 import { Button, Checkbox, Field, Kbd, LinkCard, Mark, Switcher, Slider, StatusBadge, SuggestionChip, Swatch, Toolbar, ToolButton, ToolbarSeparator, WeatherTile } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
-import { Gadget, driveRange, type GadgetSpec } from '@unlocalhosted/metalui/gadgets';
-import needleGauge from '../../../../packages/metalui/src/gadgets/fixtures/needle-gauge.gadget.json';
 import { BUTTON_LABEL, type XrayKind } from './xray';
 import { ToastStill } from './xray/ToastXray';
 import { MenuStill } from './xray/MenuXray';
@@ -46,20 +44,6 @@ function FloatSlider() {
       </Slider.Root>
     </div>
   );
-}
-
-const GAUGE = needleGauge as unknown as GadgetSpec;
-const GAUGE_RANGE = driveRange(GAUGE);
-
-/** The needle gauge reading a level that wanders every few seconds, so the needle swings and settles; still with reduced motion. */
-function FloatGauge() {
-  const [value, setValue] = React.useState(24);
-  React.useEffect(() => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('rm')) return;
-    const id = setInterval(() => setValue(GAUGE_RANGE.min + Math.round(Math.random() * (GAUGE_RANGE.max - GAUGE_RANGE.min))), 3600);
-    return () => clearInterval(id);
-  }, []);
-  return <Gadget spec={GAUGE} value={value} size={150} aria-label={`Minutes read today: ${value}`} />;
 }
 
 /** The space's perspective and its origin (kds.css .space: 1600px at 50% 40%). */
@@ -152,10 +136,6 @@ const ITEMS: Item[] = [
         <WeatherTile sky="partly" hour={10.5} temp={21} name="Partly" meta="Rain 10%" aria-label="Partly cloudy, 21° at 10:30" />
       </Link>
     ),
-  },
-  {
-    id: 'gauge', table: ['78.3%', '65.7%'], space: ['89%', '34%', -220, -14], dur: '35s', drift: ['-16px', '20px'],
-    node: () => <Link to="/gadgets/needle-gauge" aria-label="Needle gauge" style={{ display: 'block' }}><FloatGauge /></Link>,
   },
   { id: 'folder', table: ['39.3%', '65.7%'], space: ['31%', '53%', -200, 8], dur: '37s', drift: ['14px', '-12px'], live: true, node: ({ openXray }) => <div onClick={() => openXray('folder')}><FolderStill /></div> },
   {
