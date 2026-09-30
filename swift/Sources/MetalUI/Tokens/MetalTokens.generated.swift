@@ -1110,6 +1110,23 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A person, as a small raised disc: their initials engraved in ink2 on the raised surface, or their photo. The initials are there first; the photo fades in over them on the settle spring once it has loaded (a broken photo never shows). Presence is the LED part at the lower right, on a ring of the page's own ground. A group overlaps the discs, each ringed in the ground, with a +N disc for the rest; hovering the group spreads them one grid step apart on the object spring (a stack opening), and letting go settles them back on the release spring. Reduce Motion: the photo appears at once and the stack does not spread. (the raised surface (recipe surface raise-sm); the LED part; the settle, object and release springs; Base UI Avatar)
+    public static let avatar = MetalObjectRecipe(
+        name: "avatar",
+        layers: [
+
+        ],
+        props: [
+            "size.small": .number(24.0),
+            "size.regular": .number(32.0),
+            "size.large": .number(44.0),
+            "ring.width": .number(2.0),
+            "ring.ink": .perColorway(bone: "#F6F5F2", graphite: "#252527"),
+            "group.overlap": .number(8.0),
+            "group.spread": .number(4.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

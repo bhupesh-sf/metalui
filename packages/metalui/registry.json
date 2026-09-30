@@ -57,6 +57,26 @@
       "docs": "Agent guide: https://metalui.dev/r/alert-dialog.md. SwiftUI: MetalAlertDialog in the MetalUI Swift package."
     },
     {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "A person as a small raised disc: initials, or a photo that fades in once loaded; presence as the LED; a group overlaps and spreads apart on the object spring when hovered.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/avatar/avatar.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/avatar/avatar.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/avatar.md. SwiftUI: MetalAvatar in the MetalUI Swift package."
+    },
+    {
       "name": "block-silhouette",
       "type": "registry:ui",
       "title": "Block silhouette",

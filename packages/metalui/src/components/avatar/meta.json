@@ -1,0 +1,21 @@
+{
+  "name": "avatar",
+  "title": "Avatar",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["surface", "led"],
+  "description": "A person as a small raised disc: initials, or a photo that fades in once loaded; presence as the LED; a group overlaps and spreads apart on the object spring when hovered.",
+  "base": "@base-ui/react/avatar",
+  "react": {
+    "export": "Avatar, AvatarGroup",
+    "files": ["avatar.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalAvatar",
+    "file": "swift/Sources/MetalUI/Components/MetalAvatar.swift",
+    "status": "wip"
+  },
+  "agent": "avatar.agent.md",
+  "page": "/components/avatar"
+}

@@ -515,6 +515,13 @@
   --spacing-calendar-pad: var(--mu-r-calendar-self-pad);
   --spacing-calendar-step-glyph: var(--mu-r-calendar-step-glyph);
   --spacing-calendar-picker-min-width: var(--mu-r-calendar-picker-min-width);
+  --spacing-avatar-size-small: var(--mu-r-avatar-size-small);
+  --spacing-avatar-size-regular: var(--mu-r-avatar-size-regular);
+  --spacing-avatar-size-large: var(--mu-r-avatar-size-large);
+  --spacing-avatar-ring-width: var(--mu-r-avatar-ring-width);
+  --color-avatar-ring-ink: var(--mu-r-avatar-ring-ink);
+  --spacing-avatar-group-overlap: var(--mu-r-avatar-group-overlap);
+  --spacing-avatar-group-spread: var(--mu-r-avatar-group-spread);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1511,6 +1518,18 @@
 }
 @utility opacity-calendar-disabled {
   opacity: var(--mu-r-calendar-self-disabled);
+}
+@utility avatar-photo {
+  opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-starting-style] { opacity: 0; } @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+@utility avatar-ring {
+  box-shadow: 0 0 0 var(--mu-r-avatar-ring-width) var(--mu-r-avatar-ring-ink);
+}
+@utility avatar-stack {
+  & > * + * { margin-inline-start: calc(var(--mu-r-avatar-group-overlap) * -1); } & > * { translate: 0 0; transition: translate var(--mu-spring-release-d) var(--mu-spring-release); } &:hover > * { translate: calc(var(--mu-avatar-i, 0) * var(--mu-r-avatar-group-spread) * var(--mu-travel-object)) 0; transition: translate var(--mu-spring-object-d) var(--mu-spring-object); }
+}
+@utility stroke-width-avatar-ring-width {
+  stroke-width: var(--mu-r-avatar-ring-width);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

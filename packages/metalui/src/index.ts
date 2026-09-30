@@ -11,6 +11,7 @@ export { Textarea, type TextareaProps } from './components/textarea/textarea';
 export { FormField, Fieldset, Form, type FormFieldRootProps, type FormProps } from './components/form-field/form-field';
 export { NumberField, type NumberFieldProps } from './components/number-field/number-field';
 export { Calendar, DatePicker, type CalendarProps, type DatePickerProps } from './components/calendar/calendar';
+export { Avatar, AvatarGroup, initialsOf, type AvatarProps, type AvatarGroupProps, type AvatarSize } from './components/avatar/avatar';
 export { Sparkline, type SparklineProps, type SparklinePoint } from './components/sparkline/sparkline';
 export { Dialog, type DialogRootProps, type DialogPopupProps } from './components/dialog/dialog';
 export { AlertDialog, type AlertDialogRootProps, type AlertDialogConfirmProps } from './components/alert-dialog/alert-dialog';

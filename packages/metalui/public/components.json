@@ -36,6 +36,23 @@
       "agent": "https://metalui.dev/r/alert-dialog.md"
     },
     {
+      "name": "avatar",
+      "title": "Avatar",
+      "status": "alpha",
+      "description": "A person as a small raised disc: initials, or a photo that fades in once loaded; presence as the LED; a group overlaps and spreads apart on the object spring when hovered.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Avatar, AvatarGroup",
+        "base": "@base-ui/react/avatar"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalAvatar"
+      },
+      "registry": "https://metalui.dev/r/avatar.json",
+      "agent": "https://metalui.dev/r/avatar.md"
+    },
+    {
       "name": "block-silhouette",
       "title": "Block silhouette",
       "status": "alpha",
