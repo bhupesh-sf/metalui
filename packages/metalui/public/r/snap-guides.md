@@ -33,7 +33,46 @@ Reduce Motion: they clear at once.
 `onEngage` fires once when a snap catches a line that was not caught in the previous frame. Staying on a line is silent; letting go is silent; catching a second line while on the first fires again.
 
 - Mac: play `NSHapticFeedbackManager.defaultPerformer.perform(.alignment, performanceTime: .now)` in the same frame as the snap. `MetalSnapGuides` does this itself.
-- Web: browsers on a Mac trackpad or an iPhone have no haptics. Where `navigator.vibrate` exists (Android), a host may call `navigator.vibrate(8)`. Never replace a haptic with a sound or a flash.
+- Web: call `haptic('alignment')` from `onEngage`. It plays what this platform has and returns the path it took:
+
+  | Path | Where | What plays |
+  |---|---|---|
+  | `'bridge'` | a web view whose host called `setHapticBridge` | the host's native haptic |
+  | `'vibrate'` | a touch device with `navigator.vibrate` (Android) | an 8 ms pulse |
+  | `'ios-switch'` | iOS Safari 17.4+ (a touch device that knows `<input switch>`) | the system tick, by toggling a hidden switch |
+  | `'none'` | everywhere else, including every Mac and PC browser | nothing |
+
+  ```tsx
+  import { haptic, SnapGuides } from '@unlocalhosted/metalui';
+  <SnapGuides guides={guides} scale={scale} onEngage={() => haptic('alignment')} />
+  ```
+
+  Browsers expose no trackpad haptics, so on a Mac the web is silent: say so (the docs demo shows the path), and never replace a haptic with a sound or a flash. Whether the web should stand in for it at all is the owner's decision; until then, the guide's own catch (it lights in the frame of the snap) is the only feedback.
+
+### A web view in a Mac app
+
+A host that renders MetalUI in a web view (Electron, Tauri, a `WKWebView`) can route `haptic()` to `NSHapticFeedbackManager`. Set the bridge once, at start-up; every `haptic()` call then goes to it and returns `'bridge'`:
+
+```ts
+import { setHapticBridge } from '@unlocalhosted/metalui';
+
+// Electron: the preload exposes ipcRenderer.send('haptic', kind) as window.native.haptic
+setHapticBridge((kind) => window.native.haptic(kind));
+// WKWebView: a WKScriptMessageHandler named "haptic"
+setHapticBridge((kind) => window.webkit.messageHandlers.haptic.postMessage(kind));
+// Tauri: a command that performs it
+setHapticBridge((kind) => invoke('haptic', { kind }));
+```
+
+On the native side, perform it at once (`performanceTime: .now`), mapping the kind:
+
+| `kind` | `NSHapticFeedbackManager.FeedbackPattern` |
+|---|---|
+| `alignment` | `.alignment` |
+| `detent` | `.levelChange` |
+| `refusal` | `.generic` |
+
+`setHapticBridge(null)` returns to the web paths. The bridge is a setter rather than a global so it is typed, and so a page never picks up a haptic it did not ask for.
 
 ## API
 
@@ -41,7 +80,7 @@ Reduce Motion: they clear at once.
 |---|---|
 | `guides: SnapGuide[]` (`axis`, `position`, `start`, `end`, `kind`) | `guides:` |
 | `scale` | `scale:` |
-| `onEngage` | built in (the alignment haptic) |
+| `onEngage` (call `haptic('alignment')`) | built in (the alignment haptic) |
 
 ## Rules
 

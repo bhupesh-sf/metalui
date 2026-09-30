@@ -18,8 +18,9 @@ import * as React from 'react';
  *   graphite  the lighter green, so the line reads on the dark world
  *   haptic    onEngage fires once when a snap catches a new line; staying on a line, or
  *             letting go, is silent (the native reference's gate). The Mac plays the
- *             trackpad's alignment tap on it; browsers on a Mac or an iPhone have no
- *             haptics, so the web host may only vibrate where the browser allows it.
+ *             trackpad's alignment tap on it; on the web the host calls haptic('alignment'),
+ *             which vibrates on Android, ticks on iOS Safari, goes to a web-view host's
+ *             bridge, and is silent in every Mac or PC browser.
  * Drawn in world coordinates, inside the transformed world, as one path for edges and one
  * for centres. Not interactive and hidden from assistive tech: the snap is the fact.
  * ───────────────────────────────────────────────────────── */

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Lasso, Switcher, SelectionFrame, SnapGuides, Surface, type LassoRect, type SnapGuide } from '@unlocalhosted/metalui';
+import { haptic, Lasso, Switcher, SelectionFrame, SnapGuides, Surface, type HapticPath, type LassoRect, type SnapGuide } from '@unlocalhosted/metalui';
 import { snapMove, type Box } from './snapdemo';
 
 /* A tiny canvas for the Snap guides page: three notes stay put, one you drag. It snaps to their
@@ -12,6 +12,14 @@ const FIXED: Box[] = [
   { id: 'c', x: 60, y: 250, w: 120, h: 64 },
 ];
 const WORDS: Record<string, string> = { a: 'call the printer', b: 'pick the typeface', c: 'book the venue', m: 'drag me' };
+
+/* What the person felt on the last catch, by the path haptic() took. */
+const PATH: Record<HapticPath, string> = {
+  bridge: '· the app tapped',
+  vibrate: '· vibrated',
+  'ios-switch': '· iOS tick',
+  none: '· no haptics here (the Mac app taps the trackpad)',
+};
 
 const touches = (r: LassoRect, b: Box) => {
   const x = Math.min(r.x, r.x + r.width), y = Math.min(r.y, r.y + r.height), w = Math.abs(r.width), h = Math.abs(r.height);
@@ -40,9 +48,11 @@ export function SnapCanvas({ height = 360, lasso = false }: { height?: number; l
     setBox(snapped.box); setGuides(snapped.guides);
   };
   const up = () => { drag.current = null; setGuides([]); };
-  // A new line caught: the Mac taps the trackpad; here, only where the browser can vibrate.
+  // A new line caught: the Mac taps the trackpad; here, haptic() plays whatever this browser has
+  // (Android vibrates, iOS Safari ticks) and says which path it took. Nothing stands in for it.
   const [taps, setTaps] = React.useState(0);
-  const engage = React.useCallback(() => { setTaps((n) => n + 1); navigator.vibrate?.(8); }, []);
+  const [path, setPath] = React.useState<HapticPath | null>(null);
+  const engage = React.useCallback(() => { setTaps((n) => n + 1); setPath(haptic('alignment')); }, []);
 
   // Lasso: a press anywhere on the canvas that is not on a note is empty space (the guides layer,
   // the canvas outside the scaled world at 50 %, the gap next to a note). A drag from there draws
@@ -106,7 +116,7 @@ export function SnapCanvas({ height = 360, lasso = false }: { height?: number; l
       </div>
       {lasso
         ? <span className="eng snap-caption">{picked.length ? `selected · ${picked.length}` : 'drag on empty space to draw a box · shift adds · esc clears'}</span>
-        : <span className="eng snap-caption">haptic taps · {taps} <span className="text-ink3">(on a Mac trackpad in the app; the browser cannot)</span></span>}
+        : <span className="eng snap-caption" data-haptic-path={path ?? undefined}>haptic taps · {taps} <span className="text-ink3">{path ? PATH[path] : '(catch a line)'}</span></span>}
       <Switcher size="compact" aria-label="Zoom" value={zoom} onValueChange={setZoom} options={[{ value: '0.5', label: '50 %' }, { value: '1', label: '100 %' }, { value: '2', label: '200 %' }]} />
     </div>
   );
