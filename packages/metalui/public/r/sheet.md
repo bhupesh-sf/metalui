@@ -1,6 +1,6 @@
 # Sheet
 
-A panel that slides in from an edge of the window. React: `Sheet` from `@unlocalhosted/metalui`, on Base UI Drawer (named Sheet here: "drawer" is the filing-drawer gadget). SwiftUI: `MetalSheet` (work in progress). The plate and scrim are the dialog's; the `sheet` recipe adds the edge, the grip and the motion.
+A panel that slides in from an edge of the window. React: `Sheet` from `@unlocalhosted/metalui`, on Base UI Drawer. SwiftUI: `MetalSheet` (work in progress). The plate and scrim are the dialog's; the `sheet` recipe adds the edge, the grip and the motion.
 
 ## Use it for
 

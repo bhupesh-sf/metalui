@@ -36,57 +36,6 @@
       "agent": "https://metalui.dev/r/alert-dialog.md"
     },
     {
-      "name": "backlight",
-      "title": "Backlight",
-      "status": "alpha",
-      "description": "Light behind a translucent part, fading to nothing at its edge: a glow, a radar beam with a bright leading edge that fades behind it, or a blip. In a signal colour, the accent, or the glass's own colour lifted. Placed inside a Bezel.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Backlight",
-        "base": "none (SVG content)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalBacklight"
-      },
-      "registry": "https://metalui.dev/r/backlight.json",
-      "agent": "https://metalui.dev/r/backlight.md"
-    },
-    {
-      "name": "beeper",
-      "title": "Beeper",
-      "status": "alpha",
-      "description": "A grille plate over a brass piezo disc, the only source of tones in a gadget. It never glows: while an earcon plays, the disc catches the light and the plate lifts a hair, in time with the notes.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Beeper",
-        "base": "none (an SVG part)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalBeeper"
-      },
-      "registry": "https://metalui.dev/r/beeper.json",
-      "agent": "https://metalui.dev/r/beeper.md"
-    },
-    {
-      "name": "bezel",
-      "title": "Bezel",
-      "status": "alpha",
-      "description": "An inset gadget's body: a frame in the body's material around an opening, where a glass face sits sunk below it, shaded by the frame's inner wall. Light inside the glass sits between the glass and its surface.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Bezel",
-        "base": "none (an SVG part)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalBezel"
-      },
-      "registry": "https://metalui.dev/r/bezel.json",
-      "agent": "https://metalui.dev/r/bezel.md"
-    },
-    {
       "name": "block-silhouette",
       "title": "Block silhouette",
       "status": "alpha",
@@ -136,57 +85,6 @@
       },
       "registry": "https://metalui.dev/r/button.json",
       "agent": "https://metalui.dev/r/button.md"
-    },
-    {
-      "name": "cable",
-      "title": "Cable",
-      "status": "alpha",
-      "description": "A rubber patch cord between two plugs, drooping under gravity. With a length it hangs like a real cord, taut or slack as its ends move, and its belly swings after them.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Cable",
-        "base": "none (an SVG part)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalCable"
-      },
-      "registry": "https://metalui.dev/r/cable.json",
-      "agent": "https://metalui.dev/r/cable.md"
-    },
-    {
-      "name": "cap",
-      "title": "Cap",
-      "status": "alpha",
-      "description": "The fader, knob or rocker cap a person moves: a face on its darker side wall, grip ribs, a pointer groove or I and O, and its own shadow. Pressed, it sinks toward the body; a rocker tilts about its middle. The cap you would touch wears the accent.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Cap",
-        "base": "none (an SVG part)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalCap"
-      },
-      "registry": "https://metalui.dev/r/cap.json",
-      "agent": "https://metalui.dev/r/cap.md"
-    },
-    {
-      "name": "cell",
-      "title": "Cell",
-      "status": "alpha",
-      "description": "Raised blocks of translucent resin in a grid, lit from behind: dark in the resin's own colour, lit with the light coming through, hottest at the core, spilling a halo onto the slab. Cells light from the bottom row up; the one filling now glows part way.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Cell",
-        "base": "none (SVG)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalCell"
-      },
-      "registry": "https://metalui.dev/r/cell.json",
-      "agent": "https://metalui.dev/r/cell.md"
     },
     {
       "name": "checkbox",
@@ -393,23 +291,6 @@
       "agent": "https://metalui.dev/r/draw-tools.md"
     },
     {
-      "name": "drum",
-      "title": "Drum",
-      "status": "alpha",
-      "description": "A numbered wheel seen through a window: a strip of digits on a cylinder that wraps from 9 into 0, shaded where it turns away. Its value can stand between two digits while it rolls.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Drum",
-        "base": "none (an SVG part)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalDrum"
-      },
-      "registry": "https://metalui.dev/r/drum.json",
-      "agent": "https://metalui.dev/r/drum.md"
-    },
-    {
       "name": "fan",
       "title": "Fan",
       "status": "alpha",
@@ -562,23 +443,6 @@
       "agent": "https://metalui.dev/r/icon-button.md"
     },
     {
-      "name": "jack",
-      "title": "Jack",
-      "status": "alpha",
-      "description": "A knurled satin-steel nut around a socket, where a plug seats. The socket is a cut, dark at the bottom with its top wall in shadow; lit, a lamp glows down there in a signal colour.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Jack",
-        "base": "none (an SVG part)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalJack"
-      },
-      "registry": "https://metalui.dev/r/jack.json",
-      "agent": "https://metalui.dev/r/jack.md"
-    },
-    {
       "name": "kbd",
       "title": "Keycap",
       "status": "alpha",
@@ -594,23 +458,6 @@
       },
       "registry": "https://metalui.dev/r/kbd.json",
       "agent": "https://metalui.dev/r/kbd.md"
-    },
-    {
-      "name": "key",
-      "title": "Key",
-      "status": "alpha",
-      "description": "A big key standing on its skirt, the Keycap as a gadget draws it: a lit face with an engraved glyph, and its own shadow. Pressed, the face drops into the skirt. The key you would press wears the accent.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Key",
-        "base": "none (an SVG part)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalKey"
-      },
-      "registry": "https://metalui.dev/r/key.json",
-      "agent": "https://metalui.dev/r/key.md"
     },
     {
       "name": "label",
@@ -662,40 +509,6 @@
       },
       "registry": "https://metalui.dev/r/led.json",
       "agent": "https://metalui.dev/r/led.md"
-    },
-    {
-      "name": "lens",
-      "title": "Lens",
-      "status": "alpha",
-      "description": "A camera lens seen head-on: a knurled ring in the accent that turns, a domed glass dark at its centre and coated toward its rim, and an iris behind it closing to a polygon.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Lens",
-        "base": "none (SVG)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalLens"
-      },
-      "registry": "https://metalui.dev/r/lens.json",
-      "agent": "https://metalui.dev/r/lens.md"
-    },
-    {
-      "name": "lid",
-      "title": "Lid",
-      "status": "alpha",
-      "description": "A hinged flap over a bin's mouth, seen from above. Opened about its hinge it foreshortens and its shadow falls further out; armed, its underside is red and glows into the gap as it opens.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Lid",
-        "base": "none (SVG)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalLid"
-      },
-      "registry": "https://metalui.dev/r/lid.json",
-      "agent": "https://metalui.dev/r/lid.md"
     },
     {
       "name": "line-handles",
@@ -783,40 +596,6 @@
       "agent": "https://metalui.dev/r/meter.md"
     },
     {
-      "name": "needle",
-      "title": "Needle",
-      "status": "alpha",
-      "description": "A tapered pointer on a pivot cap over a scale printed on glass, with a zone past its threshold. A value turns it; in a gadget it swings to it and overshoots a little, pegged at the ends of its scale.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Needle",
-        "base": "none (SVG content)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalNeedle"
-      },
-      "registry": "https://metalui.dev/r/needle.json",
-      "agent": "https://metalui.dev/r/needle.md"
-    },
-    {
-      "name": "nib",
-      "title": "Nib",
-      "status": "alpha",
-      "description": "A pen nib seen from above: brass, narrowing to its tip, with a slit and a breather hole, its tip wet with ink in the accent. In a gadget it dips into its well.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Nib",
-        "base": "none (SVG)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalNib"
-      },
-      "registry": "https://metalui.dev/r/nib.json",
-      "agent": "https://metalui.dev/r/nib.md"
-    },
-    {
       "name": "number-field",
       "title": "Number field",
       "status": "alpha",
@@ -868,23 +647,6 @@
       "agent": "https://metalui.dev/r/perfect-preview.md"
     },
     {
-      "name": "plug",
-      "title": "Plug",
-      "status": "alpha",
-      "description": "A knurled cap that seats in a Jack: a round face on its darker skirt, six grip knurls, a centre boss, maybe a cable stub, and its own shadow. The plug you would touch wears the accent.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Plug",
-        "base": "none (an SVG part)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalPlug"
-      },
-      "registry": "https://metalui.dev/r/plug.json",
-      "agent": "https://metalui.dev/r/plug.md"
-    },
-    {
       "name": "popover",
       "title": "Popover",
       "status": "alpha",
@@ -934,23 +696,6 @@
       },
       "registry": "https://metalui.dev/r/provenance-tooltip.json",
       "agent": "https://metalui.dev/r/provenance-tooltip.md"
-    },
-    {
-      "name": "pull",
-      "title": "Pull",
-      "status": "alpha",
-      "description": "A drawer's handle, seen from above: a metal bar standing out in front of the drawer front on two posts, or a finger recess cut into it. It has no state of its own; the drawer it is on moves it.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Pull",
-        "base": "none (SVG)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalPull"
-      },
-      "registry": "https://metalui.dev/r/pull.json",
-      "agent": "https://metalui.dev/r/pull.md"
     },
     {
       "name": "radio",
@@ -1121,23 +866,6 @@
       },
       "registry": "https://metalui.dev/r/size-readout.json",
       "agent": "https://metalui.dev/r/size-readout.md"
-    },
-    {
-      "name": "slab",
-      "title": "Slab",
-      "status": "alpha",
-      "description": "The thick panel a gadget is cut from: one of the seven materials, lit by the one light, with rolled edges and cuts (slot, hole, tray, well) whose floors are the slab's own material in shadow.",
-      "react": {
-        "package": "@unlocalhosted/metalui",
-        "export": "Slab",
-        "base": "none (an SVG part)"
-      },
-      "swift": {
-        "package": "MetalUI",
-        "symbol": "MetalSlab"
-      },
-      "registry": "https://metalui.dev/r/slab.json",
-      "agent": "https://metalui.dev/r/slab.md"
     },
     {
       "name": "slider",

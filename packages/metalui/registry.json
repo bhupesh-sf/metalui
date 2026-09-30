@@ -17,124 +17,6 @@
       ]
     },
     {
-      "name": "gadgets",
-      "type": "registry:lib",
-      "title": "MetalUI gadget foundations",
-      "description": "The seven materials lit by one light (OKLCH pigments, SVG lighting filters), the host, and the drawings of the gadget Parts.",
-      "files": [
-        {
-          "path": "packages/metalui/src/gadgets/gadgets.generated.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/gadgets.generated.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/color.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/color.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/light.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/light.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/host.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/host.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/backlight.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/backlight.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/beeper.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/beeper.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/bezel.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/bezel.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/cable.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/cable.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/cap.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/cap.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/cell.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/cell.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/drum.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/drum.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/glass.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/glass.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/jack.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/jack.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/key.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/key.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/led.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/led.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/lens.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/lens.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/lid.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/lid.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/needle.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/needle.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/nib.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/nib.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/plug.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/plug.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/pull.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/pull.ts"
-        },
-        {
-          "path": "packages/metalui/src/gadgets/parts/slab.ts",
-          "type": "registry:lib",
-          "target": "components/gadgets/parts/slab.ts"
-        }
-      ]
-    },
-    {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",
@@ -173,63 +55,6 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/alert-dialog.md. SwiftUI: MetalAlertDialog in the MetalUI Swift package."
-    },
-    {
-      "name": "backlight",
-      "type": "registry:ui",
-      "title": "Backlight",
-      "description": "Light behind a translucent part, fading to nothing at its edge: a glow, a radar beam with a bright leading edge that fades behind it, or a blip. In a signal colour, the accent, or the glass's own colour lifted. Placed inside a Bezel.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/backlight/backlight.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/backlight/backlight.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/backlight.md. SwiftUI: MetalBacklight in the MetalUI Swift package."
-    },
-    {
-      "name": "beeper",
-      "type": "registry:ui",
-      "title": "Beeper",
-      "description": "A grille plate over a brass piezo disc, the only source of tones in a gadget. It never glows: while an earcon plays, the disc catches the light and the plate lifts a hair, in time with the notes.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/beeper/beeper.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/beeper/beeper.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/beeper.md. SwiftUI: MetalBeeper in the MetalUI Swift package."
-    },
-    {
-      "name": "bezel",
-      "type": "registry:ui",
-      "title": "Bezel",
-      "description": "An inset gadget's body: a frame in the body's material around an opening, where a glass face sits sunk below it, shaded by the frame's inner wall. Light inside the glass sits between the glass and its surface.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/bezel/bezel.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/bezel/bezel.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/bezel.md. SwiftUI: MetalBezel in the MetalUI Swift package."
     },
     {
       "name": "block-silhouette",
@@ -286,63 +111,6 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/button.md. SwiftUI: MetalButton in the MetalUI Swift package."
-    },
-    {
-      "name": "cable",
-      "type": "registry:ui",
-      "title": "Cable",
-      "description": "A rubber patch cord between two plugs, drooping under gravity. With a length it hangs like a real cord, taut or slack as its ends move, and its belly swings after them.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/cable/cable.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/cable/cable.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/cable.md. SwiftUI: MetalCable in the MetalUI Swift package."
-    },
-    {
-      "name": "cap",
-      "type": "registry:ui",
-      "title": "Cap",
-      "description": "The fader, knob or rocker cap a person moves: a face on its darker side wall, grip ribs, a pointer groove or I and O, and its own shadow. Pressed, it sinks toward the body; a rocker tilts about its middle. The cap you would touch wears the accent.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/cap/cap.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/cap/cap.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/cap.md. SwiftUI: MetalCap in the MetalUI Swift package."
-    },
-    {
-      "name": "cell",
-      "type": "registry:ui",
-      "title": "Cell",
-      "description": "Raised blocks of translucent resin in a grid, lit from behind: dark in the resin's own colour, lit with the light coming through, hottest at the core, spilling a halo onto the slab. Cells light from the bottom row up; the one filling now glows part way.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/cell/cell.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/cell/cell.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/cell.md. SwiftUI: MetalCell in the MetalUI Swift package."
     },
     {
       "name": "checkbox",
@@ -575,25 +343,6 @@
       "docs": "Agent guide: https://metalui.dev/r/draw-tools.md. SwiftUI: MetalDrawTools in the MetalUI Swift package."
     },
     {
-      "name": "drum",
-      "type": "registry:ui",
-      "title": "Drum",
-      "description": "A numbered wheel seen through a window: a strip of digits on a cylinder that wraps from 9 into 0, shaded where it turns away. Its value can stand between two digits while it rolls.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/drum/drum.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/drum/drum.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/drum.md. SwiftUI: MetalDrum in the MetalUI Swift package."
-    },
-    {
       "name": "fan",
       "type": "registry:ui",
       "title": "Fan",
@@ -760,25 +509,6 @@
       "docs": "Agent guide: https://metalui.dev/r/icon-button.md. SwiftUI: MetalIconButton in the MetalUI Swift package."
     },
     {
-      "name": "jack",
-      "type": "registry:ui",
-      "title": "Jack",
-      "description": "A knurled satin-steel nut around a socket, where a plug seats. The socket is a cut, dark at the bottom with its top wall in shadow; lit, a lamp glows down there in a signal colour.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/jack/jack.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/jack/jack.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/jack.md. SwiftUI: MetalJack in the MetalUI Swift package."
-    },
-    {
       "name": "kbd",
       "type": "registry:ui",
       "title": "Keycap",
@@ -795,25 +525,6 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/kbd.md. SwiftUI: MetalKbd in the MetalUI Swift package."
-    },
-    {
-      "name": "key",
-      "type": "registry:ui",
-      "title": "Key",
-      "description": "A big key standing on its skirt, the Keycap as a gadget draws it: a lit face with an engraved glyph, and its own shadow. Pressed, the face drops into the skirt. The key you would press wears the accent.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/key/key.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/key/key.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/key.md. SwiftUI: MetalKey in the MetalUI Swift package."
     },
     {
       "name": "label",
@@ -868,44 +579,6 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/led.md. SwiftUI: MetalLED in the MetalUI Swift package."
-    },
-    {
-      "name": "lens",
-      "type": "registry:ui",
-      "title": "Lens",
-      "description": "A camera lens seen head-on: a knurled ring in the accent that turns, a domed glass dark at its centre and coated toward its rim, and an iris behind it closing to a polygon.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/lens/lens.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/lens/lens.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/lens.md. SwiftUI: MetalLens in the MetalUI Swift package."
-    },
-    {
-      "name": "lid",
-      "type": "registry:ui",
-      "title": "Lid",
-      "description": "A hinged flap over a bin's mouth, seen from above. Opened about its hinge it foreshortens and its shadow falls further out; armed, its underside is red and glows into the gap as it opens.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/lid/lid.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/lid/lid.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/lid.md. SwiftUI: MetalLid in the MetalUI Swift package."
     },
     {
       "name": "line-handles",
@@ -1002,44 +675,6 @@
       "docs": "Agent guide: https://metalui.dev/r/meter.md. SwiftUI: MetalMeter in the MetalUI Swift package."
     },
     {
-      "name": "needle",
-      "type": "registry:ui",
-      "title": "Needle",
-      "description": "A tapered pointer on a pivot cap over a scale printed on glass, with a zone past its threshold. A value turns it; in a gadget it swings to it and overshoots a little, pegged at the ends of its scale.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/needle/needle.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/needle/needle.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/needle.md. SwiftUI: MetalNeedle in the MetalUI Swift package."
-    },
-    {
-      "name": "nib",
-      "type": "registry:ui",
-      "title": "Nib",
-      "description": "A pen nib seen from above: brass, narrowing to its tip, with a slit and a breather hole, its tip wet with ink in the accent. In a gadget it dips into its well.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/nib/nib.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/nib/nib.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/nib.md. SwiftUI: MetalNib in the MetalUI Swift package."
-    },
-    {
       "name": "number-field",
       "type": "registry:ui",
       "title": "Number field",
@@ -1094,25 +729,6 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/perfect-preview.md. SwiftUI: MetalPerfectPreview in the MetalUI Swift package."
-    },
-    {
-      "name": "plug",
-      "type": "registry:ui",
-      "title": "Plug",
-      "description": "A knurled cap that seats in a Jack: a round face on its darker skirt, six grip knurls, a centre boss, maybe a cable stub, and its own shadow. The plug you would touch wears the accent.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/plug/plug.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/plug/plug.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/plug.md. SwiftUI: MetalPlug in the MetalUI Swift package."
     },
     {
       "name": "popover",
@@ -1173,25 +789,6 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/provenance-tooltip.md. SwiftUI: MetalProvenanceTooltip, .metalProvenance(_:detail:) in the MetalUI Swift package."
-    },
-    {
-      "name": "pull",
-      "type": "registry:ui",
-      "title": "Pull",
-      "description": "A drawer's handle, seen from above: a metal bar standing out in front of the drawer front on two posts, or a finger recess cut into it. It has no state of its own; the drawer it is on moves it.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/pull/pull.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/pull/pull.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/pull.md. SwiftUI: MetalPull in the MetalUI Swift package."
     },
     {
       "name": "radio",
@@ -1380,25 +977,6 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/size-readout.md. SwiftUI: MetalSizeReadout in the MetalUI Swift package."
-    },
-    {
-      "name": "slab",
-      "type": "registry:ui",
-      "title": "Slab",
-      "description": "The thick panel a gadget is cut from: one of the seven materials, lit by the one light, with rolled edges and cuts (slot, hole, tray, well) whose floors are the slab's own material in shadow.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/gadgets.json"
-      ],
-      "files": [
-        {
-          "path": "packages/metalui/src/components/slab/slab.tsx",
-          "type": "registry:ui",
-          "target": "components/metalui/slab/slab.tsx"
-        }
-      ],
-      "docs": "Agent guide: https://metalui.dev/r/slab.md. SwiftUI: MetalSlab in the MetalUI Swift package."
     },
     {
       "name": "slider",

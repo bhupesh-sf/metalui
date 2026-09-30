@@ -54,7 +54,7 @@ const BITS: { x: number; y: number; i: number; zoom: number; size: [number, numb
 
 export const PIECES: Piece[] = [
   // The hero, there from frame one.
-  { id: 'cmd', at: null, fall: 'heavy', x: 0, y: 0, zoom: 1.5, size: [230, 230], draw: (f) => <PressedKey id="k-cmd" down={press(f, K[0], OFF(0))} glyph="⌘" /> },
+  { id: 'cmd', at: null, fall: 'heavy', x: 0, y: 0, zoom: 1.5, size: [230, 230], draw: (f) => <PressedKey down={press(f, K[0], OFF(0))} glyph="⌘" /> },
   // Kick 2
   { id: 'folder-red', at: K[1], fall: 'heavy', x: -470, y: -250, zoom: 1.2, size: [260, 180], turn: 12, draw: () => <Folder name="Ideas" count={7} hue="red" /> },
   { id: 'switch', at: K[1], fall: 'light', x: 360, y: -200, zoom: 2.6, size: [140, 90], draw: (f) => <Switch checked={f >= OFF(1)} aria-label="switch" /> },
@@ -63,7 +63,7 @@ export const PIECES: Piece[] = [
   { id: 'swatch-blue', at: K[2], fall: 'light', x: -380, y: 80, zoom: 1.7, size: [150, 150], turn: -16, draw: () => <Swatch hex={tokens.shared.blue} label="BLUE" /> },
   // Kick 4
   { id: 'button', at: K[3], fall: 'heavy', x: 470, y: 470, zoom: 2.4, size: [260, 100], draw: (f) => <Button cap="primary" className={f >= OFF(3) && f < K[4] ? 'recipe-button-primary-pressed' : undefined}>Ship it</Button> },
-  { id: 'key-a', at: K[3], fall: 'key', x: -170, y: -380, zoom: 1, size: [150, 150], draw: (f) => <PressedKey id="k-a" down={press(f, K[4], OFF(4))} glyph="A" size={140} /> },
+  { id: 'key-a', at: K[3], fall: 'key', x: -170, y: -380, zoom: 1, size: [150, 150], draw: (f) => <PressedKey down={press(f, K[4], OFF(4))} glyph="A" size={140} /> },
   // "Introducing" is printed on the canvas from the first frame, under the lone key: a sentence the
   // opener finishes when the title lands under it on kick 5, the heaviest thing in the opener.
   { id: 'badge', at: K[4], fall: 'heavy', x: 0, y: 290, zoom: 1, size: [700, 150], draw: () => <Wordmark size={78} /> },
@@ -75,9 +75,9 @@ export const PIECES: Piece[] = [
   { id: 'switch-2', at: K[5], fall: 'light', x: -700, y: -40, zoom: 2.4, size: [130, 80], draw: (f) => <Switch checked={f >= OFF(5)} aria-label="switch" /> },
   // Kick 7
   { id: 'folder-violet', at: K[6], fall: 'heavy', x: 660, y: 320, zoom: 1.1, size: [240, 160], turn: 10, draw: () => <Folder name="Play" count={4} hue="violet" /> },
-  { id: 'key-shift', at: K[6], fall: 'key', x: -480, y: 480, zoom: 1, size: [150, 150], spin: -1, draw: (f) => <PressedKey id="k-shift" down={press(f, K[7], OFF(7))} glyph="⇧" size={140} /> },
+  { id: 'key-shift', at: K[6], fall: 'key', x: -480, y: 480, zoom: 1, size: [150, 150], spin: -1, draw: (f) => <PressedKey down={press(f, K[7], OFF(7))} glyph="⇧" size={140} /> },
   // Kick 8: the hero lands.
-  { id: 'return', at: K[7], fall: 'heavy', x: 230, y: 90, zoom: 1.35, size: [240, 240], draw: (f) => <PressedKey id="k-ret" down={press(f, END - 6, END + 20)} glyph="↩" accent /> },
+  { id: 'return', at: K[7], fall: 'heavy', x: 230, y: 90, zoom: 1.35, size: [240, 240], draw: (f) => <PressedKey down={press(f, END - 6, END + 20)} glyph="↩" accent /> },
   // Small parts rain on the off-beats.
   ...BITS.map((b, n): Piece => ({ id: `bit-${n}`, at: OFF(b.i), fall: 'light', x: b.x, y: b.y, zoom: b.zoom, size: b.size, spin: n % 2 ? 1 : -1, draw: b.draw })),
 ];

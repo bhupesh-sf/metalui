@@ -14,7 +14,7 @@ try {
   const packed = registry ? null : JSON.parse(execFileSync('npm', [
     'pack', '--json', '--workspace', '@unlocalhosted/metalui', '--pack-destination', temp,
   ], { cwd: root, encoding: 'utf8' }))[0];
-  const required = ['LICENSE', 'README.md', 'dist/index.js', 'dist/index.d.ts', 'dist/icons.js', 'dist/icons-life.js', 'dist/sound.js', 'dist/sound.d.ts', 'dist/gadgets.js', 'dist/gadgets.d.ts', 'dist/styles.css', 'dist/icons.css', 'dist/icons-life.css'];
+  const required = ['LICENSE', 'README.md', 'dist/index.js', 'dist/index.d.ts', 'dist/icons.js', 'dist/icons-life.js', 'dist/sound.js', 'dist/sound.d.ts', 'dist/styles.css', 'dist/icons.css', 'dist/icons-life.css'];
   const names = new Set(packed?.files.map((file) => file.path) ?? []);
   for (const path of required) {
     if (packed && !names.has(path)) throw new Error(`npm tarball missing ${path}`);
@@ -34,11 +34,10 @@ import { Button, Surface } from '@unlocalhosted/metalui';
 import { SendAwayIcon } from '@unlocalhosted/metalui/icons';
 import { LifeIcon } from '@unlocalhosted/metalui/icons/life';
 import * as Sound from '@unlocalhosted/metalui/sound';
-import { GADGETS, Gadget } from '@unlocalhosted/metalui/gadgets';
 const html = renderToStaticMarkup(createElement(Surface, { material: 'raise' }, createElement(Button, { cap: 'primary' }, 'Send')));
 if (!html.includes('recipe-surface-raise') || !html.includes('recipe-button-primary') || !html.includes('Send')) throw new Error('React package render failed');
 if (!SendAwayIcon || !LifeIcon) throw new Error('Icon subpath failed');
-if (!GADGETS || !Gadget || !Object.keys(Sound).length) throw new Error('Sound or gadget subpath failed');
+if (!Object.keys(Sound).length) throw new Error('Sound subpath failed');
 const css = readFileSync(new URL('./node_modules/@unlocalhosted/metalui/dist/styles.css', import.meta.url), 'utf8');
 if (!css.includes('.recipe-button-primary') || !css.includes('.recipe-surface-raise') || !css.includes('--mu-page')) throw new Error('Component CSS missing');
 if (css.includes('button,input,optgroup')) throw new Error('Global reset leaked into component CSS');

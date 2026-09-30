@@ -21,7 +21,7 @@ if (!template.includes('<div id="root"></div>') || !template.includes('<title>Me
 const manifest = JSON.parse(readFileSync(resolve(dist, 'components.json'), 'utf8'));
 const components = new Map(manifest.components.map((item) => [item.name, item]));
 const partDescriptions = new Map();
-for (const family of ['components', 'blocks', 'gadgets']) {
+for (const family of ['components', 'blocks']) {
   const directory = resolve(root, `packages/metalui/src/${family}`);
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
@@ -45,11 +45,6 @@ const descriptions = {
   '/foundations/elevation': 'Five MetalUI elevation levels, each tied to a material recipe and a clear place in the interface.',
   '/foundations/materials': 'MetalUI material recipes for bone, graphite, frost, metal, wells, and glass, with shared CSS and SwiftUI rendering.',
   '/foundations/sound': 'Hear MetalUI sound gestures and learn how tactile feedback pairs with motion.',
-  '/foundations/gadgets': 'Explore MetalUI gadgets, their parts, materials, motion, and sounds.',
-  '/foundations/mechanisms': 'See the reusable mechanisms that move and connect MetalUI gadgets.',
-  '/gadgets/rigs': 'MetalUI rigs: catalog gadgets wired by patch cables, each cable mapping a value, the same on the web and in SwiftUI.',
-  '/gadgets/compose': 'Write a MetalUI gadget or rig as JSON, checked against the catalog as you type and drawn live when it is valid.',
-  '/gadgets/emotion': 'Whether MetalUI gadgets make people feel what their feel says: the study, and the checks a machine makes first.',
   '/foundations/motion': 'MetalUI motion classes, physical springs, travel distances, and reduced-motion behavior.',
   '/foundations/transitions': 'MetalUI state-change recipes for press, selection, panels, labels, and icons.',
   '/icons': 'Browse MetalUI Soft Hardware icons: animated monoline and duotone glyphs for React, SwiftUI, and SVG.',
@@ -60,7 +55,7 @@ const descriptions = {
   '/components/memory-scrubber': 'A time slider that moves the canvas into its past and returns it to the present with NOW.',
 };
 
-// A nav item can point at a section of a page (/gadgets/rigs#capture); the page is the route.
+// A nav item can point at a section of a page (a path ending in #section); the page is the route.
 const pageOf = (to) => to.split('#')[0];
 const labelOf = (path) => path === '/' ? 'MetalUI' : NAV.flatMap((group) => group.items).find((item) => pageOf(item.to) === path)?.label;
 const paths = ['/', ...new Set(NAV.flatMap((group) => group.items.map((item) => pageOf(item.to))))];

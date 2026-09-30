@@ -1,16 +1,16 @@
 import { useLayoutEffect, useRef } from 'react';
-import { Key } from '@unlocalhosted/metalui';
+import { Kbd } from '@unlocalhosted/metalui';
 import { Icon, ICON_CATALOG, type IconName } from '@unlocalhosted/metalui/icons';
-import { GADGETS } from '@unlocalhosted/metalui/gadgets';
 import { land, react } from '../motion';
 
-/** A key's press, as the library draws it (tokens: gadgets.key.press), stepped by frame: 0 up, 1 down. */
-export function PressedKey({ id, down, glyph, accent, size = 150 }: { id: string; down: number; glyph: string; accent?: boolean; size?: number }) {
-  const [dy, sx, sy] = GADGETS.key.press as unknown as [number, number, number];
+/** A keycap (Kbd) scaled up to fill its box, dipping under a press, stepped by frame: 0 up, 1 down. `accent` wears the primary cap. */
+export function PressedKey({ down, glyph, accent, size = 150 }: { down: number; glyph: string; accent?: boolean; size?: number }) {
+  const fit = size / 20;
   return (
-    <div id={id}>
-      <style>{`#${id} [data-part="key.face"]{transform-box:fill-box;transform-origin:center;transform:translateY(${dy * down}px) scale(${1 + (sx - 1) * down},${1 + (sy - 1) * down})}`}</style>
-      <Key glyph={glyph} accent={accent} size={size} />
+    <div style={{ width: size, height: size, display: 'grid', placeItems: 'center' }}>
+      <div style={{ transform: `translateY(${down * fit * 1.5}px) scale(${fit * (1 - 0.05 * down)})` }}>
+        <Kbd surface={accent ? 'plain' : 'default'} className={accent ? 'recipe-button-primary text-white' : undefined}>{glyph}</Kbd>
+      </div>
     </div>
   );
 }

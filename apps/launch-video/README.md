@@ -66,16 +66,7 @@ npm run check:timing                    # every sixteenth lands on its own frame
 - **`src/Film.tsx` is the film.** Each storyboard shot in order over the edit: a built shot plays (registered in `SHOTS`), a shot not built yet shows its animatic card, so the minute is watchable at every stage.
 - **`src/film/stage.tsx` is motion at film scale.** The library's motion is interface-sized (a 1 px press); a frame of video needs visible mass. A look-at `Camera` eases between poses in real perspective and takes a jolt (`punch`) from heavy landings; a `Table` is the lit ground; a `Drop` falls onto it with the object spring and touches down on its frame, its contact shadow sized to its footprint and tightening as it lands. A `Drop` can also make a later trip (`move`: an arc to a new spot, touching down on its frame) and appear or vanish on a frame (`from`, `until`): how parts become one component. The table stops the fall: the spring's overshoot becomes a squash, never a sink through the surface. Falls have character (`heavy` thuds and jolts the camera, `light` tumbles and bounces twice, `key` flips end over end), neighbours `hop` in sympathy with a heavy landing, and the film runs on a white design canvas whose dot grid ripples under every landing (`Table` with `impacts`: a ring runs out from each hit, swelling, darkening and pushing the dots it passes, bigger for heavier things). Looks (`LOOKS`) and `mixLook` remain for other scenes.
 - **Icons play their authored acts.** `IconAct` (src/film/parts.tsx) draws a library icon and seeks its act (Web Animations keyframes per part, from the icon catalog) to the frame's time, paused: the act lands where the shot puts it, frame for frame.
-- **Shots use the real library.** Styles come from the same `tokens.css` and `theme.css` through Tailwind (`remotion.config.ts`), with every CSS transition and animation off: a frame renders on its own, so motion comes from the frame. Gadgets are drawn with `renderGadgetSvg` at each frame's pose (never `<Gadget>`, which animates itself on a clock).
-
-### Designing a gadget for a shot
-
-```bash
-node scripts/gadget-sheet.mjs ../../packages/metalui/src/gadgets/fixtures/cell-grid.gadget.json \
-  '{"_":{"value":3.5}}' '{"material":"clay","_":{"value":8,"host":"bone"}}'
-```
-
-Every variant (JSON merged over the spec, draw options under `_`) goes through the library's validator and renderer into one contact sheet, `out/<name>-sheet.png`. The validator holds the library's rules (a job's hue stations, for one), so a look chosen here is a look the library allows.
+- **Shots use the real library.** Styles come from the same `tokens.css` and `theme.css` through Tailwind (`remotion.config.ts`), with every CSS transition and animation off: a frame renders on its own, so motion comes from the frame.
 - **Rendering**: Remotion's own AAC mux lays the sound 2048 samples (42.7 ms at 48 kHz) late, because it doesn't record the encoder's priming. `npm run render` renders the picture muted and `music/pipeline.py master` adds the edit with ffmpeg, then measures the offset and fails above 1 ms.
 
 ## Licensing
