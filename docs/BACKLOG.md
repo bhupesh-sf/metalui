@@ -181,3 +181,23 @@ Direction:
 - [ ] **More kinds**: a range (two knobs), a vertical slider, a stepped slider that clicks into detents (part spring), and a centred slider (fill grows from the middle, for balance or offsets).
 - [ ] **Every state**: rest, hover (the knob lifts), dragging (the knob presses, the fill follows 1:1), focus, disabled, and at the limits (a small refusal nudge when you push past an end).
 - [ ] Redo the page: examples for each kind, a DialKit panel, the x-ray card; captures in both colorways.
+
+## Spinner: rethink as waiting, by where it happens
+
+Owner, on the Spinner page: "again very bad implementation, think again; think of the various states this could happen in: conveyed on a large item vs a small item vs on an action, and all those things." (2026-09-30)
+
+Now: a sunk ring with a green arc, in two sizes, floating on its own above two worded buttons ("Quick save", "Slow save") that don't show the spinner in themselves. It reads as a loose widget, not as something waiting.
+
+Rethink it as one waiting language, placed where the wait is (research first: how Apple, Linear, Vercel and Teenage Engineering show waiting; storyboard each placement):
+
+- [ ] **On an action (a button, a key)**: the glyph itself becomes the wait (the icon morphs into a small arc, or its act loops quietly) while the label turns on the drum ("Save" → "Saving…" → "Saved" with `check`); the key keeps its width and stays pressed-looking; a second press is refused. Short waits under the show delay show nothing, then just the result.
+- [ ] **On a small item (a row, a chip, an attachment, an avatar)**: a small ring in the item's glyph slot or at its trailing edge, sized to the text; the item dims a little and can't be acted on; done → the ring morphs to `check` and fades.
+- [ ] **On a large item (a card, an image, a panel, a region)**: not a spinner in the middle: the item's own shape waits (a skeleton or a slow sheen across its surface, or a lit edge that travels around its border), with the words of what's happening ("Lifting the subject…"); progress when it's known.
+- [ ] **In a field** (search, combobox, validation): a small ring in the trailing slot, replacing the clear key while it works.
+- [ ] **For the whole place** (a page or view loading): skeletons of what will arrive, not a spinner; a thin top bar for route changes.
+- [ ] **Background work** (syncing, uploading while you keep working): the status LED breathes (the lamp gesture), and nothing blocks.
+- [ ] **Known vs unknown**: switch to Progress as soon as the amount is known (ring fills rather than spins).
+- [ ] **Timing rules**: a show delay (nothing for fast work), a minimum time on screen once shown (no flash), then the result (`check`, or `sync-error` with Try again); long waits say more after a while ("Still exporting…").
+- [ ] **Accessibility and motion**: `aria-busy` on the waiting thing, a polite status only at start and end; Reduce Motion: no spin, a slow pulse of the arc or the words only.
+- [ ] **Sizes and inks**: sized from the host (button glyph, row glyph, field glyph), in the host's ink (white on a primary key), not a fixed green arc on a sunk well.
+- [ ] Redo the page as placements, each a real host (a saving button, an uploading row, a loading card, a searching field, a syncing status), with a DialKit panel for the timing; Swift in step.
