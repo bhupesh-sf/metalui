@@ -201,3 +201,22 @@ Rethink it as one waiting language, placed where the wait is (research first: ho
 - [ ] **Accessibility and motion**: `aria-busy` on the waiting thing, a polite status only at start and end; Reduce Motion: no spin, a slow pulse of the arc or the words only.
 - [ ] **Sizes and inks**: sized from the host (button glyph, row glyph, field glyph), in the host's ink (white on a primary key), not a fixed green arc on a sunk well.
 - [ ] Redo the page as placements, each a real host (a saving button, an uploading row, a loading card, a searching field, a syncing status), with a DialKit panel for the timing; Swift in step.
+
+## Status: LEDs and badges get lost on the page
+
+Owner, on the Status page: "these appear way too muddled on the page a lot of the time, especially if someone is using them in transparent mode." (2026-09-30)
+
+What's wrong now:
+- The LEDs are 6-ish px beads in pastel inks; on the bone surface (and on frosted or transparent surfaces) their colour and the page mix, and waiting (amber) vs failed (red) are hard to tell apart at that size.
+- The captions and badge words are the engraved label type in ink3, spaced wide, so they fade into the dotted stage; the badge plate is a near-white pill on a near-white page, held only by its shadow.
+- Colour alone tells the states apart (live vs waiting vs failed).
+- The Swift capture doesn't match the web: it says "Recognizer" where the web says "Sync", and its label font falls back to a serif monospace.
+
+Direction:
+- [ ] **An LED reads on any ground**: a dark bezel ring (the LED sits in a small sunk socket) so the lamp has its own backdrop on light, dark, frosted and transparent surfaces; a lit lamp glows (a soft halo in its ink), an off lamp is a dull socket. Size up to 8 at default.
+- [ ] **Stronger, separable inks**: deeper, more saturated lamp inks tuned per colorway so live / waiting / failed / link read at a glance and for colour-blind people (check with simulated deuteranopia and protanopia).
+- [ ] **Not colour alone**: each state also differs in gesture (live steady, waiting breathing, failed a double blink, off dark) and the badge says the state in words.
+- [ ] **Badges hold their own ground**: the badge plate gets a defined edge (hairline plus shadow), and on transparent or frosted parents it switches to an opaque plate (`reduce-transparency` and a `solid` option); labels in ink2 at a readable size, not ink3 engraved.
+- [ ] **Transparent mode**: define it and test it: the status parts over frost, over images, and over the dark graphite colorway, in the captures.
+- [ ] **Tones**: a quiet badge (LED and words, no plate) for dense places, and a strong one (tinted plate in the state's ink) for alerts.
+- [ ] Make the Swift twin match the web example (same words, the label font from the tokens) and recapture it.
