@@ -24,6 +24,7 @@ export { Skeleton, type SkeletonProps, type SkeletonSwapProps } from './componen
 export { Link, type LinkProps } from './components/link/link';
 export { ButtonGroup, SplitButton, type ButtonGroupProps, type SplitButtonProps } from './components/button-group/button-group';
 export { Breadcrumbs, type BreadcrumbsProps, type Crumb } from './components/breadcrumbs/breadcrumbs';
+export { Pagination, pageWindow, type PaginationProps } from './components/pagination/pagination';
 export { Meter, type MeterProps } from './components/meter/meter';
 export { ScrollArea, type ScrollAreaProps } from './components/scroll-area/scroll-area';
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';

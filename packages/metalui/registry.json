@@ -751,6 +751,24 @@
       "docs": "Agent guide: https://metalui.dev/r/number-field.md. SwiftUI: MetalNumberField in the MetalUI Swift package."
     },
     {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Moving through pages of results: page numbers in the switcher's track with previous and next keys; the current page's thumb glides to the chosen page on the part spring.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/pagination/pagination.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/pagination/pagination.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/pagination.md. SwiftUI: MetalPagination in the MetalUI Swift package."
+    },
+    {
       "name": "past-banner",
       "type": "registry:ui",
       "title": "Past banner",

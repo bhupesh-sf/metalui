@@ -480,6 +480,9 @@
   --spacing-breadcrumbs-fold-pad: var(--mu-r-breadcrumbs-fold-pad);
   --spacing-breadcrumbs-fold-radius: var(--mu-r-breadcrumbs-fold-radius);
   --radius-breadcrumbs-fold-radius: var(--mu-r-breadcrumbs-fold-radius);
+  --spacing-pagination-page-min-width: var(--mu-r-pagination-page-min-width);
+  --spacing-pagination-siblings: var(--mu-r-pagination-self-siblings);
+  --spacing-pagination-arrow-size: var(--mu-r-pagination-arrow-size);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);

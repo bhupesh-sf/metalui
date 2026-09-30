@@ -1028,6 +1028,19 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Moving through pages of results: the switcher's sunk track holding the page numbers, with a key for the previous and next page at the ends. The current page is the switcher's raised thumb; choosing another page glides the thumb there on the part spring (a track with ends). Around a long run it shows the first and last pages, the current one and its neighbours, and a quiet ellipsis for the gaps. Ends: the previous or next key is disabled. Reduce Motion: the thumb moves at once. (the switcher (track, thumb, options) and its sliding thumb; the WAI pagination landmark)
+    public static let pagination = MetalObjectRecipe(
+        name: "pagination",
+        layers: [
+
+        ],
+        props: [
+            "page.min-width": .number(28.0),
+            "self.siblings": .number(1.0),
+            "arrow.size": .number(10.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
