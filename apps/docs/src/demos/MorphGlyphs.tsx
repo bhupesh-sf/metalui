@@ -15,6 +15,7 @@ const PAIRS: [MorphIconName, MorphIconName][] = [
   ['synced', 'offline'],
   ['offline', 'sync-error'],
   ['paste', 'check'],
+  ['plus', 'minus'],
   ['duplicate', 'check'],
   ['zoom-in', 'zoom-out'],
   ['group', 'ungroup'],

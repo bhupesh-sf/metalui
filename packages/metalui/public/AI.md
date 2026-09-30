@@ -4079,7 +4079,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 47 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 49 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4135,6 +4135,8 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `PasteIcon` | `paste` | Status | The clip levers open, the content drops onto the board, and the clip clamps it down. | plays the same act |
 | `KeeperIcon` | `keeper` | Status | The character looks up at it, perks up, and nods it in with a slow blink; its ring tips with the nod. | plays the same act |
 | `PlusIcon` | `plus` | Actions | The upright is lifted and driven into the waiting crossbar; the knock runs out to the bar's ends. | plays the same act |
+| `MinusIcon` | `minus` | Actions | The bar is pried up off its tile, as if one were taken from it, and set back down; the tile takes its weight. | plays the same act |
+| `ChevronIcon` | `chevron` | Actions | The chevron is drawn back and thrust the way it points; its arms fold in behind the point like a hinge, and an echo carries on. | plays the same act |
 | `RegionIcon` | `region` | Tools | The frame is set down on the canvas, and its name writes into the head behind a caret. | plays the same act |
 | `TaskIcon` | `task` | Tools | The box is pressed down; while it is held the tick is written, and released it springs back up with a click. | plays the same act |
 | `TagIcon` | `tag` | Tools | The cord tugs the tag by its eyelet, and it swings there and comes to hang still. | plays the same act |

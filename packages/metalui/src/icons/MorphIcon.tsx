@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { SPRINGS } from '../motion/springs.generated';
-import { morphAt, morphOutline, morphParts, morphPath, planMorph, springAt, type MorphFrame, type MorphPart } from './morph';
+import { morphAt, morphOutline, morphParts, morphPath, planMorph, springAt, type MorphFrame, type MorphPart, type MorphTurn } from './morph';
 import type { MorphIconName } from './morph.generated';
 
 /* ─────────────────────────────────────────────────────────
@@ -18,12 +18,13 @@ import type { MorphIconName } from './morph.generated';
  *            a mirror pair turns over on its axis, edge-on at the half turn
  *    ~214ms  reads as done                     (settle k380 c36, one spring for all)
  *    ~440ms  at rest: the authored icon, exactly
+ * A change of turn (a chevron opening) is planned the same way, to the turned glyph.
  * Interrupted: the next morph starts from the in-between glyph on screen.
  * Reduced motion: the glyph changes in place.
  * ───────────────────────────────────────────────────────── */
 
 export interface MorphIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'name' | 'children'> {
-  /** Any icon of the morph family (the wire-based set; a solid character glyph such as keeper is
+  /** Any icon of the morph family (the wire-based set; a solid character glyph is
    *  not one, it changes by the drum, SwapIcon). Changing it morphs from whatever is on screen. */
   name: MorphIconName;
   /** Rendered size in px. */
@@ -32,6 +33,10 @@ export interface MorphIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'nam
   strokeWidth?: number;
   /** Accessible name. Without it the glyph is decorative. */
   title?: string;
+  /** Quarter turns clockwise: a chevron is drawn pointing down, so 90 points it left, 180 up and
+   *  270 right. Changing it morphs, as a change of name does: a quarter turn rides a rigid carriage,
+   *  and a half turn of a symmetric glyph turns over on its axis (docs/MORPH.md E2, E8). */
+  turn?: MorphTurn;
 }
 
 const prefersReduced = () =>
@@ -81,24 +86,25 @@ export function MorphGlyph({ frame }: { frame: MorphFrame }) {
 
 /** An icon that becomes the next icon instead of being replaced by it. */
 export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(function MorphIcon(
-  { name, size = 24, strokeWidth = 1.7, title, className, ...props },
+  { name, size = 24, strokeWidth = 1.7, title, turn = 0, className, ...props },
   ref,
 ) {
-  const [frame, setFrame] = React.useState<MorphFrame>(() => morphParts(name, strokeWidth));
-  const shown = React.useRef({ frame, name });
+  const [frame, setFrame] = React.useState<MorphFrame>(() => morphParts(name, strokeWidth, turn));
+  const shown = React.useRef({ frame, name, turn });
   const raf = React.useRef(0);
 
   React.useEffect(() => {
-    if (shown.current.name === name) return;
+    if (shown.current.name === name && shown.current.turn === turn) return;
     cancelAnimationFrame(raf.current);
     shown.current.name = name;
-    const rest = morphParts(name, strokeWidth);
+    shown.current.turn = turn;
+    const rest = morphParts(name, strokeWidth, turn);
     if (prefersReduced()) {
       shown.current.frame = rest;
       setFrame(rest);
       return;
     }
-    const plan = planMorph(shown.current.frame, name, strokeWidth);
+    const plan = planMorph(shown.current.frame, name, strokeWidth, turn);
     const { stiffness, damping, duration } = SPRINGS.settle;
     const start = performance.now();
     const tick = (now: number) => {
@@ -111,7 +117,7 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
     };
     raf.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf.current);
-  }, [name, strokeWidth]);
+  }, [name, strokeWidth, turn]);
 
   return (
     <svg
@@ -128,6 +134,7 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
       aria-hidden={title ? undefined : true}
       focusable="false"
       data-glyph={name}
+      data-turn={turn || undefined}
       {...props}
     >
       {title && <title>{title}</title>}

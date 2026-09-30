@@ -5,4 +5,4 @@ export { ICON_CATALOG, ICON_NAMES, type IconName, type IconRecord } from './icon
 export * from './icons/components.generated';
 export { MorphIcon, MorphGlyph, type MorphIconProps } from './icons/MorphIcon';
 export { MORPH_NAMES, type MorphIconName } from './icons/morph.generated';
-export { morphParts, partsFrom, planMorph, planFrames, morphAt, morphPath, morphOutline, morphStrain, type MorphFrame, type MorphPart, type MorphPlan, type MorphRelation, type MorphStrain, type MorphMove, type MorphTrack } from './icons/morph';
+export { morphParts, partsFrom, planMorph, planFrames, morphAt, morphPath, morphOutline, morphStrain, type MorphFrame, type MorphPart, type MorphPlan, type MorphRelation, type MorphStrain, type MorphMove, type MorphTrack, type MorphTurn } from './icons/morph';

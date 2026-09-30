@@ -104,11 +104,35 @@ function cornersOf(pts: Point[], closed: boolean): number[] {
 
 const cache = new Map<string, MorphFrame>();
 
-/** A glyph at rest as morphable parts. `weight` is the wire width in 24u (1.7 by default). */
-export function morphParts(name: MorphIconName, weight = 1.7): MorphFrame {
-  const key = `${name}@${weight}`;
+/** Quarter turns clockwise (as CSS rotate) about the grid's centre: 0, 90, 180 or 270 degrees. */
+export type MorphTurn = 0 | 90 | 180 | 270;
+
+/** A point turned clockwise by a quarter turn about (12, 12), exactly. */
+const quarter = ([x, y]: Point): Point => [24 - y, x];
+
+/** A part turned by whole quarter turns: its points, holes and authored path, exactly. */
+function turnPart(p: MorphPart, turn: MorphTurn): MorphPart {
+  const q = turn / 90;
+  const at = (pt: Point) => { let r = pt; for (let i = 0; i < q; i++) r = quarter(r); return r; };
+  const points = p.points.map(at);
+  // Generated paths are absolute M, L, C and Z, so every number pair is a point.
+  const path = p.bead
+    ? `M${points[0][0]} ${points[0][1]}l0 0`
+    : p.path?.replace(/(-?(?:\d*\.\d+|\d+))[ ,](-?(?:\d*\.\d+|\d+))/g, (_, x, y) => at([+x, +y]).map((v) => +v.toFixed(3)).join(' '));
+  return { ...p, points, holes: p.holes.map((h) => h.map(at)), corners: cornersOf(points, p.closed), path };
+}
+
+/**
+ * A glyph at rest as morphable parts. `weight` is the wire width in 24u (1.7 by default); `turn`
+ * points it another way (a chevron down, left, up or right is one glyph turned).
+ */
+export function morphParts(name: MorphIconName, weight = 1.7, turn: MorphTurn = 0): MorphFrame {
+  const key = `${name}@${weight}@${turn}`;
   let parts = cache.get(key);
-  if (!parts) cache.set(key, (parts = partsFrom(MORPH_PARTS[name], weight)));
+  if (!parts) {
+    const upright = partsFrom(MORPH_PARTS[name], weight);
+    cache.set(key, (parts = turn ? upright.map((p) => turnPart(p, turn)) : upright));
+  }
   return parts;
 }
 
@@ -490,8 +514,8 @@ const TUCK_MIN = 0.5, TUCK_R = 1, TUCK_MARGIN = 0.2, TUCK_BOXY = 0.6;
 const STRAIN = { travel: 1 / 4, lone: 2, topology: 0.5, traits: 0.25, crossing: 0.5, turn: 0.5 };
 
 /** Plans the morph from what is on screen now to a glyph of the set. */
-export function planMorph(from: MorphFrame, to: MorphIconName, weight = 1.7): MorphPlan {
-  return { ...planFrames(from, morphParts(to, weight)), to };
+export function planMorph(from: MorphFrame, to: MorphIconName, weight = 1.7, turn: MorphTurn = 0): MorphPlan {
+  return { ...planFrames(from, morphParts(to, weight, turn)), to };
 }
 
 /** Whether segments ab and cd cross. */
