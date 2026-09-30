@@ -184,6 +184,20 @@ public struct MetalSpring: Equatable, Sendable {
     public var animation: Animation { native.animation }
 }
 
+/// A named timing curve (`--mu-ease-*`): the CSS cubic-bezier's control points.
+public struct MetalCurve: Equatable, Sendable {
+    public let x1: Double, y1: Double, x2: Double, y2: Double
+
+    public init(x1: Double, y1: Double, x2: Double, y2: Double) {
+        self.x1 = x1; self.y1 = y1; self.x2 = x2; self.y2 = y2
+    }
+
+    /// The curve over `duration` seconds.
+    public func animation(duration: Double) -> Animation {
+        .timingCurve(x1, y1, x2, y2, duration: duration)
+    }
+}
+
 /// A font family in the Soft Hardware type system.
 public enum MetalFontFamily: String, Sendable {
     /// Geist: UI and reading.

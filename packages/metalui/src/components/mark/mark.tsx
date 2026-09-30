@@ -15,7 +15,8 @@ import * as React from 'react';
  *   at rest   a URL becomes a host pill; a value the recognizer read that is not in the text is an inferred pill
  *   margin    the dimple (a task's checkbox), the ghost dimple (an inferred task), the urgency LED
  *   trailing  the life glyph after a middle dot, ink3 → ink2 with its host
- *   tick      draws on in 220 ms after 40 ms, ease-out, not sprung (DS-21); instant under Reduce Motion
+ *   tick      a pen draws the check glyph's tick (the checkbox's storyboard: a 40 ms beat, the short leg,
+ *             a dwell at the corner, the long leg on the part spring); whole at once under Reduce Motion
  * ───────────────────────────────────────────────────────── */
 
 export type MarkKind = 'date' | 'duration' | 'amount' | 'measurement' | 'tag' | 'derived-tag' | 'hex' | 'match';

@@ -31,7 +31,7 @@ for (const colorway of COLORWAYS) {
     await expect(dimple).toHaveAttribute('aria-checked', 'true');
     const tick = dimple.locator('.mu-dimple-tick');
     await expect(tick).toBeVisible();
-    await tick.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
+    await tick.evaluate((el) => Promise.all(el.getAnimations({ subtree: true }).map((a) => a.finished)));
     await page.locator('section', { hasText: 'On a block' }).first().screenshot({ path: capture(`cue-${colorway}`) });
     await page.locator('section', { hasText: 'Base UI Checkbox: rest' }).first().screenshot({ path: capture(`cue-dimple-${colorway}`) });
   });
@@ -42,5 +42,7 @@ test('the tick appears at once under reduced motion', async ({ page }) => {
   await open(page, '/components/cue', 'bone');
   const dimple = page.getByRole('checkbox', { name: 'Send the poster' });
   await dimple.click();
-  expect(await dimple.locator('.mu-dimple-tick').evaluate((el) => getComputedStyle(el).animationName)).toBe('none');
+  // No stroke is drawn: the tick is whole (no dash) from the first frame.
+  const tick = dimple.locator('.mu-dimple-tick path');
+  expect(await tick.evaluate((el) => [el.getAnimations().length, getComputedStyle(el).strokeDasharray, getComputedStyle(el).visibility])).toEqual([0, 'none', 'visible']);
 });

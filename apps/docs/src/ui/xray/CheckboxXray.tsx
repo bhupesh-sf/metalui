@@ -4,6 +4,7 @@ import { tokens } from '../../lib/tokens';
 import { Exploded, IsoCap, IsoTray, XrayFrame, aim, capTop, scalePx, useStateLayers, type LayerDef, type SpotDef } from './kit';
 import { HintLayer } from '../edit';
 import { CheckboxSpecimenCard } from './CheckboxSpecimens';
+import { TICK } from '../../../../../packages/metalui/src/icons/tick.generated';
 
 /* ─────────────────────────────────────────────────────────
  * X-RAY · CHECKBOX
@@ -109,7 +110,9 @@ export function CheckboxXray({ startOpen = false }: { startOpen?: boolean }) {
   const keyZ = 0.5, top = capTop(keyZ, 4);
 
   const tick = (
-    <span key={replay} className="xr-tick" style={{ left: P.tick.x * S * (m.size / P.self.size), top: P.tick.y * S * (m.size / P.self.size), width: P.tick.w * S, height: P.tick.h * S, borderWidth: `0 ${P.tick.stroke * S}px ${P.tick.stroke * S}px 0`, transform: `rotate(${m.angle}deg)`, animationDuration: P.tick.draw, animationDelay: P.tick.delay }} />
+    <svg key={replay} className="xr-tick" viewBox="0 0 24 24" aria-hidden style={{ width: m.size * S, height: m.size * S, strokeWidth: Number(P.tick.pen), transform: `rotate(${m.angle}deg)`, transformOrigin: `${(TICK.corner.x / 24) * 100}% ${(TICK.corner.y / 24) * 100}%`, animationDelay: P.tick.delay }}>
+      <path pathLength={1} d={`M${TICK.start.x} ${TICK.start.y}L${TICK.corner.x} ${TICK.corner.y}L${TICK.tip.x} ${TICK.tip.y}`} />
+    </svg>
   );
 
   const scene = exploded ? (

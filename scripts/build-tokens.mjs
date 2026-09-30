@@ -675,6 +675,11 @@ const cwInstance = (cw) => `MetalColorwayTokens(\n${cwKeys.map((k) => `        $
 const swiftShared = Object.entries(T.shared)
   .filter(([, v]) => !/^cubic-bezier|"|,\s*sans-serif|monospace|%$|px$/.test(v))
   .map(([k, v]) => { const [type, val] = swiftValue(v); return `    public static let ${camel(k)}: ${type} = ${val}`; })
+  // Named curves (--mu-ease-*) as their control points, for Animation.timingCurve.
+  .concat(Object.entries(T.shared).filter(([, v]) => /^cubic-bezier\(/.test(v)).map(([k, v]) => {
+    const [x1, y1, x2, y2] = v.slice(v.indexOf('(') + 1, -1).split(',').map((n) => num(parseFloat(n)));
+    return `    /// ${v}\n    public static let ${camel(k)} = MetalCurve(x1: ${x1}, y1: ${y1}, x2: ${x2}, y2: ${y2})`;
+  }))
   .join('\n');
 const capKeys = Object.keys(T.caps.primary);
 const swiftCaps = Object.entries(T.caps).map(([k, c]) =>

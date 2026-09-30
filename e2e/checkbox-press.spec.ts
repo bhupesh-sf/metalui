@@ -2,7 +2,8 @@ import { expect, test } from '@playwright/test';
 import { COLORWAYS, open } from './helpers';
 
 // Checkbox press: the press points at the result. Unticked, the well takes the dark on look while held;
-// ticked, it goes light; releasing commits and dragging off cancels. A checkbox group's row presses
+// ticked, the key stays dark so the pen can draw the tick back on it after release, and only then goes
+// light; releasing commits and dragging off cancels. A checkbox group's row presses
 // the same from anywhere on the row.
 const wellBg = (el: import('@playwright/test').Locator) => el.evaluate((e) => getComputedStyle(e).backgroundImage);
 
@@ -25,13 +26,18 @@ for (const colorway of COLORWAYS) {
     await expect(photos).not.toBeChecked();
     await expect.poll(() => wellBg(photos)).toBe(rest);
 
-    // Held on a ticked box's label: it goes light; released, it unticks.
+    // Held on a ticked box's label: the key stays dark; released, it unticks, the tick is drawn back,
+    // and then the key goes light.
     const label = group.getByText('Notes', { exact: true });
     const l = (await label.boundingBox())!;
     await page.mouse.move(l.x + 4, l.y + l.height / 2);
     await page.mouse.down();
-    await expect.poll(() => wellBg(notes)).toBe(rest);
+    await page.waitForTimeout(120);
+    expect(await wellBg(notes)).toBe(on);
     await page.mouse.up();
     await expect(notes).not.toBeChecked();
+    expect(await wellBg(notes)).toBe(on);
+    await expect(notes.locator('.mu-dimple-tick path')).toHaveAttribute('visibility', 'hidden');
+    await expect.poll(() => wellBg(notes)).toBe(rest);
   });
 }

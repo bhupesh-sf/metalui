@@ -21,13 +21,13 @@ Several independent choices in a form. React: `CheckboxGroup` from `@unlocalhost
 
 | State | Look | Motion |
 |---|---|---|
-| unticked / ticked | the checkbox's well / dark key with a tick | the checkbox's own (160 ms fade, tick draws 220 ms after 40 ms) |
-| parent, some ticked | the half (mixed) look | – |
-| parent ticked | every row ticks | a cascade from the top, one row every 30 ms |
-| parent cleared | every row clears | together, at once |
+| unticked / ticked | the checkbox's well / dark key with a tick | the checkbox's own: 160 ms fade; a pen draws the tick (a 40 ms beat, the short leg, a dwell at the corner, the long leg on the part spring) and draws it back before the key goes light |
+| parent, some ticked | the dark key with a white dash (mixed) | the dash draws left to right on the part spring; mixed ↔ all bends the dash into the tick (and back) on the settle spring |
+| parent ticked | every row ticks | a cascade from the top, one row every 30 ms; each tick draws a beat after its own key goes dark |
+| parent cleared | every row clears | together: every tick withdraws at once, then the keys go light |
 | disabled | the row at 40 % | – |
 
-Reduce Motion: no cascade; ticks are instant.
+Reduce Motion: no cascade; ticks and the dash are whole, or gone, at once.
 
 ## API
 

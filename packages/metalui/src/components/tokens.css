@@ -924,15 +924,13 @@
   --mu-r-checkbox-self-press: 50ms;
   --mu-r-checkbox-self-disabled: 0.4;
   --mu-r-checkbox-self-transition: background var(--mu-r-checkbox-self-fade), box-shadow var(--mu-r-checkbox-self-fade);
-  --mu-r-checkbox-tick-x: 5px;
-  --mu-r-checkbox-tick-y: 2.5px;
-  --mu-r-checkbox-tick-w: 4px;
-  --mu-r-checkbox-tick-h: 8px;
-  --mu-r-checkbox-tick-stroke: 1.6px;
-  --mu-r-checkbox-tick-rotate: 42deg;
+  --mu-r-checkbox-tick-pen: 2.4;
+  --mu-r-checkbox-tick-rotate: 0deg;
   --mu-r-checkbox-tick-color: #FFFFFF;
-  --mu-r-checkbox-tick-draw: 220ms;
   --mu-r-checkbox-tick-delay: 40ms;
+  --mu-r-checkbox-tick-down: 90ms;
+  --mu-r-checkbox-tick-pace: 30ms;
+  --mu-r-checkbox-tick-withdraw: 140ms;
   --mu-r-checkbox-ghost-x: -27px;
   --mu-r-checkbox-ghost-y: 3.5px;
   --mu-r-checkbox-ghost-size: 14px;
@@ -942,10 +940,6 @@
   --mu-r-checkbox-doing-opacity: 0.8;
   --mu-r-checkbox-row-size: 14px;
   --mu-r-checkbox-row-radius: 5px;
-  --mu-r-checkbox-row-tick-x: 4.5px;
-  --mu-r-checkbox-row-tick-y: 2px;
-  --mu-r-checkbox-row-tick-w: 3.5px;
-  --mu-r-checkbox-row-tick-h: 7px;
   /* radio: the checkbox dimple (recipe checkbox) made round; preset-button interlock; Base UI RadioGroup and Radio */
   --mu-r-radio-self-size: 16px;
   --mu-r-radio-self-fade: 160ms;
