@@ -30,26 +30,52 @@ export interface OpenOptions {
 
 /**
  * Opens a docs page in a colorway, as the site would: the colorway is the one the site's switch saved.
- * Every open starts clean: media and the window go back to the desktop's unless the slice asks.
+ * Every open starts clean: media and the window go back to the desktop's unless the slice asks, the store is
+ * empty, and the page has come to rest (nothing is left to scroll it).
  */
 export async function openPage(path: string, colorway: Colorway, options: OpenOptions = {}) {
   root?.unmount();
   await commands.media(Object.entries(options.media ?? {}).map(([name, value]) => ({ name, value })));
   await page.viewport(...(options.viewport ?? [1280, 900]));
+  // a fresh page has an empty store (the site's saved colorway, motion switch and saved work all live there)
+  // and no leftovers on <html>: the new colorway is on it before the first frame, not after the mount
+  localStorage.clear();
+  sessionStorage.clear();
   localStorage.setItem('metalui:colorway', colorway);
+  const html = document.documentElement;
+  html.classList.remove('rm');
+  delete html.dataset.flight;
+  html.dataset.muColorway = colorway;
   document.body.innerHTML = '<div id="root"></div>';
-  root = createRoot(document.getElementById('root')!);
-  root.render(
-    <ColorwayProvider>
-      <RouterProvider router={createMemoryRouter(routes, { initialEntries: [path] })} />
-    </ColorwayProvider>,
-  );
-  await until(() => document.querySelector('main h1'));
+  // React Router's <ScrollRestoration> scrolls a new page to the top. When the router has a scroll position
+  // to restore (every page after the first in this shared page does), it does so again in a second commit,
+  // a transition that lands a few frames after the page is on screen. A slice that scrolls something into
+  // view right away would have the page thrown back to the top mid-action, so wait for that commit too.
+  let toTop = 0;
+  const scrollTo = window.scrollTo;
+  window.scrollTo = ((...args: Parameters<typeof scrollTo>) => { toTop++; return scrollTo.apply(window, args); }) as typeof scrollTo;
+  try {
+    root = createRoot(document.getElementById('root')!);
+    const router = createMemoryRouter(routes, { initialEntries: [path] });
+    root.render(
+      <ColorwayProvider>
+        <RouterProvider router={router} />
+      </ColorwayProvider>,
+    );
+    await until(() => document.querySelector('main h1'));
+    // the first commit has run its layout effects: a position to restore means a second commit is coming
+    if (router.state.restoreScrollPosition != null) await until(() => toTop >= 2);
+  } finally {
+    window.scrollTo = scrollTo;
+  }
   await document.fonts.ready;
   // Captures are of the page, not the sticky header scrolled over it.
-  const pin = document.createElement('style');
-  pin.textContent = 'body > #root header { position: static !important; }';
-  document.head.append(pin);
+  if (!document.getElementById('slice-pin')) {
+    const pin = document.createElement('style');
+    pin.id = 'slice-pin';
+    pin.textContent = 'body > #root header { position: static !important; }';
+    document.head.append(pin);
+  }
 }
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));

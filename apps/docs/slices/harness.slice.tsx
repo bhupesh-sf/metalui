@@ -48,3 +48,34 @@ test('a page opens at the window it asks for, and the next one at the desktop', 
   await openPage('/components/button', 'bone');
   expect(document.documentElement.clientWidth).toBeGreaterThan(1200);
 });
+
+test('a page opens in the colorway it asks for from its first frame, with an empty store', async () => {
+  await openPage('/components/button', 'graphite');
+  localStorage.setItem('metalui:motion', 'off');
+  localStorage.setItem('left-over', '1');
+  const seen: string[] = [];
+  const watch = new MutationObserver(() => seen.push(document.documentElement.dataset.muColorway ?? ''));
+  watch.observe(document.documentElement, { attributes: true, attributeFilter: ['data-mu-colorway'] });
+  await openPage('/components/button', 'bone');
+  watch.disconnect();
+  expect(seen.every((c) => c === 'bone')).toBe(true); // never the last page's graphite, not even for a frame
+  expect(document.documentElement.dataset.muColorway).toBe('bone');
+  expect(localStorage.getItem('left-over')).toBeNull();
+  expect(document.documentElement.classList.contains('rm')).toBe(false); // the motion switch is back on
+});
+
+test('a page has come to rest when it opens: nothing scrolls it afterwards', async () => {
+  const scrollTo = window.scrollTo;
+  let calls = 0;
+  window.scrollTo = ((...args: Parameters<typeof scrollTo>) => { calls++; return scrollTo.apply(window, args); }) as typeof scrollTo;
+  try {
+    for (let i = 0; i < 5; i++) {
+      await openPage('/overview', 'graphite', { viewport: [375, 812] });
+      const atOpen = calls;
+      for (let frame = 0; frame < 30; frame++) await new Promise((r) => requestAnimationFrame(r));
+      expect(calls).toBe(atOpen); // the router's scroll-to-top is done, not still to come after the slice has scrolled
+    }
+  } finally {
+    window.scrollTo = scrollTo;
+  }
+});
