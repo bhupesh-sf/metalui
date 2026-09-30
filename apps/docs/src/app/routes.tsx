@@ -67,6 +67,7 @@ export const routes: RouteObject[] = [
       { path: 'components/avatar', lazy: lazy(() => import('../pages/components/Avatar')) },
       { path: 'components/card', lazy: lazy(() => import('../pages/components/Card')) },
       { path: 'components/attachment', lazy: lazy(() => import('../pages/components/Attachment')) },
+      { path: 'blocks/metrics-dashboard', lazy: lazy(() => import('../pages/blocks/MetricsDashboard')) },
       { path: 'components/table', lazy: lazy(() => import('../pages/components/Table')) },
       { path: 'components/empty-state', lazy: lazy(() => import('../pages/components/EmptyState')) },
       { path: 'components/split-pane', lazy: lazy(() => import('../pages/components/SplitPane')) },

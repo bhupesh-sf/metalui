@@ -48,6 +48,10 @@ export const NAV: NavGroup[] = [
       { to: '/foundations/transitions', label: 'Transitions' },
     ],
   },
+  {
+    label: 'Blocks',
+    items: [{ to: '/blocks/metrics-dashboard', label: 'Metrics dashboard' }],
+  },
   ...LAYER_GROUPS,
   {
     label: 'Assets',
