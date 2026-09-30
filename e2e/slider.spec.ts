@@ -118,3 +118,48 @@ test('a drag keeps the knob centred under the pointer and inside the groove', as
   expect(Math.abs(g.knob.centre - x)).toBeLessThanOrEqual(halfStep + 0.5);
   await page.mouse.up();
 });
+
+// ── Readable scale and contrast ─────────────────────────────────────────────
+// Colours come from the page's computed styles (what a person sees), never from the tokens file.
+
+/** Contrast of the tick labels against what they sit on, and of the fill against the groove: the
+ *  worst pair among every colour each is painted with (its colour and its gradient's stops). */
+async function contrasts(slider: Locator) {
+  return slider.evaluate((el) => {
+    const rgbs = (s: string) => [...s.matchAll(/rgba?\(([^)]+)\)/g)].map((m) => m[1].split(/[ ,/]+/).filter(Boolean).map(Number)).filter((c) => (c[3] ?? 1) > 0.5);
+    const lum = ([r, g, b]: number[]) => { const f = (v: number) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+    const ratio = (a: number[], b: number[]) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+    const worst = (a: number[][], b: number[][]) => Math.min(...a.flatMap((x) => b.map((y) => ratio(x, y))));
+    /** The colours an element is painted with: its own, or the nearest painted ancestor's. */
+    const paint = (from: Element | null): number[][] => {
+      for (let e = from; e; e = e.parentElement) {
+        const cs = getComputedStyle(e);
+        const own = [...rgbs(cs.backgroundColor), ...rgbs(cs.backgroundImage)];
+        if (own.length) return own;
+      }
+      return [[255, 255, 255]];
+    };
+    const labels = [...el.querySelectorAll('.mu-slider-ticks > span')].map((t) => {
+      const cs = getComputedStyle(t);
+      return { size: parseFloat(cs.fontSize), family: cs.fontFamily, contrast: worst(rgbs(cs.color), paint(el.parentElement)) };
+    });
+    return { labels, fillVsGroove: worst(paint(el.querySelector('.mu-slider-fill')), paint(el.querySelector('.mu-slider-track'))) };
+  });
+}
+
+for (const colorway of COLORWAYS) {
+  test(`labels read clearly and the fill stands out from the groove in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/slider', colorway);
+    const read = await contrasts(playground(page).locator('.mu-slider').first());
+    expect(read.labels.length).toBeGreaterThan(0);
+    for (const l of read.labels) {
+      expect(l.size).toBeGreaterThanOrEqual(11); // the meta type, not the 9 px engraving
+      expect(l.family).not.toMatch(/mono/i);
+      expect(l.contrast).toBeGreaterThanOrEqual(4.5); // WCAG AA for text
+    }
+    // The knob (its rim and shadow) carries the value; the fill backs it up, clearly apart from the
+    // groove in both finishes (the old see-through green on bone was about 1.3:1).
+    expect(read.fillVsGroove).toBeGreaterThanOrEqual(2);
+    await playground(page).locator('.stage').first().screenshot({ path: capture(`slider-scale-${colorway}`) });
+  });
+}

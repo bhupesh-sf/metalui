@@ -719,15 +719,13 @@
   --spacing-dialog-actions-gap: var(--mu-r-dialog-actions-gap);
   --spacing-slider-track-height: var(--mu-r-slider-track-height);
   --spacing-slider-mark-w: var(--mu-r-slider-mark-w);
-  --spacing-slider-mark-h: var(--mu-r-slider-mark-h);
   --spacing-slider-mark-radius: var(--mu-r-slider-mark-radius);
   --radius-slider-mark-radius: var(--mu-r-slider-mark-radius);
   --color-slider-mark-color: var(--mu-r-slider-mark-color);
   --spacing-slider-tick-w: var(--mu-r-slider-tick-w);
   --spacing-slider-tick-h: var(--mu-r-slider-tick-h);
-  --spacing-slider-tick-top: var(--mu-r-slider-tick-top);
-  --spacing-slider-tick-lift: var(--mu-r-slider-tick-lift);
   --color-slider-tick-color: var(--mu-r-slider-tick-color);
+  --spacing-slider-tick-gap: var(--mu-r-slider-tick-gap);
   --spacing-slider-knob-size: var(--mu-r-slider-knob-size);
   --spacing-slider-knob-rise: var(--mu-r-slider-knob-rise);
   --spacing-switcher-pad: var(--mu-r-switcher-self-pad);
@@ -2037,6 +2035,7 @@
 }
 @utility recipe-slider-fill {
   background: var(--mu-r-slider-fill-background);
+  box-shadow: var(--mu-r-slider-fill-shadow);
 }
 @utility recipe-slider-knob {
   background: var(--mu-r-slider-knob-background);
@@ -2046,10 +2045,10 @@
   top: calc(50% - var(--mu-r-slider-track-height) / 2); height: var(--mu-r-slider-track-height);
 }
 @utility slider-marks-place {
-  top: calc(50% - var(--mu-r-slider-mark-h) / 2); height: var(--mu-r-slider-mark-h);
+  top: calc(50% - var(--mu-r-slider-track-height) / 2); height: var(--mu-r-slider-track-height);
 }
 @utility slider-ticks-place {
-  top: calc(50% + var(--mu-r-slider-tick-top));
+  top: calc(50% + var(--mu-r-slider-track-height) / 2 + var(--mu-r-slider-tick-gap));
 }
 @utility slider-travel {
   left: calc(var(--mu-r-slider-knob-size) / 2); right: calc(var(--mu-r-slider-knob-size) / 2);
@@ -2062,9 +2061,6 @@
 }
 @utility transition-slider {
   transition: var(--mu-r-slider-self-transition);
-}
-@utility opacity-slider-fill-opacity {
-  opacity: var(--mu-r-slider-fill-opacity);
 }
 @utility recipe-switcher {
   background: var(--mu-r-switcher-self-background);

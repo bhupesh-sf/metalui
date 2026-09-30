@@ -12,12 +12,13 @@ public struct MetalSliderTick: Identifiable, Sendable {
     }
 }
 
-/// A value on a generated well track. Marks and labels are fractions of its
-/// span; a drag follows the pointer while keys and track jumps use the part spring.
-///
-/// Geometry, the same as the web slider: the groove is the full width W; the knob (K across)
-/// travels K/2 … W − K/2, so at either end it sits flush with the groove's rounded end and never
-/// hangs outside it. The fill runs to the knob's centre; marks and ticks use the same travel.
+/// How tick labels are set: the meta type at ink2 (readable on any surface, the default), or engraved
+/// for a host that engraves its own scale (the time scrubber's weekdays).
+public enum MetalSliderTickStyle: Sendable {
+    case meta
+    case engraved
+}
+
 /// Sizes the fill, or places the knob, at a fraction of the knob's travel. The fraction is what
 /// animates and it is clamped every frame, so a jump that overshoots on the part spring stops
 /// flush against the groove's end instead of carrying the knob past it (the web clamps the same way).
@@ -46,6 +47,12 @@ private struct MetalSliderAlong: ViewModifier, Animatable {
     }
 }
 
+/// A value on a generated well track. Marks (notches cut across the groove) and labelled ticks are
+/// fractions of its span; a drag follows the pointer while keys and track jumps use the part spring.
+///
+/// Geometry, the same as the web slider: the groove is the full width W; the knob (K across)
+/// travels K/2 … W − K/2, so at either end it sits flush with the groove's rounded end and never
+/// hangs outside it. The fill runs to the knob's centre; marks and ticks use the same travel.
 public struct MetalSlider: View {
     @Binding var value: Double
     let range: ClosedRange<Double>
@@ -53,6 +60,7 @@ public struct MetalSlider: View {
     let largeStep: Double
     let marks: [Double]
     let ticks: [MetalSliderTick]
+    let tickStyle: MetalSliderTickStyle
     let label: String
     let valueText: (Double) -> String
     let onFocusChange: ((Bool) -> Void)?
@@ -68,7 +76,7 @@ public struct MetalSlider: View {
 
     public init(value: Binding<Double>, in range: ClosedRange<Double>,
                 step: Double, largeStep: Double, marks: [Double] = [],
-                ticks: [MetalSliderTick] = [], label: String,
+                ticks: [MetalSliderTick] = [], tickStyle: MetalSliderTickStyle = .meta, label: String,
                 valueText: @escaping (Double) -> String,
                 onFocusChange: ((Bool) -> Void)? = nil,
                 onDragChange: ((Bool) -> Void)? = nil,
@@ -79,6 +87,7 @@ public struct MetalSlider: View {
         self.largeStep = largeStep
         self.marks = marks
         self.ticks = ticks
+        self.tickStyle = tickStyle
         self.label = label
         self.valueText = valueText
         self.onFocusChange = onFocusChange
@@ -117,11 +126,11 @@ public struct MetalSlider: View {
                     .position(x: width / 2, y: centre)
                 Color.clear
                     .metalObjectRecipe(recipe, part: "fill", in: Capsule())
-                    .opacity(recipe.scalar("fill.opacity"))
                     .modifier(place(true))
+                // Marks are notches cut across the groove: the groove's full height.
                 Canvas { context, _ in
                     let markWidth = recipe.points("mark.w")
-                    let markHeight = recipe.points("mark.h")
+                    let markHeight = track
                     let radius = recipe.points("mark.radius")
                     let color = (recipe.color("mark.color", colorway: finish) ?? colorway.tokens.scrubberMark).color
                     for mark in marks {
@@ -134,16 +143,24 @@ public struct MetalSlider: View {
                 .frame(width: width, height: geometry.size.height)
                 .allowsHitTesting(false)
                 .accessibilityHidden(true)
+                // Each tick hangs a gap under the groove: a short line, then its label, centred on the travel.
+                let gap = recipe.points("tick.gap")
                 ForEach(ticks) { tick in
-                    VStack(spacing: .zero) {
+                    VStack(spacing: gap) {
                         Rectangle()
                             .fill((recipe.color("tick.color", colorway: finish) ?? colorway.tokens.scrubberDayTick).color)
                             .frame(width: recipe.points("tick.w"), height: recipe.points("tick.h"))
-                        MetalLabel(tick.label, style: .engraved)
+                        switch tickStyle {
+                        case .meta:
+                            Text(tick.label).font(.metal(MetalType.meta)).foregroundColor(colorway.tokens.ink2.color)
+                        case .engraved:
+                            MetalLabel(tick.label, style: .engraved)
+                        }
                     }
                     .fixedSize()
-                    .position(x: along(tick.at),
-                              y: centre + recipe.points("tick.top") + recipe.points("tick.h"))
+                    // hung from a point, so a wide label at an end never widens the control
+                    .frame(width: .zero, height: .zero, alignment: .top)
+                    .position(x: along(tick.at), y: centre + track / 2 + gap)
                     .accessibilityHidden(true)
                 }
                 // Clear, so only the recipe paints: a bare Circle would fill black over it.

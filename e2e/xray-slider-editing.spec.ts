@@ -111,12 +111,12 @@ test('marks: switches take the marks and the ticks off the specimen and the benc
   await expect(card.locator('.mu-slider-marks')).toHaveCount(1);
   await card.getByRole('switch', { name: 'Marks in the track' }).click();
   await expect(card.locator('.mu-slider-marks')).toHaveCount(0);
-  await expect(xray.locator('.xr-scene .xr-face.is-flat')).toHaveCount(flat - 4);
-  const labels = await xray.locator('.xr-scene .eng').count();
+  await expect(xray.locator('.xr-scene .xr-face.is-flat')).toHaveCount(flat - 9); // a notch at every tenth
+  const labels = await xray.locator('.xr-scene .xr-tick-label').count();
   await card.locator('.ed-layer').filter({ hasText: 'Ticks and labels' }).locator('.mu-row-text').click();
   await expect(card.getByRole('switch', { name: 'Ticks and labels' })).toHaveAttribute('aria-checked', 'false');
   await expect(card.locator('.mu-slider-ticks')).toHaveCount(0);
-  await expect(xray.locator('.xr-scene .eng')).toHaveCount(labels - 5);
+  await expect(xray.locator('.xr-scene .xr-tick-label')).toHaveCount(labels - 5);
 });
 
 test('light: dragging the sun moves the light on the specimen and the bench', async ({ page }) => {

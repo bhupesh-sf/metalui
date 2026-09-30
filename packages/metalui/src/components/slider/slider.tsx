@@ -8,9 +8,10 @@ import { Well } from '../well/well';
  * SLIDER on Base UI Slider
  *
  *   track    a 10 tall well (the track well)
- *   fill     the green intent fill up to the knob
- *   marks    short tick marks along the track (moments, events)
- *   ticks    labelled ticks under the track
+ *   fill     the green intent fill at full strength up to the knob, its edge an inset hairline
+ *   marks    notches cut across the groove (steps, detents, moments)
+ *   ticks    a short line under the groove and its label in the meta type at ink2: readable on any
+ *            stage, never the engraved ink3
  *   knob     a knurled, anodized knob; arrows step, Shift steps large
  *   motion   a jump (a click, a key) rides the part spring; a drag follows the pointer exactly
  *
@@ -56,11 +57,12 @@ if (typeof CSS !== 'undefined' && 'registerProperty' in CSS) {
 const ROOT = 'mu-slider group/slider relative w-full h-full touch-none transition-slider data-dragging:transition-none';
 const CONTROL = 'mu-slider-control relative w-full h-full touch-none cursor-pointer';
 const TRACK = 'mu-slider-track absolute left-0 right-0 slider-track-place';
-const FILL = 'mu-slider-fill h-full rounded-pill recipe-slider-fill opacity-slider-fill-opacity slider-fill-along';
+const FILL = 'mu-slider-fill h-full rounded-pill recipe-slider-fill slider-fill-along';
 const MARKS = 'mu-slider-marks absolute slider-travel pointer-events-none slider-marks-place';
-const MARK = 'absolute w-slider-mark-w h-slider-mark-h rounded-slider-mark-radius bg-slider-mark-color';
+const MARK = 'absolute top-0 h-full w-slider-mark-w -translate-x-1/2 rounded-slider-mark-radius bg-slider-mark-color';
 const TICKS = 'mu-slider-ticks absolute slider-travel pointer-events-none slider-ticks-place';
-const TICK = 'absolute -translate-x-1/2 before:absolute before:left-1/2 before:-top-slider-tick-lift before:w-slider-tick-w before:h-slider-tick-h before:bg-slider-tick-color';
+const TICK = 'absolute flex -translate-x-1/2 flex-col items-center gap-slider-tick-gap type-meta text-ink2 whitespace-nowrap';
+const TICK_LINE = 'block w-slider-tick-w h-slider-tick-h bg-slider-tick-color';
 const KNOB = 'mu-slider-knob top-1/2 size-slider-knob-size rounded-round cursor-grab recipe-slider-knob slider-knob-along group-data-dragging/slider:cursor-grabbing has-focus-visible:focus-ring';
 
 function Root({ value, min, max, step, largeStep, onValueChange, className, children }: SliderRootProps) {
@@ -81,7 +83,7 @@ function Track() {
   );
 }
 
-/** Tick marks along the track, at fractions 0…1. */
+/** Notches cut across the groove, at fractions 0…1 of the travel (steps, detents, moments). */
 function Marks({ at }: { at: number[] }) {
   return (
     <div className={MARKS} aria-hidden>
@@ -92,12 +94,14 @@ function Marks({ at }: { at: number[] }) {
   );
 }
 
-/** Labelled ticks under the track: { at: 0…1, label }. The label is the caller's (a Label). */
+/** Labelled ticks under the groove: { at: 0…1, label }. A plain label is set in the meta type at ink2,
+ *  on the knob's travel; a caller's own node (a Label) styles itself. */
 function Ticks({ ticks }: { ticks: { at: number; label: React.ReactNode }[] }) {
   return (
     <div className={TICKS} aria-hidden>
       {ticks.map((t, i) => (
         <span key={i} className={TICK} style={{ left: `${(t.at * 100).toFixed(2)}%` }}>
+          <i className={TICK_LINE} />
           {t.label}
         </span>
       ))}

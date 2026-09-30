@@ -42,7 +42,7 @@ function Real({ m, set }: { m: Model; set: Props['set'] }) {
       <Slider.Root value={Math.round(m.v * 100)} min={0} max={100} step={1} onValueChange={(v) => set({ v: v / 100 })}>
         <Slider.Track />
         {m.marks && <Slider.Marks at={MARKS} />}
-        {m.ticks && <Slider.Ticks ticks={TICKS.map((f) => ({ at: f, label: <span className="eng">{Math.round(f * 100)}</span> }))} />}
+        {m.ticks && <Slider.Ticks ticks={TICKS.map((f) => ({ at: f, label: Math.round(f * 100) }))} />}
         <Slider.Knob aria-label="Value" />
       </Slider.Root>
     </div>

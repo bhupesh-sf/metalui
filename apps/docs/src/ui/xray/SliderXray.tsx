@@ -16,15 +16,17 @@ import { SliderSpecimenCard } from './SliderSpecimens';
  *             a sun on an arc for the light, switches for marks, ticks and layers
  * ───────────────────────────────────────────────────────── */
 
-const RP = tokens.recipes.slider.props as { track: { height: number }; fill: { opacity: string }; mark: { w: number; h: number; radius: number; color: Record<string, string> }; tick: { w: number; h: number; top: number; lift: number; color: Record<string, string> }; knob: { size: number; rise: number } };
-const RL = tokens.recipes.slider.layers as { part: string; prop: string; value: string }[];
-const FILL = RL.find((l) => l.part === 'fill')!.value;
+const RP = tokens.recipes.slider.props as { track: { height: number }; mark: { w: number; radius: number; color: Record<string, string> }; tick: { w: number; h: number; gap: number; color: Record<string, string> }; knob: { size: number; rise: number } };
+const RL = tokens.recipes.slider.layers as { part: string; prop: string; value: string; colorway?: string }[];
+/** The fill in a colorway: full strength, deeper on bone so it reads against the pale groove. */
+const fillOf = (cw: string) => RL.find((l) => l.part === 'fill' && l.prop === 'background' && (!l.colorway || l.colorway === cw))!.value;
 const KNOB_BG = RL.find((l) => l.part === 'knob' && l.prop === 'background')!.value;
 const KNOB_SH = RL.filter((l) => l.part === 'knob' && l.prop === 'shadow').map((l) => l.value);
 const PART = tokens.springs.part as { stiffness: number; damping: number };
 const S = 2.2;
 const L = 180;
-export const MARKS = [0.15, 0.4, 0.62, 0.9];
+/** Notches at every large step (a tenth), never loose. */
+export const MARKS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
 export const TICKS = [0, 0.25, 0.5, 0.75, 1];
 
 export type Spot = 'thumb' | 'well' | 'slide' | 'shape' | 'light' | 'layers';
@@ -46,7 +48,7 @@ export const TRACK_LAYERS: LayerDef[] = [
   { name: 'Inner shadow', why: 'A soft shadow inside the top edge, where the edge blocks the light.' },
   { name: 'Edge line', why: 'A very thin outline so the groove keeps its edge on a light page.' },
   { name: 'Bottom light', why: 'A thin bright line on the bottom edge, where light hits the far wall.' },
-  { name: 'Green fill', why: 'A see-through green from the start to the knob. It shows how much is chosen. It sits inside the groove, so it never looks like a separate bar.' },
+  { name: 'Green fill', why: 'A solid green from the start to the knob\'s centre, deeper on the light finish so it stands out from the pale groove. It shows how much is chosen. It sits inside the groove, so it never looks like a separate bar.' },
 ];
 export const KNOB_LAYERS: LayerDef[] = [
   { name: 'Metal', why: 'A cone-shaped gradient: light and dark bands turn around the centre. That is how brushed metal looks on a real knob.' },
@@ -74,6 +76,7 @@ export function SliderXray({ startOpen = false }: { startOpen?: boolean }) {
   const set = React.useCallback((p: Partial<Model>) => setM((o) => ({ ...o, ...p })), []);
   const well = useStateLayers('well', 'track');
   const cw = well.colorway;
+  const FILL = fillOf(cw);
 
   // the knob travels the groove minus itself: half a knob in from each end, like the real slider
   const K = RP.knob.size, TH = RP.track.height, IN = K / 2;
@@ -110,14 +113,14 @@ export function SliderXray({ startOpen = false }: { startOpen?: boolean }) {
   ) : (
     <>
       <IsoTray y={ty} w={W} h={th} r={th / 2} depth={4 * m.depth} fill={grooveFill} shadow={grooveShadow} colorway={cw} />
-      {m.track[4] && <div className="xr-face is-flat" style={{ top: ty, width: kx + (K * S) / 2, height: th, borderRadius: th / 2, transform: 'translateZ(1px)', background: FILL, opacity: Number(RP.fill.opacity), transition: move }} />}
+      {m.track[4] && <div className="xr-face is-flat" style={{ top: ty, width: kx + (K * S) / 2, height: th, borderRadius: th / 2, transform: 'translateZ(1px)', background: FILL, transition: move }} />}
       {m.marks && MARKS.map((f) => (
-        <i key={f} className="xr-face is-flat" style={{ left: (IN + f * (L - IN * 2)) * S, top: ty + (th - RP.mark.h * S) / 2, width: RP.mark.w * S, height: RP.mark.h * S, borderRadius: RP.mark.radius * S, transform: 'translateZ(1.2px)', background: RP.mark.color[cw] }} />
+        <i key={f} className="xr-face is-flat" style={{ left: (IN + f * (L - IN * 2)) * S, top: ty, width: RP.mark.w * S, height: th, marginLeft: (-RP.mark.w * S) / 2, borderRadius: RP.mark.radius * S, transform: 'translateZ(1.2px)', background: RP.mark.color[cw] }} />
       ))}
       {m.ticks && TICKS.map((f) => (
-        <span key={f} style={{ position: 'absolute', left: (IN + f * (L - IN * 2)) * S, top: ty + th + (RP.tick.top - RP.tick.lift) * S, transform: 'translateX(-50%) translateZ(0.5px)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+        <span key={f} style={{ position: 'absolute', left: (IN + f * (L - IN * 2)) * S, top: ty + th + RP.tick.gap * S, transform: 'translateX(-50%) translateZ(0.5px)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: RP.tick.gap * S }}>
           <i style={{ width: RP.tick.w * S, height: RP.tick.h * S, background: RP.tick.color[cw] }} />
-          <span className="eng" style={{ fontSize: 18 }}>{Math.round(f * 100)}</span>
+          <span className="xr-tick-label type-meta text-ink2" style={{ fontSize: 22 }}>{Math.round(f * 100)}</span>
         </span>
       ))}
       <div className="xr-shadow" style={{ left: 0, top: 0, width: K * S, height: K * S, borderRadius: '50%', filter: 'blur(5px)', opacity: 0.22, transform: `translate(${kx + 6}px, 10px)`, transition: move }} />
@@ -140,7 +143,7 @@ export function SliderXray({ startOpen = false }: { startOpen?: boolean }) {
       <Slider.Root value={Math.round(m.v * 100)} min={0} max={100} step={1} onValueChange={(v) => set({ v: v / 100 })}>
         <Slider.Track />
         {m.marks && <Slider.Marks at={MARKS} />}
-        {m.ticks && <Slider.Ticks ticks={TICKS.map((f) => ({ at: f, label: <span className="eng">{Math.round(f * 100)}</span> }))} />}
+        {m.ticks && <Slider.Ticks ticks={TICKS.map((f) => ({ at: f, label: Math.round(f * 100) }))} />}
         <Slider.Knob aria-label="Amount" />
       </Slider.Root>
     </div>
