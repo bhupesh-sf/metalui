@@ -140,3 +140,19 @@ test('the parent\'s cascade draws each row\'s tick in turn, from the top', async
   expect(fresh[3] - fresh[0]).toBeGreaterThan(60);
   expect(fresh[3] - fresh[0]).toBeLessThan(160);
 });
+
+test('the tick tuner drives the pen, and its group goes from mixed to all', async ({ page }) => {
+  await open(page, '/components/checkbox', 'bone');
+  const tuner = page.getByTestId('checkbox-tick-tuner');
+  await tuner.scrollIntoViewIfNeeded();
+  const task = tuner.getByRole('checkbox', { name: 'Tuned task' });
+  const draw = await film(task, 900, () => task.click());
+  expect(draw.some((f) => !f.whole && !f.hidden)).toBe(true);
+  expect(draw.at(-1)!.whole).toBe(true);
+  const parent = tuner.getByRole('checkbox').nth(1);
+  await expect(parent).toHaveAttribute('aria-checked', 'mixed');
+  await parent.click();
+  await expect(parent).toHaveAttribute('aria-checked', 'true');
+  await page.waitForTimeout(700);
+  await tuner.screenshot({ path: capture('checkbox-tick-tuner') });
+});
