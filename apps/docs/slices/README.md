@@ -3,13 +3,13 @@
 A slice proves what a person can see and do on the docs site, through the site itself: a real Chrome page, the site's own route table mounted at a route, real mouse and keys. Vitest runs them in browser mode with WebdriverIO. No Playwright.
 
 ```bash
-npm run slices                 # every slice, headless
+npm run slices                 # every slice, headless, in shards side by side (min(4, cores / 2))
 npm run slices -- button       # the slices whose file names match
 npm run slices:watch -w @metalui/docs   # re-run what an edit touches, in a visible browser
 CAPTURE=1 npm run slices       # also write the docs captures (docs/captures/web)
 ```
 
-Slices take turns (one real mouse, one window) and share one page, so the site's modules and stylesheet load once per run. `openPage` starts every slice clean: it remounts the site, restores the desktop window (1280 × 900) and clears emulated media.
+Within a run, slices take turns (one real mouse, one window) and share one page, so the site's modules and stylesheet load once per run. `npm run slices` runs the suite in shards side by side (`scripts/slices.mjs`), each its own run with its own Chrome and its own Vite cache; interrupting it stops them all. `openPage` starts every slice clean: it remounts the site, restores the desktop window (1280 × 900) and clears emulated media.
 
 ## Writing one
 

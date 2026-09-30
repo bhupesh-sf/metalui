@@ -52,6 +52,9 @@ export default mergeConfig(
   site,
   defineConfig({
     define: { __CAPTURE__: JSON.stringify(Boolean(process.env.CAPTURE)) },
+    // Shards run side by side (scripts/slices.mjs): each pre-bundles into its own cache, or they race
+    // on one and a shard fails to import.
+    ...(process.env.SLICE_SHARD ? { cacheDir: `node_modules/.vite/slices-${process.env.SLICE_SHARD}` } : {}),
     test: {
       include: ['slices/**/*.slice.tsx'],
       // One real mouse, one window: slices take turns. They share one page too, so the site's
