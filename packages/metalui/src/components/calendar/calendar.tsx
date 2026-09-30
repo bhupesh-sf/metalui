@@ -45,7 +45,7 @@ function weekStartOf(locale?: string) {
   }
 }
 
-const ROOT = 'mu-calendar inline-grid gap-calendar-head-gap p-calendar-self-pad select-none';
+const ROOT = 'mu-calendar inline-grid gap-calendar-head-gap p-calendar-pad select-none';
 const HEAD = 'mu-calendar-head flex items-center justify-between gap-calendar-head-gap h-calendar-head-height';
 const TITLE = 'mu-calendar-title type-title text-ink';
 const STEP = `${buttonClasses('standard', 'compact')} mu-calendar-step px-0! w-calendar-head-height justify-center`;
@@ -53,7 +53,7 @@ const GRID_WRAP = 'mu-calendar-body relative';
 const TABLE = 'mu-calendar-grid calendar-grid';
 const WEEKDAY = 'mu-calendar-weekday size-calendar-day-size p-0 type-meta text-ink3 text-center';
 const CELL = 'p-0';
-const DAY = 'mu-calendar-day relative z-1 grid place-items-center size-calendar-day-size rounded-calendar-day-radius border-0 bg-transparent type-ui tabular-nums text-ink cursor-pointer outline-none transition-row hover:not-data-selected:recipe-switcher data-selected:recipe-switcher-thumb data-selected:text-ink data-selected:calendar-land focus-visible:focus-ring data-outside:text-ink3 disabled:opacity-calendar-self-disabled disabled:cursor-default data-today:calendar-today';
+const DAY = 'mu-calendar-day relative z-1 grid place-items-center size-calendar-day-size rounded-calendar-day-radius border-0 bg-transparent type-ui tabular-nums text-ink cursor-pointer outline-none transition-row hover:not-data-selected:recipe-switcher data-selected:recipe-switcher-thumb data-selected:text-ink data-selected:calendar-land focus-visible:focus-ring data-outside:text-ink3 disabled:opacity-calendar-disabled disabled:cursor-default data-today:calendar-today';
 
 export interface CalendarProps {
   value?: Date | null;
