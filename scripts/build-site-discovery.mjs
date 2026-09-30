@@ -51,6 +51,7 @@ const descriptions = {
   '/blocks/ai-composer': 'A live MetalUI chat block: a composer that grows, attachments, a model choice, and replies that stream in word by word with stop, copy and retry.',
   '/blocks/share-panel': 'A live MetalUI sharing block: drop files that upload with progress, invite people by email with a permission, and turn on and copy a share link.',
   '/blocks/availability-picker': 'A live MetalUI booking block: a host, a call length, a calendar of the next six weeks, the day\'s free times re-labelled by time zone, and Confirm to Booked.',
+  '/blocks/settings': 'A live MetalUI settings block: profile fields validated on blur and save, notification switches, a colorway and density, and a save bar that counts unsaved changes.',
   '/icons': 'Browse MetalUI Soft Hardware icons: animated monoline and duotone glyphs for React, SwiftUI, and SVG.',
   '/icons/life': 'Browse MetalUI life icons for meals, feelings, people, places, weather, and everyday moments.',
   '/components/swatch': 'A glossy color chip with a readable color code; click it to choose a new color.',
