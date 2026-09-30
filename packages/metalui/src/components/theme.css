@@ -1325,9 +1325,6 @@
 @utility opacity-spinner-tail {
   opacity: var(--mu-r-spinner-self-tail);
 }
-@utility number-field-down {
-  --mu-swap-turn: calc(var(--mu-motion-step) * -1);
-}
 @utility stroke-width-number-field-width {
   stroke-width: var(--mu-r-number-field-self-width);
 }
@@ -3294,6 +3291,9 @@
 }
 @utility swap-out {
   opacity: 0; filter: blur(var(--mu-swap-focus)); transform: translateY(calc(var(--mu-swap-turn) * -1));
+}
+@utility swap-down {
+  --mu-swap-turn: calc(var(--mu-motion-step) * -1);
 }
 @utility duration-part {
   --tw-duration: var(--mu-spring-part-d);

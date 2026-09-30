@@ -91,7 +91,7 @@ function Root({ label, decrementLabel = 'Decrease', incrementLabel = 'Increase',
       )}
       <BaseNumberField.Group className={GROUP} data-invalid={invalid ? '' : undefined}>
         <BaseNumberField.Decrement className={KEY} aria-label={decrementLabel}>−</BaseNumberField.Decrement>
-        <span className={turn?.dir === 'down' ? `${WINDOW} number-field-down` : WINDOW} ref={drum}>
+        <span className={turn?.dir === 'down' ? `${WINDOW} swap-down` : WINDOW} ref={drum}>
           <BaseNumberField.Input
             ref={input}
             className={INPUT}
