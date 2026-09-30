@@ -1055,6 +1055,23 @@
       "agent": "https://metalui.dev/r/sheet.md"
     },
     {
+      "name": "sidebar",
+      "title": "Sidebar",
+      "status": "alpha",
+      "description": "An app's side place for moving between places: sections of items with one highlight that glides to the current place; it collapses to a rail (words first, then width) with tooltips.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Sidebar",
+        "base": "nav; useRender"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSidebar"
+      },
+      "registry": "https://metalui.dev/r/sidebar.json",
+      "agent": "https://metalui.dev/r/sidebar.md"
+    },
+    {
       "name": "size-readout",
       "title": "Size readout",
       "status": "alpha",

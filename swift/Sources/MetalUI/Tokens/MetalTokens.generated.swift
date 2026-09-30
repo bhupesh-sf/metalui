@@ -1213,6 +1213,27 @@ public enum MetalRecipes {
         ]
     )
 
+    /// An app's side place for moving between places: a header, sections under engraved titles, items (a glyph and a word) and a footer. The current item carries one lifted highlight (the list row's look) that glides to a newly chosen item on the settle spring (free travel). Collapsing to a rail, the words fade out on the release spring first and then the width settles to the rail; expanding, the width grows first and the words fade back in, so text never squeezes. In the rail each item keeps its name for assistive tech and shows it in a tooltip. Reduce Motion: width and words change at once; the highlight moves at once. (the row recipe's list hover (the highlight); the sliding indicator; the label's engraving; the tooltip; the settle and release springs)
+    public static let sidebar = MetalObjectRecipe(
+        name: "sidebar",
+        layers: [
+
+        ],
+        props: [
+            "self.width": .number(232.0),
+            "self.rail": .number(56.0),
+            "self.pad": .number(8.0),
+            "self.gap": .number(16.0),
+            "item.height": .number(32.0),
+            "item.pad-x": .number(10.0),
+            "item.radius": .number(10.0),
+            "item.gap": .number(10.0),
+            "item.glyph": .number(16.0),
+            "section.gap": .number(2.0),
+            "section.title-pad": .number(10.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

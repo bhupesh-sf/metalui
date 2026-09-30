@@ -1187,6 +1187,24 @@
       "docs": "Agent guide: https://metalui.dev/r/sheet.md. SwiftUI: MetalSheet in the MetalUI Swift package."
     },
     {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "An app's side place for moving between places: sections of items with one highlight that glides to the current place; it collapses to a rail (words first, then width) with tooltips.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/sidebar/sidebar.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/sidebar/sidebar.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/sidebar.md. SwiftUI: MetalSidebar in the MetalUI Swift package."
+    },
+    {
       "name": "size-readout",
       "type": "registry:ui",
       "title": "Size readout",

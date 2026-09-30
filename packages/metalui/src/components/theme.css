@@ -560,6 +560,18 @@
   --spacing-split-pane-grip-thickness: var(--mu-r-split-pane-grip-thickness);
   --spacing-split-pane-step: var(--mu-r-split-pane-self-step);
   --spacing-split-pane-detent: var(--mu-r-split-pane-self-detent);
+  --spacing-sidebar-width: var(--mu-r-sidebar-self-width);
+  --spacing-sidebar-rail: var(--mu-r-sidebar-self-rail);
+  --spacing-sidebar-pad: var(--mu-r-sidebar-self-pad);
+  --spacing-sidebar-gap: var(--mu-r-sidebar-self-gap);
+  --spacing-sidebar-item-height: var(--mu-r-sidebar-item-height);
+  --spacing-sidebar-item-pad-x: var(--mu-r-sidebar-item-pad-x);
+  --spacing-sidebar-item-radius: var(--mu-r-sidebar-item-radius);
+  --radius-sidebar-item-radius: var(--mu-r-sidebar-item-radius);
+  --spacing-sidebar-item-gap: var(--mu-r-sidebar-item-gap);
+  --spacing-sidebar-item-glyph: var(--mu-r-sidebar-item-glyph);
+  --spacing-sidebar-section-gap: var(--mu-r-sidebar-section-gap);
+  --spacing-sidebar-section-title-pad: var(--mu-r-sidebar-section-title-pad);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1613,6 +1625,15 @@
 }
 @utility split-pane-line {
   &::before { content: ''; position: absolute; background: var(--mu-rule); } &[data-orientation=horizontal]::before { top: 0; bottom: 0; left: 50%; width: var(--mu-r-split-pane-divider-line); } &[data-orientation=vertical]::before { left: 0; right: 0; top: 50%; height: var(--mu-r-split-pane-divider-line); }
+}
+@utility sidebar-width {
+  width: var(--mu-r-sidebar-self-width); transition: width calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle); &[data-collapsed] { width: var(--mu-r-sidebar-self-rail); transition-delay: var(--mu-spring-release-half); }
+}
+@utility sidebar-words {
+  opacity: 1; white-space: nowrap; overflow: hidden; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle) var(--mu-spring-settle-half); [data-collapsed] & { opacity: 0; transition: opacity var(--mu-spring-release-d) var(--mu-spring-release); }
+}
+@utility stroke-width-sidebar-width {
+  stroke-width: var(--mu-r-sidebar-self-width);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

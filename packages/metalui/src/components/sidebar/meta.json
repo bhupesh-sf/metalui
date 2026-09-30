@@ -1,0 +1,24 @@
+{
+  "name": "sidebar",
+  "title": "Sidebar",
+  "status": "alpha",
+  "layer": "place",
+  "kind": "composed",
+  "uses": ["row", "label", "tooltip"],
+  "description": "An app's side place for moving between places: sections of items with one highlight that glides to the current place; it collapses to a rail (words first, then width) with tooltips.",
+  "base": "nav; useRender",
+  "react": {
+    "export": "Sidebar",
+    "files": ["sidebar.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalSidebar",
+    "file": "swift/Sources/MetalUI/Components/MetalSidebar.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "Sidebar": ["Root", "Header", "Section", "Item", "Footer", "Toggle"]
+  },
+  "agent": "sidebar.agent.md",
+  "page": "/components/sidebar"
+}

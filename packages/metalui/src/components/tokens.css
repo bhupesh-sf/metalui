@@ -1175,6 +1175,18 @@
   --mu-r-split-pane-grip-thickness: 6px;
   --mu-r-split-pane-self-step: 8px;
   --mu-r-split-pane-self-detent: 3px;
+  /* sidebar: the row recipe's list hover (the highlight); the sliding indicator; the label's engraving; the tooltip; the settle and release springs */
+  --mu-r-sidebar-self-width: 232px;
+  --mu-r-sidebar-self-rail: 56px;
+  --mu-r-sidebar-self-pad: 8px;
+  --mu-r-sidebar-self-gap: 16px;
+  --mu-r-sidebar-item-height: 32px;
+  --mu-r-sidebar-item-pad-x: 10px;
+  --mu-r-sidebar-item-radius: 10px;
+  --mu-r-sidebar-item-gap: 10px;
+  --mu-r-sidebar-item-glyph: 16px;
+  --mu-r-sidebar-section-gap: 2px;
+  --mu-r-sidebar-section-title-pad: 10px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
