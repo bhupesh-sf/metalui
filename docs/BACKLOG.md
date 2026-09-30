@@ -225,13 +225,14 @@ Direction:
 
 Owner, on the Toast page: "the stacking in toast is vertical; it should be 3D, it should appear to go behind." (2026-09-30) Now each new toast takes a full row above the last, so five identical toasts make a tall column covering the page.
 
-- [ ] **A deck, not a column**: the newest toast sits in front; older ones step back behind it, each a little smaller (scale ~0.95 per step), a little higher (a peek of ~8 at the top edge), and a little dimmer, so they read as cards going behind. Show at most three; the rest are counted, not drawn.
-- [ ] **Arrival pushes the deck back**: a new toast rises into the front (T6) on the object spring while every card behind moves back one step on the same spring, together, from the same frame.
-- [ ] **Hover or focus fans it out**: pointing at the deck (or Tab into it) spreads the cards into a readable column on the surface spring and pauses their timers; leaving folds them back into the deck.
-- [ ] **Dismiss**: swipe a front toast away (it follows the pointer, then leaves on release) or its close key; the next card comes forward.
-- [ ] **Repeats merge**: the same message again doesn't add a card: the front toast bumps (a small press) and shows a count ("×5").
-- [ ] **Reading and focus**: only the front card is read out (polite status); the deck is one landmark; F6 or a shortcut reaches it. Reduce Motion: cards cross-fade into place, no travel or scale.
-- [ ] **Placement**: the deck grows toward the screen edge it sits on (bottom stack peeks upward, top stack downward); tokens for step scale, peek, depth and visible count; Swift in step.
+- [x] **A deck, not a column**: the newest toast sits in front; older ones step back behind it, each a little smaller (scale ~0.95 per step), a little higher (a peek of ~8 at the top edge), and a little dimmer, so they read as cards going behind. Show at most three; the rest are counted, not drawn.
+- [x] **Arrival pushes the deck back**: a new toast rises into the front (T6) on the object spring while every card behind moves back one step on the same spring, together, from the same frame.
+- [x] **Hover or focus fans it out**: pointing at the deck (or Tab into it) spreads the cards into a readable column on the surface spring and pauses their timers; leaving folds them back into the deck.
+- [x] **Dismiss**: swipe a front toast away (it follows the pointer, then leaves on release) or its close key; the next card comes forward.
+- [x] **Repeats merge**: the same message again doesn't add a card: the front toast bumps (a small press) and shows a count ("×5").
+- [x] **Reading and focus**: only the front card is read out (polite status); the deck is one landmark; F6 or a shortcut reaches it. Reduce Motion: cards cross-fade into place, no travel or scale.
+- [x] **Placement**: the deck grows toward the screen edge it sits on (bottom stack peeks upward, top stack downward); tokens for step scale, peek, depth and visible count; Swift in step.
+- [ ] **Follow-up: cards behind take the front card's width** (as Sonner does). Now a short front toast ("Gathered 4 notes") sits on wider cards that stick out on both sides. Also: the "+N" count floats detached above the deck; tuck it into the back card's edge. Swift fans out on hover only (add keyboard focus). The React error toast has no red mark while Swift has one.
 
 ## Tool strip: adapt to what was clicked
 
