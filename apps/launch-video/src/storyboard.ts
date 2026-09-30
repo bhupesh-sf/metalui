@@ -80,7 +80,7 @@ export const storyboard: Shot[] = [
   {
     id: 'everywhere', act: 'peak', bars: [25, 28], title: 'Final chorus: everywhere',
     music: 'The climax: the weight crashes back on an impact (sub drop, noise wash, snare), the loudest bars of the film',
-    picture: 'The lasso snaps into a selection round the gadgets, then a tour back across the whole table: objects, components, foundations, home',
+    picture: 'The lasso snaps into a selection round the objects, then a tour back across the whole table: objects, components, foundations, home',
     sync: 'The selection snaps on the drop; the camera lands on each downbeat; everything jumps on beats 1 and 3',
   },
   {
