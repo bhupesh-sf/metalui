@@ -1589,10 +1589,23 @@ No marching ants, no glow. Reduce Motion: it clears at once.
 | `scale` | `scale:` |
 | `unit` | `unit:` |
 
+## Starting and ending the drag (the host's job)
+
+`Lasso` only draws; the canvas host owns the pointer. These are the rules that make it reliable:
+
+- **Empty space is anything that isn't an object.** Listen on the canvas element itself, not on the world or a layer inside it. A press on the guides layer, on a selection frame's gap, or on the canvas outside a zoomed-out world (at 50 % most of the canvas) is empty space. Only a press on an object is not: that one moves the object. Mark objects (e.g. `data-note`) and test `event.target.closest(...)`; never test `event.target === event.currentTarget`.
+- **No native text selection.** Call `preventDefault()` on the lasso's `pointerdown` and put `user-select: none` (`select-none`) on the canvas, or the browser paints its own selection highlight over the objects' text while the box is drawn. Because `preventDefault` also stops the browser from clearing a selection made elsewhere on the page, call `getSelection().removeAllRanges()` on the press. Capture the pointer on the canvas so the drag survives leaving it.
+- **Cursor.** A crosshair over empty space; a grab (grabbing while held) over an object that can be moved.
+- **Threshold.** The box appears after 3 screen points of travel; a press without travel is a click on empty space and clears the selection.
+- **Modifier keys.** Shift held at the press adds what the box touches to the current selection (a Shift-click keeps it). Escape clears the selection. ⌘ is left to the move (it turns snapping off).
+- **After the release** the picked objects show the Selection frame only (`handles="none"`, `readout={false}` for a multi-selection); the size readouts belong to resizing one object, not to choosing several.
+- Coordinates are world coordinates: `(clientX - worldRect.left) / scale`, which stays right outside the scaled world too.
+
 ## Rules
 
 - The count is what the box touches now, never a guess.
 - The box never moves objects; it only chooses them.
+- A press on empty space always starts it, wherever on the canvas it lands.
 
 ---
 

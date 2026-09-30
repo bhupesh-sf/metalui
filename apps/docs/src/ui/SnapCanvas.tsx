@@ -44,44 +44,60 @@ export function SnapCanvas({ height = 360, lasso = false }: { height?: number; l
   const [taps, setTaps] = React.useState(0);
   const engage = React.useCallback(() => { setTaps((n) => n + 1); navigator.vibrate?.(8); }, []);
 
-  // Lasso: a drag on empty canvas draws the box; letting go selects what it touches.
+  // Lasso: a press anywhere on the canvas that is not on a note is empty space (the guides layer,
+  // the canvas outside the scaled world at 50 %, the gap next to a note). A drag from there draws
+  // the box; letting go selects what it touches. Shift adds to the selection; Escape clears it.
   const [rect, setRect] = React.useState<LassoRect | null>(null);
   const [picked, setPicked] = React.useState<string[]>([]);
   const world = React.useRef<HTMLDivElement>(null);
   const at = (e: React.PointerEvent) => { const w = world.current!.getBoundingClientRect(); return { x: (e.clientX - w.left) / scale, y: (e.clientY - w.top) / scale }; };
-  const lassoStart = React.useRef<{ x: number; y: number } | null>(null);
+  const lassoStart = React.useRef<{ x: number; y: number; keep: string[] } | null>(null);
   const all = [...FIXED, box];
   const count = rect ? all.filter((b) => touches(rect, b)).length : 0;
-  const worldDown = (e: React.PointerEvent) => {
-    if (!lasso || e.target !== e.currentTarget) return;
-    try { (e.target as HTMLElement).setPointerCapture(e.pointerId); } catch { /* a synthetic pointer */ }
-    lassoStart.current = at(e); setPicked([]);
+  const canvasDown = (e: React.PointerEvent) => {
+    // A press on the canvas ends any text selection on the page; select-none keeps a new one from starting.
+    window.getSelection()?.removeAllRanges();
+    if (!lasso || e.button !== 0 || (e.target as Element).closest('[data-note]')) return;
+    e.preventDefault(); // no native text selection runs with the lasso
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch { /* a synthetic pointer */ }
+    const keep = e.shiftKey ? picked : [];
+    lassoStart.current = { ...at(e), keep }; setPicked(keep);
   };
-  const worldMove = (e: React.PointerEvent) => {
+  const canvasMove = (e: React.PointerEvent) => {
     const s0 = lassoStart.current; if (!s0) return;
     const p = at(e);
     if (!rect && Math.hypot((p.x - s0.x) * scale, (p.y - s0.y) * scale) < 3) return;
     setRect({ x: s0.x, y: s0.y, width: p.x - s0.x, height: p.y - s0.y });
   };
-  const worldUp = () => {
-    if (rect) setPicked(all.filter((b) => touches(rect, b)).map((b) => b.id));
+  const canvasUp = () => {
+    const s0 = lassoStart.current;
+    if (s0 && rect) setPicked([...new Set([...s0.keep, ...all.filter((b) => touches(rect, b)).map((b) => b.id)])]);
     lassoStart.current = null; setRect(null);
   };
+  React.useEffect(() => {
+    if (!lasso || !picked.length) return;
+    const key = (e: KeyboardEvent) => { if (e.key === 'Escape' && !e.defaultPrevented) setPicked([]); };
+    window.addEventListener('keydown', key);
+    return () => window.removeEventListener('keydown', key);
+  }, [lasso, picked.length]);
 
   const card = (b: Box, live = false) => (
     <Surface key={b.id} material="raise-lite" radius="card"
-      className={live ? 'absolute grid cursor-grab place-items-center active:cursor-grabbing' : 'absolute grid place-items-center'}
+      data-note={b.id}
+      className={live ? 'absolute grid cursor-grab place-items-center active:cursor-grabbing' : 'absolute grid cursor-default place-items-center'}
       style={{ left: b.x, top: b.y, width: b.w, height: b.h, touchAction: 'none' }}
       {...(live ? { onPointerDown: down, onPointerMove: move, onPointerUp: up, onPointerCancel: up } : {})}>
       <span className="type-ui text-ink2">{WORDS[b.id]}</span>
-      {picked.includes(b.id) && <SelectionFrame state="selected" variant="lite" radius={24} entrance={false} />}
+      {picked.includes(b.id) && <SelectionFrame state="selected" variant="lite" radius={24} entrance={false} handles="none" readout={false} />}
     </Surface>
   );
 
   return (
     <div className="flex w-full min-w-0 flex-col items-center gap-14">
-      <div className="snap-canvas" style={{ height }}>
-        <div ref={world} className="snap-world" style={{ transform: `scale(${scale})` }} onPointerDown={worldDown} onPointerMove={worldMove} onPointerUp={worldUp} onPointerCancel={worldUp}>
+      <div className={lasso ? 'snap-canvas cursor-crosshair select-none' : 'snap-canvas select-none'} data-lasso-canvas={lasso || undefined}
+        style={{ height, touchAction: lasso ? 'none' : undefined }}
+        {...(lasso ? { onPointerDown: canvasDown, onPointerMove: canvasMove, onPointerUp: canvasUp, onPointerCancel: canvasUp } : {})}>
+        <div ref={world} className="snap-world" style={{ transform: `scale(${scale})` }}>
           {FIXED.map((b) => card(b))}
           <SnapGuides guides={guides} scale={scale} onEngage={engage} />
           {card(box, true)}
@@ -89,7 +105,7 @@ export function SnapCanvas({ height = 360, lasso = false }: { height?: number; l
         </div>
       </div>
       {lasso
-        ? <span className="eng snap-caption">{picked.length ? `selected · ${picked.length}` : 'drag on empty space to draw a box'}</span>
+        ? <span className="eng snap-caption">{picked.length ? `selected · ${picked.length}` : 'drag on empty space to draw a box · shift adds · esc clears'}</span>
         : <span className="eng snap-caption">haptic taps · {taps} <span className="text-ink3">(on a Mac trackpad in the app; the browser cannot)</span></span>}
       <Switcher size="compact" aria-label="Zoom" value={zoom} onValueChange={setZoom} options={[{ value: '0.5', label: '50 %' }, { value: '1', label: '100 %' }, { value: '2', label: '200 %' }]} />
     </div>

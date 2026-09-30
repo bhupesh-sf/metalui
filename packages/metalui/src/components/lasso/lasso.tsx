@@ -17,7 +17,11 @@ import { SizeReadout } from '../size-readout/size-readout';
  *   graphite  the lighter green and a slightly stronger fill
  * The line and the readout keep their screen size at every zoom (pass the canvas scale).
  * Drawn in world coordinates inside the transformed world; hidden from assistive tech:
- * the selection it makes is announced, not the box.
+ * the selection it makes is announced, not the box. It only draws: the host owns the drag.
+ * The host starts it from any press on the canvas that is not on an object (the whole
+ * canvas, guides and the area outside a zoomed-out world included), prevents the native
+ * text selection (preventDefault on pointerdown, user-select: none on the canvas), adds
+ * with Shift and clears with Escape.
  * ───────────────────────────────────────────────────────── */
 
 export interface LassoRect { x: number; y: number; width: number; height: number }
@@ -34,7 +38,7 @@ export interface LassoProps {
   className?: string;
 }
 
-const BOX = 'mu-lasso pointer-events-none absolute presence-lasso presence-guide-leave data-[state=leaving]:opacity-0 data-[state=drawing]:transition-none reduced-motion:transition-none';
+const BOX = 'mu-lasso pointer-events-none select-none absolute presence-lasso presence-guide-leave data-[state=leaving]:opacity-0 data-[state=drawing]:transition-none reduced-motion:transition-none';
 const READOUT = 'presence-lasso-readout';
 
 const blocks = (n: number) => (n === 1 ? 'block' : 'blocks');
