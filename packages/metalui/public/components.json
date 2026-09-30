@@ -1174,6 +1174,23 @@
       "agent": "https://metalui.dev/r/spinner.md"
     },
     {
+      "name": "split-pane",
+      "title": "Split pane",
+      "status": "alpha",
+      "description": "Two places with a divider you can move: dragged one to one, it snaps to the default size or shut on the part spring; keys step it on settle.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "SplitPane",
+        "base": "div role=separator (the ARIA window splitter pattern)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSplitPane"
+      },
+      "registry": "https://metalui.dev/r/split-pane.json",
+      "agent": "https://metalui.dev/r/split-pane.md"
+    },
+    {
       "name": "status",
       "title": "Status badge",
       "status": "alpha",

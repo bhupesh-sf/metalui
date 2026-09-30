@@ -69,6 +69,7 @@ export const routes: RouteObject[] = [
       { path: 'components/attachment', lazy: lazy(() => import('../pages/components/Attachment')) },
       { path: 'components/table', lazy: lazy(() => import('../pages/components/Table')) },
       { path: 'components/empty-state', lazy: lazy(() => import('../pages/components/EmptyState')) },
+      { path: 'components/split-pane', lazy: lazy(() => import('../pages/components/SplitPane')) },
       { path: 'components/slider', lazy: lazy(() => import('../pages/components/Slider')) },
       { path: 'components/icon-button', lazy: lazy(() => import('../pages/components/IconButton')) },
       { path: 'components/field', lazy: lazy(() => import('../pages/components/Field')) },

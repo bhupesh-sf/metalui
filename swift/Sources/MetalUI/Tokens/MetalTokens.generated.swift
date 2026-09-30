@@ -1197,6 +1197,22 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Two places side by side (or stacked) with a divider you can move: an engraved hairline with a small raised grip at its middle, which lifts under the pointer and presses while held. Dragging, the panes follow the pointer one to one. Let go near the default size and it snaps there on the part spring, a detent; a collapsible pane dragged past half its minimum snaps shut the same way. Keys step it (8) on the settle spring; Home and End go to the limits; Enter or a double-click restores the default. Reduce Motion: snaps and steps land at once. (the rule's hairline; the switch thumb (the grip); the part and settle springs; the ARIA window splitter pattern)
+    public static let splitPane = MetalObjectRecipe(
+        name: "split-pane",
+        layers: [
+
+        ],
+        props: [
+            "divider.hit": .number(12.0),
+            "divider.line": .number(1.0),
+            "grip.length": .number(28.0),
+            "grip.thickness": .number(6.0),
+            "self.step": .number(8.0),
+            "self.detent": .number(3.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

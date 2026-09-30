@@ -554,6 +554,12 @@
   --spacing-empty-state-well-radius: var(--mu-r-empty-state-well-radius);
   --radius-empty-state-well-radius: var(--mu-r-empty-state-well-radius);
   --spacing-empty-state-well-glyph: var(--mu-r-empty-state-well-glyph);
+  --spacing-split-pane-divider-hit: var(--mu-r-split-pane-divider-hit);
+  --spacing-split-pane-divider-line: var(--mu-r-split-pane-divider-line);
+  --spacing-split-pane-grip-length: var(--mu-r-split-pane-grip-length);
+  --spacing-split-pane-grip-thickness: var(--mu-r-split-pane-grip-thickness);
+  --spacing-split-pane-step: var(--mu-r-split-pane-self-step);
+  --spacing-split-pane-detent: var(--mu-r-split-pane-self-detent);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1595,6 +1601,18 @@
 }
 @utility empty-state-arrive {
   animation: mu-empty-state-arrive var(--mu-spring-settle-d) var(--mu-spring-settle) both;
+}
+@utility split-pane-size {
+  transition: flex-basis var(--mu-spring-settle-d) var(--mu-spring-settle); [data-dragging] > & { transition: none; } [data-snapping] > & { transition: flex-basis var(--mu-spring-part-d) var(--mu-spring-part); } @media (prefers-reduced-motion: reduce) { transition: none !important; }
+}
+@utility split-pane-divider {
+  &[data-orientation=horizontal] { width: var(--mu-r-split-pane-divider-hit); margin: 0 calc(var(--mu-r-split-pane-divider-hit) / -2); cursor: col-resize; } &[data-orientation=vertical] { height: var(--mu-r-split-pane-divider-hit); margin: calc(var(--mu-r-split-pane-divider-hit) / -2) 0; cursor: row-resize; }
+}
+@utility split-pane-grip {
+  scale: 1; transition: scale var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-orientation=horizontal] { width: var(--mu-r-split-pane-grip-thickness); height: var(--mu-r-split-pane-grip-length); } &[data-orientation=vertical] { height: var(--mu-r-split-pane-grip-thickness); width: var(--mu-r-split-pane-grip-length); } :hover > & { scale: 1.1; } [data-dragging] > & { scale: .95; }
+}
+@utility split-pane-line {
+  &::before { content: ''; position: absolute; background: var(--mu-rule); } &[data-orientation=horizontal]::before { top: 0; bottom: 0; left: 50%; width: var(--mu-r-split-pane-divider-line); } &[data-orientation=vertical]::before { left: 0; right: 0; top: 50%; height: var(--mu-r-split-pane-divider-line); }
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

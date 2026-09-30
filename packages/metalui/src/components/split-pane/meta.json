@@ -1,0 +1,24 @@
+{
+  "name": "split-pane",
+  "title": "Split pane",
+  "status": "alpha",
+  "layer": "place",
+  "kind": "composed",
+  "uses": ["rule", "switch"],
+  "description": "Two places with a divider you can move: dragged one to one, it snaps to the default size or shut on the part spring; keys step it on settle.",
+  "base": "div role=separator (the ARIA window splitter pattern)",
+  "react": {
+    "export": "SplitPane",
+    "files": ["split-pane.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalSplitPane",
+    "file": "swift/Sources/MetalUI/Components/MetalSplitPane.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "SplitPane": ["Root", "Pane"]
+  },
+  "agent": "split-pane.agent.md",
+  "page": "/components/split-pane"
+}

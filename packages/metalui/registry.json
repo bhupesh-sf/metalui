@@ -1315,6 +1315,24 @@
       "docs": "Agent guide: https://metalui.dev/r/spinner.md. SwiftUI: MetalSpinner in the MetalUI Swift package."
     },
     {
+      "name": "split-pane",
+      "type": "registry:ui",
+      "title": "Split pane",
+      "description": "Two places with a divider you can move: dragged one to one, it snaps to the default size or shut on the part spring; keys step it on settle.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/split-pane/split-pane.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/split-pane/split-pane.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/split-pane.md. SwiftUI: MetalSplitPane in the MetalUI Swift package."
+    },
+    {
       "name": "status",
       "type": "registry:ui",
       "title": "Status badge",

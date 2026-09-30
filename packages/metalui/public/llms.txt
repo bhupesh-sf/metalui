@@ -77,6 +77,7 @@
 - [Sparkline](https://metalui.dev/r/sparkline.md): A small series plot: a line with gaps, dots, the last point emphasised, a dashed baseline at the average.
 - [Spatial field](https://metalui.dev/r/spatial-field.md): One quiet, content-aware dot field for a Place. It yields to object footprints and reinforces the host-selected Region while the host retains placement authority.
 - [Spinner](https://metalui.dev/r/spinner.md): Steady work in a small space: a sunk round well with a lit green arc turning at a constant speed; it shows only after a beat so quick actions never flash it.
+- [Split pane](https://metalui.dev/r/split-pane.md): Two places with a divider you can move: dragged one to one, it snaps to the default size or shut on the part spring; keys step it on settle.
 - [Status badge](https://metalui.dev/r/status.md): The 24 tall status badge: an LED part and the state in the label role, not pressable, with the fixing command as a tooltip.
 - [Suggestion chip](https://metalui.dev/r/suggestion-chip.md): One question the recognizer asks at middle confidence, beside its block: Chip(suggestion) with the question, its confidence as a small engraving, and mini accept and dismiss buttons. Faint until the block is hovered.
 - [Surface](https://metalui.dev/r/surface.md): A raised plate or card from a material recipe: raise, raise-lite, raise-sm, frost, plate, panel, pop, tip, lens and the graphites.
