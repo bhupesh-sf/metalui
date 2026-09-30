@@ -17,6 +17,7 @@
     "hooks:install": "node scripts/install-hooks.mjs",
     "symbols": "node scripts/build-symbols.mjs",
     "symbols:check": "node scripts/build-symbols.mjs --check",
+    "og": "node scripts/build-og.mjs",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "build": "npm run check && npm run build -w @unlocalhosted/metalui && npm run build -w @metalui/docs",
     "test:e2e": "playwright test",

@@ -1,5 +1,5 @@
 // Publish one crawlable HTML document per docs route, plus discovery files.
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
@@ -123,7 +123,12 @@ function htmlFor(path, page) {
     `    <meta property="og:title" content="${escapeHtml(page.title)}" />\n` +
     `    <meta property="og:description" content="${escapeHtml(page.description)}" />\n` +
     `    <meta property="og:url" content="${page.canonical}" />\n` +
-    `    <meta name="twitter:card" content="summary" />\n` +
+    `    <meta property="og:image" content="${origin}/og.png" />\n` +
+    `    <meta property="og:image:width" content="2400" />\n` +
+    `    <meta property="og:image:height" content="1260" />\n` +
+    `    <meta property="og:image:alt" content="MetalUI: UI components that feel like real objects, for React and SwiftUI" />\n` +
+    `    <meta name="twitter:card" content="summary_large_image" />\n` +
+    `    <meta name="twitter:image" content="${origin}/og.png" />\n` +
     `    <meta name="twitter:title" content="${escapeHtml(page.title)}" />\n` +
     `    <meta name="twitter:description" content="${escapeHtml(page.description)}" />\n` +
     `    <link rel="alternate" type="text/markdown" href="${page.agent}" title="Agent guide" />\n` +
@@ -142,6 +147,8 @@ for (const [path, page] of Object.entries(pages)) {
   writeFileSync(target, htmlFor(path, page));
 }
 writeFileSync(resolve(dist, 'site-meta.json'), JSON.stringify(Object.fromEntries(Object.entries(pages).map(([path, { title, description, canonical, agent }]) => [path, { title, description, canonical, agent }])), null, 2) + '\n');
+// The social card, captured from the landing page by scripts/build-og.mjs.
+copyFileSync(resolve(root, 'apps/docs/og.png'), resolve(dist, 'og.png'));
 writeFileSync(resolve(dist, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`);
 writeFileSync(resolve(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map((path) => `  <url><loc>${origin}${path}</loc></url>`).join('\n')}\n</urlset>\n`);
 writeFileSync(resolve(dist, '404.html'), '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Page not found — MetalUI</title></head><body><main><h1>Page not found</h1><p><a href="/">Go to MetalUI</a></p></main></body></html>\n');
