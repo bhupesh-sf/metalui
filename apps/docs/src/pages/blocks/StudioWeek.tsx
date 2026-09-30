@@ -33,8 +33,8 @@ export default function StudioWeekPage() {
         node: <StudioWeek />,
       }}
       usage={{
-        file: 'src/blocks/studio-week.tsx',
-        code: `import { StudioWeek } from '@/blocks/studio-week';
+        file: 'src/components/metalui/screens/studio-week/studio-week.tsx',
+        code: `import { StudioWeek } from '@/components/metalui/screens/studio-week/studio-week';
 
 export function Review() {
   return <StudioWeek studio="Acme Studio" />;
@@ -44,6 +44,7 @@ export function Review() {
 // day and hour: notes written, regions formed, cues recognised and confirmed, minutes spent
 // in the past. The readouts, matrix, sparklines and meters all derive from that one shape.`,
       }}
+      registry="block-studio-week"
       madeOf={[
         { label: 'Dot display', to: '/components/dot-display' },
         { label: 'Meter', to: '/components/meter' },

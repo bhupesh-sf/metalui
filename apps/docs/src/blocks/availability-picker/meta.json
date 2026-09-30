@@ -1,0 +1,14 @@
+{
+  "name": "block-availability-picker",
+  "title": "Availability picker",
+  "status": "alpha",
+  "description": "A booking block: a host, a call length, a calendar of the next six weeks, the day's free times re-labelled by time zone, and Confirm to Booked.",
+  "since": "0.3.0",
+  "react": {
+    "export": "AvailabilityPicker",
+    "files": [
+      "availability-picker.tsx"
+    ]
+  },
+  "page": "/blocks/availability-picker"
+}

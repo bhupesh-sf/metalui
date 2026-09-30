@@ -7,20 +7,22 @@ import { Bench, Code, PageHeader, Rules, Section, SourceTabs, type Rule } from '
  *
  *   head        title and one plain line
  *   playground  the live block with sample data, and what to try
- *   usage       where the file goes, the smallest use, and the parts it is made of (each a link)
+ *   usage       the shadcn command, where the file lands, the smallest use, and the parts it is made of
  *   more        the block's own sections (its DialKit panel)
  *   source      the block's file
  *   rules       what it is for and not for, and what a builder must keep (keys, access, motion,
  *               layout); each rule says where it comes from, as component rules do
- * A block is copied into a project, not imported: it composes components into one job.
+ * A block is copied into a project (by the registry), not imported: it composes components into one job.
  * ───────────────────────────────────────────────────────── */
 
 export interface BlockPageProps {
   title: string;
   lede: React.ReactNode;
   play: { lede: string; caption?: string; node: React.ReactNode };
-  /** Where the file goes in a project, and the smallest use of it. */
+  /** Where the registry puts the file in a project, and the smallest use of it. */
   usage: { file: string; code: string };
+  /** The registry item that installs it (metalui.dev/r/<registry>.json). */
+  registry: string;
   /** The MetalUI parts it composes, each linking to its page. */
   madeOf: { label: string; to: string }[];
   more?: { id: string; title: string; lede?: string; node: React.ReactNode }[];
@@ -28,15 +30,16 @@ export interface BlockPageProps {
   rules: Rule[];
 }
 
-export function BlockPage({ title, lede, play, usage, madeOf, more, source, rules }: BlockPageProps) {
+export function BlockPage({ title, lede, play, usage, registry, madeOf, more, source, rules }: BlockPageProps) {
   return (
     <>
       <PageHeader title={title} lede={lede} tags={[{ label: 'Block', led: 'blue' }, { label: 'React', led: 'green' }, { label: 'SwiftUI not yet', led: 'off' }]} />
       <Section title="Playground" lede={play.lede}>
         <Bench caption={play.caption} className="wide">{play.node}</Bench>
       </Section>
-      <Section id="usage" title="Usage" lede={`Copy the block's file to ${usage.file} in your project (with @unlocalhosted/metalui installed), then use it.`}>
+      <Section id="usage" title="Usage" lede={`One command copies the block to ${usage.file} and adds @unlocalhosted/metalui if you don't have it; then use it.`}>
         <div className="grid gap-16">
+          <Code code={`npx shadcn@latest add https://metalui.dev/r/${registry}.json`} label="install" lang="bash" />
           <Code code={usage.code} label="example.tsx" lang="tsx" />
           <div className="grid gap-8">
             <span className="eng">made of</span>

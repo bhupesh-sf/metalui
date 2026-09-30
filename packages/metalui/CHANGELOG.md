@@ -6,6 +6,7 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ### Added
 
+- **Blocks in the shadcn registry**: Settings, Studio week, Task inbox, Share panel, AI composer and Availability picker install with `npx shadcn@latest add https://metalui.dev/r/block-<name>.json`, into `components/metalui/screens/<name>/`; they need this package installed.
 - **Radio group** (`RadioGroup`, `Radio`): one choice from a short list; the pressed well darkens, releasing latches a pip in while the old one drops out.
 - **Textarea** (`Textarea`): grows with what is written between `minRows` and `maxRows`; with `maxLength`, a counter appears near the limit and refuses writing past it.
 - **Popover** (`Popover`): a small panel that rises out of its trigger; `Title`, `Description`, `Body`, `Close` slots.

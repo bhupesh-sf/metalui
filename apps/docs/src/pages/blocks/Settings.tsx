@@ -52,8 +52,8 @@ export default function SettingsPage() {
         node: <Preview />,
       }}
       usage={{
-        file: 'src/blocks/settings.tsx',
-        code: `import { Settings, type SettingsValues } from '@/blocks/settings';
+        file: 'src/components/metalui/screens/settings/settings.tsx',
+        code: `import { Settings, type SettingsValues } from '@/components/metalui/screens/settings/settings';
 
 export function AccountSettings({ values }: { values: SettingsValues }) {
   return (
@@ -66,6 +66,7 @@ export function AccountSettings({ values }: { values: SettingsValues }) {
 
 // Replace SAVED (the sample data) with the account's values, and the photo's object URL with an upload.`,
       }}
+      registry="block-settings"
       madeOf={[
         { label: 'Sidebar', to: '/components/sidebar' },
         { label: 'Select', to: '/components/select' },

@@ -1,0 +1,14 @@
+{
+  "name": "block-studio-week",
+  "title": "Studio week",
+  "status": "alpha",
+  "description": "One week of a canvas workspace on a dot matrix, hour by hour, with readouts for notes, regions, confirmed cues and time in the past, and the recognizer by kind.",
+  "since": "0.3.0",
+  "react": {
+    "export": "StudioWeek",
+    "files": [
+      "studio-week.tsx"
+    ]
+  },
+  "page": "/blocks/studio-week"
+}

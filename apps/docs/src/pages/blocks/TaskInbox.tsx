@@ -43,9 +43,9 @@ export default function TaskInboxPage() {
           node: <div className="flex w-full justify-center"><TaskInbox /></div>,
         }}
             usage={{
-          file: 'src/blocks/task-inbox.tsx',
+          file: 'src/components/metalui/screens/task-inbox/task-inbox.tsx',
           code: `import { ToastProvider } from '@unlocalhosted/metalui';
-import { TaskInbox } from '@/blocks/task-inbox';
+import { TaskInbox } from '@/components/metalui/screens/task-inbox/task-inbox';
 
 // The inbox says what it did in a toast (with Undo), so it lives under a ToastProvider:
 // put one once near your app's root.
@@ -60,6 +60,7 @@ export function Tasks() {
 // Replace TASKS and PEOPLE (the sample data) with your own, TODAY with new Date(), and ME with the
 // person who is signed in. Each change goes through commit(): send it to your server there.`,
         }}
+        registry="block-task-inbox"
         madeOf={[
           { label: 'Checkbox', to: '/components/checkbox' },
           { label: 'Field', to: '/components/field' },

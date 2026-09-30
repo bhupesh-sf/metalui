@@ -37,8 +37,8 @@ export default function AiComposerPage() {
         node: <AiComposer />,
       }}
       usage={{
-        file: 'src/blocks/ai-composer.tsx',
-        code: `import { AiComposer } from '@/blocks/ai-composer';
+        file: 'src/components/metalui/screens/ai-composer/ai-composer.tsx',
+        code: `import { AiComposer } from '@/components/metalui/screens/ai-composer/ai-composer';
 
 export function Help() {
   return <AiComposer />;
@@ -48,6 +48,7 @@ export function Help() {
 // each chunk to the reply's words; stop() should also abort the request. MODELS lists the
 // choices in the Select, with the pace the samples stream at.`,
       }}
+      registry="block-ai-composer"
       madeOf={[
         { label: 'Textarea', to: '/components/textarea' },
         { label: 'Attachment', to: '/components/attachment' },

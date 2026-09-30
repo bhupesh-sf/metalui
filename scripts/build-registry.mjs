@@ -7,6 +7,7 @@ import { components } from './lib/components.mjs';
 const ORIGIN = process.env.METALUI_REGISTRY_ORIGIN ?? 'https://metalui.dev';
 const BASE_UI = JSON.parse(readFileSync(root('packages/metalui/package.json'), 'utf8')).dependencies['@base-ui/react'];
 const SRC = root('packages/metalui/src');
+const PACKAGE = '@unlocalhosted/metalui';
 
 // Targets mirror src/ under the consumer's components/metalui/, so every relative import
 // (../tokens.css, ../../motion/swap, ../../components/surface/surface) resolves there unchanged.
@@ -94,6 +95,39 @@ const items = metas.map((meta) => {
   };
 });
 
+// Blocks: whole screens that the docs site builds from the published package. Copied into a project,
+// not imported; they depend on the package (and Base UI) from npm, so they need the release in `since`.
+const BLOCKS = root('apps/docs/src/blocks');
+const blockItems = readdirSync(BLOCKS, { withFileTypes: true })
+  .filter((d) => d.isDirectory() && existsSync(join(BLOCKS, d.name, 'meta.json')))
+  .map((d) => {
+    const meta = JSON.parse(readFileSync(join(BLOCKS, d.name, 'meta.json'), 'utf8'));
+    const deps = new Set();
+    for (const f of meta.react.files) {
+      const path = join(BLOCKS, d.name, f);
+      const text = readFileSync(path, 'utf8');
+      if (imports(path).length) throw new Error(`${meta.name}: a block imports only packages, not relative files (${f})`);
+      for (const [, spec] of text.matchAll(/(?:from|import)\s+['"]([^.'"][^'"]*)['"]/g)) {
+        if (spec === 'react' || spec === 'react-dom') continue;
+        if (spec === PACKAGE || spec.startsWith(`${PACKAGE}/`)) deps.add(`${PACKAGE}@^${meta.since}`);
+        else if (spec.startsWith('@base-ui/react/')) deps.add(`@base-ui/react@${BASE_UI}`);
+        else throw new Error(`${meta.name} imports ${spec}, which no registry item provides`);
+      }
+    }
+    const blockFile = (f) => ({ path: `apps/docs/src/blocks/${d.name}/${f}`, type: 'registry:block', target: `components/metalui/screens/${d.name}/${f}`, content: readFileSync(join(BLOCKS, d.name, f), 'utf8') });
+    return {
+      $schema: 'https://ui.shadcn.com/schema/registry-item.json',
+      name: meta.name,
+      type: 'registry:block',
+      title: meta.title,
+      description: meta.description,
+      dependencies: [...deps].sort(),
+      registryDependencies: [`${ORIGIN}/r/tokens.json`],
+      files: meta.react.files.map(blockFile),
+      docs: `Docs: ${ORIGIN}${meta.page}. Import it from components/metalui/screens/${d.name}/${d.name}. Needs ${PACKAGE}@^${meta.since}.`,
+    };
+  });
+
 const sharedItems = Object.entries(shared).map(([name, g]) => ({
   $schema: 'https://ui.shadcn.com/schema/registry-item.json',
   name,
@@ -104,7 +138,7 @@ const sharedItems = Object.entries(shared).map(([name, g]) => ({
   files: g.files.map((f) => file(`packages/metalui/src/${f}`, fileType(f))),
 }));
 
-for (const item of [tokensItem, ...sharedItems]) emit(`packages/metalui/public/r/${item.name}.json`, JSON.stringify(item, null, 2) + '\n');
+for (const item of [tokensItem, ...sharedItems, ...blockItems]) emit(`packages/metalui/public/r/${item.name}.json`, JSON.stringify(item, null, 2) + '\n');
 for (const { dir, ...item } of items) {
   emit(`packages/metalui/public/r/${item.name}.json`, JSON.stringify(item, null, 2) + '\n');
   item.dir = dir;
@@ -116,13 +150,13 @@ emit('packages/metalui/registry.json', JSON.stringify({
   $schema: 'https://ui.shadcn.com/schema/registry.json',
   name: 'metalui',
   homepage: ORIGIN,
-  items: [strip(tokensItem), ...sharedItems.map(strip), ...items.map(strip)],
+  items: [strip(tokensItem), ...sharedItems.map(strip), ...items.map(strip), ...blockItems.map(strip)],
 }, null, 2) + '\n');
 // Items whose source is gone must not keep being served (a removed component stays installable otherwise).
-const served = new Set([tokensItem, ...sharedItems, ...items].flatMap(({ name }) => [`${name}.json`, `${name}.md`]));
+const served = new Set([tokensItem, ...sharedItems, ...blockItems, ...items].flatMap(({ name }) => [`${name}.json`, `${name}.md`]));
 for (const f of readdirSync(root('packages/metalui/public/r'))) {
   if (served.has(f)) continue;
   if (process.argv.includes('--check')) emit(`packages/metalui/public/r/${f}`, null);
   else unlinkSync(root('packages/metalui/public/r', f));
 }
-finish(`registry (${items.length} components)`);
+finish(`registry (${items.length} components, ${blockItems.length} blocks)`);

@@ -58,8 +58,8 @@ export default function SharePanelPage() {
         node: <Opened />,
       }}
       usage={{
-        file: 'src/blocks/share-panel.tsx',
-        code: `import { SharePanel } from '@/blocks/share-panel';
+        file: 'src/components/metalui/screens/share-panel/share-panel.tsx',
+        code: `import { SharePanel } from '@/components/metalui/screens/share-panel/share-panel';
 
 export function ShareSheet({ onClose }: { onClose: () => void }) {
   return <SharePanel folder="Lisbon trip" onClose={onClose} autoFocus />;
@@ -68,6 +68,7 @@ export function ShareSheet({ onClose }: { onClose: () => void }) {
 // Replace PEOPLE and FILES (the sample data) with your folder's, the upload tick with your
 // uploader's progress events, and LINK with the folder's real share link.`,
       }}
+      registry="block-share-panel"
       madeOf={[
         { label: 'Drop zone', to: '/components/drop-zone' },
         { label: 'Attachment', to: '/components/attachment' },

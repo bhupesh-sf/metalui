@@ -37,8 +37,8 @@ export default function AvailabilityPickerPage() {
         node: <AvailabilityPicker />,
       }}
       usage={{
-        file: 'src/blocks/availability-picker.tsx',
-        code: `import { AvailabilityPicker } from '@/blocks/availability-picker';
+        file: 'src/components/metalui/screens/availability-picker/availability-picker.tsx',
+        code: `import { AvailabilityPicker } from '@/components/metalui/screens/availability-picker/availability-picker';
 
 export function BookIntro() {
   return (
@@ -54,6 +54,7 @@ export function BookIntro() {
 // Replace freeHalfHours (the seeded sample) with the host's real free time: the half hours
 // still open on a day, in their own zone. Lengths, the month's quiet days and the times follow.`,
       }}
+      registry="block-availability-picker"
       madeOf={[
         { label: 'Avatar', to: '/components/avatar' },
         { label: 'Switcher', to: '/components/switcher' },
