@@ -53,6 +53,7 @@ export const NAV: NavGroup[] = [
     items: [
       { to: '/blocks/metrics-dashboard', label: 'Metrics dashboard' },
       { to: '/blocks/ai-composer', label: 'AI composer' },
+      { to: '/blocks/share-panel', label: 'Share panel' },
     ],
   },
   ...LAYER_GROUPS,
