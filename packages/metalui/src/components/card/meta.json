@@ -1,0 +1,24 @@
+{
+  "name": "card",
+  "title": "Card",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["surface"],
+  "description": "A person's thing on a raised plate: media, title, a line, actions. A card with a link lifts one grid step on the settle spring as its shadow grows; a card that goes nowhere is still.",
+  "base": "article; useRender",
+  "react": {
+    "export": "Card",
+    "files": ["card.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalCard",
+    "file": "swift/Sources/MetalUI/Components/MetalCard.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "Card": ["Root", "Media", "Title", "Description", "Footer"]
+  },
+  "agent": "card.agent.md",
+  "page": "/components/card"
+}

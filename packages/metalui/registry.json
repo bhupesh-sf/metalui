@@ -187,6 +187,24 @@
       "docs": "Agent guide: https://metalui.dev/r/calendar.md. SwiftUI: MetalCalendar in the MetalUI Swift package."
     },
     {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "A person's thing on a raised plate: media, title, a line, actions. A card with a link lifts one grid step on the settle spring as its shadow grows; a card that goes nowhere is still.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/card/card.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/card/card.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/card.md. SwiftUI: MetalCard in the MetalUI Swift package."
+    },
+    {
       "name": "checkbox",
       "type": "registry:ui",
       "title": "Checkbox",

@@ -155,6 +155,23 @@
       "agent": "https://metalui.dev/r/calendar.md"
     },
     {
+      "name": "card",
+      "title": "Card",
+      "status": "alpha",
+      "description": "A person's thing on a raised plate: media, title, a line, actions. A card with a link lifts one grid step on the settle spring as its shadow grows; a card that goes nowhere is still.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Card",
+        "base": "article; useRender"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCard"
+      },
+      "registry": "https://metalui.dev/r/card.json",
+      "agent": "https://metalui.dev/r/card.md"
+    },
+    {
       "name": "checkbox",
       "title": "Checkbox",
       "status": "alpha",

@@ -1136,6 +1136,13 @@
   --mu-r-avatar-ring-width: 2px;
   --mu-r-avatar-group-overlap: 8px;
   --mu-r-avatar-group-spread: 4px;
+  /* card: the raised surface (recipe surface raise); the hover lift (Transitions T5a); the settle spring */
+  --mu-r-card-self-pad: 16px;
+  --mu-r-card-self-gap: 6px;
+  --mu-r-card-self-footer-gap: 12px;
+  --mu-r-card-self-media: 160px;
+  --mu-r-card-self-select-width: 2px;
+  --mu-r-card-self-select-offset: 3px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
@@ -2048,6 +2055,7 @@
   --mu-r-skeleton-sheen-ink: rgba(255,255,255,.6);
   --mu-r-link-underline-ink: rgba(27,27,29,.3);
   --mu-r-avatar-ring-ink: #F6F5F2;
+  --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(40,34,24,.28);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
   --mu-r-glass-face-self-shadow:
@@ -2538,6 +2546,7 @@
   --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
   --mu-r-link-underline-ink: rgba(255,255,255,.3);
   --mu-r-avatar-ring-ink: #252527;
+  --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(0,0,0,.6);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
   --mu-r-glass-face-self-shadow:
@@ -3029,6 +3038,7 @@
     --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
     --mu-r-link-underline-ink: rgba(255,255,255,.3);
     --mu-r-avatar-ring-ink: #252527;
+    --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(0,0,0,.6);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
     --mu-r-glass-face-self-shadow:

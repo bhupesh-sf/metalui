@@ -1127,6 +1127,23 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A person's thing, held on a raised plate: optional media on top, a title, a line of description, and a footer for its actions. A card that goes somewhere takes its link on the title, stretched over the whole card (one clear link for assistive tech); only such a card moves: hovered, it lifts one grid step on the settle spring while its ambient shadow grows (the hover lift, T5a), still again by the time the pointer leaves; pressed, it comes back down. Footer actions stay their own buttons above the stretched link. Selected (one of a set) carries the green ring. A card that goes nowhere is still. Reduce Motion: no lift; the shadow still grows. (the raised surface (recipe surface raise); the hover lift (Transitions T5a); the settle spring)
+    public static let card = MetalObjectRecipe(
+        name: "card",
+        layers: [
+
+        ],
+        props: [
+            "self.pad": .number(16.0),
+            "self.gap": .number(6.0),
+            "self.footer-gap": .number(12.0),
+            "self.media": .number(160.0),
+            "self.select-width": .number(2.0),
+            "self.select-offset": .number(3.0),
+            "lift.shadow": .perColorway(bone: "0 14px 28px -12px rgba(40,34,24,.28)", graphite: "0 14px 28px -12px rgba(0,0,0,.6)"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

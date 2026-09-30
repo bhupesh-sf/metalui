@@ -12,6 +12,7 @@ export { FormField, Fieldset, Form, type FormFieldRootProps, type FormProps } fr
 export { NumberField, type NumberFieldProps } from './components/number-field/number-field';
 export { Calendar, DatePicker, type CalendarProps, type DatePickerProps } from './components/calendar/calendar';
 export { Avatar, AvatarGroup, initialsOf, type AvatarProps, type AvatarGroupProps, type AvatarSize } from './components/avatar/avatar';
+export { Card, type CardRootProps, type CardTitleProps } from './components/card/card';
 export { Sparkline, type SparklineProps, type SparklinePoint } from './components/sparkline/sparkline';
 export { Dialog, type DialogRootProps, type DialogPopupProps } from './components/dialog/dialog';
 export { AlertDialog, type AlertDialogRootProps, type AlertDialogConfirmProps } from './components/alert-dialog/alert-dialog';

@@ -522,6 +522,12 @@
   --color-avatar-ring-ink: var(--mu-r-avatar-ring-ink);
   --spacing-avatar-group-overlap: var(--mu-r-avatar-group-overlap);
   --spacing-avatar-group-spread: var(--mu-r-avatar-group-spread);
+  --spacing-card-pad: var(--mu-r-card-self-pad);
+  --spacing-card-gap: var(--mu-r-card-self-gap);
+  --spacing-card-footer-gap: var(--mu-r-card-self-footer-gap);
+  --spacing-card-media: var(--mu-r-card-self-media);
+  --spacing-card-select-width: var(--mu-r-card-self-select-width);
+  --spacing-card-select-offset: var(--mu-r-card-self-select-offset);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1530,6 +1536,18 @@
 }
 @utility stroke-width-avatar-ring-width {
   stroke-width: var(--mu-r-avatar-ring-width);
+}
+@utility card-lift {
+  translate: 0 0; transition: translate var(--mu-spring-settle-d) var(--mu-spring-settle); &::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: var(--mu-r-card-lift-shadow); opacity: 0; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); } &:has(.mu-card-link):hover { translate: 0 calc(var(--mu-motion-step) * -1 * var(--mu-travel-settle)); } &:has(.mu-card-link):hover::after { opacity: 1; } &:has(.mu-card-link:active) { translate: 0 0; transition-duration: var(--mu-r-button-self-press); }
+}
+@utility card-stretch {
+  &::before { content: ''; position: absolute; inset: 0; border-radius: inherit; z-index: 0; }
+}
+@utility card-media-bleed {
+  display: block; width: calc(100% + 2 * var(--mu-r-card-self-pad)); max-width: none; margin: calc(var(--mu-r-card-self-pad) * -1) calc(var(--mu-r-card-self-pad) * -1) calc(var(--mu-r-card-self-footer-gap) - var(--mu-r-card-self-gap)); border-radius: var(--mu-r-surface-radius-card) var(--mu-r-surface-radius-card) 0 0; object-fit: cover;
+}
+@utility card-selected {
+  outline: var(--mu-r-card-self-select-width) solid var(--mu-focus); outline-offset: var(--mu-r-card-self-select-offset);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);
