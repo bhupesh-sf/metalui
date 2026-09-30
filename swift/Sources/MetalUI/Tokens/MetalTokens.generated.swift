@@ -2320,7 +2320,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A transient notice at the bottom centre: a glass pill in the colorway with the message, a quieter detail and an Undo cap with its key. Bone on bone, graphite on graphite. (reference style.css #toast, #toast .sub, #toast button, #toast button kbd)
+    /// A transient notice at the bottom centre: a glass pill in the colorway with the message, a quieter detail and an Undo cap with its key. Bone on bone, graphite on graphite. The deck: toasts stack in depth, newest in front. Each step back is step-scale smaller, peeks peek past the card in front (away from the screen edge) and is dim dimmer; visible are drawn, the rest counted. Fanned out, the cards stand gap apart. Swipe past swipe (Base UI's own fixed threshold) and the card leaves; a repeat presses the front card to press. (reference style.css #toast, #toast .sub, #toast button, #toast button kbd)
     public static let toast = MetalObjectRecipe(
         name: "toast",
         layers: [
@@ -2362,7 +2362,16 @@ public enum MetalRecipes {
             "self.blur": .text("blur(22px)"),
             "self.rise": .number(8.0),
             "self.scale": .text("0.97"),
-            "self.transition": .text("opacity var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-spring-settle-d) var(--mu-spring-settle)"),
+            "self.transition": .text("opacity var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-toast-spring-d) var(--mu-toast-spring)"),
+            "deck.step-scale": .text("0.95"),
+            "deck.peek": .number(8.0),
+            "deck.dim": .text("0.2"),
+            "deck.visible": .text("3"),
+            "deck.gap": .number(8.0),
+            "deck.swipe": .number(40.0),
+            "deck.press": .text("0.96"),
+            "close.size": .number(28.0),
+            "close.ink": .perColorway(bone: "#6E6E72", graphite: "#9A9AA0"),
             "text.gap": .number(6.0),
             "sub.ink": .perColorway(bone: "#6E6E72", graphite: "#9A9AA0"),
             "undo.height": .number(28.0),

@@ -901,6 +901,11 @@
   --color-toast-ink: var(--mu-r-toast-self-ink);
   --spacing-toast-bottom: var(--mu-r-toast-self-bottom);
   --spacing-toast-rise: var(--mu-r-toast-self-rise);
+  --spacing-toast-deck-peek: var(--mu-r-toast-deck-peek);
+  --spacing-toast-deck-gap: var(--mu-r-toast-deck-gap);
+  --spacing-toast-deck-swipe: var(--mu-r-toast-deck-swipe);
+  --spacing-toast-close-size: var(--mu-r-toast-close-size);
+  --color-toast-close-ink: var(--mu-r-toast-close-ink);
   --spacing-toast-text-gap: var(--mu-r-toast-text-gap);
   --color-toast-sub-ink: var(--mu-r-toast-sub-ink);
   --spacing-toast-undo-height: var(--mu-r-toast-undo-height);
@@ -2428,11 +2433,20 @@
 @utility recipe-toast-kbd {
   background: var(--mu-r-toast-kbd-background);
 }
-@utility toast-enter {
-  opacity: 0; transform: translateY(calc(var(--mu-r-toast-self-rise) * var(--mu-travel-settle))) scale(calc(1 - (1 - var(--mu-r-toast-self-scale)) * var(--mu-travel-settle)));
+@utility toast-deck-viewport {
+  --mu-toast-spring: var(--mu-spring-object); --mu-toast-spring-d: calc(var(--mu-spring-object-d) * var(--mu-travel-object)); &[data-expanded], &[data-folding] { --mu-toast-spring: var(--mu-spring-surface); --mu-toast-spring-d: calc(var(--mu-spring-surface-d) * var(--mu-travel-surface)); }
 }
-@utility toast-leave {
-  opacity: 0; transform: translateY(calc(var(--mu-r-toast-self-rise) * var(--mu-travel-release))) scale(calc(1 - (1 - var(--mu-r-toast-self-scale)) * var(--mu-travel-release))); transition-duration: var(--mu-spring-release-d); transition-timing-function: var(--mu-spring-release);
+@utility toast-deck {
+  --mu-toast-i: var(--toast-index, 0); --mu-toast-x: var(--toast-swipe-movement-x, 0px); --mu-toast-y: var(--toast-swipe-movement-y, 0px); --mu-toast-back: calc(var(--mu-toast-i) * var(--mu-r-toast-deck-peek) * -1); --mu-toast-fan: calc((var(--toast-offset-y, 0px) + var(--mu-toast-i) * var(--mu-r-toast-deck-gap)) * -1); position: absolute; bottom: 0; inset-inline: 0; margin-inline: auto; width: max-content; z-index: calc(var(--mu-r-toast-deck-visible) + 1 - var(--mu-toast-i)); transform-origin: 50% 0; transform: translateX(var(--mu-toast-x)) translateY(calc(var(--mu-toast-y) + var(--mu-toast-back))) scale(calc(1 - (1 - var(--mu-r-toast-deck-step-scale)) * var(--mu-toast-i))); opacity: calc(1 - var(--mu-r-toast-deck-dim) * var(--mu-toast-i)); &::after { content: ''; position: absolute; inset-inline: 0; top: 100%; height: calc(var(--mu-r-toast-deck-gap) + 1px); } &[data-expanded] { transform: translateX(var(--mu-toast-x)) translateY(calc(var(--mu-toast-y) + var(--mu-toast-fan))); opacity: 1; } &[data-limited] { opacity: 0; pointer-events: none; } &[data-starting-style] { opacity: 0; transform: translateY(calc(var(--mu-r-toast-self-rise) * var(--mu-travel-object))) scale(calc(1 - (1 - var(--mu-r-toast-self-scale)) * var(--mu-travel-object))); } &[data-ending-style] { opacity: 0; transform: translateY(calc(var(--mu-toast-back) + var(--mu-r-toast-self-rise) * var(--mu-travel-settle))) scale(calc(1 - (1 - var(--mu-r-toast-deck-step-scale)) * var(--mu-toast-i))); transition: opacity var(--mu-spring-release-d) var(--mu-spring-release), transform var(--mu-spring-release-d) var(--mu-spring-release); } &[data-ending-style][data-expanded] { transform: translateY(calc(var(--mu-toast-fan) + var(--mu-r-toast-self-rise) * var(--mu-travel-settle))); } &[data-ending-style][data-swipe-direction=right] { transform: translateX(calc(var(--mu-toast-x) + 60% * var(--mu-travel-release))) translateY(calc(var(--mu-toast-y) + var(--mu-toast-back))); } &[data-ending-style][data-expanded][data-swipe-direction=right] { transform: translateX(calc(var(--mu-toast-x) + 60% * var(--mu-travel-release))) translateY(calc(var(--mu-toast-y) + var(--mu-toast-fan))); } &[data-ending-style][data-swipe-direction=down] { transform: translateY(calc(var(--mu-toast-y) + 100% * var(--mu-travel-release))); }
+}
+@utility toast-content {
+  display: flex; align-items: center; gap: var(--mu-r-toast-self-gap); transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-behind]:not([data-expanded]) { opacity: 0; }
+}
+@utility toast-bump {
+  &[data-bump=a] { animation: mu-toast-bump-a var(--mu-spring-part-d) var(--mu-spring-part); } &[data-bump=b] { animation: mu-toast-bump-b var(--mu-spring-part-d) var(--mu-spring-part); }
+}
+@utility toast-more {
+  position: absolute; bottom: calc(100% + var(--mu-r-toast-deck-peek)); inset-inline: 0; margin-inline: auto; width: max-content; pointer-events: none;
 }
 @utility toast-undo-focus {
   outline: var(--mu-focus-width) solid var(--mu-green); outline-offset: var(--mu-focus-offset);
@@ -2453,6 +2467,18 @@
 }
 @utility transition-toast {
   transition: var(--mu-r-toast-self-transition);
+}
+@utility opacity-toast-deck-step-scale {
+  opacity: var(--mu-r-toast-deck-step-scale);
+}
+@utility opacity-toast-deck-dim {
+  opacity: var(--mu-r-toast-deck-dim);
+}
+@utility opacity-toast-deck-visible {
+  opacity: var(--mu-r-toast-deck-visible);
+}
+@utility opacity-toast-deck-press {
+  opacity: var(--mu-r-toast-deck-press);
 }
 @utility type-toast-undo {
   font: var(--mu-r-toast-undo-font);
@@ -3002,6 +3028,12 @@
 }
 @keyframes mu-cue-life {
   from { opacity: 0; }
+}
+@keyframes mu-toast-bump-a {
+  from { scale: calc(1 - (1 - var(--mu-r-toast-deck-press)) * var(--mu-travel-part)); } to { scale: 1; }
+}
+@keyframes mu-toast-bump-b {
+  from { scale: calc(1 - (1 - var(--mu-r-toast-deck-press)) * var(--mu-travel-part)); } to { scale: 1; }
 }
 @keyframes mu-link-card-in {
   from { opacity: 0; }
