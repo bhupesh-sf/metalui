@@ -323,4 +323,9 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Attachment**: its error line wraps beside Try again when narrow; its fixed max width fights a full-width list; no hook for the rows below to close up after it leaves.
 - [ ] **A shared row-leave helper**: the release-spring leave lives only inside Attachment (with its own reduced-motion check); lists of people, files and rows need it too. Note the release travel stays full under Reduce Motion by the token; decide whether that's right.
 - [ ] **Switch** has no `label` prop; blocks wire `aria-labelledby` and make the words toggle it by hand.
+- [ ] **Calendar bug: a day from the next or previous month can't be chosen with the pointer.** Pressing it focuses it first, which turns the month and removes the button before the click lands. The availability picker stops the focus on mouse-down as a workaround. Fix in the Calendar and test it.
+- [ ] **Calendar doesn't follow a controlled `value` into another month** (it keeps showing the old month); the availability picker remounts it. Add `month` / `onMonthChange` (also in the Calendar entry) and follow `value`.
+- [ ] **Calendar: no per-day unavailable predicate** (`isDateUnavailable`, already in the Calendar entry); the availability picker greys days with a scoped style keyed to aria-labels, which is fragile.
+- [ ] **Toggle has no radio-group form** (one latched key of several, like time slots); the library doesn't export Toggle's classes, so the block copies them. Add a `ToggleGroup` single-choice mode or a `RadioKeys`.
+- [ ] **Button has no waiting or done state** (see the Spinner entry: the wait lives in the key); blocks hold the key down and mark it `aria-disabled` by hand.
 - [ ] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message.
