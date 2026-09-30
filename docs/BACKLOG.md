@@ -70,7 +70,7 @@ Audit (2026-09-30): the icon set has 47 product glyphs. Each plays its act when 
 
 Rules to adopt first (one layer, in the Button foundation and agent guides):
 
-- [ ] **An action names itself with a glyph and a verb**: a button that does something (save, share, export, delete, send, attach, copy, new) leads with its glyph. A plain choice (Cancel, Done, Close as a word) stays words only. `Button` gets a documented `icon` slot (leading, sized by the cap), not ad hoc children.
+- [x] **An action names itself with a glyph and a verb** (done: `Button` `icon` prop; link, graphite and strip caps still lack a glyph size token): a button that does something (save, share, export, delete, send, attach, copy, new) leads with its glyph. A plain choice (Cancel, Done, Close as a word) stays words only. `Button` gets a documented `icon` slot (leading, sized by the cap), not ad hoc children.
 - [ ] **A state change morphs, never swaps**: when the same control's meaning changes (copy → copied, pin → unpin, collapse → expand), its glyph morphs with `MorphIcon` on the settle spring, and its label turns on the drum (`SwapText`) together.
 - [ ] **No hand-drawn glyphs in components**: chevrons, arrows, ticks, plus and minus come from the set (one source).
 
@@ -105,7 +105,7 @@ pagination, calendar (3), navigation-menu, accordion, attachment, combobox, sele
 
 ### D. Glyphs the set lacks (design each in `icons.mjs`, with its act and morph partners)
 
-- `chevron` (one glyph, turned by morph for down / up / left / right), `minus`
+- [x] `chevron` (one glyph; `turn` prop on Icon and MorphIcon), `minus` (done)
 - `save`, `download`, `upload`, `send`, `copy` (distinct from paste), `external` (the link's arrow)
 - `settings`, `filter`, `sort`, `eye` / `eye-off` (a password field), `lock`
 - `info`, `warning` (toast and alert kinds), `sun` / `moon` (colorway), `sidebar` (the rail toggle)
