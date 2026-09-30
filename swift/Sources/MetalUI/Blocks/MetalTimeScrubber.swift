@@ -82,7 +82,7 @@ public struct MetalTimeScrubber: View {
                 in: range.lowerBound.timeIntervalSince1970...range.upperBound.timeIntervalSince1970,
                 step: MetalScrubberMetrics.stepMs / 1000,
                 largeStep: MetalScrubberMetrics.largeStepMs / 1000,
-                marks: marks.map(fraction), ticks: dayTicks,
+                marks: marks.map(fraction), ticks: dayTicks, tickStyle: .engraved,
                 label: "Memory", valueText: { _ in "MEMORY · \(readout)" },
                 onFocusChange: onFocusChange,
                 onDragChange: onScrubChange,

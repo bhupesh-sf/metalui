@@ -2,7 +2,7 @@
 .ed-slider { position: relative; display: inline-flex; }
 .ed-slider .ed-overlay { z-index: 2; }
 /* a box over the knob that rides the knob's own spring; still while the knob is dragged */
-.ed-slider-knob { position: absolute; display: block; pointer-events: none; transition: var(--mu-r-slider-knob-transition); }
+.ed-slider-knob { position: absolute; display: block; pointer-events: none; transition: var(--mu-r-slider-self-transition); }
 .ed-slider:has(.mu-slider[data-dragging]) .ed-slider-knob { transition: none; }
 .ed-slider-ring { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
 .ed-slider-ring :is(circle, path) { fill: none; stroke: var(--mu-presence-guide); stroke-width: .5; stroke-linecap: round; opacity: .6;

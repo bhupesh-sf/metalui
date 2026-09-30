@@ -54,7 +54,7 @@ test('knob: dragging the knob sideways turns its shine on the specimen and the b
   await part(xray, 'Knob');
   const start = await value(card, 'Shine').textContent();
   const bench = await style(benchKnobFace(xray), 'background');
-  const knob = card.locator('.mu-slider-knob');
+  const knob = card.locator('.mu-slider-knob-face');
   const metal = await computed(knob, 'background-image');
   await drag(page, card.getByRole('slider', { name: 'Shine' }), 30, 0);
   await expect(value(card, 'Shine')).not.toHaveText(start!);
@@ -81,13 +81,15 @@ test('move: the rims tune the spring the knob rides on the specimen and the benc
   const card = xray.locator('.xr-card');
   await part(xray, 'Move');
   const knob = card.locator('.mu-slider-knob');
+  // the knob and its fill ride one spring, set on the slider itself
+  const springs = card.locator('.mu-slider');
   const benchMove = await style(benchKnob(xray), 'transition');
-  const knobMove = await computed(knob, 'transition');
+  const knobMove = await computed(springs, 'transition');
   const k0 = Number(await value(card, 'Stiffness').textContent());
   await drag(page, card.getByRole('slider', { name: 'Stiffness' }), 24, 0);
   expect(Number(await value(card, 'Stiffness').textContent())).toBeGreaterThan(k0);
   expect(await style(benchKnob(xray), 'transition')).not.toBe(benchMove);
-  expect(await computed(knob, 'transition')).not.toBe(knobMove);
+  expect(await computed(springs, 'transition')).not.toBe(knobMove);
   const c0 = Number(await value(card, 'Damping').textContent());
   const benchMove2 = await style(benchKnob(xray), 'transition');
   await drag(page, card.getByRole('slider', { name: 'Damping' }), 0, 16);
@@ -109,12 +111,12 @@ test('marks: switches take the marks and the ticks off the specimen and the benc
   await expect(card.locator('.mu-slider-marks')).toHaveCount(1);
   await card.getByRole('switch', { name: 'Marks in the track' }).click();
   await expect(card.locator('.mu-slider-marks')).toHaveCount(0);
-  await expect(xray.locator('.xr-scene .xr-face.is-flat')).toHaveCount(flat - 4);
-  const labels = await xray.locator('.xr-scene .eng').count();
+  await expect(xray.locator('.xr-scene .xr-face.is-flat')).toHaveCount(flat - 9); // a notch at every tenth
+  const labels = await xray.locator('.xr-scene .xr-tick-label').count();
   await card.locator('.ed-layer').filter({ hasText: 'Ticks and labels' }).locator('.mu-row-text').click();
   await expect(card.getByRole('switch', { name: 'Ticks and labels' })).toHaveAttribute('aria-checked', 'false');
   await expect(card.locator('.mu-slider-ticks')).toHaveCount(0);
-  await expect(xray.locator('.xr-scene .eng')).toHaveCount(labels - 5);
+  await expect(xray.locator('.xr-scene .xr-tick-label')).toHaveCount(labels - 5);
 });
 
 test('light: dragging the sun moves the light on the specimen and the bench', async ({ page }) => {
@@ -122,7 +124,7 @@ test('light: dragging the sun moves the light on the specimen and the bench', as
   const card = xray.locator('.xr-card');
   await part(xray, 'Light');
   const bench = await style(benchGroove(xray), 'background');
-  const knob = card.locator('.mu-slider-knob');
+  const knob = card.locator('.mu-slider-knob-face');
   const shadow = await computed(knob, 'box-shadow');
   await drag(page, card.getByRole('slider', { name: 'Light' }), 30, 4);
   await expect(value(card, 'From')).not.toHaveText('top');
@@ -134,7 +136,7 @@ test('layers: a switch takes its layer off the specimen and the bench', async ({
   const xray = await openDocs(page, 'bone');
   const card = xray.locator('.xr-card');
   await part(xray, 'Layers');
-  const knob = card.locator('.mu-slider-knob');
+  const knob = card.locator('.mu-slider-knob-face');
   expect(await computed(knob, 'background-image')).toContain('conic-gradient');
   await card.getByRole('switch', { name: 'Metal' }).click();
   await expect(card.getByRole('switch', { name: 'Metal' })).toHaveAttribute('aria-checked', 'false');

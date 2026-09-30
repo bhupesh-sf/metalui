@@ -1653,28 +1653,46 @@
   --mu-r-dialog-self-gap: 14px;
   --mu-r-dialog-actions-gap: 8px;
   /* slider: reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob */
-  --mu-r-slider-fill-background:
-    /* mu-recipe:slider:0 */ linear-gradient(#9BE6BF, #5FC894);
+  --mu-r-slider-fill-shadow:
+    /* mu-recipe:slider:2 */ inset 0 1px 2px rgba(0,70,35,.3),
+    /* mu-recipe:slider:3 */ inset 0 0 0 .5px rgba(0,70,35,.25);
   --mu-r-slider-knob-background:
-    /* mu-recipe:slider:1 */ conic-gradient(from 200deg, #FAFAF8, #C9C9C5, #F2F2EF, #B8B8B4, #FAFAF8);
+    /* mu-recipe:slider:4 */ conic-gradient(from 200deg, #FAFAF8, #C9C9C5, #F2F2EF, #B8B8B4, #FAFAF8);
   --mu-r-slider-knob-shadow:
-    /* mu-recipe:slider:2 */ inset 0 0 0 2px rgba(255,255,255,.35),
-    /* mu-recipe:slider:3 */ 0 0 0 .5px rgba(0,0,0,.12),
-    /* mu-recipe:slider:4 */ 0 2px 4px rgba(0,0,0,.18);
-  --mu-r-slider-track-height: 10px;
-  --mu-r-slider-track-inset: 6px;
-  --mu-r-slider-fill-opacity: 0.55;
-  --mu-r-slider-fill-transition: width var(--mu-spring-part-d) var(--mu-spring-part);
+    /* mu-recipe:slider:5 */ inset 0 0 0 2px rgba(255,255,255,.35),
+    /* mu-recipe:slider:6 */ 0 0 0 .5px rgba(0,0,0,.12),
+    /* mu-recipe:slider:7 */ 0 2px 4px rgba(0,0,0,.18);
+  --mu-r-slider-knob-hover-shadow:
+    /* mu-recipe:slider:8 */ inset 0 0 0 2px rgba(255,255,255,.35),
+    /* mu-recipe:slider:9 */ 0 0 0 .5px rgba(0,0,0,.12),
+    /* mu-recipe:slider:10 */ 0 4px 9px rgba(0,0,0,.2);
+  --mu-r-slider-knob-press-shadow:
+    /* mu-recipe:slider:11 */ inset 0 0 0 2px rgba(255,255,255,.35),
+    /* mu-recipe:slider:12 */ 0 0 0 .5px rgba(0,0,0,.12),
+    /* mu-recipe:slider:13 */ 0 1px 2px rgba(0,0,0,.22);
+  --mu-r-slider-self-transition: --mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part);
+  --mu-r-slider-self-disabled: 0.4;
+  --mu-r-slider-compact-track: 6px;
+  --mu-r-slider-compact-knob: 16px;
+  --mu-r-slider-compact-glyph: 14px;
+  --mu-r-slider-compact-gap: 8px;
+  --mu-r-slider-regular-track: 10px;
+  --mu-r-slider-regular-knob: 22px;
+  --mu-r-slider-regular-glyph: 16px;
+  --mu-r-slider-regular-gap: 10px;
+  --mu-r-slider-large-track: 14px;
+  --mu-r-slider-large-knob: 28px;
+  --mu-r-slider-large-glyph: 18px;
+  --mu-r-slider-large-gap: 12px;
   --mu-r-slider-mark-w: 2px;
-  --mu-r-slider-mark-h: 4px;
   --mu-r-slider-mark-radius: 1px;
   --mu-r-slider-tick-w: 1px;
   --mu-r-slider-tick-h: 5px;
-  --mu-r-slider-tick-top: 11px;
-  --mu-r-slider-tick-lift: 9px;
-  --mu-r-slider-knob-size: 22px;
+  --mu-r-slider-tick-gap: 3px;
   --mu-r-slider-knob-rise: 6px;
-  --mu-r-slider-knob-transition: inset-inline-start var(--mu-spring-part-d) var(--mu-spring-part), left var(--mu-spring-part-d) var(--mu-spring-part);
+  --mu-r-slider-knob-lift: 1.08;
+  --mu-r-slider-knob-press: 0.94;
+  --mu-r-slider-knob-transition: scale var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle);
   /* switcher: reference style.css .seg, .seg button, .seg button.on */
   --mu-r-switcher-self-pad: 3px;
   --mu-r-switcher-self-gap: 6px;
@@ -2388,8 +2406,10 @@
   --mu-r-sparkline-base-color: rgba(40,38,32,.1);
   --mu-r-dialog-scrim-color: rgba(236,235,231,.5);
   --mu-r-dialog-scrim-opaque: rgba(236,235,231,.9);
-  --mu-r-slider-mark-color: rgba(40,38,32,.28);
-  --mu-r-slider-tick-color: rgba(40,38,32,.18);
+  --mu-r-slider-fill-background:
+    /* mu-recipe:slider:0 */ linear-gradient(#38B070, #2FA064);
+  --mu-r-slider-mark-color: rgba(40,38,32,.22);
+  --mu-r-slider-tick-color: rgba(40,38,32,.3);
   --mu-r-switcher-self-background:
     /* mu-recipe:switcher:0 */ linear-gradient(#E1E0DC, #EAE9E5);
   --mu-r-switcher-self-shadow:
@@ -2881,8 +2901,10 @@
   --mu-r-sparkline-base-color: rgba(255,255,255,.12);
   --mu-r-dialog-scrim-color: rgba(10,10,11,.5);
   --mu-r-dialog-scrim-opaque: rgba(10,10,11,.9);
-  --mu-r-slider-mark-color: rgba(255,255,255,.28);
-  --mu-r-slider-tick-color: rgba(255,255,255,.18);
+  --mu-r-slider-fill-background:
+    /* mu-recipe:slider:1 */ linear-gradient(#45BD7F, #339F68);
+  --mu-r-slider-mark-color: rgba(255,255,255,.14);
+  --mu-r-slider-tick-color: rgba(255,255,255,.26);
   --mu-r-switcher-self-background:
     /* mu-recipe:switcher:1 */ linear-gradient(#121213, #161617);
   --mu-r-switcher-self-shadow:
@@ -3375,8 +3397,10 @@
     --mu-r-sparkline-base-color: rgba(255,255,255,.12);
     --mu-r-dialog-scrim-color: rgba(10,10,11,.5);
     --mu-r-dialog-scrim-opaque: rgba(10,10,11,.9);
-    --mu-r-slider-mark-color: rgba(255,255,255,.28);
-    --mu-r-slider-tick-color: rgba(255,255,255,.18);
+    --mu-r-slider-fill-background:
+      linear-gradient(#45BD7F, #339F68);
+    --mu-r-slider-mark-color: rgba(255,255,255,.14);
+    --mu-r-slider-tick-color: rgba(255,255,255,.26);
     --mu-r-switcher-self-background:
       linear-gradient(#121213, #161617);
     --mu-r-switcher-self-shadow:

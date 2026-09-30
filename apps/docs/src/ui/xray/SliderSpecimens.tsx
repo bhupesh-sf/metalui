@@ -22,9 +22,9 @@ import './slider-specimens.css';
 type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; face: React.CSSProperties };
 
 // one source per fact: the recipe's numbers
-const RP = tokens.recipes.slider.props as { track: { height: number }; knob: { size: number } };
-const K = RP.knob.size;
-const TH = RP.track.height;
+const RP = tokens.recipes.slider.props as { regular: { track: number; knob: number } };
+const K = RP.regular.knob;
+const TH = RP.regular.track;
 const KNOB_BG = tokens.recipes.slider.layers.find((l) => l.part === 'knob' && l.prop === 'background')!.value;
 const SHINE_FROM = Number(KNOB_BG.match(/from\s+([\d.]+)deg/)?.[1] ?? 0);
 const PART = tokens.springs.part as { stiffness: number; damping: number };
@@ -42,7 +42,7 @@ function Real({ m, set }: { m: Model; set: Props['set'] }) {
       <Slider.Root value={Math.round(m.v * 100)} min={0} max={100} step={1} onValueChange={(v) => set({ v: v / 100 })}>
         <Slider.Track />
         {m.marks && <Slider.Marks at={MARKS} />}
-        {m.ticks && <Slider.Ticks ticks={TICKS.map((f) => ({ at: f, label: <span className="eng">{Math.round(f * 100)}</span> }))} />}
+        {m.ticks && <Slider.Ticks ticks={TICKS.map((f) => ({ at: f, label: Math.round(f * 100) }))} />}
         <Slider.Knob aria-label="Value" />
       </Slider.Root>
     </div>
@@ -55,7 +55,7 @@ function Well({ well, zoom, light = false, children }: { well: React.RefObject<H
 
 /** Where the knob sits on the specimen: a box over it that rides the knob's own spring. */
 function KnobSpot({ m, children }: { m: Model; children: React.ReactNode }) {
-  return <span className="ed-slider-knob" style={{ left: `calc(${(m.v * 100).toFixed(2)}% - ${K / 2}px)`, top: `calc(50% - ${K / 2}px)`, width: K, height: K }}>{children}</span>;
+  return <span className="ed-slider-knob" style={{ ['--mu-slider-at' as string]: m.v, left: `calc(var(--mu-slider-at) * (100% - ${K}px))`, top: `calc(50% - ${K / 2}px)`, width: K, height: K }}>{children}</span>;
 }
 
 /** Knob: the knob is the handle; sideways turns the bands of its metal. */
