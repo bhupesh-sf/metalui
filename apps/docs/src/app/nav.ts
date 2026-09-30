@@ -50,7 +50,10 @@ export const NAV: NavGroup[] = [
   },
   {
     label: 'Blocks',
-    items: [{ to: '/blocks/metrics-dashboard', label: 'Metrics dashboard' }],
+    items: [
+      { to: '/blocks/metrics-dashboard', label: 'Metrics dashboard' },
+      { to: '/blocks/ai-composer', label: 'AI composer' },
+    ],
   },
   ...LAYER_GROUPS,
   {
