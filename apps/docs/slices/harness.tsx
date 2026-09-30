@@ -24,6 +24,8 @@ let root: Root | null = null;
 export interface OpenOptions {
   /** CSS media features the page sees, e.g. { 'prefers-reduced-motion': 'reduce' }. */
   media?: Record<string, string>;
+  /** A reload of the same site: keep local and session storage (a fresh open clears them). */
+  reload?: boolean;
   /** The window, when a slice needs another width than the desktop's 1280 × 900 (a phone: 375 × 812). */
   viewport?: [number, number];
 }
@@ -34,13 +36,16 @@ export interface OpenOptions {
  * empty, and the page has come to rest (nothing is left to scroll it).
  */
 export async function openPage(path: string, colorway: Colorway, options: OpenOptions = {}) {
+  pinOuterPage();
   root?.unmount();
   await commands.media(Object.entries(options.media ?? {}).map(([name, value]) => ({ name, value })));
   await page.viewport(...(options.viewport ?? [1280, 900]));
   // a fresh page has an empty store (the site's saved colorway, motion switch and saved work all live there)
   // and no leftovers on <html>: the new colorway is on it before the first frame, not after the mount
-  localStorage.clear();
-  sessionStorage.clear();
+  if (!options.reload) {
+    localStorage.clear();
+    sessionStorage.clear();
+  }
   localStorage.setItem('metalui:colorway', colorway);
   const html = document.documentElement;
   html.classList.remove('rm');
@@ -99,8 +104,8 @@ export function target(el: Element) {
   return `[data-slice-target="${id}"]`;
 }
 type Step = { to: [number, number]; ms?: number } | { down: true } | { up: true } | { pause: number };
-/** Real mouse input at an element, as steps; moves are offsets from its centre. The button stays held between calls. */
-export const pointer = (el: Element, steps: Step[]) => commands.pointer(target(el), steps);
+/** Real mouse input at an element, as steps; moves are offsets from its centre. */
+export const pointer = (el: Element, steps: Step[]) => { pinOuterPage(); return commands.pointer(target(el), steps); };
 /** Press and hold at an element's centre (or an offset from it); `release` lets go. */
 export const press = (el: Element, at: [number, number] = [0, 0]) => pointer(el, [{ to: at }, { down: true }]);
 export const release = (el: Element) => pointer(el, [{ up: true }]);
@@ -111,18 +116,49 @@ export const release = (el: Element) => pointer(el, [{ up: true }]);
  * intermediate point in one go. The button stays held until `up`.
  */
 let at: [number, number] = [0, 0];
-const fromMiddle = (x: number, y: number): [number, number] => [x - document.documentElement.clientWidth / 2, y - document.documentElement.clientHeight / 2];
+// WebDriver moves are offsets from an element's in-view centre. The page's own centre shifts by half a
+// scrollbar whenever one comes or goes, so the mouse measures from a fixed 16 px anchor at the window's
+// top-left instead: its centre is always (8, 8).
+const ANCHOR = 16;
+function anchor() {
+  let a = document.getElementById('slice-anchor');
+  if (!a) {
+    a = document.createElement('div');
+    a.id = 'slice-anchor';
+    a.setAttribute('aria-hidden', 'true');
+    a.style.cssText = `position:fixed;left:0;top:0;width:${ANCHOR}px;height:${ANCHOR}px;pointer-events:none;opacity:0;z-index:2147483647`;
+    document.body.append(a);
+  }
+  return a;
+}
+const fromMiddle = (x: number, y: number): [number, number] => [x - ANCHOR / 2, y - ANCHOR / 2];
+
+/**
+ * The slice's page is a frame inside Vitest's own page, which is a few pixels taller than the window
+ * (904 in 900). A slice that scrolls something into view can scroll that outer page too, shifting the
+ * whole frame, so WebDriver's coordinates and the page's disagree by those pixels. Pin it: back at the
+ * top, and clipped so nothing can scroll it again.
+ */
+function pinOuterPage() {
+  if (window.parent === window) return;
+  const outer = window.parent.document.documentElement;
+  if (outer.style.overflow !== 'clip') {
+    outer.style.overflow = 'clip';
+    window.parent.document.body.style.overflow = 'clip';
+  }
+  window.parent.scrollTo(0, 0);
+}
 export const mouse = {
   async move(x: number, y: number, opts: { steps?: number } = {}) {
     const n = Math.max(1, opts.steps ?? 1);
     const [x0, y0] = at;
     const steps: Step[] = Array.from({ length: n }, (_, i) => ({ to: fromMiddle(x0 + ((x - x0) * (i + 1)) / n, y0 + ((y - y0) * (i + 1)) / n) }));
     at = [x, y];
-    await pointer(document.documentElement, steps);
+    await pointer(anchor(), steps);
   },
   // a WebDriver action chain starts at the page's corner: press and release where the mouse is
-  down: () => pointer(document.documentElement, [{ to: fromMiddle(...at) }, { down: true }]),
-  up: () => pointer(document.documentElement, [{ to: fromMiddle(...at) }, { up: true }]),
+  down: () => pointer(anchor(), [{ to: fromMiddle(...at) }, { down: true }]),
+  up: () => pointer(anchor(), [{ to: fromMiddle(...at) }, { up: true }]),
   /**
    * A whole drag in one go: press at `from`, move to `to` in `steps`, hold `hold` ms, let go. Use it
    * whenever the page captures the pointer: Chrome drops pointer capture at the end of every WebDriver
@@ -140,7 +176,7 @@ export const mouse = {
     if (opts.hold) steps.push({ pause: opts.hold });
     steps.push({ up: true });
     at = to;
-    return pointer(document.documentElement, steps);
+    return pointer(anchor(), steps);
   },
 };
 

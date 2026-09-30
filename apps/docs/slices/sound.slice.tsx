@@ -77,7 +77,7 @@ test('a muted material stays silent, and settings survive a reload but sound doe
   await expect.poll(lastText).toMatch(/Stone · \d+ Hz · silent \(material muted\)/);
 
   // A reload: the site mounted afresh, storage kept.
-  await openPage('/foundations/sound', 'bone');
+  await openPage('/foundations/sound', 'bone', { reload: true });
   await expect.element(settings()).toHaveAttribute('data-on', 'false');
   await expect.element(stoneBox()).not.toBeChecked();
 });

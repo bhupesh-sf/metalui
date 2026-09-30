@@ -34,7 +34,7 @@ for (const colorway of COLORWAYS) {
 
 | | |
 |---|---|
-| `openPage(path, colorway, { media, viewport })` | Mount the site at a route. `media: { 'prefers-reduced-motion': 'reduce' }`, `viewport: [375, 812]`. |
+| `openPage(path, colorway, { media, viewport, reload })` | Mount the site at a route, fresh: storage cleared, colorway set before the mount, settled (scroll restoration done). `media: { 'prefers-reduced-motion': 'reduce' }`, `viewport: [375, 812]`, `reload: true` keeps storage, like a page reload. |
 | `press(el, [dx, dy])`, `release(el)` | A real held press at an element's centre (or an offset from it): CSS `:active`, pointer capture. |
 | `pointer(el, steps)` | Real mouse steps relative to an element's centre, in one call: `{ to: [dx, dy], ms }`, `{ down: true }`, `{ up: true }`, `{ pause: ms }`. |
 | `mouse.move(x, y, { steps })`, `mouse.down()`, `mouse.up()` | The mouse in page coordinates (clientX/clientY). The button stays held between calls. |

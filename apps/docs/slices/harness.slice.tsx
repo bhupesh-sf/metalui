@@ -3,6 +3,13 @@ import { mouse, openPage, until } from './harness';
 
 // The harness itself, as a slice: what the other slices stand on has to be true.
 
+test('the page is not shifted by the outer page scrolling', async () => {
+  await openPage('/components/button', 'bone');
+  // a slice that scrolls something into view must not scroll Vitest's page around this one
+  document.querySelector('main section:last-of-type')?.scrollIntoView();
+  expect(window.parent === window || window.parent.scrollY === 0).toBe(true);
+});
+
 test('the mouse lands where it says, stepped moves included', async () => {
   await openPage('/components/button', 'bone');
   const seen: [number, number][] = [];
