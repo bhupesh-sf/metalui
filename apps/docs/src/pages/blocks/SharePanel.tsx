@@ -52,22 +52,14 @@ export default function SharePanelPage() {
     <BlockPage
       title="Share panel"
       lede="Share a folder with people: drop in its files and watch them upload, invite people by email with what they may do, and turn on a link anyone can open."
-      preview={{
+      play={{
         lede: 'Drop or choose files, try the failed upload again, invite someone, change what a person can do or remove them, then turn on the link and copy it.',
         caption: 'live block · sample data · simulated uploads',
         node: <Opened />,
       }}
-      use={[
-        { id: 'U1', title: 'Sharing one thing with a few people', body: 'A folder, a trip, a project: its files, who has it and whether a link opens it, in one place.' },
-        { id: 'U2', title: 'Inside a sheet or a popover', body: 'It measures itself, so it fits a side sheet, a dialog or the page.' },
-      ]}
-      avoid={[
-        { id: 'N1', title: 'Managing a whole team', body: 'Roles, groups and many people need a members table with search, not a list in a panel.' },
-        { id: 'N2', title: 'Only a link', body: 'If nobody is invited by name, a Copy link button on its own is enough.' },
-      ]}
-      install={{
+      usage={{
         file: 'src/blocks/share-panel.tsx',
-        usage: `import { SharePanel } from '@/blocks/share-panel';
+        code: `import { SharePanel } from '@/blocks/share-panel';
 
 export function ShareSheet({ onClose }: { onClose: () => void }) {
   return <SharePanel folder="Lisbon trip" onClose={onClose} autoFocus />;
@@ -76,7 +68,7 @@ export function ShareSheet({ onClose }: { onClose: () => void }) {
 // Replace PEOPLE and FILES (the sample data) with your folder's, the upload tick with your
 // uploader's progress events, and LINK with the folder's real share link.`,
       }}
-      builtFrom={[
+      madeOf={[
         { label: 'Drop zone', to: '/components/drop-zone' },
         { label: 'Attachment', to: '/components/attachment' },
         { label: 'Field', to: '/components/field' },
@@ -90,42 +82,26 @@ export function ShareSheet({ onClose }: { onClose: () => void }) {
         { label: 'The drum', to: '/foundations/transitions' },
         { label: 'Icons (morph)', to: '/icons' },
       ]}
-      behaviour={[
-        {
-          title: 'Keyboard',
-          rules: [
-            { id: 'K1', title: 'Tab', body: 'Moves through close, the drop zone, each file’s keys, the invite row, each person’s permission and ×, the switch, the link and Copy link.' },
-            { id: 'K2', title: 'Space or ↩ on the drop zone', body: 'Opens the file picker.' },
-            { id: 'K3', title: '↩ in the email field', body: 'Invites; the field empties and keeps focus for the next one.' },
-            { id: 'K4', title: '⎋', body: 'Closes the panel from anywhere in it (a select’s open list closes first).' },
-          ],
-        },
-        {
-          title: 'Accessibility',
-          rules: [
-            { id: 'A1', title: 'Results are said', body: 'A polite status says who was invited, what was uploaded or removed, what a person can do now, and that the link was copied.' },
-            { id: 'A2', title: 'Every control is named', body: 'The email field has a label, each person’s select and × say whose they are, and the switch is named by its words.' },
-            { id: 'A3', title: 'Focus never falls to the page', body: 'Removing a person moves focus to the next ×; closing returns it to the key that opened the panel.' },
-          ],
-        },
-        {
-          title: 'Motion',
-          rules: [
-            { id: 'M1', title: 'Arrivals land', body: 'A new file or person drops one nest into place on the object spring: it was put there.' },
-            { id: 'M2', title: 'Leaving closes the gap', body: 'A removed row steps down and fades on the release spring, then the rows under it travel up.' },
-            { id: 'M3', title: 'A state change morphs', body: 'Copy link morphs paste → check and turns to “Copied” on the drum; it turns back after 1.6 s.' },
-            { id: 'M4', title: 'Reduce Motion', body: 'Everything changes at once; the drum crossfades; upload tracks still fill.' },
-          ],
-        },
-        {
-          title: 'Responsive',
-          rules: [
-            { id: 'R1', title: 'It measures itself', body: 'The block is a container: under 28rem the invite row wraps, with the email on its own line.' },
-          ],
-        },
-      ]}
-      tune={{ lede: 'The Share panel swaps the springs a row lands, leaves and travels on, and stretches time.', node: <Tuned /> }}
+      more={[{ id: 'tune', title: 'Tune it', lede: 'The Share panel swaps the springs a row lands, leaves and travels on, and stretches time.', node: <Tuned /> }]}
       source={source}
+      rules={[
+        { id: 'U1', title: 'Sharing one thing with a few people', body: 'A folder, a trip, a project: its files, who has it and whether a link opens it, in one place.', origin: 'Use it for' },
+        { id: 'U2', title: 'Inside a sheet or a popover', body: 'It measures itself, so it fits a side sheet, a dialog or the page.', origin: 'Use it for' },
+        { id: 'N1', title: 'Managing a whole team', body: 'Roles, groups and many people need a members table with search, not a list in a panel.', origin: 'Not for' },
+        { id: 'N2', title: 'Only a link', body: 'If nobody is invited by name, a Copy link button on its own is enough.', origin: 'Not for' },
+        { id: 'K1', title: 'Tab', body: 'Moves through close, the drop zone, each file’s keys, the invite row, each person’s permission and ×, the switch, the link and Copy link.', origin: 'Keyboard' },
+        { id: 'K2', title: 'Space or ↩ on the drop zone', body: 'Opens the file picker.', origin: 'Keyboard' },
+        { id: 'K3', title: '↩ in the email field', body: 'Invites; the field empties and keeps focus for the next one.', origin: 'Keyboard' },
+        { id: 'K4', title: '⎋', body: 'Closes the panel from anywhere in it (a select’s open list closes first).', origin: 'Keyboard' },
+        { id: 'A1', title: 'Results are said', body: 'A polite status says who was invited, what was uploaded or removed, what a person can do now, and that the link was copied.', origin: 'Accessibility' },
+        { id: 'A2', title: 'Every control is named', body: 'The email field has a label, each person’s select and × say whose they are, and the switch is named by its words.', origin: 'Accessibility' },
+        { id: 'A3', title: 'Focus never falls to the page', body: 'Removing a person moves focus to the next ×; closing returns it to the key that opened the panel.', origin: 'Accessibility' },
+        { id: 'M1', title: 'Arrivals land', body: 'A new file or person drops one nest into place on the object spring: it was put there.', origin: 'Motion' },
+        { id: 'M2', title: 'Leaving closes the gap', body: 'A removed row steps down and fades on the release spring, then the rows under it travel up.', origin: 'Motion' },
+        { id: 'M3', title: 'A state change morphs', body: 'Copy link morphs paste → check and turns to “Copied” on the drum; it turns back after 1.6 s.', origin: 'Motion' },
+        { id: 'M4', title: 'Reduce Motion', body: 'Everything changes at once; the drum crossfades; upload tracks still fill.', origin: 'Motion' },
+        { id: 'R1', title: 'It measures itself', body: 'The block is a container: under 28rem the invite row wraps, with the email on its own line.', origin: 'Responsive' },
+      ]}
     />
   );
 }

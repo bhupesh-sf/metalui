@@ -52,7 +52,7 @@ export const NAV: NavGroup[] = [
   {
     label: 'Blocks',
     items: [
-      { to: '/blocks/metrics-dashboard', label: 'Metrics dashboard' },
+      { to: '/blocks/studio-week', label: 'Studio week' },
       { to: '/blocks/ai-composer', label: 'AI composer' },
       { to: '/blocks/share-panel', label: 'Share panel' },
       { to: '/blocks/availability-picker', label: 'Availability picker' },

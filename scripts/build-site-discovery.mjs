@@ -47,7 +47,7 @@ const descriptions = {
   '/foundations/sound': 'Hear MetalUI sound gestures and learn how tactile feedback pairs with motion.',
   '/foundations/motion': 'MetalUI motion classes, physical springs, travel distances, and reduced-motion behavior.',
   '/foundations/transitions': 'MetalUI state-change recipes for press, selection, panels, labels, and icons.',
-  '/blocks/metrics-dashboard': 'A live MetalUI analytics block: a range, four KPI tiles that pick the charted measure, an inspectable chart with compare, and top pages and sources.',
+  '/blocks/studio-week': 'A live MetalUI block: one week of a canvas workspace on a dot matrix, hour by hour, with readouts for notes, regions, confirmed cues and time in the past, and the recognizer by kind.',
   '/blocks/ai-composer': 'A live MetalUI chat block: a composer that grows, attachments, a model choice, and replies that stream in word by word with stop, copy and retry.',
   '/blocks/share-panel': 'A live MetalUI sharing block: drop files that upload with progress, invite people by email with a permission, and turn on and copy a share link.',
   '/blocks/availability-picker': 'A live MetalUI booking block: a host, a call length, a calendar of the next six weeks, the day\'s free times re-labelled by time zone, and Confirm to Booked.',

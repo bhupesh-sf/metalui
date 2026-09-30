@@ -3,70 +3,59 @@ import { Link } from 'react-router';
 import { Bench, Code, PageHeader, Rules, Section, SourceTabs, type Rule } from './doc';
 
 /* ─────────────────────────────────────────────────────────
- * BLOCK PAGE · the shape every block page shares
+ * BLOCK PAGE · the component page's shape, for a working screen
  *
  *   head        title and one plain line
- *   preview     the live block with sample data, full width
- *   use         when to use it, when not (and what to use instead)
- *   install     copy the file into your project, import it, render it
- *   built from  the MetalUI parts it composes, each a link
- *   behaviour   keyboard, accessibility, motion, responsive: what a builder must keep
- *   tune        the block's DialKit panel
- *   source      the block's own file
- * A block is a working screen made of components, not a component: it is copied, not imported.
+ *   playground  the live block with sample data, and what to try
+ *   usage       where the file goes, the smallest use, and the parts it is made of (each a link)
+ *   more        the block's own sections (its DialKit panel)
+ *   source      the block's file
+ *   rules       what it is for and not for, and what a builder must keep (keys, access, motion,
+ *               layout); each rule says where it comes from, as component rules do
+ * A block is copied into a project, not imported: it composes components into one job.
  * ───────────────────────────────────────────────────────── */
 
 export interface BlockPageProps {
   title: string;
   lede: React.ReactNode;
-  preview: { lede: string; caption?: string; node: React.ReactNode };
-  use: Rule[];
-  avoid: Rule[];
-  /** Where the file goes in your project, and the smallest render. */
-  install: { file: string; usage: string };
-  builtFrom: { label: string; to: string }[];
-  behaviour: { title: string; rules: Rule[] }[];
-  tune?: { lede: string; node: React.ReactNode };
+  play: { lede: string; caption?: string; node: React.ReactNode };
+  /** Where the file goes in a project, and the smallest use of it. */
+  usage: { file: string; code: string };
+  /** The MetalUI parts it composes, each linking to its page. */
+  madeOf: { label: string; to: string }[];
+  more?: { id: string; title: string; lede?: string; node: React.ReactNode }[];
   source: string;
+  rules: Rule[];
 }
 
-export function BlockPage({ title, lede, preview, use, avoid, install, builtFrom, behaviour, tune, source }: BlockPageProps) {
+export function BlockPage({ title, lede, play, usage, madeOf, more, source, rules }: BlockPageProps) {
   return (
     <>
       <PageHeader title={title} lede={lede} tags={[{ label: 'Block', led: 'blue' }, { label: 'React', led: 'green' }, { label: 'SwiftUI not yet', led: 'off' }]} />
-      <Section title="Preview" lede={preview.lede}>
-        <Bench caption={preview.caption} className="wide">{preview.node}</Bench>
+      <Section title="Playground" lede={play.lede}>
+        <Bench caption={play.caption} className="wide">{play.node}</Bench>
       </Section>
-      <Section id="when" title="When to use it">
-        <Rules rules={use} />
+      <Section id="usage" title="Usage" lede={`Copy the block's file to ${usage.file} in your project (with @unlocalhosted/metalui installed), then use it.`}>
+        <div className="grid gap-16">
+          <Code code={usage.code} label="example.tsx" lang="tsx" />
+          <div className="grid gap-8">
+            <span className="eng">made of</span>
+            <ul className="m-0 flex list-none flex-wrap gap-8 p-0">
+              {madeOf.map((b) => (
+                <li key={b.to + b.label}>
+                  <Link to={b.to} className="inline-flex h-28 items-center rounded-pill px-12 type-ui text-ink no-underline recipe-button hover:text-ink focus-visible:focus-ring">{b.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </Section>
-      <Section id="when-not" title="When not to">
-        <Rules rules={avoid} />
-      </Section>
-      <Section id="install" title="Install" lede={`A block is copied, not imported: put the file at ${install.file} in your project, with @unlocalhosted/metalui installed.`}>
-        <Code code={install.usage} label="example.tsx" lang="tsx" />
-      </Section>
-      <Section id="built-from" title="Built from" lede="The MetalUI parts it composes. Change one and the block follows.">
-        <ul className="m-0 flex list-none flex-wrap gap-8 p-0">
-          {builtFrom.map((b) => (
-            <li key={b.to + b.label}>
-              <Link to={b.to} className="inline-flex h-28 items-center rounded-pill px-12 type-ui text-ink no-underline recipe-button hover:text-ink focus-visible:focus-ring">{b.label}</Link>
-            </li>
-          ))}
-        </ul>
-      </Section>
-      {behaviour.map((b) => (
-        <Section key={b.title} id={b.title.toLowerCase().replace(/\W+/g, '-')} title={b.title}>
-          <Rules rules={b.rules} />
-        </Section>
-      ))}
-      {tune && (
-        <Section id="tune" title="Tune it" lede={tune.lede}>
-          {tune.node}
-        </Section>
-      )}
+      {more?.map((m) => <Section key={m.id} id={m.id} title={m.title} lede={m.lede}>{m.node}</Section>)}
       <Section title="Source">
         <SourceTabs tabs={[{ id: 'react', label: 'React', code: source }]} />
+      </Section>
+      <Section title="Rules">
+        <Rules rules={rules} />
       </Section>
     </>
   );
