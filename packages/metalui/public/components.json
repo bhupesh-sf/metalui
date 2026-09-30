@@ -528,6 +528,23 @@
       "agent": "https://metalui.dev/r/line-handles.md"
     },
     {
+      "name": "link",
+      "title": "Link",
+      "status": "alpha",
+      "description": "An inline link in text: always underlined with an engraved hairline that darkens on hover; an external link's arrow nudges toward where it goes.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Link",
+        "base": "@base-ui/react/use-render"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalLink"
+      },
+      "registry": "https://metalui.dev/r/link.json",
+      "agent": "https://metalui.dev/r/link.md"
+    },
+    {
       "name": "link-card",
       "title": "Link card",
       "status": "alpha",

@@ -1,0 +1,19 @@
+{
+  "name": "link",
+  "title": "Link",
+  "status": "alpha",
+  "layer": "component",
+  "description": "An inline link in text: always underlined with an engraved hairline that darkens on hover; an external link's arrow nudges toward where it goes.",
+  "base": "@base-ui/react/use-render",
+  "react": {
+    "export": "Link",
+    "files": ["link.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalLink",
+    "file": "swift/Sources/MetalUI/Components/MetalLink.swift",
+    "status": "wip"
+  },
+  "agent": "link.agent.md",
+  "page": "/components/link"
+}

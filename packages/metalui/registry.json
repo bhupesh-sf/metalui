@@ -599,6 +599,26 @@
       "docs": "Agent guide: https://metalui.dev/r/line-handles.md. SwiftUI: MetalLineHandles in the MetalUI Swift package."
     },
     {
+      "name": "link",
+      "type": "registry:ui",
+      "title": "Link",
+      "description": "An inline link in text: always underlined with an engraved hairline that darkens on hover; an external link's arrow nudges toward where it goes.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/link/link.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/link/link.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/link.md. SwiftUI: MetalLink in the MetalUI Swift package."
+    },
+    {
       "name": "link-card",
       "type": "registry:ui",
       "title": "Link card",

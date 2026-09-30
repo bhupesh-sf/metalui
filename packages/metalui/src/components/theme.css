@@ -463,6 +463,10 @@
   --spacing-skeleton-line: var(--mu-r-skeleton-self-line);
   --spacing-skeleton-line-gap: var(--mu-r-skeleton-self-line-gap);
   --color-skeleton-sheen-ink: var(--mu-r-skeleton-sheen-ink);
+  --spacing-link-underline-thickness: var(--mu-r-link-underline-thickness);
+  --spacing-link-underline-offset: var(--mu-r-link-underline-offset);
+  --color-link-underline-ink: var(--mu-r-link-underline-ink);
+  --spacing-link-out-nudge: var(--mu-r-link-out-nudge);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1404,6 +1408,19 @@
 @utility duration-skeleton-sweep {
   --tw-duration: var(--mu-r-skeleton-self-sweep);
   transition-duration: var(--mu-r-skeleton-self-sweep);
+}
+@utility link-line {
+  color: inherit; text-decoration-line: underline; text-decoration-thickness: var(--mu-r-link-underline-thickness); text-underline-offset: var(--mu-r-link-underline-offset); text-decoration-color: var(--mu-r-link-underline-ink); transition: text-decoration-color var(--mu-r-link-underline-fade), opacity var(--mu-r-link-underline-fade); &:hover { text-decoration-color: currentColor; } &:active { opacity: var(--mu-r-link-self-pressed); transition-duration: 0s; }
+}
+@utility link-out {
+  display: inline-block; width: var(--mu-r-link-out-size); height: var(--mu-r-link-out-size); margin-inline-start: var(--mu-r-link-out-gap); vertical-align: baseline; translate: 0 0; transition: translate var(--mu-spring-part-d) var(--mu-spring-part); a:hover > & { translate: var(--mu-r-link-out-nudge) calc(var(--mu-r-link-out-nudge) * -1); }
+}
+@utility duration-link-underline-fade {
+  --tw-duration: var(--mu-r-link-underline-fade);
+  transition-duration: var(--mu-r-link-underline-fade);
+}
+@utility opacity-link-pressed {
+  opacity: var(--mu-r-link-self-pressed);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

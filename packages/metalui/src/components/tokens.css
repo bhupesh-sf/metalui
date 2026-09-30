@@ -1071,6 +1071,14 @@
   --mu-r-skeleton-self-last: 0.62;
   --mu-r-skeleton-self-delay: 300ms;
   --mu-r-skeleton-self-sweep: 1600ms;
+  /* link: the rule's engraved hairline; the part spring; Base UI useRender (router links keep the look) */
+  --mu-r-link-underline-thickness: 1px;
+  --mu-r-link-underline-offset: 3px;
+  --mu-r-link-underline-fade: 160ms;
+  --mu-r-link-out-size: 0.72em;
+  --mu-r-link-out-gap: 0.18em;
+  --mu-r-link-out-nudge: 2px;
+  --mu-r-link-self-pressed: 0.64;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
@@ -1981,6 +1989,7 @@
   --mu-r-scroll-area-thumb-ink: rgba(27,27,29,.28);
   --mu-r-form-field-error-ink: #C23B30;
   --mu-r-skeleton-sheen-ink: rgba(255,255,255,.6);
+  --mu-r-link-underline-ink: rgba(27,27,29,.3);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
   --mu-r-glass-face-self-shadow:
@@ -2469,6 +2478,7 @@
   --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
   --mu-r-form-field-error-ink: #FF8A77;
   --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
+  --mu-r-link-underline-ink: rgba(255,255,255,.3);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
   --mu-r-glass-face-self-shadow:
@@ -2958,6 +2968,7 @@
     --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
     --mu-r-form-field-error-ink: #FF8A77;
     --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
+    --mu-r-link-underline-ink: rgba(255,255,255,.3);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
     --mu-r-glass-face-self-shadow:

@@ -979,6 +979,24 @@ public enum MetalRecipes {
         ]
     )
 
+    /// An inline link in text: it takes the text's own type and ink, and is always underlined (colour alone never marks a link) with an engraved hairline 3 below the baseline. Hovered, the underline darkens to the text's ink (160 ms). An external link carries a small arrow that nudges one step up and out on the part spring when hovered, toward where it goes. Pressed, it dims for the press. Focus: the green ring. (the rule's engraved hairline; the part spring; Base UI useRender (router links keep the look))
+    public static let link = MetalObjectRecipe(
+        name: "link",
+        layers: [
+
+        ],
+        props: [
+            "underline.thickness": .number(1.0),
+            "underline.offset": .number(3.0),
+            "underline.ink": .perColorway(bone: "rgba(27,27,29,.3)", graphite: "rgba(255,255,255,.3)"),
+            "underline.fade": .text("160ms"),
+            "out.size": .text("0.72em"),
+            "out.gap": .text("0.18em"),
+            "out.nudge": .number(2.0),
+            "self.pressed": .text("0.64"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
