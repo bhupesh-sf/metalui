@@ -277,8 +277,8 @@ Causes found in `apps/docs/src/ui/SnapCanvas.tsx`:
 - The selection frames and the size readouts both show for picked notes, so after a lasso the canvas is busy with readouts that belong to resizing; show the frame only.
 - A click on empty space clears the selection (right), but Escape doesn't; add it, and Shift-lasso to add to the selection.
 
-- [ ] Fix the above in the demo, then check the Lasso instrument itself (`packages/metalui/src/components/lasso`) for the same assumptions and document the rules in its agent guide (empty-space start, no text selection, modifier keys).
-- [ ] An e2e slice that draws a lasso from several starting points (on the guides, outside the world at 50 %, next to a note) and asserts that no text gets selected (`getSelection().toString() === ''`).
+- [x] Fix the above in the demo, then check the Lasso instrument itself (`packages/metalui/src/components/lasso`) for the same assumptions and document the rules in its agent guide (empty-space start, no text selection, modifier keys).
+- [x] An e2e slice that draws a lasso from several starting points (on the guides, outside the world at 50 %, next to a note) and asserts that no text gets selected (`getSelection().toString() === ''`).
 
 ## Cues you can operate: the interface molds inside the text
 
@@ -303,7 +303,7 @@ Owner, on the Snap guides page: "dragging on web doesn't trigger haptic feedback
 
 Facts: browsers expose no trackpad haptics on a Mac, and iOS Safari has no vibration API; `navigator.vibrate` works on Android only. The docs demo only counts taps ("haptic taps · 8 … the browser cannot") and doesn't even call `navigator.vibrate` where it exists. The Snap guides agent guide says: "Never replace a haptic with a sound or a flash."
 
-- [ ] **Call what exists**: a shared `haptic('alignment' | 'detent' | 'refusal')` helper in the motion layer: `navigator.vibrate` with a short pattern on Android; the iOS Safari (17.4+) trick of toggling a hidden `<input type="checkbox" switch>`, which plays the system tick, behind feature detection; a no-op elsewhere. Snap guides, Split pane detents, Slider detents and the operable cues (the entry above) all use it, once per catch.
+- [x] **Call what exists** (done: `haptic()` and `setHapticBridge` in motion/haptic.ts; Snap guides only so far; the iOS switch path is untested on a real iPhone): a shared `haptic('alignment' | 'detent' | 'refusal')` helper in the motion layer: `navigator.vibrate` with a short pattern on Android; the iOS Safari (17.4+) trick of toggling a hidden `<input type="checkbox" switch>`, which plays the system tick, behind feature detection; a no-op elsewhere. Snap guides, Split pane detents, Slider detents and the operable cues (the entry above) all use it, once per catch.
 - [ ] **In the Mac app**: the SwiftUI side already performs the alignment haptic; document how a web view host (Electron, Tauri, a WKWebView) bridges `haptic()` to `NSHapticFeedbackManager`, and ship that bridge as an optional hook.
 - [ ] **Decide the fallback rule with the owner**: the guide forbids a sound or flash in place of a haptic. If the web should still *feel* the catch, the candidate is the line's own catch motion (the guide lighting with a tiny overshoot), which is already there, not a new sound. Record the decision in the guide.
-- [ ] Make the demo honest and useful: it calls `haptic()`, says which path this browser took ("vibrated", "iOS tick", "no haptics here"), and keeps the tap count.
+- [x] Make the demo honest and useful: it calls `haptic()`, says which path this browser took ("vibrated", "iOS tick", "no haptics here"), and keeps the tap count.
