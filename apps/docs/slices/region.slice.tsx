@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, capture, openPage, pointer } from './harness';
+import { COLORWAYS, capture, openPage, pointer, userEvent, mouse } from './harness';
 
 const section = (text: string) => [...document.querySelectorAll('section')].find((s) => s.textContent!.includes(text))!;
 const settled = (el: Element) => Promise.all(el.getAnimations().map((a) => a.finished));
@@ -15,30 +15,6 @@ function computed(color: string) {
   return c;
 }
 
-/* The mouse in page coordinates. Local, a harness candidate: the harness's mouse.down/up start a fresh
- * WebDriver pointer at (0, 0), so they press at the page's corner; and a press does not hold across
- * pointer calls: the next call starts with no button, so the page loses its pointer capture before
- * the release. So a press is sent with the moves that follow it, in one call, and a release while
- * held re-asserts the button first (Chrome, still pressed, sends no second pointerdown). */
-const mid = (x: number, y: number): [number, number] => [x - document.documentElement.clientWidth / 2, y - document.documentElement.clientHeight / 2];
-let at: [number, number] = [0, 0];
-let pressing = false;
-const pressFirst = () => (pressing ? [{ to: mid(...at) }, { down: true as const }] : []);
-const mouse = {
-  async move(x: number, y: number, { steps = 1 } = {}) {
-    const [x0, y0] = at;
-    const first = pressFirst();
-    at = [x, y];
-    const moves = Array.from({ length: steps }, (_, i) => ({ to: mid(x0 + ((x - x0) * (i + 1)) / steps, y0 + ((y - y0) * (i + 1)) / steps) }));
-    await pointer(document.documentElement, [...first, ...moves]);
-    pressing = false;
-  },
-  async down() { pressing = true; },
-  async up() {
-    await pointer(document.documentElement, [...(pressing ? pressFirst() : [{ down: true as const }, { to: mid(...at) }]), { up: true as const }]);
-    pressing = false;
-  },
-};
 
 // Region: dragging a block over a region lights it and says the drop; dropping lands it inside and counts it;
 // double-click renames; dim and past states.

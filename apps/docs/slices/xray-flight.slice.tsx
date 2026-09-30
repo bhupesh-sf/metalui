@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, mouse, openPage, pointer, until, type Colorway, type OpenOptions } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, mouse, openPage, pointer, until, type Colorway, type OpenOptions, userEvent } from './harness';
 
 // The x-ray flight: click an object on the floating table and it lifts off, flies onto its
 // model in the x-ray card and tilts to the x-ray's angle on the way; close the card and it

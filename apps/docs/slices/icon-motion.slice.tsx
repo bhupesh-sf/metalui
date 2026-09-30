@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, mouse, openPage, pointer, sleep, until } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, mouse, openPage, pointer, sleep, until, userEvent } from './harness';
 
 // An icon with a motion study plays one act (docs/ICON-MOTION.md): hover the control and every
 // part moves on one clock, the act finishes after the pointer leaves, and it ends exactly at rest.

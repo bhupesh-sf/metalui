@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions, userEvent } from './harness';
 
 const ROUTE = '/components/command-palette';
 const CALLOUTS = ['Field', 'Rows', 'Labels', 'Keys', 'Plate', 'Layers'];

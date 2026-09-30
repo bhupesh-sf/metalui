@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, openPage, until } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, openPage, until, userEvent } from './harness';
 
 const q = (css: string) => document.querySelector(css);
 const text = (css: string) => q(css)?.textContent ?? '';

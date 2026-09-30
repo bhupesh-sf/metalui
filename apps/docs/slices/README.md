@@ -1,6 +1,6 @@
 # Feature slices
 
-A slice proves what a person can see and do on the docs site, through the site itself: a real Chrome page, the site's own route table mounted at a route, real mouse and keys. Vitest runs them in browser mode with WebdriverIO. No Playwright.
+A slice proves what a person can see and do on the docs site, through the site itself: a real Chrome page, the site's own route table mounted at a route, real mouse and keys. Vitest runs them in browser mode with WebdriverIO, and the harness sends the mouse and keys straight to Chrome over its DevTools socket (trusted input, about 5 ms a call). No Playwright.
 
 ```bash
 npm run slices                 # every slice, headless, in shards side by side (min(4, cores / 2))
@@ -9,7 +9,7 @@ npm run slices:watch -w @metalui/docs   # re-run what an edit touches, in a visi
 CAPTURE=1 npm run slices       # also write the docs captures (docs/captures/web)
 ```
 
-Within a run, slices take turns (one real mouse, one window) and share one page, so the site's modules and stylesheet load once per run. `npm run slices` runs the suite in shards side by side (`scripts/slices.mjs`), each its own run with its own Chrome and its own Vite cache; interrupting it stops them all. `openPage` starts every slice clean: it remounts the site, restores the desktop window (1280 × 900) and clears emulated media.
+Within a run, slices take turns (one real mouse, one window) and share one page, so the site's modules and stylesheet load once per run. `npm run slices` runs the suite in shards side by side (`scripts/slices.mjs`), each its own run with its own Chrome and its own Vite cache; interrupting it stops them all. Each shard's whole log is kept in `.vitest/shard-N.log`. `openPage` starts every slice clean: it lets go of any held button or key, remounts the site, restores the desktop window (1280 × 900), clears emulated media, and waits for the page to come to rest.
 
 ## Writing one
 
@@ -17,8 +17,8 @@ One file per component, `<name>.slice.tsx`, the component's page as the boundary
 
 ```tsx
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, openPage, press, release } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, openPage, userEvent } from './harness';
 
 for (const colorway of COLORWAYS) {
   test(`… in ${colorway}`, async () => {
@@ -38,12 +38,14 @@ for (const colorway of COLORWAYS) {
 | `press(el, [dx, dy])`, `release(el)` | A real held press at an element's centre (or an offset from it): CSS `:active`, pointer capture. |
 | `pointer(el, steps)` | Real mouse steps relative to an element's centre, in one call: `{ to: [dx, dy], ms }`, `{ down: true }`, `{ up: true }`, `{ pause: ms }`. |
 | `mouse.move(x, y, { steps })`, `mouse.down()`, `mouse.up()` | The mouse in page coordinates (clientX/clientY). The button stays held between calls. |
-| `mouse.drag(from, to, { steps, hold })` | A whole drag in one call. Use it whenever the page captures the pointer: Chrome drops pointer capture at the end of every WebDriver call (the button stays held, the capture does not). To look mid-drag, start it, check during `hold`, then await it. |
+| `mouse.drag(from, to, { steps, hold })` | A whole drag in one call. To look mid-drag, start it, check during `hold`, then await it. |
+| `userEvent.click / dblClick / hover / unhover / keyboard / fill / paste` | Real input, aimed as a person aims: scrolled into view, holding still, and the point is the element's own (brought clear of a panel fixed over it). A press that lands elsewhere is swallowed and aimed again. `keyboard` takes Vitest's syntax (`'{Shift>}{Enter}{/Shift}'`). |
+| `emulateMedia({ 'prefers-contrast': 'more' })` | Media features mid-slice. Never call the raw `commands.media`: the next `openPage` resets only what the harness knows. |
 | `until(read)` | Wait for something the page reaches on its own. |
 | `sleep(ms)` | Only for a real duration a slice is about (a delay, a hold). |
 | `capture(name, el)` | A docs capture, written only with `CAPTURE=1`. |
 
-From `vitest/browser`: `page.getByRole / getByText / getByTestId / getByLabelText` (locators: `.element()`, `.elements()`, `.first()`, `.last()`, `.nth(i)`), `userEvent.click / hover / keyboard / type / fill / tab`, `expect.element(locator).toBeVisible() / toHaveTextContent() / toHaveAttribute() / toBeDisabled() / toHaveFocus()`, `expect.poll(fn)`.
+From `vitest/browser`: `page.getByRole / getByText / getByTestId / getByLabelText` (locators: `.element()`, `.elements()`, `.first()`, `.last()`, `.nth(i)`). Take `userEvent` from the harness, not from `vitest/browser`. From `vitest`: `expect.element(locator).toBeVisible() / toHaveTextContent() / toHaveAttribute() / toBeDisabled() / toHaveFocus()`, `expect.poll(fn)`.
 
 A slice runs inside the page, so read the page directly: `el.getBoundingClientRect()`, `getComputedStyle(el)`, `el.getAnimations()`. Time-dependent behaviour (a flick, a delay) runs on a clock the slice controls (`vi.useFakeTimers({ toFake: ['performance', 'requestAnimationFrame', 'setTimeout'] })`) or is timed inside the page, never by sleeping and hoping.
 

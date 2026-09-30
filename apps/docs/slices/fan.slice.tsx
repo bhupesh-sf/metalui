@@ -1,13 +1,10 @@
 import { expect, test } from 'vitest';
-import { commands, page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, openPage, pointer, sleep, until } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, openPage, pointer, sleep, until, userEvent, emulateMedia, mouse } from './harness';
 
 declare const __CAPTURE__: boolean;
 
 /** A point in the window, as WebDriver's offset from the page's middle. */
-const mid = (x: number, y: number): [number, number] => [x - document.documentElement.clientWidth / 2, y - document.documentElement.clientHeight / 2];
-/** A click at a point in the window (Playwright's mouse.click(x, y)). */
-const clickAt = (x: number, y: number) => pointer(document.documentElement, [{ to: mid(x, y) }, { down: true }, { up: true }]);
 
 /**
  * A capture of a region of the window: a transparent pane over it, captured as an element. (Local: the
@@ -80,7 +77,7 @@ for (const colorway of COLORWAYS) {
     await clickStill(pen);
     await expect.element(pen).toHaveAttribute('aria-expanded', 'true');
     await expect.element(ink).toHaveAttribute('aria-expanded', 'false');
-    await clickAt(5, 5);
+    await mouse.click(5, 5);
     await expect.element(pen).toHaveAttribute('aria-expanded', 'false');
     await expect.element(pen).toHaveFocus();
 
@@ -93,7 +90,7 @@ for (const colorway of COLORWAYS) {
       await expect.element(fan.getByRole('button', { name, exact: true })).toBeVisible();
     }
     await captureFan(`fan-text-${colorway}`);
-    await commands.media([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+    await emulateMedia({ 'prefers-reduced-motion': 'reduce' });
     await clickStill(fan.getByRole('button', { name: 'Tool: Select' }));
     const reducedChoice = fan.getByRole('option', { name: 'Write · T' });
     await expect.element(reducedChoice).toBeVisible();

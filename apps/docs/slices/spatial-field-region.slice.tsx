@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { mouse, openPage, pointer, until } from './harness';
+import { page } from 'vitest/browser';
+import { mouse, openPage, pointer, until, userEvent } from './harness';
 
 // Region: the field under the board answers the carried block, and the target it would drop into.
 const centre = (r: DOMRect): [number, number] => [r.x + r.width / 2, r.y + r.height / 2];

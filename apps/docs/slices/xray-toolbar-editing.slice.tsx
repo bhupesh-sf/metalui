@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions, userEvent } from './harness';
 
 // The toolbar x-ray's editing layer: each card holds the real graphite toolbar, changed by
 // handling it. Its handles, readouts and switches change the same model the bench draws.

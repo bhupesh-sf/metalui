@@ -8,6 +8,7 @@
 //
 // Every child is ours: interrupting the runner stops them all, so no Chrome is left behind.
 import { spawn } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { availableParallelism } from 'node:os';
 
 const args = process.argv.slice(2);
@@ -34,12 +35,16 @@ const runs = Array.from({ length: n }, (_, i) => new Promise((done) => {
 }));
 
 const results = await Promise.all(runs);
+// Each shard's whole log is kept, so a failure can be read after the run: .vitest/shard-N.log
+const logs = new URL('../.vitest/', import.meta.url);
+mkdirSync(logs, { recursive: true });
 let failed = 0;
 for (const r of results) {
   const clean = r.out.replace(/\x1b\[[0-9;]*m/g, '');
+  writeFileSync(new URL(`shard-${r.i + 1}.log`, logs), clean);
   const summary = clean.split('\n').filter((l) => /Test Files|Tests |FAIL/.test(l));
   console.log(`— shard ${r.i + 1}/${n}${r.code ? ' (failed)' : ''}\n${summary.join('\n')}`);
-  if (r.code) { failed++; console.log(clean.split('\n').slice(-60).join('\n')); }
+  if (r.code) { failed++; console.log(`  log: .vitest/shard-${r.i + 1}.log`); }
 }
 console.log(`${n} shard(s) in ${((Date.now() - started) / 1000).toFixed(1)} s${failed ? `, ${failed} failed` : ''}`);
 process.exit(failed ? 1 : 0);

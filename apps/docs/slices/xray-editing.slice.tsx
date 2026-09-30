@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest';
-import { userEvent } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, capture, mouse, openPage, pointer, until } from './harness';
+import { COLORWAYS, capture, mouse, openPage, pointer, until, userEvent } from './harness';
 
 // The x-ray's editing layer: the card holds the real button (a specimen) to change by handling
 // it, never a slider. Its handles, readouts and switches change the same model the bench draws.

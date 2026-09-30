@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, openPage } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, openPage, userEvent } from './harness';
 
 const section = (has: string) => [...document.querySelectorAll('section')].find((s) => s.textContent!.includes(has))!;
 

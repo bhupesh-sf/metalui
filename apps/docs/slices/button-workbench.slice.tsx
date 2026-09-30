@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, mouse, openPage } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, mouse, openPage, userEvent } from './harness';
 
 const bench = () => document.querySelector('.button-workbench')!;
 const wb = () => page.elementLocator(bench());

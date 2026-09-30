@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions, userEvent } from './harness';
 
 const ROUTE = '/components/kbd';
 const $ = (css: string, root: ParentNode = document) => root.querySelector<HTMLElement>(css)!;

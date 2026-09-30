@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, capture, openPage } from './harness';
+import { COLORWAYS, capture, openPage, userEvent } from './harness';
 
 // Lamp gestures (tokens status.gestures) on the LED, as Parts › LED shows them: each gesture runs
 // for its token length, breathing loops, a replay starts it again, and reduced motion holds steady.

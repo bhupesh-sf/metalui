@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, onTestFinished, test, vi } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, openPage, pointer, until } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, openPage, pointer, until, userEvent } from './harness';
 
 // The sound foundation (tokens.sound), as a reader meets it on Foundations → Sound:
 // off until asked, acts and states obey the Plays setting, a muted material stays

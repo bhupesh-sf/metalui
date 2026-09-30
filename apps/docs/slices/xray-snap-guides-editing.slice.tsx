@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions } from './harness';
+import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions, userEvent } from './harness';
 
 /* The snap guides x-ray, handled: each card holds a small canvas with the real SnapGuides,
  * and every handle on it changes that canvas and the model on the bench. */

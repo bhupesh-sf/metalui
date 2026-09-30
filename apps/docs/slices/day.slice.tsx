@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, openPage } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, openPage, userEvent } from './harness';
 
 /** The large day in a colorway's bench. (Scoped by the bench's test id: a locator made from the section
  *  itself goes by its label, which holds the ticking clock.) The tile holds no image or tear button of its own. */

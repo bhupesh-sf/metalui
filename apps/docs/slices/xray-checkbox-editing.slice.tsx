@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions } from './harness';
+import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions, userEvent } from './harness';
 
 const recipe = tokens.recipes.checkbox;
 const sizes = [Number(recipe.props.row.size), Number(recipe.props.self.size)];

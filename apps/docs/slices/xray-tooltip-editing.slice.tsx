@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions, userEvent, sleep } from './harness';
 
 // The Tooltip x-ray's cards hold a real tool with its real tooltip; the tooltip is the
 // component's own popup (portalled to the page), and its handles ride inside it.
@@ -125,13 +125,13 @@ test('Place: the label steps between its real sides (lean, then snap), and its n
   const bench = () => [inline(face(), 'left'), inline(face(), 'top')].join();
   const bench0 = bench();
   // a short drag only leans: the outline of the target side lights, the tooltip stays put.
-  // One gesture, held part way while the slice looks, then carried on (the page keeps the capture
-  // only within one WebDriver call).
+  // Held part way while the slice looks, then carried on: the button and the capture hold between calls.
   inView(side());
   const [x, y] = centre(side());
-  const gesture = pointer(document.documentElement, [at(x, y), { down: true },
-    ...[1, 2, 3, 4].map((i) => at(x + (8 * i) / 4, y)), { pause: 1200 },
-    ...[1, 2, 3, 4, 5, 6].map((i) => at(x + 8 + (32 * i) / 6, y)), { up: true }]);
+  await mouse.move(x, y);
+  await mouse.down();
+  await mouse.move(x + 8, y, { steps: 4 });
+  const gesture = (async () => { await sleep(1200); await mouse.move(x + 40, y, { steps: 6 }); await mouse.up(); })();
   await expect.poll(() => $$('.ed-tip-ghost').length, { timeout: 1000 }).toBe(1);
   expect(side().getAttribute('aria-valuetext')).toBe(start);
   // further, and it snaps to the right; never anything between

@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, openPage, until } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, openPage, until, userEvent } from './harness';
 
 /** The first section whose text holds `has`: Playwright's locator('section', { hasText }). */
 const section = (has: string) => [...document.querySelectorAll('section')].find((s) => s.textContent!.includes(has))!;

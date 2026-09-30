@@ -15,26 +15,6 @@ const site = siteConfig as UserConfig;
  *   CAPTURE=1 npm run slices    also write the docs captures (docs/captures/web)
  */
 
-type Step = { to: [number, number]; ms?: number } | { down: true } | { up: true } | { pause: number };
-
-/**
- * Real mouse input through WebDriver: moves are offsets from the element's centre. The button stays
- * held between calls, so a slice can press, look, then release (CSS :active needs a real press).
- */
-const pointer = defineBrowserCommand<[selector: string, steps: Step[]]>(async (ctx, selector, steps) => {
-  const b = ctx.browser;
-  // one input source for the whole run: a new id would be a second mouse, and the page would lose the
-  // press (and its pointer capture) the first one still holds
-  let act = b.action('pointer', { id: 'slice-mouse', parameters: { pointerType: 'mouse' } });
-  for (const s of steps) {
-    if ('to' in s) act = act.move({ duration: s.ms ?? 0, origin: b.$(selector), x: Math.round(s.to[0]), y: Math.round(s.to[1]) });
-    else if ('down' in s) act = act.down({ button: 0 });
-    else if ('up' in s) act = act.up({ button: 0 });
-    else act = act.pause(s.pause);
-  }
-  await act.perform(true);
-});
-
 /**
  * A CSS media feature the page should see (prefers-reduced-motion, prefers-contrast, …): Chrome's
  * DevTools emulation, reached through WebDriver BiDi's goog:cdp extension. Applies to the whole page,
@@ -46,6 +26,55 @@ const media = defineBrowserCommand<[features: { name: string; value: string }[]]
   const top = (tree.result.contexts as { context: string }[])[0].context;
   const { result } = await b.send({ method: 'goog:cdp.getSession', params: { context: top } });
   await b.send({ method: 'goog:cdp.sendCommand', params: { method: 'Emulation.setEmulatedMedia', params: { features }, session: result.session } });
+});
+
+/**
+ * The mouse through Chrome's DevTools protocol (Input.dispatchMouseEvent), for speed: trusted events
+ * (CSS :active, pointer capture), sent straight to the page with no WebDriver element lookup per step,
+ * and a whole gesture in one call. Coordinates are the window's (the harness converts from the frame).
+ * The DevTools session is opened once per browser and reused; the button's state is kept here between
+ * calls, so a press held across calls stays held.
+ */
+type Caps = { capabilities: Record<string, { debuggerAddress?: string } | undefined> };
+type Socket = { send: (method: string, params: object) => Promise<unknown> };
+const sockets = new WeakMap<object, Promise<Socket>>();
+/** A DevTools socket straight to the page under test (ChromeDriver reports the browser's address). */
+function devtools(browser: object): Promise<Socket> {
+  let s = sockets.get(browser);
+  if (!s) {
+    s = (async () => {
+      const at = (browser as Caps).capabilities['goog:chromeOptions']?.debuggerAddress;
+      const targets = (await (await fetch(`http://${at}/json/list`)).json()) as { type: string; url: string; webSocketDebuggerUrl: string }[];
+      const page = targets.find((t) => t.type === 'page' && t.url.startsWith('http'));
+      if (!page) throw new Error(`no page to drive at ${at}`);
+      const ws = new WebSocket(page.webSocketDebuggerUrl);
+      await new Promise((ok, fail) => { ws.onopen = ok; ws.onerror = fail; });
+      let id = 0;
+      const waiting = new Map<number, (m: { error?: { message: string } }) => void>();
+      ws.onmessage = (m) => { const msg = JSON.parse(String(m.data)); waiting.get(msg.id)?.(msg); waiting.delete(msg.id); };
+      return {
+        send: (method, params) => new Promise((ok, fail) => {
+          const n = ++id;
+          waiting.set(n, (msg) => (msg.error ? fail(new Error(msg.error.message)) : ok(msg)));
+          ws.send(JSON.stringify({ id: n, method, params }));
+        }),
+      };
+    })();
+    sockets.set(browser, s);
+  }
+  return s;
+}
+/**
+ * Real input for a slice, straight to the page over the DevTools socket: a list of Input.* calls
+ * (dispatchMouseEvent, dispatchKeyEvent, insertText), sent in order, each once the page has taken the
+ * last. The harness builds them (slices/harness.tsx); one call per gesture.
+ */
+const devtoolsInput = defineBrowserCommand<[calls: { method: string; params: object }[]]>(async (ctx, calls) => {
+  const cdp = await devtools(ctx.browser);
+  for (const c of calls) {
+    if (!c.method.startsWith('Input.')) throw new Error(`devtoolsInput sends input only, not ${c.method}`);
+    await cdp.send(c.method, c.params);
+  }
 });
 
 export default mergeConfig(
@@ -66,11 +95,11 @@ export default mergeConfig(
         enabled: true,
         headless: true,
         provider: webdriverio({
-          capabilities: { 'goog:chromeOptions': { args: ['--force-device-scale-factor=2', '--disable-gpu-vsync'] } },
+          capabilities: { 'goog:chromeOptions': { args: ['--force-device-scale-factor=2'] } },
         }),
         instances: [{ browser: 'chrome' }],
         viewport: { width: 1280, height: 900 },
-        commands: { pointer, media },
+        commands: { media, devtoolsInput },
       },
     },
   }),

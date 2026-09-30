@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions } from './harness';
+import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions, userEvent } from './harness';
 
 // The slider x-ray's editing layer: every card holds the real slider (a specimen) to change by
 // handling it: its knob, its rims, the groove's bottom edge, a sun, switches. No control panel.

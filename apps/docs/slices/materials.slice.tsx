@@ -1,6 +1,5 @@
 import { expect, test } from 'vitest';
-import { commands } from 'vitest/browser';
-import { COLORWAYS, capture, openPage } from './harness';
+import { COLORWAYS, capture, openPage, emulateMedia } from './harness';
 
 const section = (has: string) => [...document.querySelectorAll('section')].find((s) => s.textContent!.includes(has))!;
 
@@ -20,14 +19,14 @@ for (const colorway of COLORWAYS) {
     expect(frosted.bg).toBe(colorway === 'bone' ? 'rgba(251, 250, 248, 0.8)' : 'rgba(34, 34, 37, 0.78)');
     await capture(`frost-${colorway}`, section('Three frosted recipes'));
 
-    await commands.media([{ name: 'prefers-reduced-transparency', value: 'reduce' }]);
+    await emulateMedia({ 'prefers-reduced-transparency': 'reduce' });
     const opaque = style();
     expect(opaque.filter).toBe('none');
     expect(opaque.bg).toBe(colorway === 'bone' ? 'rgb(244, 243, 240)' : 'rgb(37, 37, 40)');
     expect(opaque.shadow).toBe(frosted.shadow);
     await capture(`frost-${colorway}-reduce-transparency`, section('Three frosted recipes'));
 
-    await commands.media([{ name: 'prefers-contrast', value: 'more' }]);
+    await emulateMedia({ 'prefers-contrast': 'more' });
     expect(style().shadow).toMatch(/inset 0px 0px 0px 1px$|^rgba?\([^)]*\) 0px 0px 0px 1px inset/);
   });
 }

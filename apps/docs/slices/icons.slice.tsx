@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, mouse, openPage, sleep, until } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, mouse, openPage, sleep, until, userEvent } from './harness';
 
 // Every product glyph is on the Icons page and plays its act (docs/ICON-MOTION.md) from its key,
 // and none moves under reduced motion.

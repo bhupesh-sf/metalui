@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, openPage, until } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, openPage, until, userEvent } from './harness';
 
 /* A capture of a region of the window, as Playwright's clip: a transparent frame over it, captured.
  * Local; a harness candidate (capture takes an element only). */

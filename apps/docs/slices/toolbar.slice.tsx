@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, mouse, openPage, until } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, mouse, openPage, until, userEvent } from './harness';
 
 const text = (el: Element) => el.textContent!.replace(/\s+/g, ' ').trim();
 const section = (text: string) => [...document.querySelectorAll('section')].find((s) => s.textContent!.includes(text))!;

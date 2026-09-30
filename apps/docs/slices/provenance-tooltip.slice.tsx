@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, capture, mouse, openPage, until } from './harness';
+import { COLORWAYS, capture, mouse, openPage, until, userEvent } from './harness';
 
 const section = (text: string) => [...document.querySelectorAll('section')].find((s) => s.textContent!.includes(text))!;
 const provenance = (text: string) => [...document.querySelectorAll('.mu-provenance')].find((p) => p.textContent!.includes(text));

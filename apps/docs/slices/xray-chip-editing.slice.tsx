@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions } from './harness';
+import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions, userEvent } from './harness';
 
 // The suggestion chip x-ray's editing layer: every card holds the real SuggestionChip to handle,
 // never a slider. Its handles, readouts and switches change the same model the bench draws.

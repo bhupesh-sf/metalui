@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { commands, page, userEvent } from 'vitest/browser';
-import { COLORWAYS, capture, openPage, sleep } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, capture, openPage, sleep, userEvent, emulateMedia } from './harness';
 
 /**
  * What the clipboard holds, as a person would find it: pasted into a field. (Local: the page may not read
@@ -71,7 +71,7 @@ for (const colorway of ['bone', 'graphite'] as const) {
     const angry = grid.querySelector('[data-feeling="angry"] svg')!;
     const tinted = getComputedStyle(angry).color;
     await capture(`feelings-grid-${colorway}`, section('The feelings grid'));
-    await commands.media([{ name: 'prefers-contrast', value: 'more' }]);
+    await emulateMedia({ 'prefers-contrast': 'more' });
     const ink = getComputedStyle(angry).color;
     const icon = getComputedStyle(grid).color;
     expect(ink).not.toBe(tinted);

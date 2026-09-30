@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, capture, mouse, openPage } from './harness';
+import { COLORWAYS, capture, mouse, openPage, userEvent } from './harness';
 
 const S = tokens.suggestion;
 const settled = (el: Element) => Promise.all(el.getAnimations().map((a) => a.finished));
