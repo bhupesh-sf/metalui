@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, capture, openPage, pointer, sleep } from './harness';
+import { COLORWAYS, capture, openPage, pointer, sleep, until, userEvent } from './harness';
 
 const DWELL = Number(tokens.engraving['dwell-ms']);
 const opacity = (el: Element) => Number(getComputedStyle(el).opacity);
@@ -33,19 +33,26 @@ for (const colorway of COLORWAYS) {
     const block = list.querySelector('[data-block="0"]')!;
     const eng = block.querySelector('.mu-engraving')!;
     // A pass: hover for 200 ms, leave; it never showed. One WebDriver action, so the pass lasts 200 ms
-    // and not 200 plus a round trip or two.
-    const pass = watch(block, eng);
+    // and not 200 plus a round trip or two. A busy machine can stretch that hover past the dwell, and
+    // then it was a dwell, not a pass: the pass is measured in the page and tried again until it was one.
     const r = block.getBoundingClientRect();
-    await pointer(block, [{ to: [0, 0] }, { pause: 200 }, { to: [5 - (r.x + r.width / 2), 5 - (r.y + r.height / 2)] }]);
-    await sleep(500);
-    pass.stop();
-    expect(pass.left - pass.arrived, 'the pass lasted less than the dwell').toBeLessThan(DWELL);
+    const away: [number, number] = [5 - (r.x + r.width / 2), 5 - (r.y + r.height / 2)];
+    let pass: ReturnType<typeof watch>;
+    for (let tries = 0; ; tries++) {
+      pass = watch(block, eng);
+      await pointer(block, [{ to: [0, 0] }, { pause: 200 }, { to: away }]);
+      await sleep(500);
+      pass.stop();
+      if (pass.left - pass.arrived < DWELL) break;
+      if (tries >= 9) throw new Error('the machine is too busy to make a pass shorter than the dwell');
+      await until(() => opacity(eng) === 0);
+    }
     expect(pass.shown).toBe(0);
     expect(opacity(eng)).toBe(0);
     // A dwell: it shows after 420 ms (from the pointer arriving to the first frame it shows).
     const dwell = watch(block, eng);
     await userEvent.hover(page.elementLocator(block));
-    await expect.poll(() => opacity(eng), { timeout: 3000 }).toBeGreaterThan(0.99);
+    await expect.poll(() => opacity(eng), { timeout: 10_000 }).toBeGreaterThan(0.99);
     dwell.stop();
     expect(dwell.shown - dwell.arrived).toBeGreaterThanOrEqual(DWELL - 16);
     // Beside the first line: it never covers the block below.

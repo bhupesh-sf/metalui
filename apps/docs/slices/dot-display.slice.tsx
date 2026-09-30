@@ -43,6 +43,9 @@ for (const colorway of COLORWAYS) {
 test('the clock steps six times a second', async () => {
   const scene = await openOnClock();
   const tick = () => Number(scene.getAttribute('data-tick'));
+  // The display starts its clock when its own observer has heard the scene is on screen, a moment after
+  // this slice's does, and later on a busy machine. Advance only once that interval is running.
+  await expect.poll(() => vi.getTimerCount()).toBeGreaterThan(0);
   const a = tick();
   vi.advanceTimersByTime(1000);
   await expect.poll(tick).toBeGreaterThan(a);

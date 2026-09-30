@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 import tokens from '../../../tokens/tokens.json';
-import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions } from './harness';
+import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions, userEvent } from './harness';
 
 // The toast x-ray is handled, not slid: each card holds the real toast, and every handle
 // changes both the specimen and the model on the bench.
@@ -87,14 +87,22 @@ test('timing: pull the toast down to where it rises from, and let go to see it a
   const grip = () => slider('Rises from');
   const start = now(grip());
   const zoom = zoomOf();
-  const held = hold(grip(), 0, 10 * zoom, 8);
-  // while held, the specimen and the bench both sit at the pose it rises from
-  await expect.poll(() => now(grip()), { timeout: 1000 }).toBeGreaterThan(start);
-  await expect.poll(() => value('rises from')).toBe(String(now(grip())));
-  const pose = now(grip());
-  expect(inline(grip(), 'translate')).toContain(`${pose}px`);
-  expect(inline(wrap(), 'transform')).toContain('translate3d');
-  await held;
+  // While held, the specimen and the bench both sit at the pose it rises from. Watched in the page, every
+  // frame until the hand lets go: a busy machine only makes it take longer, never miss it.
+  const seen = { both: false, pose: NaN };
+  let watching = true, frame = 0;
+  const look = () => {
+    try {
+      const handle = grip(), pose = now(handle);
+      if (pose > start && value('rises from') === String(pose) && inline(handle, 'translate').includes(`${pose}px`) && inline(wrap(), 'transform').includes('translate3d')) { seen.both = true; seen.pose = pose; }
+    } catch { /* the card is between two builds */ }
+    if (watching) frame = requestAnimationFrame(look);
+  };
+  addEventListener('pointerup', () => { watching = false; cancelAnimationFrame(frame); }, { capture: true, once: true });
+  look();
+  await hold(grip(), 0, 10 * zoom, 8, 600);
+  expect(seen.both, 'held: the handle, the bench readout and the specimen all sit at the pose it rises from').toBe(true);
+  expect(seen.pose).toBeGreaterThan(start);
   // let go, and both play the arrival from there
   await expect.poll(() => $$('.ed-toast-in', card()).length).toBe(1);
   await expect.poll(() => $$('.xr-toastwrap.ed-toast-benchin', xray()).length).toBe(1);

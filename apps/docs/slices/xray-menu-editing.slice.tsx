@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
-import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions } from './harness';
+import { page } from 'vitest/browser';
+import { COLORWAYS, mouse, openPage, pointer, until, type OpenOptions, userEvent } from './harness';
 
 const ROUTE = '/components/menu';
 const CALLOUTS = ['Rows', 'Heading', 'Line', 'Glass', 'Shape', 'Layers'];
@@ -78,12 +78,20 @@ test('the lit row leans toward the next row, then snaps there; specimen and benc
   expect(labels).toContain(start);
   const next = labels[labels.indexOf(start) + 1]!;
 
-  // held part way: the next row is outlined, nothing has moved yet
-  const held = hold(lit(), 0, 7, 4);
-  await expect.poll(() => $$('.ed-menu-lean', card()).length, { timeout: 1000 }).toBe(1);
-  await expect.poll(tag).toContain(`→ ${next}`);
-  expect(lit().getAttribute('aria-valuetext')).toBe(start);
+  // held part way: the next row is outlined, nothing has moved yet. Watched in the page, every frame until
+  // the hand lets go: a busy machine only makes it take longer, never miss it.
+  let leaned = false, watching = true, frame = 0;
+  const look = () => {
+    try {
+      if ($$('.ed-menu-lean', card()).length === 1 && tag()?.includes(`→ ${next}`) && lit().getAttribute('aria-valuetext') === start) leaned = true;
+    } catch { /* the card is between two builds */ }
+    if (watching) frame = requestAnimationFrame(look);
+  };
+  addEventListener('pointerup', () => { watching = false; cancelAnimationFrame(frame); }, { capture: true, once: true });
+  look();
+  const held = hold(lit(), 0, 7, 4, 600);
   await held;
+  expect(leaned, 'held: the next row is outlined, the hint points at it, the lit row has not moved').toBe(true);
   await expect.poll(() => lit().getAttribute('aria-valuetext')).toBe(start);
   await expect.poll(() => $$('.ed-menu-lean', card()).length).toBe(0);
 
