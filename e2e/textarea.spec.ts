@@ -33,10 +33,12 @@ for (const colorway of COLORWAYS) {
 
     // The counter shows near the limit and turns red at it; typing past it changes nothing.
     const counter = page.locator('.mu-textarea-count').first();
-    await expect(counter).toHaveCSS('opacity', '0');
+    const counterRow = page.locator('.mu-textarea-count-row').first();
+    await expect(counterRow).toHaveCSS('opacity', '0');
+    expect((await counterRow.boundingBox())!.height).toBeLessThan(1); // a hidden counter takes no room
     await note.fill('x'.repeat(100));
     await expect(counter).toHaveText(/100\/120/);
-    await expect(counter).toHaveCSS('opacity', '1');
+    await expect(counterRow).toHaveCSS('opacity', '1');
     await note.fill('x'.repeat(120));
     await note.press('End');
     await note.pressSequentially('yz');

@@ -727,7 +727,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Several lines of text in the field well that grows with what is written: each new line grows the well on the settle spring (a control growing to new content, no overshoot) until max rows, then it scrolls; deleting shrinks it the same way. Focus: the flush green ring. With a limit, a counter fades in below at 80 % and turns red at the limit; typing or pasting past it shakes only the counter on the refusal spring (a nest's reach) and leaves the text alone. Invalid: a red hairline ring. Disabled: 40 %. Reduce Motion: the height snaps and nothing shakes; the counter still turns red. (the field well (recipe well field); the settle and refusal springs; a native textarea)
+    /// Several lines of text in the field well that grows with what is written: each new line grows the well on the settle spring (a control growing to new content, no overshoot) until max rows, then it scrolls; deleting shrinks it the same way. Focus: the flush green ring. With a limit, a counter's row grows open below at 80 % (the form error's motion) and turns red at the limit; typing or pasting past it shakes only the counter on the refusal spring (a nest's reach) and leaves the text alone. Invalid: a red hairline ring. Disabled: 40 %. Reduce Motion: the height snaps and nothing shakes; the counter still turns red. (the field well (recipe well field); the settle and refusal springs; a native textarea)
     public static let textarea = MetalObjectRecipe(
         name: "textarea",
         layers: [
@@ -943,6 +943,21 @@ public enum MetalRecipes {
             "self.max-rows": .number(7.0),
             "clear.size": .number(24.0),
             "clear.glyph": .number(10.0),
+        ]
+    )
+
+    /// A control with its words: a label above (ui type, ink), an optional description below (meta type, ink3), and an error that says why a value is not accepted (meta type, red). The label, description and error are tied to the control for assistive tech, and the field's invalid and disabled states reach every control inside. The error comes out from under the control: its row grows open on the settle spring as it fades in, so the layout below moves rather than jumps; it leaves on the release spring. A fieldset groups fields under a legend; a form validates every field when it is submitted, moves focus to the first one that is not accepted, and takes errors back from a server by field name. Reduce Motion: the row snaps; the fade stays. (Base UI Field and Fieldset; the invalid foundation; the settle and release springs)
+    public static let formField = MetalObjectRecipe(
+        name: "form-field",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(6.0),
+            "self.fieldset-gap": .number(16.0),
+            "self.legend-gap": .number(10.0),
+            "self.form-gap": .number(20.0),
+            "error.ink": .perColorway(bone: "#C23B30", graphite: "#FF8A77"),
         ]
     )
 

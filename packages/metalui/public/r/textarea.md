@@ -23,7 +23,7 @@ Several lines of text. React: `Textarea` from `@unlocalhosted/metalui` (a native
 | focus | the flush green ring | – |
 | grow / shrink | the well fits its text, between `minRows` and `maxRows` (8) | height on the settle spring, no overshoot; the text stays pinned to the top |
 | full | at `maxRows` it stops growing and scrolls | – |
-| near the limit | the counter shows at 80 % of `maxLength` | 160 ms fade |
+| near the limit | the counter shows at 80 % of `maxLength` | its row grows open on the settle spring as it fades in (the form error's motion) |
 | at the limit | the counter turns red | – |
 | refused | typing or pasting past the limit leaves the text alone | only the counter shakes on the refusal spring (reach: one nest, 6) |
 | invalid | a red hairline ring | – |

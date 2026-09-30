@@ -453,6 +453,11 @@
   --spacing-combobox-max-rows: var(--mu-r-combobox-self-max-rows);
   --spacing-combobox-clear-size: var(--mu-r-combobox-clear-size);
   --spacing-combobox-clear-glyph: var(--mu-r-combobox-clear-glyph);
+  --spacing-form-field-gap: var(--mu-r-form-field-self-gap);
+  --spacing-form-field-fieldset-gap: var(--mu-r-form-field-self-fieldset-gap);
+  --spacing-form-field-legend-gap: var(--mu-r-form-field-self-legend-gap);
+  --spacing-form-field-form-gap: var(--mu-r-form-field-self-form-gap);
+  --color-form-field-error-ink: var(--mu-r-form-field-error-ink);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1194,6 +1199,9 @@
 @utility transition-textarea-grow {
   transition: height calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
 }
+@utility textarea-count-row {
+  display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), opacity var(--mu-r-textarea-count-fade); & > * { min-height: 0; overflow-y: clip; overflow-x: visible; } &[data-shown] { grid-template-rows: 1fr; opacity: 1; }
+}
 @utility textarea-refused {
   animation: mu-textarea-refuse var(--mu-spring-refusal-d) var(--mu-spring-refusal) both;
 }
@@ -1357,6 +1365,12 @@
 }
 @utility combobox-fit {
   overflow: hidden; transition: height calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
+}
+@utility form-field-legend {
+  margin-bottom: calc(var(--mu-r-form-field-self-legend-gap) - var(--mu-r-form-field-self-fieldset-gap));
+}
+@utility form-field-error {
+  display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle); & > * { overflow: hidden; min-height: 0; } &[data-starting-style] { grid-template-rows: 0fr; opacity: 0; } &[data-ending-style] { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows calc(var(--mu-spring-release-d) * var(--mu-travel-settle)) var(--mu-spring-release), opacity var(--mu-spring-release-d) var(--mu-spring-release); }
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

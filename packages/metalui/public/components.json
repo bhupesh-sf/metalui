@@ -477,6 +477,23 @@
       "agent": "https://metalui.dev/r/folder.md"
     },
     {
+      "name": "form-field",
+      "title": "Form field",
+      "status": "alpha",
+      "description": "A control with its words: label, description and an error that grows open from under the control on the settle spring; invalid and disabled reach every control inside. Fieldset groups fields under a legend.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "FormField, Fieldset, Form",
+        "base": "@base-ui/react/field"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalFormField"
+      },
+      "registry": "https://metalui.dev/r/form-field.json",
+      "agent": "https://metalui.dev/r/form-field.md"
+    },
+    {
       "name": "glass-face",
       "title": "Glass face",
       "status": "alpha",

@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Field as BaseField } from '@base-ui/react/field';
 
 /* ─────────────────────────────────────────────────────────
  * TEXTAREA, several lines of text in the field well that grows with what is written
@@ -9,7 +10,8 @@ import * as React from 'react';
  *   focus     the flush green ring
  *   grow      a new line grows the well on the settle spring (no overshoot); deleting shrinks it
  *             the same way; at max rows (8) it stops and scrolls. The text stays pinned to the top.
- *   count     with maxLength, a counter below fades in at 80 % and turns red at the limit
+ *   count     with maxLength, a counter's row grows open below at 80 % (the form error's motion:
+ *             settle spring, fading in) and turns red at the limit
  *   refused   typing or pasting past the limit shakes only the counter on the refusal spring
  *             (a nest's reach); the text is left alone and a screen reader hears it once
  *   invalid   a red hairline ring
@@ -29,11 +31,18 @@ export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTex
   className?: string;
 }
 
-const WELL = 'mu-textarea group/ta relative block box-border rounded-textarea-radius recipe-well-field cursor-text focus-within:focus-ring-flush data-invalid:invalid-ring data-disabled:opacity-textarea-disabled data-disabled:cursor-default';
+const WELL = 'mu-textarea group/ta relative block box-border rounded-textarea-radius recipe-well-field cursor-text focus-within:focus-ring-flush data-invalid:invalid-ring has-[textarea[data-invalid]]:invalid-ring has-[textarea[data-disabled]]:opacity-textarea-disabled data-disabled:opacity-textarea-disabled data-disabled:cursor-default';
 const TEXT = 'px-textarea-pad-x py-textarea-pad-y type-content whitespace-pre-wrap break-words';
 const INPUT = `mu-textarea-input block w-full box-border m-0 border-0 outline-none bg-transparent resize-none ${TEXT} text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint transition-textarea-grow reduced-motion:transition-none disabled:cursor-default`;
 const MIRROR = `mu-textarea-mirror invisible absolute inset-x-0 top-0 pointer-events-none ${TEXT}`;
-const COUNT = 'mu-textarea-count mt-textarea-count-gap text-right type-meta tabular-nums text-ink3 transition-opacity duration-textarea-count-fade data-at-limit:text-red data-refused:textarea-refused';
+const COUNT_ROW = 'mu-textarea-count-row textarea-count-row';
+const COUNT = 'mu-textarea-count pt-textarea-count-gap text-right type-meta tabular-nums text-ink3 data-at-limit:text-red data-refused:textarea-refused';
+
+/* Base UI's field control rendered as a textarea: inside a FormField it takes the label, description,
+ * error and the field's states. Typed as the textarea it renders. */
+const TextareaControl = BaseField.Control as unknown as React.ForwardRefExoticComponent<
+  React.TextareaHTMLAttributes<HTMLTextAreaElement> & { render: React.ReactElement } & React.RefAttributes<HTMLTextAreaElement>
+>;
 
 const readPx = (style: CSSStyleDeclaration, prop: string) => parseFloat(style.getPropertyValue(prop)) || 0;
 
@@ -82,14 +91,14 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
   return (
     <div className="mu-textarea-slot block">
       <label className={className ? `${WELL} ${className}` : WELL} data-invalid={invalid ? '' : undefined} data-disabled={disabled ? '' : undefined}>
-        <textarea
+        <TextareaControl
+          render={<textarea />}
           ref={inner}
           value={value}
           defaultValue={defaultValue}
           maxLength={maxLength}
           disabled={disabled}
           aria-invalid={invalid || undefined}
-          aria-describedby={maxLength != null ? countId : undefined}
           rows={1}
           className={INPUT}
           style={{ height, overflowY: scrolls ? 'auto' : 'hidden', ...style }}
@@ -116,16 +125,20 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
         <div ref={mirror} aria-hidden className={MIRROR}>{current + '​'}</div>
       </label>
       {maxLength != null && (
-        <div
-          key={refusals}
-          id={countId}
-          className={COUNT}
-          style={{ opacity: showCount ? 1 : 0 }}
-          data-at-limit={atLimit ? '' : undefined}
-          data-refused={refusals > 0 ? '' : undefined}
-        >
-          {current.length}/{maxLength}
-          <span className="sr-only" aria-live="polite">{refusals > 0 && atLimit ? `Limit reached, ${maxLength} characters` : ''}</span>
+        <div className={COUNT_ROW} data-shown={showCount ? '' : undefined}>
+          {/* The row collapses to nothing; the counter keeps its own spacing inside. */}
+          <div>
+            <div
+              key={refusals}
+              id={countId}
+              className={COUNT}
+              data-at-limit={atLimit ? '' : undefined}
+              data-refused={refusals > 0 ? '' : undefined}
+            >
+              {current.length}/{maxLength}
+              <span className="sr-only" aria-live="polite">{refusals > 0 && atLimit ? `Limit reached, ${maxLength} characters` : ''}</span>
+            </div>
+          </div>
         </div>
       )}
     </div>

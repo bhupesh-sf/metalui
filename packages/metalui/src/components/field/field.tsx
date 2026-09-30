@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Field as BaseField } from '@base-ui/react/field';
 import { Well } from '../well/well';
 import { Kbd } from '../kbd/kbd';
 
@@ -15,7 +16,7 @@ import { Kbd } from '../kbd/kbd';
 export type FieldSize = 'large' | 'regular' | 'compact';
 
 /* Styled with the theme's utilities (the field recipe on the well recipe). */
-const FRAME = 'mu-field relative flex items-center cursor-text data-disabled:opacity-field-state-disabled data-disabled:cursor-default data-invalid:invalid-ring';
+const FRAME = 'mu-field relative flex items-center cursor-text data-disabled:opacity-field-state-disabled data-disabled:cursor-default data-invalid:invalid-ring has-[input[data-invalid]]:invalid-ring has-[input[data-disabled]]:opacity-field-state-disabled';
 const SIZES: Record<FieldSize, string> = {
   large: 'gap-field-field-gap h-field-field-height pl-field-field-pad-left pr-field-field-pad-right rounded-field-field-radius text-field-field-hint [&>.mu-field-icon>svg]:size-field-field-glyph',
   regular: 'gap-field-regular-gap h-field-regular-height pl-field-regular-pad-left pr-field-regular-pad-right rounded-field-regular-radius text-field-field-hint focus-within:focus-ring-flush [&>.mu-field-icon>svg]:size-field-regular-glyph',
@@ -57,7 +58,8 @@ function Icon({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
 const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(function FieldInput({ className, ...props }, ref) {
   const { size, invalid, disabled } = React.useContext(FieldCtx);
   const own = size === 'large' ? INPUT.large : INPUT.form;
-  return <input ref={ref} autoComplete="off" spellCheck={false} aria-invalid={invalid || undefined} disabled={disabled} className={className ? `${own} ${className}` : own} {...props} />;
+  // Base UI's control: inside a FormField it takes the label, description and error, and the field's states.
+  return <BaseField.Control ref={ref} autoComplete="off" spellCheck={false} aria-invalid={invalid || undefined} disabled={disabled} className={className ? `${own} ${className}` : own} {...(props as BaseField.Control.Props)} />;
 });
 function Trail({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
   return <span className={className ? `${TRAIL} ${className}` : TRAIL} {...props} />;

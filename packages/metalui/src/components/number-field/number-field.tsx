@@ -26,7 +26,7 @@ import { refuse } from '../../motion/refuse';
  * ───────────────────────────────────────────────────────── */
 
 const ROOT = 'mu-number-field inline-grid gap-number-field-gap';
-const LABEL = 'mu-number-field-label type-ui text-ink2 cursor-ew-resize select-none w-max';
+const LABEL = 'mu-number-field-label type-ui text-ink cursor-ew-resize select-none w-max';
 const GROUP = 'mu-number-field-group group/nf inline-flex items-center h-number-field-height w-number-field-width p-number-field-pad box-border rounded-pill recipe-well-field focus-within:focus-ring-flush data-disabled:opacity-number-field-disabled relative data-invalid:invalid-ring';
 const KEY = `${buttonClasses('standard', 'compact')} mu-number-field-key flex-none size-number-field-key-size px-0 justify-center type-ui group-data-disabled/nf:opacity-100!`;
 const WINDOW = 'mu-number-field-window relative grid flex-1 min-w-0 h-full place-items-center overflow-hidden';

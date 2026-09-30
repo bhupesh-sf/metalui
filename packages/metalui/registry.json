@@ -668,6 +668,26 @@
       "docs": "Agent guide: https://metalui.dev/r/folder.md. SwiftUI: MetalFolder in the MetalUI Swift package."
     },
     {
+      "name": "form-field",
+      "type": "registry:ui",
+      "title": "Form field",
+      "description": "A control with its words: label, description and an error that grows open from under the control on the settle spring; invalid and disabled reach every control inside. Fieldset groups fields under a legend.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/form-field/form-field.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/form-field/form-field.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/form-field.md. SwiftUI: MetalFormField in the MetalUI Swift package."
+    },
+    {
       "name": "glass-face",
       "type": "registry:ui",
       "title": "Glass face",

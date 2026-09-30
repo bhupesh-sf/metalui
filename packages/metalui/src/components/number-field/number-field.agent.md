@@ -12,7 +12,7 @@ A number you step, scrub or type. React: `NumberField` from `@unlocalhosted/meta
 
 ## Anatomy
 
-- Label (optional): ui type, ink2, above; drag it sideways to scrub.
+- Label (optional): ui type, ink (the form field's label), above; drag it sideways to scrub.
 - Group: a pill in the field well, 132 × 32, padding 3.
 - Keycaps: compact caps, 26 square, − at the start and + at the end.
 - Window: the value, centred, lead type with tabular figures.
