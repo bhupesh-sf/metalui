@@ -453,6 +453,24 @@
       "docs": "Agent guide: https://metalui.dev/r/draw-tools.md. SwiftUI: MetalDrawTools in the MetalUI Swift package."
     },
     {
+      "name": "drop-zone",
+      "type": "registry:ui",
+      "title": "Drop zone",
+      "description": "A place that receives files, by drop or by picking: a sunk tray whose edge lights while files are dragged in the window, sinks and says 'Let go to attach' with files over it, refuses a file it won't take with a shake, and comes back up on the object spring when they land.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/drop-zone/drop-zone.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/drop-zone/drop-zone.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/drop-zone.md. SwiftUI: MetalDropZone in the MetalUI Swift package."
+    },
+    {
       "name": "empty-state",
       "type": "registry:ui",
       "title": "Empty state",

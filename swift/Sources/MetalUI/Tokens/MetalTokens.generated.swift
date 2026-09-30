@@ -1234,6 +1234,30 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A place that receives files: a sunk tray with a glyph engraved in a small well, a line saying to drop files, a line naming what it takes, and 'or choose files'. The whole tray is the label of a real file input, so a click, Space or Enter opens the picker. While files are dragged anywhere in the window it is armed: its edge lights faintly green on the settle spring, so the eye finds it. With files over it, the edge lights fully, the tray sinks a touch and the glyph rises one step on the part spring, and the line turns to 'Let go to attach' on the drum. Over it with a file it will not take, the edge is the invalid ink and the line says so; dropping shakes it (refusal). Let go, and the tray comes back up on the object spring with its small overshoot; the files it took land below as attachments. Disabled, it dims and drags pass by. Compact, it is one row, for a composer. Reduce Motion: the edge and line change at once; nothing sinks, rises or shakes. (the well (recipe well field); the invalid ring (foundations); the drum (motion/swap); the refusal (motion/refuse); the part, settle and object springs)
+    public static let dropZone = MetalObjectRecipe(
+        name: "drop-zone",
+        layers: [
+
+        ],
+        props: [
+            "self.pad": .number(24.0),
+            "self.gap": .number(8.0),
+            "self.radius": .number(20.0),
+            "self.min-height": .number(176.0),
+            "self.edge": .number(1.5),
+            "self.sink": .text("0.985"),
+            "self.armed": .text("0.4"),
+            "self.disabled": .text("0.5"),
+            "compact.height": .number(56.0),
+            "compact.pad-x": .number(16.0),
+            "compact.gap": .number(12.0),
+            "well.size": .number(44.0),
+            "well.radius": .number(14.0),
+            "well.glyph": .number(20.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

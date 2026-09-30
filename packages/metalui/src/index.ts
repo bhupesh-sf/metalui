@@ -18,6 +18,7 @@ export { Table, type TableProps, type TableColumn, type SortState } from './comp
 export { EmptyState, type EmptyStateProps } from './components/empty-state/empty-state';
 export { SplitPane, type SplitPaneProps } from './components/split-pane/split-pane';
 export { Sidebar, type SidebarProps, type SidebarItemProps, type SidebarToggleProps } from './components/sidebar/sidebar';
+export { DropZone, type DropZoneProps, type DropRefusal } from './components/drop-zone/drop-zone';
 export { Sparkline, type SparklineProps, type SparklinePoint } from './components/sparkline/sparkline';
 export { Dialog, type DialogRootProps, type DialogPopupProps } from './components/dialog/dialog';
 export { AlertDialog, type AlertDialogRootProps, type AlertDialogConfirmProps } from './components/alert-dialog/alert-dialog';

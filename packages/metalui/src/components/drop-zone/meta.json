@@ -1,0 +1,21 @@
+{
+  "name": "drop-zone",
+  "title": "Drop zone",
+  "status": "alpha",
+  "layer": "place",
+  "kind": "composed",
+  "uses": ["well", "surface"],
+  "description": "A place that receives files, by drop or by picking: a sunk tray whose edge lights while files are dragged in the window, sinks and says 'Let go to attach' with files over it, refuses a file it won't take with a shake, and comes back up on the object spring when they land.",
+  "base": "label + input type=file",
+  "react": {
+    "export": "DropZone",
+    "files": ["drop-zone.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalDropZone",
+    "file": "swift/Sources/MetalUI/Components/MetalDropZone.swift",
+    "status": "wip"
+  },
+  "agent": "drop-zone.agent.md",
+  "page": "/components/drop-zone"
+}

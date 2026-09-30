@@ -393,6 +393,23 @@
       "agent": "https://metalui.dev/r/draw-tools.md"
     },
     {
+      "name": "drop-zone",
+      "title": "Drop zone",
+      "status": "alpha",
+      "description": "A place that receives files, by drop or by picking: a sunk tray whose edge lights while files are dragged in the window, sinks and says 'Let go to attach' with files over it, refuses a file it won't take with a shake, and comes back up on the object spring when they land.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "DropZone",
+        "base": "label + input type=file"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalDropZone"
+      },
+      "registry": "https://metalui.dev/r/drop-zone.json",
+      "agent": "https://metalui.dev/r/drop-zone.md"
+    },
+    {
       "name": "empty-state",
       "title": "Empty state",
       "status": "alpha",

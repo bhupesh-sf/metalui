@@ -1187,6 +1187,21 @@
   --mu-r-sidebar-item-glyph: 16px;
   --mu-r-sidebar-section-gap: 2px;
   --mu-r-sidebar-section-title-pad: 10px;
+  /* drop-zone: the well (recipe well field); the invalid ring (foundations); the drum (motion/swap); the refusal (motion/refuse); the part, settle and object springs */
+  --mu-r-drop-zone-self-pad: 24px;
+  --mu-r-drop-zone-self-gap: 8px;
+  --mu-r-drop-zone-self-radius: 20px;
+  --mu-r-drop-zone-self-min-height: 176px;
+  --mu-r-drop-zone-self-edge: 1.5px;
+  --mu-r-drop-zone-self-sink: 0.985;
+  --mu-r-drop-zone-self-armed: 0.4;
+  --mu-r-drop-zone-self-disabled: 0.5;
+  --mu-r-drop-zone-compact-height: 56px;
+  --mu-r-drop-zone-compact-pad-x: 16px;
+  --mu-r-drop-zone-compact-gap: 12px;
+  --mu-r-drop-zone-well-size: 44px;
+  --mu-r-drop-zone-well-radius: 14px;
+  --mu-r-drop-zone-well-glyph: 20px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
