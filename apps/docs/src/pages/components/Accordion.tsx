@@ -70,6 +70,12 @@ export default function AccordionPage() {
         <div className="w-full max-w-[440px]"><Sections /></div>
       ) }}
       more={[{ id: 'opening', title: 'Tune the opening', lede: 'The Accordion opening panel swaps the grow, close and chevron springs, sets the chevron\'s turn, and stretches time. Several sections can be open here.', node: <OpeningTuner /> }]}
+      usage={`<Accordion defaultValue={['export']}>
+  <Accordion.Item value="export">
+    <Accordion.Trigger>Export options</Accordion.Trigger>
+    <Accordion.Panel>PNG at 2×, with the canvas background.</Accordion.Panel>
+  </Accordion.Item>
+</Accordion>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

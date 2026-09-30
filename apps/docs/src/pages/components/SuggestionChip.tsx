@@ -7,6 +7,7 @@ import agentGuide from '../../../../../packages/metalui/src/blocks/suggestion-ch
 import swiftSource from '../../../../../swift/Sources/MetalUI/Blocks/MetalSuggestionChip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { UsageSection, useOwnCss } from '../../ui/Usage';
 import { ChipXray } from '../../ui/xray/ChipXray';
 
 const QUESTIONS = ['Task?', 'Date friday?', 'Track as sleep?', 'Move to Done?'];
@@ -32,6 +33,7 @@ function Block({ label, confidence }: { label: string; confidence: number }) {
 }
 
 export default function SuggestionChipPage() {
+  const ownCss = useOwnCss(cssSource);
   const d = useDialKit('Suggestion chip', {
     question: { type: 'select', options: QUESTIONS, default: 'Task?' },
     confidence: [0.72, 0.6, 0.84, 0.01],
@@ -52,6 +54,7 @@ export default function SuggestionChipPage() {
         </Bench>
       </Section>
 
+      <UsageSection agent={agentGuide} />
       <Section id="x-ray" title="X-ray" lede="See what the chip is made of. Click an icon to learn about one part and change it.">
         <ChipXray />
       </Section>
@@ -84,7 +87,7 @@ export default function SuggestionChipPage() {
       <Section title="Source" lede="The chip three ways, plus the guide your coding agent reads.">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
-          { id: 'css', label: 'CSS', code: cssSource },
+          { id: 'css', label: 'CSS', code: ownCss },
           { id: 'swift', label: 'SwiftUI', code: swiftSource },
           { id: 'agent', label: 'Agent guide', code: agentGuide },
         ]} />

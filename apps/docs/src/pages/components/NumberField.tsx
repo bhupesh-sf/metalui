@@ -59,6 +59,7 @@ export default function NumberFieldPage() {
         </div>
       ) }}
       more={[{ id: 'drum', title: 'Tune the drum', lede: 'The Number drum panel swaps the drum and refusal springs, sets the drum\'s travel, and stretches time. Step up to 9 and past it.', node: <DrumTuner /> }]}
+      usage={`<NumberField label="Copies" value={copies} onValueChange={setCopies} min={1} max={20} />`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

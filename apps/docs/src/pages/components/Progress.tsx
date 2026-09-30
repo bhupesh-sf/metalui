@@ -72,6 +72,8 @@ export default function ProgressPage() {
         </div>
       ) }}
       more={[{ id: 'fill', title: 'Tune the fill', lede: 'The Progress fill panel swaps the spring the edge rides, the step, and the unknown segment\'s size and loop, and stretches time.', node: <FillTuner /> }]}
+      usage={`<Progress value={uploaded} label="Uploading 12 photos" showValue />
+<Progress value={null} label="Syncing this canvas" />`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

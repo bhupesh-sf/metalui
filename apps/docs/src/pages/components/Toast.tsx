@@ -6,6 +6,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/toast/toa
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalToast.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { UsageSection, useOwnCss } from '../../ui/Usage';
 import { ToastXray } from '../../ui/xray/ToastXray';
 
 function Triggers() {
@@ -25,6 +26,7 @@ function Triggers() {
 }
 
 export default function ToastPage() {
+  const ownCss = useOwnCss(cssSource);
   return (
     <ToastProvider>
       <PageHeader title="Toast" lede="The result of a person's own action, with Undo: a smoked pill at the bottom centre, one at a time. It rises one nest from below on the settle spring and leaves on release. Toasts are for what you did, never for what the app recognised. Built on Base UI Toast." />
@@ -34,13 +36,14 @@ export default function ToastPage() {
         </Bench>
         <SwiftCapture name="toast" maxWidth={560} />
       </Section>
+      <UsageSection agent={agentGuide} />
       <Section id="x-ray" title="X-ray" lede="See what the toast is made of. Click an icon to learn about one part and change it.">
         <ToastXray />
       </Section>
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
-          { id: 'css', label: 'CSS', code: cssSource },
+          { id: 'css', label: 'CSS', code: ownCss },
           { id: 'swift', label: 'SwiftUI', code: swiftSource },
           { id: 'agent', label: 'Agent guide', code: agentGuide },
         ]} />

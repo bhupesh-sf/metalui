@@ -70,6 +70,10 @@ export default function SpinnerPage() {
         </div>
       ) }}
       more={[{ id: 'turn', title: 'Tune the turn', lede: 'The Spinner turn panel sets the beat before it shows, the time of a turn, the tail and the ring. Start again to see the beat.', node: <TurnTuner /> }]}
+      usage={`<Button cap="primary" disabled={saving}>
+  {saving && <Spinner size="small" label="Saving" />}
+  Save
+</Button>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

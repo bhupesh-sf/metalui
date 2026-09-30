@@ -63,6 +63,14 @@ export default function SheetPage() {
         </div>
       ) }}
       more={[{ id: 'slide', title: 'Tune the slide', lede: 'The Sheet slide panel swaps the springs it slides in, settles home and leaves on, and stretches time.', node: <SlideTuner /> }]}
+      usage={`<Sheet side="right">
+  <Sheet.Trigger render={<Button>Open inspector</Button>} />
+  <Sheet.Popup>
+    <Sheet.Title>Region</Sheet.Title>
+    <Sheet.Description>Trip to Lisbon · 14 notes.</Sheet.Description>
+    <Sheet.Close render={<Button>Done</Button>} />
+  </Sheet.Popup>
+</Sheet>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

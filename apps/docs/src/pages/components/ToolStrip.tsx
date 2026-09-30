@@ -6,8 +6,10 @@ import agentGuide from '../../../../../packages/metalui/src/blocks/tool-strip/to
 import swiftSource from '../../../../../swift/Sources/MetalUI/Blocks/MetalToolStrip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { UsageSection, useOwnCss } from '../../ui/Usage';
 
 export default function ToolStripPage() {
+  const ownCss = useOwnCss(cssSource);
   const [said, setSaid] = React.useState('Click a verb');
   const [shown, setShown] = React.useState(true);
   const verbs = ['Tasks', 'Summarise', 'Gather', 'Region', 'Export'].map((l) => ({ label: l, onSelect: () => setSaid(l) }));
@@ -24,10 +26,11 @@ export default function ToolStripPage() {
         </Bench>
         <SwiftCapture name="tool-strip" maxWidth={560} />
       </Section>
+      <UsageSection agent={agentGuide} />
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
-          { id: 'css', label: 'CSS', code: cssSource },
+          { id: 'css', label: 'CSS', code: ownCss },
           { id: 'swift', label: 'SwiftUI', code: swiftSource },
           { id: 'agent', label: 'Agent guide', code: agentGuide },
         ]} />

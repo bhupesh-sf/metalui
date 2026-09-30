@@ -72,6 +72,11 @@ export default function RadioPage() {
         </div>
       ) }}
       more={[{ id: 'latch', title: 'Tune the latch', lede: 'The Radio latch panel swaps the spring classes and stretches time. Flip the choice and watch one pip land as the other lets go.', node: <LatchTuner /> }]}
+      usage={`<RadioGroup aria-label="Export format" value={format} onValueChange={setFormat}>
+  <Radio value="png">PNG</Radio>
+  <Radio value="svg">SVG</Radio>
+  <Radio value="pdf">PDF</Radio>
+</RadioGroup>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

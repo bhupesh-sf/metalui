@@ -51,6 +51,7 @@ export default function ComboboxPage() {
         </div>
       ) }}
       more={[{ id: 'fit', title: 'Tune the fit', lede: 'The Combobox fit panel swaps the spring the plate settles on as matches change, sets how many rows show before it scrolls, and stretches time.', node: <FitTuner /> }]}
+      usage={`<Combobox items={cities} value={city} onValueChange={setCity} placeholder="Choose a city" aria-label="City" />`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

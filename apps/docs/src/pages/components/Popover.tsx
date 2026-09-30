@@ -85,6 +85,14 @@ export default function PopoverPage() {
         </div>
       ) }}
       more={[{ id: 'rise', title: 'Tune the rise', lede: 'The Popover rise panel swaps the open and close springs, the side, the reach and the starting scale, and stretches time.', node: <RiseTuner /> }]}
+      usage={`<Popover>
+  <Popover.Trigger><Button>Rename…</Button></Popover.Trigger>
+  <Popover.Content>
+    <Popover.Title>Rename region</Popover.Title>
+    <Popover.Description>The name shows on its edge and in search.</Popover.Description>
+    <Popover.Body>…</Popover.Body>
+  </Popover.Content>
+</Popover>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

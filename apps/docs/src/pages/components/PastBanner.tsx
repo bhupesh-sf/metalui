@@ -7,12 +7,14 @@ import agentGuide from '../../../../../packages/metalui/src/blocks/past-banner/p
 import swiftSource from '../../../../../swift/Sources/MetalUI/Blocks/MetalPastBanner.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { UsageSection, useOwnCss } from '../../ui/Usage';
 
 const DAY = 86400000;
 const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const fmt = (t: number) => { const d = new Date(t); return `viewing ${WD[d.getDay()]} ${d.getDate()} ${d.toLocaleString('en', { month: 'short' })} · ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
 
 export default function PastBannerPage() {
+  const ownCss = useOwnCss(cssSource);
   const [end] = React.useState(() => Date.now());
   const start = React.useMemo(() => { const d = new Date(end - 6 * DAY); d.setHours(0, 0, 0, 0); return d.getTime(); }, [end]);
   const [t, setT] = React.useState<number | null>(end - 2.3 * DAY);
@@ -31,10 +33,11 @@ export default function PastBannerPage() {
         </Bench>
         <SwiftCapture name="past-banner" maxWidth={560} />
       </Section>
+      <UsageSection agent={agentGuide} />
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
-          { id: 'css', label: 'CSS', code: cssSource },
+          { id: 'css', label: 'CSS', code: ownCss },
           { id: 'swift', label: 'SwiftUI', code: swiftSource },
           { id: 'agent', label: 'Agent guide', code: agentGuide },
         ]} />

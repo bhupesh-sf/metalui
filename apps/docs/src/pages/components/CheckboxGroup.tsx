@@ -54,6 +54,12 @@ export default function CheckboxGroupPage() {
         </div>
       ) }}
       more={[{ id: 'cascade', title: 'Tune the cascade', lede: 'The Checkbox cascade panel sets the time between rows and how long each tick draws.', node: <CascadeTuner /> }]}
+      usage={`<CheckboxGroup value={kinds} onValueChange={setKinds} allValues={['notes', 'photos', 'links']}>
+  <CheckboxGroup.Parent>Everything</CheckboxGroup.Parent>
+  <CheckboxGroup.Item value="notes">Notes</CheckboxGroup.Item>
+  <CheckboxGroup.Item value="photos">Photos</CheckboxGroup.Item>
+  <CheckboxGroup.Item value="links">Links</CheckboxGroup.Item>
+</CheckboxGroup>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

@@ -51,6 +51,9 @@ export default function ScrollAreaPage() {
       lede="A region that scrolls with the system's own scrollbar. The thumb fades in while you scroll and widens when you reach for it; the edges fade only where there is more to see."
       play={{ lede: 'Scroll the list, reach for the bar, or Tab in and use the arrow keys.', caption: '24 notes in a 240 frame', node: <div className="flex w-full justify-center"><List label="Notes" /></div> }}
       more={[{ id: 'bar', title: 'Tune the bar', lede: 'The Scroll bar panel sets how long the bar waits after you stop, how wide the thumb grows when reached for, and the size of the edge fades.', node: <BarTuner /> }]}
+      usage={`<ScrollArea aria-label="Notes" className="h-60">
+  {notes.map((n) => <p key={n.id}>{n.text}</p>)}
+</ScrollArea>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

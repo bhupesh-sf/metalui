@@ -69,6 +69,7 @@ export default function TextareaPage() {
         </div>
       ) }}
       more={[{ id: 'growth', title: 'Tune the growth', lede: 'The Textarea growth panel swaps the grow and refusal springs, changes the rows and the limit, and stretches time. Add lines and watch the well settle; write past the limit and only the counter answers.', node: <GrowthTuner /> }]}
+      usage={`<Textarea aria-label="Note" placeholder="Write a note…" maxLength={280} />`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

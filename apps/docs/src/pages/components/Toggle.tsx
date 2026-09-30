@@ -60,6 +60,12 @@ export default function TogglePage() {
         </div>
       ) }}
       more={[{ id: 'latch', title: 'Tune the latch', lede: 'The Toggle latch panel sets how far past the catch a press goes, where an on key rests, and the springs it rises on.', node: <LatchTuner /> }]}
+      usage={`<Toggle pressed={grid} onPressedChange={setGrid}>Grid</Toggle>
+
+<ToggleGroup multiple value={marks} onValueChange={setMarks} aria-label="Text marks">
+  <Toggle value="bold">Bold</Toggle>
+  <Toggle value="italic">Italic</Toggle>
+</ToggleGroup>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

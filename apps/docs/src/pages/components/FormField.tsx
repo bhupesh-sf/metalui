@@ -95,6 +95,15 @@ export default function FormFieldPage() {
       lede="A control with its words: a label, a hint, and an error that says why a value is not accepted. The error comes out from under the control, so the form moves instead of jumping. Fieldsets group fields under a legend."
       play={{ lede: 'Type two letters in the name and move on, or save with the name empty.', caption: 'label · description · error · fieldset', node: <RegionForm /> }}
       more={[{ id: 'error', title: 'Tune the error', lede: 'The Form error panel swaps the springs the error opens and closes on, and stretches time. Flip it invalid and valid.', node: <ErrorTuner /> }]}
+      usage={`<Form onFormSubmit={save}>
+  <FormField name="name">
+    <FormField.Label>Region name</FormField.Label>
+    <Field size="regular"><Field.Input required /></Field>
+    <FormField.Description>Shown on its edge and in search.</FormField.Description>
+    <FormField.Error match="valueMissing">Give the region a name.</FormField.Error>
+  </FormField>
+  <Button cap="primary" type="submit">Save</Button>
+</Form>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

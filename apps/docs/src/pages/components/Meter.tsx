@@ -53,6 +53,8 @@ export default function MeterPage() {
         </div>
       ) }}
       more={[{ id: 'sweep', title: 'Tune the sweep', lede: 'The Meter sweep panel sets the time between segments, each lamp\'s fade and the segment count. Jump the level to see it sweep both ways.', node: <SweepTuner /> }]}
+      usage={`<Meter label="Storage" value={42} showValue />
+<Meter label="Battery" value={18} bad="low" showValue />`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

@@ -77,6 +77,16 @@ export default function AlertDialogPage() {
         </div>
       ) }}
       more={[{ id: 'refusal', title: 'Tune the refusal', lede: 'The Alert refusal panel swaps the spring, the reach and the time. Open it and click the scrim.', node: <RefusalTuner /> }]}
+      usage={`<AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialog.Popup>
+    <AlertDialog.Title>Delete 3 regions?</AlertDialog.Title>
+    <AlertDialog.Description>Their notes move to the past for 30 days.</AlertDialog.Description>
+    <AlertDialog.Actions>
+      <AlertDialog.Cancel />
+      <AlertDialog.Confirm onClick={deleteRegions}>Delete regions</AlertDialog.Confirm>
+    </AlertDialog.Actions>
+  </AlertDialog.Popup>
+</AlertDialog>`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },
