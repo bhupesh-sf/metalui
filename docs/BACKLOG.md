@@ -140,3 +140,13 @@ Now: rest (engraved hairline underline), hover (underline darkens), pressed (dim
 - [ ] **Kinds**: `quiet` (no underline until hover, for dense lists and tables, only where the context already says "these are links") and `standalone` (a link on its own line with a trailing arrow).
 - [ ] **Show every state on the page**: a states strip (rest, hover, pressed, focus, visited, current, disabled, external, download), in both colorways, plus the x-ray card for handling it.
 - [ ] Keep the underline in every state except current and disabled (colour alone never marks a link); Swift in step.
+
+## Popover: the Rename action
+
+Owner, on the Popover page's "Rename" button: "same, add better semantic action." (2026-09-30)
+
+- [ ] **The confirm names itself with a glyph**: "Rename" leads with `pen` (its act plays on hover and press), the same rule as the icons entry.
+- [ ] **It behaves like a rename**: the field opens with the name selected (the extension kept out of the selection for a file); Enter renames, Escape cancels; Rename is disabled while the name is empty or unchanged; an invalid name (taken, too long) shows the invalid ring and says why under the field instead of closing.
+- [ ] **Done shows it's done**: on Rename the glyph morphs `pen` → `check` and the label turns "Renamed" on the drum, then the popover closes after a beat; offer undo in a toast: "Renamed to Lisbon · Undo".
+- [ ] **Saving**: when the rename is async, the key shows the spinner and the field locks until it lands; a failure morphs to `sync-error` with Try again.
+- [ ] Apply the same pattern to Dialog's "Rename canvas…" and to every confirm that commits a small edit (Save region, Tag, Comment).
