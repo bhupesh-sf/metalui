@@ -232,3 +232,16 @@ Owner, on the Toast page: "the stacking in toast is vertical; it should be 3D, i
 - [ ] **Repeats merge**: the same message again doesn't add a card: the front toast bumps (a small press) and shows a count ("×5").
 - [ ] **Reading and focus**: only the front card is read out (polite status); the deck is one landmark; F6 or a shortcut reaches it. Reduce Motion: cards cross-fade into place, no travel or scale.
 - [ ] **Placement**: the deck grows toward the screen edge it sits on (bottom stack peeks upward, top stack downward); tokens for step scale, peek, depth and visible count; Swift in step.
+
+## Tool strip: adapt to what was clicked
+
+Owner, on the Tool strip's Swift capture: "this tool strip is static; it should be dynamic, adaptable to the node it's clicked on." (2026-09-30)
+
+Now: `ToolStrip` takes a fixed `items` list (Tasks, Summarise, Gather, Region, Export | Send away); the page shows one set of worded verbs whatever is selected, and it doesn't place itself.
+
+- [ ] **Verbs come from the selection**: the strip asks what's selected and shows the verbs that apply: a text block (Tasks, Summarise, Region), an image (Lift subject, Copy, Crop), a link (Open, Copy link), a mix of kinds (only the verbs they share: Gather, Export, Send away), one item vs many (Rename only for one). An API like `verbsFor(selection)` or per-kind verb sets merged by intersection, with the order kept stable so muscle memory holds.
+- [ ] **Changing the selection morphs the strip**: when the verbs change, the strip's width settles on the settle spring, leaving verbs fade out, new ones fade in, and kept verbs stay in place (no jump); glyphs rather than words (the icons entry), names in tooltips.
+- [ ] **It places itself at the node**: anchored to the selection's bounds (above it, or below when there's no room; follows when the canvas pans or zooms; flips at screen edges), rising from the selection on the part spring as now.
+- [ ] **Overflow**: when the verbs don't fit, the rest go into a More key (`more`) at the end, before the destructive verb.
+- [ ] **States**: disabled verbs say why in the tooltip; a verb in progress shows the waiting language (the spinner entry) in its key; the destructive verb stays last, apart, and uses hold-to-confirm when irreversible.
+- [ ] Redo the page with a small canvas where clicking a text block, an image, a link or several shows the strip adapting; Swift twin in step and recaptured.
