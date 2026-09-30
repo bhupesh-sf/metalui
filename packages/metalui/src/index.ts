@@ -22,6 +22,7 @@ export { Progress, type ProgressProps } from './components/progress/progress';
 export { Spinner, type SpinnerProps } from './components/spinner/spinner';
 export { Skeleton, type SkeletonProps, type SkeletonSwapProps } from './components/skeleton/skeleton';
 export { Link, type LinkProps } from './components/link/link';
+export { ButtonGroup, SplitButton, type ButtonGroupProps, type SplitButtonProps } from './components/button-group/button-group';
 export { Meter, type MeterProps } from './components/meter/meter';
 export { ScrollArea, type ScrollAreaProps } from './components/scroll-area/scroll-area';
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';

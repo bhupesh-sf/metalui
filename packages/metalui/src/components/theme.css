@@ -467,6 +467,12 @@
   --spacing-link-underline-offset: var(--mu-r-link-underline-offset);
   --color-link-underline-ink: var(--mu-r-link-underline-ink);
   --spacing-link-out-nudge: var(--mu-r-link-out-nudge);
+  --spacing-button-group-tray-pad: var(--mu-r-button-group-tray-pad);
+  --spacing-button-group-tray-gap: var(--mu-r-button-group-tray-gap);
+  --spacing-button-group-key-radius: var(--mu-r-button-group-key-radius);
+  --radius-button-group-key-radius: var(--mu-r-button-group-key-radius);
+  --spacing-button-group-chevron-width: var(--mu-r-button-group-chevron-width);
+  --spacing-button-group-chevron-glyph: var(--mu-r-button-group-chevron-glyph);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1421,6 +1427,12 @@
 }
 @utility opacity-link-pressed {
   opacity: var(--mu-r-link-self-pressed);
+}
+@utility button-group-chevron {
+  transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-popup-open] > & { rotate: 180deg; }
+}
+@utility stroke-width-button-group-chevron-width {
+  stroke-width: var(--mu-r-button-group-chevron-width);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

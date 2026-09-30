@@ -57,6 +57,7 @@ export const routes: RouteObject[] = [
       { path: 'components/form-field', lazy: lazy(() => import('../pages/components/FormField')) },
       { path: 'components/skeleton', lazy: lazy(() => import('../pages/components/Skeleton')) },
       { path: 'components/link', lazy: lazy(() => import('../pages/components/Link')) },
+      { path: 'components/button-group', lazy: lazy(() => import('../pages/components/ButtonGroup')) },
       { path: 'components/slider', lazy: lazy(() => import('../pages/components/Slider')) },
       { path: 'components/icon-button', lazy: lazy(() => import('../pages/components/IconButton')) },
       { path: 'components/field', lazy: lazy(() => import('../pages/components/Field')) },

@@ -1,0 +1,19 @@
+{
+  "name": "button-group",
+  "title": "Button group",
+  "status": "alpha",
+  "layer": "component",
+  "description": "Related actions as one cluster of keys in a sunk tray, each pressing on its own; a split button adds a chevron key that opens a menu of the other ways to do the main action.",
+  "base": "div role=group; @base-ui/react/menu",
+  "react": {
+    "export": "ButtonGroup, SplitButton",
+    "files": ["button-group.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalButtonGroup",
+    "file": "swift/Sources/MetalUI/Components/MetalButtonGroup.swift",
+    "status": "wip"
+  },
+  "agent": "button-group.agent.md",
+  "page": "/components/button-group"
+}

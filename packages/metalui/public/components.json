@@ -87,6 +87,23 @@
       "agent": "https://metalui.dev/r/button.md"
     },
     {
+      "name": "button-group",
+      "title": "Button group",
+      "status": "alpha",
+      "description": "Related actions as one cluster of keys in a sunk tray, each pressing on its own; a split button adds a chevron key that opens a menu of the other ways to do the main action.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "ButtonGroup, SplitButton",
+        "base": "div role=group; @base-ui/react/menu"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalButtonGroup"
+      },
+      "registry": "https://metalui.dev/r/button-group.json",
+      "agent": "https://metalui.dev/r/button-group.md"
+    },
+    {
       "name": "checkbox",
       "title": "Checkbox",
       "status": "alpha",

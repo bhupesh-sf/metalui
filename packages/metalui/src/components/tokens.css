@@ -1079,6 +1079,12 @@
   --mu-r-link-out-gap: 0.18em;
   --mu-r-link-out-nudge: 2px;
   --mu-r-link-self-pressed: 0.64;
+  /* button-group: the button cap; the switch track (recipe switch) as the tray; the menu; the part spring */
+  --mu-r-button-group-tray-pad: 2px;
+  --mu-r-button-group-tray-gap: 2px;
+  --mu-r-button-group-key-radius: 8px;
+  --mu-r-button-group-chevron-width: 30px;
+  --mu-r-button-group-chevron-glyph: 12px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

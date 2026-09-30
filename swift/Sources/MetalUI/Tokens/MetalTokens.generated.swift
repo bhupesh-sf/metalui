@@ -997,6 +997,21 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Related actions as one cluster of keys: the button caps set side by side in a sunk tray (the switch track's well), the inner corners tightened so the caps read as one set; each key presses on its own (the button's 1 press), and its neighbours stay still. A split button is the main action plus a chevron key that opens a menu of the other ways to do it; while the menu is open the chevron turns over on the part spring, and turns back when it closes. (the button cap; the switch track (recipe switch) as the tray; the menu; the part spring)
+    public static let buttonGroup = MetalObjectRecipe(
+        name: "button-group",
+        layers: [
+
+        ],
+        props: [
+            "tray.pad": .number(2.0),
+            "tray.gap": .number(2.0),
+            "key.radius": .number(8.0),
+            "chevron.width": .number(30.0),
+            "chevron.glyph": .number(12.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
