@@ -6,6 +6,9 @@
   "description": "One question the recognizer asks at middle confidence, beside its block: Chip(suggestion) with the question, its confidence as a small engraving, and mini accept and dismiss buttons. Faint until the block is hovered.",
   "dependencies": [],
   "registryDependencies": [
+    "https://metalui.dev/r/chip.json",
+    "https://metalui.dev/r/icon-button.json",
+    "https://metalui.dev/r/label.json",
     "https://metalui.dev/r/tokens.json"
   ],
   "files": [

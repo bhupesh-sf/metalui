@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { Surface } from '../../components/surface/surface';
 import { Label } from '../../components/label/label';
 import { Button } from '../../components/button/button';

@@ -6,7 +6,11 @@
   "description": "A drawn rectangle with a name that carries a rule: Well(region) with a head (Label name, Label rule, Label count) that lights as a drop target, dims, hides in the past and renames in place; a pinned lens is Surface(lens) with Row(list) rows.",
   "dependencies": [],
   "registryDependencies": [
-    "https://metalui.dev/r/tokens.json"
+    "https://metalui.dev/r/label.json",
+    "https://metalui.dev/r/row.json",
+    "https://metalui.dev/r/surface.json",
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/well.json"
   ],
   "files": [
     {

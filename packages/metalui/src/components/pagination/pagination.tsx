@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { SlidingIndicator } from '../../motion/indicator';
 import { trackParts } from '../switcher/switcher';
 

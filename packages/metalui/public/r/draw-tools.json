@@ -8,7 +8,10 @@
     "@base-ui/react@^1.8.0"
   ],
   "registryDependencies": [
-    "https://metalui.dev/r/tokens.json"
+    "https://metalui.dev/r/draw-picks.json",
+    "https://metalui.dev/r/icon-components.json",
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/toolbar.json"
   ],
   "files": [
     {

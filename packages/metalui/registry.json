@@ -7,12 +7,105 @@
       "name": "tokens",
       "type": "registry:style",
       "title": "MetalUI tokens",
-      "description": "Soft Hardware colorways (bone, graphite), materials, caps and springs as --mu-* custom properties. Every component imports it.",
+      "description": "Soft Hardware colorways (bone, graphite), materials, caps and springs as --mu-* custom properties, and the Tailwind v4 theme built on them. Every component needs it; it imports both into your global CSS.",
       "files": [
         {
           "path": "packages/metalui/src/components/tokens.css",
           "type": "registry:file",
-          "target": "components/metalui/tokens.css"
+          "target": "components/metalui/components/tokens.css"
+        },
+        {
+          "path": "packages/metalui/src/components/theme.css",
+          "type": "registry:file",
+          "target": "components/metalui/components/theme.css"
+        }
+      ],
+      "css": {
+        "@import \"./components/metalui/components/tokens.css\"": {},
+        "@import \"./components/metalui/components/theme.css\"": {}
+      }
+    },
+    {
+      "name": "motion",
+      "type": "registry:lib",
+      "title": "MetalUI motion",
+      "description": "Springs, swap, indicator, refuse and haptic helpers that MetalUI components use.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "packages/metalui/src/motion/haptic.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/haptic.ts"
+        },
+        {
+          "path": "packages/metalui/src/motion/hop.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/hop.ts"
+        },
+        {
+          "path": "packages/metalui/src/motion/indicator.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/indicator.tsx"
+        },
+        {
+          "path": "packages/metalui/src/motion/refuse.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/refuse.ts"
+        },
+        {
+          "path": "packages/metalui/src/motion/springs.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/springs.generated.ts"
+        },
+        {
+          "path": "packages/metalui/src/motion/swap.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/swap.tsx"
+        }
+      ]
+    },
+    {
+      "name": "icons",
+      "type": "registry:lib",
+      "title": "MetalUI icon runtime",
+      "description": "The Icon element, the icon catalog and the tick drawing that components such as Checkbox and Toast use.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "packages/metalui/src/icons/Icon.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/Icon.tsx"
+        },
+        {
+          "path": "packages/metalui/src/icons/catalog.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/catalog.generated.ts"
+        },
+        {
+          "path": "packages/metalui/src/icons/icons.generated.css",
+          "type": "registry:file",
+          "target": "components/metalui/icons/icons.generated.css"
+        },
+        {
+          "path": "packages/metalui/src/icons/tick.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/tick.generated.ts"
+        }
+      ]
+    },
+    {
+      "name": "icon-components",
+      "type": "registry:lib",
+      "title": "MetalUI icon components",
+      "description": "Every product icon as a named React component.",
+      "registryDependencies": [
+        "https://metalui.dev/r/icons.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/icons/components.generated.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/components.generated.tsx"
         }
       ]
     },
@@ -31,7 +124,7 @@
         {
           "path": "packages/metalui/src/components/accordion/accordion.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/accordion/accordion.tsx"
+          "target": "components/metalui/components/accordion/accordion.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/accordion.md. SwiftUI: MetalAccordion in the MetalUI Swift package."
@@ -45,13 +138,16 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/alert-dialog/alert-dialog.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/alert-dialog/alert-dialog.tsx"
+          "target": "components/metalui/components/alert-dialog/alert-dialog.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/alert-dialog.md. SwiftUI: MetalAlertDialog in the MetalUI Swift package."
@@ -63,13 +159,15 @@
       "description": "A file someone attached, as a small raised plate: type, name, size or upload progress; it lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-button.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/attachment/attachment.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/attachment/attachment.tsx"
+          "target": "components/metalui/components/attachment/attachment.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/attachment.md. SwiftUI: MetalAttachment in the MetalUI Swift package."
@@ -83,13 +181,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/led.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/avatar/avatar.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/avatar/avatar.tsx"
+          "target": "components/metalui/components/avatar/avatar.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/avatar.md. SwiftUI: MetalAvatar in the MetalUI Swift package."
@@ -107,7 +206,7 @@
         {
           "path": "packages/metalui/src/components/block-silhouette/block-silhouette.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/block-silhouette/block-silhouette.tsx"
+          "target": "components/metalui/components/block-silhouette/block-silhouette.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/block-silhouette.md. SwiftUI: MetalBlockSilhouette in the MetalUI Swift package."
@@ -119,13 +218,14 @@
       "description": "Where you are, as a path you can climb: levels above in ink2, the current in ink, engraved chevrons between; a new level arrives from the right on the settle spring; long paths fold the middle into a menu.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/breadcrumbs/breadcrumbs.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/breadcrumbs/breadcrumbs.tsx"
+          "target": "components/metalui/components/breadcrumbs/breadcrumbs.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/breadcrumbs.md. SwiftUI: MetalBreadcrumbs in the MetalUI Swift package."
@@ -143,7 +243,7 @@
         {
           "path": "packages/metalui/src/components/brush-cursor/brush-cursor.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/brush-cursor/brush-cursor.tsx"
+          "target": "components/metalui/components/brush-cursor/brush-cursor.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/brush-cursor.md. SwiftUI: MetalBrushCursor in the MetalUI Swift package."
@@ -163,7 +263,7 @@
         {
           "path": "packages/metalui/src/components/button/button.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/button/button.tsx"
+          "target": "components/metalui/components/button/button.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/button.md. SwiftUI: MetalButton in the MetalUI Swift package."
@@ -175,13 +275,15 @@
       "description": "Related actions as one cluster of keys in a sunk tray, each pressing on its own; a split button adds a chevron key that opens a menu of the other ways to do the main action.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/button-group/button-group.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/button-group/button-group.tsx"
+          "target": "components/metalui/components/button-group/button-group.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/button-group.md. SwiftUI: MetalButtonGroup in the MetalUI Swift package."
@@ -193,13 +295,16 @@
       "description": "A month to choose a day from: the chosen day lands into the switcher's thumb look on the part spring, months turn on the drum and slide in from the side you head to; DatePicker opens it from a form field.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/popover.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/calendar/calendar.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/calendar/calendar.tsx"
+          "target": "components/metalui/components/calendar/calendar.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/calendar.md. SwiftUI: MetalCalendar in the MetalUI Swift package."
@@ -217,7 +322,7 @@
         {
           "path": "packages/metalui/src/components/card/card.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/card/card.tsx"
+          "target": "components/metalui/components/card/card.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/card.md. SwiftUI: MetalCard in the MetalUI Swift package."
@@ -231,13 +336,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/checkbox/checkbox.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/checkbox/checkbox.tsx"
+          "target": "components/metalui/components/checkbox/checkbox.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/checkbox.md. SwiftUI: MetalCheckbox in the MetalUI Swift package."
@@ -251,13 +357,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/checkbox.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/checkbox-group/checkbox-group.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/checkbox-group/checkbox-group.tsx"
+          "target": "components/metalui/components/checkbox-group/checkbox-group.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/checkbox-group.md. SwiftUI: MetalCheckboxGroup in the MetalUI Swift package."
@@ -275,7 +382,7 @@
         {
           "path": "packages/metalui/src/components/chip/chip.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/chip/chip.tsx"
+          "target": "components/metalui/components/chip/chip.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/chip.md. SwiftUI: MetalChip in the MetalUI Swift package."
@@ -287,6 +394,8 @@
       "description": "Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/chip.json",
+        "https://metalui.dev/r/glass-face.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -307,13 +416,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/combobox/combobox.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/combobox/combobox.tsx"
+          "target": "components/metalui/components/combobox/combobox.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/combobox.md. SwiftUI: MetalCombobox in the MetalUI Swift package."
@@ -327,13 +437,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/kbd.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/command-palette/command-palette.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/command-palette/command-palette.tsx"
+          "target": "components/metalui/components/command-palette/command-palette.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/command-palette.md. SwiftUI: MetalCommandPalette, MetalCommandPaletteItem in the MetalUI Swift package."
@@ -351,7 +462,7 @@
         {
           "path": "packages/metalui/src/components/connector/connector.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/connector/connector.tsx"
+          "target": "components/metalui/components/connector/connector.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/connector.md. SwiftUI: MetalConnector in the MetalUI Swift package."
@@ -363,7 +474,9 @@
       "description": "The day as an object: a tear-off page with the date in dots, the month, weekday and clock in the pixel face, the minute filling along its foot; the year so far one dot a day, the days left and the moon; one line for the day. Tap the page to tear it off. And a small tile of the date.",
       "dependencies": [],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/surface.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/well.json"
       ],
       "files": [
         {
@@ -383,13 +496,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/dialog/dialog.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/dialog/dialog.tsx"
+          "target": "components/metalui/components/dialog/dialog.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/dialog.md. SwiftUI: MetalDialog in the MetalUI Swift package."
@@ -407,7 +521,7 @@
         {
           "path": "packages/metalui/src/components/dot-display/dot-display.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/dot-display/dot-display.tsx"
+          "target": "components/metalui/components/dot-display/dot-display.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/dot-display.md. SwiftUI: MetalDotDisplay in the MetalUI Swift package."
@@ -421,13 +535,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/draw-picks/draw-picks.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/draw-picks/draw-picks.tsx"
+          "target": "components/metalui/components/draw-picks/draw-picks.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/draw-picks.md. SwiftUI: MetalDrawPicks in the MetalUI Swift package."
@@ -441,7 +556,10 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/draw-picks.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/toolbar.json"
       ],
       "files": [
         {
@@ -459,13 +577,14 @@
       "description": "A place that receives files, by drop or by picking: a sunk tray whose edge lights while files are dragged in the window, sinks and says 'Let go to attach' with files over it, refuses a file it won't take with a shake, and comes back up on the object spring when they land.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/drop-zone/drop-zone.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/drop-zone/drop-zone.tsx"
+          "target": "components/metalui/components/drop-zone/drop-zone.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/drop-zone.md. SwiftUI: MetalDropZone in the MetalUI Swift package."
@@ -483,7 +602,7 @@
         {
           "path": "packages/metalui/src/components/empty-state/empty-state.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/empty-state/empty-state.tsx"
+          "target": "components/metalui/components/empty-state/empty-state.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/empty-state.md. SwiftUI: MetalEmptyState in the MetalUI Swift package."
@@ -501,7 +620,7 @@
         {
           "path": "packages/metalui/src/components/fan/fan.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/fan/fan.tsx"
+          "target": "components/metalui/components/fan/fan.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/fan.md. SwiftUI: MetalFan in the MetalUI Swift package."
@@ -513,13 +632,15 @@
       "description": "Text input in a well with a leading glyph and trailing keycaps; SearchField, a button in a well that opens search.",
       "dependencies": [],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/kbd.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/well.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/field/field.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/field/field.tsx"
+          "target": "components/metalui/components/field/field.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/field.md. SwiftUI: MetalField, MetalSearchField in the MetalUI Swift package."
@@ -533,6 +654,12 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/glyph.json",
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/label.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/surface.json",
+        "https://metalui.dev/r/switcher.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -551,13 +678,14 @@
       "description": "A folder on the canvas that holds blocks: a back panel with a tab, up to three blocks peeking up as cards, a frosted flap with its name and count; fans on hover, opens wide when a block is dragged over, swings shut when one lands; six paper colours.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/label.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/folder/folder.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/folder/folder.tsx"
+          "target": "components/metalui/components/folder/folder.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/folder.md. SwiftUI: MetalFolder in the MetalUI Swift package."
@@ -577,7 +705,7 @@
         {
           "path": "packages/metalui/src/components/form-field/form-field.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/form-field/form-field.tsx"
+          "target": "components/metalui/components/form-field/form-field.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/form-field.md. SwiftUI: MetalFormField in the MetalUI Swift package."
@@ -595,7 +723,7 @@
         {
           "path": "packages/metalui/src/components/glass-face/glass-face.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/glass-face/glass-face.tsx"
+          "target": "components/metalui/components/glass-face/glass-face.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/glass-face.md. SwiftUI: MetalGlassFace in the MetalUI Swift package."
@@ -613,7 +741,7 @@
         {
           "path": "packages/metalui/src/components/glyph/glyph.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/glyph/glyph.tsx"
+          "target": "components/metalui/components/glyph/glyph.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/glyph.md. SwiftUI: MetalGlyph in the MetalUI Swift package."
@@ -625,6 +753,10 @@
       "description": "A block's identity on a 420 ms dwell: Surface(tip) beside its first line with the kind and details in Label(engraved), derived tags as Chip(tag) and the recognizer's status with a Led.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/chip.json",
+        "https://metalui.dev/r/label.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -649,7 +781,7 @@
         {
           "path": "packages/metalui/src/components/icon-button/icon-button.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/icon-button/icon-button.tsx"
+          "target": "components/metalui/components/icon-button/icon-button.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/icon-button.md. SwiftUI: MetalIconButton in the MetalUI Swift package."
@@ -667,7 +799,7 @@
         {
           "path": "packages/metalui/src/components/kbd/kbd.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/kbd/kbd.tsx"
+          "target": "components/metalui/components/kbd/kbd.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/kbd.md. SwiftUI: MetalKbd in the MetalUI Swift package."
@@ -685,7 +817,7 @@
         {
           "path": "packages/metalui/src/components/label/label.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/label/label.tsx"
+          "target": "components/metalui/components/label/label.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/label.md. SwiftUI: MetalLabel in the MetalUI Swift package."
@@ -697,13 +829,14 @@
       "description": "The box a drag on empty canvas draws: a 1 pt intent-green hairline over a faint fill, and a graphite readout under it counting what it will select (● 3 blocks). The same on screen at every zoom.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/size-readout.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/lasso/lasso.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/lasso/lasso.tsx"
+          "target": "components/metalui/components/lasso/lasso.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/lasso.md. SwiftUI: MetalLasso in the MetalUI Swift package."
@@ -721,7 +854,7 @@
         {
           "path": "packages/metalui/src/components/led/led.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/led/led.tsx"
+          "target": "components/metalui/components/led/led.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/led.md. SwiftUI: MetalLED in the MetalUI Swift package."
@@ -739,7 +872,7 @@
         {
           "path": "packages/metalui/src/components/line-handles/line-handles.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/line-handles/line-handles.tsx"
+          "target": "components/metalui/components/line-handles/line-handles.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/line-handles.md. SwiftUI: MetalLineHandles in the MetalUI Swift package."
@@ -759,7 +892,7 @@
         {
           "path": "packages/metalui/src/components/link/link.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/link/link.tsx"
+          "target": "components/metalui/components/link/link.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/link.md. SwiftUI: MetalLink in the MetalUI Swift package."
@@ -771,6 +904,8 @@
       "description": "A link as a glass object: the host and path on a screen tinted by the host, a LINK tag and one OPEN ↗ action.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/chip.json",
+        "https://metalui.dev/r/glass-face.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -795,7 +930,7 @@
         {
           "path": "packages/metalui/src/components/mark/mark.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/mark/mark.tsx"
+          "target": "components/metalui/components/mark/mark.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/mark.md. SwiftUI: MetalMark, MetalMarkURLPill, MetalMarkInferred, MetalMarkUrgency, MetalMarkLife, Text.metalMark(_:) in the MetalUI Swift package."
@@ -809,13 +944,15 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/kbd.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/menu/menu.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/menu/menu.tsx"
+          "target": "components/metalui/components/menu/menu.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/menu.md. SwiftUI: MetalMenuPanel, MetalMenuItem, View.metalMenu(isPresented:at:heading:items:) in the MetalUI Swift package."
@@ -829,13 +966,15 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/menubar/menubar.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/menubar/menubar.tsx"
+          "target": "components/metalui/components/menubar/menubar.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/menubar.md. SwiftUI: MetalMenubar in the MetalUI Swift package."
@@ -855,7 +994,7 @@
         {
           "path": "packages/metalui/src/components/meter/meter.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/meter/meter.tsx"
+          "target": "components/metalui/components/meter/meter.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/meter.md. SwiftUI: MetalMeter in the MetalUI Swift package."
@@ -875,7 +1014,7 @@
         {
           "path": "packages/metalui/src/components/navigation-menu/navigation-menu.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/navigation-menu/navigation-menu.tsx"
+          "target": "components/metalui/components/navigation-menu/navigation-menu.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/navigation-menu.md. SwiftUI: MetalNavigationMenu in the MetalUI Swift package."
@@ -889,13 +1028,15 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/number-field/number-field.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/number-field/number-field.tsx"
+          "target": "components/metalui/components/number-field/number-field.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/number-field.md. SwiftUI: MetalNumberField in the MetalUI Swift package."
@@ -907,13 +1048,15 @@
       "description": "Moving through pages of results: page numbers in the switcher's track with previous and next keys; the current page's thumb glides to the chosen page on the part spring.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/switcher.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/pagination/pagination.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/pagination/pagination.tsx"
+          "target": "components/metalui/components/pagination/pagination.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/pagination.md. SwiftUI: MetalPagination in the MetalUI Swift package."
@@ -925,6 +1068,10 @@
       "description": "The only chrome that changes while the canvas is scrubbed into the past: Surface(graphite-plain) with the MEMORY engraving, the moment viewed, and a Back to Now cap with its key.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/kbd.json",
+        "https://metalui.dev/r/label.json",
+        "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -949,7 +1096,7 @@
         {
           "path": "packages/metalui/src/components/perfect-preview/perfect-preview.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/perfect-preview/perfect-preview.tsx"
+          "target": "components/metalui/components/perfect-preview/perfect-preview.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/perfect-preview.md. SwiftUI: MetalPerfectPreview in the MetalUI Swift package."
@@ -969,7 +1116,7 @@
         {
           "path": "packages/metalui/src/components/popover/popover.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/popover/popover.tsx"
+          "target": "components/metalui/components/popover/popover.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/popover.md. SwiftUI: MetalPopover in the MetalUI Swift package."
@@ -983,13 +1130,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/popover.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/preview-card/preview-card.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/preview-card/preview-card.tsx"
+          "target": "components/metalui/components/preview-card/preview-card.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/preview-card.md. SwiftUI: MetalPreviewCard in the MetalUI Swift package."
@@ -1009,7 +1157,7 @@
         {
           "path": "packages/metalui/src/components/progress/progress.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/progress/progress.tsx"
+          "target": "components/metalui/components/progress/progress.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/progress.md. SwiftUI: MetalProgress in the MetalUI Swift package."
@@ -1023,7 +1171,8 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
       ],
       "files": [
         {
@@ -1049,7 +1198,7 @@
         {
           "path": "packages/metalui/src/components/radio/radio.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/radio/radio.tsx"
+          "target": "components/metalui/components/radio/radio.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/radio.md. SwiftUI: MetalRadioGroup in the MetalUI Swift package."
@@ -1061,7 +1210,11 @@
       "description": "A drawn rectangle with a name that carries a rule: Well(region) with a head (Label name, Label rule, Label count) that lights as a drop target, dims, hides in the past and renames in place; a pinned lens is Surface(lens) with Row(list) rows.",
       "dependencies": [],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/label.json",
+        "https://metalui.dev/r/row.json",
+        "https://metalui.dev/r/surface.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/well.json"
       ],
       "files": [
         {
@@ -1085,7 +1238,7 @@
         {
           "path": "packages/metalui/src/components/row/row.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/row/row.tsx"
+          "target": "components/metalui/components/row/row.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/row.md. SwiftUI: MetalRow in the MetalUI Swift package."
@@ -1103,7 +1256,7 @@
         {
           "path": "packages/metalui/src/components/rule/rule.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/rule/rule.tsx"
+          "target": "components/metalui/components/rule/rule.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/rule.md. SwiftUI: MetalRule in the MetalUI Swift package."
@@ -1123,7 +1276,7 @@
         {
           "path": "packages/metalui/src/components/scroll-area/scroll-area.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/scroll-area/scroll-area.tsx"
+          "target": "components/metalui/components/scroll-area/scroll-area.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/scroll-area.md. SwiftUI: MetalScrollArea in the MetalUI Swift package."
@@ -1137,13 +1290,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/select/select.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/select/select.tsx"
+          "target": "components/metalui/components/select/select.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/select.md. SwiftUI: MetalSelect in the MetalUI Swift package."
@@ -1155,13 +1309,14 @@
       "description": "The one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/size-readout.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/selection-frame/selection-frame.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/selection-frame/selection-frame.tsx"
+          "target": "components/metalui/components/selection-frame/selection-frame.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/selection-frame.md. SwiftUI: MetalSelectionFrame in the MetalUI Swift package."
@@ -1173,6 +1328,10 @@
       "description": "An app's settings as sections of rows: an engraved heading over a raised card; each row a name, an optional detail and one control on the right; engraved rules between rows; shortcut rows with keycaps.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/kbd.json",
+        "https://metalui.dev/r/label.json",
+        "https://metalui.dev/r/rule.json",
+        "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1193,13 +1352,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/sheet/sheet.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/sheet/sheet.tsx"
+          "target": "components/metalui/components/sheet/sheet.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/sheet.md. SwiftUI: MetalSheet in the MetalUI Swift package."
@@ -1211,13 +1371,15 @@
       "description": "An app's side place for moving between places: sections of items with one highlight that glides to the current place; it collapses to a rail (words first, then width) with tooltips.",
       "dependencies": [],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/sidebar/sidebar.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/sidebar/sidebar.tsx"
+          "target": "components/metalui/components/sidebar/sidebar.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/sidebar.md. SwiftUI: MetalSidebar in the MetalUI Swift package."
@@ -1229,13 +1391,16 @@
       "description": "A graphite pill that reads a measured value: an object's size, a multi-selection's count, a copy, a zoom level. Surface(graphite-deep) with a live Led and the value in Label(readout).",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/label.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/size-readout/size-readout.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/size-readout/size-readout.tsx"
+          "target": "components/metalui/components/size-readout/size-readout.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/size-readout.md. SwiftUI: MetalSizeReadout in the MetalUI Swift package."
@@ -1253,7 +1418,7 @@
         {
           "path": "packages/metalui/src/components/skeleton/skeleton.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/skeleton/skeleton.tsx"
+          "target": "components/metalui/components/skeleton/skeleton.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/skeleton.md. SwiftUI: MetalSkeleton in the MetalUI Swift package."
@@ -1267,13 +1432,15 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/well.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/slider/slider.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/slider/slider.tsx"
+          "target": "components/metalui/components/slider/slider.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/slider.md. SwiftUI: MetalSlider in the MetalUI Swift package."
@@ -1291,7 +1458,7 @@
         {
           "path": "packages/metalui/src/components/snap-guides/snap-guides.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/snap-guides/snap-guides.tsx"
+          "target": "components/metalui/components/snap-guides/snap-guides.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/snap-guides.md. SwiftUI: MetalSnapGuides in the MetalUI Swift package."
@@ -1309,7 +1476,7 @@
         {
           "path": "packages/metalui/src/components/sparkline/sparkline.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/sparkline/sparkline.tsx"
+          "target": "components/metalui/components/sparkline/sparkline.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/sparkline.md. SwiftUI: MetalSparkline in the MetalUI Swift package."
@@ -1327,7 +1494,7 @@
         {
           "path": "packages/metalui/src/components/spatial-field/spatial-field.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/spatial-field/spatial-field.tsx"
+          "target": "components/metalui/components/spatial-field/spatial-field.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/spatial-field.md. SwiftUI: MetalSpatialFieldView in the MetalUI Swift package."
@@ -1345,7 +1512,7 @@
         {
           "path": "packages/metalui/src/components/spinner/spinner.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/spinner/spinner.tsx"
+          "target": "components/metalui/components/spinner/spinner.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/spinner.md. SwiftUI: MetalSpinner in the MetalUI Swift package."
@@ -1363,7 +1530,7 @@
         {
           "path": "packages/metalui/src/components/split-pane/split-pane.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/split-pane/split-pane.tsx"
+          "target": "components/metalui/components/split-pane/split-pane.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/split-pane.md. SwiftUI: MetalSplitPane in the MetalUI Swift package."
@@ -1377,13 +1544,15 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/status/status.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/status/status.tsx"
+          "target": "components/metalui/components/status/status.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/status.md. SwiftUI: MetalStatusBadge in the MetalUI Swift package."
@@ -1395,6 +1564,9 @@
       "description": "One question the recognizer asks at middle confidence, beside its block: Chip(suggestion) with the question, its confidence as a small engraving, and mini accept and dismiss buttons. Faint until the block is hovered.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/chip.json",
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/label.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1419,7 +1591,7 @@
         {
           "path": "packages/metalui/src/components/surface/surface.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/surface/surface.tsx"
+          "target": "components/metalui/components/surface/surface.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/surface.md. SwiftUI: MetalSurface in the MetalUI Swift package."
@@ -1439,7 +1611,7 @@
         {
           "path": "packages/metalui/src/components/switch/switch.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/switch/switch.tsx"
+          "target": "components/metalui/components/switch/switch.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/switch.md. SwiftUI: MetalSwitch in the MetalUI Swift package."
@@ -1453,13 +1625,14 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/switcher/switcher.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/switcher/switcher.tsx"
+          "target": "components/metalui/components/switcher/switcher.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/switcher.md. SwiftUI: MetalSwitcher in the MetalUI Swift package."
@@ -1471,13 +1644,14 @@
       "description": "Rows of things, read across and compared down: engraved labels and hairlines; sorting turns the column's arrow and every row travels to its new place on the settle spring; rows select with the checkbox.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/checkbox.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/table/table.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/table/table.tsx"
+          "target": "components/metalui/components/table/table.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/table.md. SwiftUI: MetalTable in the MetalUI Swift package."
@@ -1491,13 +1665,15 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/switcher.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/tabs/tabs.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/tabs/tabs.tsx"
+          "target": "components/metalui/components/tabs/tabs.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/tabs.md. SwiftUI: MetalTabs in the MetalUI Swift package."
@@ -1515,7 +1691,7 @@
         {
           "path": "packages/metalui/src/components/textarea/textarea.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/textarea/textarea.tsx"
+          "target": "components/metalui/components/textarea/textarea.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/textarea.md. SwiftUI: MetalTextarea in the MetalUI Swift package."
@@ -1529,6 +1705,10 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/glyph.json",
+        "https://metalui.dev/r/label.json",
+        "https://metalui.dev/r/slider.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1549,13 +1729,15 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/kbd.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/toast/toast.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/toast/toast.tsx"
+          "target": "components/metalui/components/toast/toast.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/toast.md. SwiftUI: MetalToastDeck, .metalToastDeck(_:), MetalToast, .metalToast(_:) in the MetalUI Swift package."
@@ -1569,13 +1751,15 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/led.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/toggle/toggle.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/toggle/toggle.tsx"
+          "target": "components/metalui/components/toggle/toggle.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/toggle.md. SwiftUI: MetalToggle in the MetalUI Swift package."
@@ -1589,6 +1773,9 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/rule.json",
+        "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1609,13 +1796,15 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/kbd.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
       ],
       "files": [
         {
           "path": "packages/metalui/src/components/toolbar/toolbar.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/toolbar/toolbar.tsx"
+          "target": "components/metalui/components/toolbar/toolbar.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/toolbar.md. SwiftUI: MetalToolbar, MetalToolButton, MetalToolbarSeparator in the MetalUI Swift package."
@@ -1635,7 +1824,7 @@
         {
           "path": "packages/metalui/src/components/tooltip/tooltip.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/tooltip/tooltip.tsx"
+          "target": "components/metalui/components/tooltip/tooltip.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/tooltip.md. SwiftUI: View.metalTooltip(_:shortcut:edge:) in the MetalUI Swift package."
@@ -1647,7 +1836,11 @@
       "description": "Weather as an object: a slab with a dot-matrix sky sunk into it that follows the time of day, the temperature in the pixel face on its ground, the next hours and the week as dot ranges on one scale; and a small tile of one sky.",
       "dependencies": [],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/rule.json",
+        "https://metalui.dev/r/surface.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/well.json"
       ],
       "files": [
         {
@@ -1671,7 +1864,7 @@
         {
           "path": "packages/metalui/src/components/well/well.tsx",
           "type": "registry:ui",
-          "target": "components/metalui/well/well.tsx"
+          "target": "components/metalui/components/well/well.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/well.md. SwiftUI: MetalWell in the MetalUI Swift package."

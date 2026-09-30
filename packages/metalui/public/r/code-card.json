@@ -6,6 +6,8 @@
   "description": "Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag.",
   "dependencies": [],
   "registryDependencies": [
+    "https://metalui.dev/r/chip.json",
+    "https://metalui.dev/r/glass-face.json",
     "https://metalui.dev/r/tokens.json"
   ],
   "files": [

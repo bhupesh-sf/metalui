@@ -56,6 +56,10 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 - `MetalRadioGroup`, `MetalTextarea`, `MetalPopover`, `MetalAlertDialog`, `MetalProgress`, `MetalSpinner`, `MetalNumberField`, `MetalToggle`, `MetalAccordion`, `MetalMeter`, `MetalSheet`, `MetalScrollArea`, `MetalCheckboxGroup`, `MetalCombobox` and `MetalFormField` exist as work-in-progress placeholders with the React API's shape; web is the reference until they are finished.
 
+### Fixed
+
+- shadcn registry: `add …/button.json` now imports `tokens.css` and `theme.css` into your global CSS, so a copied component is styled. Files land under `components/metalui/` in the same layout as the package, so imports between components, `motion` and `icons` resolve; shared code comes as `motion`, `icons` and `icon-components` items, and each item lists the components it uses. Removed components are no longer served.
+
 ## 0.2.1
 
 Earlier releases are recorded in the git history and tags (`v0.1.0`, `v0.2.0`, `v0.2.1`).

@@ -8,6 +8,12 @@
     "@base-ui/react@^1.8.0"
   ],
   "registryDependencies": [
+    "https://metalui.dev/r/glyph.json",
+    "https://metalui.dev/r/icon-button.json",
+    "https://metalui.dev/r/label.json",
+    "https://metalui.dev/r/led.json",
+    "https://metalui.dev/r/surface.json",
+    "https://metalui.dev/r/switcher.json",
     "https://metalui.dev/r/tokens.json"
   ],
   "files": [

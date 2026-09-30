@@ -6,6 +6,10 @@
   "description": "An app's settings as sections of rows: an engraved heading over a raised card; each row a name, an optional detail and one control on the right; engraved rules between rows; shortcut rows with keycaps.",
   "dependencies": [],
   "registryDependencies": [
+    "https://metalui.dev/r/kbd.json",
+    "https://metalui.dev/r/label.json",
+    "https://metalui.dev/r/rule.json",
+    "https://metalui.dev/r/surface.json",
     "https://metalui.dev/r/tokens.json"
   ],
   "files": [

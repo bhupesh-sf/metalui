@@ -6,7 +6,11 @@
   "description": "Weather as an object: a slab with a dot-matrix sky sunk into it that follows the time of day, the temperature in the pixel face on its ground, the next hours and the week as dot ranges on one scale; and a small tile of one sky.",
   "dependencies": [],
   "registryDependencies": [
-    "https://metalui.dev/r/tokens.json"
+    "https://metalui.dev/r/led.json",
+    "https://metalui.dev/r/rule.json",
+    "https://metalui.dev/r/surface.json",
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/well.json"
   ],
   "files": [
     {

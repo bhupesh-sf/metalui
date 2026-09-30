@@ -1,38 +1,110 @@
 // components/*/meta.json → shadcn registry: registry.json (source) + public/r/<name>.json (served).
-// Targets mirror this repository's layout, so each component's relative
-// `../tokens.css` import keeps working in the consumer's project.
-import { readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync, unlinkSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
 import { root, emit, finish } from './lib/emit.mjs';
 import { components } from './lib/components.mjs';
 
-const ORIGIN = 'https://metalui.dev';
+const ORIGIN = process.env.METALUI_REGISTRY_ORIGIN ?? 'https://metalui.dev';
 const BASE_UI = JSON.parse(readFileSync(root('packages/metalui/package.json'), 'utf8')).dependencies['@base-ui/react'];
+const SRC = root('packages/metalui/src');
 
-const file = (path, type, target) => ({ path, type, target, content: readFileSync(root(path), 'utf8') });
+// Targets mirror src/ under the consumer's components/metalui/, so every relative import
+// (../tokens.css, ../../motion/swap, ../../components/surface/surface) resolves there unchanged.
+const target = (path) => `components/metalui/${relative(SRC, root(path))}`;
+const file = (path, type) => ({ path, type, target: target(path), content: readFileSync(root(path), 'utf8') });
+const fileType = (f) => (f.endsWith('.css') ? 'registry:file' : 'registry:ui');
+
+// Files that components share without being components: each becomes one registry item.
+const shared = {
+  motion: {
+    title: 'MetalUI motion',
+    description: 'Springs, swap, indicator, refuse and haptic helpers that MetalUI components use.',
+    dependsOn: [],
+    files: ['motion/haptic.ts', 'motion/hop.ts', 'motion/indicator.tsx', 'motion/refuse.ts', 'motion/springs.generated.ts', 'motion/swap.tsx'],
+  },
+  icons: {
+    title: 'MetalUI icon runtime',
+    description: 'The Icon element, the icon catalog and the tick drawing that components such as Checkbox and Toast use.',
+    dependsOn: [],
+    files: ['icons/Icon.tsx', 'icons/catalog.generated.ts', 'icons/icons.generated.css', 'icons/tick.generated.ts'],
+  },
+  'icon-components': {
+    title: 'MetalUI icon components',
+    description: 'Every product icon as a named React component.',
+    dependsOn: ['icons'],
+    files: ['icons/components.generated.tsx'],
+  },
+};
+const sharedByFile = new Map(Object.entries(shared).flatMap(([name, g]) => g.files.map((f) => [join(SRC, f), name])));
 
 const tokensItem = {
   $schema: 'https://ui.shadcn.com/schema/registry-item.json',
   name: 'tokens',
   type: 'registry:style',
   title: 'MetalUI tokens',
-  description: 'Soft Hardware colorways (bone, graphite), materials, caps and springs as --mu-* custom properties. Every component imports it.',
-  files: [file('packages/metalui/src/components/tokens.css', 'registry:file', 'components/metalui/tokens.css')],
+  description: 'Soft Hardware colorways (bone, graphite), materials, caps and springs as --mu-* custom properties, and the Tailwind v4 theme built on them. Every component needs it; it imports both into your global CSS.',
+  files: ['packages/metalui/src/components/tokens.css', 'packages/metalui/src/components/theme.css'].map((p) => file(p, 'registry:file')),
+  css: {
+    '@import "./components/metalui/components/tokens.css"': {},
+    '@import "./components/metalui/components/theme.css"': {},
+  },
 };
 
-const items = components().map((meta) => ({
+const resolve = (from, spec) => {
+  const base = join(dirname(from), spec);
+  for (const c of [base, `${base}.ts`, `${base}.tsx`, `${base}.css`, join(base, 'index.ts'), join(base, 'index.tsx')]) {
+    if (existsSync(c) && statSync(c).isFile()) return c;
+  }
+  throw new Error(`${relative(SRC, from)} imports ${spec}, which does not exist`);
+};
+const imports = (f) => [...readFileSync(f, 'utf8').matchAll(/(?:from|import)\s+['"](\.{1,2}\/[^'"]+)['"]/g)].map((m) => m[1]);
+
+const metas = components();
+const byDir = new Map(metas.map((m) => [m.dir, m]));
+const ownerOf = (abs) => {
+  if (sharedByFile.has(abs)) return { shared: sharedByFile.get(abs) };
+  const rel = relative(SRC, abs);
+  const m = byDir.get(dirname(rel));
+  if (m) return { component: m.name };
+  throw new Error(`${rel} is imported by a component but belongs to no component or shared item`);
+};
+
+const items = metas.map((meta) => {
+  const own = new Set(meta.react.files.map((f) => join(SRC, meta.dir, f)));
+  const deps = new Set([`${ORIGIN}/r/tokens.json`]);
+  for (const f of own) {
+    for (const spec of imports(f)) {
+      const abs = resolve(f, spec);
+      if (own.has(abs)) continue;
+      const owner = ownerOf(abs);
+      deps.add(`${ORIGIN}/r/${owner.shared ?? owner.component}.json`);
+    }
+  }
+  return {
+    $schema: 'https://ui.shadcn.com/schema/registry-item.json',
+    name: meta.name,
+    type: 'registry:ui',
+    title: meta.title,
+    description: meta.description,
+    dependencies: meta.base?.startsWith('@base-ui') ? [`@base-ui/react@${BASE_UI}`] : [],
+    registryDependencies: [...deps].sort(),
+    files: meta.react.files.map((f) => file(`packages/metalui/src/${meta.dir}/${f}`, fileType(f))),
+    dir: meta.dir,
+    docs: `Agent guide: ${ORIGIN}/r/${meta.name}.md. SwiftUI: ${meta.swift.symbol} in the MetalUI Swift package.`,
+  };
+});
+
+const sharedItems = Object.entries(shared).map(([name, g]) => ({
   $schema: 'https://ui.shadcn.com/schema/registry-item.json',
-  name: meta.name,
-  type: 'registry:ui',
-  title: meta.title,
-  description: meta.description,
-  dependencies: meta.base?.startsWith('@base-ui') ? [`@base-ui/react@${BASE_UI}`] : [],
-  registryDependencies: [`${ORIGIN}/r/tokens.json`],
-  files: meta.react.files.map((f) => file(`packages/metalui/src/${meta.dir}/${f}`, f.endsWith('.css') ? 'registry:file' : 'registry:ui', `components/metalui/${meta.dir.split('/')[0] === 'blocks' ? 'blocks/' : ''}${meta.name}/${f}`)),
-  dir: meta.dir,
-  docs: `Agent guide: ${ORIGIN}/r/${meta.name}.md. SwiftUI: ${meta.swift.symbol} in the MetalUI Swift package.`,
+  name,
+  type: 'registry:lib',
+  title: g.title,
+  description: g.description,
+  registryDependencies: g.dependsOn.map((d) => `${ORIGIN}/r/${d}.json`),
+  files: g.files.map((f) => file(`packages/metalui/src/${f}`, fileType(f))),
 }));
 
-emit('packages/metalui/public/r/tokens.json', JSON.stringify(tokensItem, null, 2) + '\n');
+for (const item of [tokensItem, ...sharedItems]) emit(`packages/metalui/public/r/${item.name}.json`, JSON.stringify(item, null, 2) + '\n');
 for (const { dir, ...item } of items) {
   emit(`packages/metalui/public/r/${item.name}.json`, JSON.stringify(item, null, 2) + '\n');
   item.dir = dir;
@@ -44,6 +116,13 @@ emit('packages/metalui/registry.json', JSON.stringify({
   $schema: 'https://ui.shadcn.com/schema/registry.json',
   name: 'metalui',
   homepage: ORIGIN,
-  items: [strip(tokensItem), ...items.map(strip)],
+  items: [strip(tokensItem), ...sharedItems.map(strip), ...items.map(strip)],
 }, null, 2) + '\n');
+// Items whose source is gone must not keep being served (a removed component stays installable otherwise).
+const served = new Set([tokensItem, ...sharedItems, ...items].flatMap(({ name }) => [`${name}.json`, `${name}.md`]));
+for (const f of readdirSync(root('packages/metalui/public/r'))) {
+  if (served.has(f)) continue;
+  if (process.argv.includes('--check')) emit(`packages/metalui/public/r/${f}`, null);
+  else unlinkSync(root('packages/metalui/public/r', f));
+}
 finish(`registry (${items.length} components)`);

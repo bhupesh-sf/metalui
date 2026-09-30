@@ -8,13 +8,15 @@
     "@base-ui/react@^1.8.0"
   ],
   "registryDependencies": [
-    "https://metalui.dev/r/tokens.json"
+    "https://metalui.dev/r/led.json",
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/tooltip.json"
   ],
   "files": [
     {
       "path": "packages/metalui/src/components/status/status.tsx",
       "type": "registry:ui",
-      "target": "components/metalui/status/status.tsx",
+      "target": "components/metalui/components/status/status.tsx",
       "content": "'use client';\n\nimport * as React from 'react';\nimport { Tooltip } from '../tooltip/tooltip';\nimport { Led, type LedKind } from '../led/led';\n\n/* STATUS BADGE (the reference design's .pill.status): an LED part and the state in words.\n * The badge is not pressable; its hint (the command that fixes it) shows as a tooltip on hover and focus.\n * Styled with the theme's utilities (the status recipe). */\n\nexport interface StatusBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {\n  led: LedKind;\n  /** The state, short, uppercase in the label role: \"SYNC LIVE\", \"OFFLINE · ADD KEY TO KEYCHAIN\". */\n  children: React.ReactNode;\n  /** What fixes it, shown on hover and focus: \"security add-generic-password -s example-service …\". */\n  hint?: string;\n}\n\nconst BADGE = 'mu-badge inline-flex items-center gap-status-badge-gap h-status-badge-height px-status-badge-pad rounded-pill whitespace-nowrap type-status-badge uppercase text-ink2 recipe-status-badge cursor-default focus-visible:focus-ring';\n\n/** A state the system is in, with its LED. Not a button. */\nexport const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(function StatusBadge({ led, children, hint, className, ...props }, ref) {\n  const badge = (\n    <span ref={ref} role=\"status\" tabIndex={hint ? 0 : undefined} aria-description={hint} className={className ? `${BADGE} ${className}` : BADGE} {...props}>\n      <Led kind={led} />\n      {children}\n    </span>\n  );\n  if (!hint) return badge;\n  return (\n    <Tooltip label={hint} side=\"bottom\" offset={8} wrap>\n      {badge}\n    </Tooltip>\n  );\n});\n"
     }
   ],

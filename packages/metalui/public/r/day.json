@@ -6,7 +6,9 @@
   "description": "The day as an object: a tear-off page with the date in dots, the month, weekday and clock in the pixel face, the minute filling along its foot; the year so far one dot a day, the days left and the moon; one line for the day. Tap the page to tear it off. And a small tile of the date.",
   "dependencies": [],
   "registryDependencies": [
-    "https://metalui.dev/r/tokens.json"
+    "https://metalui.dev/r/surface.json",
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/well.json"
   ],
   "files": [
     {

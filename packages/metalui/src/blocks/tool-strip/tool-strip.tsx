@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { Toolbar } from '@base-ui/react/toolbar';
 import { Surface } from '../../components/surface/surface';
 import { Button } from '../../components/button/button';
