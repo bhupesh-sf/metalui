@@ -67,6 +67,11 @@ public enum MetalRing {
 
 /// The type roles: the only sizes, weights and trackings components use.
 public enum MetalType {
+    /// 24/28 · 600
+    public static let stat = MetalTypeRole(
+        name: "stat", family: .sans, size: 24.0, line: 28.0, weight: 600,
+        tracking: -0.025, stretch: 1.0, uppercase: false, tabular: true, maxSize: nil
+    )
     /// 18/24 · 600
     public static let display = MetalTypeRole(
         name: "display", family: .sans, size: 18.0, line: 24.0, weight: 600,
@@ -138,5 +143,5 @@ public enum MetalType {
         tracking: 0.0, stretch: 1.0, uppercase: false, tabular: false, maxSize: nil
     )
 
-    public static let all: [MetalTypeRole] = [display, content, title, lead, ui, body, meta, figure, label, readout, tick, code, pixel, pixelSmall]
+    public static let all: [MetalTypeRole] = [stat, display, content, title, lead, ui, body, meta, figure, label, readout, tick, code, pixel, pixelSmall]
 }

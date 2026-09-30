@@ -69,6 +69,11 @@
 }
 
 /* Type roles */
+@utility type-stat {
+  font: 600 24px/28px var(--mu-sans);
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
 @utility type-display {
   font: 600 18px/24px var(--mu-sans);
   letter-spacing: -0.022em;

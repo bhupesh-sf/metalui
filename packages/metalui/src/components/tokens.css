@@ -484,6 +484,8 @@
   --mu-palette-lip-y: 0.5px;
   --mu-palette-screen-fallback-height: 900px;
   --mu-palette-z: 40;
+  --mu-type-stat: 600 24px/28px var(--mu-sans);
+  --mu-type-stat-tracking: -0.025em;
   --mu-type-display: 600 18px/24px var(--mu-sans);
   --mu-type-display-tracking: -0.022em;
   --mu-type-content: 500 15px/20px var(--mu-sans);
@@ -553,6 +555,7 @@
 }
 
 /* Type roles: the only sizes, weights and trackings components use. */
+.mu-type-stat { font: 600 24px/28px var(--mu-sans); letter-spacing: -0.025em; font-variant-numeric: tabular-nums; }
 .mu-type-display { font: 600 18px/24px var(--mu-sans); letter-spacing: -0.022em; }
 .mu-type-content { font: 500 15px/20px var(--mu-sans); letter-spacing: -0.012em; }
 .mu-type-title { font: 600 13.5px/18px var(--mu-sans); letter-spacing: -0.01em; }

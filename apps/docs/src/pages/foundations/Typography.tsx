@@ -4,6 +4,7 @@ import { F, TYPE_ROLES, type TypeRole } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, copyJSON } from '../../ui/doc';
 
 const SAMPLES: Record<TypeRole, string> = {
+  stat: '36,686',
   display: 'an empty pocket.',
   content: 'the font on the train poster was a condensed grotesk',
   title: 'poster refs',
@@ -21,6 +22,7 @@ const SAMPLES: Record<TypeRole, string> = {
 };
 
 const USES: Record<TypeRole, string> = {
+  stat: 'A headline figure: a dashboard tile\'s one number',
   display: 'Empty-state headline',
   content: 'User-authored text in notes',
   title: 'Object titles',
