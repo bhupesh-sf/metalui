@@ -13,10 +13,10 @@ export interface NavGroup {
 }
 
 /* The part pages, grouped by layer from each part's meta.json (app/parts.ts); nothing is filed by hand.
- * The nav reads from what people reach for to what it is made of: objects and the controls first, then
- * what the hand and the canvas use, then the parts everything is cut from. The build order (LAYERS,
- * docs/COMPOSITION.md) is unchanged; this is only reading order. */
-const READING_ORDER = ['object', 'component', 'instrument', 'place', 'part'] as const;
+ * The nav reads from what people reach for to what it is made of: the controls first, then the blocks
+ * built from them, then objects, what the hand and the canvas use, and the parts everything is cut
+ * from. The build order (LAYERS, docs/COMPOSITION.md) is unchanged; this is only reading order. */
+const READING_ORDER = ['component', 'object', 'instrument', 'place', 'part'] as const;
 const LAYER_GROUPS: NavGroup[] = [...LAYERS].sort((a, b) => READING_ORDER.indexOf(a.layer) - READING_ORDER.indexOf(b.layer)).map(({ layer, label }) => ({
   label,
   items: membersOf(layer)
@@ -48,6 +48,7 @@ export const NAV: NavGroup[] = [
       { to: '/foundations/transitions', label: 'Transitions' },
     ],
   },
+  LAYER_GROUPS[0],
   {
     label: 'Blocks',
     items: [
@@ -59,7 +60,7 @@ export const NAV: NavGroup[] = [
       { to: '/blocks/settings', label: 'Settings' },
     ],
   },
-  ...LAYER_GROUPS,
+  ...LAYER_GROUPS.slice(1),
   {
     label: 'Assets',
     items: [
