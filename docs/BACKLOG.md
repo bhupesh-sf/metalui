@@ -161,3 +161,23 @@ Owner, on the Progress page: "few more variations for reset." (2026-09-30) The p
 - [ ] **Detail**: time left or items done in the head ("8 of 12 · about 20 s"), `tabular-nums`, and the value turning on the drum.
 - [ ] **Sizes**: compact and regular, to sit in a row, a toast or a dialog.
 - [ ] Show them on the page as a states strip with a DialKit panel to scrub the value and flip the state; Swift in step.
+
+## Slider: redesign
+
+Owner, on the Slider page: "the knob goes out of bounds, which breaks it; allow changing icons and width, and improve it overall; the labels are unreadable, the colour gets muddled in the background; it has to be designed better." (2026-09-30)
+
+What's wrong now:
+- The knob's centre travels to the groove's very ends, so at 0 and 100 half the knob hangs past the groove. The tick row is inset (`slider-track-inset`) but the fill and groove are not, so the ticks, the fill end and the knob don't line up.
+- The tick labels are the engraved `eng` type in ink3, small and spaced, on the dotted stage, so they blur into the background. The loose marks (15, 40, 62, 90) sit on the fill, sit apart from the ticks, and read as noise.
+- The pale green fill against the pale groove has little contrast in bone.
+
+Direction:
+- [ ] **Bounds**: the knob stays inside the groove. Its travel is the groove minus the knob (the fill runs to the knob's centre), so at 0 and 100 the knob sits flush with the rounded ends. Ticks and labels use the same travel so the knob, fill end and tick line up at every value. Check it in Swift too (`MetalSlider`), which must follow the same geometry.
+- [ ] **Readable scale**: labels in the meta type at ink2 (not engraved ink3), with enough size and a plate or clear space so the dotted stage never runs through them. Ticks only where there are labels or steps; drop the loose marks, or make marks a documented prop that draws them as notches in the groove.
+- [ ] **Contrast**: a fill that reads in both colorways (the switch-on green at full strength, or ink for a neutral slider); the groove's edge clear against the surface.
+- [ ] **Icons at the ends**: `startIcon` / `endIcon` (volume low / high, dim / bright), the glyphs from the set, playing their acts at the limits; and an optional glyph in or beside the knob.
+- [ ] **Sizes and width**: `size` (compact, regular, large: groove thickness and knob size together) and a `width` / full-width option, all from the slider recipe.
+- [ ] **Value**: an optional value readout (beside it, or a bubble over the knob while dragging) with the drum; a formatter (%, units).
+- [ ] **More kinds**: a range (two knobs), a vertical slider, a stepped slider that clicks into detents (part spring), and a centred slider (fill grows from the middle, for balance or offsets).
+- [ ] **Every state**: rest, hover (the knob lifts), dragging (the knob presses, the fill follows 1:1), focus, disabled, and at the limits (a small refusal nudge when you push past an end).
+- [ ] Redo the page: examples for each kind, a DialKit panel, the x-ray card; captures in both colorways.
