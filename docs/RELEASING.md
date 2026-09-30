@@ -32,6 +32,6 @@ After trusted publishing is active, restrict token-based publishing in npm packa
 
 ## Later releases
 
-Change only the npm workspace version, update `package-lock.json`, run the four checks above, and commit the release. Create and push an annotated `vX.Y.Z` tag from `main`. GitHub Actions builds, checks the tarball in a fresh consumer, and publishes through npm OIDC with provenance. Verify the version and provenance on npm before announcing the release. Do not reuse a published version number.
+Change only the npm workspace version, move the **Unreleased** notes in `packages/metalui/CHANGELOG.md` under a heading for the new version, update `package-lock.json`, run the four checks above, and commit the release. Every change a user can notice gets a line under Unreleased as it lands (Added, Changed, Fixed, Removed). Create and push an annotated `vX.Y.Z` tag from `main`. GitHub Actions builds, checks the tarball in a fresh consumer, and publishes through npm OIDC with provenance. Verify the version and provenance on npm before announcing the release. Do not reuse a published version number.
 
 The browser feature suite remains a separate local check (`npm run test:e2e -- --workers=1`). It is not a release gate while existing docs fixtures are in progress. Known visual literal and recipe gaps are listed exactly in `scripts/lint-literals.allow.json` and `scripts/recipe-parity.allow.json`; the checks still reject new gaps.

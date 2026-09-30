@@ -16,6 +16,7 @@
     "public/icons.json",
     "public/icons-life.json",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "main": "./dist/index.js",
