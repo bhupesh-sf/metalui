@@ -111,6 +111,7 @@
   --mu-nest: 6px;
   --mu-focus-offset: 2px;
   --mu-focus-width: 2px;
+  --mu-invalid-width: 1px;
   --mu-select-offset: 6px;
   --mu-backdrop-blur: 22px;
   --mu-backdrop-saturate: 1.6;
@@ -570,6 +571,7 @@
 :root,
 [data-mu-colorway="bone"] {
   color-scheme: light;
+  --mu-invalid: rgba(216,69,59,.55);
   --mu-s-hi: #FCFBF9;
   --mu-s: #F6F5F2;
   --mu-s-lo: #F0EFEB;
@@ -659,6 +661,7 @@
 
 [data-mu-colorway="graphite"] {
   color-scheme: dark;
+  --mu-invalid: rgba(255,122,102,.5);
   --mu-s-hi: #2C2C2F;
   --mu-s: #252527;
   --mu-s-lo: #202022;
@@ -750,6 +753,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-mu-colorway="bone"]) {
     color-scheme: dark;
+    --mu-invalid: rgba(255,122,102,.5);
     --mu-s-hi: #2C2C2F;
     --mu-s: #252527;
     --mu-s-lo: #202022;
@@ -953,7 +957,6 @@
   --mu-r-radio-row-gap: 8px;
   --mu-r-radio-group-gap: 4px;
   --mu-r-radio-group-gap-across: 16px;
-  --mu-r-radio-error-width: 1px;
   /* textarea: the field well (recipe well field); the settle and refusal springs; a native textarea */
   --mu-r-textarea-self-radius: 14px;
   --mu-r-textarea-self-pad-x: 14px;
@@ -965,7 +968,6 @@
   --mu-r-textarea-count-show: 0.8;
   --mu-r-textarea-count-gap: 6px;
   --mu-r-textarea-count-fade: 160ms;
-  --mu-r-textarea-error-width: 1px;
   /* popover: the menu plate (recipe menu); the surface and release springs; Base UI Popover */
   --mu-r-popover-self-pad: 14px;
   --mu-r-popover-self-radius: 18px;
@@ -1836,7 +1838,6 @@
   --mu-r-select-compact-font: 500 12.5px/1.3 var(--mu-sans);
   --mu-r-select-compact-min-width: 112px;
   --mu-r-select-chevron-size: 12px;
-  --mu-r-select-error-width: 1px;
   --mu-r-select-led-size: 6px;
   --mu-r-select-led-slot: 14px;
   --mu-r-select-pop-scale: 0.97;
@@ -1956,8 +1957,6 @@
   --mu-r-checkbox-self-ghost-shadow:
     /* mu-recipe:checkbox:14 */ inset 0 0 0 1px rgba(40,38,32,.16),
     /* mu-recipe:checkbox:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
-  --mu-r-radio-error-ring: rgba(216,69,59,.55);
-  --mu-r-textarea-error-ring: rgba(216,69,59,.55);
   --mu-r-scroll-area-thumb-ink: rgba(27,27,29,.28);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
@@ -2413,7 +2412,6 @@
   --mu-r-folder-region-ring-violet: rgba(124,92,196,.22);
   --mu-r-select-chevron-ink: #8E8E93;
   --mu-r-select-veil-hover: rgba(255,255,255,.4);
-  --mu-r-select-error-ring: rgba(216,69,59,.55);
   --mu-r-weather-ink-off: rgba(40,38,32,.06);
   --mu-r-weather-ink-hz: #9A9A9D;
   --mu-r-weather-ink-hill: #5C5C60;
@@ -2444,8 +2442,6 @@
   --mu-r-checkbox-self-ghost-shadow:
     /* mu-recipe:checkbox:16 */ inset 0 0 0 1px rgba(255,255,255,.18),
     /* mu-recipe:checkbox:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
-  --mu-r-radio-error-ring: rgba(255,122,102,.5);
-  --mu-r-textarea-error-ring: rgba(255,122,102,.5);
   --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
@@ -2901,7 +2897,6 @@
   --mu-r-folder-region-ring-violet: rgba(170,140,240,.2);
   --mu-r-select-chevron-ink: #8E8E93;
   --mu-r-select-veil-hover: rgba(255,255,255,.035);
-  --mu-r-select-error-ring: rgba(255,122,102,.5);
   --mu-r-weather-ink-off: rgba(255,255,255,.05);
   --mu-r-weather-ink-hz: #5C5C60;
   --mu-r-weather-ink-hill: #77777B;
@@ -2933,8 +2928,6 @@
     --mu-r-checkbox-self-ghost-shadow:
       inset 0 0 0 1px rgba(255,255,255,.18),
       inset 0 2px 4px -2px rgba(0,0,0,.4);
-    --mu-r-radio-error-ring: rgba(255,122,102,.5);
-    --mu-r-textarea-error-ring: rgba(255,122,102,.5);
     --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
@@ -3390,7 +3383,6 @@
     --mu-r-folder-region-ring-violet: rgba(170,140,240,.2);
     --mu-r-select-chevron-ink: #8E8E93;
     --mu-r-select-veil-hover: rgba(255,255,255,.035);
-    --mu-r-select-error-ring: rgba(255,122,102,.5);
     --mu-r-weather-ink-off: rgba(255,255,255,.05);
     --mu-r-weather-ink-hz: #5C5C60;
     --mu-r-weather-ink-hill: #77777B;

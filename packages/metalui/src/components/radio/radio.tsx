@@ -46,7 +46,7 @@ const WELL = [
   // Hover and press come from the whole row, and only while the option can still be chosen.
   'not-data-checked:not-data-disabled:not-data-readonly:group-hover/radio:recipe-checkbox-hover',
   'not-data-checked:not-data-disabled:not-data-readonly:group-active/radio:recipe-checkbox-on not-data-checked:not-data-disabled:not-data-readonly:group-active/radio:duration-radio-press',
-  'data-invalid:not-data-checked:radio-invalid',
+  'data-invalid:not-data-checked:invalid-ring',
 ].join(' ');
 const PIP = 'mu-radio-pip radio-pip data-checked:radio-pip-on reduced-motion:transition-none';
 

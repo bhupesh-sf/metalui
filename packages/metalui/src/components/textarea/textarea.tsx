@@ -29,7 +29,7 @@ export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTex
   className?: string;
 }
 
-const WELL = 'mu-textarea group/ta relative block box-border rounded-textarea-radius recipe-well-field cursor-text focus-within:focus-ring-flush data-invalid:textarea-invalid data-disabled:opacity-textarea-disabled data-disabled:cursor-default';
+const WELL = 'mu-textarea group/ta relative block box-border rounded-textarea-radius recipe-well-field cursor-text focus-within:focus-ring-flush data-invalid:invalid-ring data-disabled:opacity-textarea-disabled data-disabled:cursor-default';
 const TEXT = 'px-textarea-pad-x py-textarea-pad-y type-content whitespace-pre-wrap break-words';
 const INPUT = `mu-textarea-input block w-full box-border m-0 border-0 outline-none bg-transparent resize-none ${TEXT} text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint transition-textarea-grow reduced-motion:transition-none disabled:cursor-default`;
 const MIRROR = `mu-textarea-mirror invisible absolute inset-x-0 top-0 pointer-events-none ${TEXT}`;

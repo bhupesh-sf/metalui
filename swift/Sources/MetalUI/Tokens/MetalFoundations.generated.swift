@@ -61,6 +61,7 @@ public enum MetalIconSize {
 public enum MetalRing {
     public static let focusOffset: Double = 2.0
     public static let focusWidth: Double = 2.0
+    public static let invalidWidth: Double = 1.0
     public static let selectOffset: Double = 6.0
 }
 

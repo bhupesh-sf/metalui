@@ -108,8 +108,8 @@ public struct MetalSelect<Value: Hashable>: View {
             }
         }
         .overlay {
-            if invalid, let ring = recipe.color("error.ring", colorway: MetalRecipeColorway(colorway)) {
-                shape.strokeBorder(ring.color, lineWidth: recipe.points("error.width"))
+            if invalid {
+                shape.strokeBorder(colorway.tokens.invalid.color, lineWidth: MetalRing.invalidWidth)
             }
             if triggerFocused && isEnabled {
                 shape.inset(by: -(button.points("self.focus-offset") + button.points("self.focus-width") / 2))

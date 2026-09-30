@@ -330,6 +330,11 @@
   outline: var(--mu-focus-width) solid var(--mu-focus);
   outline-offset: var(--mu-zero);
 }
+/* The invalid ring (foundations): a hairline in the invalid ink inside the control's edge, drawn on its
+   own layer so it never replaces the control's shadow stack, and never the focus ring's job. */
+@utility invalid-ring {
+  &::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 var(--mu-invalid-width) var(--mu-invalid); }
+}
 
 /* Recipes (tokens.json recipes) as theme values and utilities. Sizes are spacing (h-button-height,
    px-button-pad), inks are colors (text-button-link-ink), each part's type is type-<object>[-<part>],
@@ -379,8 +384,6 @@
   --spacing-radio-row-gap: var(--mu-r-radio-row-gap);
   --spacing-radio-group-gap: var(--mu-r-radio-group-gap);
   --spacing-radio-group-gap-across: var(--mu-r-radio-group-gap-across);
-  --spacing-radio-error-width: var(--mu-r-radio-error-width);
-  --color-radio-error-ring: var(--mu-r-radio-error-ring);
   --spacing-textarea-radius: var(--mu-r-textarea-self-radius);
   --radius-textarea-radius: var(--mu-r-textarea-self-radius);
   --spacing-textarea-pad-x: var(--mu-r-textarea-self-pad-x);
@@ -389,8 +392,6 @@
   --spacing-textarea-min-rows: var(--mu-r-textarea-self-min-rows);
   --spacing-textarea-max-rows: var(--mu-r-textarea-self-max-rows);
   --spacing-textarea-count-gap: var(--mu-r-textarea-count-gap);
-  --spacing-textarea-error-width: var(--mu-r-textarea-error-width);
-  --color-textarea-error-ring: var(--mu-r-textarea-error-ring);
   --spacing-popover-pad: var(--mu-r-popover-self-pad);
   --spacing-popover-radius: var(--mu-r-popover-self-radius);
   --radius-popover-radius: var(--mu-r-popover-self-radius);
@@ -1006,8 +1007,6 @@
   --spacing-select-chevron-size: var(--mu-r-select-chevron-size);
   --color-select-chevron-ink: var(--mu-r-select-chevron-ink);
   --color-select-veil-hover: var(--mu-r-select-veil-hover);
-  --spacing-select-error-width: var(--mu-r-select-error-width);
-  --color-select-error-ring: var(--mu-r-select-error-ring);
   --spacing-select-led-size: var(--mu-r-select-led-size);
   --spacing-select-led-slot: var(--mu-r-select-led-slot);
   --spacing-select-pop-offset: var(--mu-r-select-pop-offset);
@@ -1170,9 +1169,6 @@
 @utility radio-pip-on {
   scale: 1; transition: scale var(--mu-spring-part-d) var(--mu-spring-part);
 }
-@utility radio-invalid {
-  box-shadow: inset 0 0 0 var(--mu-r-radio-error-width) var(--mu-r-radio-error-ring);
-}
 @utility duration-radio-fade {
   --tw-duration: var(--mu-r-radio-self-fade);
   transition-duration: var(--mu-r-radio-self-fade);
@@ -1187,14 +1183,8 @@
 @utility transition-radio {
   transition: var(--mu-r-radio-self-transition);
 }
-@utility stroke-width-radio-error-width {
-  stroke-width: var(--mu-r-radio-error-width);
-}
 @utility transition-textarea-grow {
   transition: height calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
-}
-@utility textarea-invalid {
-  box-shadow: var(--mu-r-well-self-field-shadow), inset 0 0 0 var(--mu-r-textarea-error-width) var(--mu-r-textarea-error-ring);
 }
 @utility textarea-refused {
   animation: mu-textarea-refuse var(--mu-spring-refusal-d) var(--mu-spring-refusal) both;
@@ -1208,9 +1198,6 @@
 @utility duration-textarea-count-fade {
   --tw-duration: var(--mu-r-textarea-count-fade);
   transition-duration: var(--mu-r-textarea-count-fade);
-}
-@utility stroke-width-textarea-error-width {
-  stroke-width: var(--mu-r-textarea-error-width);
 }
 @utility popover-origin {
   transform-origin: var(--transform-origin); --mu-popover-dx: 0px; --mu-popover-dy: 0px; &[data-side=bottom] { --mu-popover-dy: calc(var(--mu-motion-nest) * -1); } &[data-side=top] { --mu-popover-dy: var(--mu-motion-nest); } &[data-side=right], &[data-side=inline-end] { --mu-popover-dx: calc(var(--mu-motion-nest) * -1); } &[data-side=left], &[data-side=inline-start] { --mu-popover-dx: var(--mu-motion-nest); }
@@ -2556,7 +2543,7 @@
   opacity: var(--mu-r-folder-fan-max);
 }
 @utility select-trigger {
-  position: relative; display: inline-flex; align-items: center; box-sizing: border-box; border: 0; cursor: pointer; color: var(--mu-ink); text-align: left; outline: none; -webkit-tap-highlight-color: transparent; &::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: var(--mu-r-select-veil-hover); opacity: 0; transition: opacity .16s ease, background .16s ease; } &:hover:not([data-disabled]):not([data-popup-open])::after { opacity: 1; } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); } &[data-disabled] { opacity: .4; cursor: default; } &[data-invalid]::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 var(--mu-r-select-error-width) var(--mu-r-select-error-ring); } @media (prefers-reduced-motion: reduce) { &::after { transition: none; } }
+  position: relative; display: inline-flex; align-items: center; box-sizing: border-box; border: 0; cursor: pointer; color: var(--mu-ink); text-align: left; outline: none; -webkit-tap-highlight-color: transparent; &::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: var(--mu-r-select-veil-hover); opacity: 0; transition: opacity .16s ease, background .16s ease; } &:hover:not([data-disabled]):not([data-popup-open])::after { opacity: 1; } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); } &[data-disabled] { opacity: .4; cursor: default; } &[data-invalid]::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 var(--mu-invalid-width) var(--mu-invalid); } @media (prefers-reduced-motion: reduce) { &::after { transition: none; } }
 }
 @utility select-regular {
   height: var(--mu-r-select-regular-height); min-width: var(--mu-r-select-regular-min-width); padding: 0 var(--mu-r-select-regular-pad-right) 0 var(--mu-r-select-regular-pad-left); gap: var(--mu-r-select-regular-gap); border-radius: var(--mu-r-select-regular-radius); font: var(--mu-r-select-regular-font);
@@ -2584,9 +2571,6 @@
 }
 @utility type-select-compact {
   font: var(--mu-r-select-compact-font);
-}
-@utility stroke-width-select-error-width {
-  stroke-width: var(--mu-r-select-error-width);
 }
 @utility opacity-select-pop-scale {
   opacity: var(--mu-r-select-pop-scale);

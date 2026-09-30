@@ -3,6 +3,7 @@
 
 /// Every value one colorway supplies. Mirrors the `--mu-*` colorway custom properties.
 public struct MetalColorwayTokens: Sendable {
+    public let invalid: MetalRGBA
     public let sHi: MetalRGBA
     public let s: MetalRGBA
     public let sLo: MetalRGBA
@@ -101,6 +102,7 @@ public struct MetalCapTokens: Sendable {
 
 public enum MetalTokens {
     public static let bone = MetalColorwayTokens(
+        invalid: MetalRGBA(216, 69, 59, 0.55),
         sHi: MetalRGBA(252, 251, 249, 1.0),
         s: MetalRGBA(246, 245, 242, 1.0),
         sLo: MetalRGBA(240, 239, 235, 1.0),
@@ -253,6 +255,7 @@ public enum MetalTokens {
     )
 
     public static let graphite = MetalColorwayTokens(
+        invalid: MetalRGBA(255, 122, 102, 0.5),
         sHi: MetalRGBA(44, 44, 47, 1.0),
         s: MetalRGBA(37, 37, 39, 1.0),
         sLo: MetalRGBA(32, 32, 34, 1.0),
@@ -721,8 +724,6 @@ public enum MetalRecipes {
             "row.gap": .number(8.0),
             "group.gap": .number(4.0),
             "group.gap-across": .number(16.0),
-            "error.width": .number(1.0),
-            "error.ring": .perColorway(bone: "rgba(216,69,59,.55)", graphite: "rgba(255,122,102,.5)"),
         ]
     )
 
@@ -743,8 +744,6 @@ public enum MetalRecipes {
             "count.show": .text("0.8"),
             "count.gap": .number(6.0),
             "count.fade": .text("160ms"),
-            "error.width": .number(1.0),
-            "error.ring": .perColorway(bone: "rgba(216,69,59,.55)", graphite: "rgba(255,122,102,.5)"),
         ]
     )
 
@@ -2529,8 +2528,6 @@ public enum MetalRecipes {
             "chevron.size": .number(12.0),
             "chevron.ink": .perColorway(bone: "#8E8E93", graphite: "#8E8E93"),
             "veil.hover": .perColorway(bone: "rgba(255,255,255,.4)", graphite: "rgba(255,255,255,.035)"),
-            "error.width": .number(1.0),
-            "error.ring": .perColorway(bone: "rgba(216,69,59,.55)", graphite: "rgba(255,122,102,.5)"),
             "led.size": .number(6.0),
             "led.slot": .number(14.0),
             "pop.scale": .text("0.97"),

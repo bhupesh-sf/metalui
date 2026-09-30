@@ -560,6 +560,11 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
   outline: var(--mu-focus-width) solid var(--mu-focus);
   outline-offset: var(--mu-zero);
 }
+/* The invalid ring (foundations): a hairline in the invalid ink inside the control's edge, drawn on its
+   own layer so it never replaces the control's shadow stack, and never the focus ring's job. */
+@utility invalid-ring {
+  &::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 var(--mu-invalid-width) var(--mu-invalid); }
+}
 
 /* Recipes (tokens.json recipes) as theme values and utilities. Sizes are spacing (h-button-height,
    px-button-pad), inks are colors (text-button-link-ink), each part's type is type-<object>[-<part>],
