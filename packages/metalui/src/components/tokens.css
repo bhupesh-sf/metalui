@@ -1143,6 +1143,17 @@
   --mu-r-card-self-media: 160px;
   --mu-r-card-self-select-width: 2px;
   --mu-r-card-self-select-offset: 3px;
+  /* attachment: the raised surface (recipe surface raise-sm); the well; the progress fill; Transitions T5b (land) and T9 (leave) */
+  --mu-r-attachment-self-height: 52px;
+  --mu-r-attachment-self-pad: 8px;
+  --mu-r-attachment-self-gap: 10px;
+  --mu-r-attachment-self-radius: 14px;
+  --mu-r-attachment-self-min-width: 240px;
+  --mu-r-attachment-self-max-width: 360px;
+  --mu-r-attachment-type-size: 36px;
+  --mu-r-attachment-type-radius: 10px;
+  --mu-r-attachment-track-height: 3px;
+  --mu-r-attachment-remove-glyph: 10px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

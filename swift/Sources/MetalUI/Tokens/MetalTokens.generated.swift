@@ -1144,6 +1144,26 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A file someone attached, as a small raised plate: its type engraved in a sunk well, its name (the middle cut, so the end stays readable) and a line saying its size or how its upload is going. A new file lands (T5b): from one nest above onto the table on the object spring, with its small overshoot. While uploading, a thin track fills with the progress fill on the settle spring. A failed upload says so in red with a way to try again. Removed, it leaves the way rows do (T9): one nest down, fading, on the release spring, and only then goes. Reduce Motion: it appears and goes at once; the fill still moves. (the raised surface (recipe surface raise-sm); the well; the progress fill; Transitions T5b (land) and T9 (leave))
+    public static let attachment = MetalObjectRecipe(
+        name: "attachment",
+        layers: [
+
+        ],
+        props: [
+            "self.height": .number(52.0),
+            "self.pad": .number(8.0),
+            "self.gap": .number(10.0),
+            "self.radius": .number(14.0),
+            "self.min-width": .number(240.0),
+            "self.max-width": .number(360.0),
+            "type.size": .number(36.0),
+            "type.radius": .number(10.0),
+            "track.height": .number(3.0),
+            "remove.glyph": .number(10.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

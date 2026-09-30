@@ -36,6 +36,23 @@
       "agent": "https://metalui.dev/r/alert-dialog.md"
     },
     {
+      "name": "attachment",
+      "title": "Attachment",
+      "status": "alpha",
+      "description": "A file someone attached, as a small raised plate: type, name, size or upload progress; it lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Attachment",
+        "base": "div role=group; @base-ui/react/progress"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalAttachment"
+      },
+      "registry": "https://metalui.dev/r/attachment.json",
+      "agent": "https://metalui.dev/r/attachment.md"
+    },
+    {
       "name": "avatar",
       "title": "Avatar",
       "status": "alpha",

@@ -57,6 +57,24 @@
       "docs": "Agent guide: https://metalui.dev/r/alert-dialog.md. SwiftUI: MetalAlertDialog in the MetalUI Swift package."
     },
     {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "Attachment",
+      "description": "A file someone attached, as a small raised plate: type, name, size or upload progress; it lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/attachment/attachment.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/attachment/attachment.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/attachment.md. SwiftUI: MetalAttachment in the MetalUI Swift package."
+    },
+    {
       "name": "avatar",
       "type": "registry:ui",
       "title": "Avatar",

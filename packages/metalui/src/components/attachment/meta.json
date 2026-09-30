@@ -1,0 +1,21 @@
+{
+  "name": "attachment",
+  "title": "Attachment",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["surface", "well", "icon-button", "button"],
+  "description": "A file someone attached, as a small raised plate: type, name, size or upload progress; it lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed.",
+  "base": "div role=group; @base-ui/react/progress",
+  "react": {
+    "export": "Attachment",
+    "files": ["attachment.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalAttachment",
+    "file": "swift/Sources/MetalUI/Components/MetalAttachment.swift",
+    "status": "wip"
+  },
+  "agent": "attachment.agent.md",
+  "page": "/components/attachment"
+}
