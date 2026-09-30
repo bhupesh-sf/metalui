@@ -962,6 +962,23 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Where content will be, before it arrives: shapes in the field well's sunk look (a block, lines of text, a circle) so the layout is already right. It waits a beat before it shows (300 ms, like the spinner), so fast loads never flash it. While it waits for content, a soft light passes across the wells (1.6 s, linear, a sheen on metal, not a pulse). When the content comes, the shapes fade out and the content fades in on the settle spring, in the same place. Reduce Motion: no sheen; the fades stay. (the field well (recipe well field); the spinner's beat; the settle spring)
+    public static let skeleton = MetalObjectRecipe(
+        name: "skeleton",
+        layers: [
+
+        ],
+        props: [
+            "self.radius": .number(8.0),
+            "self.line": .number(12.0),
+            "self.line-gap": .number(8.0),
+            "self.last": .text("0.62"),
+            "self.delay": .text("300ms"),
+            "self.sweep": .text("1600ms"),
+            "sheen.ink": .perColorway(bone: "rgba(255,255,255,.6)", graphite: "rgba(255,255,255,.05)"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

@@ -458,6 +458,11 @@
   --spacing-form-field-legend-gap: var(--mu-r-form-field-self-legend-gap);
   --spacing-form-field-form-gap: var(--mu-r-form-field-self-form-gap);
   --color-form-field-error-ink: var(--mu-r-form-field-error-ink);
+  --spacing-skeleton-radius: var(--mu-r-skeleton-self-radius);
+  --radius-skeleton-radius: var(--mu-r-skeleton-self-radius);
+  --spacing-skeleton-line: var(--mu-r-skeleton-self-line);
+  --spacing-skeleton-line-gap: var(--mu-r-skeleton-self-line-gap);
+  --color-skeleton-sheen-ink: var(--mu-r-skeleton-sheen-ink);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1379,6 +1384,26 @@
 }
 @utility form-field-error {
   display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle); & > * { overflow: hidden; min-height: 0; } &[data-starting-style] { grid-template-rows: 0fr; opacity: 0; } &[data-ending-style] { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows calc(var(--mu-spring-release-d) * var(--mu-travel-settle)) var(--mu-spring-release), opacity var(--mu-spring-release-d) var(--mu-spring-release); }
+}
+@utility skeleton-arrive {
+  animation: mu-skeleton-arrive var(--mu-spring-settle-d) var(--mu-r-skeleton-self-delay) var(--mu-spring-settle) both;
+}
+@utility skeleton-sheen {
+  position: relative; overflow: hidden; &::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(0,0,0,0) 20%, var(--mu-r-skeleton-sheen-ink) 50%, rgba(0,0,0,0) 80%); translate: -100% 0; animation: mu-skeleton-sheen var(--mu-r-skeleton-self-sweep) linear infinite; } @media (prefers-reduced-motion: reduce) { &::after { animation: none; opacity: 0; } } [data-mu-motion=reduce] &::after { animation: none; opacity: 0; }
+}
+@utility skeleton-swap-in {
+  animation: mu-skeleton-arrive var(--mu-spring-settle-d) var(--mu-spring-settle) both;
+}
+@utility opacity-skeleton-last {
+  opacity: var(--mu-r-skeleton-self-last);
+}
+@utility duration-skeleton-delay {
+  --tw-duration: var(--mu-r-skeleton-self-delay);
+  transition-duration: var(--mu-r-skeleton-self-delay);
+}
+@utility duration-skeleton-sweep {
+  --tw-duration: var(--mu-r-skeleton-self-sweep);
+  transition-duration: var(--mu-r-skeleton-self-sweep);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);
@@ -2677,6 +2702,12 @@
 }
 @keyframes mu-spinner-arrive {
   from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes mu-skeleton-arrive {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes mu-skeleton-sheen {
+  to { translate: 100% 0; }
 }
 @keyframes mu-toolbar-in {
   from { opacity: 0; transform: translateY(calc(var(--mu-motion-nest) * var(--mu-travel-surface))); }

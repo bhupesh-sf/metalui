@@ -1,0 +1,24 @@
+{
+  "name": "skeleton",
+  "title": "Skeleton",
+  "status": "alpha",
+  "layer": "part",
+  "kind": "composed",
+  "uses": ["well"],
+  "description": "Where content will be before it arrives: blocks, lines and circles in the well's sunk look, shown after a beat with a soft sheen, swapped for the content on the settle spring.",
+  "base": "span",
+  "react": {
+    "export": "Skeleton",
+    "files": ["skeleton.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalSkeleton",
+    "file": "swift/Sources/MetalUI/Components/MetalSkeleton.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "Skeleton": ["Text", "Circle", "Swap"]
+  },
+  "agent": "skeleton.agent.md",
+  "page": "/components/skeleton"
+}

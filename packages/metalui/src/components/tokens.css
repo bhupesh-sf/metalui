@@ -1064,6 +1064,13 @@
   --mu-r-form-field-self-fieldset-gap: 16px;
   --mu-r-form-field-self-legend-gap: 10px;
   --mu-r-form-field-self-form-gap: 20px;
+  /* skeleton: the field well (recipe well field); the spinner's beat; the settle spring */
+  --mu-r-skeleton-self-radius: 8px;
+  --mu-r-skeleton-self-line: 12px;
+  --mu-r-skeleton-self-line-gap: 8px;
+  --mu-r-skeleton-self-last: 0.62;
+  --mu-r-skeleton-self-delay: 300ms;
+  --mu-r-skeleton-self-sweep: 1600ms;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
@@ -1973,6 +1980,7 @@
     /* mu-recipe:checkbox:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
   --mu-r-scroll-area-thumb-ink: rgba(27,27,29,.28);
   --mu-r-form-field-error-ink: #C23B30;
+  --mu-r-skeleton-sheen-ink: rgba(255,255,255,.6);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
   --mu-r-glass-face-self-shadow:
@@ -2460,6 +2468,7 @@
     /* mu-recipe:checkbox:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
   --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
   --mu-r-form-field-error-ink: #FF8A77;
+  --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
   --mu-r-glass-face-self-shadow:
@@ -2948,6 +2957,7 @@
       inset 0 2px 4px -2px rgba(0,0,0,.4);
     --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
     --mu-r-form-field-error-ink: #FF8A77;
+    --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
     --mu-r-glass-face-self-shadow:

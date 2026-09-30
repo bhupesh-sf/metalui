@@ -868,6 +868,23 @@
       "agent": "https://metalui.dev/r/size-readout.md"
     },
     {
+      "name": "skeleton",
+      "title": "Skeleton",
+      "status": "alpha",
+      "description": "Where content will be before it arrives: blocks, lines and circles in the well's sunk look, shown after a beat with a soft sheen, swapped for the content on the settle spring.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Skeleton",
+        "base": "span"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalSkeleton"
+      },
+      "registry": "https://metalui.dev/r/skeleton.json",
+      "agent": "https://metalui.dev/r/skeleton.md"
+    },
+    {
       "name": "slider",
       "title": "Slider",
       "status": "alpha",

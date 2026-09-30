@@ -20,6 +20,7 @@ export { Row, type RowProps, type RowRootProps } from './components/row/row';
 export { Slider, type SliderRootProps } from './components/slider/slider';
 export { Progress, type ProgressProps } from './components/progress/progress';
 export { Spinner, type SpinnerProps } from './components/spinner/spinner';
+export { Skeleton, type SkeletonProps, type SkeletonSwapProps } from './components/skeleton/skeleton';
 export { Meter, type MeterProps } from './components/meter/meter';
 export { ScrollArea, type ScrollAreaProps } from './components/scroll-area/scroll-area';
 export { Button, type ButtonProps, type ButtonCap } from './components/button/button';
