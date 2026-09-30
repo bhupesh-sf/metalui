@@ -36,15 +36,22 @@ public struct MetalToastModel: Identifiable, Equatable {
     public static func == (a: Self, b: Self) -> Bool { a.id == b.id }
 }
 
-/// The toast pill: glass in the colorway, the result with its Undo cap.
+/// The toast pill: glass in the colorway, the result with its Undo cap, a count after a repeat (×3)
+/// and, when it can be dismissed, a quiet close key.
 public struct MetalToast: View {
     let model: MetalToastModel
+    let count: Int
     let onUndo: () -> Void
+    let onClose: (() -> Void)?
+    /// A card behind the front of a folded deck: the pill shows, its words don't.
+    var concealed = false
     @Environment(\.metalColorway) private var colorway
 
-    public init(_ model: MetalToastModel, onUndo: @escaping () -> Void = {}) {
+    public init(_ model: MetalToastModel, count: Int = 1, onUndo: @escaping () -> Void = {}, onClose: (() -> Void)? = nil) {
         self.model = model
+        self.count = count
         self.onUndo = onUndo
+        self.onClose = onClose
     }
 
     public var body: some View {
@@ -56,6 +63,11 @@ public struct MetalToast: View {
                 if model.tone == .error { Text("!").foregroundColor(MetalShared.red.color).accessibilityLabel("Error") }
                 Text(model.title)
                 if let sub = model.sub { Text("· \(sub)").foregroundColor((recipe.color("sub.ink", colorway: cw) ?? colorway.tokens.ink2).color) }
+                if count > 1 {
+                    Text("×\(count)").monospacedDigit()
+                        .foregroundColor((recipe.color("sub.ink", colorway: cw) ?? colorway.tokens.ink2).color)
+                        .accessibilityLabel("\(count) times")
+                }
             }
             .font(recipe.font("self.font"))
             .tracking(recipe.tracking("self.tracking", size: recipe.fontSize("self.font")))
@@ -76,10 +88,21 @@ public struct MetalToast: View {
                 .buttonStyle(.plain)
                 .keyboardShortcut(model.isUndo ? KeyboardShortcut("z", modifiers: .command) : nil)
             }
+            if let onClose {
+                Button(action: onClose) {
+                    MetalIcon(.close, size: 14)
+                        .frame(width: recipe.points("close.size"), height: recipe.points("close.size"))
+                        .contentShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .foregroundColor((recipe.color("close.ink", colorway: cw) ?? colorway.tokens.ink2).color)
+                .accessibilityLabel("Dismiss")
+            }
         }
+        .opacity(concealed ? Double.zero : .one)
         .foregroundColor((recipe.color("self.ink", colorway: cw) ?? colorway.tokens.ink).color)
         .padding(.leading, recipe.points("self.pad-left"))
-        .padding(.trailing, model.undo != nil ? recipe.points("self.pad-right") : recipe.points("self.pad-left"))
+        .padding(.trailing, model.undo != nil || onClose != nil ? recipe.points("self.pad-right") : recipe.points("self.pad-left"))
         .frame(height: recipe.points("self.height"))
         .fixedSize()
         .metalObjectRecipe(recipe, part: "self", in: Capsule(style: .continuous))
@@ -98,7 +121,7 @@ private struct MetalToastHost: ViewModifier {
         content.overlay(alignment: .bottom) {
             ZStack {
                 if let t = toast {
-                    MetalToast(t) { dismiss() }
+                    MetalToast(t, onUndo: { dismiss() })
                         .id(t.id)
                         // A host that passes presses through (a canvas under its chrome)
                         // must know an actionable toast is there.
@@ -137,5 +160,209 @@ extension View {
     /// plain ones 2.6 s, errors until dismissed. The clock pauses while the pointer is on the toast.
     public func metalToast(_ toast: Binding<MetalToastModel?>) -> some View {
         modifier(MetalToastHost(toast: toast))
+    }
+}
+
+// ─────────────────────────────────────────────────────────
+// TOAST DECK: toasts stack in depth, newest in front (the web toast's deck, same recipe)
+//
+// rest      each card behind is a step smaller (deck.step-scale), peeks deck.peek upward
+//           past the card in front, is deck.dim dimmer, its words hidden; deck.visible
+//           drawn, the rest counted (+2) above the back card
+// arrive    the new card rises self.rise from below, from self.scale, into the front on the
+//           object spring; the cards behind step back one on the same spring, together
+// fan out   the pointer on the deck: a column deck.gap apart on the surface spring; every
+//           clock pauses. The pointer leaves: back into the deck on the surface spring
+// swipe     the front card follows the finger (down or right); past deck.swipe on release
+//           it leaves on release; short of it, it settles home
+// close     its close key: it leaves on release; the next card comes forward
+// repeat    the same result as the front card adds no card: it presses to deck.press and
+//           springs back on the part spring, and counts (×2); its clock starts over
+// Reduce Motion: no travel or scale; cards cross-fade into place.
+// ─────────────────────────────────────────────────────────
+
+/// The toasts a host shows as a deck, newest first. Show results into it from the main actor.
+@MainActor
+@Observable
+public final class MetalToastDeck {
+    /// One card: the latest model for it and how many times it has been said in a row.
+    public struct Card: Identifiable, Equatable {
+        public let id: UUID
+        public var model: MetalToastModel
+        public var count: Int
+    }
+
+    /// Newest first.
+    public private(set) var cards: [Card] = []
+    /// True while the deck is fanned out: every card's clock stops.
+    var paused = false
+
+    public init() {}
+
+    /// Shows a result in front. The same title, detail and tone as the front card counts instead of adding a card.
+    public func show(_ model: MetalToastModel) {
+        if let front = cards.first, front.model.title == model.title, front.model.sub == model.sub, front.model.tone == model.tone {
+            cards[0].model = model
+            cards[0].count += 1
+            return
+        }
+        cards.insert(Card(id: model.id, model: model, count: 1), at: 0)
+    }
+
+    public func dismiss(_ id: UUID) {
+        cards.removeAll { $0.id == id }
+    }
+}
+
+/// The deck at rest or fanned out, without a host: for stills (docs captures, previews).
+public struct MetalToastDeckView: View {
+    let deck: MetalToastDeck
+    let expanded: Bool
+    @State private var drag: CGSize = .zero
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    public init(_ deck: MetalToastDeck, expanded: Bool = false) {
+        self.deck = deck
+        self.expanded = expanded
+    }
+
+    public var body: some View {
+        let recipe = MetalRecipes.toast
+        let visible = max(1, Int(recipe.scalar("deck.visible")))
+        let drawn = Array(deck.cards.prefix(visible))
+        let more = deck.cards.count - drawn.count
+        let height = recipe.points("self.height")
+        let rows = CGFloat(max(1, drawn.count))
+        // The deck's area grows with it, so the pointer stays on the deck while it fans out.
+        let area = expanded ? rows * height + (rows - 1) * recipe.points("deck.gap") : height + (rows - 1) * recipe.points("deck.peek")
+        let travel = MetalMotion.resolve(.object, reduceMotion: reduceMotion).allowsTravel
+        let rise = recipe.points("self.rise")
+        return ZStack(alignment: .bottom) {
+            ForEach(Array(drawn.enumerated()), id: \.element.id) { index, card in
+                MetalToastDeckCard(deck: deck, card: card, index: index, expanded: expanded,
+                                   drag: index == 0 ? drag : .zero, travel: travel,
+                                   more: index == drawn.count - 1 ? more : 0,
+                                   onDismiss: { dismiss(card.id) })
+                    .zIndex(Double(visible - index))
+                    .gesture(swipe(card.id), including: index == 0 ? .all : .subviews)
+                    .transition(.asymmetric(
+                        insertion: .opacity.combined(with: travel ? .offset(y: rise).combined(with: .scale(scale: recipe.scalar("self.scale"), anchor: .top)) : .identity),
+                        removal: .opacity.combined(with: travel ? .offset(y: rise) : .identity)))
+            }
+        }
+        .frame(height: area, alignment: .bottom)
+        .animation((MetalMotion.resolve(.object, reduceMotion: reduceMotion).animation) ?? MetalMotion.resolve(.settle, reduceMotion: reduceMotion).animation, value: deck.cards.map(\.id))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Notifications")
+    }
+
+    private func swipe(_ id: UUID) -> some Gesture {
+        let threshold = MetalRecipes.toast.points("deck.swipe")
+        return DragGesture(minimumDistance: 1)
+            .onChanged { value in
+                drag = CGSize(width: max(0, value.translation.width), height: max(0, value.translation.height))
+            }
+            .onEnded { _ in
+                if drag.width > threshold || drag.height > threshold {
+                    dismiss(id)
+                } else {
+                    withMetalAnimation(.settle, reduceMotion: reduceMotion) { drag = .zero }
+                }
+            }
+    }
+
+    private func dismiss(_ id: UUID) {
+        withMetalAnimation(.release, reduceMotion: reduceMotion) {
+            deck.dismiss(id)
+            drag = .zero
+        }
+    }
+}
+
+/// One card in the deck at its place: its step back (or its row when fanned out), its clock and its press.
+private struct MetalToastDeckCard: View {
+    let deck: MetalToastDeck
+    let card: MetalToastDeck.Card
+    let index: Int
+    let expanded: Bool
+    let drag: CGSize
+    let travel: Bool
+    let more: Int
+    let onDismiss: () -> Void
+    @State private var pressed = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.metalColorway) private var colorway
+
+    var body: some View {
+        let recipe = MetalRecipes.toast
+        let step = CGFloat(index)
+        let scale = expanded ? 1 : 1 - (1 - recipe.scalar("deck.step-scale")) * step
+        let lift = expanded ? step * (recipe.points("self.height") + recipe.points("deck.gap")) : step * recipe.points("deck.peek")
+        var toast = MetalToast(card.model, count: card.count, onUndo: onDismiss, onClose: onDismiss)
+        toast.concealed = index > 0 && !expanded
+        return toast
+            .metalHitRegion(true)
+            .scaleEffect(pressed && travel ? recipe.scalar("deck.press") : 1)
+            .scaleEffect(scale, anchor: .top)
+            .offset(x: drag.width, y: drag.height - lift)
+            // Stepping back rides the object spring, fanning out the surface spring; Reduce Motion: no travel.
+            .animation(travel ? MetalSpringClass.object.spring.animation : nil, value: index)
+            .animation(travel ? MetalSpringClass.surface.spring.animation : nil, value: expanded)
+            .opacity(expanded ? Double.one : .one - recipe.scalar("deck.dim") * step)
+            .overlay(alignment: .top) {
+                if more > 0 {
+                    Text("+\(more)")
+                        .metalType(MetalType.readout)
+                        .foregroundColor((recipe.color("sub.ink", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink2).color)
+                        .fixedSize()
+                        // Above the card where it is drawn (its offset moves the drawing, not its frame).
+                        .offset(y: -(MetalType.readout.line + recipe.points("deck.peek")) - lift)
+                        .accessibilityHidden(true)
+                }
+            }
+            .accessibilityHidden(index > 0 && !expanded)
+            .onChange(of: card.count) {
+                // A repeat: a small press, springing back on the part spring.
+                pressed = true
+                withMetalAnimation(.part, reduceMotion: reduceMotion) { pressed = false }
+            }
+            .task(id: "\(card.id)-\(card.count)") {
+                guard card.model.tone != .error else { return }
+                // The clock stops while the deck is fanned out, so an Undo is never pulled away mid-reach.
+                var remaining = card.model.undo != nil ? MetalToastMetrics.undoMs : MetalToastMetrics.plainMs
+                let tick = 100.0
+                while remaining > 0 {
+                    try? await Task.sleep(nanoseconds: UInt64(tick * 1_000_000))
+                    if Task.isCancelled { return }
+                    if !deck.paused { remaining -= tick }
+                }
+                onDismiss()
+            }
+    }
+}
+
+private struct MetalToastDeckHost: ViewModifier {
+    let deck: MetalToastDeck
+    @State private var expanded = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    func body(content: Content) -> some View {
+        content.overlay(alignment: .bottom) {
+            MetalToastDeckView(deck, expanded: expanded)
+                .contentShape(Rectangle())
+                .onHover { inside in
+                    withMetalAnimation(.surface, reduceMotion: reduceMotion) { expanded = inside }
+                    deck.paused = inside
+                }
+                .padding(.bottom, MetalRecipes.toast.points("self.bottom"))
+        }
+    }
+}
+
+extension View {
+    /// Shows a deck of toasts at the bottom centre, newest in front: older ones step back behind it, the pointer
+    /// fans them out and pauses their clocks, a swipe or the close key dismisses, a repeat counts.
+    public func metalToastDeck(_ deck: MetalToastDeck) -> some View {
+        modifier(MetalToastDeckHost(deck: deck))
     }
 }

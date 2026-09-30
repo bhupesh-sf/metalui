@@ -1729,7 +1729,15 @@
   --mu-r-toast-self-blur: blur(22px);
   --mu-r-toast-self-rise: 8px;
   --mu-r-toast-self-scale: 0.97;
-  --mu-r-toast-self-transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-spring-settle-d) var(--mu-spring-settle);
+  --mu-r-toast-self-transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle), transform var(--mu-toast-spring-d) var(--mu-toast-spring);
+  --mu-r-toast-deck-step-scale: 0.95;
+  --mu-r-toast-deck-peek: 8px;
+  --mu-r-toast-deck-dim: 0.2;
+  --mu-r-toast-deck-visible: 3;
+  --mu-r-toast-deck-gap: 8px;
+  --mu-r-toast-deck-swipe: 40px;
+  --mu-r-toast-deck-press: 0.96;
+  --mu-r-toast-close-size: 28px;
   --mu-r-toast-text-gap: 6px;
   --mu-r-toast-undo-height: 28px;
   --mu-r-toast-undo-pad-left: 11px;
@@ -2445,6 +2453,7 @@
   --mu-r-toast-kbd-background:
     /* mu-recipe:toast:22 */ rgba(0,0,0,.06);
   --mu-r-toast-self-ink: #1B1B1D;
+  --mu-r-toast-close-ink: #6E6E72;
   --mu-r-toast-sub-ink: #6E6E72;
   --mu-r-toast-kbd-ink: #5C5C60;
   --mu-r-row-list-hover-background:
@@ -2937,6 +2946,7 @@
   --mu-r-toast-kbd-background:
     /* mu-recipe:toast:23 */ rgba(0,0,0,.3);
   --mu-r-toast-self-ink: #F2F2F0;
+  --mu-r-toast-close-ink: #9A9AA0;
   --mu-r-toast-sub-ink: #9A9AA0;
   --mu-r-toast-kbd-ink: #BDBDC2;
   --mu-r-row-list-hover-background:
@@ -3430,6 +3440,7 @@
     --mu-r-toast-kbd-background:
       rgba(0,0,0,.3);
     --mu-r-toast-self-ink: #F2F2F0;
+    --mu-r-toast-close-ink: #9A9AA0;
     --mu-r-toast-sub-ink: #9A9AA0;
     --mu-r-toast-kbd-ink: #BDBDC2;
     --mu-r-row-list-hover-background:

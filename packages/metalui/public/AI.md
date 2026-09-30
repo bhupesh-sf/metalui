@@ -3767,7 +3767,7 @@ Layout and timing: `--mu-scrubber-*` (box, readout gap, glyph spacing, steps, sn
 
 # Toast
 
-The result of a person's own action, with Undo. React: `ToastProvider` + `useToast()` from `@unlocalhosted/metalui` (Base UI Toast). SwiftUI: `MetalToast` and `.metalToast(_:)`. Sheet reference: the object sheet; 
+The result of a person's own action, with Undo. React: `ToastProvider` + `useToast()` from `@unlocalhosted/metalui` (Base UI Toast). SwiftUI: `MetalToastDeck` and `.metalToastDeck(_:)` (the deck), `MetalToast` and `.metalToast(_:)` (one at a time). Sheet reference: the object sheet; 
 
 ## Use it for
 
@@ -3777,21 +3777,27 @@ The result of a person's own action, with Undo. React: `ToastProvider` + `useToa
 ## Don't use it for
 
 - Recognition. The surface never toasts, badges or sounds for what it recognised.
-- Anything a person must read later, or several messages at once. One at a time.
+- Anything a person must read later. Several results in a row stack as a deck; it isn't a log.
 
 ## Anatomy
 
-A 44 tall glass pill in the colorway (blur 22, its stack), padding 0 6 0 16, gap 12, the `ui` role; a detail after a middle dot; an Undo cap (28 tall, a light top lip) with a sunk `⌘Z` keycap. Bone: a bone pill (`rgba(251,250,248,.92)`), ink `#1B1B1D`, detail `#6E6E72`, a bone cap (`#FFFFFF → #F0EFEB`). Graphite: a smoked pill (`rgba(30,30,33,.92)`), ink `#F2F2F0`, detail `#9A9AA0`, a graphite cap (`#3A3A3E → #2C2C2F`). Bottom centre, 92 above the dock. Success carries its check; an error its red mark.
+A 44 tall glass pill in the colorway (blur 22, its stack), padding 0 6 0 16, gap 12, the `ui` role; a detail after a middle dot; a count after a repeat (`×3`); an Undo cap (28 tall, a light top lip) with a sunk `⌘Z` keycap; a quiet 28 close key (×) that shows its cap on hover. Bone: a bone pill (`rgba(251,250,248,.92)`), ink `#1B1B1D`, detail `#6E6E72`, a bone cap (`#FFFFFF → #F0EFEB`). Graphite: a smoked pill (`rgba(30,30,33,.92)`), ink `#F2F2F0`, detail `#9A9AA0`, a graphite cap (`#3A3A3E → #2C2C2F`). Bottom centre, 92 above the dock. Success carries its check; an error its red mark.
+
+The deck: toasts stack in depth, newest in front. Each card behind is a step smaller (×.95), peeks 8 past the card in front on the side away from the screen edge (a bottom deck peeks upward) and is 20 % dimmer, its words hidden. Three are drawn; the rest are counted above the back card (`+2`) and come forward as the front ones go. Fanned out, the cards stand 8 apart in a readable column.
 
 ## States and motion
 
 | State | Motion |
 |---|---|
-| arrive | one nest (8) from below, from .97, on settle; Reduce Motion: fades in place |
-| replaced by the next | the old leaves on release, the new arrives |
+| arrive | rises 8 from below, from .97, into the front on the object spring; every card behind steps back one on the same spring, in the same frame |
+| fan out | pointer on the deck, or focus into it (Tab, F6): the cards spread into a column on the surface spring; every timer pauses |
+| fold | pointer or focus leaves: back into the deck on the surface spring; timers resume |
+| swipe | follows the pointer (down or right); past 40 on release it leaves the way it was thrown on release; short of it, springs home |
+| close | the close key, or Esc on the focused toast: leaves on release; the next card comes forward |
+| repeat | the same title, detail and tone as the front card: no new card; it presses to .96 and springs back on the part spring, counts `×2`, and its timer starts over |
 | Undo pressed | the cap presses 1; the action is undone, the toast leaves |
 | time out | undoable 5 s, plain 2.6 s, error never |
-| leave | on release, the way it came |
+| Reduce Motion | no travel or scale: cards cross-fade into place; the repeat shows only the count |
 
 ## API
 
@@ -3803,10 +3809,15 @@ A 44 tall glass pill in the colorway (blur 22, its stack), padding 0 6 0 16, gap
 const toast = useToast();
 toast.show({ title: 'Moved 3 blocks', undo: () => undo() });
 toast.show({ title: 'Pinned as a live region', sub: 'it updates as you write', tone: 'success' });
+toast.show({ title: 'Moved 3 blocks', undo }); // again: the front card counts ×2
 ```
 
 ```swift
-canvas.metalToast($toast)   // toast: MetalToastModel? = .init("Moved 3 blocks", undo: { undo() })
+@State private var deck = MetalToastDeck()
+canvas.metalToastDeck(deck)
+deck.show(.init("Moved 3 blocks", undo: { undo() }))   // again: the front card counts ×2
+
+canvas.metalToast($toast)   // one at a time: toast: MetalToastModel? = .init("Moved 3 blocks", undo: { undo() })
 ```
 
 ## Rules
@@ -3815,14 +3826,16 @@ canvas.metalToast($toast)   // toast: MetalToastModel? = .init("Moved 3 blocks",
 - Say what happened, in the words of the action; a detail, if any, after the middle dot.
 - Success carries its check; never colour alone.
 - Errors stay until resolved; everything else goes by itself.
+- Show results as they happen; the deck keeps the newest in front. Don't build your own queue or clear the deck to show the next one.
+- The same result again is a repeat: let it count; don't reword it to force a new card.
 
 ## Accessibility
 
-- Base UI Toast: announced politely in a labelled region; F6 moves focus to the toast; the Undo cap is a real button, and ⌘Z does the same (the host's shortcut).
+- Base UI Toast: one labelled region (Notifications), announced politely; a new card is always the front one, so only it is read out, and a repeat reads its new count. F6 moves focus into the deck and fans it out; Esc dismisses the focused toast. The Undo cap and the close key (Dismiss) are real buttons; ⌘Z does what Undo does (the host's shortcut). Cards not drawn are inert.
 
 ## Tokens
 
-`--mu-toast-*`, `--mu-backdrop`, `--mu-kbd-sunk-*`, `--mu-spring-settle`, `--mu-spring-release`. Swift: `MetalToastMetrics`.
+`--mu-toast-*`, `--mu-r-toast-deck-*` (step-scale, peek, dim, visible, gap, swipe, press), `--mu-backdrop`, `--mu-kbd-sunk-*`, `--mu-spring-object` (arrive), `--mu-spring-surface` (fan out, fold), `--mu-spring-part` (repeat), `--mu-spring-settle`, `--mu-spring-release`. Swift: `MetalToastMetrics`, `MetalRecipes.toast` (deck.*).
 
 ---
 
