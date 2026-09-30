@@ -15,6 +15,7 @@ export { Avatar, AvatarGroup, initialsOf, type AvatarProps, type AvatarGroupProp
 export { Card, type CardRootProps, type CardTitleProps } from './components/card/card';
 export { Attachment, formatBytes, type AttachmentProps } from './components/attachment/attachment';
 export { Table, type TableProps, type TableColumn, type SortState } from './components/table/table';
+export { EmptyState, type EmptyStateProps } from './components/empty-state/empty-state';
 export { Sparkline, type SparklineProps, type SparklinePoint } from './components/sparkline/sparkline';
 export { Dialog, type DialogRootProps, type DialogPopupProps } from './components/dialog/dialog';
 export { AlertDialog, type AlertDialogRootProps, type AlertDialogConfirmProps } from './components/alert-dialog/alert-dialog';

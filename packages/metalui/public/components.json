@@ -393,6 +393,23 @@
       "agent": "https://metalui.dev/r/draw-tools.md"
     },
     {
+      "name": "empty-state",
+      "title": "Empty state",
+      "status": "alpha",
+      "description": "A place with nothing in it yet: an engraved glyph in a well, what would be here, how to start, one action; it rises in on the settle spring when the place empties.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "EmptyState",
+        "base": "div role=status"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalEmptyState"
+      },
+      "registry": "https://metalui.dev/r/empty-state.json",
+      "agent": "https://metalui.dev/r/empty-state.md"
+    },
+    {
       "name": "fan",
       "title": "Fan",
       "status": "alpha",

@@ -1160,6 +1160,14 @@
   --mu-r-table-head-height: 32px;
   --mu-r-table-caption-gap: 12px;
   --mu-r-table-sort-glyph: 10px;
+  /* empty-state: the well (recipe well field); the icon set; Transitions T9 */
+  --mu-r-empty-state-self-gap: 8px;
+  --mu-r-empty-state-self-action-gap: 16px;
+  --mu-r-empty-state-self-max-width: 320px;
+  --mu-r-empty-state-self-pad: 32px;
+  --mu-r-empty-state-well-size: 56px;
+  --mu-r-empty-state-well-radius: 18px;
+  --mu-r-empty-state-well-glyph: 24px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

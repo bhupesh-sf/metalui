@@ -1180,6 +1180,23 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A place with nothing in it yet: a glyph engraved in a sunk well, what would be here (title type), a line saying how to start (body type, ink2), and the one action that starts it. It arrives when a place empties, rising one nest from below on the settle spring (T9), so it never snaps in; content arriving replaces it. Compact, it is one quiet line and the action, for small places. Reduce Motion: it fades in without travel. (the well (recipe well field); the icon set; Transitions T9)
+    public static let emptyState = MetalObjectRecipe(
+        name: "empty-state",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(8.0),
+            "self.action-gap": .number(16.0),
+            "self.max-width": .number(320.0),
+            "self.pad": .number(32.0),
+            "well.size": .number(56.0),
+            "well.radius": .number(18.0),
+            "well.glyph": .number(24.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

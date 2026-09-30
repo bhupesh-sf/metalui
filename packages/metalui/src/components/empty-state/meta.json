@@ -1,0 +1,21 @@
+{
+  "name": "empty-state",
+  "title": "Empty state",
+  "status": "alpha",
+  "layer": "place",
+  "kind": "composed",
+  "uses": ["well"],
+  "description": "A place with nothing in it yet: an engraved glyph in a well, what would be here, how to start, one action; it rises in on the settle spring when the place empties.",
+  "base": "div role=status",
+  "react": {
+    "export": "EmptyState",
+    "files": ["empty-state.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalEmptyState",
+    "file": "swift/Sources/MetalUI/Components/MetalEmptyState.swift",
+    "status": "wip"
+  },
+  "agent": "empty-state.agent.md",
+  "page": "/components/empty-state"
+}

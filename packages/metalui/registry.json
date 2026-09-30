@@ -453,6 +453,24 @@
       "docs": "Agent guide: https://metalui.dev/r/draw-tools.md. SwiftUI: MetalDrawTools in the MetalUI Swift package."
     },
     {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Empty state",
+      "description": "A place with nothing in it yet: an engraved glyph in a well, what would be here, how to start, one action; it rises in on the settle spring when the place empties.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/empty-state/empty-state.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/empty-state/empty-state.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/empty-state.md. SwiftUI: MetalEmptyState in the MetalUI Swift package."
+    },
+    {
       "name": "fan",
       "type": "registry:ui",
       "title": "Fan",
