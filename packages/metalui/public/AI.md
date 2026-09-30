@@ -393,7 +393,8 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 ## Anatomy
 
 - The **cap** is a 32px-tall pill: 15px horizontal padding, Geist 12.5 medium (the `ui` type role), tracking −0.005em.
-- The **label** is text, optionally with a leading MetalUI icon at 16px and a 6px gap.
+- The **icon** (`icon` prop) leads the label: 16 in the 32 cap, 6 before the label; 14 and 7 in the compact cap. The cap sizes it, so pass the glyph without a size.
+- The **label** is text: a verb, or a verb and its object.
 - **Compact** (`size="compact"`): 26 tall, 11 padding, 12 pt, a 14 glyph 7 before the label, the button fill on `raise-sm`, ink2 until hover. The canvas pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
 - The **press** moves the cap down 1px (50 ms, linear), and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
 
@@ -409,6 +410,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 |---|---|---|---|
 | `cap` | `cap:` | `standard`, `primary`, `destructive`, `link`, `graphite`, `strip`, `strip-danger` | `standard` |
 | `size` | `size:` | `default` (32), `compact` (26); ignored by the link, graphite and strip caps | `default` |
+| `icon` | `icon:` (a `MetalIconName`), or the `icon:` view builder | a glyph element, such as `<ShareIcon />` or `<MorphIcon name=… />`; leads the label, sized by the cap (16, compact 14) | – |
 | `disabled` | `.disabled(_:)` | boolean | `false` |
 | `focusableWhenDisabled` | – | boolean | `false` |
 | `render` | – | Base UI render prop, for `<a>` or custom elements (set `nativeButton={false}`) | – |
@@ -416,13 +418,14 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 
 ```tsx
 import { Button } from '@unlocalhosted/metalui';
-import { SendAwayIcon } from '@unlocalhosted/metalui/icons';
+import { ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
 import '@unlocalhosted/metalui/styles.css';
 
 <Button cap="primary" onClick={create}>New Canvas</Button>
 <Button onClick={close}>Cancel</Button>
 <Button size="compact" onClick={seed}>seed a sample day</Button>
-<Button cap="destructive" onClick={remove}><SendAwayIcon size={16} />Delete</Button>
+<Button icon={<ShareIcon />} onClick={share}>Share</Button>
+<Button cap="destructive" icon={<TrashIcon />} onClick={remove}>Delete</Button>
 ```
 
 ```swift
@@ -431,7 +434,8 @@ import MetalUI
 MetalButton("New Canvas", cap: .primary) { create() }
 MetalButton("Cancel") { close() }
 MetalButton("seed a sample day", size: .compact) { seed() }
-MetalButton("Delete", cap: .destructive) { remove() }
+MetalButton("Share", icon: .share) { share() }
+MetalButton("Delete", icon: .trash, cap: .destructive) { remove() }
 ```
 
 ## Rules
@@ -439,10 +443,11 @@ MetalButton("Delete", cap: .destructive) { remove() }
 - Use at most **one** `primary` or `destructive` cap per group. Everything else is `standard`.
 - `destructive` is only for actions that remove or discard data. Pair it with confirmation when the action can't be undone.
 - The label is a verb, or a verb + object, in title case. The button text itself says what happens.
-- Put icons **before** the label, at `size={16}`. An icon inside a Button plays its hover pose and press motion from the whole button (the button is the icon's trigger), so don't wire up animation yourself.
+- **An action names itself with a glyph and a verb.** A button that does something (save, share, export, delete, send, attach, copy, new) passes its glyph as `icon`: `<Button icon={<ShareIcon />}>Share</Button>`. A plain choice (Cancel, Done, Close as a word, OK) stays words only. Use the glyph whose act is that verb (`share`, `trash` or `send-away`, `duplicate`, `plus`, `pen` for Rename); don't borrow one that means something else.
+- Pass the glyph as `icon`, not as a child, and don't give it a size: the cap sets it (16, compact 14). Children still take a glyph for compatibility, but `icon` is the documented slot. The button is the icon's trigger: it plays its act when the button is hovered, focused from the keyboard or clicked, so don't wire up animation yourself.
 - Don't restyle the cap with custom backgrounds, borders, or shadows. Colorway comes from `data-mu-colorway` (`bone` | `graphite`) on any ancestor. When no ancestor sets it, `prefers-color-scheme` decides.
 - Don't signal success with the press motion. Show the real result: a toast, a state change, or an error.
-- **A label that changes in place must morph, never snap** (Transitions T1–T3). Wrap it in `SwapText` and the icon in `SwapIcon` (both from `@unlocalhosted/metalui`): the button's face turns one step on a drum: old and new labels and icons overlap with a small defocus (no blank frame), and the width settles to the new label. If the icon changes too, use `MorphIcon` from `@unlocalhosted/metalui/icons` with the next icon's name: any icon in the set morphs into any other instead of swapping. Example: `<Button><MorphIcon name={copied ? 'check' : 'paste'} size={14} /><SwapText value={copied ? 'Copied' : 'Copy'} /></Button>`.
+- **A state change of the same control morphs, never swaps** (Transitions T1–T3, `docs/MORPH.md`). When one control's meaning changes (Copy → Copied, Pin → Unpin, Collapse → Expand), its glyph morphs with `MorphIcon` (from `@unlocalhosted/metalui/icons`) on the settle spring, and its label turns on the drum with `SwapText` (from `@unlocalhosted/metalui`), together: `<Button icon={<MorphIcon name={copied ? 'check' : 'paste'} />}><SwapText value={copied ? 'Copied' : 'Copy'} /></Button>`. The width settles to the new label. Only a glyph outside the morph family (a solid character glyph) turns on the drum with `SwapIcon` instead.
 
 ## Accessibility
 
@@ -4126,7 +4131,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 47 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 49 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4182,6 +4187,8 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `PasteIcon` | `paste` | Status | The clip levers open, the content drops onto the board, and the clip clamps it down. | plays the same act |
 | `KeeperIcon` | `keeper` | Status | The character looks up at it, perks up, and nods it in with a slow blink; its ring tips with the nod. | plays the same act |
 | `PlusIcon` | `plus` | Actions | The upright is lifted and driven into the waiting crossbar; the knock runs out to the bar's ends. | plays the same act |
+| `MinusIcon` | `minus` | Actions | The bar is pried up off its tile, as if one were taken from it, and set back down; the tile takes its weight. | plays the same act |
+| `ChevronIcon` | `chevron` | Actions | The chevron is drawn back and thrust the way it points; its arms fold in behind the point like a hinge, and an echo carries on. | plays the same act |
 | `RegionIcon` | `region` | Tools | The frame is set down on the canvas, and its name writes into the head behind a caret. | plays the same act |
 | `TaskIcon` | `task` | Tools | The box is pressed down; while it is held the tick is written, and released it springs back up with a click. | plays the same act |
 | `TagIcon` | `tag` | Tools | The cord tugs the tag by its eyelet, and it swings there and comes to hang still. | plays the same act |

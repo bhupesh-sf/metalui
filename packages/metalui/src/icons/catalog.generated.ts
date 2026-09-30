@@ -912,6 +912,50 @@ export const ICON_CATALOG = {
     motion: {"duration":875,"caption":"The upright is lifted and driven into the waiting crossbar; the knock runs out to the bar's ends.","stages":["Lift","Insert","Propagate"],"tracks":[{"part":"upright","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.19429,"transform":"translate(0px,-2px) rotate(0deg) scale(1,1.04)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.28571,"transform":"translate(0px,0.6px) rotate(0deg) scale(1,0.86)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63429,"transform":"translate(0px,-0.0522px) rotate(0deg) scale(1,1.0122)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.98286,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"bar","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.28,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.30286,"transform":"translate(0px,0.6px) rotate(0deg) scale(1.07,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.65143,"transform":"translate(0px,-0.0522px) rotate(0deg) scale(0.9939,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"tile","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.29143,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.33143,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.96)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.73829,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"beads","keyframes":[{"offset":0,"transform":"scale(.95,1)","opacity":0},{"offset":0.32571,"transform":"scale(.95,1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.36571,"transform":"scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61714,"transform":"scale(1.15,1)","opacity":0},{"offset":1,"transform":"scale(.95,1)","opacity":0}]}]},
   },
   /* ─────────────────────────────────────────────────────────
+   * REMOVE · LESS · Actions · one act, 930ms
+   *
+   * Lift → Set down → Seat
+   *          The bar is pried up off its tile, as if one were taken from it, and set back down; the tile takes its weight.
+   *  bar        0 → 160 → 220 → 320 → 625 → 930ms
+   *  tile       0 → 325 → 335 → 691 → 930ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "minus": {
+    label: "Remove · Less",
+    category: "Actions",
+    hover: "The bar is pried up off its tile, as if one were taken from it, and set back down; the tile takes its weight.",
+    press: "plays the same act",
+    pressMs: 930,
+    defs: "",
+    body: "<g data-part=\"tile\"><rect class=\"f\" style=\"--duo:.12\" x=\"4.5\" y=\"4.5\" width=\"15\" height=\"15\" rx=\"3.5\"/></g><path data-part=\"bar\" d=\"M8.8 12h6.4\"/>",
+    sw16: 1.85,
+    motion: {"duration":930,"caption":"The bar is pried up off its tile, as if one were taken from it, and set back down; the tile takes its weight.","stages":["Lift","Set down","Seat"],"tracks":[{"part":"bar","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.17204,"transform":"translate(0px,-1.8px) rotate(-5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.23656,"transform":"translate(0px,-2px) rotate(-5deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.34409,"transform":"translate(0px,0.5px) rotate(0deg) scale(1.08,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.67204,"transform":"translate(0px,-0.0435px) rotate(0deg) scale(0.993,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"tile","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.34946,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.36022,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.96)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.74301,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * CHEVRON · OPEN · Actions · one act, 1056ms
+   *
+   * Draw back → Thrust → Fold and settle
+   *          The chevron is drawn back and thrust the way it points; its arms fold in behind the point like a hinge, and an echo carries on.
+   *  point      0 → 150 → 290 → 595 → 900 → 1056ms
+   *  left       0 → 150 → 260 → 310 → 683 → 1056ms
+   *  right      0 → 150 → 260 → 310 → 683 → 1056ms
+   *  echo       0 → 290 → 320 → 480 → 1056ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "chevron": {
+    label: "Chevron · Open",
+    category: "Actions",
+    hover: "The chevron is drawn back and thrust the way it points; its arms fold in behind the point like a hinge, and an echo carries on.",
+    press: "plays the same act",
+    pressMs: 1056,
+    defs: "",
+    body: "<g data-part=\"point\"><path data-part=\"left\" d=\"M6.4 9.2 12 14.8\"/><path data-part=\"right\" d=\"M17.6 9.2 12 14.8\"/></g><path class=\"ac\" data-part=\"echo\" opacity=\"0\" d=\"M6.4 9.2 12 14.8l5.6-5.6\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":1056,"caption":"The chevron is drawn back and thrust the way it points; its arms fold in behind the point like a hinge, and an echo carries on.","stages":["Draw back","Thrust","Fold and settle"],"tracks":[{"part":"point","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.14205,"transform":"translate(0px,-1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.27462,"transform":"translate(0px,1.6px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.56345,"transform":"translate(0px,-0.1393px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.85227,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"left","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14205,"transform":"translate(0px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.24621,"transform":"translate(0px,0px) rotate(-2deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.29356,"transform":"translate(0px,0px) rotate(10deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.64678,"transform":"translate(0px,0px) rotate(-0.7354deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"right","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14205,"transform":"translate(0px,0px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.24621,"transform":"translate(0px,0px) rotate(2deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.29356,"transform":"translate(0px,0px) rotate(-10deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.64678,"transform":"translate(0px,0px) rotate(0.7354deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"echo","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0},{"offset":0.27462,"transform":"translate(0px,2.6px) rotate(0deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.30303,"transform":"translate(0px,3.2px) rotate(0deg) scale(1,1)","opacity":0.6,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.45455,"transform":"translate(0px,4.4px) rotate(0deg) scale(1,1)","opacity":0},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
    * REGION · Tools · one act, 1040ms
    *
    * Lift → Land → Name

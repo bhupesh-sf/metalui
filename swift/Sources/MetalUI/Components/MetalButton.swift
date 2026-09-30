@@ -134,3 +134,14 @@ public struct MetalButton<Icon: View>: View {
         .accessibilityLabel(title)
     }
 }
+
+extension MetalButton where Icon == MetalIcon {
+    /// An action that names itself with a glyph and a verb: the MetalUI glyph leads the label,
+    /// sized by the cap (16 pt; 14 compact), and plays its act when the button is hovered or pressed.
+    ///
+    ///     MetalButton("Share", icon: .share) { share() }
+    public init(_ title: String, icon: MetalIconName, cap: MetalButtonCap = .standard, size: MetalButtonSize = .default, action: @escaping () -> Void) {
+        let glyph = MetalRecipes.button.points(size == .compact ? "compact.glyph" : "self.glyph")
+        self.init(title, cap: cap, size: size, action: action) { MetalIcon(icon, size: glyph) }
+    }
+}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Icon, ICON_CATALOG, ICON_NAMES, type IconName } from '@unlocalhosted/metalui/icons';
+import { Icon, ICON_CATALOG, ICON_NAMES, MorphIcon, type IconName, type MorphTurn } from '@unlocalhosted/metalui/icons';
 import { Bench, Code, PageHeader, Rules, Section } from '../ui/doc';
 import { MorphFilmstrips, MorphParity, MorphPlayground } from '../demos/MorphGlyphs';
 
@@ -92,6 +92,8 @@ export default function Icons() {
         </div>
       </Section>
 
+      <Turns />
+
       <Section title="Morph" lede="Any wire icon in the set becomes any other. The morph is born from what the icons are made of: wires at one weight with round caps, beads (a wire of zero length), tint inside a wire, and depth (a part in front keeps its clearance on the part behind). Each part pairs with the part it takes least energy to become and rides a carriage: it turns, scales and travels as one rigid thing, bending only what it must. Beads draw out into wires, rings open where they meet their new ends and their tint follows the area, clearances travel with the parts that cast them. A part the next icon lacks tucks behind a body or gathers into a wire that stays; a part it gains emerges or buds. A mirror pair turns over. Nothing fades and nothing appears from empty space. Each filmstrip shows its strain: under 1 the pair reads as one object changing. The character glyph, a solid body, is not in the morph family; it changes by the drum. Click the large icon to step through the family, or pick one.">
         <Bench caption="Live · every part on one settle spring (k380 c36)">
           <MorphPlayground />
@@ -116,10 +118,53 @@ export default function Icons() {
             { id: 'I7', title: 'Strain says when not to morph', body: 'Every plan carries a strain (travel, lone material, topology, traits, crossing). Under 1 a change reads as one object; between 1 and 2 it is an honest transformation; at 2 and over the icons should be redrawn under the grammar, staged through a shared neighbour, or the control should ride the drum (SwapIcon). The filmstrips print it.', origin: 'Ours' },
             { id: 'I8', title: 'Character glyphs ride the drum', body: 'A solid glyph (the character glyph: a filled body with no wire) belongs to a different system and never morphs. A control switching to or from one uses SwapIcon (T1). The generator keeps such glyphs out of the morph family by structure, not by name.', origin: 'Ours' },
             { id: 'I9', title: 'New icons follow the grammar', body: 'One body and one to three marks, 40–90 units of wire on the keyline, at most one clearance, its act authored on its own parts. docs/ICON-GRAMMAR.md has the build spec, the evidence, and the process: lint it, score its strain against its neighbours, then author it.', origin: 'Ours; the idea of a shared construction is adapted from Benji Taylor' },
+            { id: 'I11', title: 'A direction is a turn of one glyph', body: 'The chevron is drawn once, pointing down. turn={90 | 180 | 270} points it left, up or right, act and all, so its thrust always goes the way it points. When a control’s direction is its state (a disclosure opening), MorphIcon’s turn changes and the glyph morphs: a quarter turn rides a rigid carriage, a half turn turns over on its axis. Never rotate a glyph with your own CSS transition.', origin: 'Ours' },
             { id: 'I10', title: 'Every glyph performs one act', body: 'An icon’s motion is its meaning played on its own parts: anticipate, act, settle, with a small response where the action lands. Parts have mass and real pivots and move on the system’s springs; the act starts and ends exactly at the drawn glyph. The same data plays on the web, in the standalone SVG and in SwiftUI. docs/ICON-MOTION.md has the format and the rules.', origin: 'Adapted from Dither Icons' },
           ]}
         />
       </Section>
     </>
+  );
+}
+
+const TURNS: { turn: MorphTurn; label: string }[] = [
+  { turn: 0, label: 'down · 0' },
+  { turn: 90, label: 'left · 90' },
+  { turn: 180, label: 'up · 180' },
+  { turn: 270, label: 'right · 270' },
+];
+
+/** One chevron, four directions: a set direction turns the Icon; a changing one morphs. */
+function Turns() {
+  const [open, setOpen] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
+  return (
+    <Section id="turn" title="Turn" lede="A direction is not a new glyph. The chevron is drawn once, pointing down, and turn points it left, up or right; its act turns with it, so the thrust always goes the way it points. When the direction is the state, the glyph morphs to the turned one.">
+      <div className="grid gap-16 lg:grid-cols-2 [&>*]:min-w-0">
+        <Bench caption="Icon · turn={0 | 90 | 180 | 270} · hover one">
+          <div className="flex flex-wrap items-end justify-center gap-24" data-testid="chevron-turns">
+            {TURNS.map(({ turn, label }) => (
+              <span key={turn} className="mu-icon-trigger flex cursor-pointer flex-col items-center gap-8 text-icon hover:text-ink">
+                <Icon name="chevron" size={32} turn={turn} />
+                <span className="type-doc-caption text-ink3">{label}</span>
+              </span>
+            ))}
+          </div>
+        </Bench>
+        <Bench caption="MorphIcon · the turn is the state">
+          <div className="flex flex-wrap items-center justify-center gap-24">
+            <button type="button" aria-expanded={open} onClick={() => setOpen((v) => !v)} className="mu-icon-trigger flex cursor-pointer flex-col items-center gap-8 text-icon hover:text-ink" data-testid="chevron-disclose">
+              <MorphIcon name="chevron" size={32} turn={open ? 180 : 0} />
+              <span className="type-doc-caption text-ink3">{open ? 'open · 180, turned over' : 'closed · 0'}</span>
+            </button>
+            <button type="button" aria-expanded={expanded} onClick={() => setExpanded((v) => !v)} className="mu-icon-trigger flex cursor-pointer flex-col items-center gap-8 text-icon hover:text-ink" data-testid="chevron-expand">
+              <MorphIcon name="chevron" size={32} turn={expanded ? 0 : 270} />
+              <span className="type-doc-caption text-ink3">{expanded ? 'expanded · 0' : 'collapsed · 270, a quarter turn'}</span>
+            </button>
+          </div>
+        </Bench>
+      </div>
+      <Code label="JSX" code={`import { ChevronIcon, MorphIcon } from '@unlocalhosted/metalui/icons';\n\n<ChevronIcon turn={270} />                           // a set direction: next\n<MorphIcon name="chevron" turn={open ? 180 : 0} />   // a direction that is state\n\n// SwiftUI: MetalIcon(.chevron).rotationEffect(.degrees(270))`} />
+    </Section>
   );
 }

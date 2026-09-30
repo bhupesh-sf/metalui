@@ -45,6 +45,8 @@ export const ICONS = [
   { name: 'paste', cat: 'Status', label: 'Paste' },
   { name: 'keeper', cat: 'Status', label: 'Keeper' },
   { name: 'plus', cat: 'Actions', label: 'New' },
+  { name: 'minus', cat: 'Actions', label: 'Remove · Less' },
+  { name: 'chevron', cat: 'Actions', label: 'Chevron · Open' },
   { name: 'region', cat: 'Tools', label: 'Region' },
   { name: 'task', cat: 'Tools', label: 'Task' },
   { name: 'tag', cat: 'Tools', label: 'Tag' },

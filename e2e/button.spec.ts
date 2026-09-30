@@ -30,3 +30,58 @@ for (const colorway of COLORWAYS) {
     await compact.screenshot({ path: capture(`button-compact-${colorway}`) });
   });
 }
+
+// An action names itself with a glyph and a verb: the glyph leads the label at the cap's glyph size
+// and plays its act from the whole button; a plain choice is words alone. A state change of the same
+// control morphs its glyph and turns its label.
+for (const colorway of COLORWAYS) {
+  test(`action buttons lead with their glyph in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/button', colorway);
+    const beat = page.locator('#action-names-itself');
+    await beat.scrollIntoViewIfNeeded();
+    for (const verb of ['New Canvas', 'Share', 'Export', 'Duplicate', 'Rename', 'Delete']) {
+      const button = beat.getByRole('button', { name: verb, exact: true });
+      const glyph = button.locator('svg');
+      await expect(glyph).toHaveCount(1);
+      const [g, b] = [(await glyph.boundingBox())!, (await button.boundingBox())!];
+      expect(g.width).toBe(Number(P.self.glyph));
+      expect(g.height).toBe(Number(P.self.glyph));
+      // leading: the glyph is the first thing after the cap's padding
+      expect(Math.round(g.x - b.x)).toBe(Number(P.self.pad));
+    }
+    await expect(beat.getByRole('button', { name: 'Cancel' }).locator('svg')).toHaveCount(0);
+
+    // Hovering the button plays the glyph's act, and the act finishes at rest.
+    const share = beat.getByRole('button', { name: 'Share', exact: true });
+    await share.hover();
+    await expect(share.locator('svg')).toHaveAttribute('data-playing', '');
+    await page.mouse.move(0, 0);
+    await expect(share.locator('svg')).not.toHaveAttribute('data-playing', '', { timeout: 3000 });
+
+    await beat.getByRole('button', { name: 'Delete' }).click();
+    await expect(beat).toContainText('Delete: the button did it.');
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(1500);
+    await beat.screenshot({ path: capture(`button-actions-${colorway}`) });
+  });
+}
+
+test('a copy button morphs its glyph and turns its label', async ({ page }) => {
+  await open(page, '/components/button', 'bone');
+  const copy = page.locator('#label-turns').getByRole('button').filter({ has: page.locator('.mu-morph-icon') });
+  await expect(copy.locator('svg')).toHaveAttribute('data-glyph', 'paste');
+  await copy.click();
+  await expect(copy.locator('svg')).toHaveAttribute('data-glyph', 'check');
+  await expect(copy).toHaveAccessibleName('Copied');
+  // the pause over, it becomes Copy again
+  await expect(copy.locator('svg')).toHaveAttribute('data-glyph', 'paste', { timeout: 4000 });
+});
+
+test('under reduced motion an action glyph stays still', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '/components/button', 'bone');
+  const share = page.locator('#action-names-itself').getByRole('button', { name: 'Share', exact: true });
+  await share.hover();
+  await page.waitForTimeout(200);
+  await expect(share.locator('svg')).not.toHaveAttribute('data-playing', '');
+});

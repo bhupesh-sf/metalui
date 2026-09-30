@@ -35,6 +35,10 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, 'children
   strokeWidth?: number;
   /** Set false to keep the glyph static; at ≤16px it then uses the tuned small cut. */
   animate?: boolean;
+  /** Quarter turns clockwise about the glyph's centre, act and all: a chevron is drawn pointing
+   *  down, so 90 points it left, 180 up and 270 right. A direction that is set, not a state change:
+   *  a control whose chevron turns when it opens uses MorphIcon's `turn`, which morphs. */
+  turn?: 0 | 90 | 180 | 270;
 }
 
 function markup(name: IconName, uid: string, small: boolean) {
@@ -134,7 +138,7 @@ function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, name: Icon
 }
 
 export const Icon = React.forwardRef<SVGSVGElement, IconProps & { name: IconName }>(function Icon(
-  { name, size = 24, title, strokeWidth, animate = true, className, style, ...props },
+  { name, size = 24, title, strokeWidth, animate = true, turn = 0, className, style, ...props },
   forwardedRef,
 ) {
   const ref = React.useRef<SVGSVGElement>(null);
@@ -153,7 +157,8 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps & { name: IconName
       width={size}
       height={size}
       className={`mu-icon mu-ic-${name}${className ? ` ${className}` : ''}`}
-      style={sw === undefined ? style : ({ '--sw': sw, ...style } as React.CSSProperties)}
+      style={sw === undefined && !turn ? style : ({ ...(sw === undefined ? {} : { '--sw': sw }), ...(turn ? { rotate: `${turn}deg` } : {}), ...style } as React.CSSProperties)}
+      data-turn={turn || undefined}
       data-static={animate ? undefined : ''}
       role={title ? 'img' : undefined}
       aria-hidden={title ? undefined : true}

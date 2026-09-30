@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DialRoot, useDialKitController } from 'dialkit';
 import { Button, Kbd, Slider, SwapText, type ButtonCap } from '@unlocalhosted/metalui';
-import { Icon, type IconName } from '@unlocalhosted/metalui/icons';
+import { DuplicateIcon, Icon, MorphIcon, PenIcon, PlusIcon, ShareIcon, TrashIcon, type IconName } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/button/button.tsx?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/button/button.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalButton.swift?raw';
@@ -23,8 +23,9 @@ import './button-workbench.css';
  *               2 anatomy                  the layers as an equation: fill + … = cap
  *               3 the press is physics     both curves drawn at rest; press to trace
  *               4 a changing label turns   width over time drawn at rest: a spring, a step
- *               5 one signal cap           three footers, count the dark caps
- *               6 one line, always         starts narrow: the wrapped one is already broken
+ *               5 an action names itself   glyph + verb on actions, words alone on choices
+ *               6 one signal cap           three footers, count the dark caps
+ *               7 one line, always         starts narrow: the wrapped one is already broken
  *   states · variants · colorways · keyboard · api · tokens · platforms · rules · related
  * ───────────────────────────────────────────────────────── */
 
@@ -57,7 +58,7 @@ export default function ButtonPage() {
           items={[
             { label: 'React', value: 'import { Button }', href: '#hero', mono: true },
             { label: 'Swift', value: 'MetalButton', href: '#platforms', mono: true },
-            { label: 'Props', value: '5', href: '#api' },
+            { label: 'Props', value: '6', href: '#api' },
             { label: 'States', value: '5', href: '#states' },
             { label: 'Tokens', value: '12', href: '#tokens' },
           ]}
@@ -70,6 +71,7 @@ export default function ButtonPage() {
           <Anatomy />
           <PressIsPhysics />
           <LabelTurns />
+          <ActionNamesItself />
           <OneSignalCap />
           <OneLine />
         </div>
@@ -93,9 +95,9 @@ export default function ButtonPage() {
         <Rules
           rules={[
             { id: 'B1', title: 'One signal cap per group', body: 'Everything else is standard. Destructive is only for removing or discarding data. Shown in “One signal cap”.' },
-            { id: 'B2', title: 'Icons lead, at the control’s icon size', body: '14 in a 32 button. The button is the icon’s trigger, so its hover pose and press play from the whole button.' },
+            { id: 'B2', title: 'An action names itself with a glyph and a verb', body: 'Share, Export, Duplicate, Delete pass their glyph as icon; the cap sizes it (16, compact 14) and plays its act from the whole button. Plain choices (Cancel, Done) stay words only. Shown in “An action names itself”.' },
             { id: 'B3', title: 'The press is feedback, not a result', body: 'Show the real outcome: a toast, a state change or an error. Never let the animation stand in for success.' },
-            { id: 'B4', title: 'Changing labels turn', body: 'Copy → Copied, Save → Saving… → Saved: wrap the label in SwapText. The width springs to the new label. Shown in “A changing label turns”.' },
+            { id: 'B4', title: 'A state change morphs, never swaps', body: 'Copy → Copied, Pin → Unpin: the glyph morphs with MorphIcon and the label turns with SwapText, together. The width springs to the new label. Shown in “A changing label turns”.' },
             { id: 'B5', title: 'The label is a short verb', body: 'One line, always. If it does not fit, the label is too long; the button never wraps. Shown in “One line, always”.' },
           ]}
         />
@@ -382,16 +384,16 @@ function LabelTurns() {
     <Beat
       id="label-turns"
       title="A changing label turns"
-      setup="Copy becoming Copied is one step on a drum, and the cap's width follows on the settle spring."
+      setup="Copy becoming Copied is one step on a drum, its glyph morphs from paste into check, and the cap's width follows on the settle spring."
       slow={slow}
       bar={<SlowSwitch slow={slow} onChange={setSlow} />}
-      caption="Press both buttons and watch the width. Ours grows smoothly to fit the new word. The other one jumps."
-      cost="one wrapper, SwapText, around any label that can change."
+      caption="Press both buttons and watch the glyph and the width. Ours becomes the tick and grows smoothly to fit the new word. The other one swaps its glyph and jumps."
+      cost="two wrappers: MorphIcon for the glyph and SwapText for the label."
     >
       <div className="grid w-full grid-cols-1 gap-y-32 sm:grid-cols-2 sm:divide-x sm:divide-rule">
         {[
-          { tag: 'SwapText', lit: true, pts: settle, node: <Button onClick={() => flip(setA)}><Icon name={a ? 'check' : 'duplicate'} size={14} /><SwapText value={a ? 'Copied' : 'Copy'} /></Button> },
-          { tag: 'replaced', lit: false, pts: step, node: <Button onClick={() => flip(setB)}><Icon name={b ? 'check' : 'duplicate'} size={14} />{b ? 'Copied' : 'Copy'}</Button> },
+          { tag: 'SwapText', lit: true, pts: settle, node: <Button onClick={() => flip(setA)} icon={<MorphIcon name={a ? 'check' : 'paste'} />}><SwapText value={a ? 'Copied' : 'Copy'} /></Button> },
+          { tag: 'replaced', lit: false, pts: step, node: <Button onClick={() => flip(setB)} icon={<Icon name={b ? 'check' : 'paste'} />}>{b ? 'Copied' : 'Copy'}</Button> },
         ].map((v) => (
           <div key={v.tag} className="flex flex-col items-center gap-16 px-16">
             <Tag tone={v.lit ? 'lit' : 'quiet'}>{v.tag}</Tag>
@@ -407,7 +409,44 @@ function LabelTurns() {
   );
 }
 
-/* ───────────────────────── 5 · one signal cap ───────────────────────── */
+/* ───────────────────────── 5 · an action names itself ───────────────────────── */
+
+function ActionNamesItself() {
+  const [done, setDone] = React.useState<string | null>(null);
+  const act = (verb: string) => () => setDone(verb);
+  return (
+    <Beat
+      id="action-names-itself"
+      title="An action names itself"
+      setup="A button that does something leads with the glyph of what it does, then the verb. A plain choice is words alone: it does nothing but answer."
+      caption={done ? `${done}: the button did it. Hover the actions and each glyph plays its own act; the choices stay still.` : 'Hover or press the actions: each glyph plays its own act, because the button is its trigger. The choices have no glyph.'}
+      cost="one prop, icon. The cap sizes the glyph, so nothing is hand-sized."
+      code={{ label: 'app.tsx', lang: 'tsx', code: `import { ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';\n\n<Button icon={<ShareIcon />}>Share</Button>\n<Button cap="destructive" icon={<TrashIcon />}>Delete</Button>\n<Button>Cancel</Button>` }}
+    >
+      <div className="flex w-full flex-col divide-y divide-rule" data-testid="button-actions">
+        <div className="flex flex-wrap items-center justify-between gap-12 pb-14">
+          <Tag tone="lit">actions</Tag>
+          <div className="flex flex-wrap gap-8">
+            <Button icon={<PlusIcon />} onClick={act('New canvas')}>New Canvas</Button>
+            <Button icon={<ShareIcon />} onClick={act('Share')}>Share</Button>
+            <Button icon={<ShareIcon />} onClick={act('Export')}>Export</Button>
+            <Button icon={<DuplicateIcon />} onClick={act('Duplicate')}>Duplicate</Button>
+            <Button icon={<PenIcon />} onClick={act('Rename')}>Rename</Button>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center justify-between gap-12 pt-14">
+          <Tag tone="quiet">a dialog footer</Tag>
+          <div className="flex flex-wrap gap-8">
+            <Button onClick={() => setDone(null)}>Cancel</Button>
+            <Button cap="destructive" icon={<TrashIcon />} onClick={act('Delete')}>Delete</Button>
+          </div>
+        </div>
+      </div>
+    </Beat>
+  );
+}
+
+/* ───────────────────────── 6 · one signal cap ───────────────────────── */
 
 function OneSignalCap() {
   const footers: { name: string; lit?: boolean; caps: [ButtonCap, string][] }[] = [
@@ -434,7 +473,7 @@ function OneSignalCap() {
   );
 }
 
-/* ───────────────────────── 6 · one line, always ───────────────────────── */
+/* ───────────────────────── 7 · one line, always ───────────────────────── */
 
 function OneLine() {
   const [w, setW] = React.useState(180);
@@ -505,7 +544,7 @@ function Variants() {
       <Stage caption="Compact, with a glyph, with a key, primary and disabled.">
         <div className="flex flex-wrap items-center justify-center gap-10">
           <Button size="compact">seed a sample day</Button>
-          <Button size="compact"><Icon name="share" size={12} />Share</Button>
+          <Button size="compact" icon={<ShareIcon />}>Share</Button>
           <Button size="compact">lenses <Kbd size="small">⌘K</Kbd></Button>
           <Button size="compact" cap="primary">Keep</Button>
           <Button size="compact" disabled>Share</Button>
@@ -584,12 +623,13 @@ function Api() {
         rows={[
           ['cap', "'standard' | 'primary' | 'destructive' | 'link' | 'graphite' | 'strip' | 'strip-danger'", "'standard'", 'At most one primary or destructive per group. link, graphite and strip caps set their own size.'],
           ['size', "'default' | 'compact'", "'default'", 'default is 32 tall; compact is 26 (the canvas pill).'],
+          ['icon', 'ReactNode', '–', 'The action’s glyph, before the label, sized by the cap (16, compact 14). A MorphIcon here morphs when the control changes meaning. Plain choices have none.'],
           ['disabled', 'boolean', 'false', 'Renders at 40% and skips icon motion. From Base UI.'],
           ['focusableWhenDisabled', 'boolean', 'false', 'Keeps a disabled button in the tab order. From Base UI.'],
           ['render', 'Base UI render prop', '–', 'Render as a link or custom element; set nativeButton={false}.'],
         ]}
       />
-      <p className="type-doc-caption text-ink3">Swift: <C>MetalButton(_ title:, cap:, size:, action:)</C>. No slots: the children are the label and an optional leading icon.</p>
+      <p className="type-doc-caption text-ink3">Swift: <C>MetalButton(_ title:, icon:, cap:, size:, action:)</C>, where <C>icon</C> is a <C>MetalIconName</C>; or the <C>icon:</C> view builder for any other glyph.</p>
     </Section>
   );
 }

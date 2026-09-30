@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 47,
+  "count": 49,
   "icons": [
     {
       "name": "select",
@@ -781,6 +781,46 @@
       },
       "tuned16": false,
       "construction": "Tile 15 × 15 r3.5, tinted .12; plus arms 6.4 on the centre, always upright: at 45° a plus is the close glyph, so it never turns. Motion (study): the upright lifts 2 along its axis and is driven down into the crossbar, squashing .86; the bar is pushed .6 and widens 1.07 under it, the tile takes the blow a beat later on the object spring, and two beads run out off the bar's ends."
+    },
+    {
+      "name": "minus",
+      "component": "MinusIcon",
+      "label": "Remove · Less",
+      "category": "Actions",
+      "hover": "The bar is pried up off its tile, as if one were taken from it, and set back down; the tile takes its weight.",
+      "press": "plays the same act",
+      "pressMs": 930,
+      "motion": {
+        "caption": "The bar is pried up off its tile, as if one were taken from it, and set back down; the tile takes its weight.",
+        "durationMs": 930,
+        "stages": [
+          "Lift",
+          "Set down",
+          "Seat"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Plus's tile (15 × 15 r3.5, tinted .12) with its crossbar alone, 6.4 on the centre, so Plus and Minus are one object with or without the upright and morph by the upright alone. Motion (study): the bar is pried up 2, tilting 5°, and set back down past its seat, widening 1.08 on the part spring; the tile takes the weight a beat later on the object spring."
+    },
+    {
+      "name": "chevron",
+      "component": "ChevronIcon",
+      "label": "Chevron · Open",
+      "category": "Actions",
+      "hover": "The chevron is drawn back and thrust the way it points; its arms fold in behind the point like a hinge, and an echo carries on.",
+      "press": "plays the same act",
+      "pressMs": 1056,
+      "motion": {
+        "caption": "The chevron is drawn back and thrust the way it points; its arms fold in behind the point like a hinge, and an echo carries on.",
+        "durationMs": 1056,
+        "stages": [
+          "Draw back",
+          "Thrust",
+          "Fold and settle"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Two arms 7.9 long at right angles, hinged at the point (12, 14.8), spanning 6.4 to 17.6 and 9.2 to 14.8, centred on the grid so a quarter turn about (12, 12) points it any way: one glyph for down (as drawn), up, left and right. Motion (study): drawn back 1.2 with the arms opening 6°, then thrust 1.6 toward the point on the part spring while the arms fold 10° in behind it on the hinge spring, a beat late; a faint echo leaves just past the point and carries on the way it points."
     },
     {
       "name": "region",

@@ -79,6 +79,10 @@ export const PasteIcon = createIcon("paste", "PasteIcon");
 export const KeeperIcon = createIcon("keeper", "KeeperIcon");
 /** New. Hover: The upright is lifted and driven into the waiting crossbar; the knock runs out to the bar's ends.. Press: plays the same act. */
 export const PlusIcon = createIcon("plus", "PlusIcon");
+/** Remove · Less. Hover: The bar is pried up off its tile, as if one were taken from it, and set back down; the tile takes its weight.. Press: plays the same act. */
+export const MinusIcon = createIcon("minus", "MinusIcon");
+/** Chevron · Open. Hover: The chevron is drawn back and thrust the way it points; its arms fold in behind the point like a hinge, and an echo carries on.. Press: plays the same act. */
+export const ChevronIcon = createIcon("chevron", "ChevronIcon");
 /** Region. Hover: The frame is set down on the canvas, and its name writes into the head behind a caret.. Press: plays the same act. */
 export const RegionIcon = createIcon("region", "RegionIcon");
 /** Task. Hover: The box is pressed down; while it is held the tick is written, and released it springs back up with a click.. Press: plays the same act. */

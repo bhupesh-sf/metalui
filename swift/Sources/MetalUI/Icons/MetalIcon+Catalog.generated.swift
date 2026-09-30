@@ -42,6 +42,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case paste = "paste"
     case keeper = "keeper"
     case plus = "plus"
+    case minus = "minus"
+    case chevron = "chevron"
     case region = "region"
     case task = "task"
     case tag = "tag"
@@ -94,6 +96,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .paste: return "Paste"
         case .keeper: return "Keeper"
         case .plus: return "New"
+        case .minus: return "Remove · Less"
+        case .chevron: return "Chevron · Open"
         case .region: return "Region"
         case .task: return "Task"
         case .tag: return "Tag"
@@ -146,6 +150,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .paste: return .status
         case .keeper: return .status
         case .plus: return .actions
+        case .minus: return .actions
+        case .chevron: return .actions
         case .region: return .tools
         case .task: return .tools
         case .tag: return .tools
@@ -199,6 +205,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .paste: return 0.1
         case .keeper: return nil
         case .plus: return 0.12
+        case .minus: return 0.12
+        case .chevron: return nil
         case .region: return 0.08
         case .task: return 0.12
         case .tag: return 0.12
@@ -252,6 +260,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .paste: return nil
         case .keeper: return nil
         case .plus: return nil
+        case .minus: return nil
+        case .chevron: return nil
         case .region: return nil
         case .task: return nil
         case .tag: return nil
@@ -305,6 +315,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .paste: return false
         case .keeper: return true
         case .plus: return false
+        case .minus: return false
+        case .chevron: return false
         case .region: return false
         case .task: return false
         case .tag: return false
@@ -358,6 +370,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .paste: return 1.85
         case .keeper: return 1.9
         case .plus: return 1.85
+        case .minus: return 1.85
+        case .chevron: return 1.85
         case .region: return 1.85
         case .task: return 1.85
         case .tag: return 1.85
