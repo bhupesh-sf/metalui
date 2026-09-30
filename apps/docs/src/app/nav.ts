@@ -55,6 +55,7 @@ export const NAV: NavGroup[] = [
       { to: '/blocks/ai-composer', label: 'AI composer' },
       { to: '/blocks/share-panel', label: 'Share panel' },
       { to: '/blocks/availability-picker', label: 'Availability picker' },
+      { to: '/blocks/task-inbox', label: 'Task inbox' },
     ],
   },
   ...LAYER_GROUPS,
