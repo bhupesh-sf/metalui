@@ -318,4 +318,9 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **ScrollArea**: no way to reach the viewport or listen to scrolling (a `viewportRef` / `onScroll`); the AI composer finds `.mu-scroll-area-viewport` by class.
 - [ ] **Icons**: no `send`, `stop`, `attach`, `retry` glyphs (the composer uses arrow → rectangle, plus, redo); add them with the icons entry's D list.
 - [ ] **Motion**: no exported helper for "is motion reduced here" that covers both the OS setting and the site's motion switch; blocks read `--mu-travel-settle === 0`. Export one (`useReducedMotion()` or `motionReduced(el)`).
+- [ ] **Tooltip swallows the first Escape** on a focused trigger (Base UI's trigger), so a panel around it never hears ⎋; the share panel listens in the capture phase.
+- [ ] **DropZone compact** doesn't truncate its title: at narrow widths it runs into "or choose files".
+- [ ] **Attachment**: its error line wraps beside Try again when narrow; its fixed max width fights a full-width list; no hook for the rows below to close up after it leaves.
+- [ ] **A shared row-leave helper**: the release-spring leave lives only inside Attachment (with its own reduced-motion check); lists of people, files and rows need it too. Note the release travel stays full under Reduce Motion by the token; decide whether that's right.
+- [ ] **Switch** has no `label` prop; blocks wire `aria-labelledby` and make the words toggle it by hand.
 - [ ] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message.
