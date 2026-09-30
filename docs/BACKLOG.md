@@ -309,3 +309,13 @@ Facts: browsers expose no trackpad haptics on a Mac, and iOS Safari has no vibra
 - [ ] **In the Mac app**: the SwiftUI side already performs the alignment haptic; document how a web view host (Electron, Tauri, a WKWebView) bridges `haptic()` to `NSHapticFeedbackManager`, and ship that bridge as an optional hook.
 - [ ] **Decide the fallback rule with the owner**: the guide forbids a sound or flash in place of a haptic. If the web should still *feel* the catch, the candidate is the line's own catch motion (the guide lighting with a tiny overshoot), which is already there, not a new sound. Record the decision in the guide.
 - [x] Make the demo honest and useful: it calls `haptic()`, says which path this browser took ("vibrated", "iOS tick", "no haptics here"), and keeps the tap count.
+
+## Library gaps found by building blocks
+
+Building real screens shows what the components lack. Each was worked around inside the block; fix it in the library, then remove the workaround.
+
+- [ ] **Button**: `cap="primary"` ignores `size="compact"` (the AI composer's send key is 32 tall beside a 28 Select).
+- [ ] **ScrollArea**: no way to reach the viewport or listen to scrolling (a `viewportRef` / `onScroll`); the AI composer finds `.mu-scroll-area-viewport` by class.
+- [ ] **Icons**: no `send`, `stop`, `attach`, `retry` glyphs (the composer uses arrow → rectangle, plus, redo); add them with the icons entry's D list.
+- [ ] **Motion**: no exported helper for "is motion reduced here" that covers both the OS setting and the site's motion switch; blocks read `--mu-travel-settle === 0`. Export one (`useReducedMotion()` or `motionReduced(el)`).
+- [ ] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message.
