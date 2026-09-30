@@ -711,6 +711,7 @@
   --spacing-sparkline-height: var(--mu-r-sparkline-self-height);
   --spacing-sparkline-height-mini: var(--mu-r-sparkline-self-height-mini);
   --color-dialog-scrim-color: var(--mu-r-dialog-scrim-color);
+  --color-dialog-scrim-opaque: var(--mu-r-dialog-scrim-opaque);
   --spacing-dialog-enter-y: var(--mu-r-dialog-self-enter-y);
   --spacing-dialog-width: var(--mu-r-dialog-self-width);
   --spacing-dialog-pad: var(--mu-r-dialog-self-pad);
@@ -2018,6 +2019,10 @@
 }
 @utility dialog-actions {
   display: flex; justify-content: flex-end; gap: var(--mu-r-dialog-actions-gap);
+}
+@utility backdrop-dialog-scrim-blur {
+  -webkit-backdrop-filter: var(--mu-r-dialog-scrim-blur);
+  backdrop-filter: var(--mu-r-dialog-scrim-blur);
 }
 @utility z-dialog-scrim-z {
   z-index: var(--mu-r-dialog-scrim-z);

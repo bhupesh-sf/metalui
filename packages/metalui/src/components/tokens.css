@@ -1510,6 +1510,7 @@
   --mu-r-sparkline-self-height: 40px;
   --mu-r-sparkline-self-height-mini: 24px;
   /* dialog: reference style.css #palette */
+  --mu-r-dialog-scrim-blur: blur(4px);
   --mu-r-dialog-scrim-z: 50;
   --mu-r-dialog-self-top: 16vh;
   --mu-r-dialog-self-enter-y: -6px;
@@ -2240,7 +2241,8 @@
   --mu-r-sparkline-dot-fill: #FCFBF9;
   --mu-r-sparkline-dot-ring: #5C5C60;
   --mu-r-sparkline-base-color: rgba(40,38,32,.1);
-  --mu-r-dialog-scrim-color: rgba(243,243,241,.25);
+  --mu-r-dialog-scrim-color: rgba(236,235,231,.5);
+  --mu-r-dialog-scrim-opaque: rgba(236,235,231,.9);
   --mu-r-slider-mark-color: rgba(40,38,32,.28);
   --mu-r-slider-tick-color: rgba(40,38,32,.18);
   --mu-r-switcher-self-background:
@@ -2726,7 +2728,8 @@
   --mu-r-sparkline-dot-fill: #2C2C2F;
   --mu-r-sparkline-dot-ring: #A6A6A9;
   --mu-r-sparkline-base-color: rgba(255,255,255,.12);
-  --mu-r-dialog-scrim-color: rgba(14,14,15,.25);
+  --mu-r-dialog-scrim-color: rgba(10,10,11,.5);
+  --mu-r-dialog-scrim-opaque: rgba(10,10,11,.9);
   --mu-r-slider-mark-color: rgba(255,255,255,.28);
   --mu-r-slider-tick-color: rgba(255,255,255,.18);
   --mu-r-switcher-self-background:
@@ -3213,7 +3216,8 @@
     --mu-r-sparkline-dot-fill: #2C2C2F;
     --mu-r-sparkline-dot-ring: #A6A6A9;
     --mu-r-sparkline-base-color: rgba(255,255,255,.12);
-    --mu-r-dialog-scrim-color: rgba(14,14,15,.25);
+    --mu-r-dialog-scrim-color: rgba(10,10,11,.5);
+    --mu-r-dialog-scrim-opaque: rgba(10,10,11,.9);
     --mu-r-slider-mark-color: rgba(255,255,255,.28);
     --mu-r-slider-tick-color: rgba(255,255,255,.18);
     --mu-r-switcher-self-background:

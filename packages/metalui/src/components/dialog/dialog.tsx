@@ -11,7 +11,7 @@ import { Surface, type SurfaceMaterial, type SurfaceRadius } from '../surface/su
 
 /* Styled with the theme's utilities (the dialog recipe): the scrim fades and the popup rises a step on
  * the surface spring, and leaves on release. */
-const SCRIM = 'mu-dialog-scrim fixed inset-0 z-dialog-scrim-z bg-dialog-scrim-color transition-opacity ease-surface duration-surface data-starting-style:opacity-0 data-ending-style:opacity-0';
+const SCRIM = 'mu-dialog-scrim fixed inset-0 z-dialog-scrim-z bg-dialog-scrim-color backdrop-dialog-scrim-blur reduce-transparency:bg-dialog-scrim-opaque reduce-transparency:backdrop-blur-none transition-opacity ease-surface duration-surface data-starting-style:opacity-0 data-ending-style:opacity-0';
 const POPUP = 'mu-dialog dialog-frame fixed z-dialog-scrim-z dialog-top left-1/2 -translate-x-1/2 outline-none transition-dialog data-starting-style:dialog-enter data-ending-style:dialog-enter data-ending-style:duration-release data-ending-style:ease-release';
 
 export interface DialogRootProps {

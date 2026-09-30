@@ -20,7 +20,7 @@ import { refuse } from '../../motion/refuse';
  * Slots: AlertDialog.Root, Popup, Title, Description, Actions, Cancel, Confirm.
  * ───────────────────────────────────────────────────────── */
 
-const SCRIM = 'mu-alert-dialog-scrim fixed inset-0 z-dialog-scrim-z bg-dialog-scrim-color transition-opacity ease-surface duration-surface data-starting-style:opacity-0 data-ending-style:opacity-0';
+const SCRIM = 'mu-alert-dialog-scrim fixed inset-0 z-dialog-scrim-z bg-dialog-scrim-color backdrop-dialog-scrim-blur reduce-transparency:bg-dialog-scrim-opaque reduce-transparency:backdrop-blur-none transition-opacity ease-surface duration-surface data-starting-style:opacity-0 data-ending-style:opacity-0';
 const POPUP = 'mu-alert-dialog mu-dialog dialog-frame fixed z-dialog-scrim-z dialog-top left-1/2 -translate-x-1/2 outline-none transition-dialog data-starting-style:dialog-enter data-ending-style:dialog-enter data-ending-style:duration-release data-ending-style:ease-release';
 const DESCRIPTION = 'mu-alert-dialog-description alert-dialog-description type-body text-ink2';
 

@@ -1842,14 +1842,16 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A modal layer: a scrim behind a surface; focus stays inside, Escape and a click outside close it. The dialog owns its layout: 360 wide (never wider than the viewport less a gutter), padded 20, its parts 14 apart; a title, the body, and actions at the end. (reference style.css #palette)
+    /// A modal layer: a scrim behind a surface (half the colorway's own tone with a light blur, so the page recedes instead of competing; nearly opaque under Reduce Transparency); focus stays inside, Escape and a click outside close it. The dialog owns its layout: 360 wide (never wider than the viewport less a gutter), padded 20, its parts 14 apart; a title, the body, and actions at the end. (reference style.css #palette)
     public static let dialog = MetalObjectRecipe(
         name: "dialog",
         layers: [
 
         ],
         props: [
-            "scrim.color": .perColorway(bone: "rgba(243,243,241,.25)", graphite: "rgba(14,14,15,.25)"),
+            "scrim.color": .perColorway(bone: "rgba(236,235,231,.5)", graphite: "rgba(10,10,11,.5)"),
+            "scrim.opaque": .perColorway(bone: "rgba(236,235,231,.9)", graphite: "rgba(10,10,11,.9)"),
+            "scrim.blur": .text("blur(4px)"),
             "scrim.z": .text("50"),
             "self.top": .text("16vh"),
             "self.enter-y": .number(-6.0),
