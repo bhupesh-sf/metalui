@@ -15,6 +15,14 @@ export interface ButtonProps extends BaseButton.Props {
   cap?: ButtonCap;
   /** default: 32 tall. compact: 26, 12 pt, raise-sm (the canvas pills: "seed a sample day", "lenses ⌘K"). The link, graphite and strip caps set their own size. */
   size?: 'default' | 'compact';
+  /**
+   * The action's glyph, placed before the label and sized by the cap (16 in a 32 cap, 14 in a
+   * compact one; pass it without a size). An action names itself with a glyph and a verb:
+   * `<Button icon={<ShareIcon />}>Share</Button>`. A plain choice (Cancel, Done) has none. When
+   * the same control changes meaning, pass a `MorphIcon` whose name changes, and turn the label
+   * with `SwapText`. The button is the icon's trigger, so it plays its act on hover and press.
+   */
+  icon?: React.ReactNode;
 }
 
 /* Styled with the theme's utilities: the button recipe's sizes, type and layered looks
@@ -45,11 +53,11 @@ export function buttonClasses(cap: ButtonCap = 'standard', size: 'default' | 'co
 
 /**
  * A press-in pill button. While held it sinks 1px and its shadow
- * collapses into a well; on release it springs back. MetalUI icons inside it
- * play their hover pose and press one-shot from the whole button.
+ * collapses into a well; on release it springs back. Its `icon` leads the label, and
+ * MetalUI icons inside it play their act from the whole button.
  */
 export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button(
-  { cap = 'standard', size = 'default', className, ...props },
+  { cap = 'standard', size = 'default', icon, className, children, ...props },
   ref,
 ) {
   const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)}`;
@@ -63,6 +71,9 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
         return extra ? `${own} ${extra}` : own;
       }}
       {...props}
-    />
+    >
+      {icon}
+      {children}
+    </BaseButton>
   );
 });
