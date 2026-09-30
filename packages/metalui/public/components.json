@@ -630,6 +630,23 @@
       "agent": "https://metalui.dev/r/menu.md"
     },
     {
+      "name": "menubar",
+      "title": "Menubar",
+      "status": "alpha",
+      "description": "An app's commands under a few words across the top: quiet keys that open the menu's plates; while one is open, a highlight glides between the keys on the settle spring and the next menu opens at once.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Menubar",
+        "base": "@base-ui/react/menubar"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalMenubar"
+      },
+      "registry": "https://metalui.dev/r/menubar.json",
+      "agent": "https://metalui.dev/r/menubar.md"
+    },
+    {
       "name": "meter",
       "title": "Meter",
       "status": "alpha",

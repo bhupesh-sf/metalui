@@ -60,6 +60,7 @@ export const routes: RouteObject[] = [
       { path: 'components/button-group', lazy: lazy(() => import('../pages/components/ButtonGroup')) },
       { path: 'components/breadcrumbs', lazy: lazy(() => import('../pages/components/Breadcrumbs')) },
       { path: 'components/pagination', lazy: lazy(() => import('../pages/components/Pagination')) },
+      { path: 'components/menubar', lazy: lazy(() => import('../pages/components/Menubar')) },
       { path: 'components/slider', lazy: lazy(() => import('../pages/components/Slider')) },
       { path: 'components/icon-button', lazy: lazy(() => import('../pages/components/IconButton')) },
       { path: 'components/field', lazy: lazy(() => import('../pages/components/Field')) },

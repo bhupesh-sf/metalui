@@ -1041,6 +1041,21 @@ public enum MetalRecipes {
         ]
     )
 
+    /// An app's commands under a few words across the top (File, Edit, View): quiet text keys that open the menu's frosted plates. While a menu is open, one highlight (the list row's lifted look) glides between the keys on the settle spring as the pointer or ← → move across, and the next menu opens at once while the last one fades on release, as a native menu bar does. Hovered with nothing open, a key lifts on its own. Reduce Motion: the highlight moves at once. (the menu (plates, rows, ListGlide); the row recipe's list hover; Base UI Menubar)
+    public static let menubar = MetalObjectRecipe(
+        name: "menubar",
+        layers: [
+
+        ],
+        props: [
+            "key.height": .number(26.0),
+            "key.pad-x": .number(10.0),
+            "key.radius": .number(8.0),
+            "self.gap": .number(2.0),
+            "self.pad": .number(2.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

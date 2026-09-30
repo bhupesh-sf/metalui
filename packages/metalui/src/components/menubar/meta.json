@@ -1,0 +1,22 @@
+{
+  "name": "menubar",
+  "title": "Menubar",
+  "status": "alpha",
+  "layer": "component",
+  "description": "An app's commands under a few words across the top: quiet keys that open the menu's plates; while one is open, a highlight glides between the keys on the settle spring and the next menu opens at once.",
+  "base": "@base-ui/react/menubar",
+  "react": {
+    "export": "Menubar",
+    "files": ["menubar.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalMenubar",
+    "file": "swift/Sources/MetalUI/Components/MetalMenubar.swift",
+    "status": "wip"
+  },
+  "slots": {
+    "Menubar": ["Root", "Menu"]
+  },
+  "agent": "menubar.agent.md",
+  "page": "/components/menubar"
+}

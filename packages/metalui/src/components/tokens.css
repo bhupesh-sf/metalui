@@ -1096,6 +1096,12 @@
   --mu-r-pagination-page-min-width: 28px;
   --mu-r-pagination-self-siblings: 1px;
   --mu-r-pagination-arrow-size: 10px;
+  /* menubar: the menu (plates, rows, ListGlide); the row recipe's list hover; Base UI Menubar */
+  --mu-r-menubar-key-height: 26px;
+  --mu-r-menubar-key-pad-x: 10px;
+  --mu-r-menubar-key-radius: 8px;
+  --mu-r-menubar-self-gap: 2px;
+  --mu-r-menubar-self-pad: 2px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

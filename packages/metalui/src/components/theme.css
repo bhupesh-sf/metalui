@@ -483,6 +483,12 @@
   --spacing-pagination-page-min-width: var(--mu-r-pagination-page-min-width);
   --spacing-pagination-siblings: var(--mu-r-pagination-self-siblings);
   --spacing-pagination-arrow-size: var(--mu-r-pagination-arrow-size);
+  --spacing-menubar-key-height: var(--mu-r-menubar-key-height);
+  --spacing-menubar-key-pad-x: var(--mu-r-menubar-key-pad-x);
+  --spacing-menubar-key-radius: var(--mu-r-menubar-key-radius);
+  --radius-menubar-key-radius: var(--mu-r-menubar-key-radius);
+  --spacing-menubar-gap: var(--mu-r-menubar-self-gap);
+  --spacing-menubar-pad: var(--mu-r-menubar-self-pad);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
