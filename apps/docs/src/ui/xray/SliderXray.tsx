@@ -16,7 +16,7 @@ import { SliderSpecimenCard } from './SliderSpecimens';
  *             a sun on an arc for the light, switches for marks, ticks and layers
  * ───────────────────────────────────────────────────────── */
 
-const RP = tokens.recipes.slider.props as { track: { height: number; inset: number }; fill: { opacity: string }; mark: { w: number; h: number; radius: number; color: Record<string, string> }; tick: { w: number; h: number; top: number; lift: number; color: Record<string, string> }; knob: { size: number; rise: number } };
+const RP = tokens.recipes.slider.props as { track: { height: number }; fill: { opacity: string }; mark: { w: number; h: number; radius: number; color: Record<string, string> }; tick: { w: number; h: number; top: number; lift: number; color: Record<string, string> }; knob: { size: number; rise: number } };
 const RL = tokens.recipes.slider.layers as { part: string; prop: string; value: string }[];
 const FILL = RL.find((l) => l.part === 'fill')!.value;
 const KNOB_BG = RL.find((l) => l.part === 'knob' && l.prop === 'background')!.value;
@@ -75,7 +75,8 @@ export function SliderXray({ startOpen = false }: { startOpen?: boolean }) {
   const well = useStateLayers('well', 'track');
   const cw = well.colorway;
 
-  const K = RP.knob.size, TH = RP.track.height, IN = RP.track.inset;
+  // the knob travels the groove minus itself: half a knob in from each end, like the real slider
+  const K = RP.knob.size, TH = RP.track.height, IN = K / 2;
   const Hp = K + 22;
   const W = L * S, H = Hp * S;
   const ty = ((K - TH) / 2) * S, th = TH * S;
@@ -95,8 +96,7 @@ export function SliderXray({ startOpen = false }: { startOpen?: boolean }) {
     ['--mu-r-slider-fill-background' as string]: m.track[4] ? FILL : 'transparent',
     ['--mu-r-slider-knob-background' as string]: metal,
     ['--mu-r-slider-knob-shadow' as string]: KNOB_SH.map((v, i) => (m.knob[i + 1] ? aim(v, m.lightDeg, i === 0 ? m.lightK : 1) : null)).filter(Boolean).join(', ') || 'none',
-    ['--mu-r-slider-knob-transition' as string]: `inset-inline-start ${ease.ms}ms ${ease.css}, left ${ease.ms}ms ${ease.css}`,
-    ['--mu-r-slider-fill-transition' as string]: `width ${ease.ms}ms ${ease.css}`,
+    ['--mu-r-slider-self-transition' as string]: `--mu-slider-at ${ease.ms}ms ${ease.css}`,
   } as React.CSSProperties;
   const wall = Math.round((RP.knob.rise * S) / 1.4);
   const top = capTop(1, wall);

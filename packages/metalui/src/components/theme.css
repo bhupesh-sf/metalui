@@ -718,7 +718,6 @@
   --spacing-dialog-gap: var(--mu-r-dialog-self-gap);
   --spacing-dialog-actions-gap: var(--mu-r-dialog-actions-gap);
   --spacing-slider-track-height: var(--mu-r-slider-track-height);
-  --spacing-slider-track-inset: var(--mu-r-slider-track-inset);
   --spacing-slider-mark-w: var(--mu-r-slider-mark-w);
   --spacing-slider-mark-h: var(--mu-r-slider-mark-h);
   --spacing-slider-mark-radius: var(--mu-r-slider-mark-radius);
@@ -2052,14 +2051,20 @@
 @utility slider-ticks-place {
   top: calc(50% + var(--mu-r-slider-tick-top));
 }
+@utility slider-travel {
+  left: calc(var(--mu-r-slider-knob-size) / 2); right: calc(var(--mu-r-slider-knob-size) / 2);
+}
+@utility slider-knob-along {
+  inset-inline-start: calc(var(--mu-r-slider-knob-size) / 2 + clamp(0, var(--mu-slider-at), 1) * (100% - var(--mu-r-slider-knob-size))) !important;
+}
+@utility slider-fill-along {
+  width: calc(var(--mu-r-slider-knob-size) / 2 + clamp(0, var(--mu-slider-at), 1) * (100% - var(--mu-r-slider-knob-size))) !important;
+}
+@utility transition-slider {
+  transition: var(--mu-r-slider-self-transition);
+}
 @utility opacity-slider-fill-opacity {
   opacity: var(--mu-r-slider-fill-opacity);
-}
-@utility transition-slider-fill {
-  transition: var(--mu-r-slider-fill-transition);
-}
-@utility transition-slider-knob {
-  transition: var(--mu-r-slider-knob-transition);
 }
 @utility recipe-switcher {
   background: var(--mu-r-switcher-self-background);

@@ -1529,10 +1529,9 @@
     /* mu-recipe:slider:2 */ inset 0 0 0 2px rgba(255,255,255,.35),
     /* mu-recipe:slider:3 */ 0 0 0 .5px rgba(0,0,0,.12),
     /* mu-recipe:slider:4 */ 0 2px 4px rgba(0,0,0,.18);
+  --mu-r-slider-self-transition: --mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part);
   --mu-r-slider-track-height: 10px;
-  --mu-r-slider-track-inset: 6px;
   --mu-r-slider-fill-opacity: 0.55;
-  --mu-r-slider-fill-transition: width var(--mu-spring-part-d) var(--mu-spring-part);
   --mu-r-slider-mark-w: 2px;
   --mu-r-slider-mark-h: 4px;
   --mu-r-slider-mark-radius: 1px;
@@ -1542,7 +1541,6 @@
   --mu-r-slider-tick-lift: 9px;
   --mu-r-slider-knob-size: 22px;
   --mu-r-slider-knob-rise: 6px;
-  --mu-r-slider-knob-transition: inset-inline-start var(--mu-spring-part-d) var(--mu-spring-part), left var(--mu-spring-part-d) var(--mu-spring-part);
   /* switcher: reference style.css .seg, .seg button, .seg button.on */
   --mu-r-switcher-self-pad: 3px;
   --mu-r-switcher-self-gap: 6px;

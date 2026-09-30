@@ -55,7 +55,7 @@ function Well({ well, zoom, light = false, children }: { well: React.RefObject<H
 
 /** Where the knob sits on the specimen: a box over it that rides the knob's own spring. */
 function KnobSpot({ m, children }: { m: Model; children: React.ReactNode }) {
-  return <span className="ed-slider-knob" style={{ left: `calc(${(m.v * 100).toFixed(2)}% - ${K / 2}px)`, top: `calc(50% - ${K / 2}px)`, width: K, height: K }}>{children}</span>;
+  return <span className="ed-slider-knob" style={{ ['--mu-slider-at' as string]: m.v, left: `calc(var(--mu-slider-at) * (100% - ${K}px))`, top: `calc(50% - ${K / 2}px)`, width: K, height: K }}>{children}</span>;
 }
 
 /** Knob: the knob is the handle; sideways turns the bands of its metal. */

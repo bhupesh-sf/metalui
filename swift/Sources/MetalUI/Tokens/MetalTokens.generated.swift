@@ -1864,7 +1864,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A track (a well), a green fill up to a knurled knob, tick marks along the track and labelled ticks under it; arrows step, Shift steps large; a jump rides the part spring, a drag follows the pointer. (reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob)
+    /// A track (a well), a green fill up to a knurled knob, tick marks along the track and labelled ticks under it; arrows step, Shift steps large; a jump rides the part spring, a drag follows the pointer. The knob travels the groove minus itself (it never leaves the groove) and the fill, marks and ticks share that travel: half a knob in from each end. Knob and fill ride one animated fraction (--mu-slider-at), clamped to the travel, so a spring that overshoots stops flush at the groove's end. (reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob)
     public static let slider = MetalObjectRecipe(
         name: "slider",
         layers: [
@@ -1875,10 +1875,9 @@ public enum MetalRecipes {
             .init(part: "knob", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 2.0, blur: 4.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.18)))), // mu-recipe:slider:4 0 2px 4px rgba(0,0,0,.18)
         ],
         props: [
+            "self.transition": .text("--mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part)"),
             "track.height": .number(10.0),
-            "track.inset": .number(6.0),
             "fill.opacity": .text("0.55"),
-            "fill.transition": .text("width var(--mu-spring-part-d) var(--mu-spring-part)"),
             "mark.w": .number(2.0),
             "mark.h": .number(4.0),
             "mark.radius": .number(1.0),
@@ -1890,7 +1889,6 @@ public enum MetalRecipes {
             "tick.color": .perColorway(bone: "rgba(40,38,32,.18)", graphite: "rgba(255,255,255,.18)"),
             "knob.size": .number(22.0),
             "knob.rise": .number(6.0),
-            "knob.transition": .text("inset-inline-start var(--mu-spring-part-d) var(--mu-spring-part), left var(--mu-spring-part-d) var(--mu-spring-part)"),
         ]
     )
 
