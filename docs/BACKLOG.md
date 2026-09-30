@@ -122,3 +122,21 @@ Owner, on the Fan page: "why are the tray things labels, fix them, make relevant
 - [ ] **The Ink tray doesn't explain itself**: "Ink" as a worded label cap, a bead that only shows the current ink, five colour beads and three width dots with no names, and a "‹". Rework it: the label cap says what the bar is about with a glyph (not a word in a cap), the colours and widths are two named groups (tooltips and accessible names: "Ink: red", "Width: fine"), the chosen ink and width read as latched, and the widths show as strokes of that width in the chosen ink rather than bare dots.
 - [ ] The "Pretend selection" switcher sits right on top of the fanned picker; give the demo room, or move the switcher beside the bar.
 - [ ] Update the Fan agent guide, Swift and the captures with each change.
+
+## Link: more states
+
+Owner, on the Link page: "add different states to links." (2026-09-30)
+
+Now: rest (engraved hairline underline), hover (underline darkens), pressed (dims), focus (green ring), external (a text "↗" that nudges). The hover is too quiet to notice, and the page shows no state but rest.
+
+- [ ] **Hover you can see**: the underline draws thicker from the side the pointer entered, or rises to meet the baseline (settle spring), with a faint tint behind the words; not only a colour change.
+- [ ] **Pressed**: the words sink one step (press travel) as well as dimming, the same press language as a button.
+- [ ] **Visited**: a quieter underline (ink3) for `:visited`, opt-in (`visited` on the Link, off by default in apps, on in documents).
+- [ ] **Current** (`aria-current="page"`): no underline and full ink, so a link to where you are reads as "here" (breadcrumbs and nav use it).
+- [ ] **Disabled / unavailable**: `aria-disabled`, ink3, no underline, no pointer; says why in a tooltip when given.
+- [ ] **Loading** (a link that navigates in-app and waits): the underline runs like a progress line until the route arrives.
+- [ ] **External**: the "↗" becomes the set's `external` glyph (see the icons entry) with its act on hover, instead of a text character.
+- [ ] **Download** (`download` attribute): the `download` glyph and the file size after it ("Tram map.pdf · 2.4 MB").
+- [ ] **Kinds**: `quiet` (no underline until hover, for dense lists and tables, only where the context already says "these are links") and `standalone` (a link on its own line with a trailing arrow).
+- [ ] **Show every state on the page**: a states strip (rest, hover, pressed, focus, visited, current, disabled, external, download), in both colorways, plus the x-ray card for handling it.
+- [ ] Keep the underline in every state except current and disabled (colour alone never marks a link); Swift in step.
