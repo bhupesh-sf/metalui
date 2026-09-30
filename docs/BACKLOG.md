@@ -61,3 +61,53 @@ Direction (research and sketch before building; interface-craft storyboard first
 - [ ] **Latched groups** (a toggle group) share the look: the latched segment stays sunk with its lamp.
 - [ ] Every state per segment: rest, hover (lift the segment's light, not the bar), pressed, focus (ring on the segment, inside the bar's shape), disabled (per segment and whole), and the bar in both colorways and at compact size.
 - [ ] Swift in step; update the Button group docs page, the agent guide and the captures.
+
+## Icons on actions, and morphs on changes (library-wide)
+
+Owner: "for each button which causes some action, couple it with a semantic icon; we have morphing icons which we aren't using anywhere. Find all the relevant actions and semantic changes where we can apply these icons." (2026-09-30)
+
+Audit (2026-09-30): the icon set has 47 product glyphs. Each plays its act when its trigger (`.mu-icon-trigger`, which every Button carries) is hovered or pressed, so an icon in a button already moves. `MorphIcon` morphs any glyph into any other, but no component uses it; only the docs' Icons, Transitions and MorphGlyphs pages do. 16 components draw their own inline SVG or text glyph instead of using the set.
+
+Rules to adopt first (one layer, in the Button foundation and agent guides):
+
+- [ ] **An action names itself with a glyph and a verb**: a button that does something (save, share, export, delete, send, attach, copy, new) leads with its glyph. A plain choice (Cancel, Done, Close as a word) stays words only. `Button` gets a documented `icon` slot (leading, sized by the cap), not ad hoc children.
+- [ ] **A state change morphs, never swaps**: when the same control's meaning changes (copy → copied, pin → unpin, collapse → expand), its glyph morphs with `MorphIcon` on the settle spring, and its label turns on the drum (`SwapText`) together.
+- [ ] **No hand-drawn glyphs in components**: chevrons, arrows, ticks, plus and minus come from the set (one source).
+
+### A. Action buttons that should carry a glyph (existing glyph in brackets)
+
+- Delete / Delete regions / Send away (`trash`, `send-away`): Alert dialog, Dialog, Card menu
+- Share (`share`), Export / Export PDF / Download (`document` → a `download` glyph, see D), Copy (`paste` → `check`), Paste (`paste`)
+- New note / New canvas / Comment / Attach files / Attach a file (`note`, `board`, `plus`, `document`)
+- Rename / Rename… / Rename canvas… (`pen`), Duplicate (`duplicate`), Pin (`pin`), Tag (`tag`), Group / Ungroup (`group`, `ungroup`)
+- Undo / Redo (`undo`, `redo`), Zoom in / out / fit (`zoom-in`, `zoom-out`, `fit`), Search (`search`)
+- Save / Save region (a `save` glyph, see D), Try again (`sync-error` → `synced`), Back to now (`clock`), Restore… (`undo`)
+- Summarise, Gather, Tidy, Lift subject, Keep (`tidy`, `layout`, `capture`, `pin`)
+- Close in dialogs, sheets, popovers, toasts and the attachment's remove (`close`)
+
+### B. State changes that should morph (A → B)
+
+- **Copy → Copied** (`paste` → `check`, back after the pause): the docs' Copy page and code blocks, and a documented copy-button pattern.
+- **Sync state** (`synced` ↔ `offline` ↔ `sync-error`): Status, Toast, and the Attachment's upload (uploading → done `check`, failed `sync-error`, retry → `synced`).
+- **Save** (idle → saving (Spinner) → saved `check`): the Button's "saving" demo.
+- **Pin ↔ Unpin**, **Group ↔ Ungroup**, **Zoom in ↔ Zoom out** at a limit: menus and toolbars where one key flips.
+- **Sidebar Toggle** (collapse ↔ expand) and **Split pane** collapse: a `layout` glyph whose panel part slides; today the caller passes a static icon.
+- **Accordion, Select, Combobox, Navigation menu, Menubar** open ↔ closed: the chevron (see D) turns as a morph of one glyph, not a CSS rotation of a drawn one.
+- **Checkbox / Menu check item**: the tick draws (see the Checkbox entry); mixed → ticked morphs dash → tick.
+- **Drop zone**: the well's glyph morphs `document` → `check` when files land, and to `close` while refusing.
+- **Toast** kinds (info → success → error) when one toast updates in place (a promise toast).
+- **Theme switch** (Bone ↔ Graphite) and the **Motion** switch in the docs header, if they get glyphs (see D).
+- **Table sort**: `arrow` up ↔ down as a morph instead of the rotated hand-drawn arrow.
+
+### C. Hand-drawn glyphs to replace with the set
+
+pagination, calendar (3), navigation-menu, accordion, attachment, combobox, select, table, breadcrumbs, button-group (split chevron), folder, number-field (− and + as text), fan (‹ as text), link (↗ as text). Leave the drawings that aren't glyphs: sparkline, connector, snap-guides, line-handles, brush-cursor, dot-display, perfect-preview.
+
+### D. Glyphs the set lacks (design each in `icons.mjs`, with its act and morph partners)
+
+- `chevron` (one glyph, turned by morph for down / up / left / right), `minus`
+- `save`, `download`, `upload`, `send`, `copy` (distinct from paste), `external` (the link's arrow)
+- `settings`, `filter`, `sort`, `eye` / `eye-off` (a password field), `lock`
+- `info`, `warning` (toast and alert kinds), `sun` / `moon` (colorway), `sidebar` (the rail toggle)
+
+Order of work: the rules and `Button`'s icon slot → D's `chevron` and `minus` → C (component by component) → B's morphs (copy first, it's everywhere) → A in the docs pages.
