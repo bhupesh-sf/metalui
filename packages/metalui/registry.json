@@ -1558,7 +1558,7 @@
           "target": "components/metalui/toast/toast.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/toast.md. SwiftUI: MetalToast, .metalToast(_:) in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/toast.md. SwiftUI: MetalToastDeck, .metalToastDeck(_:), MetalToast, .metalToast(_:) in the MetalUI Swift package."
     },
     {
       "name": "toggle",

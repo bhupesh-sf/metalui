@@ -1389,7 +1389,7 @@
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalToast, .metalToast(_:)"
+        "symbol": "MetalToastDeck, .metalToastDeck(_:), MetalToast, .metalToast(_:)"
       },
       "registry": "https://metalui.dev/r/toast.json",
       "agent": "https://metalui.dev/r/toast.md"

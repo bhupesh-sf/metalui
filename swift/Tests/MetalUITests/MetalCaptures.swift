@@ -488,11 +488,21 @@ final class MetalCaptures: XCTestCase {
 
     func testToast() {
         for colorway in MetalColorway.allCases {
-            let view = VStack(spacing: 16) {
-                MetalToast(MetalToastModel("Moved 3 blocks", undo: {}))
-                MetalToast(MetalToastModel("Pinned as a live region", sub: "it updates as you write", tone: .success))
+            // The deck as the web page deals it: five results, the last one twice; folded, then fanned out.
+            let deck = MetalToastDeck()
+            deck.show(MetalToastModel("Moved 3 blocks", undo: {}))
+            deck.show(MetalToastModel("Pinned as a live region", sub: "it updates as you write", tone: .success))
+            deck.show(MetalToastModel("Correction remembered", sub: "for this exact text", undo: {}))
+            deck.show(MetalToastModel("Could not export", sub: "the clipboard is locked", tone: .error))
+            deck.show(MetalToastModel("Ticked", sub: "wrote [x] into the text", undo: {}))
+            deck.show(MetalToastModel("Ticked", sub: "wrote [x] into the text", undo: {}))
+            let view = HStack(alignment: .bottom, spacing: 40) {
+                MetalToastDeckView(deck)
+                MetalToastDeckView(deck, expanded: true)
             }
-            .padding(28)
+            .padding(.horizontal, 28)
+            .padding(.top, 40)
+            .padding(.bottom, 28)
             .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
             .metalColorway(colorway)
             capture("toast-\(colorway.rawValue)", view)

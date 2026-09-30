@@ -3754,7 +3754,7 @@ Layout and timing: `--mu-scrubber-*` (box, readout gap, glyph spacing, steps, sn
 
 # Toast
 
-The result of a person's own action, with Undo. React: `ToastProvider` + `useToast()` from `@unlocalhosted/metalui` (Base UI Toast). SwiftUI: `MetalToast` and `.metalToast(_:)`. Sheet reference: the object sheet; 
+The result of a person's own action, with Undo. React: `ToastProvider` + `useToast()` from `@unlocalhosted/metalui` (Base UI Toast). SwiftUI: `MetalToastDeck` and `.metalToastDeck(_:)` (the deck), `MetalToast` and `.metalToast(_:)` (one at a time). Sheet reference: the object sheet; 
 
 ## Use it for
 
@@ -3800,7 +3800,11 @@ toast.show({ title: 'Moved 3 blocks', undo }); // again: the front card counts Ã
 ```
 
 ```swift
-canvas.metalToast($toast)   // toast: MetalToastModel? = .init("Moved 3 blocks", undo: { undo() })
+@State private var deck = MetalToastDeck()
+canvas.metalToastDeck(deck)
+deck.show(.init("Moved 3 blocks", undo: { undo() }))   // again: the front card counts Ã—2
+
+canvas.metalToast($toast)   // one at a time: toast: MetalToastModel? = .init("Moved 3 blocks", undo: { undo() })
 ```
 
 ## Rules
@@ -3818,7 +3822,7 @@ canvas.metalToast($toast)   // toast: MetalToastModel? = .init("Moved 3 blocks",
 
 ## Tokens
 
-`--mu-toast-*`, `--mu-r-toast-deck-*` (step-scale, peek, dim, visible, gap, swipe, press), `--mu-backdrop`, `--mu-kbd-sunk-*`, `--mu-spring-object` (arrive), `--mu-spring-surface` (fan out, fold), `--mu-spring-part` (repeat), `--mu-spring-settle`, `--mu-spring-release`. Swift: `MetalToastMetrics`.
+`--mu-toast-*`, `--mu-r-toast-deck-*` (step-scale, peek, dim, visible, gap, swipe, press), `--mu-backdrop`, `--mu-kbd-sunk-*`, `--mu-spring-object` (arrive), `--mu-spring-surface` (fan out, fold), `--mu-spring-part` (repeat), `--mu-spring-settle`, `--mu-spring-release`. Swift: `MetalToastMetrics`, `MetalRecipes.toast` (deck.*).
 
 ---
 
