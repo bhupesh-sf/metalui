@@ -1242,6 +1242,23 @@
       "agent": "https://metalui.dev/r/switcher.md"
     },
     {
+      "name": "table",
+      "title": "Table",
+      "status": "alpha",
+      "description": "Rows of things, read across and compared down: engraved labels and hairlines; sorting turns the column's arrow and every row travels to its new place on the settle spring; rows select with the checkbox.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Table",
+        "base": "table"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalTable"
+      },
+      "registry": "https://metalui.dev/r/table.json",
+      "agent": "https://metalui.dev/r/table.md"
+    },
+    {
       "name": "tabs",
       "title": "Tabs",
       "status": "alpha",

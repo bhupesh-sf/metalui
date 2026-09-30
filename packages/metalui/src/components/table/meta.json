@@ -1,0 +1,21 @@
+{
+  "name": "table",
+  "title": "Table",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["label", "rule", "checkbox"],
+  "description": "Rows of things, read across and compared down: engraved labels and hairlines; sorting turns the column's arrow and every row travels to its new place on the settle spring; rows select with the checkbox.",
+  "base": "table",
+  "react": {
+    "export": "Table",
+    "files": ["table.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalTable",
+    "file": "swift/Sources/MetalUI/Components/MetalTable.swift",
+    "status": "wip"
+  },
+  "agent": "table.agent.md",
+  "page": "/components/table"
+}

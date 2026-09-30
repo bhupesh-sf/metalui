@@ -1154,6 +1154,12 @@
   --mu-r-attachment-type-radius: 10px;
   --mu-r-attachment-track-height: 3px;
   --mu-r-attachment-remove-glyph: 10px;
+  /* table: the label's engraving; the rule; the switcher track; the checkbox (row size); the settle and part springs */
+  --mu-r-table-row-height: 40px;
+  --mu-r-table-row-pad-x: 12px;
+  --mu-r-table-head-height: 32px;
+  --mu-r-table-caption-gap: 12px;
+  --mu-r-table-sort-glyph: 10px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));
@@ -2067,6 +2073,7 @@
   --mu-r-link-underline-ink: rgba(27,27,29,.3);
   --mu-r-avatar-ring-ink: #F6F5F2;
   --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(40,34,24,.28);
+  --mu-r-table-select-tint: rgba(63,185,122,.08);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
   --mu-r-glass-face-self-shadow:
@@ -2558,6 +2565,7 @@
   --mu-r-link-underline-ink: rgba(255,255,255,.3);
   --mu-r-avatar-ring-ink: #252527;
   --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(0,0,0,.6);
+  --mu-r-table-select-tint: rgba(63,185,122,.12);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
   --mu-r-glass-face-self-shadow:
@@ -3050,6 +3058,7 @@
     --mu-r-link-underline-ink: rgba(255,255,255,.3);
     --mu-r-avatar-ring-ink: #252527;
     --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(0,0,0,.6);
+    --mu-r-table-select-tint: rgba(63,185,122,.12);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
     --mu-r-glass-face-self-shadow:

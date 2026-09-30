@@ -1393,6 +1393,24 @@
       "docs": "Agent guide: https://metalui.dev/r/switcher.md. SwiftUI: MetalSwitcher in the MetalUI Swift package."
     },
     {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Rows of things, read across and compared down: engraved labels and hairlines; sorting turns the column's arrow and every row travels to its new place on the settle spring; rows select with the checkbox.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/table/table.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/table/table.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/table.md. SwiftUI: MetalTable in the MetalUI Swift package."
+    },
+    {
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs",

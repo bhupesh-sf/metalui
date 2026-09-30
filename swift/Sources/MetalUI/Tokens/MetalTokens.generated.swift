@@ -1164,6 +1164,22 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Rows of a person's things, read across and compared down: engraved column labels over rows parted by engraved hairlines. Rows sink a touch on hover (the switcher's track look); selected rows (the row checkbox, with a mixed select-all) carry a quiet green tint. Sorting by a column: its arrow turns on the part spring, and each row travels from where it was to where it now belongs on the settle spring, so you can follow it. No rows: one quiet line says so. Reduce Motion: rows jump to their places; the arrow turns at once. (the label's engraving; the rule; the switcher track; the checkbox (row size); the settle and part springs)
+    public static let table = MetalObjectRecipe(
+        name: "table",
+        layers: [
+
+        ],
+        props: [
+            "row.height": .number(40.0),
+            "row.pad-x": .number(12.0),
+            "head.height": .number(32.0),
+            "caption.gap": .number(12.0),
+            "sort.glyph": .number(10.0),
+            "select.tint": .perColorway(bone: "rgba(63,185,122,.08)", graphite: "rgba(63,185,122,.12)"),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
