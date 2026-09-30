@@ -2051,6 +2051,12 @@
   background: var(--mu-r-slider-knob-background);
   box-shadow: var(--mu-r-slider-knob-shadow);
 }
+@utility recipe-slider-knob-hover {
+  box-shadow: var(--mu-r-slider-knob-hover-shadow);
+}
+@utility recipe-slider-knob-press {
+  box-shadow: var(--mu-r-slider-knob-press-shadow);
+}
 @utility slider-compact {
   --mu-slider-track: var(--mu-r-slider-compact-track); --mu-slider-knob: var(--mu-r-slider-compact-knob); --mu-slider-glyph: var(--mu-r-slider-compact-glyph); --mu-slider-gap: var(--mu-r-slider-compact-gap);
 }
@@ -2093,8 +2099,29 @@
 @utility slider-fill-along {
   width: calc(var(--mu-slider-knob) / 2 + clamp(0, var(--mu-slider-at), 1) * (100% - var(--mu-slider-knob))) !important;
 }
+@utility slider-knob-lift {
+  scale: var(--mu-r-slider-knob-lift);
+}
+@utility slider-knob-press {
+  scale: var(--mu-r-slider-knob-press);
+}
+@utility slider-knob-origin {
+  transform-origin: calc(clamp(0, var(--mu-slider-at), 1) * 100%) 50%;
+}
 @utility transition-slider {
   transition: var(--mu-r-slider-self-transition);
+}
+@utility opacity-slider-disabled {
+  opacity: var(--mu-r-slider-self-disabled);
+}
+@utility opacity-slider-knob-lift {
+  opacity: var(--mu-r-slider-knob-lift);
+}
+@utility opacity-slider-knob-press {
+  opacity: var(--mu-r-slider-knob-press);
+}
+@utility transition-slider-knob {
+  transition: var(--mu-r-slider-knob-transition);
 }
 @utility recipe-switcher {
   background: var(--mu-r-switcher-self-background);

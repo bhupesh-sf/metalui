@@ -18,6 +18,7 @@ import { ComponentPage } from '../../ui/ComponentPage';
  *   sizes        compact, regular and large: groove and knob together
  *   scale        notches at every step and labelled ticks, all on the knob's travel
  *   width        full width of its container by default, or a set width
+ *   states       hover lifts the knob, pressing presses it, a key past an end is refused; disabled
  *   tune         a DialKit panel: size, width, glyphs, value, scale and the jump's spring
  * ───────────────────────────────────────────────────────── */
 
@@ -103,6 +104,22 @@ function Widths() {
   );
 }
 
+function States() {
+  const [a, setA] = React.useState(100);
+  return (
+    <Surface material="raise" radius="card" className={PLATE} style={plate(520)}>
+      <div className={ROW}>
+        <span className={NAME}>at the end</span>
+        <Slider aria-label="Volume, at the end" value={a} min={0} max={100} onValueChange={setA} showValue format={percent} />
+      </div>
+      <div className={ROW}>
+        <span className={NAME}>disabled</span>
+        <Slider aria-label="Volume, disabled" disabled value={35} min={0} max={100} onValueChange={() => undefined} showValue format={percent} />
+      </div>
+    </Surface>
+  );
+}
+
 /** The DialKit panel: every choice the slider really has, and the jump's spring. */
 function Tuner() {
   const d = useDialKit('Slider', {
@@ -152,6 +169,7 @@ export default function SliderPage() {
       more={[
         { id: 'sizes', title: 'Sizes', lede: 'Compact, regular and large set the groove and the knob together. Regular is the default.', node: <Sizes /> },
         { id: 'scale', title: 'Marks and ticks', lede: 'Marks are notches in the groove at steps or events; ticks carry a label. Both sit on the knob\'s travel, so the knob lands exactly on them.', node: <Scale /> },
+        { id: 'states', title: 'States', lede: 'Point at the groove and the knob lifts; press or drag and it presses down. Focus the top slider and push → past the end: it will not go, and says so with a small nudge. A disabled slider dims and takes no pointer or keys.', node: <States /> },
         { id: 'width', title: 'Width', lede: 'A slider fills its container. Give it a width when it sits beside other controls.', node: <Widths /> },
         { id: 'tune', title: 'Tune it', lede: 'The Slider panel steps through its sizes and parts, sets the width, and swaps the spring a jump rides (drag never springs).', node: <Tuner /> },
       ]}

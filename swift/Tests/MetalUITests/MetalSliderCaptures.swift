@@ -31,6 +31,11 @@ final class MetalSliderCaptures: XCTestCase {
                                 label: "Zoom", valueText: { "\(Int($0))%" })
                         .frame(width: 360, height: 32)
                 }
+                // disabled: the whole slider at 40 %
+                MetalSlider(value: .constant(35), in: 0...100, step: 1, largeStep: 10, showsValue: true,
+                            label: "Volume", valueText: { "\(Int($0))%" })
+                    .frame(width: 360, height: 32)
+                    .disabled(true)
             }
             .padding(28)
             .background((colorway == .bone ? MetalShared.page : MetalShared.pageDark).color)

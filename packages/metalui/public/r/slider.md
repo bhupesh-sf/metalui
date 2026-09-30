@@ -34,7 +34,22 @@ A value on a track. React: `Slider` from `@unlocalhosted/metalui`, on Base UI Sl
 | `marks` (values), `ticks` (`{ value, label }[]`) | `marks:`, `ticks:` (fractions), `tickStyle:` |
 | `width` (full by default) | `.frame(width:)` |
 | `aria-label` | `label:` |
+| `disabled` | `.disabled(true)` |
 | parts: `Slider.Track`, `Slider.Marks`, `Slider.Ticks`, `Slider.Knob` | `onFocusChange:`, `onDragChange:`, `isExternallyDragging:` |
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| rest | the knurled face, a small drop shadow | – |
+| hover (over the groove) | the knob lifts ×1.08, a longer shadow | settle spring |
+| pressed, dragging | the knob presses ×0.94, a tight shadow; the fill follows the pointer 1:1 | settle spring; no spring on the value while dragging |
+| focus (keyboard) | the green ring around the knob | – |
+| disabled | the whole slider at 40 %; no pointer, no keys | – |
+| refused (a key pushing past an end) | the groove and knob nudge one nest toward that end and ring back; the value stays | refusal spring |
+
+- The knob's face grows away from the nearer end (its origin follows the value), so even lifted it never pokes past the groove; the refusal moves the groove with the knob, so the knob never leaves it.
+- Reduce Motion: jumps land at once, the readout crossfades, the lift and press change at once, and nothing nudges.
 
 ## Keyboard and motion
 

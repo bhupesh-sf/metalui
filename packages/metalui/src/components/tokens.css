@@ -1530,7 +1530,16 @@
     /* mu-recipe:slider:5 */ inset 0 0 0 2px rgba(255,255,255,.35),
     /* mu-recipe:slider:6 */ 0 0 0 .5px rgba(0,0,0,.12),
     /* mu-recipe:slider:7 */ 0 2px 4px rgba(0,0,0,.18);
+  --mu-r-slider-knob-hover-shadow:
+    /* mu-recipe:slider:8 */ inset 0 0 0 2px rgba(255,255,255,.35),
+    /* mu-recipe:slider:9 */ 0 0 0 .5px rgba(0,0,0,.12),
+    /* mu-recipe:slider:10 */ 0 4px 9px rgba(0,0,0,.2);
+  --mu-r-slider-knob-press-shadow:
+    /* mu-recipe:slider:11 */ inset 0 0 0 2px rgba(255,255,255,.35),
+    /* mu-recipe:slider:12 */ 0 0 0 .5px rgba(0,0,0,.12),
+    /* mu-recipe:slider:13 */ 0 1px 2px rgba(0,0,0,.22);
   --mu-r-slider-self-transition: --mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part);
+  --mu-r-slider-self-disabled: 0.4;
   --mu-r-slider-compact-track: 6px;
   --mu-r-slider-compact-knob: 16px;
   --mu-r-slider-compact-glyph: 14px;
@@ -1549,6 +1558,9 @@
   --mu-r-slider-tick-h: 5px;
   --mu-r-slider-tick-gap: 3px;
   --mu-r-slider-knob-rise: 6px;
+  --mu-r-slider-knob-lift: 1.08;
+  --mu-r-slider-knob-press: 0.94;
+  --mu-r-slider-knob-transition: scale var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle);
   /* switcher: reference style.css .seg, .seg button, .seg button.on */
   --mu-r-switcher-self-pad: 3px;
   --mu-r-switcher-self-gap: 6px;

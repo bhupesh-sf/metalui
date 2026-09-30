@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Slider as BaseSlider } from '@base-ui/react/slider';
 import { Well } from '../well/well';
 import { SwapText } from '../../motion/swap';
+import { refuse } from '../../motion/refuse';
 
 /* ─────────────────────────────────────────────────────────
  * SLIDER on Base UI Slider
@@ -39,6 +40,15 @@ import { SwapText } from '../../motion/swap';
  *   value    the readout turns on the drum (settle spring) with every change
  *   reduced  the spring's duration is 0: a jump lands at once; the drum crossfades
  *
+ * STATES (the knob's face; the knob's box never changes size, so Base UI measures it true)
+ *   rest      the knurled face, a small drop shadow
+ *   hover     over the groove: the knob lifts ×1.08 with a longer shadow (settle spring)
+ *   pressed   pressing or dragging: the knob presses ×0.94 with a tight shadow; the fill follows 1:1
+ *   focus     from the keyboard: the green ring around the knob
+ *   disabled  40 %, no pointer: no hover, no press, no keys
+ *   refused   a key pushing past an end: the groove and knob nudge one nest that way and ring back
+ *             on the refusal spring (the knob never leaves the groove). Reduce Motion: no nudge.
+ *
  * Two ways to use it: <Slider value … /> draws the groove, knob, marks and ticks from props; or
  * compose the parts inside it (Slider.Track, Slider.Marks, Slider.Ticks, Slider.Knob) for a host
  * that draws its own scale (the time scrubber).
@@ -71,6 +81,8 @@ export interface SliderRootProps {
   ticks?: { value: number; label: React.ReactNode }[];
   /** Names the knob. */
   'aria-label'?: string;
+  /** Dims it to 40 % and takes no pointer or keys. */
+  disabled?: boolean;
   className?: string;
   /** Parts, for a host that composes its own slider; left out, the props above draw it. */
   children?: React.ReactNode;
@@ -89,9 +101,9 @@ if (typeof CSS !== 'undefined' && 'registerProperty' in CSS) {
 /* Styled with the theme's utilities (the slider recipe on the track well). The root is a row: glyphs
  * and the value beside the control; the control fills the rest and the groove sits on its centre line.
  * A size sets the groove and knob together (--mu-slider-track, --mu-slider-knob). */
-const ROOT = 'mu-slider group/slider relative flex items-center w-full max-w-full h-full slider-gap type-meta touch-none transition-slider data-dragging:transition-none';
+const ROOT = 'mu-slider group/slider relative flex items-center w-full max-w-full h-full slider-gap type-meta touch-none transition-slider data-dragging:transition-none data-disabled:opacity-slider-disabled data-disabled:pointer-events-none';
 const SIZES: Record<SliderSize, string> = { compact: 'slider-compact', regular: 'slider-regular', large: 'slider-large' };
-const CONTROL = 'mu-slider-control relative flex-1 self-stretch min-w-0 slider-control-box touch-none cursor-pointer';
+const CONTROL = 'mu-slider-control group/control relative flex-1 self-stretch min-w-0 slider-control-box touch-none cursor-pointer';
 const GLYPH = 'mu-slider-icon mu-icon-trigger inline-grid flex-none place-items-center text-ink2 [&>svg]:slider-glyph';
 const VALUE = 'mu-slider-value inline-grid flex-none justify-items-end type-figure text-ink';
 const VALUE_CELL = 'col-start-1 row-start-1';
@@ -102,7 +114,16 @@ const MARK = 'absolute top-0 h-full w-slider-mark-w -translate-x-1/2 rounded-sli
 const TICKS = 'mu-slider-ticks absolute slider-travel pointer-events-none slider-ticks-place';
 const TICK = 'absolute flex -translate-x-1/2 flex-col items-center gap-slider-tick-gap type-meta text-ink2 whitespace-nowrap';
 const TICK_LINE = 'block w-slider-tick-w h-slider-tick-h bg-slider-tick-color';
-const KNOB = 'mu-slider-knob top-1/2 slider-knob-box rounded-round cursor-grab recipe-slider-knob slider-knob-along group-data-dragging/slider:cursor-grabbing has-focus-visible:focus-ring';
+const KNOB = 'mu-slider-knob top-1/2 slider-knob-box rounded-round cursor-grab slider-knob-along group-data-dragging/slider:cursor-grabbing has-focus-visible:focus-ring';
+/* The face carries the metal and moves: it lifts on hover and presses while held or dragged. It grows
+ * away from the nearer end (its origin follows the value), so even lifted it never pokes past the groove. */
+const FACE = 'mu-slider-knob-face pointer-events-none absolute inset-0 rounded-round recipe-slider-knob slider-knob-origin transition-slider-knob group-hover/control:slider-knob-lift group-hover/control:recipe-slider-knob-hover group-active/control:slider-knob-press! group-active/control:recipe-slider-knob-press! group-data-dragging/slider:slider-knob-press! group-data-dragging/slider:recipe-slider-knob-press!';
+
+/** What the knob needs from its slider: how to refuse a key that pushes past an end. */
+const SliderContext = React.createContext<{ onKeyDown?: (e: React.KeyboardEvent) => void }>({});
+
+const INCREASE = new Set(['ArrowRight', 'ArrowUp', 'PageUp', 'End']);
+const DECREASE = new Set(['ArrowLeft', 'ArrowDown', 'PageDown', 'Home']);
 
 /** Plays a glyph's act (its hover or press motion) as if it had been pressed. */
 function play(el: HTMLElement | null) {
@@ -111,10 +132,11 @@ function play(el: HTMLElement | null) {
   el.dispatchEvent(new Event('pointerdown'));
 }
 
-function Root({ value, min, max, step, largeStep, onValueChange, size = 'regular', width, startIcon, endIcon, showValue, format, marks, ticks, 'aria-label': label, className, children }: SliderRootProps) {
+function Root({ value, min, max, step, largeStep, onValueChange, size = 'regular', width, startIcon, endIcon, showValue, format, marks, ticks, 'aria-label': label, disabled, className, children }: SliderRootProps) {
   const span = max - min;
   const frac = (v: number) => (span > 0 ? Math.min(1, Math.max(0, (v - min) / span)) : 0);
   const at = frac(value);
+  const control = React.useRef<HTMLDivElement>(null);
   const start = React.useRef<HTMLSpanElement>(null);
   const end = React.useRef<HTMLSpanElement>(null);
   // At an end, that end's glyph plays its act: once as the value arrives, never on mount.
@@ -124,12 +146,20 @@ function Root({ value, min, max, step, largeStep, onValueChange, size = 'regular
     if (at === 1 && was.current !== 1) play(end.current);
     was.current = at;
   }, [at]);
+  // A key that pushes past an end is refused: the value was already there when the key went down.
+  // It rides on the knob's input (Base UI keeps its keys from bubbling), before Base UI moves it.
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (at === 1 && INCREASE.has(e.key)) refuse(control.current, 1);
+    else if (at === 0 && DECREASE.has(e.key)) refuse(control.current, -1);
+  };
+  const context = React.useMemo(() => ({ onKeyDown }), [at]); // eslint-disable-line react-hooks/exhaustive-deps
   const own = [ROOT, SIZES[size], ticks?.length ? 'slider-ticks-room' : '', className ?? ''].filter(Boolean).join(' ');
   const style = { '--mu-slider-at': at, ...(width !== undefined ? { width } : null) } as React.CSSProperties;
   return (
-    <BaseSlider.Root thumbAlignment="edge" style={style} data-size={size} value={value} min={min} max={max} step={step} largeStep={largeStep} onValueChange={(v) => onValueChange(v as number)} className={own}>
+    <BaseSlider.Root thumbAlignment="edge" style={style} data-size={size} disabled={disabled} value={value} min={min} max={max} step={step} largeStep={largeStep} onValueChange={(v) => onValueChange(v as number)} className={own}>
       {startIcon && <span ref={start} className={GLYPH} aria-hidden>{startIcon}</span>}
-      <BaseSlider.Control className={CONTROL}>
+      <BaseSlider.Control ref={control} className={CONTROL}>
+        <SliderContext.Provider value={context}>
         {children ?? (
           <>
             <Track />
@@ -138,6 +168,7 @@ function Root({ value, min, max, step, largeStep, onValueChange, size = 'regular
             <Knob aria-label={label ?? 'Value'} getAriaValueText={format ? (_, v) => format(v) : undefined} />
           </>
         )}
+        </SliderContext.Provider>
       </BaseSlider.Control>
       {endIcon && <span ref={end} className={GLYPH} aria-hidden>{endIcon}</span>}
       {showValue && <Value value={value} min={min} max={max} step={step ?? 1} format={format ?? String} />}
@@ -198,7 +229,12 @@ function Ticks({ ticks }: { ticks: { at: number; label: React.ReactNode }[] }) {
 }
 
 function Knob(props: { 'aria-label': string; getAriaValueText?: (formatted: string, value: number, index: number) => string }) {
-  return <BaseSlider.Thumb className={KNOB} {...props} />;
+  const { onKeyDown } = React.useContext(SliderContext);
+  return (
+    <BaseSlider.Thumb className={KNOB} onKeyDown={onKeyDown} {...props}>
+      <span className={FACE} aria-hidden />
+    </BaseSlider.Thumb>
+  );
 }
 
 export const Slider = Object.assign(Root, { Root, Track, Marks, Ticks, Knob });

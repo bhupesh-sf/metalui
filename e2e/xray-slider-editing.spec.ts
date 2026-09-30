@@ -54,7 +54,7 @@ test('knob: dragging the knob sideways turns its shine on the specimen and the b
   await part(xray, 'Knob');
   const start = await value(card, 'Shine').textContent();
   const bench = await style(benchKnobFace(xray), 'background');
-  const knob = card.locator('.mu-slider-knob');
+  const knob = card.locator('.mu-slider-knob-face');
   const metal = await computed(knob, 'background-image');
   await drag(page, card.getByRole('slider', { name: 'Shine' }), 30, 0);
   await expect(value(card, 'Shine')).not.toHaveText(start!);
@@ -124,7 +124,7 @@ test('light: dragging the sun moves the light on the specimen and the bench', as
   const card = xray.locator('.xr-card');
   await part(xray, 'Light');
   const bench = await style(benchGroove(xray), 'background');
-  const knob = card.locator('.mu-slider-knob');
+  const knob = card.locator('.mu-slider-knob-face');
   const shadow = await computed(knob, 'box-shadow');
   await drag(page, card.getByRole('slider', { name: 'Light' }), 30, 4);
   await expect(value(card, 'From')).not.toHaveText('top');
@@ -136,7 +136,7 @@ test('layers: a switch takes its layer off the specimen and the bench', async ({
   const xray = await openDocs(page, 'bone');
   const card = xray.locator('.xr-card');
   await part(xray, 'Layers');
-  const knob = card.locator('.mu-slider-knob');
+  const knob = card.locator('.mu-slider-knob-face');
   expect(await computed(knob, 'background-image')).toContain('conic-gradient');
   await card.getByRole('switch', { name: 'Metal' }).click();
   await expect(card.getByRole('switch', { name: 'Metal' })).toHaveAttribute('aria-checked', 'false');

@@ -61,6 +61,11 @@ private struct MetalSliderAlong: ViewModifier, Animatable {
 /// Geometry, the same as the web slider: the groove is the full width W; the knob (K across)
 /// travels K/2 … W − K/2, so at either end it sits flush with the groove's rounded end and never
 /// hangs outside it. The fill runs to the knob's centre; marks and ticks use the same travel.
+///
+/// States, as on the web: hover lifts the knob (settle spring, a longer shadow), pressing or dragging
+/// presses it (a tight shadow), the knob grows away from the nearer end so it never pokes past the
+/// groove, keyboard focus draws the ring, `.disabled(true)` dims it to 40 % and takes no input, and an
+/// arrow pushing past an end nudges the groove one nest on the refusal spring (none under Reduce Motion).
 public struct MetalSlider: View {
     @Binding var value: Double
     let range: ClosedRange<Double>
@@ -81,10 +86,15 @@ public struct MetalSlider: View {
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.isEnabled) private var isEnabled
     @FocusState private var focused: Bool
     /// Focus came from the keyboard (Tab, arrows): only then is the ring drawn, never after a press.
     @State private var keyboardFocus = false
     @State private var dragging = false
+    @State private var hovering = false
+    /// Each refusal counts up; its direction is which end was pushed (1 the maximum, −1 the minimum).
+    @State private var refusals = 0
+    @State private var refusalDirection: Double = .one
 
     public init(value: Binding<Double>, in range: ClosedRange<Double>,
                 step: Double, largeStep: Double, marks: [Double] = [],
@@ -121,6 +131,18 @@ public struct MetalSlider: View {
 
     private func set(_ next: Double) { value = min(max(next, range.lowerBound), range.upperBound) }
 
+    /// A key that pushes past an end: the value stays, and the groove says no with a nudge that way.
+    private func push(_ delta: Double) {
+        let atEnd = delta > .zero ? value >= range.upperBound : value <= range.lowerBound
+        if atEnd {
+            guard MetalMotion.resolve(.refusal, reduceMotion: reduceMotion).allowsTravel else { return }
+            refusalDirection = delta > .zero ? .one : -.one
+            refusals += 1
+        } else {
+            set(value + delta)
+        }
+    }
+
     /// A number of the slider's size (`track`, `knob`, `glyph`, `gap`).
     private func metric(_ key: String) -> CGFloat { MetalRecipes.slider.points("\(size.rawValue).\(key)") }
 
@@ -131,6 +153,8 @@ public struct MetalSlider: View {
             if let endIcon { glyph(endIcon, atEnd: fraction == .one) }
             if showsValue { readout }
         }
+        // Disabled: the whole slider, glyphs and value too, at the recipe's 40 %.
+        .opacity(isEnabled ? .one : MetalRecipes.slider.scalar("self.disabled"))
         // Focus by keyboard navigation only, like NSSlider: a click or a host
         // taking the keyboard never parks typing here.
         .focusable(interactions: .activate)
@@ -145,16 +169,16 @@ public struct MetalSlider: View {
         }
         .onKeyPress(.leftArrow, phases: .down) { press in
             keyboardFocus = true
-            set(value - (press.modifiers.contains(.shift) ? largeStep : step))
+            push(-(press.modifiers.contains(.shift) ? largeStep : step))
             return .handled
         }
         .onKeyPress(.rightArrow, phases: .down) { press in
             keyboardFocus = true
-            set(value + (press.modifiers.contains(.shift) ? largeStep : step))
+            push(press.modifiers.contains(.shift) ? largeStep : step)
             return .handled
         }
-        .onKeyPress(.home) { set(range.lowerBound); return .handled }
-        .onKeyPress(.end) { set(range.upperBound); return .handled }
+        .onKeyPress(.home) { value <= range.lowerBound ? push(-step) : set(range.lowerBound); return .handled }
+        .onKeyPress(.end) { value >= range.upperBound ? push(step) : set(range.upperBound); return .handled }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(label)
         .accessibilityValue(valueText(value))
@@ -250,10 +274,15 @@ public struct MetalSlider: View {
                     .position(x: along(tick.at), y: centre + track / 2 + gap)
                     .accessibilityHidden(true)
                 }
-                // Clear, so only the recipe paints: a bare Circle would fill black over it.
+                // Clear, so only the recipe paints: a bare Circle would fill black over it. The face
+                // lifts on hover and presses while held, growing away from the nearer end.
+                let knobState: String? = dragging ? "press" : hovering ? "hover" : nil
                 Color.clear
-                    .metalObjectRecipe(recipe, part: "knob", in: Circle())
+                    .metalObjectRecipe(recipe, part: "knob", state: knobState, in: Circle())
                     .frame(width: knob, height: knob)
+                    .scaleEffect(dragging ? recipe.scalar("knob.press") : hovering ? recipe.scalar("knob.lift") : .one,
+                                 anchor: UnitPoint(x: fraction, y: UnitPoint.center.y))
+                    .metalAnimation(.settle, value: knobState)
                     // A host that passes presses through must know where the knob is drawn.
                     .metalHitRegion()
                     .modifier(place(false))
@@ -268,9 +297,11 @@ public struct MetalSlider: View {
                 guard !dragging else { return }
                 switch phase {
                 case let .active(point):
+                    hovering = true
                     let overKnob = abs(point.x - x) <= knob / 2 && abs(point.y - centre) <= knob / 2
                     (overKnob ? NSCursor.openHand : NSCursor.pointingHand).set()
                 case .ended:
+                    hovering = false
                     NSCursor.arrow.set()
                 }
             }
@@ -293,6 +324,16 @@ public struct MetalSlider: View {
                 })
             .animation(dragging || isExternallyDragging ? nil : MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation,
                        value: value)
+        }
+        // A refusal: one nest toward the pushed end, ringing back on the refusal spring.
+        .keyframeAnimator(initialValue: Double.zero, trigger: refusals) { content, nudge in
+            content.offset(x: nudge * refusalDirection)
+        } keyframes: { _ in
+            KeyframeTrack {
+                LinearKeyframe(MetalRadius.nest, duration: .zero)
+                SpringKeyframe(.zero, duration: MetalSprings.refusal.duration,
+                               spring: Spring(mass: .one, stiffness: MetalSprings.refusal.stiffness, damping: MetalSprings.refusal.damping))
+            }
         }
         .overlay {
             if focused && keyboardFocus {
