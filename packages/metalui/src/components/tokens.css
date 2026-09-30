@@ -1085,6 +1085,13 @@
   --mu-r-button-group-key-radius: 8px;
   --mu-r-button-group-chevron-width: 30px;
   --mu-r-button-group-chevron-glyph: 12px;
+  /* breadcrumbs: the menu; the settle spring; the WAI breadcrumb pattern */
+  --mu-r-breadcrumbs-self-gap: 6px;
+  --mu-r-breadcrumbs-self-max: 4px;
+  --mu-r-breadcrumbs-sep-size: 10px;
+  --mu-r-breadcrumbs-fold-height: 22px;
+  --mu-r-breadcrumbs-fold-pad: 6px;
+  --mu-r-breadcrumbs-fold-radius: 6px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

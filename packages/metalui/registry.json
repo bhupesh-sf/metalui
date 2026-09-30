@@ -75,6 +75,24 @@
       "docs": "Agent guide: https://metalui.dev/r/block-silhouette.md. SwiftUI: MetalBlockSilhouette in the MetalUI Swift package."
     },
     {
+      "name": "breadcrumbs",
+      "type": "registry:ui",
+      "title": "Breadcrumbs",
+      "description": "Where you are, as a path you can climb: levels above in ink2, the current in ink, engraved chevrons between; a new level arrives from the right on the settle spring; long paths fold the middle into a menu.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/breadcrumbs/breadcrumbs.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/breadcrumbs/breadcrumbs.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/breadcrumbs.md. SwiftUI: MetalBreadcrumbs in the MetalUI Swift package."
+    },
+    {
       "name": "brush-cursor",
       "type": "registry:ui",
       "title": "Brush cursor",

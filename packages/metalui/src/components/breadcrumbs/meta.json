@@ -1,0 +1,19 @@
+{
+  "name": "breadcrumbs",
+  "title": "Breadcrumbs",
+  "status": "alpha",
+  "layer": "component",
+  "description": "Where you are, as a path you can climb: levels above in ink2, the current in ink, engraved chevrons between; a new level arrives from the right on the settle spring; long paths fold the middle into a menu.",
+  "base": "nav > ol; @base-ui/react/menu",
+  "react": {
+    "export": "Breadcrumbs",
+    "files": ["breadcrumbs.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalBreadcrumbs",
+    "file": "swift/Sources/MetalUI/Components/MetalBreadcrumbs.swift",
+    "status": "wip"
+  },
+  "agent": "breadcrumbs.agent.md",
+  "page": "/components/breadcrumbs"
+}

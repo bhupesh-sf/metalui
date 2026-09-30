@@ -53,6 +53,23 @@
       "agent": "https://metalui.dev/r/block-silhouette.md"
     },
     {
+      "name": "breadcrumbs",
+      "title": "Breadcrumbs",
+      "status": "alpha",
+      "description": "Where you are, as a path you can climb: levels above in ink2, the current in ink, engraved chevrons between; a new level arrives from the right on the settle spring; long paths fold the middle into a menu.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Breadcrumbs",
+        "base": "nav > ol; @base-ui/react/menu"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalBreadcrumbs"
+      },
+      "registry": "https://metalui.dev/r/breadcrumbs.json",
+      "agent": "https://metalui.dev/r/breadcrumbs.md"
+    },
+    {
       "name": "brush-cursor",
       "title": "Brush cursor",
       "status": "alpha",
