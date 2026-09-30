@@ -84,7 +84,7 @@ export default function CueFamilyPage() {
         </Bench>
       </Section>
 
-      <Section title="The dimple" lede="A task's checkbox on Base UI Checkbox: rest, hover, checked (the tick draws on in 220 ms after 40 ms, an ease-out, not a spring), doing (announced as mixed), ghost, and disabled.">
+      <Section title="The dimple" lede="A task's checkbox on Base UI Checkbox: rest, hover, checked (a pen draws the tick: the short leg, a beat at the corner, then the long leg on a spring), doing (announced as mixed), ghost, and disabled.">
         <Bench tone="page" caption="rest · checked · doing · ghost · disabled">
           <div className="flex items-center gap-40">
             <figure className="flex flex-col items-center gap-10"><Dimple aria-label="rest" /><figcaption className="type-label engraved">rest</figcaption></figure>

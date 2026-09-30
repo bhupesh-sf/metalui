@@ -430,6 +430,10 @@ public enum MetalShared {
     public static let photon: MetalRGBA = MetalRGBA(243, 217, 164, 1.0)
     public static let focus: MetalRGBA = MetalRGBA(63, 185, 122, 1.0)
     public static let zero: Double = 0.0
+    /// cubic-bezier(.3,.0,.2,1)
+    public static let easePress = MetalCurve(x1: 0.3, y1: 0.0, x2: 0.2, y2: 1.0)
+    /// cubic-bezier(.22,.9,.25,1)
+    public static let easeSlide = MetalCurve(x1: 0.22, y1: 0.9, x2: 0.25, y2: 1.0)
 }
 
 public enum MetalCaps {
@@ -648,7 +652,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The task dimple: a recessed well in the margin; ticked, a dark pressed key with a drawn tick; a ghost ring for an inferred task; a half fill while doing. Pressed (the radio's press language): an unticked well takes the dark on look at once (press time), and the tick draws on release; a ticked one goes light, so its tick sinks from view before it is taken away. Dragging off cancels. (reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing, .lrow .dimple, .lrow .dimple.on::after)
+    /// The task dimple: a recessed well in the margin; ticked, a dark pressed key with the check glyph's tick drawn on by a pen; a ghost ring for an inferred task; a half fill while doing; a group parent's mixed state is the key with a dash. Pressed (the radio's press language): an unticked well takes the dark on look at once (press time), and the tick draws on release: a beat, the short leg down into the corner, a dwell there, then the long leg up and out on the part spring, overshooting a little at the tail. Unticking draws it back from the tail to the corner and out before the key goes light. Mixed to ticked bends the dash into the tick on the settle spring. Dragging off cancels. Reduce Motion: the tick is whole or gone at once. (reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing, .lrow .dimple, .lrow .dimple.on::after)
     public static let checkbox = MetalObjectRecipe(
         name: "checkbox",
         layers: [
@@ -682,15 +686,13 @@ public enum MetalRecipes {
             "self.press": .text("50ms"),
             "self.disabled": .text("0.4"),
             "self.transition": .text("background var(--mu-r-checkbox-self-fade), box-shadow var(--mu-r-checkbox-self-fade)"),
-            "tick.x": .number(5.0),
-            "tick.y": .number(2.5),
-            "tick.w": .number(4.0),
-            "tick.h": .number(8.0),
-            "tick.stroke": .number(1.6),
-            "tick.rotate": .text("42deg"),
+            "tick.pen": .text("2.4"),
+            "tick.rotate": .text("0deg"),
             "tick.color": .text("#FFFFFF"),
-            "tick.draw": .text("220ms"),
             "tick.delay": .text("40ms"),
+            "tick.down": .text("90ms"),
+            "tick.pace": .text("30ms"),
+            "tick.withdraw": .text("140ms"),
             "ghost.x": .number(-27.0),
             "ghost.y": .number(3.5),
             "ghost.size": .number(14.0),
@@ -700,10 +702,6 @@ public enum MetalRecipes {
             "doing.opacity": .text("0.8"),
             "row.size": .number(14.0),
             "row.radius": .number(5.0),
-            "row.tick-x": .number(4.5),
-            "row.tick-y": .number(2.0),
-            "row.tick-w": .number(3.5),
-            "row.tick-h": .number(7.0),
         ]
     )
 

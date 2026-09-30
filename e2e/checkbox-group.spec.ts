@@ -28,11 +28,12 @@ test('the parent ticks its rows in order from the top and clears them together',
   const delays = await g.evaluate(async (el) => {
     (el.querySelector('[role=checkbox]') as HTMLElement).click();
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-    return [...el.querySelectorAll('.mu-dimple-tick')].map((t) => parseFloat(getComputedStyle(t).animationDelay) * 1000);
+    return [...el.querySelectorAll('.mu-dimple')].map((d) => parseFloat(getComputedStyle(d).transitionDelay) * 1000);
   });
-  // notes was ticked already; photos, links, drawings and voice follow 30 ms apart after the 40 ms beat.
+  // notes was ticked already; the keys of photos, links, drawings and voice follow 30 ms apart
+  // (each row's pen then draws a beat after its key: checkbox-tick.spec.ts).
   const fresh = delays.slice(-4);
-  expect(fresh.map((d) => Math.round(d))).toEqual([40, 70, 100, 130]);
+  expect(fresh.map((d) => Math.round(d))).toEqual([0, 30, 60, 90]);
   const clear = await g.evaluate(async (el) => {
     (el.querySelector('[role=checkbox]') as HTMLElement).click();
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));

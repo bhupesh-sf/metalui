@@ -356,11 +356,6 @@
   --radius-checkbox-radius: var(--mu-r-checkbox-self-radius);
   --spacing-checkbox-x: var(--mu-r-checkbox-self-x);
   --spacing-checkbox-y: var(--mu-r-checkbox-self-y);
-  --spacing-checkbox-tick-x: var(--mu-r-checkbox-tick-x);
-  --spacing-checkbox-tick-y: var(--mu-r-checkbox-tick-y);
-  --spacing-checkbox-tick-w: var(--mu-r-checkbox-tick-w);
-  --spacing-checkbox-tick-h: var(--mu-r-checkbox-tick-h);
-  --spacing-checkbox-tick-stroke: var(--mu-r-checkbox-tick-stroke);
   --color-checkbox-tick-color: var(--mu-r-checkbox-tick-color);
   --spacing-checkbox-ghost-x: var(--mu-r-checkbox-ghost-x);
   --spacing-checkbox-ghost-y: var(--mu-r-checkbox-ghost-y);
@@ -373,10 +368,6 @@
   --spacing-checkbox-row-size: var(--mu-r-checkbox-row-size);
   --spacing-checkbox-row-radius: var(--mu-r-checkbox-row-radius);
   --radius-checkbox-row-radius: var(--mu-r-checkbox-row-radius);
-  --spacing-checkbox-row-tick-x: var(--mu-r-checkbox-row-tick-x);
-  --spacing-checkbox-row-tick-y: var(--mu-r-checkbox-row-tick-y);
-  --spacing-checkbox-row-tick-w: var(--mu-r-checkbox-row-tick-w);
-  --spacing-checkbox-row-tick-h: var(--mu-r-checkbox-row-tick-h);
   --spacing-radio-size: var(--mu-r-radio-self-size);
   --spacing-radio-pip-size: var(--mu-r-radio-pip-size);
   --color-radio-pip-color: var(--mu-r-radio-pip-color);
@@ -1272,10 +1263,7 @@
   background: var(--mu-r-checkbox-doing-background);
 }
 @utility checkbox-tick {
-  position: absolute; left: var(--mu-r-checkbox-tick-x); top: var(--mu-r-checkbox-tick-y); width: var(--mu-r-checkbox-tick-w); height: var(--mu-r-checkbox-tick-h); border: solid var(--mu-r-checkbox-tick-color); border-width: 0 var(--mu-r-checkbox-tick-stroke) var(--mu-r-checkbox-tick-stroke) 0; transform: rotate(var(--mu-r-checkbox-tick-rotate)); animation: mu-checkbox-tick var(--mu-r-checkbox-tick-draw) var(--mu-r-checkbox-tick-delay) var(--mu-ease-slide) both;
-}
-@utility checkbox-tick-row {
-  left: var(--mu-r-checkbox-row-tick-x); top: var(--mu-r-checkbox-row-tick-y); width: var(--mu-r-checkbox-row-tick-w); height: var(--mu-r-checkbox-row-tick-h);
+  position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; fill: none; stroke: var(--mu-r-checkbox-tick-color); stroke-width: var(--mu-r-checkbox-tick-pen); stroke-linecap: round; stroke-linejoin: round; transform: rotate(var(--mu-r-checkbox-tick-rotate));
 }
 @utility checkbox-doing {
   &::before { content: ''; position: absolute; inset: var(--mu-r-checkbox-doing-inset); border-radius: var(--mu-r-checkbox-doing-radius); background: var(--mu-r-checkbox-doing-background); opacity: var(--mu-r-checkbox-doing-opacity); }
@@ -1294,16 +1282,24 @@
 @utility transition-checkbox {
   transition: var(--mu-r-checkbox-self-transition);
 }
-@utility stroke-width-checkbox-tick-stroke {
-  stroke-width: var(--mu-r-checkbox-tick-stroke);
-}
-@utility duration-checkbox-tick-draw {
-  --tw-duration: var(--mu-r-checkbox-tick-draw);
-  transition-duration: var(--mu-r-checkbox-tick-draw);
+@utility opacity-checkbox-tick-pen {
+  opacity: var(--mu-r-checkbox-tick-pen);
 }
 @utility duration-checkbox-tick-delay {
   --tw-duration: var(--mu-r-checkbox-tick-delay);
   transition-duration: var(--mu-r-checkbox-tick-delay);
+}
+@utility duration-checkbox-tick-down {
+  --tw-duration: var(--mu-r-checkbox-tick-down);
+  transition-duration: var(--mu-r-checkbox-tick-down);
+}
+@utility duration-checkbox-tick-pace {
+  --tw-duration: var(--mu-r-checkbox-tick-pace);
+  transition-duration: var(--mu-r-checkbox-tick-pace);
+}
+@utility duration-checkbox-tick-withdraw {
+  --tw-duration: var(--mu-r-checkbox-tick-withdraw);
+  transition-duration: var(--mu-r-checkbox-tick-withdraw);
 }
 @utility opacity-checkbox-doing-opacity {
   opacity: var(--mu-r-checkbox-doing-opacity);
@@ -1480,10 +1476,10 @@
   stroke-width: var(--mu-r-scroll-area-thumb-width);
 }
 @utility checkbox-group-press {
-  &:active:not(:has([data-disabled])) .mu-dimple:not([data-checked]) { background: var(--mu-r-checkbox-self-on-background); box-shadow: var(--mu-r-checkbox-self-on-shadow); transition-duration: var(--mu-r-checkbox-self-press); } &:active:not(:has([data-disabled])) .mu-dimple[data-checked] { background: var(--mu-r-checkbox-self-background); box-shadow: var(--mu-r-checkbox-self-shadow); transition-duration: var(--mu-r-checkbox-self-press); }
+  &:active:not(:has([data-disabled])) .mu-dimple:not([data-checked]) { background: var(--mu-r-checkbox-self-on-background); box-shadow: var(--mu-r-checkbox-self-on-shadow); transition-duration: var(--mu-r-checkbox-self-press); }
 }
 @utility checkbox-group-cascade {
-  & .mu-dimple { transition-delay: calc(var(--mu-cascade-step, 0) * var(--mu-r-checkbox-group-self-cascade) * var(--mu-travel-part)); } & .mu-dimple-tick { animation-delay: calc(var(--mu-r-checkbox-tick-delay) + var(--mu-cascade-step, 0) * var(--mu-r-checkbox-group-self-cascade) * var(--mu-travel-part)); }
+  & .mu-dimple { transition-delay: calc(var(--mu-cascade-step, 0) * var(--mu-r-checkbox-group-self-cascade) * var(--mu-travel-part)); }
 }
 @utility duration-checkbox-group-cascade {
   --tw-duration: var(--mu-r-checkbox-group-self-cascade);
@@ -2948,9 +2944,6 @@
 }
 @utility opacity-day-ink-fall-opacity {
   opacity: var(--mu-r-day-ink-fall-opacity);
-}
-@keyframes mu-checkbox-tick {
-  from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); }
 }
 @keyframes mu-textarea-refuse {
   from { translate: calc(var(--mu-motion-nest) * var(--mu-travel-refusal)) 0; } to { translate: 0 0; }

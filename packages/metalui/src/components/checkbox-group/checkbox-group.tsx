@@ -9,13 +9,16 @@ import { Checkbox } from '../checkbox/checkbox';
  *
  *   rows      the row-size checkbox beside its label; the whole row is the hit area, and pressing it
  *             anywhere gives the checkbox's press (as the radio group's rows do)
- *   parent    optional: ticks or clears every row; some ticked shows the half (mixed) look
+ *   parent    optional: ticks or clears every row; some ticked shows the mixed look, a dash drawn
+ *             left to right on the dark key; mixed → all bends the dash into the tick (settle spring)
  *   cascade   ticking several at once (the parent) ticks them from the top, one row every
- *             30 ms, each drawing the checkbox's own tick (40 ms beat, 220 ms draw)
- *   clear     clearing several at once clears them together: letting go is quicker than taking
+ *             30 ms: each key goes dark in turn, and its pen draws the checkbox's own tick a beat
+ *             later (the checkbox's storyboard: short leg, a dwell at the corner, the long leg sprung)
+ *   clear     clearing several at once clears them together: every tick withdraws at once, then the
+ *             keys go light. Letting go is quicker than taking
  *   focus     the green ring on the checkbox; Tab moves row to row, Space ticks
  *   disabled  the row at 40 %
- * Reduce Motion: no cascade (its steps scale with the part travel); ticks are instant.
+ * Reduce Motion: no cascade (its steps scale with the part travel); ticks and the dash are whole at once.
  * The checkboxes are the checkbox recipe; the checkbox-group recipe adds rows and the cascade.
  * Slots: CheckboxGroup.Root, CheckboxGroup.Parent, CheckboxGroup.Item.
  * ───────────────────────────────────────────────────────── */

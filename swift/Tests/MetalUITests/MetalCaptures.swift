@@ -211,6 +211,7 @@ final class MetalCaptures: XCTestCase {
                 MetalDimple(isOn: .constant(false), label: "rest")
                 MetalDimple(isOn: .constant(true), label: "checked")
                 MetalDimple(isOn: .constant(false), doing: true, label: "doing")
+                MetalDimple(isOn: .constant(false), mixed: true, label: "mixed")
                 MetalDimple(isOn: .constant(false), ghost: true, label: "ghost")
                 MetalCueUrgency()
             }

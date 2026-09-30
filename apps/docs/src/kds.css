@@ -756,7 +756,10 @@ html.rm .xr-thumb, html.rm .xr-thumb * { transition: none !important; }
 .space, .space-camera { pointer-events: none; }
 .space .drift-item { pointer-events: auto; }
 /* x-ray, checkbox: the tick is the bottom and right edges of a small box, turned; it draws on */
-.xr-tick { position: absolute; box-sizing: border-box; border: solid #fff; animation-name: mu-checkbox-tick; animation-timing-function: var(--mu-ease-slide, ease-out); animation-fill-mode: both; }
+/* The bench's tick: the check glyph's route, drawn on by its dash (the component's pen, simplified). */
+.xr-tick { position: absolute; left: 0; top: 0; overflow: visible; fill: none; stroke: #fff; stroke-linecap: round; stroke-linejoin: round; animation: xr-tick-draw calc(var(--mu-r-checkbox-tick-down) + var(--mu-r-checkbox-tick-pace) + var(--mu-spring-part-d) / 2) var(--mu-ease-press) both; }
+.xr-tick path { stroke-dasharray: 1 1; }
+@keyframes xr-tick-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 html.rm .xr-tick { animation: none; }
 .xr-actions-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .xr-actions-row .status { cursor: pointer; }

@@ -15,6 +15,8 @@ const STATES: { value: State; word: string }[] = [
   { value: 'rest', word: 'Rest' }, { value: 'hover', word: 'Hover' }, { value: 'on', word: 'Done' },
   { value: 'doing', word: 'Doing' }, { value: 'ghost', word: 'Suggested' },
 ];
+/** How far the tick may be turned about its corner either way, in degrees. */
+const TURN = 30;
 const round = (v: number) => Math.round(v * 10) / 10;
 const token = (v: number, at: number, name = 'recipe token') => v === at ? { at, name } : undefined;
 const catchAt = (v: number, at: number, reach = 0.35) => Math.abs(v - at) <= reach ? at : v;
@@ -111,11 +113,11 @@ function Tick({ m, set, setState }: Props) {
   const ref = React.useRef<HTMLSpanElement>(null);
   const [well, zoom] = useSpecimenZoom();
   const base = parseFloat(P.tick.rotate);
-  const change = (v: number, caught = true) => { const raw = round(clamp(v, 0, 90)); set({ angle: caught ? catchAt(raw, base, 1) : raw }); };
+  const change = (v: number, caught = true) => { const raw = round(clamp(v, base - TURN, base + TURN)); set({ angle: caught ? catchAt(raw, base, 1) : raw }); };
   useOnLand(active && m.angle === base ? 'tick' : undefined, () => blip(ref.current));
   const handle = useHandle({ zoom, hint: () => ({ gesture: 'corner', title: 'Tick angle', value: active ? `${m.angle}°` : undefined, how: 'drag around the tick to turn it' }), keyHint: () => ({ gesture: 'corner', title: 'Tick angle', value: `${m.angle}°`, keys: [{ k: '←→', say: 'turn' }] }), start: () => m.angle, move: (start, dx) => { setActive(true); change(start + dx * 2); }, end: () => setActive(false), step: (d) => change(m.angle + d), axis: 'x', over: setPeek, grab: () => blip(ref.current) });
-  return <><p>The white tick is drawn inside the ticked box; drag its stroke to turn its angle, or click the box to draw it again.</p>
-    <Well well={well} zoom={zoom}><div className="ed-checkbox-tick" data-hint-anchor data-peek={peek || active ? '' : undefined}><Face m={m} setState={(state) => setState(state === 'rest' ? 'on' : state)} motion={active ? 'none' : undefined} /><span ref={ref} className="ed-checkbox-tick-handle" role="slider" tabIndex={0} aria-label="Tick angle" aria-valuenow={m.angle} aria-valuemin={0} aria-valuemax={90} {...handle} /></div></Well><div className="ed-readouts"><Readout label="Tick angle" value={`${m.angle}`} unit="°" snap={token(m.angle, base)} peek={setPeek} pick={() => summon(ref.current)} scrub={(d) => change(m.angle + d, false)} /></div>
+  return <><p>A pen draws the white tick inside the ticked box along the check glyph's route; drag the tick to turn it about its corner, or click the box to draw it again.</p>
+    <Well well={well} zoom={zoom}><div className="ed-checkbox-tick" data-hint-anchor data-peek={peek || active ? '' : undefined}><Face m={m} setState={(state) => setState(state === 'rest' ? 'on' : state)} motion={active ? 'none' : undefined} /><span ref={ref} className="ed-checkbox-tick-handle" role="slider" tabIndex={0} aria-label="Tick angle" aria-valuenow={m.angle} aria-valuemin={base - TURN} aria-valuemax={base + TURN} {...handle} /></div></Well><div className="ed-readouts"><Readout label="Tick angle" value={`${m.angle}`} unit="°" snap={token(m.angle, base)} peek={setPeek} pick={() => summon(ref.current)} scrub={(d) => change(m.angle + d, false)} /></div>
   </>;
 }
 

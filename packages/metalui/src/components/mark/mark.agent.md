@@ -34,7 +34,7 @@ Recognition made visible on the text. React: `Mark`, `MarkUrl`, `MarkInferred`, 
 
 ## Motion
 
-The resolved-value chip rises 3 pt on the part spring (instant under Reduce Motion). The dimple's tick draws on in 220 ms after a 40 ms beat on an ease-out, not sprung (DS-21); instant under Reduce Motion. The life glyph fades in 120 ms when recognised; its hover is the glyph's own. Nothing else moves.
+The resolved-value chip rises 3 pt on the part spring (instant under Reduce Motion). The dimple's tick is drawn by a pen along the check glyph's route (a 40 ms beat, the short leg, a dwell at the corner, the long leg on the part spring) and drawn back before the key goes light; whole at once under Reduce Motion. The life glyph fades in 120 ms when recognised; its hover is the glyph's own. Nothing else moves.
 
 ## API
 
