@@ -82,3 +82,11 @@ test('an arrow past the limit shakes only the digits; Reduce Motion keeps them s
   });
   expect(shook).toBe(false);
 });
+
+test('invalid shows the shared ring and says so', async ({ page }) => {
+  await open(page, '/components/number-field', 'bone');
+  const seats = page.getByRole('textbox', { name: 'Seats', exact: true });
+  await expect(seats).toHaveAttribute('aria-invalid', 'true');
+  const group = seats.locator('xpath=ancestor::*[contains(@class,"mu-number-field-group")][1]');
+  expect(await group.evaluate((el) => getComputedStyle(el, '::before').boxShadow)).toContain('inset');
+});

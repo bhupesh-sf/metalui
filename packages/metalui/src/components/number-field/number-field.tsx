@@ -17,6 +17,7 @@ import { refuse } from '../../motion/refuse';
  *   limit     at min or max that keycap disables; an arrow past it shakes only the digits
  *             on the refusal spring (a nest aside)
  *   type      plain text while typing (no drum); it commits and formats on blur
+ *   invalid   the foundation's invalid ring on the group; aria-invalid on the input
  * Reduce Motion: the drum crossfades and nothing shakes.
  * The drum always holds the input's text; while it turns, the input's own text is hidden and the
  * drum shows over it.
@@ -26,7 +27,7 @@ import { refuse } from '../../motion/refuse';
 
 const ROOT = 'mu-number-field inline-grid gap-number-field-gap';
 const LABEL = 'mu-number-field-label type-ui text-ink2 cursor-ew-resize select-none w-max';
-const GROUP = 'mu-number-field-group group/nf inline-flex items-center h-number-field-height w-number-field-width p-number-field-pad box-border rounded-pill recipe-well-field focus-within:focus-ring-flush data-disabled:opacity-number-field-disabled';
+const GROUP = 'mu-number-field-group group/nf inline-flex items-center h-number-field-height w-number-field-width p-number-field-pad box-border rounded-pill recipe-well-field focus-within:focus-ring-flush data-disabled:opacity-number-field-disabled relative data-invalid:invalid-ring';
 const KEY = `${buttonClasses('standard', 'compact')} mu-number-field-key flex-none size-number-field-key-size px-0 justify-center type-ui group-data-disabled/nf:opacity-100!`;
 const WINDOW = 'mu-number-field-window relative grid flex-1 min-w-0 h-full place-items-center overflow-hidden';
 const INPUT = 'mu-number-field-input col-start-1 row-start-1 w-full min-w-0 h-full p-0 border-0 outline-none bg-transparent text-center type-lead tabular-nums text-ink caret-field-field-caret data-[turning]:text-transparent';
@@ -40,11 +41,13 @@ export interface NumberFieldProps extends Omit<BaseNumberField.Root.Props, 'clas
   /** Accessible names for the keycaps. */
   decrementLabel?: string;
   incrementLabel?: string;
+  /** The value will not be accepted: the foundation's invalid ring, and aria-invalid on the input. */
+  invalid?: boolean;
   className?: string;
 }
 
 /** A number you step, scrub or type. */
-function Root({ label, decrementLabel = 'Decrease', incrementLabel = 'Increase', className, onValueChange, value, defaultValue, min, max, ...props }: NumberFieldProps) {
+function Root({ label, decrementLabel = 'Decrease', incrementLabel = 'Increase', invalid, className, onValueChange, value, defaultValue, min, max, ...props }: NumberFieldProps) {
   const input = React.useRef<HTMLInputElement>(null);
   const drum = React.useRef<HTMLSpanElement>(null);
   const [current, setCurrent] = React.useState<number | null>(value ?? defaultValue ?? null);
@@ -86,7 +89,7 @@ function Root({ label, decrementLabel = 'Decrease', incrementLabel = 'Increase',
           <span id={labelId} className={LABEL}>{label}</span>
         </BaseNumberField.ScrubArea>
       )}
-      <BaseNumberField.Group className={GROUP}>
+      <BaseNumberField.Group className={GROUP} data-invalid={invalid ? '' : undefined}>
         <BaseNumberField.Decrement className={KEY} aria-label={decrementLabel}>−</BaseNumberField.Decrement>
         <span className={turn?.dir === 'down' ? `${WINDOW} number-field-down` : WINDOW} ref={drum}>
           <BaseNumberField.Input
@@ -94,6 +97,7 @@ function Root({ label, decrementLabel = 'Decrease', incrementLabel = 'Increase',
             className={INPUT}
             data-turning={turn ? '' : undefined}
             aria-labelledby={label != null ? labelId : undefined}
+            aria-invalid={invalid || undefined}
             onKeyDown={(e) => {
               const up = e.key === 'ArrowUp', down = e.key === 'ArrowDown';
               if ((up && max != null && shown != null && shown >= max) || (down && min != null && shown != null && shown <= min)) refuse(drum.current);

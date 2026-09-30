@@ -655,7 +655,7 @@ Type to find one of many. React: `Combobox` from `@unlocalhosted/metalui`, on Ba
 
 ## Anatomy
 
-- Well: 32 tall, radius 11, at least 220 wide; the text in ui type; a clear mark (24, a 10 cross) at the end once a value is chosen.
+- Well: the form field's, `size` regular (32, the default) or compact (28), at least 220 wide; the text in ui type; a clear mark (24, a 10 cross) at the end once a value is chosen.
 - Plate: the menu's frosted plate, as wide as the well, 6 below it; at most 7 rows, then it scrolls.
 - Rows: the menu's rows under one gliding highlight. Nothing found: one quiet row in ink3.
 
@@ -670,6 +670,7 @@ Type to find one of many. React: `Combobox` from `@unlocalhosted/metalui`, on Ba
 | chosen, then clear | the mark shows; it takes the choice away | fades in on settle |
 | nothing found | "No matches" | – |
 | focus | the flush green ring on the well | – |
+| invalid | the foundation's invalid ring; aria-invalid | – |
 | disabled | 40 % | – |
 
 Reduce Motion: the height snaps; the fades stay.
@@ -680,7 +681,7 @@ Reduce Motion: the height snaps; the fades stay.
 |---|---|
 | `items` (strings), `value`, `defaultValue`, `onValueChange` | `selection:`, `items:` |
 | `placeholder`, `aria-label`, `emptyText` ("No matches") | `prompt:` |
-| `disabled` | `.disabled()` |
+| `size` (`regular`, `compact`), `invalid`, `disabled` | `.disabled()` |
 
 ## Keyboard and accessibility
 
@@ -1895,6 +1896,7 @@ A number you step, scrub or type. React: `NumberField` from `@unlocalhosted/meta
 | past a limit (arrow key) | unchanged | only the digits shake on the refusal spring |
 | typing | plain text | no drum; commits and formats on blur |
 | focus | the flush green ring on the group | – |
+| invalid | the foundation's invalid ring; aria-invalid | – |
 | disabled | 40 % | – |
 
 Reduce Motion: the drum crossfades; nothing shakes.
@@ -1907,7 +1909,7 @@ Reduce Motion: the drum crossfades; nothing shakes.
 | `min`, `max`, `step`, `largeStep` (Shift) | `in:`, `step:` |
 | `format` (Intl.NumberFormat options) | `format:` |
 | `label`, `decrementLabel`, `incrementLabel` | `label:` |
-| `disabled`, `readOnly`, `required`, `name` | `.disabled()` |
+| `invalid`, `disabled`, `readOnly`, `required`, `name` | `.disabled()` |
 
 ## Keyboard and accessibility
 

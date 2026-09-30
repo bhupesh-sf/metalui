@@ -449,13 +449,7 @@
   --spacing-checkbox-group-row-gap: var(--mu-r-checkbox-group-row-gap);
   --spacing-checkbox-group-gap: var(--mu-r-checkbox-group-self-gap);
   --spacing-checkbox-group-indent: var(--mu-r-checkbox-group-self-indent);
-  --spacing-combobox-height: var(--mu-r-combobox-self-height);
-  --spacing-combobox-radius: var(--mu-r-combobox-self-radius);
-  --radius-combobox-radius: var(--mu-r-combobox-self-radius);
-  --spacing-combobox-pad-left: var(--mu-r-combobox-self-pad-left);
-  --spacing-combobox-pad-right: var(--mu-r-combobox-self-pad-right);
   --spacing-combobox-min-width: var(--mu-r-combobox-self-min-width);
-  --spacing-combobox-gap: var(--mu-r-combobox-self-gap);
   --spacing-combobox-max-rows: var(--mu-r-combobox-self-max-rows);
   --spacing-combobox-clear-size: var(--mu-r-combobox-clear-size);
   --spacing-combobox-clear-glyph: var(--mu-r-combobox-clear-glyph);
@@ -1363,9 +1357,6 @@
 }
 @utility combobox-fit {
   overflow: hidden; transition: height calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
-}
-@utility opacity-combobox-disabled {
-  opacity: var(--mu-r-combobox-self-disabled);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

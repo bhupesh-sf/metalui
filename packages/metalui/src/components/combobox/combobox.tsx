@@ -16,11 +16,16 @@ import { menuParts, ListGlide } from '../menu/menu';
  *   clear     a clear mark fades in once a value is chosen; it takes the choice away
  *   nothing   one quiet row: "No matches"
  *   focus     the flush green ring on the well
+ *   invalid   the foundation's invalid ring; disabled 40 % (the form field's looks and sizes)
  * Reduce Motion: the height snaps; fades stay.
- * The well is the field look, the plate and rows the menu recipe; combobox adds size and fit.
+ * The well is the form field's (sizes, rings, states), the plate and rows the menu recipe; combobox adds the fit.
  * ───────────────────────────────────────────────────────── */
 
-const GROUP = 'mu-combobox flex items-center gap-combobox-gap h-combobox-height min-w-combobox-min-width pl-combobox-pad-left pr-combobox-pad-right rounded-combobox-radius box-border recipe-well-field focus-within:focus-ring-flush data-disabled:opacity-combobox-disabled';
+const GROUP = 'mu-combobox relative flex items-center min-w-combobox-min-width box-border recipe-well-field focus-within:focus-ring-flush data-disabled:opacity-field-state-disabled data-invalid:invalid-ring';
+const SIZE = {
+  regular: 'gap-field-regular-gap h-field-regular-height pl-field-regular-pad-left pr-field-regular-pad-right rounded-field-regular-radius',
+  compact: 'gap-field-compact-gap h-field-compact-height pl-field-compact-pad-left pr-field-compact-pad-right rounded-field-compact-radius',
+};
 const INPUT = 'mu-combobox-input flex-1 min-w-0 h-full p-0 border-0 outline-none bg-transparent type-ui text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint';
 const CLEAR = 'mu-combobox-clear inline-grid place-items-center flex-none size-combobox-clear-size rounded-full border-0 bg-transparent text-ink3 hover:text-ink cursor-pointer transition-opacity duration-settle ease-settle data-starting-style:opacity-0 data-ending-style:opacity-0 focus-visible:focus-ring';
 const POSITIONER = 'mu-menu-positioner z-menu-z';
@@ -60,17 +65,22 @@ export interface ComboboxProps<Item extends string = string> {
   /** Names the field for assistive tech when there is no visible label. */
   'aria-label'?: string;
   disabled?: boolean;
+  /** The field's form sizes: regular (32, the default) or compact (28). */
+  size?: 'regular' | 'compact';
+  /** The value will not be accepted: the invalid ring, and aria-invalid on the input. */
+  invalid?: boolean;
   /** Said in the one quiet row when nothing matches. */
   emptyText?: string;
   className?: string;
 }
 
 /** Type to find one of many. */
-export function Combobox<Item extends string = string>({ items, value, defaultValue, onValueChange, placeholder, disabled, emptyText = 'No matches', className, ...aria }: ComboboxProps<Item>) {
+export function Combobox<Item extends string = string>({ items, value, defaultValue, onValueChange, placeholder, disabled, size = 'regular', invalid, emptyText = 'No matches', className, ...aria }: ComboboxProps<Item>) {
+  const group = `${GROUP} ${SIZE[size]}`;
   return (
     <BaseCombobox.Root<Item> items={items} value={value} defaultValue={defaultValue} onValueChange={(v) => onValueChange?.(v as Item | null)} disabled={disabled}>
-      <BaseCombobox.InputGroup className={className ? `${GROUP} ${className}` : GROUP}>
-        <BaseCombobox.Input className={INPUT} placeholder={placeholder} aria-label={aria['aria-label']} />
+      <BaseCombobox.InputGroup data-invalid={invalid ? '' : undefined} className={className ? `${group} ${className}` : group}>
+        <BaseCombobox.Input className={INPUT} placeholder={placeholder} aria-label={aria['aria-label']} aria-invalid={invalid || undefined} />
         <BaseCombobox.Clear className={CLEAR} aria-label="Clear">
           <svg aria-hidden viewBox="0 0 10 10" className="size-combobox-clear-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round"><path d="M2 2l6 6M8 2 2 8" /></svg>
         </BaseCombobox.Clear>

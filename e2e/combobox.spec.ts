@@ -62,3 +62,13 @@ test('the plate settles to the new count instead of snapping', async ({ page }) 
   expect(heights.some((h) => h < tall - 2 && h > short + 2)).toBe(true);
   expect(Math.min(...heights)).toBeGreaterThanOrEqual(short - 0.5);
 });
+
+test('the form field\'s sizes and states', async ({ page }) => {
+  await open(page, '/components/combobox', 'bone');
+  const well = (name: string) => page.getByRole('combobox', { name, exact: true }).locator('xpath=ancestor::*[contains(@class,"mu-combobox")][1]');
+  expect((await well('City').boundingBox())!.height).toBe(32);
+  expect((await well('Compact city').boundingBox())!.height).toBe(28);
+  await expect(page.getByRole('combobox', { name: 'Invalid city' })).toHaveAttribute('aria-invalid', 'true');
+  expect(await well('Invalid city').evaluate((el) => getComputedStyle(el, '::before').boxShadow)).toContain('inset');
+  await expect(page.getByRole('combobox', { name: 'Disabled city' })).toBeDisabled();
+});

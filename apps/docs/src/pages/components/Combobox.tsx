@@ -40,9 +40,14 @@ export default function ComboboxPage() {
     <ComponentPage
       title="Combobox"
       lede="Type to find one of many. Rows filter as you type, never behind your fingers, while the plate settles to the new count; the highlight glides from row to row."
-      play={{ lede: 'Type "b", then "bo", then "x". Use ↑ ↓ and ↩.', caption: city ? `trip to ${city}` : '32 cities', node: (
+      play={{ lede: 'Type "b", then "bo", then "x". Use ↑ ↓ and ↩.', caption: city ? `trip to ${city}` : '32 cities · compact · invalid · disabled', node: (
         <div className="flex min-h-[300px] items-start justify-center pt-16">
-          <Combobox items={CITIES} value={city} onValueChange={setCity} placeholder="Choose a city" aria-label="City" />
+          <div className="grid gap-12">
+            <Combobox items={CITIES} value={city} onValueChange={setCity} placeholder="Choose a city" aria-label="City" />
+            <Combobox items={CITIES} size="compact" placeholder="Compact" aria-label="Compact city" />
+            <Combobox items={CITIES} invalid defaultValue="Atlantis" placeholder="Invalid" aria-label="Invalid city" />
+            <Combobox items={CITIES} disabled placeholder="Disabled" aria-label="Disabled city" />
+          </div>
         </div>
       ) }}
       more={[{ id: 'fit', title: 'Tune the fit', lede: 'The Combobox fit panel swaps the spring the plate settles on as matches change, sets how many rows show before it scrolls, and stretches time.', node: <FitTuner /> }]}

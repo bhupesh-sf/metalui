@@ -1054,14 +1054,8 @@
   --mu-r-checkbox-group-self-cascade: 30ms;
   --mu-r-checkbox-group-self-disabled: 0.4;
   /* combobox: the field well (recipe well field); the menu plate and rows (menuParts, ListGlide); Base UI Combobox */
-  --mu-r-combobox-self-height: 32px;
-  --mu-r-combobox-self-radius: 11px;
-  --mu-r-combobox-self-pad-left: 12px;
-  --mu-r-combobox-self-pad-right: 4px;
   --mu-r-combobox-self-min-width: 220px;
-  --mu-r-combobox-self-gap: 6px;
   --mu-r-combobox-self-max-rows: 7px;
-  --mu-r-combobox-self-disabled: 0.4;
   --mu-r-combobox-clear-size: 24px;
   --mu-r-combobox-clear-glyph: 10px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */

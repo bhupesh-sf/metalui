@@ -29,6 +29,7 @@ A number you step, scrub or type. React: `NumberField` from `@unlocalhosted/meta
 | past a limit (arrow key) | unchanged | only the digits shake on the refusal spring |
 | typing | plain text | no drum; commits and formats on blur |
 | focus | the flush green ring on the group | – |
+| invalid | the foundation's invalid ring; aria-invalid | – |
 | disabled | 40 % | – |
 
 Reduce Motion: the drum crossfades; nothing shakes.
@@ -41,7 +42,7 @@ Reduce Motion: the drum crossfades; nothing shakes.
 | `min`, `max`, `step`, `largeStep` (Shift) | `in:`, `step:` |
 | `format` (Intl.NumberFormat options) | `format:` |
 | `label`, `decrementLabel`, `incrementLabel` | `label:` |
-| `disabled`, `readOnly`, `required`, `name` | `.disabled()` |
+| `invalid`, `disabled`, `readOnly`, `required`, `name` | `.disabled()` |
 
 ## Keyboard and accessibility
 

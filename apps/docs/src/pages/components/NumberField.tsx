@@ -50,11 +50,12 @@ export default function NumberFieldPage() {
     <ComponentPage
       title="Number field"
       lede="A number you step, scrub or type. Each step turns the value one drum step: plus rolls up, minus rolls down. Drag the label to scrub; press an arrow past the limit and only the digits shake."
-      play={{ lede: 'Press the keycaps, hold them, use ↑ ↓, or drag the label sideways.', caption: 'copies 1–20 · columns 1–12 · disabled', node: (
+      play={{ lede: 'Press the keycaps, hold them, use ↑ ↓, or drag the label sideways.', caption: 'copies 1–20 · columns 1–12 · disabled · invalid', node: (
         <div className="flex flex-wrap items-end justify-center gap-32" style={{ zoom: 1.3 }}>
           <NumberField label="Copies" value={copies} onValueChange={setCopies} min={1} max={20} />
           <NumberField label="Columns" defaultValue={12} min={1} max={12} />
           <NumberField label="Locked" defaultValue={4} disabled />
+          <NumberField label="Seats" defaultValue={0} min={0} max={8} invalid />
         </div>
       ) }}
       more={[{ id: 'drum', title: 'Tune the drum', lede: 'The Number drum panel swaps the drum and refusal springs, sets the drum\'s travel, and stretches time. Step up to 9 and past it.', node: <DrumTuner /> }]}
