@@ -70,6 +70,7 @@ export const routes: RouteObject[] = [
       { path: 'blocks/metrics-dashboard', lazy: lazy(() => import('../pages/blocks/MetricsDashboard')) },
       { path: 'blocks/ai-composer', lazy: lazy(() => import('../pages/blocks/AiComposer')) },
       { path: 'blocks/share-panel', lazy: lazy(() => import('../pages/blocks/SharePanel')) },
+      { path: 'blocks/availability-picker', lazy: lazy(() => import('../pages/blocks/AvailabilityPicker')) },
       { path: 'components/table', lazy: lazy(() => import('../pages/components/Table')) },
       { path: 'components/empty-state', lazy: lazy(() => import('../pages/components/EmptyState')) },
       { path: 'components/split-pane', lazy: lazy(() => import('../pages/components/SplitPane')) },
