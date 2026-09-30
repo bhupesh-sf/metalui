@@ -265,3 +265,17 @@ Direction:
 - [ ] **Inferred vs confirmed**: inferred cues (the "FRI" chip at 0.82) read as a suggestion (dashed, ink2) until confirmed by a click or Tab; confirming stamps them solid with a small press.
 - [ ] **Raw vs cued**: the toggle between raw text and cues keeps every chunk exactly in place (already a rule); add the glyphs fading, not jumping.
 - [ ] Redo the page with a legend of kinds, a live typing demo that shows recognition, and the DialKit for the motion; Swift in step.
+
+## Lasso demo: buggy selection and an unreliable trigger
+
+Owner, on the Lasso page: "this demo is very buggy; applying the lasso keeps applying the selected state across the component; the trigger for the lasso was very unreliable." (2026-09-30)
+
+Causes found in `apps/docs/src/ui/SnapCanvas.tsx`:
+- **Native text selection runs with the lasso**: nothing stops the browser's own selection, so dragging paints the green text highlight over the notes' words and the size readouts ("call the printer", "150 × 64") on top of the lasso's selection. That's the "selected state across the component". Fix: `select-none` on the canvas and `preventDefault` on the lasso's pointerdown.
+- **The trigger only fires on the world element itself** (`e.target !== e.currentTarget` in `worldDown`): pressing on the guides layer, on the canvas outside the scaled world (at 50 % most of the canvas), or on any child starts nothing. Fix: start from the canvas (`snap-canvas`), and treat any press that isn't on a note as empty space.
+- **A drag that starts on a note moves the note** (right), but there's no feedback telling you where empty space is; the cursor should be a crosshair over empty space and a grab over notes.
+- The selection frames and the size readouts both show for picked notes, so after a lasso the canvas is busy with readouts that belong to resizing; show the frame only.
+- A click on empty space clears the selection (right), but Escape doesn't; add it, and Shift-lasso to add to the selection.
+
+- [ ] Fix the above in the demo, then check the Lasso instrument itself (`packages/metalui/src/components/lasso`) for the same assumptions and document the rules in its agent guide (empty-space start, no text selection, modifier keys).
+- [ ] An e2e slice that draws a lasso from several starting points (on the guides, outside the world at 50 %, next to a note) and asserts that no text gets selected (`getSelection().toString() === ''`).
