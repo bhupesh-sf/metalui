@@ -17,7 +17,9 @@ import { useRender } from '@base-ui/react/use-render';
  * `render` swaps the element (a router's link) and keeps the look.
  * ───────────────────────────────────────────────────────── */
 
-const LINK = 'mu-link link-line outline-none focus-visible:focus-ring';
+const LINK = 'mu-link link-anchor outline-none focus-visible:focus-ring';
+// The underline lives on the text, so the external arrow beside it stays undecorated and inline.
+const LINE = 'mu-link-line link-line';
 const OUT = 'mu-link-out link-out';
 
 export interface LinkProps extends useRender.ComponentProps<'a'> {
@@ -38,12 +40,11 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
       ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : null),
       children: (
         <>
-          {children}
+          <span className={LINE}>{children}</span>
           {external && (
             <>
-              <svg aria-hidden viewBox="0 0 10 10" className={OUT} fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 7 7 3M3.5 3H7v3.5" />
-              </svg>
+              {/* A text glyph, not an inline-block: punctuation after the link stays on its line. */}
+              <span aria-hidden className={OUT}>↗</span>
               <span className="sr-only"> (opens in a new tab)</span>
             </>
           )}

@@ -62,6 +62,7 @@ export const routes: RouteObject[] = [
       { path: 'components/pagination', lazy: lazy(() => import('../pages/components/Pagination')) },
       { path: 'components/menubar', lazy: lazy(() => import('../pages/components/Menubar')) },
       { path: 'components/navigation-menu', lazy: lazy(() => import('../pages/components/NavigationMenu')) },
+      { path: 'components/preview-card', lazy: lazy(() => import('../pages/components/PreviewCard')) },
       { path: 'components/slider', lazy: lazy(() => import('../pages/components/Slider')) },
       { path: 'components/icon-button', lazy: lazy(() => import('../pages/components/IconButton')) },
       { path: 'components/field', lazy: lazy(() => import('../pages/components/Field')) },

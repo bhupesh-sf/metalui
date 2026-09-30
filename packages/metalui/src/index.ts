@@ -34,6 +34,7 @@ export { Kbd, type KbdProps } from './components/kbd/kbd';
 export { Toolbar, ToolButton, ToolbarSeparator, ToolbarSearch, type ToolbarProps, type ToolButtonProps, type ToolbarSearchProps } from './components/toolbar/toolbar';
 export { Tooltip, TooltipProvider, type TooltipProps } from './components/tooltip/tooltip';
 export { Popover, type PopoverRootProps, type PopoverTriggerProps, type PopoverContentProps } from './components/popover/popover';
+export { PreviewCard, type PreviewCardProps, type Preview } from './components/preview-card/preview-card';
 export { Menu, ContextMenu, MenuItem, MenuSeparator, menuParts, type MenuProps, type ContextMenuProps, type MenuItemProps } from './components/menu/menu';
 export { CommandPalette, paletteParts, type CommandPaletteItem, type CommandPaletteProps } from './components/command-palette/command-palette';
 export { ToastProvider, useToast, toastParts, type ToastOptions, type ToastTone } from './components/toast/toast';

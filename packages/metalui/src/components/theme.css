@@ -497,6 +497,13 @@
   --radius-navigation-menu-link-radius: var(--mu-r-navigation-menu-link-radius);
   --spacing-navigation-menu-link-gap: var(--mu-r-navigation-menu-link-gap);
   --spacing-navigation-menu-chevron-size: var(--mu-r-navigation-menu-chevron-size);
+  --spacing-preview-card-width: var(--mu-r-preview-card-self-width);
+  --spacing-preview-card-delay: var(--mu-r-preview-card-self-delay);
+  --spacing-preview-card-close: var(--mu-r-preview-card-self-close);
+  --spacing-preview-card-gap: var(--mu-r-preview-card-self-gap);
+  --spacing-preview-card-image: var(--mu-r-preview-card-self-image);
+  --spacing-preview-card-radius: var(--mu-r-preview-card-self-radius);
+  --radius-preview-card-radius: var(--mu-r-preview-card-self-radius);
   --spacing-toolbar-pad: var(--mu-r-toolbar-self-pad);
   --spacing-toolbar-gap: var(--mu-r-toolbar-self-gap);
   --spacing-toolbar-radius: var(--mu-r-toolbar-self-radius);
@@ -1439,11 +1446,14 @@
   --tw-duration: var(--mu-r-skeleton-self-sweep);
   transition-duration: var(--mu-r-skeleton-self-sweep);
 }
+@utility link-anchor {
+  color: inherit; text-decoration: none; transition: opacity var(--mu-r-link-underline-fade); &:active { opacity: var(--mu-r-link-self-pressed); transition-duration: 0s; }
+}
 @utility link-line {
-  color: inherit; text-decoration-line: underline; text-decoration-thickness: var(--mu-r-link-underline-thickness); text-underline-offset: var(--mu-r-link-underline-offset); text-decoration-color: var(--mu-r-link-underline-ink); transition: text-decoration-color var(--mu-r-link-underline-fade), opacity var(--mu-r-link-underline-fade); &:hover { text-decoration-color: currentColor; } &:active { opacity: var(--mu-r-link-self-pressed); transition-duration: 0s; }
+  text-decoration-line: underline; text-decoration-thickness: var(--mu-r-link-underline-thickness); text-underline-offset: var(--mu-r-link-underline-offset); text-decoration-color: var(--mu-r-link-underline-ink); transition: text-decoration-color var(--mu-r-link-underline-fade); a:hover > & { text-decoration-color: currentColor; }
 }
 @utility link-out {
-  display: inline-block; width: var(--mu-r-link-out-size); height: var(--mu-r-link-out-size); margin-inline-start: var(--mu-r-link-out-gap); vertical-align: baseline; translate: 0 0; transition: translate var(--mu-spring-part-d) var(--mu-spring-part); a:hover > & { translate: var(--mu-r-link-out-nudge) calc(var(--mu-r-link-out-nudge) * -1); }
+  position: relative; left: 0; top: 0; margin-inline-start: var(--mu-r-link-out-gap); font-size: var(--mu-r-link-out-size); line-height: 1; transition: left var(--mu-spring-part-d) var(--mu-spring-part), top var(--mu-spring-part-d) var(--mu-spring-part); a:hover > & { left: var(--mu-r-link-out-nudge); top: calc(var(--mu-r-link-out-nudge) * -1); }
 }
 @utility duration-link-underline-fade {
   --tw-duration: var(--mu-r-link-underline-fade);
@@ -1472,6 +1482,9 @@
 }
 @utility navigation-menu-chevron {
   transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-popup-open] > & { rotate: 180deg; }
+}
+@utility stroke-width-preview-card-width {
+  stroke-width: var(--mu-r-preview-card-self-width);
 }
 @utility recipe-toolbar {
   background: var(--mu-r-toolbar-self-background);

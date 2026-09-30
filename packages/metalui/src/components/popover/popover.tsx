@@ -27,6 +27,9 @@ const TITLE = 'mu-popover-title m-0 type-title text-ink';
 const DESCRIPTION = 'mu-popover-description m-0 mt-popover-gap type-body text-ink2';
 const BODY = 'mu-popover-body mt-popover-body-gap';
 
+/** The popover's plate, title and description looks, for other plates that rise from a trigger. */
+export const popoverParts = { PLATE, TITLE, DESCRIPTION } as const;
+
 function offset() {
   if (typeof window === 'undefined') return 6;
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-r-popover-self-offset')) || 6;

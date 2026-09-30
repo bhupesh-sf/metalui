@@ -1110,6 +1110,13 @@
   --mu-r-navigation-menu-link-radius: 12px;
   --mu-r-navigation-menu-link-gap: 2px;
   --mu-r-navigation-menu-chevron-size: 10px;
+  /* preview-card: the popover (plate and rise); Base UI Preview Card */
+  --mu-r-preview-card-self-width: 300px;
+  --mu-r-preview-card-self-delay: 600px;
+  --mu-r-preview-card-self-close: 300px;
+  --mu-r-preview-card-self-gap: 6px;
+  --mu-r-preview-card-self-image: 140px;
+  --mu-r-preview-card-self-radius: 10px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

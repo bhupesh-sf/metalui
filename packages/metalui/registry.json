@@ -865,6 +865,26 @@
       "docs": "Agent guide: https://metalui.dev/r/popover.md. SwiftUI: MetalPopover in the MetalUI Swift package."
     },
     {
+      "name": "preview-card",
+      "type": "registry:ui",
+      "title": "Preview card",
+      "description": "What is behind a link, seen by resting on it: after a steady hover the popover's plate rises out of the link with an image, title, description and host; it lingers so you can move onto it.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/preview-card/preview-card.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/preview-card/preview-card.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/preview-card.md. SwiftUI: MetalPreviewCard in the MetalUI Swift package."
+    },
+    {
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress",

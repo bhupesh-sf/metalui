@@ -1,0 +1,19 @@
+{
+  "name": "preview-card",
+  "title": "Preview card",
+  "status": "alpha",
+  "layer": "component",
+  "description": "What is behind a link, seen by resting on it: after a steady hover the popover's plate rises out of the link with an image, title, description and host; it lingers so you can move onto it.",
+  "base": "@base-ui/react/preview-card",
+  "react": {
+    "export": "PreviewCard",
+    "files": ["preview-card.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalPreviewCard",
+    "file": "swift/Sources/MetalUI/Components/MetalPreviewCard.swift",
+    "status": "wip"
+  },
+  "agent": "preview-card.agent.md",
+  "page": "/components/preview-card"
+}

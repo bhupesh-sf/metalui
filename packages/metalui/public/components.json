@@ -766,6 +766,23 @@
       "agent": "https://metalui.dev/r/popover.md"
     },
     {
+      "name": "preview-card",
+      "title": "Preview card",
+      "status": "alpha",
+      "description": "What is behind a link, seen by resting on it: after a steady hover the popover's plate rises out of the link with an image, title, description and host; it lingers so you can move onto it.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "PreviewCard",
+        "base": "@base-ui/react/preview-card"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalPreviewCard"
+      },
+      "registry": "https://metalui.dev/r/preview-card.json",
+      "agent": "https://metalui.dev/r/preview-card.md"
+    },
+    {
       "name": "progress",
       "title": "Progress",
       "status": "alpha",

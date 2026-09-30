@@ -1073,6 +1073,22 @@ public enum MetalRecipes {
         ]
     )
 
+    /// What is behind a link, seen by resting on it: the popover's frosted plate with an optional image, a title, a line of description and where it goes. It waits for a steady hover (600 ms) so passing over a link never flashes it, then rises one nest out of the link on the surface spring, as a popover does. Moving the pointer onto the card keeps it; it lingers 300 ms after the pointer leaves, then fades on the release spring. Reduce Motion: a crossfade. (the popover (plate and rise); Base UI Preview Card)
+    public static let previewCard = MetalObjectRecipe(
+        name: "preview-card",
+        layers: [
+
+        ],
+        props: [
+            "self.width": .number(300.0),
+            "self.delay": .number(600.0),
+            "self.close": .number(300.0),
+            "self.gap": .number(6.0),
+            "self.image": .number(140.0),
+            "self.radius": .number(10.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",
