@@ -1117,6 +1117,18 @@
   --mu-r-preview-card-self-gap: 6px;
   --mu-r-preview-card-self-image: 140px;
   --mu-r-preview-card-self-radius: 10px;
+  /* calendar: the switcher thumb; the row recipe's list hover; the swap drum; the LED; the settle spring; the ARIA date grid pattern */
+  --mu-r-calendar-day-size: 32px;
+  --mu-r-calendar-day-radius: 10px;
+  --mu-r-calendar-day-gap: 2px;
+  --mu-r-calendar-head-height: 32px;
+  --mu-r-calendar-head-gap: 8px;
+  --mu-r-calendar-today-size: 4px;
+  --mu-r-calendar-today-offset: 4px;
+  --mu-r-calendar-self-pad: 4px;
+  --mu-r-calendar-self-disabled: 0.4;
+  --mu-r-calendar-step-glyph: 10px;
+  --mu-r-calendar-picker-min-width: 200px;
   /* toolbar: reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd */
   --mu-r-toolbar-self-background:
     /* mu-recipe:toolbar:0 */ linear-gradient(180deg, rgba(40,40,43,.94), rgba(27,27,29,.96));

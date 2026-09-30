@@ -1,0 +1,19 @@
+{
+  "name": "calendar",
+  "title": "Calendar",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A month to choose a day from: the chosen day lands into the switcher's thumb look on the part spring, months turn on the drum and slide in from the side you head to; DatePicker opens it from a form field.",
+  "base": "table role=grid (the ARIA date grid pattern); Popover",
+  "react": {
+    "export": "Calendar, DatePicker",
+    "files": ["calendar.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalCalendar",
+    "file": "swift/Sources/MetalUI/Components/MetalCalendar.swift",
+    "status": "wip"
+  },
+  "agent": "calendar.agent.md",
+  "page": "/components/calendar"
+}

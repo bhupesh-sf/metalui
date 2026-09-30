@@ -1089,6 +1089,27 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A month to choose a day from: the weekday initials, then six rows of days (always six, so the height never jumps). Days sink a touch on hover (the switcher's track look, so only the chosen day stands raised); today carries a small green lamp under its number; the chosen day takes the switcher's raised thumb look and lands into it on the part spring (a day is not a track, so the choice lands where it is instead of gliding across the weeks). Changing month, the title turns on the drum (up for later, down for earlier) and the grid comes in two grid steps from the side you are heading to as it fades in, on the settle spring. Days outside the month are ink3; days out of range are disabled at 40 %. A date picker is a form field that opens the calendar in a popover; choosing a day closes it and the field's text turns on the drum. Reduce Motion: the grid arrives and the choice lands at once; fades stay. (the switcher thumb; the row recipe's list hover; the swap drum; the LED; the settle spring; the ARIA date grid pattern)
+    public static let calendar = MetalObjectRecipe(
+        name: "calendar",
+        layers: [
+
+        ],
+        props: [
+            "day.size": .number(32.0),
+            "day.radius": .number(10.0),
+            "day.gap": .number(2.0),
+            "head.height": .number(32.0),
+            "head.gap": .number(8.0),
+            "today.size": .number(4.0),
+            "today.offset": .number(4.0),
+            "self.pad": .number(4.0),
+            "self.disabled": .text("0.4"),
+            "step.glyph": .number(10.0),
+            "picker.min-width": .number(200.0),
+        ]
+    )
+
     /// The graphite dock: a dark strip of pressable tool caps (a latched tool sits pressed with a green LED), an engraved separator and a sunk search well. (reference style.css #toolbar, .tb, .tb:active, .tb.on, .tb.on::after, .tb-sep, .tb-search, .tb-search kbd)
     public static let toolbar = MetalObjectRecipe(
         name: "toolbar",

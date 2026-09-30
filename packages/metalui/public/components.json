@@ -121,6 +121,23 @@
       "agent": "https://metalui.dev/r/button-group.md"
     },
     {
+      "name": "calendar",
+      "title": "Calendar",
+      "status": "alpha",
+      "description": "A month to choose a day from: the chosen day lands into the switcher's thumb look on the part spring, months turn on the drum and slide in from the side you head to; DatePicker opens it from a form field.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Calendar, DatePicker",
+        "base": "table role=grid (the ARIA date grid pattern); Popover"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCalendar"
+      },
+      "registry": "https://metalui.dev/r/calendar.json",
+      "agent": "https://metalui.dev/r/calendar.md"
+    },
+    {
       "name": "checkbox",
       "title": "Checkbox",
       "status": "alpha",

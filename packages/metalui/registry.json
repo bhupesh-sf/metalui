@@ -149,6 +149,24 @@
       "docs": "Agent guide: https://metalui.dev/r/button-group.md. SwiftUI: MetalButtonGroup in the MetalUI Swift package."
     },
     {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "A month to choose a day from: the chosen day lands into the switcher's thumb look on the part spring, months turn on the drum and slide in from the side you head to; DatePicker opens it from a form field.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/calendar/calendar.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/calendar/calendar.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/calendar.md. SwiftUI: MetalCalendar in the MetalUI Swift package."
+    },
+    {
       "name": "checkbox",
       "type": "registry:ui",
       "title": "Checkbox",
