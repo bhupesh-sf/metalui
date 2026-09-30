@@ -328,4 +328,13 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Calendar: no per-day unavailable predicate** (`isDateUnavailable`, already in the Calendar entry); the availability picker greys days with a scoped style keyed to aria-labels, which is fragile.
 - [ ] **Toggle has no radio-group form** (one latched key of several, like time slots); the library doesn't export Toggle's classes, so the block copies them. Add a `ToggleGroup` single-choice mode or a `RadioKeys`.
 - [ ] **Button has no waiting or done state** (see the Spinner entry: the wait lives in the key); blocks hold the key down and mark it `aria-disabled` by hand.
+- [ ] **Toast's Undo shows ⌘Z but binds nothing**: the keycap promises a shortcut the toast doesn't handle; bind it (for the page's last undoable change) or let the host pass it.
+- [ ] **ToolStrip** items take no icons, no menu trigger and no leading count; the task inbox rebuilds the strip from Base UI Toolbar. Extend `ToolStrip` (with the Tool strip entry above).
+- [ ] **Button strip / graphite / link caps don't size an `icon`** (noted with the icon slot); blocks pass `size-16`.
+- [ ] **Icons: no person / assign glyph** (the `me` glyph reads as a chart); add `person`.
+- [ ] **Icon: no way to play a glyph's act on demand** (a celebration, a result): add `play()` via a ref or an `act` prop; the inbox dispatches a synthetic click.
+- [ ] **AlertDialog.Popup** doesn't type Base UI's `finalFocus` (it passes it through); type it.
+- [ ] **Avatar**: no accessible label separate from the name its initials come from.
+- [ ] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes.
+- [ ] **Task inbox polish**: while selecting, the selection box (14) and the completion box (16) sit side by side and look alike; make completion a distinct task dimple or a status glyph, or show selection only as the row's plate.
 - [ ] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message.
