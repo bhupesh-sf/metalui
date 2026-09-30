@@ -296,3 +296,14 @@ Where it belongs: a recognised cue becomes a **component** (a control you operat
 - [ ] **Affordance without clutter**: nothing shows at rest; on hover a cue's underline thickens and the cursor says it can move (ns-resize for numbers, a rotate cursor for enums); first-time hint in a tooltip ("Drag to change").
 - [ ] **Accessibility**: each operable cue is a `spinbutton` (numbers, dates) or a listbox-like picker (enums) with a name ("Sleep, 6 hours"); keyboard does everything the pointer does. Reduce Motion: values change without the drum's travel.
 - [ ] **Survey first**: go through every recognised kind (date, time, duration, amount, measurement, colour, tag, derived tag, link, person) and list what "changing it in place" means for each, before building; then build one kind at a time (numbers first).
+
+## Snap guides: no haptic on the web
+
+Owner, on the Snap guides page: "dragging on web doesn't trigger haptic feedback." (2026-09-30)
+
+Facts: browsers expose no trackpad haptics on a Mac, and iOS Safari has no vibration API; `navigator.vibrate` works on Android only. The docs demo only counts taps ("haptic taps · 8 … the browser cannot") and doesn't even call `navigator.vibrate` where it exists. The Snap guides agent guide says: "Never replace a haptic with a sound or a flash."
+
+- [ ] **Call what exists**: a shared `haptic('alignment' | 'detent' | 'refusal')` helper in the motion layer: `navigator.vibrate` with a short pattern on Android; the iOS Safari (17.4+) trick of toggling a hidden `<input type="checkbox" switch>`, which plays the system tick, behind feature detection; a no-op elsewhere. Snap guides, Split pane detents, Slider detents and the operable cues (the entry above) all use it, once per catch.
+- [ ] **In the Mac app**: the SwiftUI side already performs the alignment haptic; document how a web view host (Electron, Tauri, a WKWebView) bridges `haptic()` to `NSHapticFeedbackManager`, and ship that bridge as an optional hook.
+- [ ] **Decide the fallback rule with the owner**: the guide forbids a sound or flash in place of a haptic. If the web should still *feel* the catch, the candidate is the line's own catch motion (the guide lighting with a tiny overshoot), which is already there, not a new sound. Record the decision in the guide.
+- [ ] Make the demo honest and useful: it calls `haptic()`, says which path this browser took ("vibrated", "iOS tick", "no haptics here"), and keeps the tap count.
