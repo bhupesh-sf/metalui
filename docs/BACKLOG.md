@@ -44,3 +44,20 @@ Owner, on the Alert dialog's "Delete regions" button: "this should have motion l
 - [ ] Reduce Motion: the fill still shows the time passing (it is information), with no settle bounce and no lid travel.
 - [ ] SwiftUI in step (a long-press gesture with the same fill and timing).
 - [ ] Decide where it applies: irreversible deletes only; a delete that goes to the past (undoable) stays a plain press.
+
+## Button group and Split button: redesign
+
+Owner: "these groups look ugly, we need to find a good UX; rounded corners inside a button group don't make sense; it doesn't have the feeling of metal." (2026-09-30)
+
+What's wrong now: each segment is its own rounded cap (inner radius `button-group-key-radius`) sitting in a sunk switch tray, so the group reads as loose pills in a trough, not one part. The 100 % readout is dressed as a key though it can't be pressed. The split button's dark cap and light chevron are two different objects pushed together.
+
+Direction (research and sketch before building; interface-craft storyboard first):
+
+- [ ] **One machined bar.** The group is a single raised cap with the outer pill radius only; segments are divided by an engraved seam (a hairline groove: a dark line with a light edge beside it), with square inner edges. Reference: segments cut from one block (hardware rockers, console transport keys, Braun and Teenage Engineering panels).
+- [ ] **Pressing a segment** sinks only that segment inside the bar (its own shading goes to the pressed look, travels its 1 px); the seams and the rest of the bar stay put, so it feels like one part with several keys.
+- [ ] **Readouts are windows, not keys**: a value between steppers (the zoom's 100 %) is a sunk, engraved display window in the bar, with tabular figures and the drum when it changes.
+- [ ] **Pairs as a rocker (explore)**: Undo / Redo, − / + as one rocker cap that tips toward the pressed end (a small rotation about the centre on the part spring), with a single seam in the middle.
+- [ ] **Split button**: one bar in one material (the primary's dark for both parts), the chevron segment behind a seam; opening the menu keeps the chevron segment pressed while it's open.
+- [ ] **Latched groups** (a toggle group) share the look: the latched segment stays sunk with its lamp.
+- [ ] Every state per segment: rest, hover (lift the segment's light, not the bar), pressed, focus (ring on the segment, inside the bar's shape), disabled (per segment and whole), and the bar in both colorways and at compact size.
+- [ ] Swift in step; update the Button group docs page, the agent guide and the captures.
