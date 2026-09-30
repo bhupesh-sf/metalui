@@ -29,3 +29,18 @@ Owner: "the tick animation is boring, it just makes it appear; it should make th
 - [ ] **The group cascade** keeps its stagger, with each child's tick drawing in turn.
 - [ ] Reduce Motion: the tick appears whole and at once. Keep SwiftUI in step (`trim(from:to:)` on the same path).
 - [ ] Anything else that draws a tick uses the same drawing: the menu's checkbox item, the select's chosen row, and the table's select column (it uses Checkbox already).
+
+## Destructive confirm: hold to delete (Alert dialog, Button)
+
+Owner, on the Alert dialog's "Delete regions" button: "this should have motion like hold to delete, and proper icon animation." (2026-09-30)
+
+- [ ] **Hold to confirm** as a Button behaviour (`hold` on a destructive cap, e.g. `<Button cap="destructive" hold>`), used by `AlertDialog.Confirm` for irreversible acts:
+  - press: the cap presses as now, and a darker red fill runs across it from the leading edge over the hold time (a token, about 800 ms, linear, so it reads as time and not as a spring);
+  - let go early: the fill drains back on the release spring, and nothing happens; a short line under the actions says "Hold to delete" the first time;
+  - complete: the fill reaches the end, the cap gives one small settle (object spring), and the act fires; then the dialog closes;
+  - keyboard: holding Space or Enter fills it the same way; a single tap only shows the hint.
+- [ ] **The trash glyph acts**: the cap leads with the trash icon; while held, its lid lifts a little in step with the fill; at complete, the lid drops shut (a short timeline in the icon set's motion format, from `icons.mjs`, not a CSS pose).
+- [ ] **Accessibility**: say the hold in the button's name or description ("Delete regions, hold to confirm"); announce the progress sparingly; WCAG 2.5.7 needs a single-pointer path; for pointers that can't hold, offer a setting or `hold={false}`, and the alert dialog's question still guards the act.
+- [ ] Reduce Motion: the fill still shows the time passing (it is information), with no settle bounce and no lid travel.
+- [ ] SwiftUI in step (a long-press gesture with the same fill and timing).
+- [ ] Decide where it applies: irreversible deletes only; a delete that goes to the past (undoable) stays a plain press.
