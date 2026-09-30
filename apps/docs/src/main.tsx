@@ -10,6 +10,9 @@ const DevAgentation = import.meta.env.DEV
   ? React.lazy(() => import('agentation').then(({ Agentation }) => ({ default: Agentation })))
   : null;
 
+// In development the feedback toolbar owns the bottom-right corner; the DialKit tuner stacks above it.
+if (import.meta.env.DEV) document.documentElement.dataset.devDocks = '';
+
 const router = createBrowserRouter(routes);
 
 router.subscribe(({ location }) => { void syncSiteMetadata(location.pathname); });

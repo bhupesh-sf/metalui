@@ -28,3 +28,9 @@
   .twinkleplop :is(.comment, .prompt, .front_matter_marker) { color: var(--mu-syn-comment); }
   .twinkleplop :is(.punctuation, .operator, .list_marker, .code_fence, .deleted) { color: var(--mu-syn-punct); }
 }
+
+/* Development only: the feedback toolbar (agentation, in its own shadow root) owns the bottom-right
+   corner, so the page's DialKit tuner stacks one dock above it. Production has no toolbar. */
+html[data-dev-docks] .dialkit-panel {
+  bottom: 72px !important;
+}

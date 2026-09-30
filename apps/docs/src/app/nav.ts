@@ -12,8 +12,12 @@ export interface NavGroup {
   items: NavItem[];
 }
 
-/* The part pages, grouped by layer from each part's meta.json (app/parts.ts); nothing is filed by hand. */
-const LAYER_GROUPS: NavGroup[] = LAYERS.map(({ layer, label }) => ({
+/* The part pages, grouped by layer from each part's meta.json (app/parts.ts); nothing is filed by hand.
+ * The nav reads from what people reach for to what it is made of: objects and the controls first, then
+ * what the hand and the canvas use, then the parts everything is cut from. The build order (LAYERS,
+ * docs/COMPOSITION.md) is unchanged; this is only reading order. */
+const READING_ORDER = ['object', 'component', 'instrument', 'place', 'part'] as const;
+const LAYER_GROUPS: NavGroup[] = [...LAYERS].sort((a, b) => READING_ORDER.indexOf(a.layer) - READING_ORDER.indexOf(b.layer)).map(({ layer, label }) => ({
   label,
   items: membersOf(layer)
     .filter((m) => m.page)
