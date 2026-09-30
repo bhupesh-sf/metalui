@@ -17,7 +17,7 @@ export { Sheet, type SheetRootProps } from './components/sheet/sheet';
 export { GlassFace } from './components/glass-face/glass-face';
 export { Glyph, type GlyphProps } from './components/glyph/glyph';
 export { Row, type RowProps, type RowRootProps } from './components/row/row';
-export { Slider, type SliderRootProps } from './components/slider/slider';
+export { Slider, type SliderRootProps, type SliderSize } from './components/slider/slider';
 export { Progress, type ProgressProps } from './components/progress/progress';
 export { Spinner, type SpinnerProps } from './components/spinner/spinner';
 export { Meter, type MeterProps } from './components/meter/meter';

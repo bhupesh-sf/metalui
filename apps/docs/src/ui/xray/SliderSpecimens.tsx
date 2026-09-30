@@ -22,9 +22,9 @@ import './slider-specimens.css';
 type Props = { spot: Spot; m: Model; set: (patch: Partial<Model>) => void; focus: (name: string | null) => void; face: React.CSSProperties };
 
 // one source per fact: the recipe's numbers
-const RP = tokens.recipes.slider.props as { track: { height: number }; knob: { size: number } };
-const K = RP.knob.size;
-const TH = RP.track.height;
+const RP = tokens.recipes.slider.props as { regular: { track: number; knob: number } };
+const K = RP.regular.knob;
+const TH = RP.regular.track;
 const KNOB_BG = tokens.recipes.slider.layers.find((l) => l.part === 'knob' && l.prop === 'background')!.value;
 const SHINE_FROM = Number(KNOB_BG.match(/from\s+([\d.]+)deg/)?.[1] ?? 0);
 const PART = tokens.springs.part as { stiffness: number; damping: number };

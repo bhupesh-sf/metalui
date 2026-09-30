@@ -5,10 +5,11 @@ import { COLORWAYS, capture, open } from './helpers';
 // flush inside the groove; the fill runs to the knob's centre, and marks and ticks share the same
 // travel, so the knob, the fill's end and the matching tick line up at every value.
 
-const playground = (page: Page) => page.locator('section', { hasText: 'Playground' }).first();
+// The tuned slider (Tune it): 0 to 100, labelled ticks at every quarter, regular size by default.
+const playground = (page: Page) => page.getByTestId('slider-tuner');
 const knobInput = (page: Page) => playground(page).getByRole('slider').first();
 
-/** The playground slider's geometry once it has come to rest. */
+/** The slider's geometry once it has come to rest. */
 async function geometry(root: Locator) {
   const read = () => root.evaluate((el) => {
     const box = (q: string) => el.querySelector(q)!.getBoundingClientRect();
@@ -55,7 +56,7 @@ for (const colorway of COLORWAYS) {
     expect(Math.abs(g.knob.centre - g.ticks.at(-1)!)).toBeLessThanOrEqual(1);
 
     // In between: each labelled tick sits where the knob's centre and the fill's end land.
-    // (the playground's ticks sit at every quarter: 0, 25, 50, 75, 100)
+    // (the tuned slider's ticks sit at every quarter: 0, 25, 50, 75, 100)
     await page.keyboard.press('Home');
     for (let i = 1; i < g.ticks.length - 1; i++) {
       for (let k = 0; k < 100 / (g.ticks.length - 1); k++) await page.keyboard.press('ArrowRight');
@@ -99,6 +100,7 @@ test('a jump to an end rides the spring but never carries the knob past the groo
 test('a drag keeps the knob centred under the pointer and inside the groove', async ({ page }) => {
   await open(page, '/components/slider', 'bone');
   const slider = playground(page).locator('.mu-slider').first();
+  await slider.scrollIntoViewIfNeeded();
   const g0 = await geometry(slider);
   const knob = playground(page).locator('.mu-slider-knob').first();
   const box = (await knob.boundingBox())!;
@@ -160,6 +162,6 @@ for (const colorway of COLORWAYS) {
     // The knob (its rim and shadow) carries the value; the fill backs it up, clearly apart from the
     // groove in both finishes (the old see-through green on bone was about 1.3:1).
     expect(read.fillVsGroove).toBeGreaterThanOrEqual(2);
-    await playground(page).locator('.stage').first().screenshot({ path: capture(`slider-scale-${colorway}`) });
+    await playground(page).screenshot({ path: capture(`slider-scale-${colorway}`) });
   });
 }

@@ -24,6 +24,13 @@ final class MetalSliderCaptures: XCTestCase {
                 slider(0)
                 slider(40)
                 slider(100)
+                // the playground's zoom: glyphs at the ends, the value beside it, in each size
+                ForEach(MetalSliderSize.allCases, id: \.self) { size in
+                    MetalSlider(value: .constant(100), in: 25...200, step: 5, largeStep: 25,
+                                size: size, startIcon: .zoomOut, endIcon: .zoomIn, showsValue: true,
+                                label: "Zoom", valueText: { "\(Int($0))%" })
+                        .frame(width: 360, height: 32)
+                }
             }
             .padding(28)
             .background((colorway == .bone ? MetalShared.page : MetalShared.pageDark).color)

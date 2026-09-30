@@ -1531,13 +1531,23 @@
     /* mu-recipe:slider:6 */ 0 0 0 .5px rgba(0,0,0,.12),
     /* mu-recipe:slider:7 */ 0 2px 4px rgba(0,0,0,.18);
   --mu-r-slider-self-transition: --mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part);
-  --mu-r-slider-track-height: 10px;
+  --mu-r-slider-compact-track: 6px;
+  --mu-r-slider-compact-knob: 16px;
+  --mu-r-slider-compact-glyph: 14px;
+  --mu-r-slider-compact-gap: 8px;
+  --mu-r-slider-regular-track: 10px;
+  --mu-r-slider-regular-knob: 22px;
+  --mu-r-slider-regular-glyph: 16px;
+  --mu-r-slider-regular-gap: 10px;
+  --mu-r-slider-large-track: 14px;
+  --mu-r-slider-large-knob: 28px;
+  --mu-r-slider-large-glyph: 18px;
+  --mu-r-slider-large-gap: 12px;
   --mu-r-slider-mark-w: 2px;
   --mu-r-slider-mark-radius: 1px;
   --mu-r-slider-tick-w: 1px;
   --mu-r-slider-tick-h: 5px;
   --mu-r-slider-tick-gap: 3px;
-  --mu-r-slider-knob-size: 22px;
   --mu-r-slider-knob-rise: 6px;
   /* switcher: reference style.css .seg, .seg button, .seg button.on */
   --mu-r-switcher-self-pad: 3px;

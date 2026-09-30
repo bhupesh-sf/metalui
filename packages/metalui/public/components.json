@@ -871,7 +871,7 @@
       "name": "slider",
       "title": "Slider",
       "status": "alpha",
-      "description": "A track well, a green fill up to a knurled knob, tick marks and labelled ticks; arrows step, Shift steps large.",
+      "description": "A knob in a groove that never leaves it, a green fill to the knob's centre, notches and labelled ticks on the same travel; three sizes, glyphs at the ends, full width or a set width, and a value readout on the drum. Arrows step, Shift steps large.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Slider",

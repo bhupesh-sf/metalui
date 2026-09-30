@@ -16,7 +16,7 @@ import { SliderSpecimenCard } from './SliderSpecimens';
  *             a sun on an arc for the light, switches for marks, ticks and layers
  * ───────────────────────────────────────────────────────── */
 
-const RP = tokens.recipes.slider.props as { track: { height: number }; mark: { w: number; radius: number; color: Record<string, string> }; tick: { w: number; h: number; gap: number; color: Record<string, string> }; knob: { size: number; rise: number } };
+const RP = tokens.recipes.slider.props as { regular: { track: number; knob: number }; mark: { w: number; radius: number; color: Record<string, string> }; tick: { w: number; h: number; gap: number; color: Record<string, string> }; knob: { rise: number } };
 const RL = tokens.recipes.slider.layers as { part: string; prop: string; value: string; colorway?: string }[];
 /** The fill in a colorway: full strength, deeper on bone so it reads against the pale groove. */
 const fillOf = (cw: string) => RL.find((l) => l.part === 'fill' && l.prop === 'background' && (!l.colorway || l.colorway === cw))!.value;
@@ -79,7 +79,7 @@ export function SliderXray({ startOpen = false }: { startOpen?: boolean }) {
   const FILL = fillOf(cw);
 
   // the knob travels the groove minus itself: half a knob in from each end, like the real slider
-  const K = RP.knob.size, TH = RP.track.height, IN = K / 2;
+  const K = RP.regular.knob, TH = RP.regular.track, IN = K / 2;
   const Hp = K + 22;
   const W = L * S, H = Hp * S;
   const ty = ((K - TH) / 2) * S, th = TH * S;

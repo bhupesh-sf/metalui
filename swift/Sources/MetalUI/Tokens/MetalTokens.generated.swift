@@ -1864,7 +1864,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A track (a well), a green fill at full strength up to a knurled knob, notches cut across the groove (marks) and labelled ticks under it in the meta type at ink2; arrows step, Shift steps large; a jump rides the part spring, a drag follows the pointer. The knob travels the groove minus itself (it never leaves the groove) and the fill, marks and ticks share that travel: half a knob in from each end. Knob and fill ride one animated fraction (--mu-slider-at), clamped to the travel, so a spring that overshoots stops flush at the groove's end. (reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob)
+    /// A track (a well) in three sizes (compact, regular, large: groove and knob together), optional glyphs at its ends and a value readout beside it, a green fill at full strength up to a knurled knob, notches cut across the groove (marks) and labelled ticks under it in the meta type at ink2; arrows step, Shift steps large; a jump rides the part spring, a drag follows the pointer. The knob travels the groove minus itself (it never leaves the groove) and the fill, marks and ticks share that travel: half a knob in from each end. Knob and fill ride one animated fraction (--mu-slider-at), clamped to the travel, so a spring that overshoots stops flush at the groove's end. (reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob)
     public static let slider = MetalObjectRecipe(
         name: "slider",
         layers: [
@@ -1879,7 +1879,18 @@ public enum MetalRecipes {
         ],
         props: [
             "self.transition": .text("--mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part)"),
-            "track.height": .number(10.0),
+            "compact.track": .number(6.0),
+            "compact.knob": .number(16.0),
+            "compact.glyph": .number(14.0),
+            "compact.gap": .number(8.0),
+            "regular.track": .number(10.0),
+            "regular.knob": .number(22.0),
+            "regular.glyph": .number(16.0),
+            "regular.gap": .number(10.0),
+            "large.track": .number(14.0),
+            "large.knob": .number(28.0),
+            "large.glyph": .number(18.0),
+            "large.gap": .number(12.0),
             "mark.w": .number(2.0),
             "mark.radius": .number(1.0),
             "mark.color": .perColorway(bone: "rgba(40,38,32,.22)", graphite: "rgba(255,255,255,.14)"),
@@ -1887,7 +1898,6 @@ public enum MetalRecipes {
             "tick.h": .number(5.0),
             "tick.color": .perColorway(bone: "rgba(40,38,32,.3)", graphite: "rgba(255,255,255,.26)"),
             "tick.gap": .number(3.0),
-            "knob.size": .number(22.0),
             "knob.rise": .number(6.0),
         ]
     )

@@ -12,6 +12,14 @@ public struct MetalSliderTick: Identifiable, Sendable {
     }
 }
 
+/// The slider's sizes: the groove's thickness and the knob together, with the end glyphs and the gap
+/// beside the groove (tokens.json `recipes.slider.props.compact | regular | large`).
+public enum MetalSliderSize: String, CaseIterable, Sendable {
+    case compact
+    case regular
+    case large
+}
+
 /// How tick labels are set: the meta type at ink2 (readable on any surface, the default), or engraved
 /// for a host that engraves its own scale (the time scrubber's weekdays).
 public enum MetalSliderTickStyle: Sendable {
@@ -61,6 +69,10 @@ public struct MetalSlider: View {
     let marks: [Double]
     let ticks: [MetalSliderTick]
     let tickStyle: MetalSliderTickStyle
+    let size: MetalSliderSize
+    let startIcon: MetalIconName?
+    let endIcon: MetalIconName?
+    let showsValue: Bool
     let label: String
     let valueText: (Double) -> String
     let onFocusChange: ((Bool) -> Void)?
@@ -76,7 +88,11 @@ public struct MetalSlider: View {
 
     public init(value: Binding<Double>, in range: ClosedRange<Double>,
                 step: Double, largeStep: Double, marks: [Double] = [],
-                ticks: [MetalSliderTick] = [], tickStyle: MetalSliderTickStyle = .meta, label: String,
+                ticks: [MetalSliderTick] = [], tickStyle: MetalSliderTickStyle = .meta,
+                size: MetalSliderSize = .regular,
+                startIcon: MetalIconName? = nil, endIcon: MetalIconName? = nil,
+                showsValue: Bool = false,
+                label: String,
                 valueText: @escaping (Double) -> String,
                 onFocusChange: ((Bool) -> Void)? = nil,
                 onDragChange: ((Bool) -> Void)? = nil,
@@ -88,6 +104,10 @@ public struct MetalSlider: View {
         self.marks = marks
         self.ticks = ticks
         self.tickStyle = tickStyle
+        self.size = size
+        self.startIcon = startIcon
+        self.endIcon = endIcon
+        self.showsValue = showsValue
         self.label = label
         self.valueText = valueText
         self.onFocusChange = onFocusChange
@@ -101,14 +121,81 @@ public struct MetalSlider: View {
 
     private func set(_ next: Double) { value = min(max(next, range.lowerBound), range.upperBound) }
 
+    /// A number of the slider's size (`track`, `knob`, `glyph`, `gap`).
+    private func metric(_ key: String) -> CGFloat { MetalRecipes.slider.points("\(size.rawValue).\(key)") }
+
     public var body: some View {
+        HStack(spacing: metric("gap")) {
+            if let startIcon { glyph(startIcon, atEnd: fraction == .zero) }
+            control
+            if let endIcon { glyph(endIcon, atEnd: fraction == .one) }
+            if showsValue { readout }
+        }
+        // Focus by keyboard navigation only, like NSSlider: a click or a host
+        // taking the keyboard never parks typing here.
+        .focusable(interactions: .activate)
+        // No system ring: MetalUI's own ring, and only for keyboard focus.
+        .focusEffectDisabled()
+        .focused($focused)
+        .onChange(of: focused) { _, isFocused in
+            #if os(macOS)
+            keyboardFocus = isFocused && NSApp.currentEvent?.type == .keyDown
+            #endif
+            onFocusChange?(isFocused)
+        }
+        .onKeyPress(.leftArrow, phases: .down) { press in
+            keyboardFocus = true
+            set(value - (press.modifiers.contains(.shift) ? largeStep : step))
+            return .handled
+        }
+        .onKeyPress(.rightArrow, phases: .down) { press in
+            keyboardFocus = true
+            set(value + (press.modifiers.contains(.shift) ? largeStep : step))
+            return .handled
+        }
+        .onKeyPress(.home) { set(range.lowerBound); return .handled }
+        .onKeyPress(.end) { set(range.upperBound); return .handled }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(label)
+        .accessibilityValue(valueText(value))
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment: set(value + step)
+            case .decrement: set(value - step)
+            @unknown default: break
+            }
+        }
+    }
+
+    /// An end's glyph at ink2. It plays its act as the value arrives at its end.
+    private func glyph(_ icon: MetalIconName, atEnd: Bool) -> some View {
+        MetalIcon(icon, size: metric("glyph"), interaction: MetalIconInteraction(isPressed: atEnd))
+            .foregroundStyle(colorway.tokens.ink2.color)
+    }
+
+    /// The value beside the groove, in the figure type. It keeps the width of the widest end so the
+    /// groove never moves, and its digits roll as it changes (the web's drum).
+    private var readout: some View {
+        ZStack(alignment: .trailing) {
+            Text(valueText(range.lowerBound)).hidden()
+            Text(valueText(range.upperBound)).hidden()
+            Text(valueText(value))
+                .contentTransition(reduceMotion ? .opacity : .numericText(value: value))
+                .foregroundStyle(colorway.tokens.ink.color)
+        }
+        .font(.metal(MetalType.figure))
+        .monospacedDigit()
+        .accessibilityHidden(true)
+    }
+
+    private var control: some View {
         let recipe = MetalRecipes.slider
         let finish = MetalRecipeColorway(colorway)
-        GeometryReader { geometry in
+        return GeometryReader { geometry in
             let width = geometry.size.width
             let centre = geometry.size.height / 2
-            let track = recipe.points("track.height")
-            let knob = recipe.points("knob.size")
+            let track = metric("track")
+            let knob = metric("knob")
             // One travel for the knob, the fill's end, the marks and the ticks.
             let travel = max(.zero, width - knob)
             let along = { (f: Double) in knob / 2 + clamp(f) * travel }
@@ -207,46 +294,12 @@ public struct MetalSlider: View {
             .animation(dragging || isExternallyDragging ? nil : MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation,
                        value: value)
         }
-        // Focus by keyboard navigation only, like NSSlider: a click or a host
-        // taking the keyboard never parks typing here.
-        .focusable(interactions: .activate)
-        // No system ring: MetalUI's own ring, and only for keyboard focus.
-        .focusEffectDisabled()
-        .focused($focused)
         .overlay {
             if focused && keyboardFocus {
-                RoundedRectangle(cornerRadius: MetalRecipes.slider.points("track.height"), style: .continuous)
+                RoundedRectangle(cornerRadius: metric("track"), style: .continuous)
                     .inset(by: -(MetalRing.focusOffset + MetalRing.focusWidth / 2))
                     .stroke(MetalShared.focus.color, lineWidth: MetalRing.focusWidth)
                     .allowsHitTesting(false)
-            }
-        }
-        .onChange(of: focused) { _, isFocused in
-            #if os(macOS)
-            keyboardFocus = isFocused && NSApp.currentEvent?.type == .keyDown
-            #endif
-            onFocusChange?(isFocused)
-        }
-        .onKeyPress(.leftArrow, phases: .down) { press in
-            keyboardFocus = true
-            set(value - (press.modifiers.contains(.shift) ? largeStep : step))
-            return .handled
-        }
-        .onKeyPress(.rightArrow, phases: .down) { press in
-            keyboardFocus = true
-            set(value + (press.modifiers.contains(.shift) ? largeStep : step))
-            return .handled
-        }
-        .onKeyPress(.home) { set(range.lowerBound); return .handled }
-        .onKeyPress(.end) { set(range.upperBound); return .handled }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(label)
-        .accessibilityValue(valueText(value))
-        .accessibilityAdjustableAction { direction in
-            switch direction {
-            case .increment: set(value + step)
-            case .decrement: set(value - step)
-            @unknown default: break
             }
         }
     }
