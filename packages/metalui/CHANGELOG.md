@@ -25,6 +25,24 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 - Checkbox has a pressed state; checkbox group rows press from anywhere on the row.
 - A foundation for invalid: `--mu-invalid` per colorway, `--mu-invalid-width`, and the `invalid-ring` utility; `MetalRing.invalidWidth` in SwiftUI.
 - `buttonParts` (the button cap's frame and size without its press) for keys that travel their own way.
+- **Skeleton** (`Skeleton`): the shape of content still loading, with a slow sheen.
+- **Link** (`Link`): inline text that goes somewhere; an external link carries a small arrow.
+- **Button group** and **Split button** (`ButtonGroup`, `SplitButton`): caps joined into one bar; an action with a menu of its variants.
+- **Breadcrumbs** (`Breadcrumbs`): the way back up; long trails fold into a menu.
+- **Pagination** (`Pagination`): pages of results; the current page's lift glides between numbers.
+- **Menubar** (`Menubar`): an app's menus in a row; moving along the bar opens the next at once.
+- **Navigation menu** (`NavigationMenu`): site sections whose panels open under the bar.
+- **Preview card** (`PreviewCard`): a glance at where a link goes, on hover or focus.
+- **Calendar** and **Date picker** (`Calendar`, `DatePicker`): a month of days; the chosen day lands with a small press.
+- **Avatar** (`Avatar`, `AvatarGroup`): a person, as a photo or initials, with presence.
+- **Card** (`Card`): a person's thing on a raised plate that lifts when it can be opened.
+- **Attachment** (`Attachment`, `formatBytes`): a file someone attached, with upload progress and failure.
+- **Table** (`Table`): rows that travel to their places when sorted; selectable rows.
+- **Empty state** (`EmptyState`): a place with nothing in it yet, and how to start.
+- **Split pane** (`SplitPane`): two places with a divider you can move, with a detent at the default.
+- **Sidebar** (`Sidebar`): an app's side place that folds to a rail with tooltips.
+- **Drop zone** (`DropZone`): a place that receives files by drop or by picking; it lights while files are dragged in the window and refuses what it won't take.
+- `disabled` on `Tooltip`, to keep it shut without changing the tree.
 - A shadcn registry entry for every new component at `https://metalui.dev/r/<name>.json`.
 
 ### Changed
