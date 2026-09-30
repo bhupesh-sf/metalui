@@ -14,6 +14,7 @@ export const routes: RouteObject[] = [
     errorElement: <NotFound />,
     children: [
       { path: 'overview', lazy: lazy(() => import('../pages/Home')) },
+      { path: 'wip', lazy: lazy(() => import('../pages/Wip')) },
       { path: 'layers', lazy: lazy(() => import('../pages/Layers')) },
       { path: 'foundations', lazy: lazy(() => import('../pages/foundations/Principles')) },
       { path: 'foundations/color', lazy: lazy(() => import('../pages/foundations/Color')) },

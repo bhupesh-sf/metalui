@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { WipNotice } from '../ui/WipNotice';
 import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { DialRoot } from 'dialkit';
 import { SlidingIndicator } from '@unlocalhosted/metalui';
@@ -147,6 +148,7 @@ export function Shell() {
           <SocialLinks labelled />
         </aside>
         <main id="main" tabIndex={-1}>
+          <WipNotice />
           <Outlet />
         </main>
         <Toc />

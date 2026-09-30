@@ -30,6 +30,7 @@ export const NAV: NavGroup[] = [
     items: [
       { to: '/overview', label: 'Overview' },
       { to: '/layers', label: 'How it fits together' },
+      { to: '/wip', label: 'Work in progress' },
     ],
   },
   {
