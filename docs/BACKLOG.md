@@ -279,3 +279,20 @@ Causes found in `apps/docs/src/ui/SnapCanvas.tsx`:
 
 - [ ] Fix the above in the demo, then check the Lasso instrument itself (`packages/metalui/src/components/lasso`) for the same assumptions and document the rules in its agent guide (empty-space start, no text selection, modifier keys).
 - [ ] An e2e slice that draws a lasso from several starting points (on the guides, outside the world at 50 %, next to a note) and asserts that no text gets selected (`getSelection().toString() === ''`).
+
+## Cues you can operate: the interface molds inside the text
+
+Owner, on the Provenance tooltip page ("Send #poster tomorrow 4pm, slept 6h in #done by #coffee"): "these should let the user interact and change them: slide up and down to change the number or unit; #done can rotate through its enum states; tomorrow → yesterday, today, then show dates; find opportunities where the interface molds inside the text itself." (2026-09-30)
+
+Where it belongs: a recognised cue becomes a **component** (a control you operate, `docs/COMPOSITION.md`), living inline in text; the scrub feedback that shows only while you drag is an **instrument**. It builds on the Cue family and replaces nothing: at rest the text reads exactly as now.
+
+- [ ] **Numbers scrub**: press and drag up / down on "6h", "1h30", "$40" to change the value (a pixel step per unit, Shift for bigger steps, Alt for finer); the digits turn on the drum; a tiny engraved scale appears beside the value only while dragging; arrow keys when focused. Units cycle with a horizontal drag or a key (h ↔ min, $ ↔ €), converting the value.
+- [ ] **Enums rotate**: "#done" turns through its states (todo → doing → done → dropped) like a drum or a rotary switch: scroll, drag, or Space to step; the next state peeks above and below while held; its colour and glyph follow the state.
+- [ ] **Relative dates slide**: "tomorrow" steps through yesterday / today / tomorrow / the weekdays, then real dates ("Fri 3 Oct"); the resolved date chip rides along; a long press opens the Calendar in a popover anchored to the words, and the chosen day writes back as words ("next Friday") when it can.
+- [ ] **Times and durations**: "4pm" scrubs in 15-minute detents (part spring clicks, the haptic tick on a trackpad); "1h30" in 5-minute steps.
+- [ ] **Colours**: "#FF6B3D" opens a swatch well; dragging on it shifts hue, with the text rewriting live.
+- [ ] **Tags and people**: a tag cycles through your recent tags on scroll; a person's name opens a small picker.
+- [ ] **The text stays the source**: every change rewrites the words in place (undoable as one step per gesture), the caret and layout never jump, and the line keeps its width through the change (the drum's footprint rule).
+- [ ] **Affordance without clutter**: nothing shows at rest; on hover a cue's underline thickens and the cursor says it can move (ns-resize for numbers, a rotate cursor for enums); first-time hint in a tooltip ("Drag to change").
+- [ ] **Accessibility**: each operable cue is a `spinbutton` (numbers, dates) or a listbox-like picker (enums) with a name ("Sleep, 6 hours"); keyboard does everything the pointer does. Reduce Motion: values change without the drum's travel.
+- [ ] **Survey first**: go through every recognised kind (date, time, duration, amount, measurement, colour, tag, derived tag, link, person) and list what "changing it in place" means for each, before building; then build one kind at a time (numbers first).
