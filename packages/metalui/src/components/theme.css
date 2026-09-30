@@ -1156,6 +1156,10 @@
   --tw-duration: var(--mu-r-checkbox-self-fade);
   transition-duration: var(--mu-r-checkbox-self-fade);
 }
+@utility duration-checkbox-press {
+  --tw-duration: var(--mu-r-checkbox-self-press);
+  transition-duration: var(--mu-r-checkbox-self-press);
+}
 @utility opacity-checkbox-disabled {
   opacity: var(--mu-r-checkbox-self-disabled);
 }
@@ -1349,6 +1353,9 @@
 }
 @utility stroke-width-scroll-area-thumb-width {
   stroke-width: var(--mu-r-scroll-area-thumb-width);
+}
+@utility checkbox-group-press {
+  &:active:not(:has([data-disabled])) .mu-dimple:not([data-checked]) { background: var(--mu-r-checkbox-self-on-background); box-shadow: var(--mu-r-checkbox-self-on-shadow); transition-duration: var(--mu-r-checkbox-self-press); } &:active:not(:has([data-disabled])) .mu-dimple[data-checked] { background: var(--mu-r-checkbox-self-background); box-shadow: var(--mu-r-checkbox-self-shadow); transition-duration: var(--mu-r-checkbox-self-press); }
 }
 @utility checkbox-group-cascade {
   & .mu-dimple { transition-delay: calc(var(--mu-cascade-step, 0) * var(--mu-r-checkbox-group-self-cascade) * var(--mu-travel-part)); } & .mu-dimple-tick { animation-delay: calc(var(--mu-r-checkbox-tick-delay) + var(--mu-cascade-step, 0) * var(--mu-r-checkbox-group-self-cascade) * var(--mu-travel-part)); }

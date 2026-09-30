@@ -7,7 +7,8 @@ import { Checkbox } from '../checkbox/checkbox';
 /* ─────────────────────────────────────────────────────────
  * CHECKBOX GROUP, several independent choices in a form, on Base UI CheckboxGroup
  *
- *   rows      the row-size checkbox beside its label; the whole row is the hit area
+ *   rows      the row-size checkbox beside its label; the whole row is the hit area, and pressing it
+ *             anywhere gives the checkbox's press (as the radio group's rows do)
  *   parent    optional: ticks or clears every row; some ticked shows the half (mixed) look
  *   cascade   ticking several at once (the parent) ticks them from the top, one row every
  *             30 ms, each drawing the checkbox's own tick (40 ms beat, 220 ms draw)
@@ -20,7 +21,7 @@ import { Checkbox } from '../checkbox/checkbox';
  * ───────────────────────────────────────────────────────── */
 
 const ROOT = 'mu-checkbox-group grid gap-checkbox-group-gap';
-const ROW = 'mu-checkbox-group-row inline-flex items-center gap-checkbox-group-row-gap min-h-checkbox-group-row-height type-ui text-ink cursor-pointer select-none w-max checkbox-group-cascade has-data-disabled:opacity-checkbox-group-disabled has-data-disabled:cursor-default';
+const ROW = 'mu-checkbox-group-row inline-flex items-center gap-checkbox-group-row-gap min-h-checkbox-group-row-height type-ui text-ink cursor-pointer select-none w-max checkbox-group-cascade checkbox-group-press has-data-disabled:opacity-checkbox-group-disabled has-data-disabled:cursor-default';
 const CHILD = 'pl-checkbox-group-indent';
 
 const CascadeCtx = React.createContext<{ step: (value: string) => number; hasParent: boolean }>({ step: () => 0, hasParent: false });

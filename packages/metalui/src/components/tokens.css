@@ -921,6 +921,7 @@
   --mu-r-checkbox-self-x: -25px;
   --mu-r-checkbox-self-y: 2.5px;
   --mu-r-checkbox-self-fade: 160ms;
+  --mu-r-checkbox-self-press: 50ms;
   --mu-r-checkbox-self-disabled: 0.4;
   --mu-r-checkbox-self-transition: background var(--mu-r-checkbox-self-fade), box-shadow var(--mu-r-checkbox-self-fade);
   --mu-r-checkbox-tick-x: 5px;

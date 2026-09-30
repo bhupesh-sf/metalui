@@ -12,6 +12,9 @@ import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
  *   doing    a half-filled green square (announced as mixed)
  *   ghost    a hollow ring: a task that was inferred, not written; green ring on hover
  *   row      size="row": 14 with radius 5 and a smaller tick, in a list row (in flow, not the margin)
+ *   pressed  the press points at the result (the radio's press language): unticked, the well takes the
+ *            dark on look at once (50 ms); ticked, it goes light so the tick sinks from view; release
+ *            commits, dragging off cancels
  * Styled with the theme's utilities (the checkbox recipe, its tick and doing drawings).
  * ───────────────────────────────────────────────────────── */
 
@@ -27,9 +30,10 @@ export interface CheckboxProps extends Omit<BaseCheckbox.Root.Props, 'className'
 
 const SLOT = 'mu-dimple-slot inline-flex w-max h-max leading-none';
 const WELL = 'mu-dimple relative box-border inline-block p-0 border-0 cursor-pointer tap-highlight-none transition-checkbox focus-visible:focus-ring data-disabled:opacity-checkbox-disabled data-disabled:cursor-default data-indeterminate:checkbox-doing';
+const PRESS = 'not-data-disabled:active:duration-checkbox-press not-data-disabled:not-data-checked:active:recipe-checkbox-on not-data-disabled:data-checked:active:recipe-checkbox';
 const LOOKS = {
-  margin: 'size-checkbox-size rounded-checkbox-radius recipe-checkbox hover:not-data-checked:recipe-checkbox-hover data-checked:recipe-checkbox-on',
-  row: 'size-checkbox-row-size rounded-checkbox-row-radius recipe-checkbox hover:not-data-checked:recipe-checkbox-hover data-checked:recipe-checkbox-on',
+  margin: `size-checkbox-size rounded-checkbox-radius recipe-checkbox hover:not-data-checked:recipe-checkbox-hover data-checked:recipe-checkbox-on ${PRESS}`,
+  row: `size-checkbox-row-size rounded-checkbox-row-radius recipe-checkbox hover:not-data-checked:recipe-checkbox-hover data-checked:recipe-checkbox-on ${PRESS}`,
   ghost: 'size-checkbox-ghost-size rounded-checkbox-ghost-radius recipe-checkbox-ghost hover:recipe-checkbox-ghost-hover',
 };
 const TICK = {

@@ -18,6 +18,8 @@ The dimple checkbox. React: `Checkbox` (earlier `Dimple`) from `@unlocalhosted/m
 | doing | a half-filled green square inside the well | – |
 | ghost | a hollow 14 ring, radius 5; hover: a green ring | 160 ms |
 | row (`size="row"`) | 14, radius 5, a smaller tick; in flow at the start of a list row | as above |
+| pressed, unticked | the dark on look (the press points at the result) | 50 ms; the tick draws on release; dragging off cancels |
+| pressed, ticked | the light well, the tick sinks from view | 50 ms; release unticks |
 | disabled | 40 % | – |
 
 ## Keyboard and accessibility

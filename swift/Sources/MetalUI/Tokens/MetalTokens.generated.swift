@@ -648,7 +648,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The task dimple: a recessed well in the margin; ticked, a dark pressed key with a drawn tick; a ghost ring for an inferred task; a half fill while doing. (reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing, .lrow .dimple, .lrow .dimple.on::after)
+    /// The task dimple: a recessed well in the margin; ticked, a dark pressed key with a drawn tick; a ghost ring for an inferred task; a half fill while doing. Pressed (the radio's press language): an unticked well takes the dark on look at once (press time), and the tick draws on release; a ticked one goes light, so its tick sinks from view before it is taken away. Dragging off cancels. (reference style.css .dimple, .dimple:hover, .dimple.on, .dimple.ghost, .dimple.doing, .lrow .dimple, .lrow .dimple.on::after)
     public static let checkbox = MetalObjectRecipe(
         name: "checkbox",
         layers: [
@@ -679,6 +679,7 @@ public enum MetalRecipes {
             "self.x": .number(-25.0),
             "self.y": .number(2.5),
             "self.fade": .text("160ms"),
+            "self.press": .text("50ms"),
             "self.disabled": .text("0.4"),
             "self.transition": .text("background var(--mu-r-checkbox-self-fade), box-shadow var(--mu-r-checkbox-self-fade)"),
             "tick.x": .number(5.0),
