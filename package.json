@@ -22,6 +22,7 @@
     "build": "npm run check && npm run build -w @unlocalhosted/metalui && npm run build -w @metalui/docs",
     "test:e2e": "playwright test",
     "verify:package": "node scripts/verify-package.mjs",
+    "verify:types": "cd packages/metalui && npx --yes publint@latest . && npx --yes @arethetypeswrong/cli@latest --pack . --ignore-rules cjs-resolves-to-esm --exclude-entrypoints ./styles.css ./icons.css ./icons/life.css ./tokens.css ./theme.css ./components.json ./icons.json ./icons-life.json",
     "verify:registry": "node scripts/verify-package.mjs --registry",
     "check:layers": "node scripts/check-layers.mjs",
     "check:composition": "node scripts/check-composition.mjs",

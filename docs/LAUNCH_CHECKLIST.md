@@ -35,7 +35,17 @@ These are facts about the repo today, not guesses.
 - [ ] **Still to do (shadcn):** look at an installed component rendered in a browser and click it (so far: built, type-checked, server-rendered HTML, never seen);
 - Passed both runs: `button.json` is 200, `application/json`, CORS `*`; a missing item is a real 404.
 
-Section 1 partly done: 0.3.0 published (tag `v0.3.0`, provenance on npm, `verify:registry` passes). Not yet run: the rest of section 1, and sections 2, 4–12.
+Section 1 partly done: 0.3.0 published (tag `v0.3.0`, provenance on npm, `verify:registry` passes). **Section 2, fresh installs from npm 0.3.1, 2026-10-01 (clean VM, headless Chromium, production builds).** Each app renders Surface, Button, Checkbox, Switch, Led, Kbd, Progress and Skeleton; the check asserts no console errors or warnings, no failed requests, a styled 32px button with a shadow, the checkbox toggling on a real click, the colorway attribute changing the surface, and (where the app has Tailwind) a host `p-4` still 16px.
+
+- [x] Vite + React 19 + TS (no Tailwind), Vite + React 18, Vite + React 19 + Tailwind v4: `tsc` 0 errors, build ok, all assertions pass.
+- [x] Next 16 App Router (components imported straight into a server component, so the `'use client'` banner is exercised) and Pages Router: `next build` and `next start`, no hydration warnings, all assertions pass.
+- [x] SSR: `renderToString` of every export on React 19 and 18: 254 render with no props, 36 need props or a parent context, 0 touch browser-only globals. Found and fixed 25 React 18 `useLayoutEffect` server warnings (shared `useIsoLayoutEffect`).
+- [x] No Tailwind at all: the Vite apps without Tailwind work from `styles.css` alone.
+- [x] `publint` clean; are-the-types-wrong: types resolve for every entry under bundler and node16; legacy `node` resolution failed for `/icons`, `/icons/life`, `/sound`, fixed with `typesVersions`; both now run in CI (`npm run verify:types`). ESM-only is stated in the README; `require()` fails and only `import` works, by design.
+- [x] **Bundle size.** Published 0.3.1: a Button-only Vite 8 app ships 621 kB JS (197 kB gzip) against 220 kB for React alone, i.e. tree-shaking was not working. Current `main` (the unreleased perf commits `f543a590`, `65f9b67d`): 236 kB (74 kB gzip), +17 kB over React alone, confirmed in the real Vite build. `styles.css` is a fixed 300 kB (48 kB gzip) whatever you use. **Needs the next release to reach users.**
+- [ ] Still to do: Tailwind v3 host (supported or stated unsupported), the full per-export render with real props.
+
+Not yet run: the rest of section 1, the rest of section 2, and sections 4–12.
 
 ---
 

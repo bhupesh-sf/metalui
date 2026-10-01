@@ -6,6 +6,7 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ### Fixed
 
+- TypeScript projects on the legacy `moduleResolution: "node"` can now import `@unlocalhosted/metalui/icons`, `/icons/life` and `/sound` with types (`typesVersions`). CI runs `publint` and are-the-types-wrong on every change.
 - Server rendering on React 18 no longer logs `useLayoutEffect does nothing on the server` (25 warnings for Calendar, Checkbox, Combobox and others): components use one shared `useIsoLayoutEffect`, a layout effect in the browser and a plain effect on the server. The shadcn `motion` item includes it.
 
 ## 0.3.1 - 2026-10-01

@@ -25,6 +25,7 @@ jobs:
       - run: npm run build
       - run: npm run typecheck
       - run: npm run verify:package
+      - run: npm run verify:types
       - run: npm run bench:bundle:gate
 
   # Idle counters (running loops, layouts and style recalcs per second at rest) do not depend on how busy the
