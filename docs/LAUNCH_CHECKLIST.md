@@ -71,6 +71,11 @@ These are facts about the repo today, not guesses.
 - [x] **Landing page had no `<h1>`, no headings and no `<main>` once rendered** (the crawlable static HTML had one, the app replaced it). Now a `<main>` landmark with a visually hidden h1; the page looks identical; covered by `e2e/docs-landing-structure.spec.ts` in both colorways.
 - [ ] Still to do: a VoiceOver pass by a person, a real phone (iOS Safari and Android Chrome), forced-colors and 200% zoom.
 
+**Section 8, component behaviour, 2026-10-01:** the full end-to-end suite (109 spec files) on a Mac, 3 workers, 8.4 minutes: 535 passed, 2 failed; both (`life-gallery` "the composer draws every feeling…" and `memory-scrubber` "the whole scrubber box takes pointer input in bone") pass when run alone, so they are timing-sensitive under parallel load, not broken. CI had never run this suite; added as a non-blocking `e2e` job (Linux, `--retries=1`, report uploaded on failure) to prove itself before it gates anything.
+
+- [ ] Make the two load-sensitive specs wait on state instead of time; make the CI `e2e` job blocking once it is green on a few runs in a row.
+- [ ] Still to do: each component's every state looked at by a person in both colorways and with reduced motion, screen-reader behaviour per component, controlled and uncontrolled use, `react-hook-form` example, sound is opt-in, a leak test (open and close a popover, dialog, toast and sheet 200 times and compare heap and listeners).
+
 Section 1 partly done: 0.3.0 published (tag `v0.3.0`, provenance on npm, `verify:registry` passes). **Section 2, fresh installs from npm 0.3.1, 2026-10-01 (clean VM, headless Chromium, production builds).** Each app renders Surface, Button, Checkbox, Switch, Led, Kbd, Progress and Skeleton; the check asserts no console errors or warnings, no failed requests, a styled 32px button with a shadow, the checkbox toggling on a real click, the colorway attribute changing the surface, and (where the app has Tailwind) a host `p-4` still 16px.
 
 - [x] Vite + React 19 + TS (no Tailwind), Vite + React 18, Vite + React 19 + Tailwind v4: `tsc` 0 errors, build ok, all assertions pass.

@@ -46,6 +46,29 @@ jobs:
       - run: BENCH_PAGES=all npx playwright test -c bench/playwright.config.ts --workers=3
       - run: npm run bench:gate
 
+  # The feature slices against the real docs site. Non-blocking until it has proven stable on GitHub's runners
+  # (fonts and timing differ from a Mac); it uploads the report when it fails.
+  e2e:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e -- --workers=2 --retries=1
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
+
   swift:
     runs-on: macos-15
     steps:
