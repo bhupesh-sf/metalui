@@ -35,6 +35,11 @@ These are facts about the repo today, not guesses.
 - [ ] **Still to do (shadcn):** look at an installed component rendered in a browser and click it (so far: built, type-checked, server-rendered HTML, never seen);
 - Passed both runs: `button.json` is 200, `application/json`, CORS `*`; a missing item is a real 404.
 
+**Sections 4 and 5, live crawl of metalui.dev, 2026-10-01:** all 103 sitemap pages return 200; all 152 other internal links resolve with no redirects or errors; every page has one `<h1>`, a self-referencing canonical, `og:url`, `og:title`, `og:description`, an absolute `og:image` and `twitter:card=summary_large_image`; `og.png` is 200, `image/png`, 554 kB. Found and fixed: 31 descriptions over 200 characters (now cut to whole sentences within 160) and two pages titled "Settings — MetalUI" (block pages are now "… block"; the build fails on a duplicate title).
+
+- [ ] Several component descriptions in `meta.json` read like token specs ("frost-strong at .92, radius 18, padding 6", Menu, Tooltip, Slider, Command palette, Fan, Day, Folder) and show up that way in search results and the shadcn registry; rewrite them as one plain sentence about what the component is for.
+- [ ] Still to do from 4 and 5: previews in the real scrapers (X card validator, LinkedIn, Slack, Discord, iMessage), `og.png` under 300 px readability, Search Console and Bing verification, favicon and touch icon check, Lighthouse and axe on mobile, keyboard and VoiceOver passes, the Safari and Firefox pass.
+
 Section 1 partly done: 0.3.0 published (tag `v0.3.0`, provenance on npm, `verify:registry` passes). **Section 2, fresh installs from npm 0.3.1, 2026-10-01 (clean VM, headless Chromium, production builds).** Each app renders Surface, Button, Checkbox, Switch, Led, Kbd, Progress and Skeleton; the check asserts no console errors or warnings, no failed requests, a styled 32px button with a shadow, the checkbox toggling on a real click, the colorway attribute changing the surface, and (where the app has Tailwind) a host `p-4` still 16px.
 
 - [x] Vite + React 19 + TS (no Tailwind), Vite + React 18, Vite + React 19 + Tailwind v4: `tsc` 0 errors, build ok, all assertions pass.

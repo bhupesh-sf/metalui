@@ -78,6 +78,20 @@ if (paths.length !== routerPaths.length || paths.some((path) => !routerPaths.inc
 const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const escapeJson = (value) => JSON.stringify(value).replace(/</g, '\\u003c');
 
+// A search result shows about 160 characters: keep whole sentences that fit, else cut at a word.
+const MAX_DESCRIPTION = 160;
+function fit(text) {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length <= MAX_DESCRIPTION) return clean;
+  let out = '';
+  for (const sentence of clean.split(/(?<=[.!?])\s+/)) {
+    if ((out ? `${out} ${sentence}` : sentence).length > MAX_DESCRIPTION) break;
+    out = out ? `${out} ${sentence}` : sentence;
+  }
+  if (out) return out;
+  return `${clean.slice(0, MAX_DESCRIPTION - 1).replace(/\s+\S*$/, '').replace(/[.,;:]$/, '')}…`;
+}
+
 function pageFor(path) {
   const name = path.split('/').at(-1);
   const component = path.startsWith('/components/') ? components.get(name) : undefined;
@@ -86,8 +100,9 @@ function pageFor(path) {
   const description = component?.description ?? partDescriptions.get(path) ?? descriptions[path];
   if (!description) throw new Error(`Missing search description for ${path}`);
   return {
-    title: path === '/' ? 'MetalUI — Soft Hardware for React and SwiftUI' : `${label} — MetalUI`,
-    description,
+    // A block shares its name with a component (Settings), and two pages must not share a title.
+    title: path === '/' ? 'MetalUI — Soft Hardware for React and SwiftUI' : `${label}${path.startsWith('/blocks/') ? ' block' : ''} — MetalUI`,
+    description: fit(description),
     canonical: `${origin}${path}`,
     agent: component ? `${origin}/r/${component.name}.md` : `${origin}/AI.md`,
     label,
@@ -142,6 +157,9 @@ function htmlFor(path, page) {
 }
 
 const pages = Object.fromEntries(paths.map((path) => [path, pageFor(path)]));
+const byTitle = new Map();
+for (const [path, page] of Object.entries(pages)) byTitle.set(page.title, [...(byTitle.get(page.title) ?? []), path]);
+for (const [title, at] of byTitle) if (at.length > 1) throw new Error(`Two pages share the title "${title}": ${at.join(', ')}`);
 for (const [path, page] of Object.entries(pages)) {
   const filename = path === '/' ? 'index.html' : `${path.slice(1)}.html`;
   const target = resolve(dist, filename);
