@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { ICON_CATALOG, type IconName } from './catalog.generated';
 import './icons.generated.css';

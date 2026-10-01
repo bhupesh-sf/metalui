@@ -10,7 +10,7 @@ const SRC = root('packages/metalui/src');
 const PACKAGE = '@unlocalhosted/metalui';
 
 // Targets mirror src/ under the consumer's components/metalui/, so every relative import
-// (../tokens.css, ../../motion/swap, ../../components/surface/surface) resolves there unchanged.
+// (../../motion/swap, ../../components/surface/surface) resolves there unchanged.
 const target = (path) => `components/metalui/${relative(SRC, root(path))}`;
 const file = (path, type) => ({ path, type, target: target(path), content: readFileSync(root(path), 'utf8') });
 const fileType = (f) => (f.endsWith('.css') ? 'registry:file' : 'registry:ui');
@@ -38,16 +38,22 @@ const shared = {
 };
 const sharedByFile = new Map(Object.entries(shared).flatMap(([name, g]) => g.files.map((f) => [join(SRC, f), name])));
 
+// The tokens and theme come from the package, not a copy: a copied file can only be imported by a path
+// relative to the user's own CSS file, which the CLI cannot know (src/index.css, app/globals.css,
+// src/app/globals.css), and Next.js fails the build on a wrong one. A package import resolves everywhere.
+// TOKENS_SINCE is the first release whose tokens.css/theme.css the components expect; raise it by hand
+// when a component starts needing newer tokens.
+const TOKENS_SINCE = '0.3.0';
 const tokensItem = {
   $schema: 'https://ui.shadcn.com/schema/registry-item.json',
   name: 'tokens',
   type: 'registry:style',
   title: 'MetalUI tokens',
-  description: 'Soft Hardware colorways (bone, graphite), materials, caps and springs as --mu-* custom properties, and the Tailwind v4 theme built on them. Every component needs it; it imports both into your global CSS.',
-  files: ['packages/metalui/src/components/tokens.css', 'packages/metalui/src/components/theme.css'].map((p) => file(p, 'registry:file')),
+  description: 'Soft Hardware colorways (bone, graphite), materials, caps and springs as --mu-* custom properties, and the Tailwind v4 theme built on them. Every component needs it; it installs @unlocalhosted/metalui and imports its tokens.css and theme.css into your global CSS.',
+  dependencies: [`${PACKAGE}@^${TOKENS_SINCE}`],
   css: {
-    '@import "./components/metalui/components/tokens.css"': {},
-    '@import "./components/metalui/components/theme.css"': {},
+    [`@import "${PACKAGE}/tokens.css"`]: {},
+    [`@import "${PACKAGE}/theme.css"`]: {},
   },
 };
 
@@ -145,7 +151,7 @@ for (const { dir, ...item } of items) {
   emit(`packages/metalui/public/r/${item.name}.md`, readFileSync(root('packages/metalui/src', item.dir, `${item.name}.agent.md`), 'utf8'));
 }
 
-const strip = ({ $schema, dir, ...item }) => ({ ...item, files: item.files.map(({ content, ...f }) => f) });
+const strip = ({ $schema, dir, ...item }) => ({ ...item, ...(item.files && { files: item.files.map(({ content, ...f }) => f) }) });
 emit('packages/metalui/registry.json', JSON.stringify({
   $schema: 'https://ui.shadcn.com/schema/registry.json',
   name: 'metalui',

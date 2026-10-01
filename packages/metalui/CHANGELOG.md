@@ -4,6 +4,11 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ## Unreleased
 
+### Fixed
+
+- shadcn registry: the `tokens` item imports `tokens.css` and `theme.css` from `@unlocalhosted/metalui` instead of a copied path that Next.js could not resolve; it works in Vite and Next.js (`app/` and `src/app/`) with no edits.
+- `Icon` is marked `'use client'` in source, so a copy of it works as a Next.js client component.
+
 ## 0.3.0 - 2026-10-01
 
 ### Added

@@ -7,22 +7,13 @@
       "name": "tokens",
       "type": "registry:style",
       "title": "MetalUI tokens",
-      "description": "Soft Hardware colorways (bone, graphite), materials, caps and springs as --mu-* custom properties, and the Tailwind v4 theme built on them. Every component needs it; it imports both into your global CSS.",
-      "files": [
-        {
-          "path": "packages/metalui/src/components/tokens.css",
-          "type": "registry:file",
-          "target": "components/metalui/components/tokens.css"
-        },
-        {
-          "path": "packages/metalui/src/components/theme.css",
-          "type": "registry:file",
-          "target": "components/metalui/components/theme.css"
-        }
+      "description": "Soft Hardware colorways (bone, graphite), materials, caps and springs as --mu-* custom properties, and the Tailwind v4 theme built on them. Every component needs it; it installs @unlocalhosted/metalui and imports its tokens.css and theme.css into your global CSS.",
+      "dependencies": [
+        "@unlocalhosted/metalui@^0.3.0"
       ],
       "css": {
-        "@import \"./components/metalui/components/tokens.css\"": {},
-        "@import \"./components/metalui/components/theme.css\"": {}
+        "@import \"@unlocalhosted/metalui/tokens.css\"": {},
+        "@import \"@unlocalhosted/metalui/theme.css\"": {}
       }
     },
     {

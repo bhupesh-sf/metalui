@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { Attachment, Button, IconButton, Led, ScrollArea, Select, Skeleton, SwapText, Textarea, Tooltip, type LedKind } from '@unlocalhosted/metalui';
 import { MorphIcon, PlusIcon, RedoIcon } from '@unlocalhosted/metalui/icons';

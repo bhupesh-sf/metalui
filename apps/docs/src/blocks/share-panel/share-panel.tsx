@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import {
   Attachment, Avatar, Button, DropZone, Field, FormField, IconButton, Select, SwapText, Switch, Tooltip, TooltipProvider,

@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import {
   Avatar, Button, Field, FormField, Led, Radio, RadioGroup, Select, Sidebar, SwapText, Switch, Switcher, Textarea,
