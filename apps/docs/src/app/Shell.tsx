@@ -112,12 +112,12 @@ export function Shell() {
         <button className="menu-btn" type="button" aria-expanded={menuOpen} aria-controls="side" aria-label="Menu" onClick={() => setMenuOpen((o) => !o)}>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
         </button>
-        <NavLink className="brand" to="/" aria-label="MetalUI, home">
+        <NavLink className="brand" to="/">
           <Wordmark size={12} />
           <span className="eng">Soft Hardware · 0.0 alpha</span>
         </NavLink>
         <span className="grow" />
-        <button className="search-well" type="button" onClick={openSearch} aria-label="Search the system (⌘K)">
+        <button className="search-well" type="button" onClick={openSearch}>
           <svg className="ki" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" /></svg>
           <span>Search the system</span>
           <span className="key">⌘K</span>

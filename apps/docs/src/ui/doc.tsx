@@ -247,7 +247,7 @@ export function CopyPageButton() {
     <Button
       size="compact"
       className="mt-4 shrink-0"
-      aria-label="Copy this page as Markdown for agents"
+      aria-label={copied ? 'Copied page as Markdown for agents' : 'Copy page as Markdown for agents'}
       onClick={async () => {
         const main = document.querySelector('main');
         if (!main) return;

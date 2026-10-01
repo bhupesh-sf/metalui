@@ -6,6 +6,8 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ### Changed
 
+- **Tertiary text and engraved labels now meet WCAG AA (4.5:1) in both colorways.** `ink3` was 2.5:1 on Bone and 3.1 to 4.3:1 on Graphite, and `engrave` 2.7:1 and 3.3 to 3.6:1. Bone `ink3` is now `#6C6C6F` (was `#9A9A9D`), Graphite `ink3` `#939397` (was `#77777B`), and `engrave` is `rgba(40,38,32,.65)` on Bone (was .46) and `rgba(255,255,255,.49)` on Graphite (was .38). Placeholders, captions, hints, counts, tags and engraved labels read a little firmer; ink and ink2 are unchanged. SwiftUI tokens follow.
+- The mini icon button (the accept and reject marks inside chips) has a 24 × 24 hit area (WCAG 2.5.8); it looks the same.
 - SwiftUI package: `Package.swift` declares macOS 14 only. It listed iOS 17, but eight files use AppKit and the package does not build for iOS; the README, agent guide and `docs/BACKLOG.md` ("SwiftUI on iOS") say so, with the file-by-file port list.
 
 ## 0.3.2 - 2026-10-01

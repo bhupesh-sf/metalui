@@ -280,7 +280,7 @@ export function FloatingTable({ mode, lifted, onXray }: { mode: 'space' | 'table
   }, [mode]);
 
   return (
-    <div ref={root} className={mode === 'space' ? 'space' : 'drift'} aria-label="Components on the table">
+    <div ref={root} className={mode === 'space' ? 'space' : 'drift'} role="region" aria-label="Components on the table">
       <div className={mode === 'space' ? 'space-camera' : undefined} style={mode === 'space' ? undefined : { position: 'absolute', inset: 0 }}>
         {ITEMS.map((it) => {
           const [tx, ty] = it.table;

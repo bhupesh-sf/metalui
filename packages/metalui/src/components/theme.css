@@ -770,6 +770,7 @@
   --color-icon-button-mini-ink: var(--mu-r-icon-button-mini-ink);
   --color-icon-button-mini-ink-hover: var(--mu-r-icon-button-mini-ink-hover);
   --color-icon-button-mini-accept-ink: var(--mu-r-icon-button-mini-accept-ink);
+  --spacing-icon-button-mini-hit: var(--mu-r-icon-button-mini-hit);
   --spacing-chip-suggestion-height: var(--mu-r-chip-suggestion-height);
   --spacing-chip-suggestion-pad-left: var(--mu-r-chip-suggestion-pad-left);
   --spacing-chip-suggestion-pad-right: var(--mu-r-chip-suggestion-pad-right);
@@ -2224,6 +2225,9 @@
 }
 @utility recipe-icon-button-mini-hover {
   background: var(--mu-r-icon-button-mini-hover-background);
+}
+@utility icon-button-mini-hit {
+  &::after { content: ""; position: absolute; left: 50%; top: 50%; width: var(--mu-r-icon-button-mini-hit); height: var(--mu-r-icon-button-mini-hit); translate: -50% -50%; }
 }
 @utility duration-icon-button-tool-press-time {
   --tw-duration: var(--mu-r-icon-button-tool-press-time);

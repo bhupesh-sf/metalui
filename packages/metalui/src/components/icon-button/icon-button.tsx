@@ -6,7 +6,7 @@ import * as React from 'react';
  *   tool    a graphite cap (38, radius 15); pressed sinks 1 into a dark well; latched (pressed={true})
  *           stays down with a 4 pt green LED top right
  *   ghost   a flat round button (28) that fills on hover
- *   mini    a small flat pill (18 × 16) inside a chip; `accept` greens its glyph on hover
+ *   mini    a small flat pill (18 × 16) inside a chip, with a 24 × 24 hit area (WCAG 2.5.8); `accept` greens its glyph on hover
  * It renders a <button>; pass `render` through Base UI parts (Toolbar.Button) to join their focus.
  * Styled with the theme's utilities (the icon-button recipe). */
 
@@ -25,7 +25,7 @@ const FRAME = 'relative box-border inline-grid place-items-center flex-none p-0 
 const VARIANTS = {
   tool: 'size-icon-button-tool-size rounded-icon-button-tool-radius text-icon-button-tool-ink recipe-icon-button-tool transition-icon-button-tool [&>svg]:size-icon-button-tool-glyph active:translate-y-icon-button-tool-press active:recipe-icon-button-tool-pressed data-pressed:translate-y-icon-button-tool-press data-pressed:recipe-icon-button-tool-pressed data-pressed:after:absolute data-pressed:after:top-icon-button-led-inset data-pressed:after:right-icon-button-led-inset data-pressed:after:size-icon-button-led-size data-pressed:after:rounded-round data-pressed:after:recipe-icon-button-led',
   ghost: 'size-icon-button-ghost-size rounded-pill text-icon-button-ghost-ink transition-icon-button [&>svg]:size-icon-button-ghost-glyph hover:recipe-icon-button-ghost-hover hover:text-icon-button-ghost-ink-hover',
-  mini: 'w-icon-button-mini-w h-icon-button-mini-h rounded-pill type-icon-button-mini text-icon-button-mini-ink transition-icon-button hover:recipe-icon-button-mini-hover hover:text-icon-button-mini-ink-hover',
+  mini: 'w-icon-button-mini-w h-icon-button-mini-h icon-button-mini-hit rounded-pill type-icon-button-mini text-icon-button-mini-ink transition-icon-button hover:recipe-icon-button-mini-hover hover:text-icon-button-mini-ink-hover',
 };
 const ACCEPT = 'hover:text-icon-button-mini-accept-ink';
 
