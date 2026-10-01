@@ -4,6 +4,8 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ## Unreleased
 
+## 0.3.3 - 2026-10-01
+
 ### Added
 
 - `@unlocalhosted/metalui/styles.unlayered.css`: `styles.css` without cascade layers, for Tailwind v3 apps (their PostCSS plugin rejects `@layer` rules it has no `@tailwind` directive for, so `styles.css` failed their build). Same rules in the same order; verified in a Vite + Tailwind 3.4 app: styled, interactive, and the host's own `p-4` still 16px.
