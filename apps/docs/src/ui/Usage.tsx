@@ -56,7 +56,7 @@ export function Usage({ meta, agent, example }: { meta: UsageMeta; agent: string
   const [how, setHow] = React.useState<'package' | 'registry'>('package');
   const rows = apiRows(agent);
   return (
-    <div className="grid gap-20" data-testid="usage">
+    <div className="grid grid-cols-1 gap-20" data-testid="usage">
       <Tabs value={how} onValueChange={(v) => setHow(v as 'package' | 'registry')}>
         <Code
           code={install[how]}

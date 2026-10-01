@@ -50,7 +50,7 @@ export default function WipPage() {
         </ul>
       </Section>
       <Section id="reworks" title="Being reworked" lede="Open items from the backlog, by topic. Each is a change that is planned, not yet made.">
-        <ul className="m-0 grid max-w-measure list-none gap-0 p-0">
+        <ul className="m-0 grid max-w-measure grid-cols-1 list-none gap-0 p-0">
           {open.map((t) => (
             <li key={t.title} className="flex items-center justify-between gap-12 border-t border-rule py-10 first:border-t-0">
               <span className="flex min-w-0 items-center gap-8 type-ui text-ink">

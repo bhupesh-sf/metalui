@@ -300,6 +300,12 @@ tbody tr:hover td { background: color-mix(in srgb, var(--ink) 2.5%, transparent)
   background: var(--mu-r-well-self-region-background);
   box-shadow: var(--mu-r-well-self-region-shadow); }
 .stage.wide { width: auto; margin-inline: 0; } /* a scene, not a specimen: things move across it */
+/* On a phone a demo wider than the screen scrolls inside its stage; it never widens the page. */
+@media (max-width: 760px) {
+  .stage { overflow-x: auto; }
+  /* A few pixels of a wide font past the edge are clipped, not scrolled; nothing the page can reach is hidden. */
+  .shell > main { overflow-x: clip; }
+}
 .stage.bare { background: none; box-shadow: none; padding-left: 0; padding-right: 0; }
 /* What a specimen sits on follows its layer (docs/COMPOSITION.md). A part or component sits on the table:
    no well, the space hugs it. An object, instrument or place sits on a piece of canvas: the page's own

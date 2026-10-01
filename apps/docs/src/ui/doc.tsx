@@ -27,7 +27,7 @@ export function PageHeader({ title, lede, kicker, tags, children }: { title: str
   return (
     <header id="head" className="page-head">
       <span className="eng">{auto || 'MetalUI · Soft Hardware'}</span>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
         <h1>{title}</h1>
         <CopyPageButton />
       </div>
@@ -274,8 +274,8 @@ export function Code({ code, label, lang, head, numbers = false, maxH = true, wr
   const lines = <Lines code={code} lang={lang ?? langOf(label)} numbers={numbers} className={['type-doc-code px-16 py-14', maxH ? 'max-h-440' : ''].join(' ')} />;
   return (
     <div className="material-stage max-w-full min-w-0 overflow-hidden rounded-plate">
-      <div data-md="skip" className="flex min-h-40 items-center justify-between gap-12 border-b border-rule py-6 pl-14 pr-6">
-        {head ?? <span className="type-readout truncate text-ink3">{label ?? 'Code'}</span>}
+      <div data-md="skip" className="flex min-h-40 flex-wrap items-center justify-between gap-x-12 gap-y-4 border-b border-rule py-6 pl-14 pr-6">
+        <div className="min-w-0 max-w-full overflow-x-auto">{head ?? <span className="type-readout truncate text-ink3">{label ?? 'Code'}</span>}</div>
         <CopyButton text={code} />
       </div>
       {wrap ? wrap(lines) : lines}

@@ -84,7 +84,7 @@ export default function ChangelogPage() {
                   <Led kind={GROUP_LED[g.name] ?? 'off'} size="small" />
                   {g.name}
                 </span>
-                <ul className="m-0 grid max-w-measure list-none gap-0 p-0">
+                <ul className="m-0 grid max-w-measure grid-cols-1 list-none gap-0 break-words p-0">
                   {g.notes.map((n) => (
                     <li key={n} className="border-t border-rule py-8 type-body text-ink first:border-t-0"><Inline text={n} /></li>
                   ))}

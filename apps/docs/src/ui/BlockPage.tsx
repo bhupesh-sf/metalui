@@ -37,7 +37,7 @@ export function BlockPage({ title, lede, play, usage, registry, madeOf, more, so
       <Section title="Playground" lede={play.lede}>
         <Bench caption={play.caption} className="wide">{play.node}</Bench>
       </Section>
-      <Section id="usage" title="Usage" lede={`One command copies the block to ${usage.file} and adds @unlocalhosted/metalui if you don't have it; then use it.`}>
+      <Section id="usage" title="Usage" lede={<>One command copies the block into your project and adds @unlocalhosted/metalui if you don&rsquo;t have it. It lands at <code className="break-all">{usage.file}</code>; then use it.</>}>
         <div className="grid gap-16">
           <Code code={`npx shadcn@latest add https://metalui.dev/r/${registry}.json`} label="install" lang="bash" />
           <Code code={usage.code} label="example.tsx" lang="tsx" />
