@@ -37,6 +37,8 @@ To copy the source into your project instead:
 npx shadcn@latest add https://metalui.dev/r/button.json
 ```
 
+This needs Tailwind v4 (the copied components use its utilities), and the first install also adds `@unlocalhosted/metalui` for the tokens and theme. Tested on Vite and on Next.js (App Router and Pages Router). Whole screens install the same way, for example `https://metalui.dev/r/block-settings.json`. The npm package itself needs no Tailwind.
+
 Colorway: set `data-mu-colorway="bone"` or `"graphite"` on any ancestor. Without it, `prefers-color-scheme` decides.
 
 ## SwiftUI

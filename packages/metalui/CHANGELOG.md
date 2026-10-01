@@ -10,6 +10,10 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 - The mini icon button (the accept and reject marks inside chips) has a 24 × 24 hit area (WCAG 2.5.8); it looks the same.
 - SwiftUI package: `Package.swift` declares macOS 14 only. It listed iOS 17, but eight files use AppKit and the package does not build for iOS; the README, agent guide and `docs/BACKLOG.md` ("SwiftUI on iOS") say so, with the file-by-file port list.
 
+### Fixed
+
+- The npm tarball no longer contains `dist/index.css`, an unreferenced duplicate of `icons.css` (13 kB smaller packed). Nothing imported it; import `icons.css` for icons as before.
+- The landing page has a `<main>` landmark and one (visually hidden) `<h1>` once it renders, so it has a heading structure for assistive technology.
 ## 0.3.2 - 2026-10-01
 
 ### Fixed
