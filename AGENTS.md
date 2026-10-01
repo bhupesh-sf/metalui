@@ -30,6 +30,7 @@ e2e/                       Playwright feature slices; captures land in docs/capt
 - **React components wrap Base UI.** Don't reimplement focus management, keyboard handling or ARIA that a Base UI part already provides. The component layer moves to Tailwind v4 utilities from `theme.css`.
 - **Swift types are prefixed `Metal`.** Minimum platforms: macOS 14 and iOS 17.
 - **Material recipes are shared.** CSS and SwiftUI render the same fill and shadow stack; never tune one platform alone.
+- **Performance rules live in `docs/PERFORMANCE.md`.** Nothing runs at rest, only transform and opacity animate, one low-power switch, one import ships one component. `npm run check` lints transitions; `npm run bench:gate` and `npm run bench:bundle:gate` hold the numbers.
 - **Tests are integration or e2e only** (Playwright feature slices). No unit tests.
 - **X-ray cards are handled, not slid.** Every x-ray card holds a specimen: the real component, changed by handling it, never sliders. Follow `docs/EDITING_LAYER.md` (the Button x-ray is the reference) and build on `apps/docs/src/ui/edit`.
 - **Every docs page is real documentation.** No throwaway demo pages. Tunable values go in a DialKit panel on the page.
