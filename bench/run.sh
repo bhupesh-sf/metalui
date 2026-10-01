@@ -11,6 +11,12 @@ OUT=bench/results
 mkdir -p "$OUT"
 
 load() { cut -d' ' -f1 /proc/loadavg; }
+# A shared machine is rarely quiet on demand: wait up to BENCH_WAIT_S for the load to fall, then run anyway
+# (the run is marked invalid if it was still busy).
+waited=0
+while [ "$waited" -lt "${BENCH_WAIT_S:-0}" ] && awk -v l="$(load)" -v m="$MAX_LOAD" 'BEGIN { exit !(l > m) }'; do
+  sleep 20; waited=$((waited + 20))
+done
 before=$(load)
 
 # Fingerprint: enough to say exactly where the numbers came from.
