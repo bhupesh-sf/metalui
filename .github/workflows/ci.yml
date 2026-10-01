@@ -25,6 +25,25 @@ jobs:
       - run: npm run build
       - run: npm run typecheck
       - run: npm run verify:package
+      - run: npm run bench:bundle:gate
+
+  # Idle counters (running loops, layouts and style recalcs per second at rest) do not depend on how busy the
+  # runner is, so they gate here. Durations are only ever published from the benchmark machine (bench/run.sh).
+  # continue-on-error until it has run green on GitHub once; then drop it and the gate is hard.
+  idle:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: BENCH_PAGES=all npx playwright test -c bench/playwright.config.ts --workers=3
+      - run: npm run bench:gate
 
   swift:
     runs-on: macos-15
