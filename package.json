@@ -28,7 +28,8 @@
     "check:slots": "node scripts/check-slots.mjs",
     "check:utilities": "node scripts/check-utilities.mjs",
     "check:host-safe": "node scripts/check-host-safe.mjs",
-    "slices": "npm run slices -w @metalui/docs --"
+    "slices": "npm run slices -w @metalui/docs --",
+    "bench:bundle": "node scripts/bench-bundle.mjs"
   },
   "engines": {
     "node": ">=22"

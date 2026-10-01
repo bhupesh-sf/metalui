@@ -13,3 +13,6 @@ docs/captures/review/
 
 # vitest browser mode: attachments and cache
 apps/docs/.vitest/
+
+# Benchmark output (produced by CI, never committed)
+bench/results/
