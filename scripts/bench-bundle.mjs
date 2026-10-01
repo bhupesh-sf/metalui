@@ -66,3 +66,15 @@ const heavy = Object.entries(perExport).sort((a, b) => b[1].gzip - a[1].gzip);
 console.log(`\nper-export (gzip, ${names.length} exports) heaviest:`);
 for (const [n, f] of heavy.slice(0, 10)) console.log(`  ${n.padEnd(30)} raw ${kb(f.raw)}  gzip ${kb(f.gzip)}`);
 for (const n of ['Button', 'Switch', 'Tooltip']) if (perExport[n]) console.log(`  ${n.padEnd(30)} raw ${kb(perExport[n].raw)}  gzip ${kb(perExport[n].gzip)}`);
+
+// --gate: a consumer that imports one small component must ship one small component. Ceilings are gzip KB,
+// set just above today's cost; lower them as the shared graph shrinks.
+if (process.argv.includes('--gate')) {
+  const CEILING = { Button: 40, Switch: 40, Led: 40, Well: 40, Surface: 40 };
+  const over = Object.entries(CEILING).filter(([n, kb]) => !perExport[n] || perExport[n].gzip / 1024 > kb);
+  if (over.length) {
+    console.error(`\nbench-bundle gate: ${over.map(([n, kb]) => `${n} ${perExport[n] ? (perExport[n].gzip / 1024).toFixed(1) : 'missing'} KB gzip > ${kb}`).join(', ')}`);
+    process.exit(1);
+  }
+  console.log('\nbench-bundle gate: single-component imports within budget');
+}

@@ -32,7 +32,8 @@
     "bench:bundle": "node scripts/bench-bundle.mjs",
     "bench:web": "playwright test -c bench/playwright.config.ts",
     "bench:idle-report": "node scripts/bench-idle-report.mjs",
-    "bench:gate": "node scripts/bench-gate.mjs"
+    "bench:gate": "node scripts/bench-gate.mjs",
+    "bench:bundle:gate": "node scripts/bench-bundle.mjs --gate"
   },
   "engines": {
     "node": ">=22"
