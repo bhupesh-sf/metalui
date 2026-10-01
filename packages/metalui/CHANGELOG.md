@@ -4,6 +4,8 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ## Unreleased
 
+## 0.3.0 - 2026-10-01
+
 ### Added
 
 - **Blocks in the shadcn registry**: Settings, Studio week, Task inbox, Share panel, AI composer and Availability picker install with `npx shadcn@latest add https://metalui.dev/r/block-<name>.json`, into `components/metalui/screens/<name>/`; they need this package installed.
