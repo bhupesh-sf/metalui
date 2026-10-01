@@ -61,12 +61,12 @@ test('Reduce Motion: the latch snaps to its depth', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await open(page, '/components/toggle', 'graphite');
   const snap = page.getByRole('button', { name: 'Snap' });
-  const y = await snap.evaluate(async (el) => {
-    (el as HTMLElement).click();
-    for (let i = 0; i < 3; i++) await new Promise((r) => requestAnimationFrame(r));
+  await snap.click();
+  // With Reduce Motion there is no travel: the latch is at its depth as soon as the state lands. Wait for that,
+  // not for a number of frames, which a slow machine overruns.
+  await expect.poll(() => snap.evaluate((el) => {
     const t = getComputedStyle(el).translate;
     return t === 'none' ? 0 : parseFloat(t.split(' ')[1] ?? '0');
-  });
-  expect(y).toBeCloseTo(1, 1);
+  })).toBeCloseTo(1, 1);
   await expect(snap.locator('.mu-led')).toHaveAttribute('data-kind', 'live');
 });

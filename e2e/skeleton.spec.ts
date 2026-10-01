@@ -20,17 +20,23 @@ for (const colorway of COLORWAYS) {
 
 test('the shapes wait a beat, then sweep a sheen; the content lands where they stood', async ({ page }) => {
   await open(page, '/components/skeleton', 'bone');
+  // Read the animation's own timeline, not the clock: how long two frames take differs between machines.
   const first = await section(page).evaluate(async (el) => {
     (([...el.querySelectorAll('button')].find((b) => b.textContent === 'Load again')) as HTMLElement).click();
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     const shape = el.querySelector('.mu-skeleton')!;
+    const arrive = shape.getAnimations().find((a) => (a as CSSAnimation).animationName === 'mu-skeleton-arrive')!;
+    arrive.pause();
+    const timing = arrive.effect!.getTiming();
+    arrive.currentTime = 0;
     const early = parseFloat(getComputedStyle(shape).opacity);
-    await new Promise((r) => setTimeout(r, 900));
+    arrive.currentTime = Number(timing.delay) + Number(timing.duration);
     const later = parseFloat(getComputedStyle(shape).opacity);
     const sheen = getComputedStyle(shape, '::after').animationName;
     const top = shape.closest('.mu-skeleton-swap')!.getBoundingClientRect().top;
-    return { early, later, sheen, top };
+    return { early, later, sheen, top, delay: Number(timing.delay) };
   });
+  expect(first.delay).toBeGreaterThanOrEqual(200); // the shapes wait a beat before they show
   expect(first.early).toBeLessThan(0.05);
   expect(first.later).toBeGreaterThan(0.95);
   expect(first.sheen).toBe('mu-skeleton-sheen');
