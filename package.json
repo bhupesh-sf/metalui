@@ -31,7 +31,8 @@
     "slices": "npm run slices -w @metalui/docs --",
     "bench:bundle": "node scripts/bench-bundle.mjs",
     "bench:web": "playwright test -c bench/playwright.config.ts",
-    "bench:idle-report": "node scripts/bench-idle-report.mjs"
+    "bench:idle-report": "node scripts/bench-idle-report.mjs",
+    "bench:gate": "node scripts/bench-gate.mjs"
   },
   "engines": {
     "node": ">=22"
