@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Surface } from '../../components/surface/surface';
 import { Well } from '../../components/well/well';
+import { useAwake } from '../../motion/awake';
 
 /* ─────────────────────────────────────────────────────────
  * DAY: a custom block (an object). A tear-off page sunk into a raise slab.
@@ -131,6 +132,7 @@ function useNow(on: boolean, beat: number) {
   const [now, setNow] = React.useState(() => Date.now());
   React.useEffect(() => {
     if (!on || typeof window === 'undefined') return;
+    setNow(Date.now()); // catch up the moment it wakes
     const id = window.setInterval(() => setNow(Date.now()), beat);
     return () => window.clearInterval(id);
   }, [on, beat]);
@@ -194,7 +196,13 @@ const Root = React.forwardRef<HTMLElement, DayRootProps>(function DayRoot(
 ) {
   const reduced = useReduced();
   const still = reduced || !animate;
-  const nowMs = useNow(true, BEAT_MS);
+  const [watch, awake] = useAwake();
+  const nowMs = useNow(awake, BEAT_MS);
+  const slab = React.useCallback((el: HTMLElement | null) => {
+    watch(el);
+    if (typeof ref === 'function') ref(el);
+    else if (ref) ref.current = el;
+  }, [watch, ref]);
   const [offset, setOffset] = React.useState(0);
   const [frame, setFrame] = React.useState(-1);
   const base = date ?? new Date(nowMs);
@@ -229,7 +237,7 @@ const Root = React.forwardRef<HTMLElement, DayRootProps>(function DayRoot(
   const pad = (n: number) => String(n).padStart(2, '0');
   return (
     <DayContext.Provider value={state}>
-      <Surface ref={ref} as="section" material="raise" radius="card" aria-label={`${f.long}, ${pad(now.getHours())}:${pad(now.getMinutes())}`} className={className ? `${CARD} ${className}` : CARD} {...props}>
+      <Surface ref={slab} as="section" material="raise" radius="card" aria-label={`${f.long}, ${pad(now.getHours())}:${pad(now.getMinutes())}`} className={className ? `${CARD} ${className}` : CARD} {...props}>
         {children}
       </Surface>
     </DayContext.Provider>

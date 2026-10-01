@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Weather, WeatherTile, WEATHER_SKIES, type WeatherDay, type WeatherHour, type WeatherKind, type WeatherSky } from '@unlocalhosted/metalui';
+import { useAwake, Weather, WeatherTile, WEATHER_SKIES, type WeatherDay, type WeatherHour, type WeatherKind, type WeatherSky } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/blocks/weather/weather.tsx?raw';
 import agentSource from '../../../../../packages/metalui/src/blocks/weather/weather.agent.md?raw';
 import { ComponentPage } from '../../ui/ComponentPage';
@@ -81,7 +81,8 @@ function Playground() {
     },
     motion: { animate: true },
   });
-  const hour = useClock(d.time.runs, d.time.dayLength, d.time.start);
+  const [watch, awake] = useAwake(); // the demo's day-cycle clock sleeps when the page is hidden or scrolled away
+  const hour = useClock(d.time.runs && awake, d.time.dayLength, d.time.start);
   const p = period(hour);
   const kind: WeatherKind = d.sky.kind === 'forecast' ? p.kind : (d.sky.kind as WeatherKind);
   const sky: WeatherSky = d.sky.own
@@ -96,7 +97,7 @@ function Playground() {
   });
   const clock = `${pad(Math.floor(hour))}:${pad(Math.floor(((hour % 1) * 60) / 5) * 5)}`;
   const widget = (cw: 'bone' | 'graphite') => (
-    <div key={cw} data-mu-colorway={cw} data-testid={`weather-${cw}`} className="flex flex-col items-center gap-20 rounded-card bg-page p-24">
+    <div key={cw} ref={cw === 'bone' ? watch : undefined} data-mu-colorway={cw} data-testid={`weather-${cw}`} className="flex flex-col items-center gap-20 rounded-card bg-page p-24">
       <Weather
         place="Lisbon"
         summary={`${condition} now`}

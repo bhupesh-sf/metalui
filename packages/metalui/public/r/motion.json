@@ -3,9 +3,15 @@
   "name": "motion",
   "type": "registry:lib",
   "title": "MetalUI motion",
-  "description": "Springs, swap, indicator, refuse and haptic helpers that MetalUI components use.",
+  "description": "Springs, swap, indicator, refuse, awake and haptic helpers that MetalUI components use.",
   "registryDependencies": [],
   "files": [
+    {
+      "path": "packages/metalui/src/motion/awake.ts",
+      "type": "registry:ui",
+      "target": "components/metalui/motion/awake.ts",
+      "content": "import * as React from 'react';\n\n/**\n * Whether the thing on screen is worth running a clock for: the tab is visible and the node is in view.\n * Returns a ref callback to put on the node and the answer. Anything that ticks on a timer while nobody can\n * see it should gate on this, so a page at rest costs nothing.\n */\nexport function useAwake(): [(el: Element | null) => void, boolean] {\n  const [el, setEl] = React.useState<Element | null>(null);\n  const [seen, setSeen] = React.useState(true);\n  const [shown, setShown] = React.useState(() => typeof document === 'undefined' || !document.hidden);\n  React.useEffect(() => {\n    if (!el) return;\n    const watch = new IntersectionObserver((entries) => setSeen(entries[entries.length - 1]?.isIntersecting ?? true)); // the latest entry is the current truth\n    const visibility = () => setShown(!document.hidden);\n    watch.observe(el);\n    document.addEventListener('visibilitychange', visibility);\n    visibility();\n    return () => { watch.disconnect(); document.removeEventListener('visibilitychange', visibility); };\n  }, [el]);\n  return [setEl, seen && shown];\n}\n"
+    },
     {
       "path": "packages/metalui/src/motion/haptic.ts",
       "type": "registry:ui",

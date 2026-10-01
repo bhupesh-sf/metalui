@@ -19,9 +19,9 @@ const fileType = (f) => (f.endsWith('.css') ? 'registry:file' : 'registry:ui');
 const shared = {
   motion: {
     title: 'MetalUI motion',
-    description: 'Springs, swap, indicator, refuse and haptic helpers that MetalUI components use.',
+    description: 'Springs, swap, indicator, refuse, awake and haptic helpers that MetalUI components use.',
     dependsOn: [],
-    files: ['motion/haptic.ts', 'motion/hop.ts', 'motion/indicator.tsx', 'motion/layout-effect.ts', 'motion/refuse.ts', 'motion/springs.generated.ts', 'motion/swap.tsx'],
+    files: ['motion/awake.ts', 'motion/haptic.ts', 'motion/hop.ts', 'motion/indicator.tsx', 'motion/layout-effect.ts', 'motion/refuse.ts', 'motion/springs.generated.ts', 'motion/swap.tsx'],
   },
   icons: {
     title: 'MetalUI icon runtime',

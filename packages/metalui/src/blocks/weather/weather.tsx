@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Surface } from '../../components/surface/surface';
 import { Well } from '../../components/well/well';
+import { useAwake } from '../../motion/awake';
 import { Led } from '../../components/led/led';
 import { Rule } from '../../components/rule/rule';
 
@@ -367,11 +368,11 @@ export function WeatherGlyph({ kind, hour = 12, className, ...props }: WeatherGl
 
 /* ── frames ─────────────────────────────────────────────── */
 
-/** A stepped frame counter; holds at 0 under reduced motion or when `on` is false. */
-function useFrames(on: boolean) {
+/** A stepped frame counter; holds at 0 under reduced motion or when `on` is false, and holds still while `awake` is false. */
+function useFrames(on: boolean, awake: boolean) {
   const [tick, setTick] = React.useState(0);
   React.useEffect(() => {
-    if (!on || typeof window === 'undefined') return;
+    if (!on || !awake || typeof window === 'undefined') return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     let id: number | undefined;
     const run = () => {
@@ -381,7 +382,7 @@ function useFrames(on: boolean) {
     run();
     reduced.addEventListener('change', run);
     return () => { window.clearInterval(id); reduced.removeEventListener('change', run); };
-  }, [on]);
+  }, [on, awake]);
   return on ? tick : 0;
 }
 
@@ -464,13 +465,19 @@ export interface WeatherSkyProps extends React.HTMLAttributes<HTMLElement> {
 /** The well with its dot-matrix scene; children (Weather.Now) sit on its ground. */
 const Sky = React.forwardRef<HTMLElement, WeatherSkyProps>(function WeatherSkyPart({ hour, sky, date, animate = true, label, className, children, ...props }, ref) {
   const size = React.useContext(SizeContext);
-  const tick = useFrames(animate);
+  const [watch, awake] = useAwake();
+  const tick = useFrames(animate, awake);
+  const well = React.useCallback((el: HTMLElement | null) => {
+    watch(el);
+    if (typeof ref === 'function') ref(el);
+    else if (ref) ref.current = el;
+  }, [watch, ref]);
   const base = typeof sky === 'string' ? WEATHER_SKIES[sky] : sky;
   const described: WeatherSky = base.moonPhase === undefined && date ? { ...base, moonPhase: moonAge(date) } : base;
   const g = GRID[size];
   const paths = weatherScene({ ...g, hour, sky: described, tick });
   return (
-    <Well ref={ref} variant="field" role={label ? 'img' : undefined} aria-label={label} data-kind={typeof sky === 'string' ? sky : 'custom'} className={className ? `${SKY[size]} ${className}` : SKY[size]} {...props}>
+    <Well ref={well} variant="field" role={label ? 'img' : undefined} aria-label={label} data-kind={typeof sky === 'string' ? sky : 'custom'} className={className ? `${SKY[size]} ${className}` : SKY[size]} {...props}>
       <svg aria-hidden shapeRendering="crispEdges" viewBox={`0 0 ${g.cols * PITCH} ${g.rows * PITCH}`} className="absolute inset-0 block size-full">
         {WEATHER_SKY_LAYERS.map((l) => (paths[l] ? <path key={l} data-layer={l} d={paths[l]} className={SKY_PAINT[l]} /> : null))}
       </svg>

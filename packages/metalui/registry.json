@@ -20,9 +20,14 @@
       "name": "motion",
       "type": "registry:lib",
       "title": "MetalUI motion",
-      "description": "Springs, swap, indicator, refuse and haptic helpers that MetalUI components use.",
+      "description": "Springs, swap, indicator, refuse, awake and haptic helpers that MetalUI components use.",
       "registryDependencies": [],
       "files": [
+        {
+          "path": "packages/metalui/src/motion/awake.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/awake.ts"
+        },
         {
           "path": "packages/metalui/src/motion/haptic.ts",
           "type": "registry:ui",
@@ -472,6 +477,7 @@
       "description": "The day as an object: a tear-off page with the date in dots, the month, weekday and clock in the pixel face, the minute filling along its foot; the year so far one dot a day, the days left and the moon; one line for the day. Tap the page to tear it off. And a small tile of the date.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json",
         "https://metalui.dev/r/well.json"
@@ -1842,6 +1848,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/rule.json",
         "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json",
