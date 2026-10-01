@@ -5,6 +5,13 @@
 - [Full agent guide](https://metalui.dev/AI.md)
 - [Component manifest](https://metalui.dev/components.json)
 - [Icon manifest](https://metalui.dev/icons.json)
+- [Changelog](https://metalui.dev/changelog)
+
+## Install
+
+- React from npm (ESM only): `npm install @unlocalhosted/metalui`, then import `@unlocalhosted/metalui/styles.css` once.
+- React source into your project (Tailwind v4): `npx shadcn@latest add https://metalui.dev/r/<name>.json`; whole screens as `https://metalui.dev/r/block-<name>.json` (settings, task-inbox, share-panel, ai-composer, availability-picker, studio-week).
+- SwiftUI: add `https://github.com/vijayksingh/metalui` with Swift Package Manager (macOS 14, iOS 17).
 
 ## Components
 

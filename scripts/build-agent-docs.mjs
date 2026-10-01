@@ -24,7 +24,9 @@ import '@unlocalhosted/metalui/styles.css'; // once, at the app root
 import '@unlocalhosted/metalui/icons.css';  // once, if you use icons
 \`\`\`
 
-Or copy the source into your project with the shadcn CLI: \`npx shadcn@latest add ${ORIGIN}/r/<name>.json\`.
+The package is ESM only: use \`import\`, not \`require()\`. Components are client components (they carry \`"use client"\`), so they work in Next.js App Router.
+
+Or copy the source into your project with the shadcn CLI (Tailwind v4): \`npx shadcn@latest add ${ORIGIN}/r/<name>.json\`. The first install also adds \`@unlocalhosted/metalui\` and imports its \`tokens.css\` and \`theme.css\` into your global CSS, which is what styles the copied component; files land under \`components/metalui/\` in the same layout as the package, so imports between components resolve. Whole screens (blocks) install the same way as \`${ORIGIN}/r/block-<name>.json\` into \`components/metalui/screens/<name>/\`. Both routes work in Vite and Next.js (\`app/\` and \`src/app/\`). Release notes: ${ORIGIN}/changelog.
 
 SwiftUI: add the package \`https://github.com/vijayksingh/metalui\` and \`import MetalUI\`. It needs macOS 14 or iOS 17.
 
@@ -76,6 +78,13 @@ emit('packages/metalui/public/llms.txt', `# MetalUI
 - [Full agent guide](${ORIGIN}/AI.md)
 - [Component manifest](${ORIGIN}/components.json)
 - [Icon manifest](${ORIGIN}/icons.json)
+- [Changelog](${ORIGIN}/changelog)
+
+## Install
+
+- React from npm (ESM only): \`npm install @unlocalhosted/metalui\`, then import \`@unlocalhosted/metalui/styles.css\` once.
+- React source into your project (Tailwind v4): \`npx shadcn@latest add ${ORIGIN}/r/<name>.json\`; whole screens as \`${ORIGIN}/r/block-<name>.json\` (settings, task-inbox, share-panel, ai-composer, availability-picker, studio-week).
+- SwiftUI: add \`https://github.com/vijayksingh/metalui\` with Swift Package Manager (macOS 14, iOS 17).
 
 ## Components
 
