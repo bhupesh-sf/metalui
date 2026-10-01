@@ -26,12 +26,12 @@ These are facts about the repo today, not guesses.
 - [x] **71 type errors after adding everything.** Fixed: files land mirroring `src/` (`components/metalui/{components,blocks,motion,icons}/…`) so every relative import resolves; `motion`, `icons` and `icon-components` are registry items; each item's `registryDependencies` come from its real import graph, and the build fails if an import has no owner. Result: 92 of 92 items install, 0 type errors.
 - [x] Six unused `React` imports removed. Two stale items whose source was removed (`lens-bar`, `memory-scrubber`) were still served; the generator now prunes them.
 - [x] Re-run against production after deploy, 2026-10-01: 92 of 92 items install from `metalui.dev`, 0 type errors, 1836 `--mu-` variables in the built CSS.
-- [ ] **Blocks as registry items (committed, not pushed).** The six docs blocks are now `block-<name>` items that install to `components/metalui/screens/<name>/`; all six install and type-check (0 errors) against a locally packed package. They depend on `@unlocalhosted/metalui@^0.3.0` because they use components that are only in Unreleased, so **publish 0.3.0 to npm before pushing this commit**; until then `shadcn add block-*` fails with `ETARGET`. After release, re-run the blocks install against production.
+- [x] **Blocks as registry items**, 2026-10-01: the six docs blocks are `block-<name>` items (install to `components/metalui/screens/<name>/`). 0.3.0 is on npm (latest, provenance attested, `verify:registry` passes); on a clean VM all six install from `metalui.dev` with the real npm package 0.3.0, 0 type errors, and a build rendering `Settings` succeeds.
 - [ ] Optional after launch: list `@metalui` in shadcn's public registry directory so `npx shadcn add @metalui/button` works; the files stay hosted at `metalui.dev/r`.
 - [ ] **Still to do:** the same test in Next.js App Router, where the `@import "./components/metalui/..."` path in `src/index.css` may need to be `../` for `app/globals.css`; the `@theme { --spacing: 1px }` in `theme.css` overrides a host app's whole Tailwind spacing scale, so decide if the shadcn path should warn; TS 6 rejects the standard shadcn `baseUrl` config without `ignoreDeprecations` (shadcn's side, mention in docs); `/r/registry.json` is a 404, so there is no machine-readable index.
 - Passed both runs: `button.json` is 200, `application/json`, CORS `*`; a missing item is a real 404.
 
-Not yet run: sections 1, 2, 4–12.
+Section 1 partly done: 0.3.0 published (tag `v0.3.0`, provenance on npm, `verify:registry` passes). Not yet run: the rest of section 1, and sections 2, 4–12.
 
 ---
 
