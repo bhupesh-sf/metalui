@@ -24,7 +24,8 @@ export default function Landing() {
   }, [xray, enter, close]);
 
   return (
-    <div className="landing">
+    <main className="landing">
+      <h1 className="sr-only">MetalUI: UI components that feel like real objects, for React and SwiftUI</h1>
       <header className="landing-corners">
         <span className="eng">metalui // soft hardware</span>
         <Switcher size="compact" aria-label="Colorway" value={colorway} onValueChange={(v) => setColorway(v as Colorway)} options={[{ value: 'bone', label: 'Bone' }, { value: 'graphite', label: 'Graphite' }]} />
@@ -39,6 +40,6 @@ export default function Landing() {
       </footer>
 
       {xray && <XrayOverlay kind={xray.kind} from={xray.from} onClose={close} />}
-    </div>
+    </main>
   );
 }
