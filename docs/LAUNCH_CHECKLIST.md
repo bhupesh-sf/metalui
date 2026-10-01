@@ -40,6 +40,14 @@ These are facts about the repo today, not guesses.
 - [ ] Several component descriptions in `meta.json` read like token specs ("frost-strong at .92, radius 18, padding 6", Menu, Tooltip, Slider, Command palette, Fan, Day, Folder) and show up that way in search results and the shadcn registry; rewrite them as one plain sentence about what the component is for.
 - [ ] Still to do from 4 and 5: previews in the real scrapers (X card validator, LinkedIn, Slack, Discord, iMessage), `og.png` under 300 px readability, Search Console and Bing verification, favicon and touch icon check, Lighthouse and axe on mobile, keyboard and VoiceOver passes, the Safari and Firefox pass.
 
+**Section 6, agent surfaces, live, 2026-10-01:** `/AI.md` (201 kB), `/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/components.json` and `/icons.json` all 200 with the right content types; all 91 links in `AI.md` and `llms.txt` resolve; all 88 component guides exist. `llms.txt` and `AI.md` now say how to install (npm, shadcn, blocks, SwiftUI), that the package is ESM only, and link the changelog.
+
+- [ ] `AI.md` is 201 kB (about 50k tokens): consider a short entry guide plus per-component guides fetched on demand. Try it for real: give an agent only `https://metalui.dev/AI.md`, ask for a settings panel, and fix what it gets wrong.
+
+**Section 10, the repository as a public product, 2026-10-01:** added `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, bug and feature issue forms (blank issues off), a pull request template, `CODEOWNERS` and Dependabot config. Set on GitHub: 8 topics, private vulnerability reporting, Dependabot alerts and security updates, Discussions on, `main` protected against force-push and deletion (pull requests are not required, direct pushes remain the workflow), and a ruleset that stops `v*` release tags being moved or deleted. Already on: secret scanning with push protection.
+
+- [ ] Still to do: social preview image (GitHub Settings, Social preview, upload `og.png`; no API for it), a pinned first Discussion saying where questions go, GitHub Releases per version (changelog text), repository size and the weight of `docs/captures`, history scan with gitleaks, and the decision about which `docs/` working notes stay public.
+
 Section 1 partly done: 0.3.0 published (tag `v0.3.0`, provenance on npm, `verify:registry` passes). **Section 2, fresh installs from npm 0.3.1, 2026-10-01 (clean VM, headless Chromium, production builds).** Each app renders Surface, Button, Checkbox, Switch, Led, Kbd, Progress and Skeleton; the check asserts no console errors or warnings, no failed requests, a styled 32px button with a shadow, the checkbox toggling on a real click, the colorway attribute changing the surface, and (where the app has Tailwind) a host `p-4` still 16px.
 
 - [x] Vite + React 19 + TS (no Tailwind), Vite + React 18, Vite + React 19 + Tailwind v4: `tsc` 0 errors, build ok, all assertions pass.
