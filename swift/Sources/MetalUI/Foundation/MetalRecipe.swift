@@ -75,17 +75,28 @@ struct MetalOuterShadows<S: Shape>: View {
     let shape: S
     var excludesInterior = false
 
+    /// How far the blurs reach past the shape: the most any one layer spills.
+    private var extent: CGFloat {
+        layers.map { $0.blur + abs($0.x) + abs($0.y) + max($0.spread, 0) }.max() ?? 0
+    }
+
     var body: some View {
+        // One texture for the whole stack: a parent that moves, fades or scales re-uses it instead of
+        // re-blurring every layer. drawingGroup clips to its bounds, so the group is padded by the
+        // extent (and handed back as negative padding, so layout does not change).
+        let reach = extent * 2
         Group {
             if excludesInterior {
-                let extent = layers.map { $0.blur + abs($0.x) + abs($0.y) + max($0.spread, 0) }.max() ?? 0
                 stack.mask {
-                    MetalOutsideShape(base: shape, extent: extent * 2).fill(style: FillStyle(eoFill: true))
+                    MetalOutsideShape(base: shape, extent: reach).fill(style: FillStyle(eoFill: true))
                 }
             } else {
                 stack
             }
         }
+        .padding(reach)
+        .drawingGroup(opaque: false)
+        .padding(-reach)
         .allowsHitTesting(false)
         .accessibilityHidden(true)
     }
@@ -137,6 +148,8 @@ struct MetalInnerShadows<S: Shape>: View {
             }
         }
         .clipShape(shape)
+        // clipped to the shape, so nothing spills: one texture, no padding needed
+        .drawingGroup(opaque: false)
         .allowsHitTesting(false)
         .accessibilityHidden(true)
     }
