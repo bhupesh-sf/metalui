@@ -48,7 +48,7 @@ export interface FanProps {
 }
 
 /** The bar. It keeps which cell is open (one at a time) and folds it on Escape or a press outside. */
-export function Fan({ className, children, ...props }: FanProps) {
+function FanRoot({ className, children, ...props }: FanProps) {
   const [open, setOpenState] = React.useState<Open>(null);
   const root = React.useRef<HTMLDivElement>(null);
   const setOpen = React.useCallback((o: Open) => setOpenState(o), []);
@@ -239,6 +239,5 @@ function FanTray({ label, icon, children }: FanTrayProps) {
   );
 }
 
-Fan.Label = FanLabel;
-Fan.Picker = FanPicker;
-Fan.Tray = FanTray;
+// Bound, not assigned as statements: a bundler can drop an unused `X = Object.assign(...)`, never a bare `Fan.Label = ...`.
+export const Fan = Object.assign(FanRoot, { Label: FanLabel, Picker: FanPicker, Tray: FanTray });

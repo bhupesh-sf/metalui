@@ -41,9 +41,12 @@ const COUNT = 'mu-textarea-count pt-textarea-count-gap text-right type-meta tabu
 
 /* Base UI's field control rendered as a textarea: inside a FormField it takes the label, description,
  * error and the field's states. Typed as the textarea it renders. */
-const TextareaControl = BaseField.Control as unknown as React.ForwardRefExoticComponent<
+type TextareaControl = React.ForwardRefExoticComponent<
   React.TextareaHTMLAttributes<HTMLTextAreaElement> & { render: React.ReactElement } & React.RefAttributes<HTMLTextAreaElement>
 >;
+// Read at render, not at module level: a property read on Base UI's namespace at load time is a side effect to a
+// bundler, and would ship Field with every component in the package.
+const control = () => BaseField.Control as unknown as TextareaControl;
 
 const readPx = (style: CSSStyleDeclaration, prop: string) => parseFloat(style.getPropertyValue(prop)) || 0;
 
@@ -52,6 +55,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
   { minRows, maxRows, invalid, maxLength, value, defaultValue, onChange, onKeyDown, onPaste, className, disabled, style, ...props },
   forwardedRef,
 ) {
+  const TextareaControl = control();
   const inner = React.useRef<HTMLTextAreaElement>(null);
   React.useImperativeHandle(forwardedRef, () => inner.current!);
   const mirror = React.useRef<HTMLDivElement>(null);

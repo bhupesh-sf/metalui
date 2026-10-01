@@ -112,11 +112,13 @@ function Root({ label, decrementLabel = 'Decrease', incrementLabel = 'Increase',
   );
 }
 
-export const NumberField = Object.assign(Root, {
+// Base UI hands its parts over as a namespace (`export * as NumberField`), so a bundler cannot tell a property read on
+// it from a getter with effects; read them inside a call it is told is pure, and an app without NumberField ships none of it.
+export const NumberField = Object.assign(Root, /* @__PURE__ */ (() => ({
   Label: BaseNumberField.ScrubArea,
   Group: BaseNumberField.Group,
   Decrement: BaseNumberField.Decrement,
   Input: BaseNumberField.Input,
   Increment: BaseNumberField.Increment,
   Root,
-});
+}))());
