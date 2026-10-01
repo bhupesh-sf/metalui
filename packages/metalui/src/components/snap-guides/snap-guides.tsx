@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * SNAP GUIDES (the native reference's guides overlay)
@@ -74,7 +75,7 @@ function pathOf(guides: SnapGuide[], kind: SnapGuide['kind'], over: number) {
 export function SnapGuides({ guides, scale = 1, onEngage, className }: SnapGuidesProps) {
   // The haptic gate: a line that was not engaged in the last frame is a new catch.
   const engaged = React.useRef<Set<string>>(new Set());
-  React.useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     const keys = new Set(guides.map(keyOf));
     if (onEngage && [...keys].some((k) => !engaged.current.has(k))) onEngage();
     engaged.current = keys;
@@ -82,7 +83,7 @@ export function SnapGuides({ guides, scale = 1, onEngage, className }: SnapGuide
   // Keep the last guides while they fade out after the drag ends.
   const [shown, setShown] = React.useState<SnapGuide[]>(guides);
   const leaving = guides.length === 0 && shown.length > 0;
-  React.useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     if (guides.length) setShown(guides);
   }, [guides]);
   // After the fade (or at once under Reduce Motion, where nothing fades), the guides are gone.

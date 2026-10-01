@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { flushSync } from 'react-dom';
 import { SizeReadout } from '../size-readout/size-readout';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * SELECTION FRAME (the reference's renderSelection, as one object)
@@ -110,7 +111,7 @@ const place = (h: SelectionHandle): React.CSSProperties => {
  */
 function useHostSize(ref: React.RefObject<HTMLDivElement | null>, enabled: boolean) {
   const [size, setSize] = React.useState<{ width: number; height: number } | null>(null);
-  React.useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     const host = ref.current?.parentElement;
     if (!host || !enabled) return;
     const same = (a: { width: number; height: number } | null, w: number, h: number) => !!a && a.width === w && a.height === h;

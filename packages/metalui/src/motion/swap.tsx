@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useIsoLayoutEffect } from './layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * THE DRUM (a control's face changes: label, icon, digits)
@@ -51,7 +52,7 @@ function useSwapLayers(key: string, node: React.ReactNode, root: React.RefObject
   }, [key, node]);
 
   // Same frame: force the "enter" styles to be computed, then release them.
-  React.useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     if (!layers.some((l) => l.state === 'enter')) return;
     void root.current?.offsetWidth;
     setLayers((prev) => prev.map((l) => (l.state === 'enter' ? { ...l, state: 'in' } : l)));
@@ -101,7 +102,7 @@ export function SwapText({ value, className }: SwapTextProps) {
   const target = () => measure.current?.getBoundingClientRect().width;
 
   // Size before first paint; follow late font loads and later value changes.
-  React.useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     setWidth(target());
     const el = measure.current;
     if (!el || typeof ResizeObserver === 'undefined') return;

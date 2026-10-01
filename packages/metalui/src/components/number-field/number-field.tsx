@@ -5,6 +5,7 @@ import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
 import { buttonClasses } from '../button/button';
 import { SwapText } from '../../motion/swap';
 import { refuse } from '../../motion/refuse';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * NUMBER FIELD, a number you step, scrub or type, on Base UI NumberField
@@ -57,7 +58,7 @@ function Root({ label, decrementLabel = 'Decrease', incrementLabel = 'Increase',
   const labelId = React.useId();
 
   // The drum shows exactly what the input shows (its formatted text), read after each render.
-  React.useLayoutEffect(() => { if (input.current) setFace(input.current.value); }, [shown]);
+  useIsoLayoutEffect(() => { if (input.current) setFace(input.current.value); }, [shown]);
 
   // The input's own text comes back once the drum has settled.
   React.useEffect(() => {

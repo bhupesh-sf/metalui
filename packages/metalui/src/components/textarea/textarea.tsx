@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Field as BaseField } from '@base-ui/react/field';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * TEXTAREA, several lines of text in the field well that grows with what is written
@@ -75,7 +76,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
     setScrolls(natural > hi);
   }, [minRows, maxRows]);
 
-  React.useLayoutEffect(fit, [fit, current]);
+  useIsoLayoutEffect(fit, [fit, current]);
   React.useEffect(() => {
     const m = mirror.current;
     if (!m || typeof ResizeObserver === 'undefined') return;

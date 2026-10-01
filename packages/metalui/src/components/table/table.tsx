@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Checkbox } from '../checkbox/checkbox';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * TABLE, rows of a person's things, read across and compared down
@@ -84,7 +85,7 @@ export function Table<Row>({ columns, rows, rowKey, caption, captionHidden, sort
   }, [rows, columns, current]);
 
   // Each row travels from where it was to where it now is (FLIP), measured inside the table body.
-  React.useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     const tb = body.current;
     if (!tb) return;
     const next = new Map<string, number>();

@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
 import { menuParts, ListGlide } from '../menu/menu';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * COMBOBOX, type to find one of many, on Base UI Combobox
@@ -43,7 +44,7 @@ function offset() {
 function Fit({ children }: { children: React.ReactNode }) {
   const inner = React.useRef<HTMLDivElement>(null);
   const [height, setHeight] = React.useState<number>();
-  React.useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     const el = inner.current;
     if (!el) return;
     setHeight(el.offsetHeight);

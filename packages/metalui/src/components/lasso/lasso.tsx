@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { SizeReadout } from '../size-readout/size-readout';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * LASSO (the native reference's lasso overlay)
@@ -47,7 +48,7 @@ const blocks = (n: number) => (n === 1 ? 'block' : 'blocks');
 export function Lasso({ rect, count, scale = 1, unit = blocks, className }: LassoProps) {
   // Keep the last box while it fades after the drag ends.
   const [last, setLast] = React.useState<{ rect: LassoRect; count: number } | null>(rect ? { rect, count } : null);
-  React.useLayoutEffect(() => { if (rect) setLast({ rect, count }); }, [rect, count]);
+  useIsoLayoutEffect(() => { if (rect) setLast({ rect, count }); }, [rect, count]);
   const leaving = !rect && !!last;
   React.useEffect(() => {
     if (!leaving) return;

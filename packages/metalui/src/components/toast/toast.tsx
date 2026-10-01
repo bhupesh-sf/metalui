@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Toast } from '@base-ui/react/toast';
 import { Icon } from '../../icons/Icon';
 import { Kbd } from '../kbd/kbd';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * TOAST (object sheet) on Base UI Toast: a deck in depth, not a column
@@ -61,7 +62,6 @@ const ms = (name: string, fallback: number) => {
   return v.endsWith('ms') ? n : v.endsWith('s') ? n * 1000 : n;
 };
 const count = (name: string, fallback: number) => Math.max(1, Math.round(parseFloat(cssValue(name))) || fallback);
-const useIsoLayoutEffect = typeof window === 'undefined' ? React.useEffect : React.useLayoutEffect;
 
 /** Shows toasts. Call show() from anywhere under a ToastProvider. */
 export function useToast() {

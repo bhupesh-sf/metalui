@@ -39,6 +39,11 @@
           "target": "components/metalui/motion/indicator.tsx"
         },
         {
+          "path": "packages/metalui/src/motion/layout-effect.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/layout-effect.ts"
+        },
+        {
           "path": "packages/metalui/src/motion/refuse.ts",
           "type": "registry:ui",
           "target": "components/metalui/motion/refuse.ts"
@@ -328,6 +333,7 @@
       ],
       "registryDependencies": [
         "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -408,6 +414,7 @@
       ],
       "registryDependencies": [
         "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -605,6 +612,7 @@
       "description": "A compact control bar whose cells open in place: a label, the current choice that fans its siblings out along one axis, and an options cap that stretches sideways into more controls. One open at a time; nothing hides in a menu.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -820,6 +828,7 @@
       "description": "The box a drag on empty canvas draws: a 1 pt intent-green hairline over a faint fill, and a graphite readout under it counting what it will select (● 3 blocks). The same on screen at every zoom.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/size-readout.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -1300,6 +1309,7 @@
       "description": "The one selection for every kind of object: a 1.25 green ring with a flat collar at offset 6, eight handles on the ring line, and a graphite readout of the measured frame. Hover shows only faint corner dots and an edge light.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/size-readout.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -1443,6 +1453,7 @@
       "description": "The lines that explain a snap while a person moves or resizes on the canvas: 1 pt intent green, solid for aligned edges, dashed for aligned centres, spanning the aligned objects plus 8 pt, the same on screen at every zoom.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1636,6 +1647,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/checkbox.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1676,6 +1688,7 @@
       "description": "Several lines of text in the field well that grows with what is written on the settle spring; with a limit, a counter fades in near it and shakes on the refusal spring when writing goes past it.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1722,6 +1735,7 @@
       "registryDependencies": [
         "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/kbd.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

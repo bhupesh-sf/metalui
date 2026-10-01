@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import { TICK } from '../../icons/tick.generated';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * CHECKBOX, the dimple (the reference design's .dimple) on Base UI Checkbox
@@ -224,7 +225,7 @@ function Ink({ mark, onInk, ...props }: { mark: Mark; onInk: (inked: boolean) =>
   const shown = React.useRef<Mark>(mark);
   const [initial] = React.useState(mark);
 
-  React.useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     const path = ref.current;
     if (!path) return;
     pen.current ??= { path, route: ROUTES[initial ?? 'tick'], stop: () => {} };

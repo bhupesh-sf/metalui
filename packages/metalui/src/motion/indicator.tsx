@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useIsoLayoutEffect } from './layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * SLIDING INDICATOR STORYBOARD (selection A → B in a group)
@@ -45,7 +46,7 @@ export function SlidingIndicator({ activeSelector = activeItem, className, sprin
   const [box, setBox] = React.useState<{ x: number; y: number; w: number; h: number; animate: boolean; shown: boolean } | null>(null);
   const watched = watch.join(' ');
 
-  React.useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     const el = self.current?.parentElement;
     if (!el) return;
     const place = (animate: boolean) => {

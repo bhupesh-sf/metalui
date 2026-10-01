@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * FAN: a compact control bar whose cells open in place
@@ -189,7 +190,7 @@ function FanTray({ label, icon, children }: FanTrayProps) {
   const inner = React.useRef<HTMLDivElement>(null);
   const [width, setWidth] = React.useState<number | null>(null);
 
-  React.useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     if (!isOpen) { setWidth(null); return; }
     setWidth(inner.current?.scrollWidth ?? null);
   }, [isOpen, children]);
