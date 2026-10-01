@@ -4,6 +4,8 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ## Unreleased
 
+## 0.3.2 - 2026-10-01
+
 ### Fixed
 
 - TypeScript projects on the legacy `moduleResolution: "node"` can now import `@unlocalhosted/metalui/icons`, `/icons/life` and `/sound` with types (`typesVersions`). CI runs `publint` and are-the-types-wrong on every change.
