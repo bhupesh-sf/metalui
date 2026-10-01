@@ -35,3 +35,25 @@ After trusted publishing is active, restrict token-based publishing in npm packa
 Change only the npm workspace version, move the **Unreleased** notes in `packages/metalui/CHANGELOG.md` under a heading for the new version, update `package-lock.json`, run the four checks above, and commit the release. Every change a user can notice gets a line under Unreleased as it lands (Added, Changed, Fixed, Removed). Create and push an annotated `vX.Y.Z` tag from `main`. GitHub Actions builds, checks the tarball in a fresh consumer, and publishes through npm OIDC with provenance. Verify the version and provenance on npm before announcing the release. Do not reuse a published version number.
 
 The browser feature suite remains a separate local check (`npm run test:e2e -- --workers=1`). It is not a release gate while existing docs fixtures are in progress. Known visual literal and recipe gaps are listed exactly in `scripts/lint-literals.allow.json` and `scripts/recipe-parity.allow.json`; the checks still reject new gaps.
+
+## When something goes wrong
+
+Never unpublish and never reuse a version number. Move forward with a patch, and use these to limit the damage in the meantime. Each has been checked to exist; the first time you need one, read it against the live system before running it.
+
+**A bad npm version.** Publish a fixed patch the normal way (changelog, version, tag). Meanwhile warn people on the bad one, which needs `npm login` as a maintainer (trusted publishing covers publishing only, not this):
+
+```sh
+npm deprecate @unlocalhosted/metalui@0.3.0 "Importing theme.css changed the host app's spacing; use 0.3.1 or later"
+npm deprecate @unlocalhosted/metalui@0.3.0 ""   # lifts the warning
+```
+
+**A bad site or registry deploy.** The docs, `/r/*.json`, `AI.md` and `llms.txt` ship in one Cloudflare Pages deploy. In the Cloudflare dashboard, Workers & Pages, `metalui`, Deployments, pick the last good production deployment and choose Rollback; or redeploy the last good commit from the command line (see DEPLOYMENT.md, "manual recovery"). Check `/`, `/r/button.json` and `/r/tokens.json` afterwards.
+
+**A registry item that must stop being served now.** Remove its `meta.json` (or the block's), run `npm run generate` (the generator deletes the served files of anything no longer in the source) and push; the deploy takes about two minutes.
+
+**A release workflow that failed after publishing.** The npm publish and the GitHub Release are separate jobs, so a failed `release` job leaves the package published. Create the release by hand: `node scripts/changelog-section.mjs 0.3.2 > notes.md && gh release create v0.3.2 --title "MetalUI 0.3.2" --notes-file notes.md --verify-tag`.
+
+**A wrong tag.** Release tags are protected against deletion and moving (a repository ruleset). Don't fight it: ship the next patch version.
+
+**Knowing early.** `.github/workflows/health.yml` checks the site, the registry, the agent files and the latest npm install every 30 minutes; a failing run emails the owner. Trigger it by hand from the Actions tab after any deploy.
+

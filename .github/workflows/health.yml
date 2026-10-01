@@ -1,0 +1,47 @@
+name: Health
+
+# What a new visitor depends on, checked every 30 minutes: the docs site, the shadcn registry, the agent
+# files and the npm package. A failing run emails the repository owner through GitHub's own notifications.
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Site, registry and agent files answer
+        run: |
+          set -u
+          fail=0
+          check() { # url, expected content-type text, expected body text
+            code=$(curl -sS -o /tmp/body -w '%{http_code} %{content_type}' --max-time 20 "$1") || { echo "FAIL $1 unreachable"; fail=1; return; }
+            status=${code%% *}; type=${code#* }
+            [ "$status" = 200 ] || { echo "FAIL $1 status $status"; fail=1; return; }
+            case "$type" in *"$2"*) ;; *) echo "FAIL $1 content-type $type"; fail=1; return;; esac
+            grep -q "$3" /tmp/body || { echo "FAIL $1 missing '$3'"; fail=1; return; }
+            echo "ok   $1"
+          }
+          check https://metalui.dev/ text/html 'MetalUI'
+          check https://metalui.dev/components/button text/html 'Button'
+          check https://metalui.dev/changelog text/html 'Changelog'
+          check https://metalui.dev/r/tokens.json application/json '"name": "tokens"'
+          check https://metalui.dev/r/button.json application/json '"name": "button"'
+          check https://metalui.dev/AI.md text/markdown 'MetalUI'
+          check https://metalui.dev/llms.txt text/plain 'MetalUI'
+          check https://metalui.dev/sitemap.xml xml '<urlset'
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 https://metalui.dev/r/does-not-exist.json)
+          [ "$code" = 404 ] && echo "ok   unknown registry item is a 404" || { echo "FAIL unknown registry item returned $code"; fail=1; }
+          exit $fail
+      - name: The npm package is published and its latest version installs
+        run: |
+          set -eu
+          latest=$(npm view @unlocalhosted/metalui version)
+          echo "latest on npm: $latest"
+          dir=$(mktemp -d); cd "$dir"; npm init -y >/dev/null
+          npm install "@unlocalhosted/metalui@$latest" react@19 react-dom@19 --no-audit --no-fund >/dev/null
+          node --input-type=module -e "import('@unlocalhosted/metalui').then((m) => { if (!m.Button) throw new Error('Button missing'); console.log('import ok'); })"
