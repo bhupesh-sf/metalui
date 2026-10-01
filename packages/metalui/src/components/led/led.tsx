@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useAwake } from '../../motion/awake';
 
 /* LED (the reference design's .led-*): a tiny lamp lit from the top left that says one state by colour.
  * A part: it never stands alone, it sits beside words (a status badge, a readout, an engraving).
@@ -44,8 +45,11 @@ const LED_GESTURES: Record<LedGesture, string> = {
 };
 
 /** A tiny lamp, lit from the top left. Decorative: pair it with words. */
-export function Led({ kind, size = 'default', gesture = 'steady', className, ...props }: LedProps) {
+export function Led({ kind, size = 'default', gesture = 'steady', className, style, ...props }: LedProps) {
+  // A breathing lamp loops forever, so it holds still while the tab is hidden or the lamp is scrolled away.
+  const [watch, awake] = useAwake();
   const own = `${LED} ${LED_SIZES[size]} ${LED_KINDS[kind]} ${LED_GESTURES[gesture]} reduced-motion:animate-none`;
   // A new gesture (or a new state with the same gesture) remounts the lamp so the gesture plays again.
-  return <span key={`${kind}-${gesture}`} aria-hidden data-kind={kind} data-size={size} data-gesture={gesture} className={className ? `${own} ${className}` : own} {...props} />;
+  const looping = gesture === 'breathe';
+  return <span key={`${kind}-${gesture}`} ref={looping ? watch : undefined} aria-hidden data-kind={kind} data-size={size} data-gesture={gesture} className={className ? `${own} ${className}` : own} style={looping && !awake ? { ...style, animationPlayState: 'paused' } : style} {...props} />;
 }
