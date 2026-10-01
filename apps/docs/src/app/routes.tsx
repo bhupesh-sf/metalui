@@ -15,6 +15,7 @@ export const routes: RouteObject[] = [
     children: [
       { path: 'overview', lazy: lazy(() => import('../pages/Home')) },
       { path: 'wip', lazy: lazy(() => import('../pages/Wip')) },
+      { path: 'changelog', lazy: lazy(() => import('../pages/Changelog')) },
       { path: 'layers', lazy: lazy(() => import('../pages/Layers')) },
       { path: 'foundations', lazy: lazy(() => import('../pages/foundations/Principles')) },
       { path: 'foundations/color', lazy: lazy(() => import('../pages/foundations/Color')) },
