@@ -24,7 +24,7 @@ import '@unlocalhosted/metalui/styles.css'; // once, at the app root
 import '@unlocalhosted/metalui/icons.css';  // once, if you use icons
 \`\`\`
 
-The package is ESM only: use \`import\`, not \`require()\`. Components are client components (they carry \`"use client"\`), so they work in Next.js App Router.
+The package is ESM only: use \`import\`, not \`require()\`. In a Tailwind v3 app import \`@unlocalhosted/metalui/styles.unlayered.css\` instead of \`styles.css\` (the same rules without cascade layers, which Tailwind v3's PostCSS rejects). Components are client components (they carry \`"use client"\`), so they work in Next.js App Router.
 
 Or copy the source into your project with the shadcn CLI (Tailwind v4): \`npx shadcn@latest add ${ORIGIN}/r/<name>.json\`. The first install also adds \`@unlocalhosted/metalui\` and imports its \`tokens.css\` and \`theme.css\` into your global CSS, which is what styles the copied component; files land under \`components/metalui/\` in the same layout as the package, so imports between components resolve. Whole screens (blocks) install the same way as \`${ORIGIN}/r/block-<name>.json\` into \`components/metalui/screens/<name>/\`. Both routes work in Vite and Next.js (\`app/\` and \`src/app/\`). Release notes: ${ORIGIN}/changelog.
 

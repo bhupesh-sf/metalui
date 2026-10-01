@@ -4,6 +4,10 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ## Unreleased
 
+### Added
+
+- `@unlocalhosted/metalui/styles.unlayered.css`: `styles.css` without cascade layers, for Tailwind v3 apps (their PostCSS plugin rejects `@layer` rules it has no `@tailwind` directive for, so `styles.css` failed their build). Same rules in the same order; verified in a Vite + Tailwind 3.4 app: styled, interactive, and the host's own `p-4` still 16px.
+
 ### Changed
 
 - **Tertiary text and engraved labels now meet WCAG AA (4.5:1) in both colorways.** `ink3` was 2.5:1 on Bone and 3.1 to 4.3:1 on Graphite, and `engrave` 2.7:1 and 3.3 to 3.6:1. Bone `ink3` is now `#6C6C6F` (was `#9A9A9D`), Graphite `ink3` `#939397` (was `#77777B`), and `engrave` is `rgba(40,38,32,.65)` on Bone (was .46) and `rgba(255,255,255,.49)` on Graphite (was .38). Placeholders, captions, hints, counts, tags and engraved labels read a little firmer; ink and ink2 are unchanged. SwiftUI tokens follow.

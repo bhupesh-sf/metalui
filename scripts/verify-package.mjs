@@ -14,7 +14,7 @@ try {
   const packed = registry ? null : JSON.parse(execFileSync('npm', [
     'pack', '--json', '--workspace', '@unlocalhosted/metalui', '--pack-destination', temp,
   ], { cwd: root, encoding: 'utf8' }))[0];
-  const required = ['LICENSE', 'README.md', 'dist/index.js', 'dist/index.d.ts', 'dist/icons.js', 'dist/icons-life.js', 'dist/sound.js', 'dist/sound.d.ts', 'dist/styles.css', 'dist/icons.css', 'dist/icons-life.css'];
+  const required = ['LICENSE', 'README.md', 'dist/index.js', 'dist/index.d.ts', 'dist/icons.js', 'dist/icons-life.js', 'dist/sound.js', 'dist/sound.d.ts', 'dist/styles.css', 'dist/styles.unlayered.css', 'dist/icons.css', 'dist/icons-life.css'];
   const names = new Set(packed?.files.map((file) => file.path) ?? []);
   for (const path of required) {
     if (packed && !names.has(path)) throw new Error(`npm tarball missing ${path}`);
@@ -40,6 +40,8 @@ if (!SendAwayIcon || !LifeIcon) throw new Error('Icon subpath failed');
 if (!Object.keys(Sound).length) throw new Error('Sound subpath failed');
 const css = readFileSync(new URL('./node_modules/@unlocalhosted/metalui/dist/styles.css', import.meta.url), 'utf8');
 if (!css.includes('.recipe-button-primary') || !css.includes('.recipe-surface-raise') || !css.includes('--mu-page')) throw new Error('Component CSS missing');
+const flat = readFileSync(new URL('./node_modules/@unlocalhosted/metalui/dist/styles.unlayered.css', import.meta.url), 'utf8');
+if (/@layer\\b/.test(flat) || !flat.includes('.recipe-button-primary')) throw new Error('styles.unlayered.css is wrong');
 if (css.includes('button,input,optgroup')) throw new Error('Global reset leaked into component CSS');
 `;
   const script = join(temp, 'smoke.mjs');

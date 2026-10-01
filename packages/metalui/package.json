@@ -53,6 +53,7 @@
       "import": "./dist/sound.js"
     },
     "./styles.css": "./dist/styles.css",
+    "./styles.unlayered.css": "./dist/styles.unlayered.css",
     "./icons.css": "./dist/icons.css",
     "./icons/life.css": "./dist/icons-life.css",
     "./tokens.css": "./src/components/tokens.css",
@@ -62,7 +63,7 @@
     "./icons-life.json": "./public/icons-life.json"
   },
   "scripts": {
-    "build": "tsup && rm -f dist/index.css && tailwindcss -i styles.input.css -o dist/styles.css --minify",
+    "build": "tsup && rm -f dist/index.css && tailwindcss -i styles.input.css -o dist/styles.css --minify && node ../../scripts/build-unlayered.mjs",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
@@ -77,6 +78,7 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "postcss": "^8.5.28",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.3.3",

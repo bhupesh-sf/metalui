@@ -84,7 +84,8 @@ Section 1 partly done: 0.3.0 published (tag `v0.3.0`, provenance on npm, `verify
 - [x] No Tailwind at all: the Vite apps without Tailwind work from `styles.css` alone.
 - [x] `publint` clean; are-the-types-wrong: types resolve for every entry under bundler and node16; legacy `node` resolution failed for `/icons`, `/icons/life`, `/sound`, fixed with `typesVersions`; both now run in CI (`npm run verify:types`). ESM-only is stated in the README; `require()` fails and only `import` works, by design.
 - [x] **Bundle size.** Published 0.3.1: a Button-only Vite 8 app ships 621 kB JS (197 kB gzip) against 220 kB for React alone, i.e. tree-shaking was not working. Current `main` (the unreleased perf commits `f543a590`, `65f9b67d`): 236 kB (74 kB gzip), +17 kB over React alone, confirmed in the real Vite build. `styles.css` is a fixed 300 kB (48 kB gzip) whatever you use. **Released as 0.3.2 and re-measured from real npm: 236 kB (74 kB gzip), provenance attested, React 18 SSR warning-free.**
-- [ ] Still to do: Tailwind v3 host (supported or stated unsupported), the full per-export render with real props.
+- [x] **Tailwind v3 host (2026-10-01).** Importing `styles.css` into a Vite + Tailwind 3.4 app failed the build (v3's PostCSS rejects the `@layer` rules). Added `styles.unlayered.css` (same rules, no layers; built by `scripts/build-unlayered.mjs`, checked by `verify:package`); in that app it builds, styles the button next to v3's preflight, toggles the checkbox, switches colorway, and the host `p-4` stays 16px. The shadcn route needs Tailwind v4 (README says so). Also dropped an unreferenced duplicate `dist/index.css` from the tarball.
+- [ ] Still to do: the full per-export render with real props; a Next.js + Tailwind v3 app with `styles.unlayered.css`.
 
 Not yet run: the rest of section 1, the rest of section 2, and sections 4–12.
 
