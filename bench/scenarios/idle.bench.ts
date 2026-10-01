@@ -21,6 +21,8 @@ function pages(): string[] {
 for (const colorway of COLORWAYS) {
   for (const path of pages()) {
     test(`idle ${path} ${colorway}`, async ({ page }) => {
+      // Nothing outside the local site is fetched: a slow DNS failure must not land inside a measurement window.
+      await page.route((url) => !['127.0.0.1', 'localhost'].includes(url.hostname), (route) => route.abort());
       await page.addInitScript((c) => localStorage.setItem('metalui:colorway', c), colorway);
       await page.goto(path);
       await page.waitForSelector('#root *');
