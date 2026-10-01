@@ -220,12 +220,12 @@
   box-shadow: var(--mu-raise);
   -webkit-backdrop-filter: var(--mu-backdrop);
   backdrop-filter: var(--mu-backdrop);
-  @media (prefers-reduced-transparency: reduce) {
+  @media (prefers-reduced-transparency: reduce), (prefers-reduced-data: reduce) {
     background: var(--mu-frost-opaque);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
-  [data-mu-transparency="reduce"] &, &[data-mu-transparency="reduce"] {
+  :is([data-mu-transparency="reduce"], [data-mu-power="low"]) &, &:is([data-mu-transparency="reduce"], [data-mu-power="low"]) {
     background: var(--mu-frost-opaque);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
@@ -239,12 +239,12 @@
   box-shadow: var(--mu-raise);
   -webkit-backdrop-filter: var(--mu-backdrop);
   backdrop-filter: var(--mu-backdrop);
-  @media (prefers-reduced-transparency: reduce) {
+  @media (prefers-reduced-transparency: reduce), (prefers-reduced-data: reduce) {
     background: var(--mu-frost-opaque);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
-  [data-mu-transparency="reduce"] &, &[data-mu-transparency="reduce"] {
+  :is([data-mu-transparency="reduce"], [data-mu-power="low"]) &, &:is([data-mu-transparency="reduce"], [data-mu-power="low"]) {
     background: var(--mu-frost-opaque);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
@@ -258,12 +258,12 @@
   box-shadow: var(--mu-frost-graphite-shadow);
   -webkit-backdrop-filter: var(--mu-backdrop);
   backdrop-filter: var(--mu-backdrop);
-  @media (prefers-reduced-transparency: reduce) {
+  @media (prefers-reduced-transparency: reduce), (prefers-reduced-data: reduce) {
     background: var(--mu-frost-graphite-opaque);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
-  [data-mu-transparency="reduce"] &, &[data-mu-transparency="reduce"] {
+  :is([data-mu-transparency="reduce"], [data-mu-power="low"]) &, &:is([data-mu-transparency="reduce"], [data-mu-power="low"]) {
     background: var(--mu-frost-graphite-opaque);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
@@ -284,12 +284,13 @@
   -webkit-tap-highlight-color: transparent;
 }
 /* Reduce Transparency (the system setting, or data-mu-transparency="reduce" on an ancestor): frosted
-   surfaces turn opaque and lose their backdrop. */
+   surfaces turn opaque and lose their backdrop. Low power (prefers-reduced-data, or data-mu-power="low"
+   set from Save-Data or a low battery) does the same: a blur is re-rendered every frame anything moves under it. */
 @custom-variant reduce-transparency {
-  @media (prefers-reduced-transparency: reduce) {
+  @media (prefers-reduced-transparency: reduce), (prefers-reduced-data: reduce) {
     @slot;
   }
-  [data-mu-transparency="reduce"] & {
+  :is([data-mu-transparency="reduce"], [data-mu-power="low"]) & {
     @slot;
   }
 }

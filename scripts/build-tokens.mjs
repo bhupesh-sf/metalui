@@ -125,10 +125,10 @@ const edgeColor = (r) => (FR.recipes[r].finish ? T.colorways[FR.recipes[r].finis
 const edgeDecl = (r) => `box-shadow: inset 0 0 0 1px ${edgeColor(r)}, ${frostRef(r, 'shadow')}`;
 const frostClasses = `/* Frost (tokens.json frost): ${FR.$use.split('.')[0]}. */
 ${FROSTS.map((r) => `.mu-frost-${r} { ${frostDecls(r).join('; ')}; } /* ${FR.recipes[r].use} */`).join('\n')}
-@media (prefers-reduced-transparency: reduce) {
+@media (prefers-reduced-transparency: reduce), (prefers-reduced-data: reduce) {
 ${FROSTS.map((r) => `  .mu-frost-${r} { ${opaqueDecls(r).join('; ')}; }`).join('\n')}
 }
-${FROSTS.map((r) => `[data-mu-transparency="reduce"] .mu-frost-${r}, .mu-frost-${r}[data-mu-transparency="reduce"] { ${opaqueDecls(r).join('; ')}; }`).join('\n')}
+${FROSTS.map((r) => `:is([data-mu-transparency="reduce"], [data-mu-power="low"]) .mu-frost-${r}, .mu-frost-${r}:is([data-mu-transparency="reduce"], [data-mu-power="low"]) { ${opaqueDecls(r).join('; ')}; }`).join('\n')}
 @media (prefers-contrast: more) {
 ${FROSTS.map((r) => `  .mu-frost-${r} { ${edgeDecl(r)}; }`).join('\n')}
 }`;
@@ -487,10 +487,10 @@ ${Object.keys(ED.type).map((role) => `@utility type-doc-${role} {\n  ${typeDecls
 /* Frost: the same recipes as .mu-frost-*, with their Reduce Transparency and Increase Contrast twins. */
 ${FROSTS.map((r) => `@utility material-frost-${r} {
   ${frostDecls(r).join(';\n  ')};
-  @media (prefers-reduced-transparency: reduce) {
+  @media (prefers-reduced-transparency: reduce), (prefers-reduced-data: reduce) {
     ${opaqueDecls(r).join(';\n    ')};
   }
-  [data-mu-transparency="reduce"] &, &[data-mu-transparency="reduce"] {
+  :is([data-mu-transparency="reduce"], [data-mu-power="low"]) &, &:is([data-mu-transparency="reduce"], [data-mu-power="low"]) {
     ${opaqueDecls(r).join(';\n    ')};
   }
   @media (prefers-contrast: more) {
@@ -509,12 +509,13 @@ ${FROSTS.map((r) => `@utility material-frost-${r} {
   -webkit-tap-highlight-color: transparent;
 }
 /* Reduce Transparency (the system setting, or data-mu-transparency="reduce" on an ancestor): frosted
-   surfaces turn opaque and lose their backdrop. */
+   surfaces turn opaque and lose their backdrop. Low power (prefers-reduced-data, or data-mu-power="low"
+   set from Save-Data or a low battery) does the same: a blur is re-rendered every frame anything moves under it. */
 @custom-variant reduce-transparency {
-  @media (prefers-reduced-transparency: reduce) {
+  @media (prefers-reduced-transparency: reduce), (prefers-reduced-data: reduce) {
     @slot;
   }
-  [data-mu-transparency="reduce"] & {
+  :is([data-mu-transparency="reduce"], [data-mu-power="low"]) & {
     @slot;
   }
 }
