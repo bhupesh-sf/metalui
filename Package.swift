@@ -3,7 +3,8 @@ import PackageDescription
 
 let package = Package(
     name: "MetalUI",
-    platforms: [.macOS(.v14), .iOS(.v17)],
+    // macOS only today: eight files use AppKit (see docs/BACKLOG.md, "SwiftUI on iOS"). iOS 17 returns once it builds.
+    platforms: [.macOS(.v14)],
     products: [
         .library(name: "MetalUI", targets: ["MetalUI"]),
     ],

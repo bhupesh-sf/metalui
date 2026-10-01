@@ -345,3 +345,17 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **RadioGroup disabled**: the checked radio stays in the Tab order; decide (reachable to explain, or skipped) and document.
 - [ ] **Container queries in blocks**: unnamed `@container` matches the nearest container; blocks should name theirs (`@container/block`). Write it into the block page guide.
 - [ ] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message.
+
+## SwiftUI on iOS
+
+Found 2026-10-01 by building the package for the iOS Simulator (`xcodebuild -scheme MetalUI -destination 'generic/platform=iOS Simulator'`): it fails, so `Package.swift` lists macOS 14 only. CI has only ever run `swift build` on macOS. These eight files use AppKit; each needs a UIKit twin or a platform-neutral rewrite behind `#if canImport(AppKit)`:
+
+- [ ] **Icons** (`Icons/MetalIcon.swift`): renders the custom SF Symbols through `NSImage.SymbolConfiguration` and `NSImage(symbolName:bundle:)`. iOS needs `UIImage.SymbolConfiguration` and `UIImage(named:in:)`, with the y-up/y-down centre correction checked.
+- [ ] **Fonts** (`Foundation/MetalFonts.swift`): `NSFont` for the system and monospaced fallbacks and weights; `UIFont` has the same calls with `UIFont.Weight`. Registration of the bundled Geist, Martian Mono and Doto already goes through Core Text.
+- [ ] **Fan** (`Components/MetalFan.swift`): `NSEvent.addLocalMonitorForEvents` to close on an outside click, and an `NSViewRepresentable` window probe. iOS needs a tap-outside layer instead.
+- [ ] **Slider** (`Components/MetalSlider.swift`): `NSCursor` hand and pointer cursors and `NSApp.currentEvent` to tell keyboard focus from a click. iOS has no cursor; use `.hoverEffect` or none, and focus from `@FocusState` only.
+- [ ] **Brush cursor** (`Components/MetalBrushCursor.swift`): `NSCursor` built from an image. iOS has no pointer cursor to set; the brush ring is drawn in the canvas there.
+- [ ] **Spatial field** (`Components/MetalSpatialFieldView.swift`): a custom `NSView` that draws with `NSGraphicsContext` and `NSColor`. iOS needs a `UIView` with `UIGraphicsGetCurrentContext` or a `Canvas`.
+- [ ] **Snap guides** (`Components/MetalSnapGuides.swift`): `NSHapticFeedbackManager`. iOS has `UIImpactFeedbackGenerator` or `.sensoryFeedback`.
+- [ ] **Command palette** (`Components/MetalCommandPalette.swift`): `NSScreen.main` for the maximum height. iOS can read the container height.
+- [ ] Then: add an iOS Simulator build to `.github/workflows/ci.yml`, restore `.iOS(.v17)` in `Package.swift`, and put "iOS 17" back in the README and the agent guide.

@@ -4,6 +4,10 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ## Unreleased
 
+### Changed
+
+- SwiftUI package: `Package.swift` declares macOS 14 only. It listed iOS 17, but eight files use AppKit and the package does not build for iOS; the README, agent guide and `docs/BACKLOG.md` ("SwiftUI on iOS") say so, with the file-by-file port list.
+
 ## 0.3.2 - 2026-10-01
 
 ### Fixed
