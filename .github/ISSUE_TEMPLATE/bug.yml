@@ -1,0 +1,24 @@
+name: Bug report
+description: Something doesn't work or doesn't look right
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes: { label: Package version, description: "`@unlocalhosted/metalui` version, or the commit if you built from source", placeholder: "0.3.2" }
+    validations: { required: true }
+  - type: dropdown
+    id: install
+    attributes: { label: How you installed it, options: [npm package, shadcn registry (copied source), SwiftUI package, from source] }
+    validations: { required: true }
+  - type: input
+    id: env
+    attributes: { label: Framework and versions, description: "e.g. Next.js 16 App Router, React 19, Tailwind 4.3, Safari 19", placeholder: "Vite 8, React 19, Chrome" }
+    validations: { required: true }
+  - type: textarea
+    id: repro
+    attributes: { label: Minimal reproduction, description: "A short code sample or a link to a repository or StackBlitz. The smaller the better." }
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes: { label: What you expected, and what happened }
+    validations: { required: true }
