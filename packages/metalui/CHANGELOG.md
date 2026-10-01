@@ -4,6 +4,8 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ## Unreleased
 
+## 0.3.1 - 2026-10-01
+
 ### Fixed
 
 - `theme.css` no longer redefines `--spacing`, `--font-sans` or `--font-mono`. Importing it into an app with its own Tailwind (the shadcn route) used to set the spacing scale to 1px per step, shrinking that app's `p-4`, `gap-2` and `h-10` to a quarter of their size, and to replace its fonts. It now adds names of its own only, so the host's layout and fonts are untouched. `check:host-safe` keeps it that way. The `styles.css` build is unchanged.
