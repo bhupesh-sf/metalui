@@ -10,7 +10,7 @@ MetalUI looks like small, well-made physical objects: bone and graphite soft-tou
 
 Icons come too: Soft Hardware monoline + duotone glyphs, each with its own hover pose and press animation.
 
-[metalui.dev](https://metalui.dev) · [Agent guide](packages/metalui/public/AI.md) · [Plan](docs/PLAN.md) · MIT
+[metalui.dev](https://metalui.dev) · [Agent guide](packages/metalui/public/AI.md) · [Plan](docs/PLAN.md) · [Contributing](CONTRIBUTING.md) · [Changelog](https://metalui.dev/changelog) · MIT ([third-party notices](THIRD_PARTY_NOTICES.md))
 
 > Status: alpha. APIs and visual recipes may change before 1.0. See [docs/PLAN.md](docs/PLAN.md) for the roadmap.
 
