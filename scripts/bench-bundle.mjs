@@ -3,6 +3,7 @@
 import { readdirSync, readFileSync, statSync, mkdirSync, writeFileSync, existsSync } from 'node:fs';
 import { gzipSync, brotliCompressSync, constants } from 'node:zlib';
 import { join, relative, extname } from 'node:path';
+import { build } from 'esbuild';
 import { root } from './lib/emit.mjs';
 
 const TARGETS = {
@@ -35,12 +36,33 @@ for (const [group, dir] of Object.entries(TARGETS)) {
   out[group] = { total: { raw: sum('raw'), gzip: sum('gzip'), brotli: sum('brotli') }, files };
 }
 
+// Tree-shaking: what a consumer pays for `import { X } from '@unlocalhosted/metalui'` (minified, react external).
+const entry = root('packages/metalui/dist/index.js');
+const exportBlock = readFileSync(entry, 'utf8').match(/\nexport \{([\s\S]*?)\};?\s*$/);
+const names = exportBlock[1].split(',').map((s) => s.trim().split(/\s+as\s+/).pop()).filter(Boolean);
+const perExport = {};
+for (const name of names) {
+  const r = await build({
+    stdin: { contents: `export { ${name} } from ${JSON.stringify(entry)};`, resolveDir: root(), loader: 'js' },
+    bundle: true, minify: true, format: 'esm', write: false, treeShaking: true, logLevel: 'silent',
+    external: ['react', 'react-dom', 'react/jsx-runtime', 'react-dom/*'], loader: { '.css': 'empty' },
+  });
+  const buf = Buffer.from(r.outputFiles[0].contents);
+  perExport[name] = { raw: buf.length, gzip: gzipSync(buf, { level: 9 }).length };
+}
+out.exports = perExport;
+
 mkdirSync(root('bench/results'), { recursive: true });
 writeFileSync(root('bench/results/bundle.json'), JSON.stringify(out, null, 2) + '\n');
 
 const kb = (n) => (n / 1024).toFixed(1).padStart(8);
-for (const [group, { total, files }] of Object.entries(out)) {
+for (const [group, { total, files }] of Object.entries(out).filter(([g]) => g in TARGETS)) {
   console.log(`\n${group}  total  raw ${kb(total.raw)} KB  gzip ${kb(total.gzip)} KB  brotli ${kb(total.brotli)} KB`);
   const top = Object.entries(files).sort((a, b) => b[1].raw - a[1].raw).slice(0, 8);
   for (const [name, f] of top) console.log(`  ${name.padEnd(34)} raw ${kb(f.raw)}  gzip ${kb(f.gzip)}  brotli ${kb(f.brotli)}`);
 }
+
+const heavy = Object.entries(perExport).sort((a, b) => b[1].gzip - a[1].gzip);
+console.log(`\nper-export (gzip, ${names.length} exports) heaviest:`);
+for (const [n, f] of heavy.slice(0, 10)) console.log(`  ${n.padEnd(30)} raw ${kb(f.raw)}  gzip ${kb(f.gzip)}`);
+for (const n of ['Button', 'Switch', 'Tooltip']) if (perExport[n]) console.log(`  ${n.padEnd(30)} raw ${kb(perExport[n].raw)}  gzip ${kb(perExport[n].gzip)}`);
