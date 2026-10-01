@@ -122,10 +122,14 @@ export function Connector({
   const sim = React.useRef({ m: { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2, vx: 0, vy: 0 }, time: 0, phase: 0, energy: 0, align: 0, av: 0, last: { ...from, tx: to.x, ty: to.y } });
   const [, redraw] = React.useReducer((n: number) => n + 1, 0);
 
+  // The loop runs while something moves: a spring still settling, or a flow look (comets, dust), which
+  // keep going by design. An elastic line at rest sleeps until its ends or state change; a hidden tab holds it.
+  const wake = React.useRef(() => {});
   React.useEffect(() => {
     if (reduce) return;
-    let raf = 0, prev = performance.now();
+    let raf = 0, prev = 0;
     const loop = (now: number) => {
+      raf = 0;
       const dt = Math.min(1 / 30, (now - prev) / 1000); prev = now;
       const s = sim.current, { from: a, to: b, state: st, look: lk } = live.current;
       const tx = (a.x + b.x) / 2, ty = (a.y + b.y) / 2, m = s.m;
@@ -140,13 +144,16 @@ export function Connector({
       s.av += (DUST.align.k * (want - s.align) - DUST.align.damping * s.av) * dt; s.align += s.av * dt;
       const settled = Math.hypot(tx - m.x, ty - m.y) < BAND.rest && Math.hypot(m.vx, m.vy) < BAND.rest;
       if (settled) { m.x = tx; m.y = ty; m.vx = m.vy = 0; }
-      // Elastic rests when the spring does; the flow looks keep going.
-      if (!settled || lk !== 'elastic') redraw();
-      raf = requestAnimationFrame(loop);
+      if (!settled || lk !== 'elastic') { redraw(); raf = requestAnimationFrame(loop); }
     };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
+    const start = () => { if (raf || document.hidden) return; prev = performance.now(); raf = requestAnimationFrame(loop); };
+    const visibility = () => { if (document.hidden) { cancelAnimationFrame(raf); raf = 0; } else start(); };
+    wake.current = start;
+    document.addEventListener('visibilitychange', visibility);
+    start();
+    return () => { cancelAnimationFrame(raf); document.removeEventListener('visibilitychange', visibility); wake.current = () => {}; };
   }, [reduce]);
+  React.useEffect(() => { wake.current(); }, [from.x, from.y, to.x, to.y, state, look]);
 
   const s = sim.current;
   const mid: P = reduce ? { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 } : s.m;
