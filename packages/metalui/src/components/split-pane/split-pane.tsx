@@ -54,6 +54,7 @@ function Root({ orientation = 'horizontal', size, defaultSize = 30, onSizeChange
   const [dragging, setDragging] = React.useState(false);
   const [snapping, setSnapping] = React.useState(false);
   const root = React.useRef<HTMLDivElement>(null);
+  const box = React.useRef<DOMRect | null>(null); // measured once at pointer down: the pane does not move under the pointer
   const firstId = React.useId();
   const horizontal = orientation === 'horizontal';
 
@@ -83,17 +84,19 @@ function Root({ orientation = 'horizontal', size, defaultSize = 30, onSizeChange
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.button !== 0) return;
     e.currentTarget.setPointerCapture(e.pointerId);
+    box.current = root.current!.getBoundingClientRect();
     setDragging(true);
   };
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging) return;
-    const r = root.current!.getBoundingClientRect();
+    if (!dragging || !box.current) return;
+    const r = box.current;
     const v = horizontal ? ((e.clientX - r.left) / r.width) * 100 : ((e.clientY - r.top) / r.height) * 100;
     set(Math.min(max, Math.max(collapsible ? 0 : min, v)));
   };
   const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragging) return;
     e.currentTarget.releasePointerCapture(e.pointerId);
+    box.current = null;
     setDragging(false);
     settle(current);
   };
