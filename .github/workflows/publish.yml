@@ -42,3 +42,18 @@ jobs:
       - name: Publish
         if: steps.registry.outputs.exists == 'false'
         run: npm publish --workspace @unlocalhosted/metalui --access public
+
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: GitHub Release from the changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node scripts/changelog-section.mjs "$GITHUB_REF_NAME" > notes.md
+          printf '\nnpm: https://www.npmjs.com/package/@unlocalhosted/metalui/v/%s\nChangelog: https://metalui.dev/changelog\n' "${GITHUB_REF_NAME#v}" >> notes.md
+          gh release create "$GITHUB_REF_NAME" --title "MetalUI ${GITHUB_REF_NAME#v}" --notes-file notes.md --verify-tag
