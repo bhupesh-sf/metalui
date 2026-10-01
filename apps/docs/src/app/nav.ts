@@ -32,6 +32,7 @@ export const NAV: NavGroup[] = [
       { to: '/layers', label: 'How it fits together' },
       { to: '/wip', label: 'Work in progress' },
       { to: '/changelog', label: 'Changelog' },
+      { to: '/performance', label: 'Performance' },
     ],
   },
   {

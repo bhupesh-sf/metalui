@@ -34,7 +34,8 @@
     "bench:idle-report": "node scripts/bench-idle-report.mjs",
     "bench:gate": "node scripts/bench-gate.mjs",
     "bench:bundle:gate": "node scripts/bench-bundle.mjs --gate",
-    "lint:transitions": "node scripts/lint-transitions.mjs"
+    "lint:transitions": "node scripts/lint-transitions.mjs",
+    "bench:summary": "node scripts/bench-summary.mjs"
   },
   "engines": {
     "node": ">=22"

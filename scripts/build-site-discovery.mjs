@@ -48,6 +48,7 @@ const descriptions = {
   '/foundations/motion': 'MetalUI motion classes, physical springs, travel distances, and reduced-motion behavior.',
   '/foundations/transitions': 'MetalUI state-change recipes for press, selection, panels, labels, and icons.',
   '/changelog': 'What changed in each release of @unlocalhosted/metalui: added, changed, fixed and removed, newest first, with links to npm and the release tag.',
+  '/performance': 'What MetalUI costs a laptop: idle work, wake-ups and bytes shipped, measured on a separate machine, with the rules the library keeps and what the numbers do not prove.',
   '/wip': 'What is unfinished in MetalUI 0.0 alpha: SwiftUI placeholders, React-only blocks, and open backlog items by topic.',
   '/blocks/studio-week': 'A live MetalUI block: one week of a canvas workspace on a dot matrix, hour by hour, with readouts for notes, regions, confirmed cues and time in the past, and the recognizer by kind.',
   '/blocks/ai-composer': 'A live MetalUI chat block: a composer that grows, attachments, a model choice, and replies that stream in word by word with stop, copy and retry.',
