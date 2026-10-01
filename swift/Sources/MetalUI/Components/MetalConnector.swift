@@ -29,6 +29,7 @@ public struct MetalConnector: View {
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.scenePhase) private var scenePhase
     @SwiftUI.State private var middle = CGPoint.zero
 
     public init(from: End, to: End, look: Look = .elastic, flow: Flow = .forward,
@@ -61,7 +62,7 @@ public struct MetalConnector: View {
                 band.stroke(ink, style: StrokeStyle(lineWidth: width, lineCap: .round))
                 arrowheads(mid).stroke(ink, style: StrokeStyle(lineWidth: width, lineCap: .round, lineJoin: .round))
             } else {
-                TimelineView(.animation(minimumInterval: Double.one / recipe.scalar("motion.frame-rate"))) { timeline in
+                TimelineView(.animation(minimumInterval: Double.one / recipe.scalar("motion.frame-rate"), paused: scenePhase != .active)) { timeline in
                     let t = timeline.date.timeIntervalSinceReferenceDate
                     if look == .current { current(mid: mid, time: t) }
                     else { stardust(mid: mid, time: t) }

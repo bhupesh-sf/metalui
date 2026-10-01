@@ -156,14 +156,14 @@ struct MetalInnerShadows<S: Shape>: View {
 }
 
 /// The frost behind a floating surface: SwiftUI's own material, so it rasterizes with the view
-/// tree (no platform view), tinted to the recipe's finish. The recipe's fill lies over it.
+/// tree (no platform view). No `.saturation` here, it costs an offscreen pass: the recipe's fill
+/// lies over the material and carries the tint, and the web's `saturate()` is not re-applied.
 struct MetalBackdropView: View {
     let backdrop: MetalBackdrop
 
     var body: some View {
         Rectangle()
             .fill(.ultraThinMaterial)
-            .saturation(backdrop.saturation)
             .environment(\.colorScheme, backdrop.dark ? .dark : .light)
             .allowsHitTesting(false)
             .accessibilityHidden(true)

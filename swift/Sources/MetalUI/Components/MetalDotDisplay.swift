@@ -77,6 +77,7 @@ public struct MetalDotClock<Content: View>: View {
     let running: Bool
     let content: (Int) -> Content
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.scenePhase) private var scenePhase
     @State private var origin = Date()
 
     public init(running: Bool = true, @ViewBuilder content: @escaping (Int) -> Content) {
@@ -85,7 +86,7 @@ public struct MetalDotClock<Content: View>: View {
 
     public var body: some View {
         let step = MetalRecipes.dotDisplay.durationSeconds("self.step")
-        TimelineView(.animation(minimumInterval: step, paused: !running || reduceMotion)) { timeline in
+        TimelineView(.animation(minimumInterval: step, paused: !running || reduceMotion || scenePhase != .active)) { timeline in
             content(Int(timeline.date.timeIntervalSince(origin) / step))
         }
     }
