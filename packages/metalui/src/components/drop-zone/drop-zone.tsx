@@ -29,7 +29,7 @@ const WELL = 'mu-drop-zone-well grid flex-none place-items-center size-drop-zone
 const TITLE = 'mu-drop-zone-title type-ui text-ink';
 const LINE = 'mu-drop-zone-description type-meta text-ink3';
 const CHOOSE = 'mu-drop-zone-choose type-meta text-ink2 underline underline-offset-2';
-const WORDS = 'mu-drop-zone-words grid min-w-0 gap-1';
+const WORDS = 'mu-drop-zone-words grid min-w-0 gap-drop-zone-words-gap';
 
 export type DropRefusal = { file: File; reason: 'type' | 'size' | 'count' };
 

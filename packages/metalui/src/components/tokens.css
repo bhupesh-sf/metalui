@@ -1147,6 +1147,7 @@
   --mu-r-attachment-self-radius: 14px;
   --mu-r-attachment-self-min-width: 240px;
   --mu-r-attachment-self-max-width: 360px;
+  --mu-r-attachment-body-gap: 1px;
   --mu-r-attachment-type-size: 36px;
   --mu-r-attachment-type-radius: 10px;
   --mu-r-attachment-track-height: 3px;
@@ -1157,6 +1158,7 @@
   --mu-r-table-head-height: 32px;
   --mu-r-table-caption-gap: 12px;
   --mu-r-table-sort-glyph: 10px;
+  --mu-r-table-sort-gap: 4px;
   /* empty-state: the well (recipe well field); the icon set; Transitions T9 */
   --mu-r-empty-state-self-gap: 8px;
   --mu-r-empty-state-self-action-gap: 16px;
@@ -1193,6 +1195,7 @@
   --mu-r-drop-zone-self-sink: 0.985;
   --mu-r-drop-zone-self-armed: 0.4;
   --mu-r-drop-zone-self-disabled: 0.5;
+  --mu-r-drop-zone-words-gap: 1px;
   --mu-r-drop-zone-compact-height: 56px;
   --mu-r-drop-zone-compact-pad-x: 16px;
   --mu-r-drop-zone-compact-gap: 12px;

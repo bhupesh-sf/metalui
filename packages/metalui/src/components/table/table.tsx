@@ -52,7 +52,7 @@ export interface TableProps<Row> {
 const TABLE = 'mu-table w-full table-reset';
 const CAPTION = 'mu-table-caption caption-top text-left pb-table-caption-gap type-title text-ink';
 const TH = 'mu-table-th align-middle h-table-head-height px-table-row-pad-x type-label engraved text-left font-normal table-rule data-end:text-right';
-const SORT = 'mu-table-sort inline-flex items-center gap-4 border-0 bg-transparent p-0 table-sort-button cursor-pointer outline-none focus-visible:focus-ring';
+const SORT = 'mu-table-sort inline-flex items-center gap-table-sort-gap border-0 bg-transparent p-0 table-sort-button cursor-pointer outline-none focus-visible:focus-ring';
 const ARROW = 'mu-table-arrow size-table-sort-glyph table-sort-arrow reduced-motion:transition-none';
 const TR = 'mu-table-row transition-row hover:not-data-selected:recipe-switcher data-selected:bg-table-select-tint';
 const TD = 'mu-table-td align-middle h-table-row-height px-table-row-pad-x type-ui text-ink table-rule data-end:text-right data-end:tabular-nums';

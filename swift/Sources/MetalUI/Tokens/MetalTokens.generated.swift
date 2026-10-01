@@ -1155,6 +1155,7 @@ public enum MetalRecipes {
             "self.radius": .number(14.0),
             "self.min-width": .number(240.0),
             "self.max-width": .number(360.0),
+            "body.gap": .number(1.0),
             "type.size": .number(36.0),
             "type.radius": .number(10.0),
             "track.height": .number(3.0),
@@ -1174,6 +1175,7 @@ public enum MetalRecipes {
             "head.height": .number(32.0),
             "caption.gap": .number(12.0),
             "sort.glyph": .number(10.0),
+            "sort.gap": .number(4.0),
             "select.tint": .perColorway(bone: "rgba(63,185,122,.08)", graphite: "rgba(63,185,122,.12)"),
         ]
     )
@@ -1247,6 +1249,7 @@ public enum MetalRecipes {
             "self.sink": .text("0.985"),
             "self.armed": .text("0.4"),
             "self.disabled": .text("0.5"),
+            "words.gap": .number(1.0),
             "compact.height": .number(56.0),
             "compact.pad-x": .number(16.0),
             "compact.gap": .number(12.0),

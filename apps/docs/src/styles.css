@@ -4,6 +4,14 @@
 @import "@fontsource-variable/doto";
 @import "@unlocalhosted/metalui/tokens.css";
 @import "@unlocalhosted/metalui/theme.css";
+
+/* The site is not a host app, so it may set the base scale and fonts that the library leaves alone:
+   one pixel per spacing step (p-12 is 12px) and the library's own system fonts. */
+@theme inline {
+  --spacing: 1px;
+  --font-sans: var(--mu-sans);
+  --font-mono: var(--mu-mono);
+}
 @import "dialkit/styles.css";
 
 /* The library's own sources use these utilities too. */

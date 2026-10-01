@@ -6,6 +6,7 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ### Fixed
 
+- `theme.css` no longer redefines `--spacing`, `--font-sans` or `--font-mono`. Importing it into an app with its own Tailwind (the shadcn route) used to set the spacing scale to 1px per step, shrinking that app's `p-4`, `gap-2` and `h-10` to a quarter of their size, and to replace its fonts. It now adds names of its own only, so the host's layout and fonts are untouched. `check:host-safe` keeps it that way. The `styles.css` build is unchanged.
 - shadcn registry: the `tokens` item imports `tokens.css` and `theme.css` from `@unlocalhosted/metalui` instead of a copied path that Next.js could not resolve; it works in Vite and Next.js (`app/` and `src/app/`) with no edits.
 - `Icon` is marked `'use client'` in source, so a copy of it works as a Next.js client component.
 

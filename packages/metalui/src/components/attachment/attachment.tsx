@@ -22,7 +22,7 @@ import { Button } from '../button/button';
 
 const PLATE = 'mu-attachment relative flex w-full items-center gap-attachment-gap h-attachment-height min-w-attachment-min-width max-w-attachment-max-width p-attachment-pad rounded-attachment-radius recipe-surface-raise-sm attachment-land data-leaving:attachment-leave reduced-motion:animate-none';
 const TYPE = 'mu-attachment-type grid flex-none place-items-center size-attachment-type-size rounded-attachment-type-radius recipe-well-field type-label text-ink2 uppercase';
-const BODY = 'mu-attachment-body grid flex-1 min-w-0 gap-1';
+const BODY = 'mu-attachment-body grid flex-1 min-w-0 gap-attachment-body-gap';
 const NAME = 'mu-attachment-name flex min-w-0 type-ui text-ink';
 const META = 'mu-attachment-meta type-meta tabular-nums text-ink3 data-failed:text-form-field-error-ink';
 const TRACK = 'mu-attachment-track block h-attachment-track-height rounded-pill overflow-hidden recipe-switch';
