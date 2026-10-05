@@ -2642,6 +2642,9 @@ public enum MetalRecipes {
             "small.height": .number(20.0),
             "small.thumb": .number(16.0),
             "small.travel": .number(12.0),
+            "row.gap": .number(12.0),
+            "row.gap-apart": .number(16.0),
+            "row.text-gap": .number(2.0),
         ]
     )
 

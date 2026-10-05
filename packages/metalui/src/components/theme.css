@@ -1020,6 +1020,9 @@
   --spacing-switch-small-height: var(--mu-r-switch-small-height);
   --spacing-switch-small-thumb: var(--mu-r-switch-small-thumb);
   --spacing-switch-small-travel: var(--mu-r-switch-small-travel);
+  --spacing-switch-row-gap: var(--mu-r-switch-row-gap);
+  --spacing-switch-row-gap-apart: var(--mu-r-switch-row-gap-apart);
+  --spacing-switch-row-text-gap: var(--mu-r-switch-row-text-gap);
   --spacing-brush-min: var(--mu-r-brush-self-min);
   --spacing-brush-ring: var(--mu-r-brush-self-ring);
   --color-brush-ring-ink: var(--mu-r-brush-self-ring-ink);

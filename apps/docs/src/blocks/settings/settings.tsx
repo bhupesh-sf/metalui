@@ -155,18 +155,10 @@ const nestOf = (el: Element) => parseFloat(getComputedStyle(el).getPropertyValue
 /* ── Parts ─────────────────────────────────────────────────── */
 
 /** A setting that is on or off: its words on the left (clicking them toggles), the switch on the right. */
-function SwitchRow({ id, title, about, checked, onChange, small }: {
-  id: string; title: string; about: string; checked: boolean; onChange: (on: boolean) => void; small: boolean;
+function SwitchRow({ title, about, checked, onChange, small }: {
+  title: string; about: string; checked: boolean; onChange: (on: boolean) => void; small: boolean;
 }) {
-  return (
-    <div className="flex items-center justify-between gap-16">
-      <span className="grid min-w-0 gap-2">
-        <span id={`${id}-t`} className="cursor-pointer select-none type-ui text-ink" onClick={() => onChange(!checked)}>{title}</span>
-        <span id={`${id}-d`} className="type-meta text-ink3">{about}</span>
-      </span>
-      <Switch size={small ? 'small' : 'regular'} checked={checked} onCheckedChange={onChange} aria-labelledby={`${id}-t`} aria-describedby={`${id}-d`} />
-    </div>
-  );
+  return <Switch size={small ? 'small' : 'regular'} labelSide="start" label={title} description={about} checked={checked} onCheckedChange={onChange} />;
 }
 
 /** A group's words above it, the way a FormField labels a single control. */
@@ -424,9 +416,9 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
             {section === 'notifications' && (
               <>
                 <div className={`grid ${rows}`}>
-                  <SwitchRow id={`${ids}-digests`} small={compact} title="Email digests" about="A roundup of what you missed." checked={draft.digests} onChange={(v) => set('digests', v)} />
-                  <SwitchRow id={`${ids}-mentions`} small={compact} title="Mentions" about="An email when someone mentions you." checked={draft.mentions} onChange={(v) => set('mentions', v)} />
-                  <SwitchRow id={`${ids}-weekly`} small={compact} title="Weekly summary" about="Monday morning: the workspace’s week in one email." checked={draft.weekly} onChange={(v) => set('weekly', v)} />
+                  <SwitchRow small={compact} title="Email digests" about="A roundup of what you missed." checked={draft.digests} onChange={(v) => set('digests', v)} />
+                  <SwitchRow small={compact} title="Mentions" about="An email when someone mentions you." checked={draft.mentions} onChange={(v) => set('mentions', v)} />
+                  <SwitchRow small={compact} title="Weekly summary" about="Monday morning: the workspace’s week in one email." checked={draft.weekly} onChange={(v) => set('weekly', v)} />
                 </div>
                 <div className={`grid gap-10 border-t border-rule ${compact ? 'pt-12' : 'pt-16'}`}>
                   <GroupLabel id={`${ids}-freq`} about={<SwapText value={draft.digests ? 'How often the digest comes.' : 'Turn on email digests to choose.'} />}>Digest frequency</GroupLabel>
@@ -460,7 +452,7 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
                   </RadioGroup>
                 </div>
                 <div className={`border-t border-rule ${compact ? 'pt-12' : 'pt-16'}`}>
-                  <SwitchRow id={`${ids}-motion`} small={compact} title="Reduce motion" about="Everything changes at once; nothing travels or springs." checked={draft.reduceMotion} onChange={(v) => set('reduceMotion', v)} />
+                  <SwitchRow small={compact} title="Reduce motion" about="Everything changes at once; nothing travels or springs." checked={draft.reduceMotion} onChange={(v) => set('reduceMotion', v)} />
                 </div>
               </>
             )}

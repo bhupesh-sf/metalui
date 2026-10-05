@@ -19,6 +19,14 @@ export default function SwitchPage() {
           <Switch aria-label="Disabled" disabled defaultChecked />
         </div>
       ) }}
+      more={[
+        { id: 'labelled', title: 'With a label', lede: 'The words and the switch are one row: click the words to toggle it. The description is read as its description.', node: (
+          <div className="grid w-full max-w-[24rem] gap-16">
+            <Switch label="Sync this canvas" description="Changes reach your other devices." defaultChecked />
+            <Switch labelSide="start" label="Email digests" description="A roundup of what you missed." />
+          </div>
+        ) },
+      ]}
       xray={<SwitchXray />}
       sources={[
         { id: 'react', label: 'React', code: reactSource },

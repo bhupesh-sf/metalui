@@ -3529,11 +3529,13 @@ Reduce Motion: the thumb moves at once; the colour still fades.
 | `checked`, `defaultChecked`, `onCheckedChange` | `isOn:` |
 | `size` (`regular`, `small`) | `size:` |
 | `disabled` | `.disabled()` |
-| `aria-label` | `.accessibilityLabel` |
+| `label`, `description` (a row: the words toggle it; the description is read as its description) | the title (`MetalSwitch("Sync", isOn:)`) |
+| `labelSide` (`end`: after the switch; `start`: a settings row, words left, switch right) | – |
+| `aria-label` (no visible label) | `.accessibilityLabel` |
 
 ## Keyboard and accessibility
 
-- A button with the switch role; Space toggles. Pair it with a visible label (the settings row does), or give it `aria-label`.
+- A button with the switch role; Space toggles. Give it a visible `label` (the row is a native label, so the words toggle it), or `aria-label` when nothing visible names it. Never wire a click on its words by hand.
 
 ## Rules
 

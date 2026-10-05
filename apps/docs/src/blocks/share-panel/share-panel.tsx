@@ -361,13 +361,7 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
         {/* Link */}
         <section aria-labelledby={`${ids}-link`} className="grid gap-10 border-t border-rule pt-16">
           <Heading id={`${ids}-link`}>Link</Heading>
-          <div className="flex items-center gap-12">
-            <Switch checked={open} onCheckedChange={setOpen} aria-labelledby={`${ids}-anyone`} aria-describedby={`${ids}-who`} />
-            <span className="grid min-w-0 gap-1">
-              <span id={`${ids}-anyone`} className="type-ui text-ink cursor-pointer select-none" onClick={() => setOpen((o) => !o)}>Anyone with the link</span>
-              <span id={`${ids}-who`} className="type-meta text-ink3"><SwapText value={open ? 'Anyone who has it can view' : 'Only people invited can open it'} /></span>
-            </span>
-          </div>
+          <Switch checked={open} onCheckedChange={setOpen} label="Anyone with the link" description={<SwapText value={open ? 'Anyone who has it can view' : 'Only people invited can open it'} />} />
           {/* Narrow, the link takes its own line so its end stays readable. */}
           <div className="flex flex-wrap items-center justify-end gap-8">
             <Field size="regular" className="min-w-[15rem] flex-1">

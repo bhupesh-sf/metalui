@@ -1892,6 +1892,9 @@
   --mu-r-switch-small-height: 20px;
   --mu-r-switch-small-thumb: 16px;
   --mu-r-switch-small-travel: 12px;
+  --mu-r-switch-row-gap: 12px;
+  --mu-r-switch-row-gap-apart: 16px;
+  --mu-r-switch-row-text-gap: 2px;
   /* brush: the native reference brushCursor (CanvasToolGesture), with a colorway-aware eraser ring */
   --mu-r-brush-self-min: 6px;
   --mu-r-brush-self-ring: 0.5px;
