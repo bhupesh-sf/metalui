@@ -39,7 +39,10 @@ function MotionToggle() {
     try { return localStorage.getItem('metalui:motion') !== 'off'; } catch { return true; }
   });
   React.useEffect(() => {
+    // `rm` quiets the site's own CSS; data-mu-motion is the library's switch, which script-driven motion reads too.
     document.documentElement.classList.toggle('rm', !on);
+    if (on) document.documentElement.removeAttribute('data-mu-motion');
+    else document.documentElement.setAttribute('data-mu-motion', 'reduce');
     try { localStorage.setItem('metalui:motion', on ? 'on' : 'off'); } catch {}
   }, [on]);
   return (

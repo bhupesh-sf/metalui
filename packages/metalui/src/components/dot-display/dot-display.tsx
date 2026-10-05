@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { motionReduced, onMotionChange } from '../../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
  * DOT DISPLAY: square dots on one pitch, printed into a well
@@ -79,25 +80,24 @@ export function useDotTick(ref: React.RefObject<Element | null>, running = true)
   React.useEffect(() => {
     const el = ref.current;
     if (!running || !el) return;
-    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let seen = true;
     let timer = 0;
     const sync = () => {
       window.clearInterval(timer);
       timer = 0;
       const ms = stepMs(el);
-      if (motion.matches || document.hidden || !seen || !(ms > 0)) return;
+      if (motionReduced(el) || document.hidden || !seen || !(ms > 0)) return;
       timer = window.setInterval(() => setTick((t) => t + 1), ms);
     };
     const watch = new IntersectionObserver(([e]) => { seen = e?.isIntersecting ?? true; sync(); });
     watch.observe(el);
-    motion.addEventListener('change', sync);
+    const unwatch = onMotionChange(sync);
     document.addEventListener('visibilitychange', sync);
     sync();
     return () => {
       window.clearInterval(timer);
       watch.disconnect();
-      motion.removeEventListener('change', sync);
+      unwatch();
       document.removeEventListener('visibilitychange', sync);
     };
   }, [ref, running]);

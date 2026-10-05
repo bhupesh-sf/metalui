@@ -181,7 +181,7 @@ export default function Motion() {
         <TokenTable head={['Class', 'Spring', 'Timing', 'Moves']} rows={massRows} mono={[0, 1, 2]} />
       </Section>
 
-      <Section title="Reduce Motion" lede="Each class resolves one way under Reduce Motion, from the system setting or from data-mu-motion=&quot;reduce&quot; on any ancestor. Parts, objects, hinges and refusals apply at once; surfaces and settles lose their travel and fade in place; release plays as authored, because a press of one point is feedback. Meaning never depends on the motion.">
+      <Section title="Reduce Motion" lede="Each class resolves one way under Reduce Motion, from the system setting or from data-mu-motion=&quot;reduce&quot; on any ancestor. Parts, objects, hinges and refusals apply at once; surfaces and settles lose their travel and fade in place; release plays as authored, because a press of one point is feedback. Meaning never depends on the motion. Script-driven motion asks motionReduced(el) or useReducedMotion(ref), which read both the system setting and the switch; never matchMedia alone.">
         <Bench caption="Each class arrives from one step away · Replay, then turn Reduce motion on and replay">
           <ReducedMotionBench />
         </Bench>

@@ -317,7 +317,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Button**: `cap="primary"` ignores `size="compact"` (the AI composer's send key is 32 tall beside a 28 Select).
 - [ ] **ScrollArea**: no way to reach the viewport or listen to scrolling (a `viewportRef` / `onScroll`); the AI composer finds `.mu-scroll-area-viewport` by class.
 - [ ] **Icons**: no `send`, `stop`, `attach`, `retry` glyphs (the composer uses arrow → rectangle, plus, redo); add them with the icons entry's D list.
-- [ ] **Motion**: no exported helper for "is motion reduced here" that covers both the OS setting and the site's motion switch; blocks read `--mu-travel-settle === 0`. Export one (`useReducedMotion()` or `motionReduced(el)`).
+- [x] **Motion**: no exported helper for "is motion reduced here" that covers both the OS setting and the site's motion switch; blocks read `--mu-travel-settle === 0`. Export one (`useReducedMotion()` or `motionReduced(el)`).
 - [ ] **Tooltip swallows the first Escape** on a focused trigger (Base UI's trigger), so a panel around it never hears ⎋; the share panel listens in the capture phase.
 - [ ] **DropZone compact** doesn't truncate its title: at narrow widths it runs into "or choose files".
 - [ ] **Attachment**: its error line wraps beside Try again when narrow; its fixed max width fights a full-width list; no hook for the rows below to close up after it leaves.

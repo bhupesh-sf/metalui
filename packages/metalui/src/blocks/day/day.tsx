@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Surface } from '../../components/surface/surface';
 import { Well } from '../../components/well/well';
 import { useAwake } from '../../motion/awake';
+import { useReducedMotion } from '../../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
  * DAY: a custom block (an object). A tear-off page sunk into a raise slab.
@@ -139,19 +140,6 @@ function useNow(on: boolean, beat: number) {
   return now;
 }
 
-const useReduced = () => {
-  const [reduced, setReduced] = React.useState(false);
-  React.useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const q = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const on = () => setReduced(q.matches);
-    on();
-    q.addEventListener('change', on);
-    return () => q.removeEventListener('change', on);
-  }, []);
-  return reduced;
-};
-
 /* ── the parts ──────────────────────────────────────────── */
 
 interface DayState {
@@ -194,7 +182,7 @@ const Root = React.forwardRef<HTMLElement, DayRootProps>(function DayRoot(
   { date, weekendInk = true, animate = true, onTear, className, children, ...props },
   ref,
 ) {
-  const reduced = useReduced();
+  const reduced = useReducedMotion();
   const still = reduced || !animate;
   const [watch, awake] = useAwake();
   const nowMs = useNow(awake, BEAT_MS);

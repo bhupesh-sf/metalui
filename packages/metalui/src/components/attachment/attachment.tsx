@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Progress as BaseProgress } from '@base-ui/react/progress';
 import { IconButton } from '../icon-button/icon-button';
 import { Button } from '../button/button';
+import { motionReduced } from '../../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
  * ATTACHMENT, a file someone attached, as a small raised plate
@@ -64,7 +65,7 @@ export function Attachment({ name, size, progress, error, onRetry, onRemove, cla
   const remove = () => {
     const el = plate.current;
     const ms = el ? parseFloat(getComputedStyle(el).getPropertyValue('--mu-spring-release-d')) * 1000 : 0;
-    const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduced = motionReduced(el);
     if (!ms || reduced) return onRemove?.();
     setLeaving(true);
     window.setTimeout(() => onRemove?.(), ms);

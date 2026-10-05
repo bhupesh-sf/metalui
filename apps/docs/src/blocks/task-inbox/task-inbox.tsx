@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import {
   AlertDialog, Avatar, Button, Checkbox, Chip, EmptyState, Field, IconButton, Kbd, Menu, MenuItem, Row, Rule, Surface,
-  SwapText, Switcher, useToast,
+  SwapText, Switcher, useToast, motionReduced,
 } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 
@@ -129,14 +129,11 @@ const short = (s: string, n = 32) => (s.length > n ? `${s.slice(0, n - 1).trimEn
 
 /* ── Motion helpers ────────────────────────────────────────── */
 
-function reduced(el: Element) {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches || !!el.closest('[data-mu-motion="reduce"]');
-}
 
 /** A spring's duration (ms, zero under Reduce Motion) and curve, read from the element's own tokens. */
 function spring(el: Element, name: 'settle' | 'object' | 'release') {
   const s = getComputedStyle(el);
-  const ms = reduced(el) ? 0 : parseFloat(s.getPropertyValue(`--mu-spring-${name}-d`)) * 1000 * (parseFloat(s.getPropertyValue(`--mu-travel-${name}`)) || 0);
+  const ms = motionReduced(el) ? 0 : parseFloat(s.getPropertyValue(`--mu-spring-${name}-d`)) * 1000 * (parseFloat(s.getPropertyValue(`--mu-travel-${name}`)) || 0);
   return { ms, easing: s.getPropertyValue(`--mu-spring-${name}`).trim() || 'ease-out' };
 }
 const nestOf = (el: Element) => parseFloat(getComputedStyle(el).getPropertyValue('--mu-motion-nest')) || 6;

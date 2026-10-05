@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Radio as BaseRadio } from '@base-ui/react/radio';
 import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
-import { Avatar, Button, Calendar, EmptyState, Led, Select, SwapText, Switcher } from '@unlocalhosted/metalui';
+import { Avatar, Button, Calendar, EmptyState, Led, Select, SwapText, Switcher, useReducedMotion } from '@unlocalhosted/metalui';
 import { ClockIcon, LinkIcon, MorphIcon } from '@unlocalhosted/metalui/icons';
 
 /* ─────────────────────────────────────────────────────────
@@ -170,17 +170,6 @@ function spring(el: Element, name: 'settle' | 'part') {
   return { ms, easing: s.getPropertyValue(`--mu-spring-${name}`).trim() || 'ease-out' };
 }
 
-function usePrefersReduced() {
-  const [reduced, setReduced] = React.useState(false);
-  React.useEffect(() => {
-    const q = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(q.matches);
-    const on = () => setReduced(q.matches);
-    q.addEventListener('change', on);
-    return () => q.removeEventListener('change', on);
-  }, []);
-  return reduced;
-}
 
 /** A value that follows another after a delay: labels turn one after another, top to bottom. */
 function useLater<T>(value: T, ms: number) {
@@ -271,8 +260,7 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
   const [zone, setZone] = React.useState(host.zone);
   const [time, setTime] = React.useState<number | null>(null);
   const [phase, setPhase] = React.useState<Phase>('choosing');
-  const [jump, setJump] = React.useState(0);
-  const reduced = usePrefersReduced();
+  const reduced = useReducedMotion();
   const list = React.useRef<HTMLDivElement>(null);
   const confirmKey = React.useRef<HTMLElement>(null);
   const cal = React.useId().replace(/[^\w-]/g, '');
@@ -288,8 +276,6 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
     if (time != null && !startsOn(day, l, host, now).includes(time)) setTime(null);
   };
   const jumpTo = (d: Date) => {
-    // The Calendar shows the month you left it on; a jump to another month opens that month.
-    if (d.getMonth() !== day.getMonth()) setJump((j) => j + 1);
     chooseDay(d);
     requestAnimationFrame(() => list.current?.querySelector<HTMLElement>('[role=radio]')?.focus());
   };
@@ -354,13 +340,8 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
         </div>
 
         {/* The month */}
-        <div
-          className={`${cal} justify-self-start`}
-          // Pressing a day of the next or last month would focus it first, which turns the month and
-          // takes the day away before the click lands; keeping focus where it is lets the click choose it.
-          onMouseDown={(e) => { if ((e.target as Element).closest('button[data-outside]')) e.preventDefault(); }}
-        >
-          <Calendar key={jump} aria-label="Day" value={day} onValueChange={chooseDay} min={today} max={last} locale="en-GB" />
+        <div className={`${cal} justify-self-start`}>
+          <Calendar aria-label="Day" value={day} onValueChange={chooseDay} min={today} max={last} locale="en-GB" />
         </div>
 
         {/* The day's times */}

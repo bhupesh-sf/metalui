@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {
   Attachment, Avatar, Button, DropZone, Field, FormField, IconButton, Select, SwapText, Switch, Tooltip, TooltipProvider,
-  type DropRefusal,
+  type DropRefusal, motionReduced,
 } from '@unlocalhosted/metalui';
 import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
 
@@ -91,14 +91,11 @@ const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one :
 
 /* ── Motion helpers ────────────────────────────────────────── */
 
-function reduced(el: Element) {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches || !!el.closest('[data-mu-motion="reduce"]');
-}
 
 /** A spring's duration (ms, zero under Reduce Motion) and curve, read from the element's own tokens. */
 function spring(el: Element, name: 'settle' | 'object' | 'release') {
   const s = getComputedStyle(el);
-  const ms = reduced(el) ? 0 : parseFloat(s.getPropertyValue(`--mu-spring-${name}-d`)) * 1000 * (parseFloat(s.getPropertyValue(`--mu-travel-${name}`)) || 0);
+  const ms = motionReduced(el) ? 0 : parseFloat(s.getPropertyValue(`--mu-spring-${name}-d`)) * 1000 * (parseFloat(s.getPropertyValue(`--mu-travel-${name}`)) || 0);
   return { ms, easing: s.getPropertyValue(`--mu-spring-${name}`).trim() || 'ease-out' };
 }
 

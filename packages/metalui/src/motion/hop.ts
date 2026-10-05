@@ -1,3 +1,4 @@
+import { motionReduced } from './reduced';
 /* ─────────────────────────────────────────────────────────
  * HOP: a thing thrown from one stop to the next along a small arc
  *
@@ -47,7 +48,7 @@ export function hopPoint(from: HopPoint, to: HopPoint, t: number, { side = 'up' 
 
 /** Throws the element from one translate to another along the hop's arc. Returns the animation. */
 export function hop(el: HTMLElement, from: HopPoint, to: HopPoint, options: HopOptions = {}): Animation {
-  const reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduced = motionReduced(el);
   if (options.reach === 'far') return throwFar(el, from, to, options, reduced);
   const duration = reduced ? 0 : token('--mu-motion-hop-duration', 250);
   const lift = token('--mu-motion-hop-lift', 14);

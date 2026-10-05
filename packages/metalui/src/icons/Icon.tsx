@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { ICON_CATALOG, type IconName } from './catalog.generated';
 import './icons.generated.css';
+import { motionReduced, onMotionChange } from '../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
  * ICON PLAYBACK
@@ -63,7 +64,6 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
     const act = 'motion' in icon ? icon.motion : undefined;
     if (!svg || !enabled || !act) return;
     const trigger = svg.closest('.mu-icon-trigger') ?? svg;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
     svg.setAttribute('data-motion-runtime', ''); // the CSS player steps aside
     let running: Animation[] = [];
     const stop = () => {
@@ -72,7 +72,7 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
       svg.removeAttribute('data-playing');
     };
     const play = () => {
-      if (running.length || reduce.matches || disabled(trigger)) return;
+      if (running.length || motionReduced(svg) || disabled(trigger)) return;
       svg.setAttribute('data-playing', '');
       // A part and its occluders (a mask's knockout named like it) move on one track.
       running = act.tracks.flatMap(({ part, keyframes }) =>
@@ -93,19 +93,19 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
       if (trigger.matches(':focus-visible')) play();
     };
     const onReduce = () => {
-      if (reduce.matches) stop();
+      if (motionReduced(svg)) stop();
     };
     trigger.addEventListener('pointerenter', onPointer);
     trigger.addEventListener('focusin', onFocus);
     trigger.addEventListener('click', play);
-    reduce.addEventListener('change', onReduce);
+    const unwatch = onMotionChange(onReduce);
     return () => {
       stop();
       svg.removeAttribute('data-motion-runtime');
       trigger.removeEventListener('pointerenter', onPointer);
       trigger.removeEventListener('focusin', onFocus);
       trigger.removeEventListener('click', play);
-      reduce.removeEventListener('change', onReduce);
+      unwatch();
     };
   }, [ref, name, enabled]);
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useReducedMotion } from '../../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
  * CONNECTOR (DRAWING.md DR-07): a line between two blocks, and everything around it
@@ -94,18 +95,6 @@ function arrowhead(tip: P, from: P, len: number) {
 }
 const frac = (v: number) => ((v % 1) + 1) % 1;
 const easeInOut = (u: number) => 0.5 - 0.5 * Math.cos(Math.PI * u);
-
-function useReducedMotion() {
-  const [reduce, setReduce] = React.useState(false);
-  React.useEffect(() => {
-    const q = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduce(q.matches);
-    const on = () => setReduce(q.matches);
-    q.addEventListener('change', on);
-    return () => q.removeEventListener('change', on);
-  }, []);
-  return reduce;
-}
 
 /** A line between two blocks, with its look, its flow and its chrome. */
 export function Connector({

@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
+import { useReducedMotion } from '../../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
  * FAN: a compact control bar whose cells open in place
@@ -30,8 +31,6 @@ const useFan = () => {
   if (!c) throw new Error('Fan cells go inside <Fan>');
   return c;
 };
-
-const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* Styled with the theme's utilities: the icon-button tool cap for cells, the toolbar recipe for the tray. */
 const ROW = 'mu-fan relative inline-flex items-end gap-toolbar-gap';
@@ -123,7 +122,7 @@ function FanPicker<V extends string>({ label, value, options, onValueChange, dir
     if (next < 0) { cap.current?.focus(); return; }
     items.current[Math.min(others.length - 1, next)]?.focus();
   };
-  const still = reduced();
+  const still = useReducedMotion(cap);
 
   return (
     <div className="mu-fan-picker relative">
@@ -202,7 +201,7 @@ function FanTray({ label, icon, children }: FanTrayProps) {
 
   const toggle = () => { setOpen(isOpen ? null : { id, restore: () => cap.current?.focus() }); };
   const fold = () => { setOpen(null); requestAnimationFrame(() => cap.current?.focus()); };
-  const still = reduced();
+  const still = useReducedMotion(cap);
 
   return (
     <div

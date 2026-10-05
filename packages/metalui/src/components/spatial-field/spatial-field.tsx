@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { motionReduced, onMotionChange } from '../../motion/reduced';
 
 export type SpatialFieldRect = Readonly<{ x: number; y: number; width: number; height: number }>;
 export type SpatialFieldRegion = Readonly<{ id: string; rect: SpatialFieldRect }>;
@@ -53,7 +54,7 @@ export class SpatialFieldController {
   private resizeObserver: ResizeObserver | null = null;
   private intersectionObserver: IntersectionObserver | null = null;
   private themeObserver: MutationObserver | null = null;
-  private media: MediaQueryList | null = null;
+  private unwatchMotion: (() => void) | null = null;
   private mask = new Uint8Array(0);
   private maskSpacing = 0;
   private maskColumns = 0;
@@ -72,8 +73,7 @@ export class SpatialFieldController {
       else this.stop();
     });
     this.intersectionObserver.observe(canvas);
-    this.media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    this.media.addEventListener('change', this.onMediaChange);
+    this.unwatchMotion = onMotionChange(this.onMediaChange);
     const refresh = () => { this.refreshTheme(); this.onMediaChange(); };
     this.themeObserver = new MutationObserver(refresh);
     this.themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-mu-colorway'] });
@@ -87,12 +87,12 @@ export class SpatialFieldController {
     this.resizeObserver?.disconnect();
     this.intersectionObserver?.disconnect();
     this.themeObserver?.disconnect();
-    this.media?.removeEventListener('change', this.onMediaChange);
+    this.unwatchMotion?.();
     document.removeEventListener('visibilitychange', this.onVisibility);
     this.resizeObserver = null;
     this.intersectionObserver = null;
     this.themeObserver = null;
-    this.media = null;
+    this.unwatchMotion = null;
     this.canvas = null;
     this.context = null;
     this.recipe = null;
@@ -104,7 +104,7 @@ export class SpatialFieldController {
   };
 
   private onMediaChange = () => {
-    this.setReducedMotion(this.media?.matches || document.documentElement.classList.contains('rm'));
+    this.setReducedMotion(motionReduced(this.canvas));
   };
 
   setScene(scene: SpatialFieldScene) {

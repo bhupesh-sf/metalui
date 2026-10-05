@@ -21,12 +21,12 @@ const shared = {
     title: 'MetalUI motion',
     description: 'Springs, swap, indicator, refuse, awake and haptic helpers that MetalUI components use.',
     dependsOn: [],
-    files: ['motion/awake.ts', 'motion/haptic.ts', 'motion/hop.ts', 'motion/indicator.tsx', 'motion/layout-effect.ts', 'motion/refuse.ts', 'motion/springs.generated.ts', 'motion/swap.tsx'],
+    files: ['motion/awake.ts', 'motion/haptic.ts', 'motion/hop.ts', 'motion/indicator.tsx', 'motion/layout-effect.ts', 'motion/reduced.ts', 'motion/refuse.ts', 'motion/springs.generated.ts', 'motion/swap.tsx'],
   },
   icons: {
     title: 'MetalUI icon runtime',
     description: 'The Icon element, the icon catalog and the tick drawing that components such as Checkbox and Toast use.',
-    dependsOn: [],
+    dependsOn: ['motion'],
     files: ['icons/Icon.tsx', 'icons/catalog.generated.ts', 'icons/icons.generated.css', 'icons/tick.generated.ts'],
   },
   'icon-components': {

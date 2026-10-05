@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Surface } from '../../components/surface/surface';
 import { Well } from '../../components/well/well';
 import { useAwake } from '../../motion/awake';
+import { motionReduced, onMotionChange } from '../../motion/reduced';
 import { Led } from '../../components/led/led';
 import { Rule } from '../../components/rule/rule';
 
@@ -373,15 +374,14 @@ function useFrames(on: boolean, awake: boolean) {
   const [tick, setTick] = React.useState(0);
   React.useEffect(() => {
     if (!on || !awake || typeof window === 'undefined') return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     let id: number | undefined;
     const run = () => {
       window.clearInterval(id);
-      id = reduced.matches ? undefined : window.setInterval(() => setTick((t) => t + 1), FRAME_MS);
+      id = motionReduced() ? undefined : window.setInterval(() => setTick((t) => t + 1), FRAME_MS);
     };
     run();
-    reduced.addEventListener('change', run);
-    return () => { window.clearInterval(id); reduced.removeEventListener('change', run); };
+    const unwatch = onMotionChange(run);
+    return () => { window.clearInterval(id); unwatch(); };
   }, [on, awake]);
   return on ? tick : 0;
 }

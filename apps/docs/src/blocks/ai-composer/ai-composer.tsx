@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Attachment, Button, IconButton, Led, ScrollArea, Select, Skeleton, SwapText, Textarea, Tooltip, type LedKind } from '@unlocalhosted/metalui';
+import { Attachment, Button, IconButton, Led, ScrollArea, Select, Skeleton, SwapText, Textarea, Tooltip, type LedKind, motionReduced } from '@unlocalhosted/metalui';
 import { MorphIcon, PlusIcon, RedoIcon } from '@unlocalhosted/metalui/icons';
 
 /* ─────────────────────────────────────────────────────────
@@ -89,7 +89,6 @@ function spring(el: Element, name: 'settle' | 'object') {
 }
 
 /** Reduce Motion, as the tokens see it (the media query or the site's own switch). */
-const reduced = (el: Element | null) => !!el && (parseFloat(getComputedStyle(el).getPropertyValue('--mu-travel-settle')) || 0) === 0;
 
 /** A message lands: from one nest below, on the object spring. */
 function useLand<T extends HTMLElement>(on: boolean) {
@@ -216,7 +215,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
   const landed = React.useRef(new Set<number>(OPENING.map((m) => m.id)));
 
   const live = [...messages].reverse().find((m) => m.role === 'assistant' && (m.status === 'waiting' || m.status === 'writing')) as Extract<Message, { role: 'assistant' }> | undefined;
-  const still = reduced(root.current);
+  const still = motionReduced(root.current);
   const busy = !!live;
   const empty = draft.trim() === '' && files.length === 0;
 
@@ -226,7 +225,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
   const toFoot = (smooth: boolean) => {
     const v = viewport();
     if (!v) return;
-    v.scrollTo({ top: v.scrollHeight, behavior: smooth && !reduced(v) ? 'smooth' : 'auto' });
+    v.scrollTo({ top: v.scrollHeight, behavior: smooth && !motionReduced(v) ? 'smooth' : 'auto' });
   };
 
   // Where the person is: at the foot the thread follows; away, it stays put and offers a way back.

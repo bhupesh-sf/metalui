@@ -49,6 +49,11 @@
           "target": "components/metalui/motion/layout-effect.ts"
         },
         {
+          "path": "packages/metalui/src/motion/reduced.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/reduced.ts"
+        },
+        {
           "path": "packages/metalui/src/motion/refuse.ts",
           "type": "registry:ui",
           "target": "components/metalui/motion/refuse.ts"
@@ -70,7 +75,9 @@
       "type": "registry:lib",
       "title": "MetalUI icon runtime",
       "description": "The Icon element, the icon catalog and the tick drawing that components such as Checkbox and Toast use.",
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/motion.json"
+      ],
       "files": [
         {
           "path": "packages/metalui/src/icons/Icon.tsx",
@@ -162,6 +169,7 @@
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -459,6 +467,7 @@
       "description": "The look around ink that joins two blocks: a green halo and end dots on hover (solid attached, hollow free), end handles when selected, and a label chip at the middle; same size on screen at every zoom.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -519,6 +528,7 @@
       "description": "Square dots on one pitch, printed into a well: each dot one px colour or unlit. A slow display that steps six times a second and never tweens. The picture (a sky, a sticker) is the caller's.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1497,6 +1507,7 @@
       "description": "One quiet, content-aware dot field for a Place. It yields to object footprints and reinforces the host-selected Region while the host retains placement authority.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

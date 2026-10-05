@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { SPRINGS } from '../motion/springs.generated';
+import { motionReduced } from '../motion/reduced';
 import { morphAt, morphOutline, morphParts, morphPath, planMorph, springAt, type MorphFrame, type MorphPart, type MorphTurn } from './morph';
 import type { MorphIconName } from './morph.generated';
 
@@ -38,9 +39,6 @@ export interface MorphIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'nam
    *  and a half turn of a symmetric glyph turns over on its axis (docs/MORPH.md E2, E8). */
   turn?: MorphTurn;
 }
-
-const prefersReduced = () =>
-  typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 /** The mask for one depth relation: what a caster's body hides (behind) or shows (inside), live. */
 function DepthMask({ id, caster, r, inside }: { id: string; caster: MorphPart; r: number; inside: boolean }) {
@@ -92,6 +90,12 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
   const [frame, setFrame] = React.useState<MorphFrame>(() => morphParts(name, strokeWidth, turn));
   const shown = React.useRef({ frame, name, turn });
   const raf = React.useRef(0);
+  const svg = React.useRef<SVGSVGElement | null>(null);
+  const setRef = React.useCallback((node: SVGSVGElement | null) => {
+    svg.current = node;
+    if (typeof ref === 'function') ref(node);
+    else if (ref) ref.current = node;
+  }, [ref]);
 
   React.useEffect(() => {
     if (shown.current.name === name && shown.current.turn === turn) return;
@@ -99,7 +103,7 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
     shown.current.name = name;
     shown.current.turn = turn;
     const rest = morphParts(name, strokeWidth, turn);
-    if (prefersReduced()) {
+    if (motionReduced(svg.current)) {
       shown.current.frame = rest;
       setFrame(rest);
       return;
@@ -121,7 +125,7 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
 
   return (
     <svg
-      ref={ref}
+      ref={setRef}
       viewBox="0 0 24 24"
       width={size}
       height={size}
