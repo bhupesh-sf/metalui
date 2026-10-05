@@ -621,7 +621,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
                   <Chip variant="tag" className="@lg:col-start-2 @lg:row-start-1 @lg:justify-self-end"><Chip.Text>{t.tag}</Chip.Text></Chip>
                 </span>
                 <span title={who.id === ME ? `${who.name} (you)` : who.name} className="col-start-2 row-span-2 row-start-1 self-center @lg:col-start-4 @lg:row-span-1">
-                  <Avatar name={who.name} size="small" />
+                  <Avatar name={who.name} label={`Assigned to ${who.name}${who.id === ME ? ' (you)' : ''}`} size="small" />
                 </span>
               </span>
             </Row.Root>

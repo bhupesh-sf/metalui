@@ -44,15 +44,19 @@ export interface AvatarProps {
   size?: AvatarSize;
   /** Their presence, as the LED part: live (here), waiting (away), off. */
   presence?: Extract<LedKind, 'live' | 'waiting' | 'off'>;
+  /** Its accessible name when it should differ from `name` ("Assigned to Marta"). `''` when the name is already
+   * written beside it: the avatar is then decorative and silent. */
+  label?: string;
   className?: string;
 }
 
 /** A person as a small raised disc: a photo, or their initials. */
-export function Avatar({ name, src, size = 'regular', presence, className }: AvatarProps) {
+export function Avatar({ name, src, size = 'regular', presence, label, className }: AvatarProps) {
   const own = `${DISC} ${SIZE[size]}`;
-  const label = presence ? `${name}, ${presence === 'live' ? 'here' : presence === 'waiting' ? 'away' : 'offline'}` : name;
+  const said = `${label ?? name}${presence ? `, ${presence === 'live' ? 'here' : presence === 'waiting' ? 'away' : 'offline'}` : ''}`;
+  const silent = label === '';
   return (
-    <BaseAvatar.Root role="img" aria-label={label} className={className ? `${own} ${className}` : own}>
+    <BaseAvatar.Root role={silent ? undefined : 'img'} aria-label={silent ? undefined : said} aria-hidden={silent || undefined} className={className ? `${own} ${className}` : own}>
       <BaseAvatar.Fallback className={INITIALS}>{initialsOf(name)}</BaseAvatar.Fallback>
       {src && <BaseAvatar.Image src={src} alt="" className={PHOTO} />}
       {presence && <span className={PRESENCE}><Led kind={presence} size={size === 'large' ? 'default' : 'small'} /></span>}

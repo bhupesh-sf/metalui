@@ -35,6 +35,7 @@ Reduce Motion: the photo appears at once; the group does not spread.
 | React | SwiftUI |
 |---|---|
 | `Avatar` `name`, `src`, `size` (`small`, `regular`, `large`), `presence` (`live`, `waiting`, `off`) | `MetalAvatar(name:image:)` |
+| `Avatar` `label`: its accessible name when it differs from `name` ("Assigned to Marta"); `''` when the name is written beside it (decorative, silent) | `.accessibilityLabel`, `.accessibilityHidden(true)` |
 | `AvatarGroup` `people`, `max` (4), `size`, `aria-label` | – |
 
 ## Keyboard and accessibility

@@ -324,7 +324,7 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
           <ul ref={peopleList} aria-label={`People with access to ${folder}`} className="m-0 grid list-none gap-2 p-0">
             {people.map((p) => (
               <li key={p.id} data-row={p.id} className={ROW}>
-                <Avatar name={p.name} size="regular" />
+                <Avatar name={p.name} label="" size="regular" />
                 <span className="grid min-w-0 gap-1">
                   <span className="truncate type-ui text-ink">{p.name}{p.permission === 'owner' && <span className="text-ink3"> (you)</span>}</span>
                   <span className="truncate type-meta text-ink3">{p.email}</span>
