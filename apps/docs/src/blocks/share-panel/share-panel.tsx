@@ -375,10 +375,11 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
           <Heading id={`${ids}-files`}>Files</Heading>
           <DropZone compact onFiles={onFiles} maxSize={LIMITS.maxSize} description="Up to 25 MB each" icon={<Icon name="document" />} />
           {refusedNote && <p className="m-0 type-meta text-form-field-error-ink">{refusedNote}.</p>}
-          <div ref={fileList} className="grid gap-8 [&>[data-row]>.mu-attachment]:max-w-none">
+          <div ref={fileList} className="grid gap-8">
             {files.map((f) => (
               <div key={f.id} data-row={f.id}>
                 <Attachment
+                  fill
                   name={f.name}
                   size={f.size}
                   progress={f.progress}

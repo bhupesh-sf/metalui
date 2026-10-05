@@ -321,7 +321,8 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Tooltip swallows the first Escape** on a focused trigger (Base UI's trigger), so a panel around it never hears ⎋; the share panel listens in the capture phase.
 - [x] **DropZone compact** doesn't truncate its title: at narrow widths it runs into "or choose files". (Now the words clip to one line each; the description ends in an ellipsis.)
 - [ ] **SwapText can't end in an ellipsis**: its layers keep the measured width for the drum, so a clipped SwapText (DropZone compact's title) is cut mid-word ("Add image" for "Add images") instead of "Add ima…". Let it shrink and truncate when its box is narrower than the text.
-- [ ] **Attachment**: its error line wraps beside Try again when narrow; its fixed max width fights a full-width list; no hook for the rows below to close up after it leaves.
+- [x] **Attachment**: its error line wraps beside Try again when narrow; its fixed max width fights a full-width list. (The line truncates with the reason in its title and alert; `fill` drops the max width.)
+- [ ] **Attachment**: no hook for the rows below to close up after it leaves (with the shared row-leave helper below).
 - [ ] **A shared row-leave helper**: the release-spring leave lives only inside Attachment (with its own reduced-motion check); lists of people, files and rows need it too. Note the release travel stays full under Reduce Motion by the token; decide whether that's right.
 - [x] **Switch** has no `label` prop; blocks wire `aria-labelledby` and make the words toggle it by hand.
 - [x] **Calendar bug: a day from the next or previous month can't be chosen with the pointer.** Pressing it focuses it first, which turns the month and removes the button before the click lands. The availability picker stops the focus on mouse-down as a workaround. Fix in the Calendar and test it.

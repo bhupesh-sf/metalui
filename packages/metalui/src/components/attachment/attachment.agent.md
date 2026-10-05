@@ -38,6 +38,7 @@ Reduce Motion: it appears and goes at once; the fill still moves.
 | `progress` (0–100 while uploading) | `progress:` |
 | `error`, `onRetry` | `error:`, `retry:` |
 | `onRemove` (called after it has left) | `remove:` |
+| `fill` (no max width: a list as wide as its panel) | `.frame(maxWidth: .infinity)` |
 
 ## Keyboard and accessibility
 

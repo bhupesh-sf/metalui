@@ -21,11 +21,11 @@ import { motionReduced } from '../../motion/reduced';
  * An object: it stands for a person's file. It uses the raised surface, the well and the progress fill.
  * ───────────────────────────────────────────────────────── */
 
-const PLATE = 'mu-attachment relative flex w-full items-center gap-attachment-gap h-attachment-height min-w-attachment-min-width max-w-attachment-max-width p-attachment-pad rounded-attachment-radius recipe-surface-raise-sm attachment-land data-leaving:attachment-leave reduced-motion:animate-none';
+const PLATE = 'mu-attachment relative flex w-full items-center gap-attachment-gap h-attachment-height min-w-attachment-min-width p-attachment-pad rounded-attachment-radius recipe-surface-raise-sm attachment-land data-leaving:attachment-leave reduced-motion:animate-none';
 const TYPE = 'mu-attachment-type grid flex-none place-items-center size-attachment-type-size rounded-attachment-type-radius recipe-well-field type-label text-ink2 uppercase';
 const BODY = 'mu-attachment-body grid flex-1 min-w-0 gap-attachment-body-gap';
 const NAME = 'mu-attachment-name flex min-w-0 type-ui text-ink';
-const META = 'mu-attachment-meta type-meta tabular-nums text-ink3 data-failed:text-form-field-error-ink';
+const META = 'mu-attachment-meta truncate type-meta tabular-nums text-ink3 data-failed:text-form-field-error-ink';
 const TRACK = 'mu-attachment-track block h-attachment-track-height rounded-pill overflow-hidden recipe-switch';
 const FILL = 'block h-full rounded-pill recipe-switch-on transition-progress-fill';
 
@@ -48,11 +48,13 @@ export interface AttachmentProps {
   onRetry?: () => void;
   /** Shows the remove key; called after the file has left. */
   onRemove?: () => void;
+  /** Fill the row: no max width, for a list as wide as its panel. */
+  fill?: boolean;
   className?: string;
 }
 
 /** A file someone attached. (Named Attachment so it never shadows the browser's File.) */
-export function Attachment({ name, size, progress, error, onRetry, onRemove, className }: AttachmentProps) {
+export function Attachment({ name, size, progress, error, onRetry, onRemove, fill, className }: AttachmentProps) {
   const [leaving, setLeaving] = React.useState(false);
   const plate = React.useRef<HTMLDivElement>(null);
   const dot = name.lastIndexOf('.');
@@ -72,7 +74,7 @@ export function Attachment({ name, size, progress, error, onRetry, onRemove, cla
   };
 
   return (
-    <div ref={plate} role="group" aria-label={name} data-leaving={leaving ? '' : undefined} className={className ? `${PLATE} ${className}` : PLATE}>
+    <div ref={plate} role="group" aria-label={name} data-leaving={leaving ? '' : undefined} className={[PLATE, !fill && 'max-w-attachment-max-width', className].filter(Boolean).join(' ')}>
       <span aria-hidden className={TYPE}>{type}</span>
       <span className={BODY}>
         <span className={NAME} title={name}><span className="truncate">{base}</span><span className="flex-none">{ext}</span></span>
@@ -81,7 +83,8 @@ export function Attachment({ name, size, progress, error, onRetry, onRemove, cla
             <BaseProgress.Track className={TRACK}><BaseProgress.Indicator className={FILL} /></BaseProgress.Track>
           </BaseProgress.Root>
         )}
-        <span className={META} data-failed={error ? '' : undefined} role={error ? 'alert' : undefined}>{meta}</span>
+        {/* One line beside Try again; the whole reason is in the title and in the alert. */}
+        <span className={META} title={meta || undefined} data-failed={error ? '' : undefined} role={error ? 'alert' : undefined}>{meta}</span>
       </span>
       {error && onRetry && <Button size="compact" onClick={onRetry}>Try again</Button>}
       {onRemove && (
