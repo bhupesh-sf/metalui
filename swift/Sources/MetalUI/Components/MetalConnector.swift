@@ -174,11 +174,14 @@ public struct MetalConnector: View {
             let loose = state == .rest ? 1.0 : 0.0
             let drift = (sin(time * 1.3 + Double(index) * 2.1) + sin(time * 0.7 + Double(index) * 5.3) * 0.6) * 3.4 * loose
             let shimmer = max(0, 1 - abs((fraction - time * 0.5).truncatingRemainder(dividingBy: 1) - 0.5) * 7)
-            Circle().fill(ink.opacity(min(.one, recipe.scalar("stardust.base-opacity") + shimmer * recipe.scalar("stardust.shimmer-opacity"))))
-                .frame(width: width * (recipe.scalar("stardust.base-size") + shimmer * recipe.scalar("stardust.shimmer-size")),
-                       height: width * (recipe.scalar("stardust.base-size") + shimmer * recipe.scalar("stardust.shimmer-size")))
-                .position(x: p.x - (next.y - p.y) / tangent * drift,
-                          y: p.y + (next.x - p.x) / tangent * drift)
+            // Split into typed steps: as one expression the compiler times out type-checking it.
+            let opacity: Double = min(.one, recipe.scalar("stardust.base-opacity") + shimmer * recipe.scalar("stardust.shimmer-opacity"))
+            let scale: Double = recipe.scalar("stardust.base-size") + shimmer * recipe.scalar("stardust.shimmer-size")
+            let size: CGFloat = width * scale
+            let normal = CGPoint(x: -(next.y - p.y) / tangent, y: (next.x - p.x) / tangent)
+            Circle().fill(ink.opacity(opacity))
+                .frame(width: size, height: size)
+                .position(x: p.x + normal.x * drift, y: p.y + normal.y * drift)
         }
     }
 }
