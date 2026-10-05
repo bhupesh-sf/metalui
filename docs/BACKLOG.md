@@ -348,7 +348,7 @@ Building real screens shows what the components lack. Each was worked around ins
 
 ## Components other libraries ship that we don't
 
-Owner: "compare our design system with reui, what all components are there which are missing in ours", then the same against shadcn/ui. (2026-10-05)
+Bhupesh Gupta: "compare our design system with reui, what all components are there which are missing in ours", then the same against shadcn/ui. (2026-10-05)
 
 Compared with [ReUI](https://reui.io/docs) (its 25 extras on top of shadcn) and [shadcn/ui](https://ui.shadcn.com/docs/components) (64 components). Place each in the six layers (`docs/COMPOSITION.md`) before building it; some below are Objects or Places, not Components. Date ranges, range presets and time are already in the Calendar entry above.
 
@@ -442,7 +442,7 @@ Not needed as components: Aspect Ratio (the CSS `aspect-ratio` property), Native
 
 ## AI components
 
-Owner: "research online what AI components exist which we might have to add in our library." (2026-10-05)
+Bhupesh Gupta: "research online what AI components exist which we might have to add in our library." (2026-10-05)
 
 Compared with seven AI UI libraries: [AI Elements](https://elements.ai-sdk.dev/) (V), [prompt-kit](https://github.com/ibelick/prompt-kit) (P), [assistant-ui](https://www.assistant-ui.com/docs/ui/thread) (A), [Ant Design X](https://x.ant.design/components/overview) (X), [shadcn](https://ui.shadcn.com/docs/components/message) (S), [CopilotKit](https://docs.copilotkit.ai/) (C) and [OpenAI ChatKit](https://developers.openai.com/api/docs/guides/chatkit-widgets) (K). The letters after each entry say who ships it. Place each in the six layers (`docs/COMPOSITION.md`) before building it: a message is probably an Object, a thread a Place.
 
