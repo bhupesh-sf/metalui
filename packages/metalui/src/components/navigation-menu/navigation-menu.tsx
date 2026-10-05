@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { NavigationMenu as BaseNav } from '@base-ui/react/navigation-menu';
+import { InheritColorway, useColorwayAnchor } from '../../theme/colorway';
 
 /* ─────────────────────────────────────────────────────────
  * NAVIGATION MENU, a site's sections across the top, with panels of links
@@ -40,10 +41,12 @@ export interface NavigationMenuProps extends Omit<BaseNav.Root.Props, 'className
 }
 
 function Root({ className, children, ...props }: NavigationMenuProps) {
+  const at = useColorwayAnchor();
   return (
-    <BaseNav.Root className={className ? `${ROOT} ${className}` : ROOT} {...props}>
+    <BaseNav.Root ref={at.ref} className={className ? `${ROOT} ${className}` : ROOT} {...props}>
       <BaseNav.List className={LIST}>{children}</BaseNav.List>
       <BaseNav.Portal>
+        <InheritColorway anchor={at} />
         <BaseNav.Positioner className={POSITIONER} sideOffset={offset()} collisionPadding={8}>
           <BaseNav.Popup className={POPUP}>
             <BaseNav.Viewport className={VIEWPORT} />

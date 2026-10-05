@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Select as BaseSelect } from '@base-ui/react/select';
 import { menuParts, ListGlide } from '../menu/menu';
+import { InheritColorway, useColorwayAnchor } from '../../theme/colorway';
 
 /* ─────────────────────────────────────────────────────────
  * SELECT on Base UI Select: one value from a list of named options
@@ -111,6 +112,7 @@ export function Select<V extends string = string>({
 }: SelectProps<V>) {
   const flat = isGroups(options) ? options.flatMap((g) => g.options) : options;
   const byValue = React.useMemo(() => new Map(flat.map((o) => [o.value, o])), [flat]);
+  const trigger = useColorwayAnchor();
   return (
     <BaseSelect.Root<V>
       value={value}
@@ -120,6 +122,7 @@ export function Select<V extends string = string>({
       name={name}
     >
       <BaseSelect.Trigger
+        ref={trigger.ref}
         aria-label={aria['aria-label']}
         data-invalid={invalid ? '' : undefined}
         aria-invalid={invalid || undefined}
@@ -135,6 +138,7 @@ export function Select<V extends string = string>({
         <Chevron />
       </BaseSelect.Trigger>
       <BaseSelect.Portal>
+        <InheritColorway anchor={trigger} />
         <BaseSelect.Positioner className={POSITIONER} sideOffset={offset()} collisionPadding={8}>
           <BaseSelect.Popup className={POP}>
             <ListGlide />

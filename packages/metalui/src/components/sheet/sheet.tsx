@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Drawer as BaseDrawer } from '@base-ui/react/drawer';
+import { InheritColorway, useColorwayAnchor, type ColorwayAnchor } from '../../theme/colorway';
 import { Surface } from '../surface/surface';
 
 /* ─────────────────────────────────────────────────────────
@@ -34,24 +35,33 @@ export interface SheetRootProps extends Omit<BaseDrawer.Root.Props, 'swipeDirect
   side?: Side;
 }
 
+// Where the trigger sits, so the portalled sheet opens in its colorway.
+const AtCtx = React.createContext<ColorwayAnchor | null>(null);
+
 function Root({ side = 'right', children, ...props }: SheetRootProps) {
+  const at = useColorwayAnchor();
   return (
     <SideCtx.Provider value={side}>
-      <BaseDrawer.Root swipeDirection={side === 'right' ? 'right' : 'down'} {...props}>{children}</BaseDrawer.Root>
+      <AtCtx.Provider value={at}>
+        <BaseDrawer.Root swipeDirection={side === 'right' ? 'right' : 'down'} {...props}>{children}</BaseDrawer.Root>
+      </AtCtx.Provider>
     </SideCtx.Provider>
   );
 }
 
 function Trigger(props: BaseDrawer.Trigger.Props) {
-  return <BaseDrawer.Trigger {...props} />;
+  const at = React.useContext(AtCtx);
+  return <BaseDrawer.Trigger ref={at?.ref} {...props} />;
 }
 
 /** The sheet itself, with its scrim: title, description and content inside. */
 function Popup({ className, children, ...props }: BaseDrawer.Popup.Props & { className?: string }) {
   const side = React.useContext(SideCtx);
   const own = POPUP[side];
+  const at = React.useContext(AtCtx);
   return (
     <BaseDrawer.Portal>
+      {at && <InheritColorway anchor={at} />}
       <BaseDrawer.Backdrop className={SCRIM} />
       <BaseDrawer.Viewport className={VIEWPORT}>
         <BaseDrawer.Popup data-side={side} {...props} className={className ? `${own} ${className}` : own} render={<Surface material="plate" />}>

@@ -342,7 +342,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Icons blocks keep missing** (highest-value icon work; with the icons entry's D list): `person`, `bell`, `palette`, `save`, `send`, `stop`, `attach`, `retry`, `download`, `upload`. The settings block shows a chart glyph for Profile, a clock for Notifications and a document for Save because nothing better exists.
 - [x] **Sidebar item icons take their own Tab stop in Chrome** (also on /components/sidebar). Cause: an `Icon` outside any `.mu-icon-trigger` put its focus listener on the bare svg, which Chrome then makes focusable. Fixed in `Icon`; Sidebar items are icon triggers now.
 - [ ] **Textarea**: its text is 15px (content type) beside Field's 12.5px, so a bio looks louder than name and email; add a `size` matching Field. Its counter only shows from 80 % with no per-instance option and reads the threshold from the document root.
-- [ ] **Portalled popups ignore a colorway set on a parent** (Select, Menu, Popover open in the page's colorway inside a graphite block); let them inherit (portal into the nearest colorway root, or copy `data-mu-colorway`).
+- [x] **Portalled popups ignore a colorway set on a parent** (Select, Menu, Popover open in the page's colorway inside a graphite block); let them inherit (portal into the nearest colorway root, or copy `data-mu-colorway`).
 - [ ] **Tabs has no vertical orientation** (settings sections use Sidebar items instead).
 - [ ] **RadioGroup disabled**: the checked radio stays in the Tab order; decide (reachable to explain, or skipped) and document.
 - [ ] **Container queries in blocks**: unnamed `@container` matches the nearest container; blocks should name theirs (`@container/block`). Write it into the block page guide.

@@ -5,6 +5,7 @@ import { SlidingIndicator } from '../../motion/indicator';
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import { Kbd } from '../kbd/kbd';
+import { InheritColorway, useColorwayAnchor } from '../../theme/colorway';
 
 /* ─────────────────────────────────────────────────────────
  * MENU and CORRECTION POPOVER (the brief, 04 §8, §18; the reference design's #pop) on Base UI Menu
@@ -72,10 +73,12 @@ export interface MenuProps {
 
 /** A menu from a trigger: a frosted plate of rows 6 below it. */
 export function Menu({ trigger, heading, side = 'bottom', align = 'start', children, open, onOpenChange }: MenuProps) {
+  const at = useColorwayAnchor();
   return (
     <BaseMenu.Root open={open} onOpenChange={onOpenChange ? (o) => onOpenChange(o) : undefined}>
-      <BaseMenu.Trigger render={trigger} />
+      <BaseMenu.Trigger ref={at.ref} render={trigger} />
       <BaseMenu.Portal>
+        <InheritColorway anchor={at} />
         <BaseMenu.Positioner className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
           <Plate heading={heading}>{children}</Plate>
         </BaseMenu.Positioner>
@@ -98,10 +101,12 @@ export interface ContextMenuProps {
  * and are remembered; the host shows a toast with Undo after one.
  */
 export function ContextMenu({ menu, heading, children }: ContextMenuProps) {
+  const at = useColorwayAnchor();
   return (
     <BaseContextMenu.Root>
-      <BaseContextMenu.Trigger render={children} />
+      <BaseContextMenu.Trigger ref={at.ref} render={children} />
       <BaseContextMenu.Portal>
+        <InheritColorway anchor={at} />
         <BaseContextMenu.Positioner className={POSITIONER} collisionPadding={8}>
           <Plate heading={heading}>{menu}</Plate>
         </BaseContextMenu.Positioner>

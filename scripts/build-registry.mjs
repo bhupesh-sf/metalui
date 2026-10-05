@@ -23,6 +23,12 @@ const shared = {
     dependsOn: [],
     files: ['motion/awake.ts', 'motion/haptic.ts', 'motion/hop.ts', 'motion/indicator.tsx', 'motion/layout-effect.ts', 'motion/reduced.ts', 'motion/refuse.ts', 'motion/springs.generated.ts', 'motion/swap.tsx'],
   },
+  colorway: {
+    title: 'MetalUI inherited colorway',
+    description: 'Gives a portalled popup the colorway its trigger sits in.',
+    dependsOn: ['motion'],
+    files: ['theme/colorway.tsx'],
+  },
   icons: {
     title: 'MetalUI icon runtime',
     description: 'The Icon element, the icon catalog and the tick drawing that components such as Checkbox and Toast use.',

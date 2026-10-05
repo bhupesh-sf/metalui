@@ -71,6 +71,22 @@
       ]
     },
     {
+      "name": "colorway",
+      "type": "registry:lib",
+      "title": "MetalUI inherited colorway",
+      "description": "Gives a portalled popup the colorway its trigger sits in.",
+      "registryDependencies": [
+        "https://metalui.dev/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/theme/colorway.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/theme/colorway.tsx"
+        }
+      ]
+    },
+    {
       "name": "icons",
       "type": "registry:lib",
       "title": "MetalUI icon runtime",
@@ -426,6 +442,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
@@ -961,6 +978,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/kbd.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
@@ -1025,6 +1043,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1127,6 +1146,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1147,6 +1167,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/popover.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -1307,6 +1328,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -1370,6 +1392,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -1841,6 +1864,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

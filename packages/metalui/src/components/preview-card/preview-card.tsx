@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { PreviewCard as BaseCard } from '@base-ui/react/preview-card';
+import { InheritColorway, useColorwayAnchor } from '../../theme/colorway';
 import { popoverParts } from '../popover/popover';
 
 /* ─────────────────────────────────────────────────────────
@@ -47,10 +48,12 @@ function timing(name: 'delay' | 'close', fallback: number) {
 
 /** Shows what is behind a link after a steady hover. */
 export function PreviewCard({ children, preview, side = 'bottom' }: PreviewCardProps) {
+  const at = useColorwayAnchor();
   return (
     <BaseCard.Root>
-      <BaseCard.Trigger render={children} delay={timing('delay', 600)} closeDelay={timing('close', 300)} />
+      <BaseCard.Trigger ref={at.ref} render={children} delay={timing('delay', 600)} closeDelay={timing('close', 300)} />
       <BaseCard.Portal>
+        <InheritColorway anchor={at} />
         <BaseCard.Positioner className={POSITIONER} side={side} sideOffset={6} collisionPadding={8}>
           <BaseCard.Popup className={PLATE}>
             {preview.image && <img src={preview.image} alt="" className={IMAGE} />}

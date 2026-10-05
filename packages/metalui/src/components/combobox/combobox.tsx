@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
+import { InheritColorway, useColorwayAnchor } from '../../theme/colorway';
 import { menuParts, ListGlide } from '../menu/menu';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
@@ -78,15 +79,17 @@ export interface ComboboxProps<Item extends string = string> {
 /** Type to find one of many. */
 export function Combobox<Item extends string = string>({ items, value, defaultValue, onValueChange, placeholder, disabled, size = 'regular', invalid, emptyText = 'No matches', className, ...aria }: ComboboxProps<Item>) {
   const group = `${GROUP} ${SIZE[size]}`;
+  const at = useColorwayAnchor();
   return (
     <BaseCombobox.Root<Item> items={items} value={value} defaultValue={defaultValue} onValueChange={(v) => onValueChange?.(v as Item | null)} disabled={disabled}>
-      <BaseCombobox.InputGroup data-invalid={invalid ? '' : undefined} className={className ? `${group} ${className}` : group}>
+      <BaseCombobox.InputGroup ref={at.ref} data-invalid={invalid ? '' : undefined} className={className ? `${group} ${className}` : group}>
         <BaseCombobox.Input className={INPUT} placeholder={placeholder} aria-label={aria['aria-label']} aria-invalid={invalid || undefined} />
         <BaseCombobox.Clear className={CLEAR} aria-label="Clear">
           <svg aria-hidden viewBox="0 0 10 10" className="size-combobox-clear-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round"><path d="M2 2l6 6M8 2 2 8" /></svg>
         </BaseCombobox.Clear>
       </BaseCombobox.InputGroup>
       <BaseCombobox.Portal>
+        <InheritColorway anchor={at} />
         <BaseCombobox.Positioner className={POSITIONER} sideOffset={offset()} collisionPadding={8}>
           <BaseCombobox.Popup className={POP}>
             <Fit>

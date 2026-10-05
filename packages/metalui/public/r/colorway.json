@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "colorway",
+  "type": "registry:lib",
+  "title": "MetalUI inherited colorway",
+  "description": "Gives a portalled popup the colorway its trigger sits in.",
+  "registryDependencies": [
+    "https://metalui.dev/r/motion.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/theme/colorway.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/theme/colorway.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { useIsoLayoutEffect } from '../motion/layout-effect';\n\n/* ─────────────────────────────────────────────────────────\n * INHERITED COLORWAY, for popups portalled out of their place\n *\n * A colorway is data-mu-colorway on any ancestor. A popup portalled to <body>\n * leaves that ancestor behind and would open in the page's colorway; placed\n * inside the Portal, InheritColorway gives the portal the colorway its trigger\n * sits in, when it opens.\n * ───────────────────────────────────────────────────────── */\n\n/** The colorway set on `el` or its nearest ancestor (data-mu-colorway), if any. */\nexport function colorwayOf(el: Element | null | undefined): string | undefined {\n  return el?.closest('[data-mu-colorway]')?.getAttribute('data-mu-colorway') ?? undefined;\n}\n\nexport interface ColorwayAnchor {\n  /** Pass to the trigger (any element). */\n  ref: (el: Element | null) => void;\n  current: Element | null;\n}\n\n/** Where a popup's trigger sits: give `anchor.ref` to the trigger and `anchor` to InheritColorway. */\nexport function useColorwayAnchor(): ColorwayAnchor {\n  const [anchor] = React.useState<ColorwayAnchor>(() => {\n    const a: ColorwayAnchor = { current: null, ref: (el) => { a.current = el; } };\n    return a;\n  });\n  return anchor;\n}\n\n// One observer for every mounted portal; some (Select's) stay mounted between openings.\nconst listeners = new Set<() => void>();\nlet stopWatching: (() => void) | null = null;\nfunction onColorwayChange(run: () => void) {\n  listeners.add(run);\n  if (!stopWatching) {\n    const watch = new MutationObserver(() => listeners.forEach((l) => l()));\n    watch.observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ['data-mu-colorway'] });\n    stopWatching = () => watch.disconnect();\n  }\n  return () => {\n    listeners.delete(run);\n    if (!listeners.size) { stopWatching?.(); stopWatching = null; }\n  };\n}\n\n/** Put first inside a Portal: the portal takes the colorway that the anchor (the trigger) sits in, and follows it. */\nexport function InheritColorway({ anchor }: { anchor: ColorwayAnchor }) {\n  const self = React.useRef<HTMLSpanElement>(null);\n  useIsoLayoutEffect(() => {\n    const apply = () => {\n      const portal = self.current?.parentElement;\n      if (!portal) return;\n      const colorway = colorwayOf(anchor.current);\n      // Only on a change: the observer sees this attribute too.\n      if (portal.getAttribute('data-mu-colorway') === (colorway ?? null)) return;\n      if (colorway) portal.setAttribute('data-mu-colorway', colorway);\n      else portal.removeAttribute('data-mu-colorway');\n    };\n    apply();\n    return onColorwayChange(apply);\n  }, [anchor]);\n  return <span hidden ref={self} />;\n}\n"
+    }
+  ]
+}

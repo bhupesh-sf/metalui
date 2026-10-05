@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Popover as BasePopover } from '@base-ui/react/popover';
+import { InheritColorway, useColorwayAnchor, type ColorwayAnchor } from '../../theme/colorway';
 
 /* ─────────────────────────────────────────────────────────
  * POPOVER, a small panel that comes out of its trigger, on Base UI Popover
@@ -37,8 +38,12 @@ function offset() {
 
 export type PopoverRootProps = BasePopover.Root.Props;
 
+// Where the trigger sits, so the portalled plate opens in its colorway.
+const AtCtx = React.createContext<ColorwayAnchor | null>(null);
+
 function Root(props: PopoverRootProps) {
-  return <BasePopover.Root {...props} />;
+  const at = useColorwayAnchor();
+  return <AtCtx.Provider value={at}><BasePopover.Root {...props} /></AtCtx.Provider>;
 }
 
 export interface PopoverTriggerProps extends Omit<BasePopover.Trigger.Props, 'render'> {
@@ -47,7 +52,8 @@ export interface PopoverTriggerProps extends Omit<BasePopover.Trigger.Props, 're
 }
 
 function Trigger({ children, ...props }: PopoverTriggerProps) {
-  return <BasePopover.Trigger render={children} {...props} />;
+  const at = React.useContext(AtCtx);
+  return <BasePopover.Trigger ref={at?.ref} render={children} {...props} />;
 }
 
 export interface PopoverContentProps extends Omit<BasePopover.Popup.Props, 'className'> {
@@ -58,8 +64,10 @@ export interface PopoverContentProps extends Omit<BasePopover.Popup.Props, 'clas
 
 /** The plate: portalled and placed beside its trigger. */
 const Content = React.forwardRef<HTMLDivElement, PopoverContentProps>(function PopoverContent({ side = 'bottom', align = 'center', className, ...props }, ref) {
+  const at = React.useContext(AtCtx);
   return (
     <BasePopover.Portal>
+      {at && <InheritColorway anchor={at} />}
       <BasePopover.Positioner className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
         <BasePopover.Popup ref={ref} className={className ? `${PLATE} ${className}` : PLATE} {...props} />
       </BasePopover.Positioner>

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
+import { InheritColorway, useColorwayAnchor } from '../../theme/colorway';
 
 /* ─────────────────────────────────────────────────────────
  * TOOLTIP (the brief; the reference design's #tip and .tb[data-tip]) on Base UI Tooltip
@@ -53,10 +54,12 @@ const KEY = 'mu-tooltip-key text-tooltip-key-ink';
 
 /** Names an icon-only control and its key, one hover away. */
 function TooltipRoot({ label, shortcut, side = 'top', children, open, disabled, wrap, delay, offset, className }: TooltipProps) {
+  const at = useColorwayAnchor();
   return (
     <BaseTooltip.Root open={open} disabled={disabled}>
-      <BaseTooltip.Trigger delay={delay} render={children} />
+      <BaseTooltip.Trigger ref={at.ref} delay={delay} render={children} />
       <BaseTooltip.Portal>
+        <InheritColorway anchor={at} />
         <BaseTooltip.Positioner className={POSITIONER} side={side} sideOffset={offset ?? gap()} collisionPadding={8}>
           <BaseTooltip.Popup className={`${POPUP} ${wrap ? 'whitespace-normal' : 'whitespace-nowrap'}${className ? ` ${className}` : ''}`} data-wrap={wrap ? '' : undefined}>
             {label}

@@ -231,3 +231,17 @@ for (const colorway of COLORWAYS) {
     await b.screenshot({ path: capture(`block-settings-375-${colorway}`) });
   });
 }
+
+test('a popup opened inside the graphite block opens in graphite on a bone page', async ({ page }) => {
+  await page.setViewportSize({ width: 600, height: 900 });
+  await open(page, '/blocks/settings', 'bone');
+  const b = block(page);
+  await section(page, 'Appearance');
+  await b.getByRole('radio', { name: 'Graphite' }).click();
+  await b.getByRole('combobox', { name: 'Settings section' }).click();
+  const list = page.getByRole('listbox');
+  await expect(list).toBeVisible();
+  // The list is portalled out of the block; it carries the block's colorway, not the page's.
+  expect(await list.evaluate((el) => el.closest('[data-mu-colorway]')?.getAttribute('data-mu-colorway'))).toBe('graphite');
+  expect(await list.evaluate((el) => getComputedStyle(el).getPropertyValue('--mu-s').trim())).toBe(await b.evaluate((el) => getComputedStyle(el).getPropertyValue('--mu-s').trim()));
+});
