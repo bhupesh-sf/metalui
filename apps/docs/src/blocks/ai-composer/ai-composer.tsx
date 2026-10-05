@@ -219,8 +219,8 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
   const busy = !!live;
   const empty = draft.trim() === '' && files.length === 0;
 
-  // The ScrollArea keeps its viewport to itself; find it from inside.
-  const viewport = () => content.current?.closest<HTMLElement>('.mu-scroll-area-viewport') ?? null;
+  const viewportRef = React.useRef<HTMLDivElement>(null);
+  const viewport = () => viewportRef.current;
 
   const toFoot = (smooth: boolean) => {
     const v = viewport();
@@ -322,7 +322,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
       </header>
 
       <div className="relative flex min-h-0 flex-1 flex-col">
-        <ScrollArea className="min-h-0 flex-1">
+        <ScrollArea className="min-h-0 flex-1" viewportRef={viewportRef}>
           <div ref={content} role="log" aria-live="polite" aria-label="Conversation" className="grid gap-20 px-20 py-12 @max-md:px-14">
             {messages.map((m, i) => {
               const land = !landed.current.has(m.id);

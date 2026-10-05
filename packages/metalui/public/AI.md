@@ -2680,6 +2680,7 @@ Reduce Motion: the thumb's width snaps; the fades stay.
 | children (the content) | `content:` |
 | `className` (give it a height or max-height) | `.frame(maxHeight:)` |
 | `aria-label` (makes it a named region) | `.accessibilityLabel` |
+| `viewportRef` (the element that scrolls: scroll it, read its position, listen to scroll) | `ScrollViewReader`, `.onScrollGeometryChange` |
 
 ## Keyboard and accessibility
 

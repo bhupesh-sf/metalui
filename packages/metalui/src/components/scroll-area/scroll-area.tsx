@@ -1,5 +1,6 @@
 'use client';
 
+import type * as React from 'react';
 import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
 
 /* ─────────────────────────────────────────────────────────
@@ -23,13 +24,15 @@ export interface ScrollAreaProps extends Omit<BaseScrollArea.Root.Props, 'classN
   className?: string;
   /** Name the region for assistive tech when it is a landmark of its own. */
   'aria-label'?: string;
+  /** The element that scrolls: to scroll it, read its position, or listen to scroll and wheel. */
+  viewportRef?: React.Ref<HTMLDivElement>;
 }
 
 /** A region that scrolls vertically with the system's scrollbar. Give it a height (or max-height). */
-export function ScrollArea({ className, children, 'aria-label': label, ...props }: ScrollAreaProps) {
+export function ScrollArea({ className, children, 'aria-label': label, viewportRef, ...props }: ScrollAreaProps) {
   return (
     <BaseScrollArea.Root className={className ? `${ROOT} ${className}` : ROOT} {...props}>
-      <BaseScrollArea.Viewport className={VIEWPORT} tabIndex={0} aria-label={label} role={label ? 'region' : undefined}>
+      <BaseScrollArea.Viewport ref={viewportRef} className={VIEWPORT} tabIndex={0} aria-label={label} role={label ? 'region' : undefined}>
         <BaseScrollArea.Content>{children}</BaseScrollArea.Content>
       </BaseScrollArea.Viewport>
       <BaseScrollArea.Scrollbar orientation="vertical" className={BAR}>
