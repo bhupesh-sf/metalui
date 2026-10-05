@@ -346,6 +346,57 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Container queries in blocks**: unnamed `@container` matches the nearest container; blocks should name theirs (`@container/block`). Write it into the block page guide.
 - [ ] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message.
 
+## Components other libraries ship that we don't
+
+Owner: "compare our design system with reui, what all components are there which are missing in ours", then the same against shadcn/ui. (2026-10-05)
+
+Compared with [ReUI](https://reui.io/docs) (its 25 extras on top of shadcn) and [shadcn/ui](https://ui.shadcn.com/docs/components) (64 components). Place each in the six layers (`docs/COMPOSITION.md`) before building it; some below are Objects or Places, not Components. Date ranges, range presets and time are already in the Calendar entry above.
+
+### 1. Small, used everywhere (in both libraries)
+
+- [ ] **Alert**: an inline message in the page (info, success, warning, error), with an optional action and dismiss. Today only `AlertDialog`, `Toast` and `StatusBadge` exist.
+- [ ] **Badge**: a plain neutral or count badge. `Chip` and `StatusBadge` are both specialised.
+
+### 2. Common form and data controls
+
+- [ ] **Tree** (ReUI): nested rows that expand and collapse, with keyboard navigation (ARIA tree pattern).
+- [ ] **Sortable** (ReUI): drag to reorder a list, with a keyboard path. Nothing in the library reorders today.
+- [ ] **Stepper** (ReUI) / **Questionnaire** (shadcn): the steps of a wizard, and a step-by-step form.
+- [ ] **Time picker** (ReUI): see "Time" in the Calendar entry.
+- [ ] **Input OTP** (shadcn): one box per digit for a one-time code; paste fills all of them.
+- [ ] **Phone input** (ReUI): a country picker plus number formatting.
+- [ ] **Rating** (ReUI): stars, read-only and editable.
+- [ ] **Cascader** (ReUI): a value chosen through nested levels, one column per level.
+- [ ] **Autocomplete** (ReUI): free text with suggestions, where the value isn't limited to the list. A thin wrapper on Base UI Autocomplete; `Combobox` covers choosing from the list.
+- [ ] **Signature pad** (ReUI): a form field that captures a signature. `BrushCursor` and `DrawPicks` are canvas tools, not a field.
+- [ ] **Scrollspy** (ReUI): marks the section being read in a table of contents.
+
+### 3. Extend what exists rather than adding new components
+
+- [ ] **Table → data grid** (ReUI Data Grid, shadcn Data Table): column visibility, filtering, resizing and pinning columns, virtualised rows, editing cells.
+- [ ] **Field → input group** (shadcn): text attached to the input (a `https://` prefix, a `.com` suffix) and buttons inside the field.
+- [ ] **Collapsible** (shadcn): a standalone show/hide wrapper. `Accordion` and `SplitPane` collapse, but nothing does on its own.
+- [ ] **Icon tile** (ReUI): an icon on a small tile; probably `Glyph` in a `well`, as a documented recipe.
+- [ ] **Code block** (ReUI): `CodeCard` lives only in the docs; decide whether it ships in the package.
+
+### 4. Chat parts (only if MetalUI covers AI chat interfaces)
+
+- [ ] **Bubble**, **Message**, **Message scroller** (shadcn): message parts, and a list that stays scrolled to the newest message. Builds on the AI composer block.
+- [ ] **Marker** (shadcn): find out what it does before planning it.
+
+### 5. Large; place in the layers first
+
+- [ ] **Chart** (shadcn): bar, line and area charts with axes and tooltips. `Sparkline` and `Meter` are the small cases.
+- [ ] **Carousel** (shadcn).
+- [ ] **Kanban** (ReUI): columns of cards; needs Sortable.
+- [ ] **Gantt** (ReUI): a timeline chart.
+- [ ] **Event calendar** (ReUI): a month or week view that shows events; see "Marked days" in the Calendar entry.
+- [ ] **Timeline** (ReUI): a vertical list of events in order. `MemoryScrubber` looks through the past; this is not that.
+- [ ] **Filters** (ReUI): a bar for building filters, for example "Status is Open".
+- [ ] **Icon stack** (ReUI).
+
+Not needed as components: Aspect Ratio (the CSS `aspect-ratio` property), Native Select (a `<select>` on a `well`), Typography (`Label`). Direction (a right-to-left provider) only if the library commits to right-to-left text.
+
 ## SwiftUI on iOS
 
 Found 2026-10-01 by building the package for the iOS Simulator (`xcodebuild -scheme MetalUI -destination 'generic/platform=iOS Simulator'`): it fails, so `Package.swift` lists macOS 14 only. CI has only ever run `swift build` on macOS. These eight files use AppKit; each needs a UIKit twin or a platform-neutral rewrite behind `#if canImport(AppKit)`:
