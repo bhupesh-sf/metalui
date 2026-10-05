@@ -417,10 +417,9 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
   - Diff (added and removed lines), a unified patch with two gutters, diagnostics per line (error, warning, info) with an action ("Fix with AI").
   - Streaming from an AI response; splitting Markdown code fences; highlighting on the server.
 
-### 4. Chat parts (only if MetalUI covers AI chat interfaces)
+### 4. Chat parts
 
-- [ ] **Bubble**, **Message**, **Message scroller** (shadcn): message parts, and a list that stays scrolled to the newest message. Builds on the AI composer block.
-- [ ] **Marker** (shadcn): find out what it does before planning it.
+Moved to "AI components" below (shadcn's Bubble, Message, Message scroller and Marker are there).
 
 ### 5. Large; place in the layers first
 
@@ -440,6 +439,56 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 - [ ] **Icon stack**: layered isometric icons for small illustrations (empty states, onboarding, feature cards, status panels); sizes and tones. Check against `BlockSilhouette` and `EmptyState` first.
 
 Not needed as components: Aspect Ratio (the CSS `aspect-ratio` property), Native Select (a `<select>` on a `well`), Typography (`Label`). Direction (a right-to-left provider) only if the library commits to right-to-left text.
+
+## AI components
+
+Owner: "research online what AI components exist which we might have to add in our library." (2026-10-05)
+
+Compared with seven AI UI libraries: [AI Elements](https://elements.ai-sdk.dev/) (V), [prompt-kit](https://github.com/ibelick/prompt-kit) (P), [assistant-ui](https://www.assistant-ui.com/docs/ui/thread) (A), [Ant Design X](https://x.ant.design/components/overview) (X), [shadcn](https://ui.shadcn.com/docs/components/message) (S), [CopilotKit](https://docs.copilotkit.ai/) (C) and [OpenAI ChatKit](https://developers.openai.com/api/docs/guides/chatkit-widgets) (K). The letters after each entry say who ships it. Place each in the six layers (`docs/COMPOSITION.md`) before building it: a message is probably an Object, a thread a Place.
+
+### 1. Lift the AI composer block's parts into components
+
+The block (`apps/docs/src/blocks/ai-composer`) already does these inside itself; make them components and rebuild the block from them.
+
+- [ ] **Thread** (V P A S): the scrolling conversation; stays at the newest message while a reply streams, lets the person scroll up to read, and offers Jump to latest. Needs the ScrollArea `viewportRef` / `onScroll` from "Library gaps".
+- [ ] **Message** (V P A X S): user and assistant turns (start or end aligned), avatar, header (name, model, time) and footer (status); consecutive turns from one sender grouped; a system message (P).
+- [ ] **Streaming text and Markdown** (P V K): words arriving at a pace, a caret while writing, Markdown rendered as it streams (headings, lists, tables, code fences into Code block); a "writing" status said with `role="status"` (shadcn's Marker).
+- [ ] **Prompt input** (V P A X C): grows with its text; ↩ sends and ⇧↩ breaks the line; Send becomes Stop while a reply writes; attach (with `Attachment` and `DropZone`); a model selector (V); dictation (A); disabled while offline.
+- [ ] **Message actions** (V P A X): copy, retry, edit the person's message, thumbs up and down with an optional reason (P's feedback bar), export as Markdown (A).
+
+### 2. Agent parts (missing; most libraries ship them)
+
+- [ ] **Reasoning** (V P A X): a collapsible "Thought for 4 s" that streams open while the model thinks and folds shut when the answer starts; consecutive reasoning parts grouped (A).
+- [ ] **Chain of thought / steps** (V P X): a list of steps, each pending, running, done or failed, with detail under each.
+- [ ] **Tool call** (V P A): the tool's name, its inputs, a status (queued, running, done, failed) and its result, folded by default; consecutive calls grouped (A); a fallback look for tools with no UI of their own.
+- [ ] **Confirmation** (V C): the agent asks before it acts ("Delete 3 files?"), with Allow and Deny, and what was decided kept in the thread. Destructive ones can use the hold to confirm from "Destructive confirm".
+- [ ] **Plan, task and queue** (V A): the agent's to-do list with progress, tasks nested under a step, and what is waiting to run.
+- [ ] **Sources and inline citations** (V P X): numbered marks in the text that open the source in a preview card; a list of sources under the answer. Builds on the `ProvenanceTooltip` block.
+- [ ] **Thinking indicator / shimmer** (V P S): shimmering placeholder text and a thinking bar. Do it inside "Spinner: rethink as waiting" rather than as its own thing.
+- [ ] **Starter prompts and follow-ups** (V P A X): prompts on an empty thread and follow-ups after a reply. Different from `Chip variant="suggestion"`, which accepts or dismisses an AI suggestion.
+- [ ] **Welcome** (A X): the empty thread's greeting with starter prompts; check against `EmptyState` first.
+- [ ] **Conversation list** (A X): past chats in a sidebar, with rename, delete and a loading skeleton.
+- [ ] **Branch picker** (A): moves between alternate replies, "2 of 3".
+- [ ] **Context meter** (V): how full the model's context window is, likely a `Meter` use.
+- [ ] **Checkpoint** (V): a point in the thread to restore to.
+
+### 3. Code and artifacts (only if MetalUI targets coding agents)
+
+- [ ] An artifact panel beside the thread (V); a web or JSX preview (V P); a terminal (V); a stack trace (V); test results (V); a commit (V); a schema view (V); environment variables (V). Code block and Tree are in "Components other libraries ship" above.
+
+### 4. Voice (V)
+
+- [ ] Speech input, transcription, an audio player, mic and voice pickers, and a persona (an animated presence for the agent).
+
+### 5. Workflow canvas (V)
+
+- [ ] Nodes, edges, a canvas, controls and panels. `Connector` and `SpatialField` already exist, so this may fit the Objects and Places layers better than anything above.
+
+### 6. Generative UI and entry points
+
+- [ ] **Render from JSON** (K): ChatKit's widgets are ordinary parts (card, list, badge, button, date picker) that a model composes. We have nearly all of them; what's missing is a schema that lets a model render MetalUI components from JSON.
+- [ ] **Chat sidebar and popup** (C): the thread in a `Sidebar` or a floating panel.
+- [ ] **Ghost text in a textarea** (C): the AI's next words shown in grey, Tab to accept. Close to the cues and the suggestion chip.
 
 ## SwiftUI on iOS
 
