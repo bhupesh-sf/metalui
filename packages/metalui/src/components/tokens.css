@@ -1365,11 +1365,13 @@
   --mu-r-button-link-font: 500 9px/1 var(--mu-mono);
   --mu-r-button-link-tracking: 0.1em;
   --mu-r-button-link-ink: #3FB97A;
+  --mu-r-button-link-glyph: 12px;
   --mu-r-button-graphite-height: 24px;
   --mu-r-button-graphite-pad: 10px;
   --mu-r-button-graphite-font: 500 12px/1 var(--mu-sans);
   --mu-r-button-graphite-tracking: 0;
   --mu-r-button-graphite-ink: #EDEDEF;
+  --mu-r-button-graphite-glyph: 14px;
   --mu-r-button-strip-height: 28px;
   --mu-r-button-strip-pad: 10px;
   --mu-r-button-strip-radius: 11px;
@@ -1377,6 +1379,7 @@
   --mu-r-button-strip-tracking: 0;
   --mu-r-button-strip-ink: #D6D6D8;
   --mu-r-button-strip-ink-hover: #FFFFFF;
+  --mu-r-button-strip-glyph: 16px;
   --mu-r-button-strip-danger-ink: #FF8A7E;
   --mu-r-button-destructive-ink: #FFFFFF;
   /* kbd: reference style.css kbd, .tb-search kbd, #toast kbd */

@@ -650,10 +650,12 @@
   --tracking-button-compact-tracking: var(--mu-r-button-compact-tracking);
   --tracking-button-link-tracking: var(--mu-r-button-link-tracking);
   --color-button-link-ink: var(--mu-r-button-link-ink);
+  --spacing-button-link-glyph: var(--mu-r-button-link-glyph);
   --spacing-button-graphite-height: var(--mu-r-button-graphite-height);
   --spacing-button-graphite-pad: var(--mu-r-button-graphite-pad);
   --tracking-button-graphite-tracking: var(--mu-r-button-graphite-tracking);
   --color-button-graphite-ink: var(--mu-r-button-graphite-ink);
+  --spacing-button-graphite-glyph: var(--mu-r-button-graphite-glyph);
   --spacing-button-strip-height: var(--mu-r-button-strip-height);
   --spacing-button-strip-pad: var(--mu-r-button-strip-pad);
   --spacing-button-strip-radius: var(--mu-r-button-strip-radius);
@@ -661,6 +663,7 @@
   --tracking-button-strip-tracking: var(--mu-r-button-strip-tracking);
   --color-button-strip-ink: var(--mu-r-button-strip-ink);
   --color-button-strip-ink-hover: var(--mu-r-button-strip-ink-hover);
+  --spacing-button-strip-glyph: var(--mu-r-button-strip-glyph);
   --color-button-strip-danger-ink: var(--mu-r-button-strip-danger-ink);
   --color-button-primary-ink: var(--mu-r-button-primary-ink);
   --color-button-destructive-ink: var(--mu-r-button-destructive-ink);

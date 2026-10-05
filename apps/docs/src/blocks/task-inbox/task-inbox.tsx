@@ -204,9 +204,8 @@ const GUTTER = `${CELL} opacity-0 transition-opacity group-hover/row:opacity-100
 
 // A key on the graphite strip: the strip cap's look; the verb hides under 32rem, the glyph stays.
 const Verb = ({ children }: { children: string }) => <span className="sr-only @lg:not-sr-only">{children}</span>;
-const STRIP_GLYPH = 'size-16';
 // The icon set has no person glyph yet: a head and shoulders, drawn to the set's 24 grid and stroke.
-const PERSON = <svg aria-hidden viewBox="0 0 24 24" className={STRIP_GLYPH} fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round"><circle cx="12" cy="8.6" r="3.6" /><path d="M5.2 19.4c.9-3.3 3.6-5.2 6.8-5.2s5.9 1.9 6.8 5.2" /></svg>;
+const PERSON = <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round"><circle cx="12" cy="8.6" r="3.6" /><path d="M5.2 19.4c.9-3.3 3.6-5.2 6.8-5.2s5.9 1.9 6.8 5.2" /></svg>;
 
 /* ── The block ─────────────────────────────────────────────── */
 
@@ -639,7 +638,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
             >
               <span className="px-8 type-ui whitespace-nowrap tabular-nums text-toolstrip-ink-hover"><SwapText value={`${stripCount} selected`} /></span>
               <BaseToolbar.Separator render={<Rule tone="graphite" />} />
-              <BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="check" className={STRIP_GLYPH} />} />} aria-label="Complete" aria-keyshortcuts="E" onClick={completeTargets}>
+              <BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="check" />} />} aria-label="Complete" aria-keyshortcuts="E" onClick={completeTargets}>
                 <Verb>Complete</Verb>
               </BaseToolbar.Button>
               <Menu
@@ -658,16 +657,16 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
                 heading="Snooze until"
                 open={snoozeOpen}
                 onOpenChange={setSnoozeOpen}
-                trigger={<BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="clock" className={STRIP_GLYPH} />} />} aria-label="Snooze"><Verb>Snooze</Verb></BaseToolbar.Button>}
+                trigger={<BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="clock" />} />} aria-label="Snooze"><Verb>Snooze</Verb></BaseToolbar.Button>}
               >
                 <MenuItem onSelect={() => snooze(targets(), 1, 'tomorrow')}>Tomorrow</MenuItem>
                 <MenuItem onSelect={() => snooze(targets(), NEXT_WEEK, `${weekday.format(dateOf(NEXT_WEEK))} ${monthDay.format(dateOf(NEXT_WEEK))}`)}>Next week</MenuItem>
               </Menu>
               <BaseToolbar.Separator render={<Rule tone="graphite" />} />
-              <BaseToolbar.Button render={<Button cap="strip-danger" icon={<Icon name="trash" className={STRIP_GLYPH} />} />} aria-label="Delete" aria-keyshortcuts="Delete" onClick={() => openConfirm()}>
+              <BaseToolbar.Button render={<Button cap="strip-danger" icon={<Icon name="trash" />} />} aria-label="Delete" aria-keyshortcuts="Delete" onClick={() => openConfirm()}>
                 <Verb>Delete</Verb>
               </BaseToolbar.Button>
-              <BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="close" className={STRIP_GLYPH} />} />} aria-label="Clear selection" aria-keyshortcuts="Escape" onClick={() => { clearSelection(); focusCell(activeId); }} />
+              <BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="close" />} />} aria-label="Clear selection" aria-keyshortcuts="Escape" onClick={() => { clearSelection(); focusCell(activeId); }} />
             </BaseToolbar.Root>
           </div>
         ) : visible.length > 0 && (

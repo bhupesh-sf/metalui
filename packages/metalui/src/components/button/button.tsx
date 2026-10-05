@@ -16,8 +16,8 @@ export interface ButtonProps extends BaseButton.Props {
   /** default: 32 tall. compact: 26, 12 pt, raise-sm (the canvas pills: "seed a sample day", "lenses ⌘K"). The link, graphite and strip caps set their own size. */
   size?: 'default' | 'compact';
   /**
-   * The action's glyph, placed before the label and sized by the cap (16 in a 32 cap, 14 in a
-   * compact one; pass it without a size). An action names itself with a glyph and a verb:
+   * The action's glyph, placed before the label and sized by the cap (16 in a 32 cap or a strip, 14 in
+   * a compact or graphite one, 12 beside a link; pass it without a size). An action names itself with a glyph and a verb:
    * `<Button icon={<ShareIcon />}>Share</Button>`. A plain choice (Cancel, Done) has none. When
    * the same control changes meaning, pass a `MorphIcon` whose name changes, and turn the label
    * with `SwapText`. The button is the icon's trigger, so it plays its act on hover and press.
@@ -36,10 +36,10 @@ const CAPS: Record<ButtonCap, string> = {
   standard: `${REGULAR} text-ink recipe-button ${PRESS} not-data-disabled:active:recipe-button-pressed`,
   primary: `${REGULAR} text-button-primary-ink recipe-button-primary ${PRESS} not-data-disabled:active:recipe-button-primary-pressed`,
   destructive: `${REGULAR} text-button-destructive-ink recipe-button-destructive ${PRESS} not-data-disabled:active:recipe-button-destructive-pressed`,
-  link: 'h-auto p-0 rounded-none bg-transparent type-button-link text-button-link-ink transition-button',
-  graphite: `gap-button-gap h-button-graphite-height px-button-graphite-pad rounded-pill type-button-graphite text-button-graphite-ink recipe-button-graphite transition-button ${PRESS}`,
-  strip: `gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-ink bg-transparent transition-button hover:text-button-strip-ink-hover hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
-  'strip-danger': `gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-danger-ink bg-transparent transition-button hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
+  link: 'h-auto p-0 rounded-none bg-transparent type-button-link text-button-link-ink transition-button [&>svg]:size-button-link-glyph',
+  graphite: `gap-button-gap h-button-graphite-height px-button-graphite-pad rounded-pill type-button-graphite text-button-graphite-ink recipe-button-graphite transition-button [&>svg]:size-button-graphite-glyph ${PRESS}`,
+  strip: `gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-ink bg-transparent transition-button [&>svg]:size-button-strip-glyph hover:text-button-strip-ink-hover hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
+  'strip-danger': `gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-danger-ink bg-transparent transition-button [&>svg]:size-button-strip-glyph hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
 };
 const COMPACT = `gap-button-compact-gap h-button-compact-height px-button-compact-pad rounded-pill type-button-compact text-ink2 hover:text-ink recipe-button-compact transition-button-compact [&>svg]:size-button-compact-glyph ${PRESS} not-data-disabled:active:recipe-button-compact-pressed`;
 

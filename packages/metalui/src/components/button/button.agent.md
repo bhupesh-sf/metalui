@@ -16,7 +16,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 ## Anatomy
 
 - The **cap** is a 32px-tall pill: 15px horizontal padding, Geist 12.5 medium (the `ui` type role), tracking −0.005em.
-- The **icon** (`icon` prop) leads the label: 16 in the 32 cap, 6 before the label; 14 and 7 in the compact cap. The cap sizes it, so pass the glyph without a size.
+- The **icon** (`icon` prop) leads the label: 16 in the 32 cap, 6 before the label; 14 and 7 in the compact cap; 16 on a strip, 14 on graphite, 12 beside a link. The cap sizes it, so pass the glyph without a size.
 - The **label** is text: a verb, or a verb and its object.
 - **Compact** (`size="compact"`): 26 tall, 11 padding, 12 pt, a 14 glyph 7 before the label, the button fill on `raise-sm`, ink2 until hover. The canvas pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
 - The **press** moves the cap down 1px (50 ms, linear), and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
@@ -33,7 +33,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 |---|---|---|---|
 | `cap` | `cap:` | `standard`, `primary`, `destructive`, `link`, `graphite`, `strip`, `strip-danger` | `standard` |
 | `size` | `size:` | `default` (32), `compact` (26); ignored by the link, graphite and strip caps | `default` |
-| `icon` | `icon:` (a `MetalIconName`), or the `icon:` view builder | a glyph element, such as `<ShareIcon />` or `<MorphIcon name=… />`; leads the label, sized by the cap (16, compact 14) | – |
+| `icon` | `icon:` (a `MetalIconName`), or the `icon:` view builder | a glyph element, such as `<ShareIcon />` or `<MorphIcon name=… />`; leads the label, sized by the cap (16, compact 14, strip 16, graphite 14, link 12) | – |
 | `disabled` | `.disabled(_:)` | boolean | `false` |
 | `focusableWhenDisabled` | – | boolean | `false` |
 | `render` | – | Base UI render prop, for `<a>` or custom elements (set `nativeButton={false}`) | – |
@@ -67,7 +67,7 @@ MetalButton("Delete", icon: .trash, cap: .destructive) { remove() }
 - `destructive` is only for actions that remove or discard data. Pair it with confirmation when the action can't be undone.
 - The label is a verb, or a verb + object, in title case. The button text itself says what happens.
 - **An action names itself with a glyph and a verb.** A button that does something (save, share, export, delete, send, attach, copy, new) passes its glyph as `icon`: `<Button icon={<ShareIcon />}>Share</Button>`. A plain choice (Cancel, Done, Close as a word, OK) stays words only. Use the glyph whose act is that verb (`share`, `trash` or `send-away`, `duplicate`, `plus`, `pen` for Rename); don't borrow one that means something else.
-- Pass the glyph as `icon`, not as a child, and don't give it a size: the cap sets it (16, compact 14). Children still take a glyph for compatibility, but `icon` is the documented slot. The button is the icon's trigger: it plays its act when the button is hovered, focused from the keyboard or clicked, so don't wire up animation yourself.
+- Pass the glyph as `icon`, not as a child, and don't give it a size: the cap sets it (16, compact 14, strip 16, graphite 14, link 12). Children still take a glyph for compatibility, but `icon` is the documented slot. The button is the icon's trigger: it plays its act when the button is hovered, focused from the keyboard or clicked, so don't wire up animation yourself.
 - Don't restyle the cap with custom backgrounds, borders, or shadows. Colorway comes from `data-mu-colorway` (`bone` | `graphite`) on any ancestor. When no ancestor sets it, `prefers-color-scheme` decides.
 - Don't signal success with the press motion. Show the real result: a toast, a state change, or an error.
 - **A state change of the same control morphs, never swaps** (Transitions T1–T3, `docs/MORPH.md`). When one control's meaning changes (Copy → Copied, Pin → Unpin, Collapse → Expand), its glyph morphs with `MorphIcon` (from `@unlocalhosted/metalui/icons`) on the settle spring, and its label turns on the drum with `SwapText` (from `@unlocalhosted/metalui`), together: `<Button icon={<MorphIcon name={copied ? 'check' : 'paste'} />}><SwapText value={copied ? 'Copied' : 'Copy'} /></Button>`. The width settles to the new label. Only a glyph outside the morph family (a solid character glyph) turns on the drum with `SwapIcon` instead.
