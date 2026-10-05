@@ -254,9 +254,12 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
 
   useRows(grid, order.join('|'), landing);
 
-  /* The count, said once typing pauses. */
+  /* The count, said once typing pauses; not on arrival, where it would land late over whatever was said since. */
   const said = `${plural(counted.length, 'task', 'tasks')}${query.trim() ? ` matching “${query.trim()}”` : ''}`;
+  const lastSaid = React.useRef(said);
   React.useEffect(() => {
+    if (said === lastSaid.current) return;
+    lastSaid.current = said;
     const t = window.setTimeout(() => setStatus(said), TIMING.announce);
     return () => window.clearTimeout(t);
   }, [said]);
