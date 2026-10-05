@@ -101,9 +101,19 @@ export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min
   const choose = (d: Date) => {
     if (out(d)) return;
     if (value === undefined) setOwn(d);
-    if (monthKey(d) !== monthKey(focused)) go(d, false); else setFocused(d);
+    // A day of the next or last month turns the month; focus follows it, since the pressed button leaves.
+    if (monthKey(d) !== monthKey(focused)) go(d, true); else setFocused(d);
     onValueChange?.(d);
   };
+
+  // A controlled value set from outside opens its month.
+  const valueTime = value ? startOfDay(value).getTime() : null;
+  React.useEffect(() => {
+    if (valueTime == null || valueTime === focused.getTime()) return;
+    go(new Date(valueTime), false);
+    // Only a new value moves the month; browsing away from the value must stay where it is.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [valueTime]);
 
   // Keyboard moves carry focus with them.
   React.useEffect(() => {
@@ -167,7 +177,9 @@ export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min
                         data-outside={d.getMonth() !== month.getMonth() ? '' : undefined}
                         disabled={out(d)}
                         onClick={() => choose(d)}
-                        onFocus={() => { if (!sameDay(d, focused)) setFocused(d); }}
+                        // Only days of the shown month take the roving focus: focusing a day of the next or
+                        // last month would turn the month and remove the button before its click lands.
+                        onFocus={() => { if (!sameDay(d, focused) && d.getMonth() === month.getMonth()) setFocused(d); }}
                       >
                         {d.getDate()}
                       </button>

@@ -34,6 +34,17 @@ for (const colorway of COLORWAYS) {
   });
 }
 
+test('a day of the next month is chosen by a pointer press, and the month turns to it', async ({ page }) => {
+  await open(page, '/components/calendar', 'bone');
+  const sept = cal(page).getByRole('grid', { name: 'September 2026' });
+  // 2 October shows among September's trailing days; a real press (down, focus, up, click) chooses it.
+  await sept.getByRole('button', { name: /^Friday,? 2 October 2026$/ }).click();
+  const oct = cal(page).getByRole('grid', { name: 'October 2026' });
+  await expect(oct).toBeVisible();
+  await expect(oct.locator('[data-selected]')).toHaveAttribute('aria-label', /^Friday,? 2 October 2026$/);
+  await expect(page.locator(':focus')).toHaveAttribute('aria-label', /^Friday,? 2 October 2026$/);
+});
+
 test('a chosen day lands into the thumb, and a later month comes from the right', async ({ page }) => {
   await open(page, '/components/calendar', 'bone');
   const grid = cal(page).getByRole('grid', { name: 'September 2026' });
