@@ -352,32 +352,70 @@ Owner: "compare our design system with reui, what all components are there which
 
 Compared with [ReUI](https://reui.io/docs) (its 25 extras on top of shadcn) and [shadcn/ui](https://ui.shadcn.com/docs/components) (64 components). Place each in the six layers (`docs/COMPOSITION.md`) before building it; some below are Objects or Places, not Components. Date ranges, range presets and time are already in the Calendar entry above.
 
+Each entry lists the variations ReUI shows on its page (checked 2026-10-05); take them as the checklist when the component is built, not as a spec to copy.
+
 ### 1. Small, used everywhere (in both libraries)
 
-- [ ] **Alert**: an inline message in the page (info, success, warning, error), with an optional action and dismiss. Today only `AlertDialog`, `Toast` and `StatusBadge` exist.
-- [ ] **Badge**: a plain neutral or count badge. `Chip` and `StatusBadge` are both specialised.
+- [ ] **Alert**: an inline message in the page. Today only `AlertDialog`, `Toast` and `StatusBadge` exist.
+  - Kinds: default, info, success, warning, destructive, invert.
+  - Parts: icon, title, description, actions (`Alert.Title`, `Alert.Description`, `Alert.Action`); title only, description only, or all of them; a long message that wraps.
+- [ ] **Badge**: a plain label or count. `Chip` and `StatusBadge` are both specialised.
+  - Tones: default, secondary, info, success, warning, destructive, invert; each as solid, outline and light (soft).
+  - Sizes xs, sm, default, lg, xl; default or full radius.
+  - With an icon, an icon button (remove), a dot (our LED), or as a link.
 
 ### 2. Common form and data controls
 
-- [ ] **Tree** (ReUI): nested rows that expand and collapse, with keyboard navigation (ARIA tree pattern).
-- [ ] **Sortable** (ReUI): drag to reorder a list, with a keyboard path. Nothing in the library reorders today.
-- [ ] **Stepper** (ReUI) / **Questionnaire** (shadcn): the steps of a wizard, and a step-by-step form.
-- [ ] **Time picker** (ReUI): see "Time" in the Calendar entry.
+- [ ] **Tree**: nested rows that expand and collapse, with keyboard navigation (ARIA tree pattern).
+  - Guide lines per level; folder open, folder closed and file icons; chevron or plus/minus toggles; `indent` per level; drag to move with a drop line.
+- [ ] **Sortable**: drag to reorder, with a keyboard path. Nothing in the library reorders today.
+  - Vertical list, horizontal, grid with mixed sizes, nested levels; a grip handle or the whole item; disabled items.
+  - `onValueCommit` with the previous order, so a failed save can roll back.
+- [ ] **Stepper** (ReUI) / **Questionnaire** (shadcn): the steps of a wizard.
+  - Step states: inactive, active, completed, loading, disabled; custom indicators per state.
+  - Layouts: number only, title, title and bar, title and status, title and description, title inline beside the indicator; horizontal and vertical.
+  - Controlled or not; a progress bar across the steps; a panel per step.
+- [ ] **Time picker**: see "Time" in the Calendar entry.
+  - In a popover, or typed by segment; 12 or 24 hour; hour, minute or second granularity; AM/PM before or after.
+  - Steps (every 15 minutes), opening hours (`min`/`max`), unavailable slots; a start and end time pair; a time zone label.
+  - Now, Clear, and Confirm before applying; localised labels; a form field with validation; date and time together.
 - [ ] **Input OTP** (shadcn): one box per digit for a one-time code; paste fills all of them.
-- [ ] **Phone input** (ReUI): a country picker plus number formatting.
-- [ ] **Rating** (ReUI): stars, read-only and editable.
-- [ ] **Cascader** (ReUI): a value chosen through nested levels, one column per level.
-- [ ] **Autocomplete** (ReUI): free text with suggestions, where the value isn't limited to the list. A thin wrapper on Base UI Autocomplete; `Combobox` covers choosing from the list.
-- [ ] **Signature pad** (ReUI): a form field that captures a signature. `BrushCursor` and `DrawPicks` are canvas tools, not a field.
-- [ ] **Scrollspy** (ReUI): marks the section being read in a table of contents.
+- [ ] **Phone input**: a country picker plus number formatting; E.164 value; a default country; sizes sm, default, lg; disabled.
+- [ ] **Rating**: stars; half stars from decimals; the number shown beside them; editable or read-only; `max`; sizes sm, default, lg.
+- [ ] **Cascader**: a value chosen through nested levels.
+  - Modes: drill down one level at a time (with Back), Miller columns side by side, a tree that expands in place.
+  - One value or many (checkboxes, a `max`, selection that cascades to children); leaves only or any branch.
+  - Levels loaded on demand; virtualised long lists.
+- [ ] **Autocomplete**: free text with suggestions, where the value isn't limited to the list. A thin wrapper on Base UI Autocomplete.
+  - Highlight the first match; a clear button, a trigger button, or both; groups; async search with a loading state; sizes; in a form; disabled.
+- [ ] **Signature pad**: a form field that captures a signature. `BrushCursor` and `DrawPicks` are canvas tools, not a field.
+  - Undo and redo; draw or type the name; stylus with pressure and palm rejection (`sizing`: auto, pressure, velocity); smoothing and min/max width.
+  - Export PNG, JPEG, SVG or the strokes as JSON; `name`, `required` and validation in a form.
+  - In a dialog, on an agreement card, initials per clause, proof of delivery.
+- [ ] **Scrollspy**: marks the section being read in a table of contents; horizontal and vertical; a scroll container other than the window; an offset; smooth scrolling; the URL hash follows.
 
 ### 3. Extend what exists rather than adding new components
 
-- [ ] **Table → data grid** (ReUI Data Grid, shadcn Data Table): column visibility, filtering, resizing and pinning columns, virtualised rows, editing cells.
+- [ ] **Table → data grid** (ReUI Data Grid, shadcn Data Table). `Table` has sort, row selection and an empty line today.
+  - Looks: cell borders, dense, light (rounded rows, no header fill), striped, auto column width.
+  - Columns: resize, move, show/hide; pin rows to the top or bottom.
+  - Rows: tree rows that expand; virtualised rows.
+  - Spreadsheet editing: select cells, copy and paste, edit in place.
+- [ ] **Calendar and DatePicker → date selector** (beyond the Calendar entry above): period types (day, month, quarter, half year, year); operators (is, before, after, between); in a dialog as well as a popover, with Apply and Cancel; two months side by side; localised.
+- [ ] **Number field**: sizes sm, default, lg (ours has one size today).
+- [ ] **DropZone and Attachment → file upload layouts**: an avatar upload (one image with a preview); a compact row with thumbnails and a count; a gallery grid with a preview dialog; a table of files with round progress; image tiles with their own progress; drag to reorder (needs Sortable); retry on failure (ours has it).
+- [ ] **Card → frame**: panels separated, stacked or dense inside one frame, with header, title, description and footer; a ghost frame without the outer border; spacing sm, default, lg.
+- [ ] **Combobox**: groups, async search with a loading state, and a trigger button beside the clear mark (from ReUI's Autocomplete).
 - [ ] **Field → input group** (shadcn): text attached to the input (a `https://` prefix, a `.com` suffix) and buttons inside the field.
 - [ ] **Collapsible** (shadcn): a standalone show/hide wrapper. `Accordion` and `SplitPane` collapse, but nothing does on its own.
-- [ ] **Icon tile** (ReUI): an icon on a small tile; probably `Glyph` in a `well`, as a documented recipe.
-- [ ] **Code block** (ReUI): `CodeCard` lives only in the docs; decide whether it ships in the package.
+- [ ] **Icon tile**: probably `Glyph` in a `well`, as a documented recipe.
+  - Looks: outline, elevated, soft, solid, framed; sizes xs to xl; square or round; tones and brand colours.
+  - Holds an icon, initials or short text; a status overlay; interactive; used in a list row, a feature card and an empty state.
+- [ ] **Code block**: `CodeCard` lives only in the docs; decide whether it ships in the package.
+  - Looks: framed or ghost; line numbers from a start line; wrap; a max height with its own scroll or a `ScrollArea`; a copy button pinned over the scroll.
+  - Lines: highlighted lines and words, focused lines, selectable lines (reference them in a chat), folding by indent.
+  - Diff (added and removed lines), a unified patch with two gutters, diagnostics per line (error, warning, info) with an action ("Fix with AI").
+  - Streaming from an AI response; splitting Markdown code fences; highlighting on the server.
 
 ### 4. Chat parts (only if MetalUI covers AI chat interfaces)
 
@@ -388,12 +426,18 @@ Compared with [ReUI](https://reui.io/docs) (its 25 extras on top of shadcn) and 
 
 - [ ] **Chart** (shadcn): bar, line and area charts with axes and tooltips. `Sparkline` and `Meter` are the small cases.
 - [ ] **Carousel** (shadcn).
-- [ ] **Kanban** (ReUI): columns of cards; needs Sortable.
-- [ ] **Gantt** (ReUI): a timeline chart.
-- [ ] **Event calendar** (ReUI): a month or week view that shows events; see "Marked days" in the Calendar entry.
-- [ ] **Timeline** (ReUI): a vertical list of events in order. `MemoryScrubber` looks through the past; this is not that.
-- [ ] **Filters** (ReUI): a bar for building filters, for example "Status is Open".
-- [ ] **Icon stack** (ReUI).
+- [ ] **Kanban**: columns of cards, dragged between columns with an overlay while dragging; columns reorder by a handle; disabled items; `onValueCommit` with the previous state so a failed save rolls back with a toast. Needs Sortable.
+- [ ] **Gantt**: day, week, month, quarter and year scales; drag to move, resize and create; summary bars that roll up; planned against actual (a ghost baseline); dependencies as finish-to-start arrows; milestones as diamonds; progress fills; side columns (owner, status); people rows with avatars; zoom, now line, off days, infinite scroll; time zones; right-to-left.
+- [ ] **Event calendar**: month, week, day, N days, agenda, and a resource time grid; all-day bars across days; custom event chips; drag to move, resize and create; tooltips; weekends, week numbers, now line, off days; day start and end hours, grid interval, snap; week start; time zones; right-to-left. See "Marked days" in the Calendar entry.
+- [ ] **Timeline**: a vertical list of events in order. `MemoryScrubber` looks through the past; this is not that.
+  - Dates on the left; custom indicators or icons; alternating sides; horizontal with indicators above or below; an active step.
+  - Uses: a roadmap, an activity feed, an order's status, git activity, milestones, CI/CD steps, deployment history.
+- [ ] **Filters**: a bar for building filters, for example "Status is Open".
+  - Basic (a row of chips for a toolbar) or advanced (nested conditions, reorderable, inline in a sidebar).
+  - Field types: text, number, range, select, multiselect, boolean; nested fields.
+  - Operators: is, contains, starts and ends with, empty, is any of, is none of, greater and less than, between.
+  - Searchable options, chosen ones pinned to the top, an option that clears the rest, custom editors (toggles, radios, checkboxes); clear all; filters a data grid.
+- [ ] **Icon stack**: layered isometric icons for small illustrations (empty states, onboarding, feature cards, status panels); sizes and tones. Check against `BlockSilhouette` and `EmptyState` first.
 
 Not needed as components: Aspect Ratio (the CSS `aspect-ratio` property), Native Select (a `<select>` on a `well`), Typography (`Label`). Direction (a right-to-left provider) only if the library commits to right-to-left text.
 
