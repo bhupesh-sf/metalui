@@ -182,8 +182,9 @@ export function DropZone({
       />
       {icon && <span aria-hidden className={WELL}>{icon}</span>}
       <span className={WORDS}>
-        <span aria-hidden className={TITLE}><SwapText value={line} /></span>
-        {description && <span id={descId} className={LINE}>{description}</span>}
+        {/* One row when compact: the words clip to the room left beside "or choose files". */}
+        <span aria-hidden className={compact ? `${TITLE} truncate` : TITLE}><SwapText value={line} /></span>
+        {description && <span id={descId} className={compact ? `${LINE} truncate` : LINE}>{description}</span>}
       </span>
       {!disabled && <span aria-hidden className={compact ? `${CHOOSE} ms-auto flex-none` : CHOOSE}>{chooseLabel}</span>}
     </label>
