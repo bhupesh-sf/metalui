@@ -96,7 +96,8 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
       if (motionReduced(svg)) stop();
     };
     trigger.addEventListener('pointerenter', onPointer);
-    trigger.addEventListener('focusin', onFocus);
+    // Focus listeners on a bare svg make Chrome give it a Tab stop of its own; only a real trigger listens.
+    if (trigger !== svg) trigger.addEventListener('focusin', onFocus);
     trigger.addEventListener('click', play);
     const unwatch = onMotionChange(onReduce);
     return () => {

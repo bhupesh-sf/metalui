@@ -54,3 +54,13 @@ test('collapsing, the words leave before the width moves', async ({ page }) => {
   expect(r.wordsHalf).toBeGreaterThan(0);
   expect(r.widthHalf).toBeGreaterThan(r.wordsHalf);
 });
+
+test('Tab moves from item to item; the glyphs take no stop of their own', async ({ page }) => {
+  await open(page, '/components/sidebar', 'bone');
+  const links = nav(page).getByRole('link');
+  await links.nth(0).focus();
+  await page.keyboard.press('Tab');
+  await expect(links.nth(1)).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(links.nth(2)).toBeFocused();
+});
