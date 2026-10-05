@@ -685,9 +685,8 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
       </div>
 
       <AlertDialog open={!!confirm} onOpenChange={(o) => { if (!o) setConfirm(null); }}>
-        {/* Focus goes to the row after the deleted ones, not to the strip that is leaving. Popup
-            passes finalFocus through to Base UI, but its props don't type it. */}
-        <AlertDialog.Popup {...({ finalFocus: () => (afterDelete.current ? cellOf(afterDelete.current, 2) ?? search.current : true) } as object)}>
+        {/* Focus goes to the row after the deleted ones, not to the strip that is leaving. */}
+        <AlertDialog.Popup finalFocus={() => (afterDelete.current ? cellOf(afterDelete.current, 2) ?? search.current : true)}>
           <AlertDialog.Title>{confirm?.length === 1 ? `Delete “${short(tasks.find((t) => t.id === confirm[0])?.title ?? '', 40)}”?` : `Delete ${plural(confirm?.length ?? 0, 'task', 'tasks')}?`}</AlertDialog.Title>
           <AlertDialog.Description>{confirm?.length === 1 ? 'It leaves' : 'They leave'} the inbox for everyone on the team. You can undo it for a few seconds.</AlertDialog.Description>
           <AlertDialog.Actions>

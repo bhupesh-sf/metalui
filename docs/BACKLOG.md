@@ -333,7 +333,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Button strip / graphite / link caps don't size an `icon`** (noted with the icon slot); blocks pass `size-16`.
 - [ ] **Icons: no person / assign glyph** (the `me` glyph reads as a chart); add `person`.
 - [ ] **Icon: no way to play a glyph's act on demand** (a celebration, a result): add `play()` via a ref or an `act` prop; the inbox dispatches a synthetic click.
-- [ ] **AlertDialog.Popup** doesn't type Base UI's `finalFocus` (it passes it through); type it.
+- [x] **AlertDialog.Popup** doesn't type Base UI's `finalFocus` (it passes it through); type it.
 - [ ] **Avatar**: no accessible label separate from the name its initials come from.
 - [ ] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes.
 - [ ] **Task inbox polish**: while selecting, the selection box (14) and the completion box (16) sit side by side and look alike; make completion a distinct task dimple or a status glyph, or show selection only as the row's plate.

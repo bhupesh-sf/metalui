@@ -48,7 +48,8 @@ function Root({ open, onOpenChange, children }: AlertDialogRootProps) {
   );
 }
 
-function Popup({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+/** `finalFocus`: where focus goes when it closes (Base UI's), e.g. the row after a deleted one. */
+function Popup({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement> & Pick<BaseAlertDialog.Popup.Props, 'finalFocus'>) {
   const ctx = React.useContext(AlertCtx)!;
   return (
     <BaseAlertDialog.Popup ref={ctx.popup} initialFocus={ctx.cancel} {...props} className={className ? `${POPUP} ${className}` : POPUP} render={<Surface material="plate" radius="card" />}>
