@@ -622,9 +622,11 @@ Moved to "AI components" below (shadcn's Bubble, Message, Message scroller and M
 
 ### 5. Large; place in the layers first
 
-- [ ] **Chart** (shadcn): bar, line and area charts with axes and tooltips. `Sparkline` and `Meter` are the small cases.
+- [x] **Chart** (shadcn): bar, line and area charts with axes and tooltips. `Sparkline` and `Meter` are the small cases.
+  Done (2026-10-06), Must tier: line, area and grouped bar, a readout strip instead of a tooltip, series told apart by pattern, a summary and a real table for screen readers; SwiftUI on Swift Charts (bars use tones, no hatching). Left: stacked bars and areas, values on bars (Should); a legend that hides a series, zoom, horizontal bars (Later). Sheet: `docs/sheets/chart.md`.
 - [x] **Carousel** (shadcn). (Built 2026-10-06; sheet in `docs/sheets/carousel.md`, which says when not to use one: a grid when it fits, Tabs for named peers, Pagination for many, never a rotating hero. Native scroll-snap, a "3 / 8" readout on the drum instead of dots, no autoplay. Left: SwiftUI shows only the first slide's number; a thumbnail strip, right-to-left.)
-- [ ] **Kanban**: columns of cards, dragged between columns with an overlay while dragging; columns reorder by a handle; disabled items; `onValueCommit` with the previous state so a failed save rolls back with a toast. Needs Sortable.
+- [x] **Kanban**: columns of cards, dragged between columns with an overlay while dragging; columns reorder by a handle; disabled items; `onValueCommit` with the previous state so a failed save rolls back with a toast. Needs Sortable.
+  Done (2026-10-06): `Kanban` (a Place) on Sortable's new `useSortableLists`; an overlay copy follows the hand, keys move the card itself; soft WIP limits (amber LED, "Over by N"); rollback with a toast; disabled columns and a Move to menu. Left: open a folded column on hover, swimlanes, multi-card drag, virtual rows. Sheet: `docs/sheets/kanban.md`.
 - [ ] **Gantt**: day, week, month, quarter and year scales; drag to move, resize and create; summary bars that roll up; planned against actual (a ghost baseline); dependencies as finish-to-start arrows; milestones as diamonds; progress fills; side columns (owner, status); people rows with avatars; zoom, now line, off days, infinite scroll; time zones; right-to-left.
 - [ ] **Event calendar**: month, week, day, N days, agenda, and a resource time grid; all-day bars across days; custom event chips; drag to move, resize and create; tooltips; weekends, week numbers, now line, off days; day start and end hours, grid interval, snap; week start; time zones; right-to-left. See "Marked days" in the Calendar entry.
 - [x] **Timeline**: a vertical list of events in order. `MemoryScrubber` looks through the past; this is not that. (Built 2026-10-06 as an Object; sheet in `docs/sheets/timeline.md`: states use the LED meanings, running waits with the Spinner's ring, the now marker comes from the states, lamps gesture only on change. Left: horizontal, day groups and a fold (Later); move the relative-time wording shared with Table into one module.)
@@ -693,12 +695,14 @@ The block (`apps/docs/src/blocks/ai-composer`) already does these inside itself;
 
 Found 2026-10-01 by building the package for the iOS Simulator (`xcodebuild -scheme MetalUI -destination 'generic/platform=iOS Simulator'`): it fails, so `Package.swift` lists macOS 14 only. CI has only ever run `swift build` on macOS. These eight files use AppKit; each needs a UIKit twin or a platform-neutral rewrite behind `#if canImport(AppKit)`:
 
-- [ ] **Icons** (`Icons/MetalIcon.swift`): renders the custom SF Symbols through `NSImage.SymbolConfiguration` and `NSImage(symbolName:bundle:)`. iOS needs `UIImage.SymbolConfiguration` and `UIImage(named:in:)`, with the y-up/y-down centre correction checked.
-- [ ] **Fonts** (`Foundation/MetalFonts.swift`): `NSFont` for the system and monospaced fallbacks and weights; `UIFont` has the same calls with `UIFont.Weight`. Registration of the bundled Geist, Martian Mono and Doto already goes through Core Text.
-- [ ] **Fan** (`Components/MetalFan.swift`): `NSEvent.addLocalMonitorForEvents` to close on an outside click, and an `NSViewRepresentable` window probe. iOS needs a tap-outside layer instead.
-- [ ] **Slider** (`Components/MetalSlider.swift`): `NSCursor` hand and pointer cursors and `NSApp.currentEvent` to tell keyboard focus from a click. iOS has no cursor; use `.hoverEffect` or none, and focus from `@FocusState` only.
-- [ ] **Brush cursor** (`Components/MetalBrushCursor.swift`): `NSCursor` built from an image. iOS has no pointer cursor to set; the brush ring is drawn in the canvas there.
-- [ ] **Spatial field** (`Components/MetalSpatialFieldView.swift`): a custom `NSView` that draws with `NSGraphicsContext` and `NSColor`. iOS needs a `UIView` with `UIGraphicsGetCurrentContext` or a `Canvas`.
-- [ ] **Snap guides** (`Components/MetalSnapGuides.swift`): `NSHapticFeedbackManager`. iOS has `UIImpactFeedbackGenerator` or `.sensoryFeedback`.
-- [ ] **Command palette** (`Components/MetalCommandPalette.swift`): `NSScreen.main` for the maximum height. iOS can read the container height.
-- [ ] Then: add an iOS Simulator build to `.github/workflows/ci.yml`, restore `.iOS(.v17)` in `Package.swift`, and put "iOS 17" back in the README and the agent guide.
+- [x] **Icons** (`Icons/MetalIcon.swift`): renders the custom SF Symbols through `NSImage.SymbolConfiguration` and `NSImage(symbolName:bundle:)`. iOS needs `UIImage.SymbolConfiguration` and `UIImage(named:in:)`, with the y-up/y-down centre correction checked.
+- [x] **Fonts** (`Foundation/MetalFonts.swift`): `NSFont` for the system and monospaced fallbacks and weights; `UIFont` has the same calls with `UIFont.Weight`. Registration of the bundled Geist, Martian Mono and Doto already goes through Core Text.
+- [x] **Fan** (`Components/MetalFan.swift`): `NSEvent.addLocalMonitorForEvents` to close on an outside click, and an `NSViewRepresentable` window probe. iOS needs a tap-outside layer instead.
+- [x] **Slider** (`Components/MetalSlider.swift`): `NSCursor` hand and pointer cursors and `NSApp.currentEvent` to tell keyboard focus from a click. iOS has no cursor; use `.hoverEffect` or none, and focus from `@FocusState` only.
+- [x] **Brush cursor** (`Components/MetalBrushCursor.swift`): `NSCursor` built from an image. iOS has no pointer cursor to set; the brush ring is drawn in the canvas there.
+- [x] **Spatial field** (`Components/MetalSpatialFieldView.swift`): a custom `NSView` that draws with `NSGraphicsContext` and `NSColor`. iOS needs a `UIView` with `UIGraphicsGetCurrentContext` or a `Canvas`.
+- [x] **Snap guides** (`Components/MetalSnapGuides.swift`): `NSHapticFeedbackManager`. iOS has `UIImpactFeedbackGenerator` or `.sensoryFeedback`.
+- [x] **Command palette** (`Components/MetalCommandPalette.swift`): `NSScreen.main` for the maximum height. iOS can read the container height.
+- [x] Then: add an iOS Simulator build to `.github/workflows/ci.yml`, restore `.iOS(.v17)` in `Package.swift`, and put "iOS 17" back in the README and the agent guide.
+
+Done (2026-10-06): `Foundation/MetalPlatform.swift` holds keys, focus and cursor per platform; every file builds for the iOS Simulator and `Package.swift` lists `.iOS(.v17)` again; CI runs `xcodebuild` for iOS. macOS only, by design: `MetalBrushCursor` (no pointer cursor on iOS) and Tree's ⌘/⇧-click. Left: run it on a simulator (icon centring, Fan's tap outside, Escape); Swift captures are macOS only.
