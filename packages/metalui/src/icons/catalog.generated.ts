@@ -1352,6 +1352,49 @@ export const ICON_CATALOG = {
     sw16: 1.85,
     motion: {"duration":950,"caption":"The palette is lifted on its thumb and each paint is dabbed in turn.","stages":["Lift","Dab","Settle"],"tracks":[{"part":"board","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16842,"transform":"translate(0px,-0.6px) rotate(-5deg) scale(1,1)","easing":"linear"},{"offset":0.21053,"transform":"translate(0px,-0.6px) rotate(-5deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.58526,"transform":"translate(0px,0.0592px) rotate(0.4934deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.96105,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"p1","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.12632,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.18947,"transform":"translate(0px,0px) rotate(0deg) scale(1.12,0.78)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.51053,"transform":"translate(0px,0px) rotate(0deg) scale(0.9896,1.0192)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.83158,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"p2","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.21053,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.27368,"transform":"translate(0px,0px) rotate(0deg) scale(1.12,0.78)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.59474,"transform":"translate(0px,0px) rotate(0deg) scale(0.9896,1.0192)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.91579,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"p3","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.29474,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.35789,"transform":"translate(0px,0px) rotate(0deg) scale(1.12,0.78)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.67895,"transform":"translate(0px,0px) rotate(0deg) scale(0.9896,1.0192)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"glint","keyframes":[{"offset":0,"transform":"scale(.9)","opacity":0},{"offset":0.34737,"transform":"scale(.9)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.38947,"transform":"scale(1)","opacity":0.6,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61053,"transform":"scale(1.35)","opacity":0},{"offset":1,"transform":"scale(.9)","opacity":0}]}]},
   },
+  /* ─────────────────────────────────────────────────────────
+   * COPY · Actions · one act, 796ms
+   *
+   * Lay on → Take → Pull off
+   *          The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.
+   *  sheet      0 → 160 → 360 → 440 → 796ms
+   *  light      0 → 170 → 210 → 350 → 400 → 796ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "copy": {
+    label: "Copy",
+    category: "Actions",
+    hover: "The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.",
+    press: "plays the same act",
+    pressMs: 796,
+    defs: "",
+    body: "<path d=\"M5 9.6V18a2.4 2.4 0 0 0 2.4 2.4h7.4\"/><g data-part=\"sheet\"><path class=\"f\" style=\"--duo:.12\" d=\"M10.8 4.4H16a2.4 2.4 0 0 1 2.4 2.4v8A2.4 2.4 0 0 1 16 17.2h-5.2a2.4 2.4 0 0 1-2.4-2.4v-8a2.4 2.4 0 0 1 2.4-2.4Z\"/></g><path class=\"ac\" data-part=\"light\" opacity=\"0\" d=\"M10.6 7.4h5.6\" style=\"stroke-width:calc(var(--sw) * .6)\"/>",
+    sw16: 1.85,
+    motion: {"duration":796,"caption":"The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.","stages":["Lay on","Take","Pull off"],"tracks":[{"part":"sheet","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.20101,"transform":"translate(-1.2px,1.2px) rotate(0deg) scale(0.96,0.96)","easing":"linear"},{"offset":0.45226,"transform":"translate(-1.2px,1.2px) rotate(0deg) scale(0.96,0.96)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.55276,"transform":"translate(0.5px,-0.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"light","keyframes":[{"offset":0,"transform":"translate(-1.2px,1.2px)","opacity":0},{"offset":0.21357,"transform":"translate(-1.2px,1.2px)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.26382,"transform":"translate(-1.2px,2px)","opacity":0.7,"easing":"linear"},{"offset":0.4397,"transform":"translate(-1.2px,6.8px)","opacity":0.5,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.50251,"transform":"translate(-1.2px,7.4px)","opacity":0},{"offset":1,"transform":"translate(-1.2px,1.2px)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * OPEN ELSEWHERE · EXTERNAL · Actions · one act, 596ms
+   *
+   * Draw back → Leave → Settle
+   *          The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.
+   *  arrow      0 → 150 → 230 → 535 → 596ms
+   *  frame      0 → 225 → 240 → 596ms
+   *  streak     0 → 210 → 250 → 450 → 596ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "external": {
+    label: "Open elsewhere · External",
+    category: "Actions",
+    hover: "The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.",
+    press: "plays the same act",
+    pressMs: 596,
+    defs: "<mask id=\"&-m\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"24\" height=\"24\"><rect width=\"24\" height=\"24\" fill=\"#fff\" stroke=\"none\"/><g data-part=\"arrow\"><path d=\"M11.4 12.6 19.4 4.6\" fill=\"none\" stroke=\"#000\" stroke-width=\"3.7\"/></g></mask>",
+    body: "<g data-part=\"frame\"><path class=\"f\" style=\"--duo:.1\" mask=\"url(#&-m)\" d=\"M6.9 7.5h7.2a2.4 2.4 0 0 1 2.4 2.4v7.2a2.4 2.4 0 0 1-2.4 2.4H6.9a2.4 2.4 0 0 1-2.4-2.4V9.9a2.4 2.4 0 0 1 2.4-2.4Z\"/></g><g data-part=\"arrow\"><path d=\"M11.4 12.6 19.4 4.6\"/><path d=\"M14.2 4.6h5.2v5.2\"/></g><path class=\"ac\" data-part=\"streak\" opacity=\"0\" d=\"M9.6 14.4 8.4 15.6\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":596,"caption":"The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.","stages":["Draw back","Leave","Settle"],"tracks":[{"part":"arrow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.25168,"transform":"translate(-0.7071px,0.7071px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.38591,"transform":"translate(1.1314px,-1.1314px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.89765,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"frame","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.37752,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.40268,"transform":"translate(-0.2121px,0.2121px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"streak","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.35235,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.41946,"transform":"scale(1)","opacity":0.8,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75503,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;

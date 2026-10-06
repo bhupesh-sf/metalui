@@ -4231,7 +4231,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 59 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 61 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4308,3 +4308,5 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `PersonIcon` | `person` | Tools | The figure looks up and nods; its shoulders follow, and a ring opens round its head. | plays the same act |
 | `BellIcon` | `bell` | Status | The bell swings on its loop and the clapper, lagging, strikes the rim on each side. | plays the same act |
 | `PaletteIcon` | `palette` | Tools | The palette is lifted on its thumb and each paint is dabbed in turn. | plays the same act |
+| `CopyIcon` | `copy` | Actions | The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place. | plays the same act |
+| `ExternalIcon` | `external` | Actions | The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it. | plays the same act |

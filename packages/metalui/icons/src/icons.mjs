@@ -65,6 +65,8 @@ export const ICONS = [
   { name: 'person', cat: 'Tools', label: 'Person · Assign' },
   { name: 'bell', cat: 'Status', label: 'Notifications' },
   { name: 'palette', cat: 'Tools', label: 'Appearance' },
+  { name: 'copy', cat: 'Actions', label: 'Copy' },
+  { name: 'external', cat: 'Actions', label: 'Open elsewhere · External' },
 ];
 
 // MU_ICON_ACTS=a,b loads only those acts (the film tool, so one icon in progress never breaks another).

@@ -62,6 +62,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case person = "person"
     case bell = "bell"
     case palette = "palette"
+    case copy = "copy"
+    case external = "external"
 
     public enum Category: String, Sendable { case tools = "Tools", actions = "Actions", status = "Status" }
 
@@ -126,6 +128,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return "Person · Assign"
         case .bell: return "Notifications"
         case .palette: return "Appearance"
+        case .copy: return "Copy"
+        case .external: return "Open elsewhere · External"
         }
     }
 
@@ -190,6 +194,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return .tools
         case .bell: return .status
         case .palette: return .tools
+        case .copy: return .actions
+        case .external: return .actions
         }
     }
 
@@ -255,6 +261,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return 0.1
         case .bell: return 0.12
         case .palette: return 0.12
+        case .copy: return 0.12
+        case .external: return 0.1
         }
     }
 
@@ -320,6 +328,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return nil
         case .bell: return nil
         case .palette: return nil
+        case .copy: return nil
+        case .external: return nil
         }
     }
 
@@ -385,6 +395,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return false
         case .bell: return false
         case .palette: return false
+        case .copy: return false
+        case .external: return false
         }
     }
 
@@ -450,6 +462,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return 1.85
         case .bell: return 1.85
         case .palette: return 1.85
+        case .copy: return 1.85
+        case .external: return 1.85
         }
     }
 }

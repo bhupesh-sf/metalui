@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 59,
+  "count": 61,
   "icons": [
     {
       "name": "select",
@@ -1181,6 +1181,46 @@
       },
       "tuned16": false,
       "construction": "Palette 16.9 × 16.8, tinted .12, its thumb notch at the lower right; three paint beads r1.35 in an arc on the upper left. Motion (study): the board tips back 5° about its notch and rises .6 on the object spring; the paints are dabbed in turn (flattened .78, widened 1.12) and spring back on the part spring; a glint opens at the last."
+    },
+    {
+      "name": "copy",
+      "component": "CopyIcon",
+      "label": "Copy",
+      "category": "Actions",
+      "hover": "The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.",
+      "press": "plays the same act",
+      "pressMs": 796,
+      "motion": {
+        "caption": "The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.",
+        "durationMs": 796,
+        "stages": [
+          "Lay on",
+          "Take",
+          "Pull off"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Two portrait sheets 10 × 12.8, r2.4, offset 3.4 across and 3.2 down: the copy in front at the upper right, tinted .12, and the original behind at the lower left as an L of its left and bottom edges ending clear of the copy (no clearance, no plus: Duplicate's original is at the upper left and whole). With the original at the upper left (the first draft) the mean strain was 1.65, and 1.61 at a wider offset; here 1.55. Motion (study): the copy is laid back 1.2 onto the original and pressed .96; a light passes down it; it is pulled off .5 past its place on the object spring."
+    },
+    {
+      "name": "external",
+      "component": "ExternalIcon",
+      "label": "Open elsewhere · External",
+      "category": "Actions",
+      "hover": "The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.",
+      "press": "plays the same act",
+      "pressMs": 596,
+      "motion": {
+        "caption": "The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.",
+        "durationMs": 596,
+        "stages": [
+          "Draw back",
+          "Leave",
+          "Settle"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A 14 frame r2.4, tinted .1, open at its top-right corner (a chord-closed wire); an arrow 11.3 long on the diagonal, its head (5.2 arms) out past the corner. Motion (study): the arrow is drawn back 1 into the frame and thrown out 1.6 along its diagonal on the part spring; the frame gives .3 behind it on the object spring; a streak shows behind the tail."
     }
   ]
 }

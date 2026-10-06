@@ -15,6 +15,7 @@ const PAIRS: [MorphIconName, MorphIconName][] = [
   ['synced', 'offline'],
   ['offline', 'sync-error'],
   ['paste', 'check'],
+  ['copy', 'check'],
   ['send', 'stop'],
   ['download', 'upload'],
   ['save', 'check'],

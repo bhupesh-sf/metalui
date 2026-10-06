@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette", "copy", "external"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -304,5 +304,14 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M8 12", 2.7, 0, 0, 1],
     ["M10 8", 2.7, 0, 0, 1],
     ["M14.4 7.6", 2.7, 0, 0, 1],
+  ],
+  "copy": [
+    ["M5 9.6L5 18C5 19.33 6.07 20.4 7.4 20.4L14.8 20.4", 1.7, 0, 0, 1],
+    ["M10.8 4.4L16 4.4C17.33 4.4 18.4 5.47 18.4 6.8L18.4 14.8C18.4 16.13 17.33 17.2 16 17.2L10.8 17.2C9.47 17.2 8.4 16.13 8.4 14.8L8.4 6.8C8.4 5.47 9.47 4.4 10.8 4.4Z", 1.7, 0.12, 0, 1],
+  ],
+  "external": [
+    ["M6.9 7.5L14.1 7.5C15.43 7.5 16.5 8.57 16.5 9.9L16.5 17.1C16.5 18.43 15.43 19.5 14.1 19.5L6.9 19.5C5.57 19.5 4.5 18.43 4.5 17.1L4.5 9.9C4.5 8.57 5.57 7.5 6.9 7.5Z", 1.7, 0.1, 0, 1, [["behind",1,1.85]]],
+    ["M11.4 12.6L19.4 4.6", 1.7, 0, 0, 1],
+    ["M14.2 4.6L19.4 4.6L19.4 9.8", 1.7, 0, 0, 1],
   ],
 };

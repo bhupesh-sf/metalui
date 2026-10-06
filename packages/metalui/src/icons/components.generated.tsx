@@ -119,3 +119,7 @@ export const PersonIcon = createIcon("person", "PersonIcon");
 export const BellIcon = createIcon("bell", "BellIcon");
 /** Appearance. Hover: The palette is lifted on its thumb and each paint is dabbed in turn.. Press: plays the same act. */
 export const PaletteIcon = createIcon("palette", "PaletteIcon");
+/** Copy. Hover: The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.. Press: plays the same act. */
+export const CopyIcon = createIcon("copy", "CopyIcon");
+/** Open elsewhere · External. Hover: The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.. Press: plays the same act. */
+export const ExternalIcon = createIcon("external", "ExternalIcon");
