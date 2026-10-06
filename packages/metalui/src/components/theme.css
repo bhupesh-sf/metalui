@@ -1571,6 +1571,12 @@
 @utility link-out {
   position: relative; left: 0; top: 0; margin-inline-start: var(--mu-r-link-out-gap); font-size: var(--mu-r-link-out-size); line-height: 1; transition: left var(--mu-spring-part-d) var(--mu-spring-part), top var(--mu-spring-part-d) var(--mu-spring-part); a:hover > & { left: var(--mu-r-link-out-nudge); top: calc(var(--mu-r-link-out-nudge) * -1); }
 }
+@utility link-file {
+  white-space: nowrap; margin-inline-start: var(--mu-r-link-file-gap); & > svg { display: inline; width: var(--mu-r-link-file-size); height: var(--mu-r-link-file-size); vertical-align: var(--mu-r-link-file-drop); }
+}
+@utility link-file-size {
+  margin-inline-start: var(--mu-r-link-file-gap); color: color-mix(in srgb, currentColor var(--mu-r-link-file-quiet), transparent); font-variant-numeric: tabular-nums;
+}
 @utility duration-link-underline-fade {
   --tw-duration: var(--mu-r-link-underline-fade);
   transition-duration: var(--mu-r-link-underline-fade);

@@ -34,3 +34,14 @@ test('the external arrow nudges up and out on hover; not under Reduce Motion', a
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect.poll(() => arrow.evaluate((el) => parseFloat(getComputedStyle(el).transitionDuration))).toBeLessThan(0.001);
 });
+
+test('a download link carries the glyph and its size, outside the underline, and says so', async ({ page }) => {
+  await open(page, '/components/link', 'bone');
+  const file = play(page).getByRole('link', { name: 'the whole agent guide (download, 200 KB)' });
+  await expect(file).toHaveAttribute('download', '');
+  await expect(file.locator('.mu-link-file svg')).toBeVisible();
+  await expect(file.locator('.mu-link-size')).toHaveText('· 200 KB');
+  await expect(file.locator('.mu-link-size')).toHaveCSS('text-decoration-line', 'none');
+  await file.hover();
+  await expect.poll(() => file.locator('.mu-link-file svg').evaluate((el) => el.getAnimations({ subtree: true }).length)).toBeGreaterThan(0);
+});

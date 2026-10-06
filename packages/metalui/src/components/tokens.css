@@ -1082,6 +1082,10 @@
   --mu-r-link-out-gap: 0.18em;
   --mu-r-link-out-nudge: 2px;
   --mu-r-link-self-pressed: 0.64;
+  --mu-r-link-file-size: 0.95em;
+  --mu-r-link-file-gap: 0.24em;
+  --mu-r-link-file-drop: -0.14em;
+  --mu-r-link-file-quiet: 62%;
   /* button-group: the button cap; the switch track (recipe switch) as the tray; the menu; the part spring */
   --mu-r-button-group-tray-pad: 2px;
   --mu-r-button-group-tray-gap: 2px;

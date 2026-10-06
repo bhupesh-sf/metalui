@@ -20,7 +20,8 @@ function Paragraph({ label }: { label: string }) {
   return (
     <p className="m-0 max-w-[440px] type-lead text-ink" aria-label={label}>
       Export the region as a PDF, then read <Link href="#export">the export guide</Link> for paper sizes, or see how{' '}
-      <Link href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color" external>links stay visible without colour</Link>.
+      <Link href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color" external>links stay visible without colour</Link>. Agents can take{' '}
+      <Link href="/AI.md" download fileSize="200 KB">the whole agent guide</Link> with them.
     </p>
   );
 }
@@ -43,8 +44,8 @@ export default function LinkPage() {
   return (
     <ComponentPage
       title="Link"
-      lede="An inline link in text. It is always underlined, so colour never carries it alone; hovered, the line darkens, and an external link's arrow nudges toward where it goes."
-      play={{ lede: 'Hover the links, or Tab to them.', caption: 'in a sentence · external', node: <Paragraph label="Example paragraph" /> }}
+      lede="An inline link in text. It is always underlined, so colour never carries it alone; hovered, the line darkens, an external link's arrow nudges toward where it goes, and a download link's glyph plays its drop."
+      play={{ lede: 'Hover the links, or Tab to them.', caption: 'in a sentence · external · download', node: <Paragraph label="Example paragraph" /> }}
       more={[{ id: 'nudge', title: 'Tune the nudge', lede: 'The Link nudge panel sets how far the external arrow moves, its spring, and how strong the underline is at rest.', node: <NudgeTuner /> }]}
       usage={`<p>
   Read <Link href="/guides/export">the export guide</Link>, or see{' '}
@@ -62,6 +63,7 @@ export default function LinkPage() {
         { id: 'LK1', title: 'Always underlined', body: 'Colour alone never marks a link; the hairline is always there.', origin: 'WCAG 1.4.1' },
         { id: 'LK2', title: 'Say where it goes', body: '"the export guide", never "click here".', origin: 'Ours' },
         { id: 'LK3', title: 'Leaving is marked', body: 'External links carry the arrow and say they open a new tab.', origin: 'Ours' },
+        { id: 'LK4', title: 'A download says so', body: 'A link with the download attribute carries the download glyph and, when known, the file size, outside the underline; assistive tech hears "download" and the size.', origin: 'Owner, 2026-09-30' },
       ]}
     />
   );
