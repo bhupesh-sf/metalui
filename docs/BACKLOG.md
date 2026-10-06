@@ -623,7 +623,7 @@ Moved to "AI components" below (shadcn's Bubble, Message, Message scroller and M
 ### 5. Large; place in the layers first
 
 - [ ] **Chart** (shadcn): bar, line and area charts with axes and tooltips. `Sparkline` and `Meter` are the small cases.
-- [ ] **Carousel** (shadcn).
+- [x] **Carousel** (shadcn). (Built 2026-10-06; sheet in `docs/sheets/carousel.md`, which says when not to use one: a grid when it fits, Tabs for named peers, Pagination for many, never a rotating hero. Native scroll-snap, a "3 / 8" readout on the drum instead of dots, no autoplay. Left: SwiftUI shows only the first slide's number; a thumbnail strip, right-to-left.)
 - [ ] **Kanban**: columns of cards, dragged between columns with an overlay while dragging; columns reorder by a handle; disabled items; `onValueCommit` with the previous state so a failed save rolls back with a toast. Needs Sortable.
 - [ ] **Gantt**: day, week, month, quarter and year scales; drag to move, resize and create; summary bars that roll up; planned against actual (a ghost baseline); dependencies as finish-to-start arrows; milestones as diamonds; progress fills; side columns (owner, status); people rows with avatars; zoom, now line, off days, infinite scroll; time zones; right-to-left.
 - [ ] **Event calendar**: month, week, day, N days, agenda, and a resource time grid; all-day bars across days; custom event chips; drag to move, resize and create; tooltips; weekends, week numbers, now line, off days; day start and end hours, grid interval, snap; week start; time zones; right-to-left. See "Marked days" in the Calendar entry.
