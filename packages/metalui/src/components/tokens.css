@@ -1112,12 +1112,15 @@
   --mu-r-link-file-gap: 0.24em;
   --mu-r-link-file-drop: -0.14em;
   --mu-r-link-file-quiet: 62%;
-  /* button-group: the button cap; the switch track (recipe switch) as the tray; the menu; the part spring */
-  --mu-r-button-group-tray-pad: 2px;
-  --mu-r-button-group-tray-gap: 2px;
-  --mu-r-button-group-key-radius: 8px;
-  --mu-r-button-group-chevron-width: 30px;
-  --mu-r-button-group-chevron-glyph: 12px;
+  /* button-group: the button cap and its pressed look; the field well (the window); the set's chevron; the menu; the part spring; hardware rockers and transport keys cut from one block (Braun, Teenage Engineering) */
+  --mu-r-button-group-seam-width: 2px;
+  --mu-r-button-group-window-inset: 4px;
+  --mu-r-button-group-window-pad: 8px;
+  --mu-r-button-group-window-min: 56px;
+  --mu-r-button-group-window-radius: 4px;
+  --mu-r-button-group-chevron-width: 32px;
+  --mu-r-button-group-focus-offset: -4px;
+  --mu-r-button-group-rocker-tip: 1deg;
   /* breadcrumbs: the menu; the settle spring; the WAI breadcrumb pattern */
   --mu-r-breadcrumbs-self-gap: 6px;
   --mu-r-breadcrumbs-self-max: 4px;
@@ -2180,6 +2183,14 @@
   --mu-r-form-field-error-ink: #C23B30;
   --mu-r-skeleton-sheen-ink: rgba(255,255,255,.6);
   --mu-r-link-underline-ink: rgba(27,27,29,.3);
+  --mu-r-button-group-seam-background:
+    /* mu-recipe:button-group:0 */ linear-gradient(90deg, rgba(60,55,40,.16) 50%, #FFFFFF 50%);
+  --mu-r-button-group-seam-primary-background:
+    /* mu-recipe:button-group:2 */ linear-gradient(90deg, rgba(0,0,0,.6) 50%, rgba(255,255,255,.1) 50%);
+  --mu-r-button-group-hover-background:
+    /* mu-recipe:button-group:4 */ linear-gradient(#FFFFFF,#FBFAF8);
+  --mu-r-button-group-hover-primary-background:
+    /* mu-recipe:button-group:6 */ linear-gradient(#45454A,#2D2D31);
   --mu-r-avatar-ring-ink: #F6F5F2;
   --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(40,34,24,.28);
   --mu-r-table-select-tint: rgba(63,185,122,.08);
@@ -2737,6 +2748,14 @@
   --mu-r-form-field-error-ink: #FF8A77;
   --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
   --mu-r-link-underline-ink: rgba(255,255,255,.3);
+  --mu-r-button-group-seam-background:
+    /* mu-recipe:button-group:1 */ linear-gradient(90deg, rgba(0,0,0,.6) 50%, rgba(255,255,255,.07) 50%);
+  --mu-r-button-group-seam-primary-background:
+    /* mu-recipe:button-group:3 */ linear-gradient(90deg, rgba(0,0,0,.2) 50%, rgba(255,255,255,.85) 50%);
+  --mu-r-button-group-hover-background:
+    /* mu-recipe:button-group:5 */ linear-gradient(#3A3A3E,#2F2F33);
+  --mu-r-button-group-hover-primary-background:
+    /* mu-recipe:button-group:7 */ linear-gradient(#FBFAF8,#ECEBE7);
   --mu-r-avatar-ring-ink: #252527;
   --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(0,0,0,.6);
   --mu-r-table-select-tint: rgba(63,185,122,.12);
@@ -3295,6 +3314,14 @@
     --mu-r-form-field-error-ink: #FF8A77;
     --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
     --mu-r-link-underline-ink: rgba(255,255,255,.3);
+    --mu-r-button-group-seam-background:
+      linear-gradient(90deg, rgba(0,0,0,.6) 50%, rgba(255,255,255,.07) 50%);
+    --mu-r-button-group-seam-primary-background:
+      linear-gradient(90deg, rgba(0,0,0,.2) 50%, rgba(255,255,255,.85) 50%);
+    --mu-r-button-group-hover-background:
+      linear-gradient(#3A3A3E,#2F2F33);
+    --mu-r-button-group-hover-primary-background:
+      linear-gradient(#FBFAF8,#ECEBE7);
     --mu-r-avatar-ring-ink: #252527;
     --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(0,0,0,.6);
     --mu-r-table-select-tint: rgba(63,185,122,.12);
