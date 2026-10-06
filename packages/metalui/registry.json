@@ -416,6 +416,7 @@
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/time-picker.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1960,6 +1961,31 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/textarea.md. SwiftUI: MetalTextarea in the MetalUI Swift package."
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:ui",
+      "title": "Time picker",
+      "description": "A time of day you type (read back with its part of the day, so 02:30 and 14:30 can't be mixed up), dial by part with the arrows, or choose from slots: the toggle's latching keys every `step` minutes inside opening hours, unavailable ones quiet, Now under them. 12 or 24 hours by locale, hour / minute / second, a window across midnight, a zone engraved after the time, the end of a pair saying each slot's length. DatePicker takes it with `time`.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/form-field.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/toggle.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/time-picker/time-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/time-picker/time-picker.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/time-picker.md. SwiftUI: MetalTimePicker in the MetalUI Swift package."
     },
     {
       "name": "time-scrubber",

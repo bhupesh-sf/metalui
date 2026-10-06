@@ -1463,6 +1463,23 @@
       "agent": "https://metalui.dev/r/textarea.md"
     },
     {
+      "name": "time-picker",
+      "title": "Time picker",
+      "status": "alpha",
+      "description": "A time of day you type (read back with its part of the day, so 02:30 and 14:30 can't be mixed up), dial by part with the arrows, or choose from slots: the toggle's latching keys every `step` minutes inside opening hours, unavailable ones quiet, Now under them. 12 or 24 hours by locale, hour / minute / second, a window across midnight, a zone engraved after the time, the end of a pair saying each slot's length. DatePicker takes it with `time`.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "TimePicker",
+        "base": "Field, FormField, Popover and RadioKeys (Base UI RadioGroup)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalTimePicker"
+      },
+      "registry": "https://metalui.dev/r/time-picker.json",
+      "agent": "https://metalui.dev/r/time-picker.md"
+    },
+    {
       "name": "time-scrubber",
       "title": "Time scrubber",
       "status": "alpha",

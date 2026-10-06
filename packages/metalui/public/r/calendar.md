@@ -12,7 +12,7 @@ A month to choose a day from (or a range, several days, a month, quarter, half y
 
 ## Don't use it for
 
-- A time (not yet; see the backlog's Time item).
+- A time alone: `TimePicker`. A day and a time: `DatePicker` `time`.
 - An operator filter ("before", "between"): that is a separate date selector built on this.
 
 ## Anatomy
@@ -61,9 +61,11 @@ Reduce Motion: the grid arrives, the choice and the range land at once; the fade
 | `isDateUnavailable(date)` | `isUnavailable:` |
 | `marks(date)` → `{ label, tone?: 'amber' \| 'red' }` | `marks:` → `MetalDayMark?` |
 | `weekStartsOn`, `weekNumbers`, `locale` | `weekStartsOn:`, `weekNumbers:`, the environment's locale |
-| `DatePicker` the options above plus `mode` (single, range), `presets`, `today`, `placeholder`, `format`, `size`, `required`, `name`, `readOnly`, `disabled`, `invalid`, `readback`, `aria-label` | `MetalDatePicker(_:selection:)` |
+| `DatePicker` the options above plus `mode` (single, range), `presets`, `today`, `time` (single: a time field beside the date, `true` or the time picker's options), `placeholder`, `format`, `size`, `required`, `name`, `readOnly`, `disabled`, `invalid`, `readback`, `aria-label` | `MetalDatePicker(_:selection:)` |
 
-`DatePicker`'s `onValueChange` hears `null` when the field is cleared. `name` sends ISO 8601 in a hidden input (`2026-10-07`, or `2026-10-01/2026-10-07`).
+`DatePicker`'s `onValueChange` hears `null` when the field is cleared. `name` sends ISO 8601 in a hidden input (`2026-10-07`, `2026-10-01/2026-10-07`, or `2026-10-07T14:30` with `time`).
+
+With `time`, the value's hours and minutes are the time field's: a picked or typed day keeps them, a time typed before there is a day waits for it, and a cleared time is the day's start. The time field is named "Time" (in its own field root, so a FormField's label names the date). SwiftUI: `MetalDatePicker(_:selection:time:timeStep:)`.
 
 ## Keyboard and accessibility
 

@@ -8,6 +8,8 @@ import { buttonClasses } from '../button/button';
 import { menuParts } from '../menu/menu';
 import { CalendarIcon, CloseIcon } from '../../icons/components.generated';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
+import { Field as BaseField } from '@base-ui/react/field';
+import { TimePicker, secondsOf, timeOf, type TimePickerProps } from '../time-picker/time-picker';
 import { Calendar, addMonths, sameDay, startOfDay, type CalendarSingleProps, type DateRange } from './calendar';
 
 /* ─────────────────────────────────────────────────────────
@@ -26,6 +28,8 @@ import { Calendar, addMonths, sameDay, startOfDay, type CalendarSingleProps, typ
  *             Today (one day), and the host's presets ("Last 7 days") as menu rows
  *   range     mode="range": "1–7 Oct 2026" in one field; the popover closes when the range is whole
  *   clear     the field's clear key pops in once there is something to clear
+ *   time      `time`: a time field beside the date field (the TimePicker), one Date; a picked or typed
+ *             day keeps the time, and a time typed before the day waits for it
  *   form      `name` sends ISO 8601 (2026-10-07, or 2026-10-01/2026-10-07 for a range) in a hidden
  *             input; `required`, `readOnly`, `disabled` and `invalid` as the field's; in a FormField it
  *             takes the label, description and error like any control
@@ -66,7 +70,11 @@ export interface DatePickerSingleProps extends DatePickerBase {
   /** A Today key under the calendar. Default true. */
   today?: boolean;
   presets?: DatePreset<Date>[];
+  /** A time field beside the date: true, or the time picker's options. The value's hours and minutes are the time. */
+  time?: boolean | DatePickerTime;
 }
+/** The time picker's options when a DatePicker takes a time. */
+export type DatePickerTime = Pick<TimePickerProps, 'step' | 'min' | 'max' | 'isTimeUnavailable' | 'hourCycle' | 'granularity' | 'timeZone' | 'placeholder'>;
 export interface DatePickerRangeProps extends DatePickerBase {
   mode: 'range';
   value?: DateRange | null;
@@ -170,6 +178,10 @@ const PRESETS = 'mu-date-picker-presets grid content-start w-calendar-presets-wi
 const PRESET = `${menuParts.ROW} w-full border-0 bg-transparent text-left cursor-pointer hover:recipe-menu-row-hover focus-visible:recipe-menu-row-hover aria-pressed:recipe-menu-row-hover`;
 const FOOT = 'mu-date-picker-foot flex justify-end px-calendar-pad';
 const TODAY = buttonClasses('standard', 'compact');
+const TIME_ROW = 'mu-date-picker-time flex items-start gap-calendar-time-gap';
+const DATE_COLUMN = 'grid flex-1 gap-form-field-gap';
+// The time keeps its own width (an input's default size would widen it); the date takes the rest.
+const TIME_COLUMN = { minute: 'grid flex-none w-time-picker-min-width gap-form-field-gap', second: 'grid flex-none w-time-picker-seconds-min-width gap-form-field-gap' };
 
 /** A form field you type a date (or a range) into, or open a calendar from. */
 export function DatePicker(props: DatePickerProps) {
@@ -185,6 +197,22 @@ export function DatePicker(props: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
   const [left, setLeft] = React.useState(false);
   const caretPart = React.useRef<number | null>(null);
+  const time = props.mode !== 'range' && props.time ? (props.time === true ? {} : props.time) : null;
+  const granularity = time?.granularity ?? 'minute';
+  // The time of day, as the time field holds it: the value's, or one typed before there is a day.
+  const timeOfDay = (d: Date) => timeOf(d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds(), granularity);
+  const [clock, setClock] = React.useState<string | null>(() => (value instanceof Date ? timeOfDay(value) : null));
+  const ownSet = React.useRef<number | null>(null);
+  const valueTime = value instanceof Date ? value.getTime() : null;
+  // A value from outside (the host) brings its time; one we set keeps the field as typed (cleared stays empty).
+  React.useEffect(() => {
+    if (time && value instanceof Date && valueTime !== ownSet.current) setClock(timeOfDay(value));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [valueTime]);
+  const at = (d: Date, t: string | null) => {
+    const s = t ? secondsOf(t) : 0;
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(s / 3600), Math.floor(s / 60) % 60, s % 60);
+  };
 
   const fmt = React.useMemo(() => new Intl.DateTimeFormat(locale, format), [locale, format]);
   const readout = React.useMemo(() => new Intl.DateTimeFormat(locale, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }), [locale]);
@@ -204,7 +232,10 @@ export function DatePicker(props: DatePickerProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [valueKey]);
 
-  const set = (v: PickerValue) => {
+  const set = (picked: PickerValue, t = clock) => {
+    // With a time, a day keeps it.
+    const v = time && picked instanceof Date ? at(picked, t) : picked;
+    ownSet.current = v instanceof Date ? v.getTime() : null;
     if (props.value === undefined) setOwn(v);
     (props.onValueChange as ((v: PickerValue) => void) | undefined)?.(v);
   };
@@ -276,8 +307,7 @@ export function DatePicker(props: DatePickerProps) {
   const calendarProps = { min, max, isDateUnavailable, marks, locale, weekStartsOn, weekNumbers, months, defaultMonth, autoFocus: true, 'aria-label': props['aria-label'] ?? 'Calendar' };
   const presets = props.presets as DatePreset<Date | DateRange>[] | undefined;
 
-  return (
-    <>
+  const dateField = (
       <Field size={size} invalid={invalid || (left && !!message)} disabled={disabled} className={className ? `${FIELD[mode]} ${className}` : FIELD[mode]}>
         <Field.Input
           ref={input}
@@ -323,8 +353,31 @@ export function DatePicker(props: DatePickerProps) {
           </Popover>
         </Field.Trail>
       </Field>
-      {name && <input type="hidden" name={name} value={value == null || (!(value instanceof Date) && !value.end) ? '' : keyOf(value)} disabled={disabled} />}
-      {readback && <FormField.Readback>{reading}</FormField.Readback>}
-    </>
+  );
+  const sent = value == null || (!(value instanceof Date) && !value.end) ? '' : keyOf(value) + (time && value instanceof Date ? `T${clock ?? timeOf(0, granularity)}` : '');
+  const hidden = name && <input type="hidden" name={name} value={sent} disabled={disabled} />;
+  const dateReading = readback && <FormField.Readback>{reading}</FormField.Readback>;
+
+  if (!time) return <>{dateField}{hidden}{dateReading}</>;
+  // The time beside the date, each with its own reading under it. Its own field root keeps it out of a
+  // FormField's control (the label names the date), so it is named "Time".
+  return (
+    <div className={TIME_ROW}>
+      <div className={DATE_COLUMN}>{dateField}{dateReading}</div>
+      <BaseField.Root className={TIME_COLUMN[granularity === 'second' ? 'second' : 'minute']} disabled={disabled}>
+        <TimePicker
+          {...time}
+          aria-label={props['aria-label'] ? `${props['aria-label']}, time` : 'Time'}
+          locale={locale}
+          size={size}
+          disabled={disabled}
+          readOnly={readOnly}
+          readback={readback}
+          value={clock}
+          onValueChange={(t) => { setClock(t); if (value instanceof Date) set(value, t); }}
+        />
+      </BaseField.Root>
+      {hidden}
+    </div>
   );
 }
