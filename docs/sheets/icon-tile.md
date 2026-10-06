@@ -46,3 +46,5 @@ Decide: does the tile draw its glyph through the `Glyph` part? **Decided**: no. 
 Decide: what is the size above large called? **Decided**: `hero`, the word the surface radii already use for the biggest plate.
 
 Decide: where does the lamp sit? **Decided**: the top-right rim (Alert's seat, inset 2), so a thing's state and a person's presence (Avatar, lower right) never look alike.
+
+Done (2026-10-06): the Must tier and the round shape (Should) in React (`IconTile`), SwiftUI (`MetalIconTile`), the icon-tile recipe, the agent guide, the page (DialKit workbench; a list row, a feature card, an empty place, beside avatars) and `e2e/icon-tile.spec.ts`. Left: the glyph's lip and waking with its row (Later); Alert's window and EmptyState's well moving onto the tile (their owners); a group of tiles (Later).
