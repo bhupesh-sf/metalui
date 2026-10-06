@@ -1,0 +1,23 @@
+{
+  "name": "citation",
+  "title": "Citation",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["collapsible", "link", "preview-card"],
+  "description": "Where an answer's words came from: a numbered mark in the text on the link cue's pill, a link to the source that opens its preview card on a steady hover; and the sources under the answer, folded under one row (\"4 sources\"), each numbered with its title and host.",
+  "base": "@base-ui/react/preview-card (through PreviewCard)",
+  "react": {
+    "export": "Citation",
+    "files": ["citation.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalCitation, MetalCitationSources",
+    "file": "swift/Sources/MetalUI/Components/MetalCitation.swift"
+  },
+  "slots": {
+    "Citation": ["Root", "Sources"]
+  },
+  "agent": "citation.agent.md",
+  "page": "/components/citation"
+}

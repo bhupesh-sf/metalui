@@ -1363,6 +1363,59 @@ A small pill. React: `Chip` with parts `Chip.Root`, `Chip.Lead`, `Chip.Text`, `C
 
 ---
 
+# Citation
+
+Where an answer's words came from. React: `Citation` (and `Citation.Sources`) from `@unlocalhosted/metalui`. SwiftUI: `MetalCitation`, `MetalCitationSources`. An object: it stands for a source and stays with the words it backs. Every look is borrowed: the mark is the link cue's host pill (`mark-url`, as `MarkUrl`), the preview is `PreviewCard`, the list folds in `Collapsible`, each title is a quiet external `Link`. It builds on the provenance tooltip's idea (a cue says where it came from), but a source has a title, a line and a place to go, so it opens a preview card rather than a tooltip. The `citation` recipe holds only sizes.
+
+## Use it for
+
+- A claim in an assistant's answer that came from somewhere: `<Citation n={1} source={…} />` right after the words it backs.
+- The sources under the answer: `<Citation.Sources sources={…} />`, in the order of the numbers.
+
+## Don't use it for
+
+- Where a recognised cue came from (a rule, a recognizer, a guess): use the `ProvenanceTooltip`.
+- A link in a sentence: use `Link`; a URL at rest: use `MarkUrl`.
+
+## Anatomy
+
+- The mark: the source's number in meta type, tabular figures, on the link cue's pill (at least 18 wide, 5 each side), inline in the text. A link to `source.href`, opening in a new tab.
+- The preview: `PreviewCard` after a steady hover (600 ms): the image if any, the title, the description, the host.
+- `Citation.Sources`: Collapsible's 32 row with "4 sources" (or `label`), folded by default; open, an ordered list, 6 above and below, rows 6 apart: the number on the same pill (ink2), 8, the title as a quiet external `Link` (truncated), the host in meta type, ink3.
+- The host defaults to the href's host without "www.".
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| rest | the pill and its number | – |
+| hover | the pill's hover tint; after 600 ms the preview card | the card rises one nest on the surface spring; lingers 300 ms |
+| focus | the green ring | – |
+| sources open | the list | Collapsible's reveal (settle) and close (release) |
+
+Reduce Motion: the card and the fold crossfade.
+
+## Rules
+
+- Number sources in the order they first appear in the answer, and give `Citation.Sources` the same order: the mark's number is the list's.
+- One mark per source per claim; several sources for one claim are several marks side by side.
+- A source's `title` is the page's own title; `description` is one line, never the answer again.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `Citation` `n`, `source` (`href`, `title`, `description`, `host`, `image`), anchor props | `MetalCitation(_ n:, source:)` |
+| `Citation.Sources` `sources`, `label`, `open`, `defaultOpen`, `onOpenChange` | `MetalCitationSources(_ sources:, label:, isOpen:)` |
+| `CitationSource` | `MetalCitationSource(url:, title:, description:, host:)` |
+
+## Keyboard and accessibility
+
+- The mark is a link named "Source 1: Springs" (its number stays in its name); Tab reaches it and Enter follows it. The preview card is for the pointer: everything on it is in the link's name or a step away.
+- The list's row is Collapsible's button (`aria-expanded`); the list is an ordered list named "Sources"; each title is an external `Link` that says it opens in a new tab.
+
+---
+
 # Code block
 
 Code to read and copy in the flow: a docs page, a README, an AI reply. React: `CodeBlock` (and `splitFences`, `splitHtmlLines`, `tintLine`) from `@unlocalhosted/metalui`. SwiftUI: `MetalCodeBlock`. A component: you copy it, pick its lines, take a fix. The code card is the canvas object (a fence placed on the canvas); it takes this block's tint and diff classes.
@@ -3883,6 +3936,64 @@ Reduce Motion: the field's, the plate's and the keys' own (the height snaps, fad
 ## SwiftUI
 
 `MetalPhoneInput("Phone", value: $e164, defaultCountry: "GB", size: .regular)` draws the same well on the field recipe (its own, since `MetalField` has no leading slot for a key), the key, the engraved code, the grouping, the trunk on leaving, "+" and paste moving the country, the readback and the messages, from the same two table strings. The country list is a popover with a search field and rows. Left: SwiftUI's `TextField` can't place the caret before macOS 15, so a regroup leaves it at the end.
+
+---
+
+# Plan
+
+The agent's to-do list: what it said it would do and how far it has got. React: `Plan` from `@unlocalhosted/metalui`. SwiftUI: `MetalPlan`. An object: it stands for the work the agent took on and stays as the record of how it went. Every look is borrowed: the head is a compact `Progress`, the lamps are the LED with its meanings, the running ring is the `Spinner` on the wait timing (`useWait`), done is the check glyph, the words turn on the drum (`SwapText`), the nesting rule is the engraved rule. The states are `ToolCall`'s, so a plan and the calls that carry it out never disagree. The `plan` recipe holds only sizes.
+
+## Use it for
+
+- An agent's plan in an assistant's `Message`: the steps it will take, ticking off as it goes.
+- What is waiting to run: steps marked `queued` (next up, or held on a `Confirmation`).
+- Tasks under a step: give the step its own `tasks`.
+
+## Don't use it for
+
+- A story of what happened, with times: use a `Timeline` (in `Reasoning` for an agent's working).
+- One tool call with inputs and a result: use `ToolCall`.
+- A wizard the person walks through: use `Stepper`.
+- The person's own to-do list they tick: use `Checkbox`es (a plan's ticks are the agent's, not operated).
+
+## Anatomy
+
+- Head, 10 above the list: a compact `Progress`, its label the `title` ("Plan"), its detail "3 of 5" on the drum, its track filling as steps finish. Any failed step turns it failed (the fill stops in the failed ink); every step done completes it.
+- A task, 4 above and below: a 16 slot with the mark, 8, the title in ui type, then the state's word in meta type, ink3.
+- `description`: a line under the title, meta type, ink2, lined up with the title.
+- `tasks`: under the step, an engraved rule down the mark's column and the tasks 8 in, their marks under the step's words. The head counts steps (the top level) only.
+
+## States and motion
+
+| `state` | Look | Motion |
+|---|---|---|
+| pending (default) | the off lamp; the title in ink | – |
+| queued | the amber lamp, "Queued" | – |
+| running | after the show delay the small ring, "Running"; the list is busy | the ring turns; its tick when it ends |
+| done | the check glyph; the title in ink3 | – |
+| failed | the red lamp, "Failed" | blinks twice when it turns failed on screen, never on load |
+
+Reduce Motion: the lamp holds steady; the drum changes in place.
+
+## Rules
+
+- One step runs at a time unless the agent really runs them together; what is next is `queued`, the rest `pending`.
+- A failed step says why in its `description`, in words a person reads.
+- Status colour never stands alone: the word or the check goes with the lamp.
+- Fold a long plan by putting it in a `Collapsible` or a `Reasoning`; the plan itself does not fold.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `Plan` `tasks`, `title` ("Plan") | `MetalPlan(_ title:, tasks:)` |
+| `PlanTask` `id`, `title`, `state`, `description`, `tasks` | `MetalPlanTask(id:, title:, state:, description:, tasks:)` |
+| `PlanTaskState` `pending`, `queued`, `running`, `done`, `failed` | `MetalPlanTaskState` the same cases |
+
+## Keyboard and accessibility
+
+- Nothing takes focus. The head is a progressbar named by the title, its value said as "3 of 5 done".
+- The tasks are an ordered list named by the title, `aria-busy` while a task runs; a done task says ", done" after its title, and queued, running and failed say their word.
 
 ---
 

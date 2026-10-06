@@ -606,6 +606,14 @@
   --spacing-tool-call-result-pad-y: var(--mu-r-tool-call-result-pad-y);
   --spacing-tool-call-result-max-height: var(--mu-r-tool-call-result-max-height);
   --spacing-tool-call-group-indent: var(--mu-r-tool-call-group-indent);
+  --spacing-plan-gap: var(--mu-r-plan-self-gap);
+  --spacing-plan-task-gap: var(--mu-r-plan-task-gap);
+  --spacing-plan-task-pad-y: var(--mu-r-plan-task-pad-y);
+  --spacing-citation-mark-min-width: var(--mu-r-citation-mark-min-width);
+  --spacing-citation-mark-pad-x: var(--mu-r-citation-mark-pad-x);
+  --spacing-citation-list-gap: var(--mu-r-citation-list-gap);
+  --spacing-citation-list-pad-y: var(--mu-r-citation-list-pad-y);
+  --spacing-citation-list-number-gap: var(--mu-r-citation-list-number-gap);
   --spacing-confirmation-hint-gap: var(--mu-r-confirmation-hint-gap);
   --spacing-confirmation-decision-gap: var(--mu-r-confirmation-decision-gap);
   --spacing-confirmation-decision-glyph: var(--mu-r-confirmation-decision-glyph);

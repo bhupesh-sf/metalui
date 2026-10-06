@@ -1233,6 +1233,16 @@
   --mu-r-tool-call-result-pad-y: 8px;
   --mu-r-tool-call-result-max-height: 240px;
   --mu-r-tool-call-group-indent: 12px;
+  /* plan: the progress (compact, its head and track); the LED part; the spinner and the wait timing (useWait); the check glyph; SwapText; the rule */
+  --mu-r-plan-self-gap: 10px;
+  --mu-r-plan-task-gap: 8px;
+  --mu-r-plan-task-pad-y: 4px;
+  /* citation: the mark's link cue (mark-url); the preview card; the collapsible (row, reveal, travel) */
+  --mu-r-citation-mark-min-width: 18px;
+  --mu-r-citation-mark-pad-x: 5px;
+  --mu-r-citation-list-gap: 6px;
+  --mu-r-citation-list-pad-y: 6px;
+  --mu-r-citation-list-number-gap: 8px;
   /* confirmation: the alert (kinds urgent and note, tones plate and quiet); the button (compact, primary, destructive, hold); the check and close glyphs */
   --mu-r-confirmation-hint-gap: 6px;
   --mu-r-confirmation-decision-gap: 6px;
