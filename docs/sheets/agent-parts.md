@@ -94,3 +94,89 @@ Not doing: a timer that auto-denies (nothing runs at rest), a modal for a confir
 **Later**
 - [ ] Allow always; editing inputs before allowing.
 - [ ] A step's own fold; copying a result.
+
+### Plan, sources, the context meter, and a new chat's welcome
+
+From "AI components" § 2: the plan, task and queue (AI Elements Plan, Task and Queue; assistant-ui's todo list), sources and inline citations (AI Elements Sources and InlineCitation, prompt-kit Source, Ant Design X Sources), the context meter (AI Elements Context), starter prompts and follow-ups (AI Elements Suggestion, prompt-kit PromptSuggestion, assistant-ui ThreadWelcome suggestions, X Prompts) and the welcome (assistant-ui ThreadWelcome, X Welcome). Neighbours that must not be duplicated, besides those above:
+
+- **`Progress`** is how far a task has come, with words on the drum. A plan's head is a Progress.
+- **`Checkbox`** is a tick the person operates. A plan's ticks are the agent's: the check glyph, not the control.
+- **`PreviewCard`** is what is behind a link after a steady hover. A source is that.
+- **`MarkUrl`** (the link cue) is a URL at rest in text, a host pill. A citation is a link at rest in text.
+- **`ProvenanceTooltip`** says where a recognised cue came from. A citation says where an answer's words came from: the same idea, but a source has a title, a line and a place to go, so it previews as a card, not a tooltip.
+- **`Meter`** is a level in a known range whose top (or bottom) end is the problem. A context window is that.
+- **`EmptyState`** is a place with nothing in it yet, how to start and the action that starts it. A new chat is that.
+
+**Place (docs/COMPOSITION.md).**
+
+- **Plan is an Object.** It stands for the work the agent took on and stays as the record of how far it got. You don't operate it (its ticks are the agent's), it isn't drawn only while you act, you don't go into it. Sibling of `Timeline` and `Tool call`.
+- **Citation is an Object.** It stands for a source and stays with the words it backs. Pressing it follows the link (a link is a link, as in `Link card`); the list of sources is the same object, folded together.
+- **The context meter is a `Meter`** (a Component), not a thing of its own.
+- **The welcome is an `EmptyState`** (a Place: the thread before anything is in it). Starter prompts and follow-ups are `Button`s.
+
+**Decide**
+
+- **Does a plan share Timeline's states or ToolCall's?** ToolCall's: pending (off lamp), queued (amber, "Queued"), running (the ring after the show delay, "Running"), done, failed (red, "Failed", blinking twice when it fails on screen). A plan and the calls that carry it out never disagree. Done is the check glyph in ink3 rather than the off lamp, because a to-do list's done must differ from its not-yet without colour.
+- **What is the queue?** What is waiting to run: steps in state `queued`. A separate queue component would be a second list of the same tasks. The person's own messages waiting to send while the agent works belong to the composer (another entry).
+- **What does the head count?** Steps, the top level. A step's own tasks are its business; counting leaves would let one big step swamp the count.
+- **Does a plan fold?** No. A long plan goes in a `Collapsible` or a `Reasoning`; one fold, not two kinds.
+- **What does a citation mark look like?** The link cue's pill with the number in place of the host (meta type, tabular). It is a link at rest in text, so it wears the link cue's look; the number ties it to the list.
+- **Hover, tooltip or card?** The preview card: a source has a title, a line and a host, and the pointer may want to move onto it. Focus opens it too (PreviewCard's own).
+- **Who numbers the sources?** The host: `n` on the mark, the order of `sources` in the list. The two are the same numbers by rule, not by the component counting.
+- **Context meter: a component?** No: `<Meter label="Context" value={used} max={window} showValue />`, the tokens in words under it and in `getAriaValueText`. Its default zones are the right ones (amber from 75 %, red from 90 %). Documented on the Meter page and in its agent guide.
+- **Starter prompts: Chip or Button?** Button (compact, standard). `Chip variant="suggestion"` accepts or dismisses something the AI proposed; a starter prompt is an action that sends words. Several in the EmptyState's action row, which already wraps and centres. Follow-ups are the same Buttons in a row under the reply, inside the Thread.
+- **Welcome: a component?** No: an `EmptyState` in the `Thread` (glyph or avatar, greeting, what it can do, the prompts). Documented on the EmptyState page and in its agent guide.
+- **Reuse.** The plan's head is `Progress`; the lamps are `Led`; the ring is `Spinner` through `useWait`; the words are `SwapText`; the nesting is the engraved rule. The mark is `mark-url`; the preview is `PreviewCard`; the list folds in `Collapsible`; its titles are quiet external `Link`s. The `plan` and `citation` recipes hold only sizes.
+
+**Jobs: Plan, task and queue**
+
+| Job | Where | Our form | Tier |
+|---|---|---|---|
+| See the agent's plan and how far it has got | an agent at work | `Plan`: a compact `Progress` head ("Plan", "3 of 5" on the drum, the track filling), then the steps | Must |
+| Each step's state | every step | `state`: pending the off lamp; queued amber, "Queued"; running the ring, "Running"; done the check, ink3; failed red, "Failed" | Must |
+| What is waiting to run | a queue | covered: steps `queued` | covered |
+| Tasks nested under a step | a big step | `tasks`: under the step beside an engraved rule, their marks under its words | Must |
+| Why a step failed, what it found | detail | `description`: a line under the title, meta type, ink2 | Must |
+| The plan failed or finished | the head | any failed step turns the Progress failed; every step done completes it | Must |
+| Fold the plan | long plans | covered: in a `Collapsible` or a `Reasoning` | covered |
+| A plan revised while it runs (steps arrive, leave) | replanning | Later: `useRowMotion` on the list, when an agent replans on screen | Later |
+| The person's queued messages (A Queue) | sending while it works | Later: the composer's entry | Later |
+| Remove or reorder a queued step | | Later: a step's own actions wait on a need | Later |
+
+**Jobs: Sources and citations**
+
+| Job | Where | Our form | Tier |
+|---|---|---|---|
+| Mark where a claim came from | in the answer | `Citation` `n` `source`: a numbered mark on the link cue's pill, a link to the source (new tab), named "Source 1: Motion" | Must |
+| See the source without leaving | a steady hover or focus | the `PreviewCard`: image, title, a line, the host (the href's host without "www." by default) | Must |
+| The sources under the answer | after the answer | `Citation.Sources`: one collapsible row ("4 sources"), folded; open, numbered lines with the title as a quiet external `Link` and the host | Must |
+| Several sources for one claim | | covered: several marks side by side | covered |
+| A host pill with "+2" (V InlineCitation) | | dropped: numbers tie the text to the list; a carousel inside a hover card hides sources | dropped |
+| Favicons | | Later: needs the host's images and a fallback | Later |
+
+**Jobs: Context meter**
+
+| Job | Where | Our form | Tier |
+|---|---|---|---|
+| How full the context window is | the composer, the thread's header | covered: `Meter` `label="Context"`, `value` used, `max` window, `showValue`; the tokens in words under it and in `getAriaValueText` | covered |
+| A breakdown (input, output, cached, cost) on hover | | Later: a `Popover` or `Properties` beside it, when a host has the numbers | Later |
+
+**Jobs: Welcome, starter prompts and follow-ups**
+
+| Job | Where | Our form | Tier |
+|---|---|---|---|
+| Greet a new chat | an empty thread | covered: `EmptyState` in the `Thread`: glyph or `Avatar`, greeting, what it can do | covered |
+| Start from a prompt | a new chat | covered: two to four compact `Button`s in its action row, each a whole prompt, sending it | covered |
+| Follow-ups after a reply | after an answer | covered: the same compact Buttons in a row (`role="group"`, "Follow-ups") under the reply in the Thread, gone when the person sends | covered |
+| Prompts as cards with a title and a line (X Prompts) | | Later: a `Card` grid waits on a host that needs it | Later |
+
+**Must**
+- [x] React: `Plan` (`tasks`, `title`) with `PlanTask` (`id`, `title`, `state`, `description`, `tasks`); `Citation` (`n`, `source`) and `Citation.Sources` (`sources`, `label`, `open`, `defaultOpen`, `onOpenChange`).
+- [x] SwiftUI `MetalPlan`, `MetalCitation`, `MetalCitationSources` with the same states.
+- [x] Recipes `plan` and `citation` (sizes), agent guides, meta.json, the pages with their DialKit panels, the e2e slices, bundle ceilings.
+- [x] Context meter on the Meter page and in its agent guide; the welcome, starter prompts and follow-ups on the EmptyState page and in its agent guide.
+- [x] `MetalMessage` `waiting` shows its body when it has one (the skeleton only while it has none), as React.
+
+**Later**
+- [ ] A plan revised on screen; removing or reordering a queued step; the person's queued messages.
+- [ ] Favicons on sources; a context breakdown; prompt cards.
