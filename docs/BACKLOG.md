@@ -304,15 +304,22 @@ Where it belongs: a recognised cue becomes a **component** (a control you operat
 
 - [x] **Numbers scrub**: press and drag up / down on "6h", "1h30", "$40" to change the value (a pixel step per unit, Shift for bigger steps, Alt for finer); the digits turn on the drum; a tiny engraved scale appears beside the value only while dragging; arrow keys when focused. Units cycle with a horizontal drag or a key (h ↔ min, $ ↔ €), converting the value.
   Done (2026-10-06): `MarkScrub` (number, duration, clock scales), `role=spinbutton`, one commit per gesture, haptic per detent, no wheel and no pointer lock. Left: unit cycling (Should).
-- [ ] **Enums rotate**: "#done" turns through its states (todo → doing → done → dropped) like a drum or a rotary switch: scroll, drag, or Space to step; the next state peeks above and below while held; its colour and glyph follow the state.
-- [ ] **Relative dates slide**: "tomorrow" steps through yesterday / today / tomorrow / the weekdays, then real dates ("Fri 3 Oct"); the resolved date chip rides along; a long press opens the Calendar in a popover anchored to the words, and the chosen day writes back as words ("next Friday") when it can.
+- [x] **Enums rotate**: "#done" turns through its states (todo → doing → done → dropped) like a drum or a rotary switch: scroll, drag, or Space to step; the next state peeks above and below while held; its colour and glyph follow the state.
+  Done (2026-10-06): `MarkScrub` `enum` scale, a spinbutton with peeks while held. Sheet: `docs/sheets/cues-operate.md`.
+- [x] **Relative dates slide**: "tomorrow" steps through yesterday / today / tomorrow / the weekdays, then real dates ("Fri 3 Oct"); the resolved date chip rides along; a long press opens the Calendar in a popover anchored to the words, and the chosen day writes back as words ("next Friday") when it can.
+  Done (2026-10-06): `day` scale; long press or Enter calls `onPick`, the host opens a Popover with the Calendar (MarkScrub carries no popover: 8.4 KB).
 - [x] **Times and durations**: "4pm" scrubs in 15-minute detents (part spring clicks, the haptic tick on a trackpad); "1h30" in 5-minute steps.
   Done (2026-10-06) in `MarkScrub` (`clock`, `duration`).
-- [ ] **Colours**: "#FF6B3D" opens a swatch well; dragging on it shifts hue, with the text rewriting live.
-- [ ] **Tags and people**: a tag cycles through your recent tags on scroll; a person's name opens a small picker.
-- [ ] **The text stays the source**: every change rewrites the words in place (undoable as one step per gesture), the caret and layout never jump, and the line keeps its width through the change (the drum's footprint rule).
-- [ ] **Affordance without clutter**: nothing shows at rest; on hover a cue's underline thickens and the cursor says it can move (ns-resize for numbers, a rotate cursor for enums); first-time hint in a tooltip ("Drag to change").
-- [ ] **Accessibility**: each operable cue is a `spinbutton` (numbers, dates) or a listbox-like picker (enums) with a name ("Sleep, 6 hours"); keyboard does everything the pointer does. Reduce Motion: values change without the drum's travel.
+- [x] **Colours**: "#FF6B3D" opens a swatch well; dragging on it shifts hue, with the text rewriting live.
+  Done (2026-10-06) as a hue drag; the swatch well is dropped until there's a colour picker to put in it.
+- [x] **Tags and people**: a tag cycles through your recent tags on scroll; a person's name opens a small picker.
+  Done (2026-10-06): `MarkPick`, a small Combobox in a popover.
+- [x] **The text stays the source**: every change rewrites the words in place (undoable as one step per gesture), the caret and layout never jump, and the line keeps its width through the change (the drum's footprint rule).
+  Done (2026-10-06) for every MarkScrub scale and MarkPick: one undo step per gesture, width held.
+- [x] **Affordance without clutter**: nothing shows at rest; on hover a cue's underline thickens and the cursor says it can move (ns-resize for numbers, a rotate cursor for enums); first-time hint in a tooltip ("Drag to change").
+  Done (2026-10-06): the line thickens on hover (a scale), "Drag to change" once per host.
+- [x] **Accessibility**: each operable cue is a `spinbutton` (numbers, dates) or a listbox-like picker (enums) with a name ("Sleep, 6 hours"); keyboard does everything the pointer does. Reduce Motion: values change without the drum's travel.
+  Done (2026-10-06): every scale is a spinbutton; MarkPick a combobox in a dialog.
 - [x] **Survey first**: go through every recognised kind (date, time, duration, amount, measurement, colour, tag, derived tag, link, person) and list what "changing it in place" means for each, before building; then build one kind at a time (numbers first).
   Done (2026-10-06): `docs/sheets/cues-operate.md`.
 
@@ -662,9 +669,12 @@ The block (`apps/docs/src/blocks/ai-composer`) already does these inside itself;
   Done (2026-10-06): `Thread` (a Place) stays at the newest while you're at the bottom (ResizeObserver, nothing at rest), keeps your place when you scroll up, Jump to latest; `pinKey` says the person sent. The AI composer block uses it. Later: earlier messages at the top, a new-message count. Sheet: `docs/sheets/thread.md`.
 - [x] **Message** (V P A X S): user and assistant turns (start or end aligned), avatar, header (name, model, time) and footer (status); consecutive turns from one sender grouped; a system message (P).
   Done (2026-10-06): `Message` (an Object): user on a raised plate at the end, assistant on the page; a reply's state (Thinking, Writing, Stopped, Failed) sits in the header by the speaker; the footer holds what comes after; `grouped` set by the host; system as a centred note. Swift: indent doesn't narrow, avatar fixed at 32.
-- [ ] **Streaming text and Markdown** (P V K): words arriving at a pace, a caret while writing, Markdown rendered as it streams (headings, lists, tables, code fences into Code block); a "writing" status said with `role="status"` (shadcn's Marker).
-- [ ] **Prompt input** (V P A X C): grows with its text; ↩ sends and ⇧↩ breaks the line; Send becomes Stop while a reply writes; attach (with `Attachment` and `DropZone`); a model selector (V); dictation (A); disabled while offline.
-- [ ] **Message actions** (V P A X): copy, retry, edit the person's message, thumbs up and down with an optional reason (P's feedback bar), export as Markdown (A).
+- [x] **Streaming text and Markdown** (P V K): words arriving at a pace, a caret while writing, Markdown rendered as it streams (headings, lists, tables, code fences into Code block); a "writing" status said with `role="status"` (shadcn's Marker).
+  Done (2026-10-06): `Markdown` (own parser, never sets HTML; fences into CodeBlock; caret and half-arrived marks closed while streaming; `pace`). Message's status word is the `role=status`; `aria-busy` moved to its body. Sheet: `docs/sheets/prompt.md`.
+- [x] **Prompt input** (V P A X C): grows with its text; ↩ sends and ⇧↩ breaks the line; Send becomes Stop while a reply writes; attach (with `Attachment` and `DropZone`); a model selector (V); dictation (A); disabled while offline.
+  Done (2026-10-06): `PromptInput` grows one to six rows, ↩/⇧↩, Send morphs to Stop, ⎋ stops, files picked, dropped or pasted (Attachments in a slot), `tools` slot, `disabled` with its reason. Left: dictation, slash commands; no Swift capture (AppKit field).
+- [x] **Message actions** (V P A X): copy, retry, edit the person's message, thumbs up and down with an optional reason (P's feedback bar), export as Markdown (A).
+  Done (2026-10-06): `MessageActions` (Copy → Copied, Retry, Edit, Good/Bad thumbs with reasons after Bad); a new `thumb` glyph. Left: export as Markdown.
 
 ### 2. Agent parts (missing; most libraries ship them)
 
