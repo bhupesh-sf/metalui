@@ -71,7 +71,10 @@ for (const n of ['Button', 'Switch', 'Tooltip']) if (perExport[n]) console.log(`
 // set just above today's cost; lower them as the shared graph shrinks.
 if (process.argv.includes('--gate')) {
   // Button 10 (was 9, 2026-10-06): it now waits (`state`) and holds to confirm (`hold`) in itself; 9.4 KB measured.
-  const CEILING = { Button: 10, Switch: 12, Led: 6, Well: 6, Surface: 6 };
+  // Table, ToolStrip, Card, Link (2026-10-06): one module per glyph, so they ship the glyphs they draw, not the catalog
+  // (was 122, 95, 79, 67). Combobox still ships the catalog and the morph family: its items name any glyph, which morphs
+  // into the well (was 111).
+  const CEILING = { Button: 10, Switch: 12, Led: 6, Well: 6, Surface: 6, Table: 94, Combobox: 112, ToolStrip: 72, Card: 55, Link: 44 };
   const over = Object.entries(CEILING).filter(([n, kb]) => !perExport[n] || perExport[n].gzip / 1024 > kb);
   if (over.length) {
     console.error(`\nbench-bundle gate: ${over.map(([n, kb]) => `${n} ${perExport[n] ? (perExport[n].gzip / 1024).toFixed(1) : 'missing'} KB gzip > ${kb}`).join(', ')}`);

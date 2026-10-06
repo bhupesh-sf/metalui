@@ -32,6 +32,9 @@ Each rule says how it is enforced. A rule with no check is a promise, not a rule
 10. **One import ships one component.** Component factories are marked pure in the build (`packages/metalui/tsup.config.ts`), so a bundler drops what an app does not use.
     *Enforced:* `npm run bench:bundle:gate` holds a single-component import under 40 KB gzip.
 11. **Icons are imported by name**, never as the whole catalog. CSS is imported in entry files, not inside components.
+    Each glyph is its own export (`icons/glyphs.generated.ts`, `morph.generated.ts`), and `<Name>Icon` carries only its own, so a component draws known glyphs with `<DownloadIcon />`, never `<Icon name="download" />` (which ships every glyph), and morphs between known glyphs with `MorphPair` and their parts (`{ copy: copyMorph, check: checkMorph }`), never `MorphIcon` (every glyph's parts). A glyph an app chooses comes in as an element (Table's action `icon`). Generated factory calls are marked `/* @__PURE__ */` and module-level values are literals: one unmarked call kept the whole catalog in every import.
+    Before and after (2026-10-06, fresh build, gzip KB): Table 122 → 93, ToolStrip 95 → 71, Card 79 → 54, Link 67 → 43, DatePicker 89 → 65, AlertDialog 57 → 33, Fan 41 → 17, Calendar 37 → 13, Connector 34 → 8, `DownloadIcon` 27 → 2.7. Combobox stays at 111: its items name any glyph of the set, which morphs into the well, so it ships the catalog and the morph family.
+    *Enforced:* `npm run bench:bundle:gate` holds Table, Combobox, ToolStrip, Card and Link just above these numbers.
 12. **SwiftUI follows the same rules.** No clock that runs at rest, `TimelineView` always has a `paused:` that includes `scenePhase`, shadow stacks render through `drawingGroup` or a cached image, no `.saturation` on a material, Low Power Mode drops the material.
 
 ## Measuring
