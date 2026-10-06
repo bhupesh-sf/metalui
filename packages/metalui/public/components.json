@@ -919,6 +919,23 @@
       "agent": "https://metalui.dev/r/menubar.md"
     },
     {
+      "name": "message",
+      "title": "Message",
+      "status": "alpha",
+      "description": "One turn of a conversation: the person's at the end on a raised plate, the assistant's at the start on the page, with an avatar, a header (name, model, time) whose lamp and word say a reply's state, a footer for actions, consecutive turns grouped, and a system message between rules.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Message",
+        "base": "article (a turn named by its speaker); a note for the system"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalMessage"
+      },
+      "registry": "https://metalui.dev/r/message.json",
+      "agent": "https://metalui.dev/r/message.md"
+    },
+    {
       "name": "meter",
       "title": "Meter",
       "status": "alpha",
@@ -1665,6 +1682,23 @@
       },
       "registry": "https://metalui.dev/r/textarea.json",
       "agent": "https://metalui.dev/r/textarea.md"
+    },
+    {
+      "name": "thread",
+      "title": "Thread",
+      "status": "alpha",
+      "description": "A conversation that scrolls, newest at the foot: it follows a reply while you are at the foot, stays put when you scroll up to read, and offers Jump to latest to come back. New messages rise from below.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Thread",
+        "base": "@base-ui/react/scroll-area (through ScrollArea); a log"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalThread"
+      },
+      "registry": "https://metalui.dev/r/thread.json",
+      "agent": "https://metalui.dev/r/thread.md"
     },
     {
       "name": "time-picker",

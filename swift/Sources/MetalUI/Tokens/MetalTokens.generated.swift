@@ -1064,6 +1064,43 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A conversation that scrolls, newest at the foot (a Place: it holds messages and you look through it). The log sits in the scroll area with gutters and a gap between turns; a grouped turn (the same speaker again) closes up to the group gap. While you are at the foot (within the follow slop) it follows its content as it grows; scroll up and it stays put, and Jump to latest (a compact button with the chevron) rises at the end edge from one nest below on the settle spring; pressed, it glides to the foot and follows again. A new message rises one nest from below on the object spring, fading in (the rows motion, from below). Under 28rem (a container query) the gutters narrow. Reduce Motion: messages appear in place; Jump to latest jumps and only fades. (the scroll area (viewport, edge fades, bar); the rows motion (motion/rows.ts, from below); the button (compact, chevron); the settle and object springs)
+    public static let thread = MetalObjectRecipe(
+        name: "thread",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(20.0),
+            "self.group-gap": .number(6.0),
+            "self.pad-x": .number(20.0),
+            "self.pad-y": .number(12.0),
+            "self.follow": .number(24.0),
+            "narrow.pad-x": .number(14.0),
+            "jump.inset": .number(8.0),
+        ]
+    )
+
+    /// One turn of a conversation (an Object: it stands for something said, and stays). The person speaks at the end on a raised plate (raise-sm, the card radius), indented from the start; the assistant at the start as plain content type on the page, as an answer is read. A header names the speaker, the model after a dot and the time in tabular figures (meta type, ink2), level with an optional avatar (the host's, at the turn's own side); the person's turn shows a header only for a time or an avatar. A reply's state is the header's lamp with the LED meanings and its word on the drum: waiting the amber lamp breathing and Thinking (with one sunk skeleton line where the words will stand), writing the green lamp and Writing, stopped the off lamp and Stopped, failed the red lamp and Failed, done the off lamp. The footer (the host's actions or delivery) fades in on the settle spring when it appears after the turn did. Files sit above the body on the turn's side. A grouped turn drops its header and keeps its avatar's column empty. A system message is centred meta words in ink2 between two engraved rules. Under 28rem (a container query on the turn) the person's indent narrows. Reduce Motion: the footer appears at once; the lamp holds steady. (the raised surface (recipe surface raise-sm); the LED part and its gestures; SwapText (the drum); the skeleton; the avatar; the rule; the settle spring)
+    public static let message = MetalObjectRecipe(
+        name: "message",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(8.0),
+            "self.avatar-gap": .number(10.0),
+            "header.gap": .number(8.0),
+            "header.height": .number(24.0),
+            "user.indent": .number(48.0),
+            "narrow.indent": .number(32.0),
+            "plate.pad-x": .number(14.0),
+            "plate.pad-y": .number(10.0),
+            "footer.gap": .number(6.0),
+            "system.gap": .number(12.0),
+        ]
+    )
+
     /// A level in a range (storage used, battery, signal), not a task: a row of LED segments like a level meter. A segment's colour comes from where it sits (green through the range, amber near the top, red at the end), the way a level meter is printed. When the value changes the level sweeps from its old edge to its new one, segment by segment (16 ms apart, each lamp fading in 90 ms): rising lights upward, falling darkens downward. Reduce Motion: every segment changes at once. The lamps are the LED part's looks. (the LED part (status recipe lamps); hardware level meters; Base UI Meter)
     public static let meter = MetalObjectRecipe(
         name: "meter",

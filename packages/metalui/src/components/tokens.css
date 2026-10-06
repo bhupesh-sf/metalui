@@ -1169,6 +1169,25 @@
   --mu-r-timeline-event-text-gap: 2px;
   --mu-r-timeline-event-when-gap: 6px;
   --mu-r-timeline-now-pad: 6px;
+  /* thread: the scroll area (viewport, edge fades, bar); the rows motion (motion/rows.ts, from below); the button (compact, chevron); the settle and object springs */
+  --mu-r-thread-self-gap: 20px;
+  --mu-r-thread-self-group-gap: 6px;
+  --mu-r-thread-self-pad-x: 20px;
+  --mu-r-thread-self-pad-y: 12px;
+  --mu-r-thread-self-follow: 24px;
+  --mu-r-thread-narrow-pad-x: 14px;
+  --mu-r-thread-jump-inset: 8px;
+  /* message: the raised surface (recipe surface raise-sm); the LED part and its gestures; SwapText (the drum); the skeleton; the avatar; the rule; the settle spring */
+  --mu-r-message-self-gap: 8px;
+  --mu-r-message-self-avatar-gap: 10px;
+  --mu-r-message-header-gap: 8px;
+  --mu-r-message-header-height: 24px;
+  --mu-r-message-user-indent: 48px;
+  --mu-r-message-narrow-indent: 32px;
+  --mu-r-message-plate-pad-x: 14px;
+  --mu-r-message-plate-pad-y: 10px;
+  --mu-r-message-footer-gap: 6px;
+  --mu-r-message-system-gap: 12px;
   /* meter: the LED part (status recipe lamps); hardware level meters; Base UI Meter */
   --mu-r-meter-self-height: 10px;
   --mu-r-meter-self-gap: 2px;

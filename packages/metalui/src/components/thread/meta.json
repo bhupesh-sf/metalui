@@ -1,0 +1,20 @@
+{
+  "name": "thread",
+  "title": "Thread",
+  "status": "alpha",
+  "layer": "place",
+  "kind": "composed",
+  "uses": ["button", "scroll-area"],
+  "description": "A conversation that scrolls, newest at the foot: it follows a reply while you are at the foot, stays put when you scroll up to read, and offers Jump to latest to come back. New messages rise from below.",
+  "base": "@base-ui/react/scroll-area (through ScrollArea); a log",
+  "react": {
+    "export": "Thread",
+    "files": ["thread.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalThread",
+    "file": "swift/Sources/MetalUI/Components/MetalThread.swift"
+  },
+  "agent": "thread.agent.md",
+  "page": "/components/thread"
+}

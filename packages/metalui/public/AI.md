@@ -3089,6 +3089,68 @@ Reduce Motion: the highlight moves at once.
 
 ---
 
+# Message
+
+One turn of a conversation: the person's at the end on a raised plate, the assistant's at the start on the page. React: `Message` from `@unlocalhosted/metalui`. SwiftUI: `MetalMessage`. An object: it stands for something said and stays. Every look is borrowed: the plate is the raised surface (raise-sm), the header's lamp is the LED with its meanings, the state's word turns on the drum (`SwapText`), a reply that hasn't started waits as a `Skeleton` line, the avatar is the host's `Avatar`. The `message` recipe holds the gaps, the indent and the plate's padding.
+
+## Use it for
+
+- The person's turns and the assistant's replies in a `Thread`.
+- A system line in the conversation: "Model changed to Thorough", "Conversation restarted".
+
+## Don't use it for
+
+- A comment on a thing (a card, a photo): that belongs to the thing.
+- A notice about the page: use `Alert` or `Toast`.
+
+## Anatomy
+
+- `Message`: `from` (user, assistant, system), `name`, `model`, `time`, `status`, `avatar` (an element), `attachments`, `footer`, `grouped`, `children` (the body).
+- The person's turn: indented 48 from the start (32 under 28rem, a container query on the turn), aligned to the end; the body on the plate, padded 14 × 10, content type, ink. A header only for a `time` or an `avatar`.
+- The assistant's turn: at the start; a header (24 tall, meta type, ink2): the lamp when `status` is set, the name ("Assistant"), `· model`, the time (ink3, tabular figures), the state's word (ink3). The body in content type, ink, on the page.
+- `avatar` sits at the turn's own side (start for the assistant, end for the person), level with the header, 10 from the body.
+- Files (`attachments`) above the body, the footer under it, both on the turn's side, 6 apart.
+- A system message: its words centred in meta type, ink2, between two engraved rules, 12 apart.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| `status` waiting | the amber lamp, "Thinking"; with no body yet, one sunk skeleton line | the lamp breathes |
+| writing | the green lamp, "Writing" | the word turns on the drum |
+| done | the off lamp, no word | – |
+| stopped | the off lamp, "Stopped" | – |
+| failed | the red lamp, "Failed" | – |
+| footer appears after the turn did | – | fades in on the settle spring; not on the first render |
+| `grouped` | no header; the avatar's column kept, empty | – |
+
+Reduce Motion: the footer appears at once; the lamp holds steady; the drum changes in place.
+
+## Rules
+
+- Say a reply's state with `status`; colour never says it alone (the word goes with the lamp).
+- Set `grouped` when the turn before has the same `from` (and speaker); the host decides, from its own list.
+- Pass the avatar as an element (`<Avatar name="Ana Rocha" size="small" label="" />`): the turn's name already says who, so the avatar is silent.
+- Put actions (Copy, Retry) and delivery ("Sent", "Not sent · Try again") in `footer`; show actions once a reply settles, so they fade in.
+- The body is the host's node. Streaming words and Markdown are their own entry; a caret, if any, is the host's until then.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `Message` `from`, `name`, `model`, `time`, `status`, `avatar`, `attachments`, `footer`, `grouped`, `children` | `MetalMessage(_ from:, name:, model:, time:, status:, avatar:, grouped:) { body } footer: { … }` |
+| `MessageFrom` `user`, `assistant`, `system` | `MetalMessageFrom` `.user`, `.assistant`, `.system` |
+| `MessageStatus` `waiting`, `writing`, `done`, `stopped`, `failed` | `MetalMessageStatus` the same cases |
+
+## Keyboard and accessibility
+
+- An `article` named by its speaker: "You", or "Assistant, Thorough" when a model is set. Nothing in it is focusable but the host's actions and files.
+- `aria-busy` while a reply waits or writes, so a reader hears the turn once it settles; `false` after.
+- The lamp is decorative; the word says the state. The avatar is decorative when its label is `''`.
+- A system message is a `note`; its rules are hidden.
+
+---
+
 # Meter
 
 A level in a range. React: `Meter` from `@unlocalhosted/metalui`, on Base UI Meter. SwiftUI: `MetalMeter` (work in progress). The lamps are the LED part's looks (the `status` recipe); the `meter` recipe adds the segments and the sweep.
@@ -5710,6 +5772,64 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 - A refusal is local: only the counter moves, and the text is never trimmed or changed.
 - Show the counter only when it helps (near the limit), or from the start (`countFrom={0}`) when the form states its limit.
 - In a form of regular or compact Fields, give the textarea the same `size`.
+
+---
+
+# Thread
+
+A conversation that scrolls, newest at the foot: it stays with a reply while it writes, lets the person scroll up to read, and offers Jump to latest to come back. React: `Thread` from `@unlocalhosted/metalui`. SwiftUI: `MetalThread`. A place: it has area, holds `Message`s, and you look through it. Every look is borrowed: the scrolling is `ScrollArea`, the way back is a compact `Button` with the chevron, arrival is the rows' motion. The `thread` recipe holds the gutters, the gaps and the follow slop.
+
+## Use it for
+
+- A chat with an assistant: the person's turns and the replies, with a composer under it.
+- Any log that grows at its foot and is read as it grows (an agent's run, a support chat).
+
+## Don't use it for
+
+- A record of events with states and a now marker: use `Timeline`.
+- Rows you compare and sort that arrive at the top: use `Table` `live`.
+- Scrolling that has no "newest" end: use `ScrollArea`.
+
+## Anatomy
+
+- Root (`Thread`): `children` (the messages, each with a stable `key`), `aria-label` ("Conversation"), `pinKey`, `jumpLabel` ("Jump to latest"), `className` (give it a height, or a flex parent that does).
+- A `ScrollArea` holding a `log`; each child is wrapped in a row (`data-row`) the rows' motion moves.
+- Gutters 20 (14 under 28rem) and 12 above and below; 20 between turns, 6 before a `grouped` message.
+- Jump to latest: a compact button at the end edge, 8 above the foot, over the thread.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| open | at the foot | – |
+| pinned (within 24 of the foot) | follows its content as it grows (a ResizeObserver; nothing runs at rest) | – |
+| away (scrolled up) | stays put; Jump to latest shows | the key rises one nest from below and fades in on settle |
+| jump | back at the foot, pinned | a smooth scroll; under Reduce Motion a jump |
+| `pinKey` changes | back at the foot, pinned | at once (the new message lands as it arrives) |
+| a message arrives | – | rises one nest from below on the object spring, fading in (`useRowMotion`, from below); not on the first render |
+
+Reduce Motion: messages appear in place; Jump to latest jumps and only fades.
+
+## Rules
+
+- Key every message by its id. A new key lands as an arrival; Retry that replaces a reply with a new id lands the new take.
+- Pass `pinKey` = the id of the person's newest message, so sending always shows the reply even if they had scrolled up. Don't pin on replies: the person who scrolled up to read stays where they are.
+- Give the thread a height (or `min-h-0 flex-1` in a column). It doesn't size itself to its content.
+- The host draws a hairline under its own title from the scroll area's `data-overflow-y-start` (the AI composer block does).
+- Set `grouped` on a `Message` that follows one from the same speaker; the thread closes the gap.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `Thread` `children`, `aria-label`, `pinKey`, `jumpLabel`, `className` | `MetalThread(label:, pinKey:, jumpLabel:) { … }` |
+| each child a `Message` with a `key` | each child a `MetalMessage` with an `.id` |
+
+## Keyboard and accessibility
+
+- The scroll area's viewport takes focus: arrows, Page Up/Down, Home and End scroll it.
+- A `log` named by `aria-label`: what arrives at its end is said politely. A reply that is `aria-busy` while it writes is said once it settles.
+- Jump to latest is a button in the tab order only while away; at the foot it is `inert` and hidden.
 
 ---
 
