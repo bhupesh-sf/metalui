@@ -57,15 +57,16 @@ public struct MetalNumberField: View {
     /// - Parameters:
     ///   - value: nil while empty (or while `mixed`).
     ///   - in: the limits. The keys, arrows and scrub stop at them; typing does too unless `softLimits`.
-    ///   - smallStep, largeStep: the steps ⌥ and ⇧ take, shown on the keycaps while held.
+    ///   - smallStep, largeStep: the steps ⌥ and ⇧ take, shown on the keycaps while held. `smallStep` defaults to
+    ///     `step` when it is a whole number (a count has no tenths), else 0.1.
     ///   - letter: the inspector's engraved handle ("W"); `label` is then the accessible name.
     ///   - unit: engraved after the value ("px", "%", "°"); typing it is understood.
     ///   - softLimits: a typed value past a limit is kept, invalid, with the limit said under the field.
-    ///   - default: the value a double-click on the label, or ⌘-click on a keycap, returns to; while off it, the changed mark shows.
+    ///   - default: the value a double-click on the label, ⌘-click on a keycap, or ⌘⌫ in the field returns to; while off it, the changed mark shows.
     ///   - mixed: a multi-selection whose values differ: "Mixed"; a step calls `onStep` with the signed amount.
     ///   - wheel: the scroll wheel steps the value, only while the field has focus.
     public init(_ label: String, value: Binding<Double?>, in range: ClosedRange<Double>, step: Double = 1,
-                smallStep: Double = 0.1, largeStep: Double = 10, size: MetalFieldSize = .regular,
+                smallStep: Double? = nil, largeStep: Double = 10, size: MetalFieldSize = .regular,
                 kind: MetalNumberFieldKind = .stepper, letter: String? = nil, unit: String? = nil,
                 format: FloatingPointFormatStyle<Double> = .number, softLimits: Bool = false,
                 default defaultValue: Double? = nil, mixed: Bool = false, onStep: ((Double) -> Void)? = nil,
@@ -74,7 +75,7 @@ public struct MetalNumberField: View {
         self._value = value
         self.range = range
         self.step = step
-        self.smallStep = smallStep
+        self.smallStep = smallStep ?? (step.rounded() == step ? step : 0.1)
         self.largeStep = largeStep
         self.size = kind == .inspector && size == .large ? .regular : size
         self.kind = kind
@@ -216,6 +217,13 @@ public struct MetalNumberField: View {
                         .tint(MetalRecipes.field.color("field.caret")?.color ?? MetalShared.greenDeep.color)
                         .onSubmit(commit)
                         .onKeyPress(.escape) { guard draft != nil else { return .ignored }; draft = nil; return .handled }
+                        // ⌘⌫: back to default, the keyboard twin of ⌘-click on a keycap.
+                        .onKeyPress(.delete, phases: .down) { press in
+                            guard press.modifiers.contains(.command), defaultValue != nil else { return .ignored }
+                            draft = nil
+                            reset()
+                            return .handled
+                        }
                         .onKeyPress(.upArrow, phases: .down) { press in arrow(1, press.modifiers) }
                         .onKeyPress(.downArrow, phases: .down) { press in arrow(-1, press.modifiers) }
                 } else {

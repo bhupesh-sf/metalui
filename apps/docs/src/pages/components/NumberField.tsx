@@ -56,7 +56,7 @@ function Sizes() {
       {(['large', 'regular', 'compact'] as const).map((size) => (
         <div key={size} className="flex items-center gap-12" data-testid={`nf-size-${size}`}>
           <Field size={size} style={{ width: 200 }}><Field.Input defaultValue="Poster, A2" aria-label={`Name (${size})`} /></Field>
-          <NumberField size={size} aria-label={`Copies (${size})`} defaultValue={2} min={1} max={50} smallStep={1} />
+          <NumberField size={size} aria-label={`Copies (${size})`} defaultValue={2} min={1} max={50} />
         </div>
       ))}
     </div>
@@ -97,7 +97,7 @@ function Defaults() {
   return (
     <div className={COLUMN}>
       <NumberField label="Font size" value={size} onValueChange={setSize} defaultValue={16} min={8} max={72} unit="pt" />
-      <p className={NOTE}>Off its default (16), the changed mark hangs before the label. Double-click the label, or ⌘-click a keycap, and it turns back.</p>
+      <p className={NOTE}>Off its default (16), the changed mark hangs before the label. Double-click the label, ⌘-click a keycap, or press ⌘⌫ in it, and it turns back.</p>
     </div>
   );
 }
@@ -115,7 +115,6 @@ function Mixed() {
         unit="%"
         min={0}
         max={100}
-        smallStep={1}
         mixed={values.size > 1}
         value={values.size > 1 ? null : layers[0].opacity}
         onStep={(amount) => setLayers((ls) => ls.map((l) => ({ ...l, opacity: clamp(l.opacity + amount) })))}
@@ -316,8 +315,8 @@ export default function NumberFieldPage() {
       lede="A number you step, scrub or type. Each step turns the value one drum step: plus rolls up, minus rolls down. Drag the label to scrub; press an arrow past the limit and only the digits shake."
       play={{ lede: 'Press the keycaps, hold them, use ↑ ↓, or drag the label sideways. Hold ⌥ or ⇧ over a field to see the fine and coarse steps; double-click a label to put it back.', caption: 'copies 1–20 · columns 1–12 · disabled · invalid', node: (
         <div className="flex flex-wrap items-end justify-center gap-32" style={{ zoom: 1.3 }}>
-          <NumberField label="Copies" value={copies} onValueChange={setCopies} defaultValue={2} min={1} max={20} smallStep={1} />
-          <NumberField label="Columns" defaultValue={12} min={1} max={12} smallStep={1} />
+          <NumberField label="Copies" value={copies} onValueChange={setCopies} defaultValue={2} min={1} max={20} />
+          <NumberField label="Columns" defaultValue={12} min={1} max={12} />
           <NumberField label="Locked" defaultValue={4} disabled />
           <NumberField label="Seats" defaultValue={0} min={0} max={8} invalid />
         </div>
@@ -328,7 +327,7 @@ export default function NumberFieldPage() {
         { id: 'steps', title: 'Fine and coarse steps, shown', lede: '⌥ steps fine and ⇧ coarse, with the keycaps, the arrows and the scrub. While either is held over the field, the keycaps\' legends turn on the drum to the step they will take, so the step size is never a hidden rule.', node: <Steps /> },
         { id: 'units', title: 'Units printed, not typed', lede: 'A unit is engraved after the value in ink3, like Field\'s suffix: it says what the number means without being part of it. Typing "12px" is understood. Currency and locale come from format.', node: <Units /> },
         { id: 'soft', title: 'Soft limits while typing', lede: 'With allowOutOfRange, a typed value past a limit is kept: the invalid ring shows and the limit is said under the field until the value changes. The keys and the scrub still stop at the limit.', node: <SoftLimits /> },
-        { id: 'default', title: 'Back to default', lede: 'Double-click the label or ⌘-click a keycap and the value turns back to its default on the drum. While it is off its default the field carries the shared changed mark, so you can see what you touched.', node: <Defaults /> },
+        { id: 'default', title: 'Back to default', lede: 'Double-click the label, ⌘-click a keycap, or press ⌘⌫ (Ctrl+Backspace) in the field, and the value turns back to its default on the drum. While it is off its default the field carries the shared changed mark, so you can see what you touched.', node: <Defaults /> },
         { id: 'mixed', title: 'Mixed', lede: 'For a selection whose values differ, the field says "Mixed". A step adds to each item from its own value (onStep gives the amount; applying it is the host\'s job); typing a number sets them all.', node: <Mixed /> },
         { id: 'inspector', title: 'Inspector', lede: 'For tight panels: no keycaps, and a letter or glyph engraved at the well\'s start is the scrub handle, with the resize cursor. Regular and compact only.', node: <Inspector /> },
         { id: 'wheel', title: 'Wheel, only when asked', lede: 'allowWheelScrub lets the wheel step the value, and only while the field has focus.', node: <Wheel /> },

@@ -2371,10 +2371,10 @@ Arithmetic is read back under the field before it commits ("= 96 px", or "= 120 
 ## Variations
 
 - **Sizes**: `size` large, regular (default), compact.
-- **Fine and coarse**: ⌥ steps by `smallStep` (Base UI's default 0.1), ⇧ by `largeStep` (10), on the keycaps, arrows and scrub. Give a whole count `smallStep={1}`: a step equal to `step` shows no legend.
+- **Fine and coarse**: ⌥ steps by `smallStep`, ⇧ by `largeStep` (10), on the keycaps, arrows and scrub. `smallStep` defaults to `step` when `step` is a whole number (a count has no tenths) and to 0.1 otherwise; pass it to override. A step equal to `step` shows no legend.
 - **Unit**: `unit` ("px", "%", "°"); `format` and `locale` for currency and grouping.
 - **Soft limits**: `allowOutOfRange`. A typed value past a limit is kept and invalid; the keys and the scrub still clamp.
-- **Back to default**: give `defaultValue` (it is the reset target even when `value` is controlled). Double-click the label (or the inspector's letter), or ⌘-click (Ctrl-click) a keycap. The changed mark shows while the value differs; a screen reader hears "Font size off its default".
+- **Back to default**: give `defaultValue` (it is the reset target even when `value` is controlled). Double-click the label (or the inspector's letter), ⌘-click (Ctrl-click) a keycap, or press ⌘⌫ (Ctrl+Backspace) in the input: the keyboard twin of ⌘-click, so ⌘ always means "back to default" here; it overrides only the delete-to-line-start of a value a few characters long. The input says it in `aria-keyshortcuts`. The changed mark shows while the value differs; a screen reader hears "Font size off its default".
 - **Mixed**: `mixed` with `value={null}`. A step calls `onStep(amount)` (signed, with the modifier's step); add it to each item from its own value and keep `mixed` while they still differ. Typing (or Home / End) calls `onValueChange` with one value for all.
 - **Inspector**: `kind="inspector"` with a one-letter `label` and an `aria-label` ("W", "Width"). Regular or compact (large falls back to regular).
 - **Wheel**: `allowWheelScrub`: the wheel steps the value only while the field has focus, so scrolling the page never changes it.
@@ -2399,7 +2399,7 @@ Arithmetic is read back under the field before it commits ("= 96 px", or "= 120 
 - The input is a text input described as "Number field" (Base UI): ↑ ↓ step, ⇧ by the large step, ⌥ by the small one, Home and End go to the limits; Enter commits a draft and Esc drops it. The keycaps are named "Decrease" and "Increase" and are skipped by Tab.
 - `label` names the input (aria-labelledby); without it, or in the inspector, pass `aria-label`.
 - The readback and the limit line describe the input (aria-describedby) while they show.
-- Back to default has no key of its own: type the default, or use the label or a keycap.
+- Back to default: ⌘⌫ (Ctrl+Backspace) in the input, while there is a `defaultValue`.
 
 ## Thumbwheel: prototyped, not shipped
 

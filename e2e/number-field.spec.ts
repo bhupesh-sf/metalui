@@ -212,6 +212,38 @@ test('double-click the label or ⌘-click a key goes back to default, with the c
   await expect(mark).toHaveAttribute('data-changed', '');
   await group(size).getByRole('button', { name: 'Increase' }).click({ modifiers: ['Meta'] });
   await expect(size).toHaveValue('16');
+
+  // The keyboard path: ⌘⌫ (Ctrl+Backspace) in the input, said in aria-keyshortcuts.
+  await expect(size).toHaveAttribute('aria-keyshortcuts', 'Meta+Backspace Control+Backspace');
+  await size.focus();
+  await page.keyboard.press('ArrowUp');
+  await page.keyboard.press('ArrowUp');
+  await expect(size).toHaveValue('18');
+  await page.keyboard.press('Meta+Backspace');
+  await expect(size).toHaveValue('16');
+  await page.keyboard.press('ArrowUp');
+  await page.keyboard.press('Control+Backspace');
+  await expect(size).toHaveValue('16');
+  await expect(mark).not.toHaveAttribute('data-changed', '');
+  // Plain Backspace still edits the digits (End would go to the max: Base UI's limit key).
+  await page.keyboard.press('Backspace');
+  await expect(size).toHaveValue('1');
+});
+
+test('a whole step makes a count: Alt steps by the step, not tenths', async ({ page }) => {
+  await open(page, '/components/number-field', 'bone');
+  const copies = field(page, 'Copies');
+  await copies.focus();
+  await page.keyboard.press('Alt+ArrowUp');
+  await expect(copies).toHaveValue('3');
+  await page.keyboard.down('Alt');
+  await expect(group(copies).getByRole('button', { name: 'Increase' })).not.toContainText(/\d/);
+  await page.keyboard.up('Alt');
+  // An explicit smallStep still wins: Opacity steps by 0.1 with Alt.
+  const opacity = field(page, 'Opacity');
+  await opacity.focus();
+  await page.keyboard.press('Alt+ArrowUp');
+  await expect(opacity).toHaveValue(/80[.,]1/);
 });
 
 test('mixed: a step adds to each item, typing sets them all', async ({ page }) => {
