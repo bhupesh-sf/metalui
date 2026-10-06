@@ -4,7 +4,7 @@
   "status": "alpha",
   "layer": "object",
   "kind": "composed",
-  "uses": ["label", "rule", "row", "checkbox", "led", "avatar", "chip", "meter", "sparkline", "skeleton", "tooltip", "icon-button", "button", "menu"],
+  "uses": ["label", "rule", "row", "checkbox", "led", "avatar", "chip", "meter", "sparkline", "skeleton", "tooltip", "icon-button", "button", "menu", "tree"],
   "description": "Rows of things, read across and compared down: a fixed vocabulary of cell kinds (text, numbers with the unit in the header, delta, date, status, person, tags, progress, trend, yes, code, actions); roomy, regular or compact; a reading guide that glides under the hovered or focused row; sort with a morphing arrow and rows that travel; selection, open with the row's rail, row actions in a menu; a visible filter count; skeleton rows, empty, nothing matches and failed; a sticky head; narrow widths move low-priority columns under the primary cell. Totals in a sunk readout row; groups with counts and subtotals that collapse; a pinned first column; row headers and checkbox cells for a matrix; live rows that land or wait behind \"N new\"; detail in place; columns to hide and size.",
   "base": "table; @base-ui/react/menu (row actions, the columns menu's checkbox rows); @base-ui/react/tooltip (whole text, exact times)",
   "react": {

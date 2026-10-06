@@ -1608,6 +1608,9 @@
   --mu-r-table-resize-grip: 3px;
   --mu-r-table-resize-min: 64px;
   --mu-r-table-resize-step: 8px;
+  --mu-r-table-tree-gap: 4px;
+  --mu-r-table-virtual-overscan: 320px;
+  --mu-r-table-more-slop: 240px;
   /* properties: the label's engraving; the rule; the table's cell looks */
   --mu-r-properties-self-min-height: 32px;
   --mu-r-properties-self-pad-y: 6px;

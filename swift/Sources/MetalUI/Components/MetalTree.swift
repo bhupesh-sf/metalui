@@ -225,21 +225,8 @@ public struct MetalTree: View {
 
     /// One engraved groove per ancestor, at the centre of its chevron, the full height of the row.
     private func guides(level: Int, lit: Int?) -> some View {
-        let width = recipe.points("guide.width")
-        let litInk = recipe.color("guide.lit", colorway: MetalRecipeColorway(colorway))?.color ?? .clear
-        return HStack(spacing: .zero) {
-            ForEach(1..<max(level, 1), id: \.self) { col in
-                ZStack {
-                    MetalRule(.vertical).frame(maxHeight: .infinity)
-                    litInk.frame(width: width).opacity(lit == col ? .one : .zero)
-                }
-                .frame(width: indent)
-            }
-        }
-        .padding(.leading, MetalRecipes.row.points("list.pad-x"))
-        .metalAnimation(.settle, value: lit)
-        .allowsHitTesting(false)
-        .accessibilityHidden(true)
+        MetalTreeGuides(level: level, lit: lit, indent: indent)
+            .padding(.leading, MetalRecipes.row.points("list.pad-x"))
     }
 
     // MARK: Acting
@@ -376,29 +363,14 @@ private struct MetalTreeRow: View {
 
     var body: some View {
         let recipe = MetalRecipes.tree
-        let chevron = recipe.points("chevron.size")
         let failed = work == .failed
         let lead = Double(row.level - 1) * indent
         MetalRow(.list, selected: selected, opened: opened, waiting: wait.busy) {
             HStack(spacing: MetalRecipes.row.points("list.gap")) {
                 HStack(spacing: .zero) {
                     Color.clear.frame(width: lead)
-                    ZStack {
-                        if item.isBranch {
-                            if failed && !wait.showing {
-                                MetalIcon(.syncError, size: chevron)
-                            } else {
-                                MetalIcon(.chevron, size: chevron)
-                                    .rotationEffect(.degrees(row.open ? .zero : -90))
-                                    .metalAnimation(.part, value: row.open)
-                                    .opacity(wait.showing ? .zero : .one)
-                            }
-                            if wait.phase != .idle && wait.phase != .failed {
-                                MetalSpinner(size: .small, label: "Loading \(item.label)", phase: wait.phase) { EmptyView() }
-                            }
-                        }
-                    }
-                    .frame(width: indent)
+                    MetalTreeDisclosure(branch: item.isBranch, open: row.open, wait: wait, failed: failed, label: "Loading \(item.label)")
+                        .frame(width: indent)
                     .contentShape(Rectangle())
                     .onTapGesture(perform: onDisclosure)
                 }
@@ -428,5 +400,64 @@ private struct MetalTreeRow: View {
         .accessibilityLabel(item.label)
         .accessibilityValue(failed ? words.failed : item.isBranch ? (row.open ? "expanded" : "collapsed") : "")
         .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+}
+
+// THE TREE'S OWN PIECES, for any row that sits at a level (Tree, Table's hierarchy rows), as the web's
+// Tree.Guides and Tree.Disclosure.
+
+/// The indent's guides: one engraved groove per ancestor, at the centre of its chevron, the full height of
+/// what it overlays (so the grooves join down a list); `lit` lights one level's groove (settle).
+struct MetalTreeGuides: View {
+    let level: Int
+    let lit: Int?
+    let indent: Double
+    @Environment(\.metalColorway) private var colorway
+
+    var body: some View {
+        let recipe = MetalRecipes.tree
+        let width = recipe.points("guide.width")
+        let litInk = recipe.color("guide.lit", colorway: MetalRecipeColorway(colorway))?.color ?? .clear
+        HStack(spacing: .zero) {
+            ForEach(1..<max(level, 1), id: \.self) { col in
+                ZStack {
+                    MetalRule(.vertical).frame(maxHeight: .infinity)
+                    litInk.frame(width: width).opacity(lit == col ? .one : .zero)
+                }
+                .frame(width: indent)
+            }
+        }
+        .metalAnimation(.settle, value: lit)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+}
+
+/// The set's chevron that opens a branch: along when closed, a quarter turn down on the part spring when
+/// open; while a level loads the spinner's ring stands in for it (`wait`), and a failed load shows sync-error.
+struct MetalTreeDisclosure: View {
+    let branch: Bool
+    let open: Bool
+    let wait: MetalWait
+    let failed: Bool
+    let label: String
+
+    var body: some View {
+        let chevron = MetalRecipes.tree.points("chevron.size")
+        ZStack {
+            if branch {
+                if failed && !wait.showing {
+                    MetalIcon(.syncError, size: chevron)
+                } else {
+                    MetalIcon(.chevron, size: chevron)
+                        .rotationEffect(.degrees(open ? .zero : -90))
+                        .metalAnimation(.part, value: open)
+                        .opacity(wait.showing ? .zero : .one)
+                }
+                if wait.phase != .idle && wait.phase != .failed {
+                    MetalSpinner(size: .small, label: label, phase: wait.phase) { EmptyView() }
+                }
+            }
+        }
     }
 }

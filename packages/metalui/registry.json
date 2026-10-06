@@ -2480,7 +2480,8 @@
         "https://metalui.dev/r/skeleton.json",
         "https://metalui.dev/r/sparkline.json",
         "https://metalui.dev/r/tokens.json",
-        "https://metalui.dev/r/tooltip.json"
+        "https://metalui.dev/r/tooltip.json",
+        "https://metalui.dev/r/tree.json"
       ],
       "files": [
         {
