@@ -63,7 +63,7 @@ Direction (research and sketch before building; interface-craft storyboard first
 - [x] **Latched groups** (a toggle group) share the look: the latched segment stays sunk with its lamp.
 - [x] Every state per segment: rest, hover (lift the segment's light, not the bar), pressed, focus (ring on the segment, inside the bar's shape), disabled (per segment and whole), and the bar in both colorways and at compact size.
 - [x] Swift in step; update the Button group docs page, the agent guide and the captures.
-- Done (2026-10-06): one raised bar with seams; only the pressed key sinks; `ButtonGroupReadout` (a sunk window on the drum); `rocker`; the split's chevron is the set's glyph and stays held while its menu is open; `latch` one / several; a real SwiftUI twin. Left: the chevron turns by CSS, not `MorphIcon` (it can now: the `icon-morph` registry item landed with Quick edit); SwiftUI latches use plain toggles.
+- Done (2026-10-06): one raised bar with seams; only the pressed key sinks; `ButtonGroupReadout` (a sunk window on the drum); `rocker`; the split's chevron is the set's glyph and stays held while its menu is open; `latch` one / several; a real SwiftUI twin. The chevron is a `MorphIcon` half turn now (SplitButton 32 → 19 KB gzip). SwiftUI latches use plain toggles.
 
 ## Icons on actions, and morphs on changes (library-wide)
 
@@ -167,7 +167,7 @@ Owner, on the Progress page: "few more variations for reset." (2026-09-30) The p
 - [x] **Detail**: time left or items done in the head ("8 of 12 · about 20 s"), `tabular-nums`, and the value turning on the drum.
 - [x] **Sizes**: compact and regular, to sit in a row, a toast or a dialog.
 - [x] Show them on the page as a states strip with a DialKit panel to scrub the value and flip the state; Swift in step.
-- Done (2026-10-06): the fill drains on the release spring; Run export morphs to Cancel; `state` complete / failed / paused; `shape` slim and ring (the Spinner's ring), `steps`, `buffer`; `detail` and `icon`; `size` compact; a real `MetalProgress`. Left: Attachment still uses the old width transition; re-baseline `bench/budgets.json`; the ring takes the Spinner's fixed sizes.
+- Done (2026-10-06): the fill drains on the release spring; Run export morphs to Cancel; `state` complete / failed / paused; `shape` slim and ring (the Spinner's ring), `steps`, `buffer`; `detail` and `icon`; `size` compact; a real `MetalProgress`. Attachment now uses the transform fill. Left: re-baseline `bench/budgets.json`; the ring takes the Spinner's fixed sizes.
 
 ## Slider: redesign
 
@@ -229,7 +229,7 @@ Direction:
 - [x] **Transparent mode**: define it and test it: the status parts over frost, over images, and over the dark graphite colorway, in the captures.
 - [x] **Tones**: a quiet badge (LED and words, no plate) for dense places, and a strong one (tinted plate in the state's ink) for alerts.
 - [x] Make the Swift twin match the web example (same words, the label font from the tokens) and recapture it.
-- Done (2026-10-06): the lamp sits in a sunk socket and glows; inks tuned per colorway and checked through deuteranopia and protanopia filters (worst pair ΔE 21); each state has its own gesture; `StatusBadge` `tone` quiet / plate / strong and `solid` for transparent mode; the Swift twin matches. Left: IconButton, toolbar and chip keep their own copies of the old green lamp; point them at the LED recipe. The Swift mono role is Menlo now (all Swift captures re-run 2026-10-06).
+- Done (2026-10-06): the lamp sits in a sunk socket and glows; inks tuned per colorway and checked through deuteranopia and protanopia filters (worst pair ΔE 21); each state has its own gesture; `StatusBadge` `tone` quiet / plate / strong and `solid` for transparent mode; the Swift twin matches. IconButton, toolbar, chip, choice cards and the Fan now light the LED part's lamp (Chip.Lead `led` takes `LedKind`). Left: hover engraving, select, swatch and the calendar's today dot still use `--mu-led-green` and their own rings. The Swift mono role is Menlo now (all Swift captures re-run 2026-10-06).
 
 ## Toast: stack in depth
 
@@ -394,7 +394,7 @@ Now: one size (32); a well pill with − and + keycaps; the value turns on the d
 Not doing: ReUI's "custom button layouts" (one look: − value + or the inspector); Figma's four scrub speeds by cursor position (hidden; modifiers are shown instead); Shift for fine steps (audio gear) — it clashes with Base UI and the HIG, where Shift is coarse.
 
 Decide: is the thumbwheel worth a prototype now, or after the rest?
-- Done (2026-10-06). Decisions: the legends show the signed step ("−0.1", "+10"), not "×10"; the thumbwheel was prototyped and should not ship (a second gesture for the scrub's job, an 18 px target, detents you can't feel on a desktop) and stays on the page as a prototype. Left: no key for back to default; whole counts need `smallStep={1}`; export `NumberFieldSize`; SwiftUI legends and modifiers are macOS only.
+- Done (2026-10-06). Decisions: the legends show the signed step ("−0.1", "+10"), not "×10"; the thumbwheel was prototyped and should not ship (a second gesture for the scrub's job, an 18 px target, detents you can't feel on a desktop) and stays on the page as a prototype. ⌘⌫ goes back to default; `smallStep` defaults to a whole `step`; `NumberFieldSize` exported. Left: SwiftUI legends and modifiers are macOS only.
 
 ### Combobox
 
@@ -520,7 +520,7 @@ Now: `Field` (Root, Icon, Input, Trail) in large / regular / compact and two ton
 
 - [x] **SwiftUI first**: write `MetalField` (the well, the sizes, the caret) and a real `MetalFormField` (the error row's motion, `Fieldset`).
 - [x] **Fixed parts of the value** (shadcn input group, Geist prefixes): `Field.Prefix` / `Field.Suffix` ("https://", ".com", "$"), engraved in ink3 inside the well, not selectable, not part of the value; pressing them puts the caret in the input.
-- [ ] **Keys inside the field** (shadcn addons): `Trail` holds mini keys with a documented set: clear (`close`), copy (`copy` → `check`, a morph), show password (`eye` → `eye-off`, glyphs still to draw), and a working ring.
+- [x] **Keys inside the field** (shadcn addons): `Trail` holds mini keys with a documented set: clear (`close`), copy (`copy` → `check`, a morph), show password (`eye` → `eye-off`, glyphs still to draw), and a working ring.
 - [x] **A shortcut hint that knows** (Geist): a ⌘K keycap in the trail that turns on the drum to "Esc" while the field is active; Esc clears.
 - [x] **Errors at the right moment** (Geist, Raycast, HIG): the default checks on blur and clears the error as you change the value; documented as the rule. A remote check that passed ("name available") shows `check` acting in the trail; ordinary valid fields show nothing.
 - [x] **Labels beside the field** (shadcn orientation): `FormField` `orientation` vertical / horizontal, horizontal turning vertical when its block is narrow (the `@container/block` rule).
@@ -533,7 +533,7 @@ Now: `Field` (Root, Icon, Input, Trail) in large / regular / compact and two ton
 Not doing: prefix and suffix printed outside the well (they break the column of wells in a form); a green LED on every valid field (noise; only a remote check earns a confirmation); addons above and below the input (Textarea's toolbar belongs to Textarea). One box per character (OTP) is its own component in section 2; take its keycap slots from there.
 
 Decide: is `chars` worth it, or is a width class enough?
-- Done (2026-10-06): `MetalField`, `MetalFieldset` and a real `MetalFormField`; `Field.Prefix`/`Suffix`, `Field.Key`/`Clear`/`Check`, `Field.Shortcut`; validate on blur; `orientation` (its own `@container/form-field`, stacking under 400); `FormField.Label mark`; `ChangedMark` and `FormField.Readback` exported for reuse; the counter and `chars` (kept: a class can't say "a postcode is 8"). Left: the copy and show-password keys (`Field.Key` with `MorphIcon`, now that the glyphs exist); Number field, Table and Settings adopt `ChangedMark`.
+- Done (2026-10-06): `MetalField`, `MetalFieldset` and a real `MetalFormField`; `Field.Prefix`/`Suffix`, `Field.Key`/`Clear`/`Check`, `Field.Shortcut`; validate on blur; `orientation` (its own `@container/form-field`, stacking under 400); `FormField.Label mark`; `ChangedMark` and `FormField.Readback` exported for reuse; the counter and `chars` (kept: a class can't say "a postcode is 8"). Copy and show-password keys done the same day (`Field.Copy`, `Field.Reveal`; the host passes the glyphs). Left: Number field, Table and Settings adopt `ChangedMark`.
 
 ## Components other libraries ship that we don't
 
