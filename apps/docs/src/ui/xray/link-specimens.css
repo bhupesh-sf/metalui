@@ -1,0 +1,42 @@
+/* THE LINK'S SPECIMENS: handles on the real link, in the editing layer's hairlines. */
+
+/* states and kinds: the link itself is the handle, dragged sideways; a ring shows the lean, pips the options */
+.ed-link-steps { display: inline-flex; flex-direction: column; align-items: center; gap: 10px; }
+.ed-link-grab { position: relative; display: inline-flex; padding: 3px 6px; cursor: ew-resize; outline: none; touch-action: none; border-radius: 6px; }
+/* the handle owns the pointer: the link inside shows its state, it does not take presses */
+.ed-link-grab a, .ed-link-press a { pointer-events: none; }
+.ed-link-ring { position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 0 .8px var(--mu-presence-guide); opacity: 0; pointer-events: none;
+  transition: opacity var(--spring-part-d) var(--spring-part); }
+.ed-link-grab:is(:hover, :focus-visible, [data-peek]) .ed-link-ring { opacity: 1; }
+.ed-link-grab[data-lean] .ed-link-ring { opacity: 1; box-shadow: 0 0 0 .9px var(--mu-presence-guide), 0 0 5px var(--mu-presence-guide); }
+.ed-link-pips { display: inline-flex; gap: 6px; }
+.ed-link-pips > span { width: 5px; height: 5px; border-radius: 50%; background: var(--ink3); opacity: .45;
+  transition: opacity var(--spring-part-d) var(--spring-part), box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-link-pips > span[data-at] { opacity: 1; background: var(--mu-presence-guide); }
+.ed-link-pips > span[data-lean] { opacity: 1; box-shadow: 0 0 0 .9px var(--mu-presence-guide), 0 0 4px var(--mu-presence-guide); }
+
+/* the line: its own hairline is the handle, a thin strip over the real underline */
+.ed-link-box { position: relative; display: inline-block; padding: 6px 4px 10px; }
+.ed-link-box a { pointer-events: none; }
+/* a tunable follows the finger exactly: nothing on the link animates while a handle is held */
+.ed-link-box[data-live] .mu-link-line { transition: none; }
+.ed-link-rule { position: absolute; display: block; cursor: ns-resize; outline: none; touch-action: none; }
+.ed-link-rule i { position: absolute; left: -3px; right: -3px; top: 3px; bottom: 3px; border-radius: 1px;
+  box-shadow: 0 0 0 .5px color-mix(in srgb, var(--mu-presence-guide) 55%, transparent);
+  transition: box-shadow var(--spring-part-d) var(--spring-part); }
+.ed-link-rule:is(:hover, :focus-visible, [data-on]) i { box-shadow: 0 0 0 1.1px var(--mu-presence-guide); }
+.ed-link-ghost { position: absolute; display: block; height: 0; border-top: .6px dashed color-mix(in srgb, var(--mu-presence-guide) 80%, transparent); pointer-events: none; }
+
+/* press: the link is pressed through its handle */
+.ed-link-press { display: inline-flex; padding: 3px 4px; cursor: ns-resize; outline: none; touch-action: none; border-radius: 6px; }
+.ed-link-press:focus-visible { box-shadow: 0 0 0 .8px var(--mu-presence-guide); }
+
+[data-mu-colorway="graphite"] :is(.ed-link-ring, .ed-link-rule, .ed-link-pips, .ed-link-ghost, .ed-link-press) { --mu-presence-guide: var(--green-deep); }
+
+/* the bench: the words lie on the page, the line is its own layer under them */
+.xr-face.xr-link-words { display: flex; align-items: flex-start; justify-content: flex-start; gap: 14px; border-radius: 0; white-space: nowrap; transition: transform var(--spring-release-d) var(--spring-release), opacity .16s; }
+.xr-face.xr-link-words svg { align-self: center; flex: none; }
+.xr-face.xr-link-line { overflow: hidden; transition: transform var(--spring-settle-d) var(--spring-settle), opacity .16s; }
+.xr-face.xr-link-ring { box-shadow: 0 0 0 8px var(--mu-focus); }
+.xr-link-run { position: absolute; top: 0; bottom: 0; left: 20%; width: 40%; background: linear-gradient(90deg, transparent, var(--ink) 30% 70%, transparent); }
+html.rm .xr-face.xr-link-words, html.rm .xr-face.xr-link-line { transition: none; }
