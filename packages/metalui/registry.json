@@ -1931,16 +1931,19 @@
       "name": "tool-strip",
       "type": "registry:ui",
       "title": "Tool strip",
-      "description": "Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.",
+      "description": "Verbs over a selection, adapted to it: verbsFor(selection, sets) keeps the verbs every selected kind shares; Surface(graphite-strip) as a plate whose ends travel when the verbs change, Button(strip) caps with glyphs and Tooltip names, the rest in a More key, and the destructive verb as Button(strip-danger) after a Rule. Places itself over the selection's bounds and rises 4 on the part spring.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/rule.json",
         "https://metalui.dev/r/surface.json",
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
       ],
       "files": [
         {

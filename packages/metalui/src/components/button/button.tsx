@@ -32,7 +32,7 @@ export interface ButtonProps extends BaseButton.Props {
    */
   state?: 'ready' | 'waiting' | 'done';
   /**
-   * Hold to confirm, for an irreversible act on a destructive cap: `onClick` runs only after the key is
+   * Hold to confirm, for an irreversible act on a destructive or strip-danger cap: `onClick` runs only after the key is
    * held (pointer, Space or Enter) for the hold time, while a darker fill runs across it. Letting go early
    * drains the fill and runs nothing; call that the hint's moment (`onHoldHint`). A click with no press
    * before it (a screen reader's or switch's activate) confirms at once: those can't hold, and the
@@ -74,7 +74,12 @@ const HELD: Record<ButtonCap, string> = {
 const COMPACT_HELD = 'data-held:translate-y-button-travel data-held:recipe-button-compact-pressed';
 // Holding (hold): down in the pressed look on the press time whatever holds it (Enter has no :active),
 // with the fill under the label (button-hold).
-const HOLDING = 'button-hold data-holding:translate-y-button-travel data-holding:recipe-button-destructive-pressed data-holding:duration-button-press data-holding:ease-linear';
+// On a strip the danger key sinks into the strip's dark well and its word goes white over the fill.
+const HOLDING_BASE = 'button-hold data-holding:translate-y-button-travel data-holding:duration-button-press data-holding:ease-linear';
+const HOLDING: Partial<Record<ButtonCap, string>> = {
+  destructive: `${HOLDING_BASE} data-holding:recipe-button-destructive-pressed`,
+  'strip-danger': `${HOLDING_BASE} data-holding:recipe-button-strip-pressed data-holding:text-button-strip-ink-hover`,
+};
 // The glyph's slot while a state is given: the glyph and the arc share it (an svg, so the cap sizes it).
 const WAIT = 'mu-button-wait button-wait';
 // The arc's radius, stroke and length are the recipe's (wait.*), set by button-wait.
@@ -219,9 +224,9 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button
   ref,
 ) {
   const held = state === 'waiting' || state === 'done';
-  const holds = hold && cap === 'destructive';
+  const holds = hold && !!HOLDING[cap];
   const heldLook = size === 'compact' && cap === 'standard' ? COMPACT_HELD : HELD[cap];
-  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)}${state ? ` ${heldLook} data-held:cursor-default` : ''}${holds ? ` ${HOLDING}` : ''}`;
+  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)}${state ? ` ${heldLook} data-held:cursor-default` : ''}${holds ? ` ${HOLDING[cap]}` : ''}`;
   const el = React.useRef<HTMLElement | null>(null);
   const setRef = React.useCallback((node: HTMLElement | null) => {
     el.current = node;

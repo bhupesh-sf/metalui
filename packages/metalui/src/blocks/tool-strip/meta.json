@@ -8,9 +8,10 @@
     "surface",
     "button",
     "rule",
-    "menu"
+    "menu",
+    "tooltip"
   ],
-  "description": "Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.",
+  "description": "Verbs over a selection, adapted to it: verbsFor(selection, sets) keeps the verbs every selected kind shares; Surface(graphite-strip) as a plate whose ends travel when the verbs change, Button(strip) caps with glyphs and Tooltip names, the rest in a More key, and the destructive verb as Button(strip-danger) after a Rule. Places itself over the selection's bounds and rises 4 on the part spring.",
   "base": "@base-ui/react/toolbar",
   "react": {
     "export": "ToolStrip",

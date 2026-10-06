@@ -36,7 +36,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 | `cap` | `cap:` | `standard`, `primary`, `destructive`, `link`, `graphite`, `strip`, `strip-danger` | `standard` |
 | `size` | `size:` | `default` (32), `compact` (28); ignored by the link, graphite and strip caps | `default` |
 | `state` | `.metalButtonState(_:)` | `ready`, `waiting` (held, refuses presses, busy; the glyph turns into the arc after 400 ms), `done` (held for the result). Pass `ready` between waits so a MorphIcon keeps morphing | – |
-| `hold` | `.metalHoldToConfirm(hint:onHint:)` | boolean; destructive caps only. `onClick` runs only after the hold time | `false` |
+| `hold` | `.metalHoldToConfirm(hint:onHint:)` | boolean; destructive and strip-danger caps only. `onClick` runs only after the hold time | `false` |
 | `holdHint` | `hint:` | the button's description (said after its name) and the hint text | `'Hold to confirm'` |
 | `onHoldHint` | `onHint:` | called when a hold is let go early: show the hint under the actions | – |
 | `icon` | `icon:` (a `MetalIconName`), or the `icon:` view builder | a glyph element, such as `<ShareIcon />` or `<MorphIcon name=… />`; leads the label, sized by the cap (16, compact 14, strip 16, graphite 14, link 12) | – |

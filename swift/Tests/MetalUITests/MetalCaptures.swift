@@ -432,12 +432,59 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    /// The strip adapting to what was clicked: a text block, an image (Lift subject at work), and both (the verbs
+    /// they share), each placed over its selection; and the list strip with its count and close key.
     func testToolStrip() {
+        enum Kind { case text, image }
+        let shared = [
+            MetalToolStripItem("Rename", icon: .pen, single: true),
+            MetalToolStripItem("Gather", icon: .group),
+            MetalToolStripItem("Export", icon: .share),
+            MetalToolStripItem("Send away", icon: .sendAway, destructive: true),
+        ]
+        let sets: [Kind: [MetalToolStripItem]] = [
+            .text: [MetalToolStripItem("Tasks", icon: .task), MetalToolStripItem("Summarise", icon: .document), MetalToolStripItem("Region", icon: .region)] + shared,
+            .image: [MetalToolStripItem("Lift subject", icon: .capture, state: .waiting), MetalToolStripItem("Copy", icon: .copy), MetalToolStripItem("Crop", icon: .fit)] + shared,
+        ]
         for colorway in MetalColorway.allCases {
-            let view = MetalToolStrip(label: "3 blocks", items: ["Tasks", "Summarise", "Gather", "Region", "Export"].map { MetalToolStripItem($0) {} } + [MetalToolStripItem("Send away", destructive: true) {}])
-                .padding(28)
-                .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
-                .metalColorway(colorway)
+            let t = colorway.tokens
+            func node(_ title: String, _ frame: CGRect, selected: Bool) -> some View {
+                Text(title).font(.metal(MetalType.ui)).foregroundStyle(t.ink.color)
+                    .frame(width: frame.width, height: frame.height)
+                    .background { MetalSurface(.raise, radius: .card) { Color.clear } }
+                    .overlay { if selected { RoundedRectangle(cornerRadius: MetalRadius.card, style: .continuous).stroke(MetalShared.focus.color, lineWidth: 1.25).padding(-6) } }
+                    .position(x: frame.midX, y: frame.midY)
+            }
+            func canvas(_ kinds: [Kind], _ label: String) -> some View {
+                let brief = CGRect(x: 40, y: 64, width: 150, height: 52)
+                let photo = CGRect(x: 214, y: 64, width: 110, height: 52)
+                let picked = (kinds.contains(.text) ? [brief] : []) + (kinds.contains(.image) ? [photo] : [])
+                let bounds = picked.dropFirst().reduce(picked[0]) { $0.union($1) }
+                return ZStack {
+                    node("Poster brief", brief, selected: kinds.contains(.text))
+                    node("venue.jpg", photo, selected: kinds.contains(.image))
+                }
+                .frame(width: 364, height: 132)
+                .metalToolStrip(over: bounds) {
+                    MetalToolStrip(label: label, items: MetalToolStrip.verbs(for: kinds, in: sets), glyphsOnly: true)
+                }
+            }
+            let view = VStack(alignment: .leading, spacing: 8) {
+                canvas([.text], "Poster brief")
+                canvas([.image], "venue.jpg")
+                canvas([.text, .image], "2 things")
+                MetalToolStrip(label: "3 selected tasks", items: [
+                    MetalToolStripItem("Complete", icon: .check, shortcut: "E"),
+                    MetalToolStripItem("Snooze", icon: .clock, menu: MetalToolStripMenu(heading: "Snooze until", items: [MetalMenuItem("Tomorrow") {}])),
+                    MetalToolStripItem("Delete", icon: .trash, destructive: true, hold: true),
+                    MetalToolStripItem("Clear selection", icon: .close, iconOnly: true),
+                ], count: "3 selected")
+                .padding(.leading, 40)
+            }
+            .padding(28)
+            .environment(\.metalWaitFrozen, true)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
             capture("tool-strip-\(colorway.rawValue)", view)
         }
     }
