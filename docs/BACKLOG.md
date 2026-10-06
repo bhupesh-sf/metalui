@@ -368,21 +368,22 @@ LED meanings stay the library's: green live, amber waiting or urgent, red failed
 
 Now: one size (32); a well pill with − and + keycaps; the value turns on the drum; drag the label to scrub; a refusal shake past the limits; typing commits on blur. SwiftUI is a stock `Stepper` (whole numbers only).
 
-- [ ] **SwiftUI first**: `MetalNumberField` rebuilt to match (the well, keycaps, drum, `Double` values, `format`, scrub). No variation below ships on one platform.
-- [ ] **Sizes** (ReUI sm/lg): `size` large / regular / compact, the same heights and radii as `Field`, so a number sits level with the fields beside it.
-- [ ] **Fine and coarse steps, shown** (Base UI `smallStep`/`largeStep`, HIG Shift-click): Alt steps fine, Shift coarse; *ours*: while a modifier is held, the keycaps' legends turn on the drum to "×0.1" / "×10", so the step size is visible, not a hidden rule.
-- [ ] **Units printed, not typed** (React Aria `formatOptions`, Geist suffixes): `unit` ("px", "%", "°") engraved after the value inside the well in ink3; `format` for currency and locale. Typing "12px" or "50%" is understood.
-- [ ] **Soft limits while typing** (Base UI `allowOutOfRange`, React Aria "validate"): a typed value past a limit is kept and shows the invalid ring with the limit said under the field ("Up to 100"); the keys and the scrub still clamp with the refusal shake.
-- [ ] **Back to default** (FabFilter Cmd-click): double-click the label, or ⌘-click a key, turns the value back on the drum to `defaultValue`; *ours*: the field shows the shared `changed` mark (see Field) while it is off its default.
-- [ ] **Mixed** (Figma "Mixed"): `mixed` for a multi-selection with different values: "Mixed" in ink3 on the drum; a step applies to each item (the host's job, documented); typing sets them all.
-- [ ] **Inspector kind** (*ours*, after Figma's letter labels): `kind="inspector"` for tight panels: no keycaps; a one-letter or glyph label (W, H, X, °) engraved inside the well's start is the scrub handle, with the resize cursor; regular and compact only.
-- [ ] **Wheel, only when asked** (Base UI `allowWheelScrub`): opt-in, and only while focused, so scrolling a page never changes a value.
-- [ ] **Expressions with a readback** (Figma maths): typing `+10`, `*2` or `=8*12` shows the result under the field in the shared `Readback` line (see Field) before it commits on Enter or blur.
-- [ ] **Thumbwheel kind, prototype first** (*ours*): a detented wheel standing out of the well's edge, one detent per `step`, a heavier tick at each `largeStep` (part spring; a haptic on Swift where the hardware has one). For values you set by feel (zoom, brush size). Prototype on the page; ship only if it reads better than scrubbing.
+- [x] **SwiftUI first**: `MetalNumberField` rebuilt to match (the well, keycaps, drum, `Double` values, `format`, scrub). No variation below ships on one platform.
+- [x] **Sizes** (ReUI sm/lg): `size` large / regular / compact, the same heights and radii as `Field`, so a number sits level with the fields beside it.
+- [x] **Fine and coarse steps, shown** (Base UI `smallStep`/`largeStep`, HIG Shift-click): Alt steps fine, Shift coarse; *ours*: while a modifier is held, the keycaps' legends turn on the drum to "×0.1" / "×10", so the step size is visible, not a hidden rule.
+- [x] **Units printed, not typed** (React Aria `formatOptions`, Geist suffixes): `unit` ("px", "%", "°") engraved after the value inside the well in ink3; `format` for currency and locale. Typing "12px" or "50%" is understood.
+- [x] **Soft limits while typing** (Base UI `allowOutOfRange`, React Aria "validate"): a typed value past a limit is kept and shows the invalid ring with the limit said under the field ("Up to 100"); the keys and the scrub still clamp with the refusal shake.
+- [x] **Back to default** (FabFilter Cmd-click): double-click the label, or ⌘-click a key, turns the value back on the drum to `defaultValue`; *ours*: the field shows the shared `changed` mark (see Field) while it is off its default.
+- [x] **Mixed** (Figma "Mixed"): `mixed` for a multi-selection with different values: "Mixed" in ink3 on the drum; a step applies to each item (the host's job, documented); typing sets them all.
+- [x] **Inspector kind** (*ours*, after Figma's letter labels): `kind="inspector"` for tight panels: no keycaps; a one-letter or glyph label (W, H, X, °) engraved inside the well's start is the scrub handle, with the resize cursor; regular and compact only.
+- [x] **Wheel, only when asked** (Base UI `allowWheelScrub`): opt-in, and only while focused, so scrolling a page never changes a value.
+- [x] **Expressions with a readback** (Figma maths): typing `+10`, `*2` or `=8*12` shows the result under the field in the shared `Readback` line (see Field) before it commits on Enter or blur.
+- [x] **Thumbwheel kind, prototype first** (*ours*): a detented wheel standing out of the well's edge, one detent per `step`, a heavier tick at each `largeStep` (part spring; a haptic on Swift where the hardware has one). For values you set by feel (zoom, brush size). Prototype on the page; ship only if it reads better than scrubbing.
 
 Not doing: ReUI's "custom button layouts" (one look: − value + or the inspector); Figma's four scrub speeds by cursor position (hidden; modifiers are shown instead); Shift for fine steps (audio gear) — it clashes with Base UI and the HIG, where Shift is coarse.
 
 Decide: is the thumbwheel worth a prototype now, or after the rest?
+- Done (2026-10-06). Decisions: the legends show the signed step ("−0.1", "+10"), not "×10"; the thumbwheel was prototyped and should not ship (a second gesture for the scrub's job, an 18 px target, detents you can't feel on a desktop) and stays on the page as a prototype. Left: no key for back to default; whole counts need `smallStep={1}`; export `NumberFieldSize`; SwiftUI legends and modifiers are macOS only.
 
 ### Combobox
 
