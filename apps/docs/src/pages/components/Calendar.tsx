@@ -17,11 +17,13 @@ import { ComponentPage } from '../../ui/ComponentPage';
 
 const SEP_30 = new Date(2026, 8, 30);
 
-function Month({ label }: { label: string }) {
+const weekend = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
+
+function Month({ label, isDateUnavailable }: { label: string; isDateUnavailable?: (d: Date) => boolean }) {
   const [day, setDay] = React.useState<Date | null>(SEP_30);
   return (
     <div className="grid justify-items-center gap-8">
-      <Calendar aria-label={label} value={day} onValueChange={setDay} defaultMonth={SEP_30} locale="en-GB" max={new Date(2027, 11, 31)} />
+      <Calendar aria-label={label} value={day} onValueChange={setDay} defaultMonth={SEP_30} locale="en-GB" max={new Date(2027, 11, 31)} isDateUnavailable={isDateUnavailable} />
       <span className="type-meta text-ink3">{day ? new Intl.DateTimeFormat('en-GB', { dateStyle: 'full' }).format(day) : 'No day chosen'}</span>
     </div>
   );
@@ -54,7 +56,7 @@ export default function CalendarPage() {
           </div>
         </div>
       ) }}
-      more={[{ id: 'month', title: 'Tune the month', lede: 'The Calendar month panel swaps the spring the thumb and the month ride, sets how far a new month comes from, and stretches time.', node: <MonthTuner /> }]}
+      more={[{ id: 'unavailable', title: 'Quiet days', lede: 'isDateUnavailable marks days with nothing to offer (here, weekends): quiet in the month and described as “Unavailable”. They can still be chosen, so the host can say why and offer the next good day; days out of min and max are the ones that can’t.', node: <div className="flex justify-center"><Month label="Studio day" isDateUnavailable={weekend} /></div> }, { id: 'month', title: 'Tune the month', lede: 'The Calendar month panel swaps the spring the thumb and the month ride, sets how far a new month comes from, and stretches time.', node: <MonthTuner /> }]}
       usage={`const [day, setDay] = React.useState<Date | null>(null);
 
 <Calendar aria-label="Trip day" value={day} onValueChange={setDay} min={new Date()} />

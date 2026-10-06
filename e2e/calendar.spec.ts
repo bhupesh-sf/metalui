@@ -77,3 +77,17 @@ test('the date picker opens on today, chooses and closes', async ({ page }) => {
   await expect(page.getByRole('button', { name: /^Due date: 1 Oct 2026$/ })).toBeFocused();
   await expect(page.getByRole('grid', { name: /October 2026/ })).toHaveCount(0);
 });
+
+// Unavailable days are quiet and described as such, keep their names, and can still be chosen.
+test('an unavailable day is quiet, said, and still chosen', async ({ page }) => {
+  await open(page, '/components/calendar', 'bone');
+  const cal = page.getByRole('group', { name: 'Studio day' });
+  const sat = cal.getByRole('button', { name: 'Saturday, 26 September 2026', exact: true });
+  const fri = cal.getByRole('button', { name: 'Friday, 25 September 2026', exact: true });
+  await expect(sat).toHaveAccessibleDescription('Unavailable');
+  await expect(fri).toHaveAccessibleDescription('');
+  const ink = (b: typeof sat) => b.evaluate((el) => getComputedStyle(el).color);
+  expect(await ink(sat)).not.toBe(await ink(fri));
+  await sat.click();
+  await expect(sat).toHaveAttribute('data-selected', '');
+});

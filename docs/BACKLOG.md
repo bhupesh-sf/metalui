@@ -8,7 +8,7 @@ Owner: "no select date range; add option for min legit date, option for max legi
 
 - [ ] **Range selection**: `mode="range"`, `{ start, end }` value; the thumb stretches across the range, with ends and a hover preview of the range before the second click; `minDays` / `maxDays`.
 - [ ] **Min and max on the page**: `Calendar` already takes `min` / `max` (out-of-range days disabled, month steps stop), but the docs page doesn't show them and `DatePicker` does not pass them through. Wire them through, demo them, and let the DialKit set them.
-- [ ] **Unavailable days**: `isDateUnavailable(date)` (weekends, booked days), distinct from out of range, and said to assistive tech.
+- [x] **Unavailable days**: `isDateUnavailable(date)` (weekends, booked days), distinct from out of range, and said to assistive tech. (Quiet in ink3, described "Unavailable", still choosable; out of range stays the unchoosable case. On the page as Quiet days.)
 - [ ] **Multiple days**: `mode="multiple"`.
 - [ ] **Week start** (`weekStartsOn`) beyond the locale default; **week numbers**.
 - [ ] **More than one month** side by side (`months={2}`, for ranges).
@@ -327,7 +327,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Switch** has no `label` prop; blocks wire `aria-labelledby` and make the words toggle it by hand.
 - [x] **Calendar bug: a day from the next or previous month can't be chosen with the pointer.** Pressing it focuses it first, which turns the month and removes the button before the click lands. The availability picker stops the focus on mouse-down as a workaround. Fix in the Calendar and test it.
 - [x] **Calendar doesn't follow a controlled `value` into another month** (it keeps showing the old month); the availability picker remounts it. Add `month` / `onMonthChange` (also in the Calendar entry) and follow `value`.
-- [ ] **Calendar: no per-day unavailable predicate** (`isDateUnavailable`, already in the Calendar entry); the availability picker greys days with a scoped style keyed to aria-labels, which is fragile.
+- [x] **Calendar: no per-day unavailable predicate** (`isDateUnavailable`, already in the Calendar entry); the availability picker greys days with a scoped style keyed to aria-labels, which is fragile. (Added; the picker uses it and its scoped style is gone.)
 - [ ] **Toggle has no radio-group form** (one latched key of several, like time slots); the library doesn't export Toggle's classes, so the block copies them. Add a `ToggleGroup` single-choice mode or a `RadioKeys`.
 - [ ] **Button has no waiting or done state** (see the Spinner entry: the wait lives in the key); blocks hold the key down and mark it `aria-disabled` by hand.
 - [x] **Toast's Undo shows ⌘Z but binds nothing**: the keycap promises a shortcut the toast doesn't handle; bind it (for the page's last undoable change) or let the host pass it. (⌘Z / Ctrl+Z runs the newest undoable toast's Undo, once; fields and a host that calls `preventDefault` keep theirs. Undo now also closes its toast, as SwiftUI's did.)

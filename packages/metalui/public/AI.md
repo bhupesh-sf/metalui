@@ -545,6 +545,8 @@ A month to choose a day from, and a field that opens one. React: `Calendar` and 
 | later month | title turns up; the grid comes from the right | drum and settle spring, fading in |
 | earlier month | title turns down; the grid comes from the left | the same, mirrored |
 | focus | the green ring on the day | – |
+| unavailable | `isDateUnavailable` days in ink3, described "Unavailable"; still focusable and choosable (say why on choosing) | – |
+| out of range | days before `min` or after `max` at 40 %, disabled; the month steps stop | – |
 | picker chosen | the popover closes; the field's text turns | the drum |
 
 Reduce Motion: the grid arrives and the choice lands at once; the fades stay.
@@ -554,6 +556,7 @@ Reduce Motion: the grid arrives and the choice lands at once; the fades stay.
 | React | SwiftUI |
 |---|---|
 | `Calendar` `value`, `defaultValue`, `onValueChange`, `defaultMonth`, `min`, `max`, `locale` | `selection:`, `in:` |
+| `Calendar` `isDateUnavailable(date)`: quiet days that can still be chosen | – (SwiftUI's DatePicker has no per-day state) |
 | `DatePicker` the same, plus `placeholder`, `format`, `invalid`, `disabled`, `aria-label` | `DatePicker` |
 
 ## Keyboard and accessibility

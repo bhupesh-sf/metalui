@@ -159,7 +159,6 @@ const shortDay = (zone: string) => new Intl.DateTimeFormat('en-GB', { timeZone: 
 const longDay = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
 const offsetName = (zone: string, at: number) => new Intl.DateTimeFormat('en-GB', { timeZone: zone, timeZoneName: 'shortOffset' }).formatToParts(new Date(at)).find((p) => p.type === 'timeZoneName')?.value ?? '';
 /** The Calendar names each day "Thursday 1 October 2026" (en-GB): the same words find its key. */
-const calendarName = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
 /* ── Motion helpers ────────────────────────────────────────── */
 
@@ -263,7 +262,6 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
   const reduced = useReducedMotion();
   const list = React.useRef<HTMLDivElement>(null);
   const confirmKey = React.useRef<HTMLElement>(null);
-  const cal = React.useId().replace(/[^\w-]/g, '');
   const headingId = React.useId();
 
   const starts = React.useMemo(() => startsFor(day), [startsFor, day]);
@@ -297,13 +295,6 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
     requestAnimationFrame(() => confirmKey.current?.focus());
   };
 
-  // Days with nothing free read as quiet in the month (the Calendar has no per-day state: see the page).
-  const quiet = React.useMemo(() => {
-    const names: string[] = [];
-    for (let d = today; d <= last; d = addDays(d, 1)) if (!startsFor(d).length) names.push(calendarName.format(d));
-    return names.map((n) => `.${cal} button[aria-label="${n}"]:not([data-selected])`).join(',');
-  }, [today, last, startsFor, cal]);
-
   const open = time != null;
   const booked = phase === 'booked';
   const free = nextFree(addDays(day, 1));
@@ -311,7 +302,6 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
 
   return (
     <section aria-label={`Book a call with ${host.name}`} className={`@container/block grid w-full rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`}>
-      {quiet && <style>{`${quiet} { color: var(--mu-ink3); }`}</style>}
       <div
         inert={booked}
         className={`grid gap-24 p-20 transition-opacity duration-settle ease-settle reduced-motion:transition-none @xl/block:grid-cols-[auto_minmax(0,1fr)] @4xl/block:grid-cols-[minmax(0,17rem)_auto_12rem] @4xl/block:justify-between ${booked ? 'opacity-60' : ''}`}
@@ -340,8 +330,8 @@ export function AvailabilityPicker({ host = ANA, onBook, className }: Availabili
         </div>
 
         {/* The month */}
-        <div className={`${cal} justify-self-start`}>
-          <Calendar aria-label="Day" value={day} onValueChange={chooseDay} min={today} max={last} locale="en-GB" />
+        <div className="justify-self-start">
+          <Calendar aria-label="Day" value={day} onValueChange={chooseDay} min={today} max={last} isDateUnavailable={(d) => !startsFor(d).length} locale="en-GB" />
         </div>
 
         {/* The day's times */}

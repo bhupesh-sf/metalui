@@ -18,6 +18,8 @@ import { Popover } from '../popover/popover';
  *   keys      arrows by day and week, Page Up / Down by month, Home / End to the week's ends,
  *             Enter or Space chooses; moving past the month turns it
  *   limits    days outside the month in ink3; days out of range disabled at 40 %
+ *   quiet     an unavailable day (isDateUnavailable: a weekend, a booked day) in ink3, still focusable
+ *             and choosable, described as "Unavailable"; out of range is the one that can't be chosen
  *   picker    a form field that opens the calendar in a popover; choosing closes it and the
  *             field's text turns on the drum
  * Reduce Motion: the grid arrives and the choice lands at once; the fades stay.
@@ -53,7 +55,7 @@ const GRID_WRAP = 'mu-calendar-body relative';
 const TABLE = 'mu-calendar-grid calendar-grid';
 const WEEKDAY = 'mu-calendar-weekday size-calendar-day-size p-0 type-meta text-ink3 text-center';
 const CELL = 'p-0';
-const DAY = 'mu-calendar-day relative z-1 grid place-items-center size-calendar-day-size rounded-calendar-day-radius border-0 bg-transparent type-ui tabular-nums text-ink cursor-pointer outline-none transition-row hover:not-data-selected:recipe-switcher data-selected:recipe-switcher-thumb data-selected:text-ink data-selected:calendar-land focus-visible:focus-ring data-outside:text-ink3 disabled:opacity-calendar-disabled disabled:cursor-default data-today:calendar-today';
+const DAY = 'mu-calendar-day relative z-1 grid place-items-center size-calendar-day-size rounded-calendar-day-radius border-0 bg-transparent type-ui tabular-nums text-ink cursor-pointer outline-none transition-row hover:not-data-selected:recipe-switcher data-selected:recipe-switcher-thumb data-selected:text-ink data-selected:calendar-land focus-visible:focus-ring data-outside:text-ink3 data-unavailable:not-data-selected:text-ink3 disabled:opacity-calendar-disabled disabled:cursor-default data-today:calendar-today';
 
 export interface CalendarProps {
   value?: Date | null;
@@ -64,6 +66,9 @@ export interface CalendarProps {
   /** The earliest and latest days that can be chosen. */
   min?: Date;
   max?: Date;
+  /** Days with nothing to offer (weekends, booked days): quiet, and described as unavailable. They can still be
+   * chosen, so the host can say why (and what's next); to forbid a day, keep it out of `min` / `max`. */
+  isDateUnavailable?: (date: Date) => boolean;
   /** A locale for names and the first day of the week (the browser's by default). */
   locale?: string;
   /** Put focus on the chosen day (or today) when it mounts: for a calendar opened in a picker. */
@@ -73,7 +78,7 @@ export interface CalendarProps {
 }
 
 /** A month to choose a day from. */
-export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min, max, locale, autoFocus, className, ...aria }: CalendarProps) {
+export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min, max, isDateUnavailable, locale, autoFocus, className, ...aria }: CalendarProps) {
   const [own, setOwn] = React.useState<Date | null>(defaultValue ?? null);
   const chosen = value !== undefined ? value : own;
   const today = startOfDay(new Date());
@@ -82,6 +87,7 @@ export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min
   const moved = React.useRef(autoFocus ?? false);
   const grid = React.useRef<HTMLTableElement>(null);
   const titleId = React.useId();
+  const quietId = React.useId();
 
   const first = weekStartOf(locale);
   const month = startOfMonth(focused);
@@ -164,6 +170,7 @@ export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min
               <tr key={r}>
                 {days.slice(r * 7, r * 7 + 7).map((d) => {
                   const selected = sameDay(d, chosen);
+                  const quiet = !out(d) && !!isDateUnavailable?.(d);
                   return (
                     <td key={d.getTime()} role="gridcell" aria-selected={selected} className={CELL}>
                       <button
@@ -175,6 +182,8 @@ export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min
                         data-today={sameDay(d, today) ? '' : undefined}
                         data-selected={selected ? '' : undefined}
                         data-outside={d.getMonth() !== month.getMonth() ? '' : undefined}
+                        data-unavailable={quiet ? '' : undefined}
+                        aria-describedby={quiet ? quietId : undefined}
                         disabled={out(d)}
                         onClick={() => choose(d)}
                         // Only days of the shown month take the roving focus: focusing a day of the next or
@@ -191,6 +200,7 @@ export function Calendar({ value, defaultValue, onValueChange, defaultMonth, min
           </tbody>
         </table>
       </div>
+      {isDateUnavailable && <span id={quietId} hidden>Unavailable</span>}
     </div>
   );
 }
