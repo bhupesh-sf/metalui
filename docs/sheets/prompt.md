@@ -60,7 +60,7 @@ Now: the AI composer block (`apps/docs/src/blocks/ai-composer`) does all three i
 | Write it again | the last reply | `onRetry`: the retry glyph; `retryDisabled` while another reply writes | Must |
 | Edit what I said | the person's last turn | `onEdit`: the pen glyph; the host turns the turn into a `Textarea` (or the composer) | Must |
 | Say it was good or bad | every reply | `feedback` (`'up' | 'down' | null`) and `onFeedback`: two toggle keys, the thumb and the thumb turned over (`MorphPair` `turn`), latched (pressed) on the chosen one; pressing it again clears | Must |
-| Say why (P's feedback bar) | a bad reply | `reasons`: after a thumb is chosen, a row of compact `Button`s with the reasons and "Other" fades in under the keys (settle); one press sends `onFeedback(value, reason)` and the row says "Thanks" on the drum, then leaves | Should |
+| Say why (P's feedback bar) | a bad reply | `reasons`: after Bad is chosen (a good reply needs no why), a row of compact `Button`s with the reasons fades in under the keys (settle); one press sends `onFeedback(value, reason)` and the row says "Thanks" on the drum, then leaves | Should |
 | Shown only once a reply settles | streaming | covered: `Message` fades its footer in when it appears; the host passes the actions once the reply is done | covered |
 | On hover only (V, A `autohide`) | dense threads | Should: `reveal="hover"` keeps the row invisible until the pointer or focus is in the message (opacity on the settle spring); never under touch | Should |
 | Export as Markdown (A) | | Later: a host action in a `Menu` behind "More" | Later |
@@ -79,16 +79,16 @@ Not doing: a typing indicator inside the input (the reply's lamp says it), a sen
 - **Reasons are keys, not a text field.** A field opens a form inside a thread; most people pick a word. "Other" hands the host the moment to ask more.
 
 **Must**
-- [ ] React: `Markdown` (`children`, `streaming`, `pace`), `PromptInput` (`value`, `onValueChange`, `onSend`, `busy`, `onStop`, `onAttach`, `attachments`, `tools`, `disabled`, `disabledReason`, `placeholder`, `label`, `maxRows`), `MessageActions` (`copy`, `onRetry`, `retryDisabled`, `onEdit`, `feedback`, `onFeedback`, `reasons`).
-- [ ] SwiftUI `MetalMarkdown`, `MetalPromptInput`, `MetalMessageActions` with the same states.
-- [ ] Recipes `markdown`, `prompt-input`, `message-actions`; agent guides, meta.json, pages with DialKit panels, e2e slices.
-- [ ] `Message`'s word as `role="status"`, aria-busy on its body.
-- [ ] The AI composer block rebuilt from them.
+- [x] React: `Markdown` (`children`, `streaming`, `pace`), `PromptInput` (`value`, `onValueChange`, `onSend`, `busy`, `onStop`, `onAttach`, `attachments`, `tools`, `disabled`, `disabledReason`, `placeholder`, `label`, `maxRows`), `MessageActions` (`copy`, `onRetry`, `retryDisabled`, `onEdit`, `feedback`, `onFeedback`, `reasons`).
+- [x] SwiftUI `MetalMarkdown`, `MetalPromptInput`, `MetalMessageActions` with the same states.
+- [x] Recipes `markdown`, `prompt-input`, `message-actions`; agent guides, meta.json, pages with DialKit panels, e2e slices.
+- [x] `Message`'s word as `role="status"`, aria-busy on its body.
+- [x] The AI composer block rebuilt from them.
 
 **Should**
-- [ ] Half-arrived marks closed while streaming.
-- [ ] Drop and paste files on the composer.
-- [ ] Reasons after a thumb.
+- [x] Half-arrived marks closed while streaming.
+- [x] Drop and paste files on the composer.
+- [x] Reasons after Bad.
 - [ ] `reveal="hover"`.
 
 **Later**
