@@ -507,8 +507,10 @@ Plan it by the **kind of data**, not by features: each kind below is a real situ
 - Should done (2026-10-06): `total` (sum, mean, a function) in a sticky sunk footer on the drum; `groupBy` with sticky `rowgroup` headers, chevrons and subtotals; `pin: 'start'` with a shade only while scrolled under; `rowHeader` and a `check` kind for a permissions matrix; `live` rows behind "N new"; `expandRow`; `columnsMenu` and `resizable` with `onColumnsChange`. The head, group headers and pinned cells are opaque frost (blur doesn't apply on table cells). Left: `Menu` should get its own `MenuCheckboxItem`; SwiftUI `total` takes no function and live rows can overlap while landing.
 
 **Later**
-- [ ] Tree rows (after Tree, sharing its parts).
-- [ ] Virtual rows for very long lists, then infinite scroll.
+- [x] Tree rows (after Tree, sharing its parts).
+  Done (2026-10-06): `childRows`/`loadChildRows`/`expandedRows` on Tree's guides and disclosure (React and SwiftUI); a plain table, not a treegrid. Left: the focused branch's groove.
+- [x] Virtual rows for very long lists, then infinite scroll.
+  Done (2026-10-06): `virtual` (in-house window, 320px overscan, `aria-rowcount`/`aria-rowindex`; not with `groupBy`), `hasMore`/`loadMore` with a skeleton row and Try again. Table's ceiling 92 → 96. Left: Home/End in virtual mode.
 - [ ] The data grid: arrow keys between cells, editing in place, cell ranges with copy and paste, reordering columns (after Sortable).
 
 Not doing: striped rows (the reading guide does it); full cell borders (they come with the editable grid, where cells are targets); ReUI's "light, rounded rows" look (the hover plate is already rounded); colour-only cells such as heatmap tints or red negatives (a sign or a glyph always carries it); a coloured sort LED per header (green and blue already mean other things); sideways scrolling as the answer to narrow screens.
