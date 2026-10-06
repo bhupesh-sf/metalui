@@ -5,8 +5,8 @@ import SwiftUI
 //              the start; a header only for a time or an avatar
 //   assistant  at the start, content type on the page; a header: the name, the model after a dot, the time
 //   avatar     at the turn's own side, level with the header
-//   status     the header's lamp and its word: waiting (amber, breathing, "Thinking", a skeleton line in
-//              place of the body), writing (green, "Writing"), done (off), stopped ("Stopped"), failed (red,
+//   status     the header's lamp and its word: waiting (amber, breathing, "Thinking", a skeleton line while
+//              there is no body yet), writing (green, "Writing"), done (off), stopped ("Stopped"), failed (red,
 //              "Failed")
 //   footer     under the body; insert it inside `withMetalAnimation(.settle)` and it fades in
 //   grouped    the same speaker again: no header, the avatar's column kept; in a MetalThread the gap closes
@@ -85,7 +85,9 @@ public struct MetalMessage<Content: View, Footer: View>: View {
             if !user, let avatar { side(avatar) }
             VStack(alignment: user ? .trailing : .leading, spacing: recipe.points("self.gap")) {
                 if showsHeader { header }
-                if status == .waiting {
+                // As React: the skeleton holds the place only until words come; a waiting reply that already
+                // has a body (a tool call, the thought so far) shows it.
+                if status == .waiting && Content.self == EmptyView.self {
                     MetalSkeleton().frame(maxWidth: .infinity, alignment: .leading)
                 } else if user {
                     content
