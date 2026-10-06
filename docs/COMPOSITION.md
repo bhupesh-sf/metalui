@@ -38,7 +38,7 @@ The generators emit CSS custom properties and classes, and Swift `MetalTokens` /
 | Layer | Members |
 |---|---|
 | **Parts** | Chip, Dot display, Glass face, Glyph, Keycap, LED, Label, Mark, Properties, Row, Rule, Skeleton, Sparkline, Spatial field, Surface, Well |
-| **Components** | Accordion, Alert dialog, Breadcrumbs, Button, Button group, Calendar, Checkbox, Checkbox group, Combobox, Command palette, Dialog, Draw picks, Draw tools, Fan, Field, Form field, Icon button, Link, Menu and correction popover, Menubar, Meter, Navigation menu, Number field, Pagination, Popover, Preview card, Progress, Quick edit, Radio group, Scroll area, Select, Settings, Sheet, Slider, Spinner, Status badge, Switch, Switcher, Tabs, Textarea, Toast, Toggle, Tool strip, Toolbar and tool button, Tooltip |
+| **Components** | Accordion, Alert dialog, Breadcrumbs, Button, Button group, Calendar, Checkbox, Checkbox group, Combobox, Command palette, Dialog, Draw picks, Draw tools, Fan, Field, Form field, Icon button, Link, Menu and correction popover, Menubar, Meter, Navigation menu, Number field, Pagination, Popover, Preview card, Progress, Quick edit, Radio group, Scroll area, Select, Settings, Sheet, Slider, Spinner, Status badge, Switch, Switcher, Tabs, Textarea, Toast, Toggle, Tool strip, Toolbar and tool button, Tooltip, Tree |
 | **Objects** | Attachment, Avatar, Block silhouette, Card, Code card, Connector, Day, Folder, Link card, Table, Weather |
 | **Instruments** | Brush cursor, Hover engraving, Lasso, Line handles, Perfect preview, Provenance tooltip, Selection frame, Size readout, Snap guides, Suggestion chip |
 | **Places** | Drop zone, Empty state, Filter bar, Past banner, Region, Sidebar, Split pane, Time scrubber |

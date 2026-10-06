@@ -1,0 +1,21 @@
+{
+  "name": "tree",
+  "title": "Tree",
+  "status": "alpha",
+  "layer": "component",
+  "uses": ["popover", "quick-edit", "row", "spinner"],
+  "description": "Nested rows that open and close in place, walked with the keyboard (the WAI-ARIA tree pattern): engraved guides per level that light for the branch holding the focus, the set's chevron turning a quarter on the part spring, children landing and leaving with the rows' motion, levels that load on demand with the small-item wait, selection none / single / multiple, the opened row's rail, type-ahead, and F2 to rename with QuickEdit. Tree.Guides and Tree.Disclosure are exported for other rows at a level.",
+  "base": "none (WAI-ARIA tree pattern; Base UI has no tree)",
+  "react": {
+    "export": "Tree",
+    "files": [
+      "tree.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalTree",
+    "file": "swift/Sources/MetalUI/Components/MetalTree.swift"
+  },
+  "agent": "tree.agent.md",
+  "page": "/components/tree"
+}
