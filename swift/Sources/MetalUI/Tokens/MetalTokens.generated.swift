@@ -2941,7 +2941,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A number, a duration or a time of day inside the text that you change in place: press and drag up or down on the words (one detent per scrub.pixels of travel; Shift for the large step, Alt for the small, read at each detent) or focus it and press the arrows. The words are the value: only the part that carries it is rewritten ("tomorrow 4pm" keeps "tomorrow"), live while dragging, committed once per gesture (the host’s one undo step). The digits turn on the drum up or down with the value; the words hold the widest width of the gesture so the line doesn’t jitter, and let go on release. While dragging only, an engraved scale stands beside the words: the mark’s groove ink and lip as a tick per detent (scale.minor of its width) and a full tick every five, under a centre index in ink, faded at both ends; it follows the hand one detent at a time and fades in and out on the settle spring. Each detent plays the detent haptic where there is one; a push past a limit shakes only the words, once (refusal). Defaults per scale: a number 1 / 0.1 / 10, a duration (minutes) 5 / 1 / 30, a clock (minutes, wrapping at midnight) 15 / 5 / 60. At rest it is the Mark exactly; the cursor says ns-resize and keyboard focus shows the ring. Reduce Motion: the drum crossfades and the scale comes and goes at once. (the mark (its look; the groove for the scale), the number field (detents, Alt and Shift, refusal), the drum (SwapText), the haptic (detent); the WAI-ARIA APG spinbutton; Tangle’s scrubbable numbers)
+    /// A number, a duration or a time of day inside the text that you change in place: press and drag up or down on the words (one detent per scrub.pixels of travel; Shift for the large step, Alt for the small, read at each detent) or focus it and press the arrows. The words are the value: only the part that carries it is rewritten ("tomorrow 4pm" keeps "tomorrow"), live while dragging, committed once per gesture (the host’s one undo step). The digits turn on the drum up or down with the value; the words hold the widest width of the gesture so the line doesn’t jitter, and let go on release. While dragging only, an engraved scale stands beside the words: the mark’s groove ink and lip as a tick per detent (scale.minor of its width) and a full tick every five, under a centre index in ink, faded at both ends; it follows the hand one detent at a time and fades in and out on the settle spring. Each detent plays the detent haptic where there is one; a push past a limit shakes only the words, once (refusal). Defaults per scale: a number 1 / 0.1 / 10, a duration (minutes) 5 / 1 / 30, a clock (minutes, wrapping at midnight) 15 / 5 / 60. At rest it is the Mark exactly; the cursor says ns-resize and keyboard focus shows the ring. Reduce Motion: the drum crossfades and the scale comes and goes at once. More scales: a day ("tomorrow" → "Friday" → "next Monday" → "Fri 16 Oct", day.pixels a detent), an enum (a status tag turning through its states and wrapping, enum.pixels a detent; the neighbouring states peek above and below while held, peek.gap from the words at peek.opacity) and a hue (a hex turning round the colour wheel, its saturation and lightness kept). A duration says its amount the other way ("90 min" ↔ "1h30") on U or a horizontal drag of unit.pixels. A press held for press.hold without a detent opens the host's picker (a Calendar for a day) in a popover anchored to the words; Enter opens it from the keyboard. On hover the line thickens by hover.line (a scale, so nothing reflows); the first hover on a host says "Drag to change" in the chip, once. (the mark (its look; the groove for the scale), the number field (detents, Alt and Shift, refusal), the drum (SwapText), the haptic (detent); the WAI-ARIA APG spinbutton; Tangle’s scrubbable numbers)
     public static let markScrub = MetalObjectRecipe(
         name: "mark-scrub",
         layers: [
@@ -2958,12 +2958,39 @@ public enum MetalRecipes {
             "clock.step": .text("15"),
             "clock.small": .text("5"),
             "clock.large": .text("60"),
+            "day.step": .text("1"),
+            "day.small": .text("1"),
+            "day.large": .text("7"),
+            "day.pixels": .number(8.0),
+            "enum.step": .text("1"),
+            "enum.small": .text("1"),
+            "enum.large": .text("1"),
+            "enum.pixels": .number(16.0),
+            "hue.step": .text("5"),
+            "hue.small": .text("1"),
+            "hue.large": .text("30"),
+            "unit.pixels": .number(24.0),
+            "press.hold": .text("500ms"),
+            "hover.line": .text("2"),
+            "peek.gap": .number(2.0),
+            "peek.opacity": .text("0.4"),
             "scale.gap": .number(4.0),
             "scale.width": .number(6.0),
             "scale.height": .number(24.0),
             "scale.tick": .number(3.0),
             "scale.minor": .text("55%"),
             "scale.index": .number(1.5),
+        ]
+    )
+
+    /// A tag or a person inside the text that you swap for another: a click, Enter or Space opens a small Combobox in a popover from the words (the popover's plate and motion), every choice under it at once; a pick rewrites the words in place, one commit. At rest it is the Mark exactly; the cursor says pointer and keyboard focus shows the ring. The plate's width is plate.width so the field doesn't jump with the words. (the mark (its look), the popover (the plate), the combobox (the field and rows); Notion's mentions, Linear's inline pickers)
+    public static let markPick = MetalObjectRecipe(
+        name: "mark-pick",
+        layers: [
+
+        ],
+        props: [
+            "plate.width": .number(220.0),
         ]
     )
 

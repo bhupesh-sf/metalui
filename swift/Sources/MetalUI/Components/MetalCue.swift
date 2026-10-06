@@ -179,6 +179,16 @@ enum MetalCueLine {
     static let dash: CGFloat = 2
 }
 
+private struct MetalCueLineScaleKey: EnvironmentKey { static let defaultValue: CGFloat = 1 }
+
+extension EnvironmentValues {
+    /// How thick a cue's line stands, as a scale of its own: an operable cue thickens it on hover (mark-scrub hover.line).
+    var metalCueLineScale: CGFloat {
+        get { self[MetalCueLineScaleKey.self] }
+        set { self[MetalCueLineScaleKey.self] = newValue }
+    }
+}
+
 /// A recognised chunk as a view: the glyph before the words, the kind's line under them, and the
 /// moment of recognition when `fresh`. The chip (the glyph's name, then `resolved`) shows on hover and,
 /// for a fresh date, once.
@@ -201,6 +211,7 @@ public struct MetalCueMark: View {
     @State private var acting = false
     @State private var chipOnce = false
     @State private var hovering = false
+    @Environment(\.metalCueLineScale) private var lineScale
 
     public init(_ text: String, kind: MetalCueKind, resolved: String? = nil, label: String? = nil, glyph: MetalCueGlyph = .kind,
                 hex: MetalRGBA? = nil, fresh: Bool = false, inferred: Bool = false, raw: Bool = false) {
@@ -293,7 +304,8 @@ public struct MetalCueMark: View {
                     }
                 }
             }
-            .scaleEffect(x: drawn, y: 1, anchor: .leading)
+            .scaleEffect(x: drawn, y: lineScale, anchor: .leading)
+            .metalAnimation(.settle, value: lineScale)
         }
     }
 

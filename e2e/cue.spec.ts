@@ -152,6 +152,8 @@ test('the tick appears at once under reduced motion', async ({ page }) => {
   await open(page, '/components/cue', 'bone');
   const dimple = page.getByRole('checkbox', { name: 'Send the poster' });
   await dimple.click();
+  // Sampled once it is checked (the click's re-render can land a frame later), so the first checked frame is read.
+  await expect(dimple).toBeChecked();
   // No stroke is drawn: the tick is whole (no dash) from the first frame.
   const tick = dimple.locator('.mu-dimple-tick path');
   expect(await tick.evaluate((el) => [el.getAnimations().length, getComputedStyle(el).strokeDasharray, getComputedStyle(el).visibility])).toEqual([0, 'none', 'visible']);
