@@ -799,7 +799,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Something is working and will be done soon, in a small space (inside a button, beside a row): a sunk round well (the switch track's look) with a lit green arc fading into a tail, turning at a constant speed (linear: steady work has no spring). It appears only after a beat, so a quick action never flashes it. Reduce Motion: the arc stands still and breathes. The well is the switch recipe; this adds the arc and its motion. (the switch track (recipe switch); a conic arc masked to a ring)
+    /// One waiting language, placed where the wait is. The ring: an arc in the host's own ink (the button's wait arc, wait.*) turning at a constant speed in the host's glyph slot, sized by the host; it stands in for the item's glyph after the show delay, fills instead of turning once the amount is known, and draws the check glyph's tick when the work is done. The item: dims its other parts and refuses actions while it waits. The rim: a short arc travelling round an avatar. The edge: a lit edge travelling round a large item's own border (a card), not a spinner in its middle. The bar: a thin bar across the top of a place for a route change, creeping toward the end and completing when the page arrives. Timing (self.delay, minimum, result, still): nothing for fast work, at least `minimum` on screen once shown, then the result, and more words after `still`; useWait reads them. Reduce Motion: nothing turns or travels; the arc, rim, edge and bar breathe in place. (the button's wait arc (recipe button, wait.*); the check glyph's tick (icons/src/acts/check.mjs); the progress breathe; the switch's lit fill for the bar)
     public static let spinner = MetalObjectRecipe(
         name: "spinner",
         layers: [
@@ -808,11 +808,27 @@ public enum MetalRecipes {
         props: [
             "self.size": .number(16.0),
             "self.small": .number(12.0),
-            "self.ring": .number(2.5),
             "self.turn": .text("900ms"),
             "self.delay": .text("400ms"),
             "self.fade": .text("160ms"),
-            "self.tail": .text("0.72"),
+            "self.minimum": .text("600ms"),
+            "self.result": .text("1400ms"),
+            "self.still": .text("8000ms"),
+            "item.dim": .text("0.5"),
+            "track.opacity": .text("0.18"),
+            "tick.draw": .text("280ms"),
+            "rim.radius": .number(11.3),
+            "rim.stroke": .number(1.3),
+            "rim.arc": .text("0.26"),
+            "rim.turn": .text("1600ms"),
+            "edge.width": .number(1.5),
+            "edge.turn": .text("2800ms"),
+            "edge.tail": .text("0.42"),
+            "edge.opacity": .text("0.75"),
+            "bar.height": .number(2.0),
+            "bar.creep": .text("9000ms"),
+            "bar.reach": .text("0.86"),
+            "bar.finish": .text("260ms"),
         ]
     )
 

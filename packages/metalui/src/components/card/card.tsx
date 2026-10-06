@@ -14,7 +14,10 @@ import { useRender } from '@base-ui/react/use-render';
  *   pressed   it comes back down (press time)
  *   focus     the green ring, from the title's link
  *   selected  one of a set: the green ring, 3 out
- * Reduce Motion: no lift; the shadow still grows.
+ *   waiting   the card's own shape waits: after the show delay a lit edge travels round its border in
+ *             the card's ink (the spinner recipe's edge), never a spinner in its middle; the host's
+ *             words say what is happening, and a Progress takes over once the amount is known
+ * Reduce Motion: no lift; the shadow still grows; the edge breathes in place.
  * An object: it stands for a person's thing. It uses the raised surface.
  * Slots: Card.Root, Card.Media, Card.Title, Card.Description, Card.Footer.
  * ───────────────────────────────────────────────────────── */
@@ -30,15 +33,27 @@ const FOOTER = 'mu-card-footer relative z-1 flex flex-wrap items-center gap-card
 export interface CardRootProps extends React.HTMLAttributes<HTMLElement> {
   /** One of a set, chosen: the green ring. */
   selected?: boolean;
+  /** Its work is under way (useWait's `busy`): aria-busy, and the lit edge after the show delay. */
+  waiting?: boolean;
   /** The element: an article by default. */
   render?: useRender.ComponentProps<'article'>['render'];
 }
 
-function Root({ selected, render, className, ...props }: CardRootProps) {
+const EDGE = <span aria-hidden className="mu-card-wait spinner-edge"><span /></span>;
+
+function Root({ selected, waiting, render, className, children, ...props }: CardRootProps) {
   return useRender({
     render,
     defaultTagName: 'article',
-    props: { ...props, 'data-selected': selected ? '' : undefined, 'aria-current': selected ? 'true' : undefined, className: className ? `${ROOT} ${className}` : ROOT },
+    props: {
+      ...props,
+      children: waiting ? <>{children}{EDGE}</> : children,
+      'data-selected': selected ? '' : undefined,
+      'data-waiting': waiting ? '' : undefined,
+      'aria-current': selected ? 'true' : undefined,
+      'aria-busy': waiting || undefined,
+      className: className ? `${ROOT} ${className}` : ROOT,
+    },
   });
 }
 

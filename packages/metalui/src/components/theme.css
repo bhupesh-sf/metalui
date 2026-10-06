@@ -410,7 +410,11 @@
   --spacing-progress-min-width: var(--mu-r-progress-self-min-width);
   --spacing-spinner-size: var(--mu-r-spinner-self-size);
   --spacing-spinner-small: var(--mu-r-spinner-self-small);
-  --spacing-spinner-ring: var(--mu-r-spinner-self-ring);
+  --spacing-spinner-rim-radius: var(--mu-r-spinner-rim-radius);
+  --radius-spinner-rim-radius: var(--mu-r-spinner-rim-radius);
+  --spacing-spinner-rim-stroke: var(--mu-r-spinner-rim-stroke);
+  --spacing-spinner-edge-width: var(--mu-r-spinner-edge-width);
+  --spacing-spinner-bar-height: var(--mu-r-spinner-bar-height);
   --spacing-number-field-height: var(--mu-r-number-field-self-height);
   --spacing-number-field-width: var(--mu-r-number-field-self-width);
   --spacing-number-field-pad: var(--mu-r-number-field-self-pad);
@@ -1442,11 +1446,23 @@
 @utility opacity-progress-segment-dim {
   opacity: var(--mu-r-progress-segment-dim);
 }
-@utility spinner-arc {
-  position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, rgba(0,0,0,0) calc((1 - var(--mu-r-spinner-self-tail)) * 360deg), var(--mu-green-deep)); mask: radial-gradient(farthest-side, rgba(0,0,0,0) calc(100% - var(--mu-r-spinner-self-ring)), #000 calc(100% - var(--mu-r-spinner-self-ring) + 0.5px)); animation: mu-spinner-turn var(--mu-r-spinner-self-turn) linear infinite; @media (prefers-reduced-motion: reduce) { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] & { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+@utility spinner-ring {
+  overflow: visible; & > svg { width: 100%; height: 100%; transition: opacity var(--mu-r-spinner-self-fade) ease-out; } & > circle, & > polyline { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: var(--mu-r-button-wait-stroke); transform-box: fill-box; transform-origin: center; transition: opacity var(--mu-r-spinner-self-fade) ease-out; } & > circle { r: var(--mu-r-button-wait-radius); opacity: 0; } & > .mu-spinner-arc { stroke-dasharray: calc(var(--mu-r-button-wait-arc) * 100) 100; } & > .mu-spinner-fill { rotate: -90deg; stroke-dasharray: var(--mu-spinner-value, 0) 100; transition: opacity var(--mu-r-spinner-self-fade) ease-out, stroke-dasharray calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle); } & > .mu-spinner-tick { opacity: 0; stroke-dasharray: 1 1; stroke-dashoffset: 0; } &:not([data-phase]) { animation: mu-spinner-arrive var(--mu-r-spinner-self-fade) var(--mu-r-spinner-self-delay) ease-out both; } &:is([data-phase=shown], [data-phase=done]) > svg { opacity: 0; } &:not([data-phase]):not([data-known]) > .mu-spinner-arc, &[data-phase=shown]:not([data-known]) > .mu-spinner-arc { opacity: 1; animation: mu-spinner-turn var(--mu-r-spinner-self-turn) linear infinite; } &[data-phase=done]:not([data-known]) > .mu-spinner-arc { animation: mu-spinner-turn var(--mu-r-spinner-self-turn) linear infinite; } &[data-known]:not([data-phase]) > .mu-spinner-track, &[data-known][data-phase=shown] > .mu-spinner-track { opacity: var(--mu-r-spinner-track-opacity); } &[data-known]:not([data-phase]) > .mu-spinner-fill, &[data-known][data-phase=shown] > .mu-spinner-fill { opacity: 1; } &[data-phase=done] > .mu-spinner-tick { opacity: 1; transition: none; animation: mu-spinner-tick var(--mu-r-spinner-tick-draw) var(--mu-ease-press, ease-out) both; } @media (prefers-reduced-motion: reduce) { &:not([data-phase]):not([data-known]) > .mu-spinner-arc, &[data-phase=shown]:not([data-known]) > .mu-spinner-arc { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } &[data-phase=done]:not([data-known]) > .mu-spinner-arc { animation: none; } &[data-phase=done] > .mu-spinner-tick { animation: none; } } [data-mu-motion=reduce] &:not([data-phase]):not([data-known]) > .mu-spinner-arc, [data-mu-motion=reduce] &[data-phase=shown]:not([data-known]) > .mu-spinner-arc { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] &[data-phase=done]:not([data-known]) > .mu-spinner-arc { animation: none; } [data-mu-motion=reduce] &[data-phase=done] > .mu-spinner-tick { animation: none; }
 }
 @utility spinner-arrive {
   animation: mu-spinner-arrive var(--mu-r-spinner-self-fade) var(--mu-r-spinner-self-delay) ease-out both;
+}
+@utility spinner-item {
+  :where(&) > * { transition: opacity var(--mu-r-spinner-self-fade) ease-out; } &[data-waiting] { pointer-events: none; } &[data-waiting] > :not(.mu-spinner, :has(.mu-spinner)) { opacity: var(--mu-r-spinner-item-dim); }
+}
+@utility spinner-rim {
+  position: absolute; left: calc(var(--mu-r-avatar-ring-width) * -1); top: calc(var(--mu-r-avatar-ring-width) * -1); width: calc(100% + var(--mu-r-avatar-ring-width) * 2); height: calc(100% + var(--mu-r-avatar-ring-width) * 2); overflow: visible; pointer-events: none; animation: mu-spinner-arrive var(--mu-r-spinner-self-fade) var(--mu-r-spinner-self-delay) ease-out both; & > circle { fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: var(--mu-r-spinner-rim-stroke); r: var(--mu-r-spinner-rim-radius); stroke-dasharray: calc(var(--mu-r-spinner-rim-arc) * 100) 100; transform-box: fill-box; transform-origin: center; animation: mu-spinner-turn var(--mu-r-spinner-rim-turn) linear infinite; } @media (prefers-reduced-motion: reduce) { & > circle { stroke-dasharray: none; animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } } [data-mu-motion=reduce] & > circle { stroke-dasharray: none; animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+}
+@utility spinner-edge {
+  position: absolute; inset: 0; z-index: 1; border-radius: inherit; padding: var(--mu-r-spinner-edge-width); pointer-events: none; container-type: size; overflow: hidden; --mu-spinner-edge-ink: color-mix(in srgb, currentColor calc(var(--mu-r-spinner-edge-opacity) * 100%), transparent); mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude; animation: mu-spinner-arrive var(--mu-r-spinner-self-fade) var(--mu-r-spinner-self-delay) ease-out both; & > span { position: absolute; left: 50%; top: 50%; width: calc(100cqw + 100cqh); aspect-ratio: 1; translate: -50% -50%; background: conic-gradient(from 0deg, rgba(0,0,0,0) calc((1 - var(--mu-r-spinner-edge-tail)) * 360deg), var(--mu-spinner-edge-ink)); animation: mu-spinner-turn var(--mu-r-spinner-edge-turn) linear infinite; } @media (prefers-reduced-motion: reduce) { & > span { background: var(--mu-spinner-edge-ink); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } } [data-mu-motion=reduce] & > span { background: var(--mu-spinner-edge-ink); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+}
+@utility spinner-bar {
+  position: absolute; inset-inline: 0; top: 0; height: var(--mu-r-spinner-bar-height); overflow: hidden; pointer-events: none; opacity: 0; transition: opacity var(--mu-r-spinner-self-fade) ease-out var(--mu-r-spinner-bar-finish); & > span { position: absolute; inset: 0; transform-origin: left center; scale: 0 1; } &:not([data-phase]) { animation: mu-spinner-arrive var(--mu-r-spinner-self-fade) var(--mu-r-spinner-self-delay) ease-out both; } &[data-phase=shown] { opacity: 1; transition-delay: 0s; } &:not([data-phase]):not([data-known]) > span { animation: mu-spinner-creep var(--mu-r-spinner-bar-creep) var(--mu-ease-slide) var(--mu-r-spinner-self-delay) both; } &[data-phase=shown]:not([data-known]) > span { animation: mu-spinner-creep var(--mu-r-spinner-bar-creep) var(--mu-ease-slide) both; } &[data-known] > span { scale: calc(var(--mu-spinner-value, 0) / 100) 1; transition: scale calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle); } &[data-phase=done] > span { scale: 1 1; transition: scale var(--mu-r-spinner-bar-finish) ease-out; } @media (prefers-reduced-motion: reduce) { &:not([data-known]):is(:not([data-phase]), [data-phase=shown]) > span { scale: 1 1; animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } } [data-mu-motion=reduce] &:not([data-known]):is(:not([data-phase]), [data-phase=shown]) > span { scale: 1 1; animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
 }
 @utility duration-spinner-turn {
   --tw-duration: var(--mu-r-spinner-self-turn);
@@ -1460,8 +1476,61 @@
   --tw-duration: var(--mu-r-spinner-self-fade);
   transition-duration: var(--mu-r-spinner-self-fade);
 }
-@utility opacity-spinner-tail {
-  opacity: var(--mu-r-spinner-self-tail);
+@utility duration-spinner-minimum {
+  --tw-duration: var(--mu-r-spinner-self-minimum);
+  transition-duration: var(--mu-r-spinner-self-minimum);
+}
+@utility duration-spinner-result {
+  --tw-duration: var(--mu-r-spinner-self-result);
+  transition-duration: var(--mu-r-spinner-self-result);
+}
+@utility duration-spinner-still {
+  --tw-duration: var(--mu-r-spinner-self-still);
+  transition-duration: var(--mu-r-spinner-self-still);
+}
+@utility opacity-spinner-item-dim {
+  opacity: var(--mu-r-spinner-item-dim);
+}
+@utility opacity-spinner-track-opacity {
+  opacity: var(--mu-r-spinner-track-opacity);
+}
+@utility duration-spinner-tick-draw {
+  --tw-duration: var(--mu-r-spinner-tick-draw);
+  transition-duration: var(--mu-r-spinner-tick-draw);
+}
+@utility stroke-width-spinner-rim-stroke {
+  stroke-width: var(--mu-r-spinner-rim-stroke);
+}
+@utility opacity-spinner-rim-arc {
+  opacity: var(--mu-r-spinner-rim-arc);
+}
+@utility duration-spinner-rim-turn {
+  --tw-duration: var(--mu-r-spinner-rim-turn);
+  transition-duration: var(--mu-r-spinner-rim-turn);
+}
+@utility stroke-width-spinner-edge-width {
+  stroke-width: var(--mu-r-spinner-edge-width);
+}
+@utility duration-spinner-edge-turn {
+  --tw-duration: var(--mu-r-spinner-edge-turn);
+  transition-duration: var(--mu-r-spinner-edge-turn);
+}
+@utility opacity-spinner-edge-tail {
+  opacity: var(--mu-r-spinner-edge-tail);
+}
+@utility opacity-spinner-edge-opacity {
+  opacity: var(--mu-r-spinner-edge-opacity);
+}
+@utility duration-spinner-bar-creep {
+  --tw-duration: var(--mu-r-spinner-bar-creep);
+  transition-duration: var(--mu-r-spinner-bar-creep);
+}
+@utility opacity-spinner-bar-reach {
+  opacity: var(--mu-r-spinner-bar-reach);
+}
+@utility duration-spinner-bar-finish {
+  --tw-duration: var(--mu-r-spinner-bar-finish);
+  transition-duration: var(--mu-r-spinner-bar-finish);
 }
 @utility stroke-width-number-field-width {
   stroke-width: var(--mu-r-number-field-self-width);
@@ -3166,6 +3235,12 @@
 }
 @keyframes mu-spinner-arrive {
   from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes mu-spinner-tick {
+  from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; }
+}
+@keyframes mu-spinner-creep {
+  from { scale: 0 1; } to { scale: var(--mu-r-spinner-bar-reach) 1; }
 }
 @keyframes mu-skeleton-arrive {
   from { opacity: 0; } to { opacity: 1; }

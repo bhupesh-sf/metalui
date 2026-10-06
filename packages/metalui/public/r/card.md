@@ -47,3 +47,7 @@ Reduce Motion: no lift; the shadow still grows.
 
 - One link per card; everything else is an explicit action in the footer.
 - Only cards that go somewhere move.
+
+## Waiting
+
+- `waiting` (useWait's `busy`): aria-busy, and after the show delay a lit edge travels round the card's own border in its ink (never a spinner in its middle). Say what is happening in the card's words ("Lifting the subject…", then "Still …" from `wait.still`), mount `Spinner.Status` beside them, and hand over to `Progress` once the amount is known (drop `waiting`). Reduce Motion: the edge breathes.

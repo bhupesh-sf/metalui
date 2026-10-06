@@ -48,3 +48,7 @@ Reduce Motion: it appears and goes at once; the fill still moves.
 
 - Say why an upload failed in a few words ("Too large, 25 MB at most"), and offer to try again.
 - Keep the extension visible; cut the middle of long names.
+
+## Waiting
+
+- `progress={null}` while uploading before the amount is known: a lit segment sweeps the track and the line says "Uploading"; pass the number as soon as it is known and the fill takes over.

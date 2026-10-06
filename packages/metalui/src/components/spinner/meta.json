@@ -13,8 +13,7 @@
   },
   "swift": {
     "symbol": "MetalSpinner",
-    "file": "swift/Sources/MetalUI/Components/MetalSpinner.swift",
-    "status": "wip"
+    "file": "swift/Sources/MetalUI/Components/MetalSpinner.swift"
   },
   "agent": "spinner.agent.md",
   "page": "/components/spinner"

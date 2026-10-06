@@ -8,7 +8,10 @@ import * as React from 'react';
  *   option   a palette row (36 tall, radius 12); the active one raises with a green rail
  * checked strikes the text in ink3; maybe fades a weak match.
  * selected  any variant: the option's raised plate, held through hover (a picked row in a list)
- * opened    any variant: the green rail at the left (the row whose detail is showing) Slots: Row.Root, Row.Lead, Row.Text, Row.Trail.
+ * opened    any variant: the green rail at the left (the row whose detail is showing)
+ * waiting   any variant: held (aria-busy, no pointer); every part but the one holding a Spinner dims
+ *           (the spinner recipe's item look). Put <Spinner phase> in Row.Lead in place of its glyph.
+ * Slots: Row.Root, Row.Lead, Row.Text, Row.Trail.
  * Styled with the theme's utilities (the row recipe). */
 
 export interface RowRootProps extends React.HTMLAttributes<HTMLElement> {
@@ -22,10 +25,12 @@ export interface RowRootProps extends React.HTMLAttributes<HTMLElement> {
   opened?: boolean;
   /** a weak match, faded. */
   maybe?: boolean;
+  /** Its work is under way (useWait's `busy`): held and dimmed, except the part holding a Spinner. */
+  waiting?: boolean;
   as?: 'div' | 'li' | 'tr' | 'button';
 }
 
-const FRAME = 'group/row relative box-border flex text-ink cursor-pointer outline-none data-maybe:opacity-row-maybe';
+const FRAME = 'group/row relative box-border flex text-ink cursor-pointer outline-none data-maybe:opacity-row-maybe spinner-item';
 const SELECTED = 'data-selected:recipe-row-option-on data-selected:hover:recipe-row-option-on data-selected:focus-visible:recipe-row-option-on';
 const OPENED = 'data-open:before:absolute data-open:before:left-row-rail-offset data-open:before:top-row-rail-inset data-open:before:bottom-row-rail-inset data-open:before:w-row-rail-w data-open:before:rounded-row-rail-radius data-open:before:bg-row-rail-color';
 const VARIANTS = {
@@ -37,7 +42,7 @@ const LEAD = 'mu-row-lead inline-flex flex-none';
 const TEXT = 'mu-row-text flex-1 min-w-0 group-data-checked/row:text-row-text-checked group-data-checked/row:line-through';
 const TRAIL = 'mu-row-trail inline-flex items-center gap-row-option-gap ml-auto';
 
-const Root = React.forwardRef<HTMLElement, RowRootProps>(function RowRoot({ variant = 'list', checked, active, selected, opened, maybe, as = 'div', className, ...props }, ref) {
+const Root = React.forwardRef<HTMLElement, RowRootProps>(function RowRoot({ variant = 'list', checked, active, selected, opened, maybe, waiting, as = 'div', className, ...props }, ref) {
   const Tag = as as React.ElementType;
   const own = `mu-row ${FRAME} ${VARIANTS[variant]} ${SELECTED} ${OPENED}`;
   return (
@@ -49,6 +54,8 @@ const Root = React.forwardRef<HTMLElement, RowRootProps>(function RowRoot({ vari
       data-selected={selected ? '' : undefined}
       data-open={opened ? '' : undefined}
       data-maybe={maybe ? '' : undefined}
+      data-waiting={waiting ? '' : undefined}
+      aria-busy={waiting || undefined}
       className={className ? `${own} ${className}` : own}
       {...props}
     />

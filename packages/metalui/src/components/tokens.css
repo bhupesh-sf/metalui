@@ -992,14 +992,30 @@
   --mu-r-progress-segment-sweep: 1400ms;
   --mu-r-progress-segment-breathe: 1600ms;
   --mu-r-progress-segment-dim: 0.35;
-  /* spinner: the switch track (recipe switch); a conic arc masked to a ring */
+  /* spinner: the button's wait arc (recipe button, wait.*); the check glyph's tick (icons/src/acts/check.mjs); the progress breathe; the switch's lit fill for the bar */
   --mu-r-spinner-self-size: 16px;
   --mu-r-spinner-self-small: 12px;
-  --mu-r-spinner-self-ring: 2.5px;
   --mu-r-spinner-self-turn: 900ms;
   --mu-r-spinner-self-delay: 400ms;
   --mu-r-spinner-self-fade: 160ms;
-  --mu-r-spinner-self-tail: 0.72;
+  --mu-r-spinner-self-minimum: 600ms;
+  --mu-r-spinner-self-result: 1400ms;
+  --mu-r-spinner-self-still: 8000ms;
+  --mu-r-spinner-item-dim: 0.5;
+  --mu-r-spinner-track-opacity: 0.18;
+  --mu-r-spinner-tick-draw: 280ms;
+  --mu-r-spinner-rim-radius: 11.3px;
+  --mu-r-spinner-rim-stroke: 1.3px;
+  --mu-r-spinner-rim-arc: 0.26;
+  --mu-r-spinner-rim-turn: 1600ms;
+  --mu-r-spinner-edge-width: 1.5px;
+  --mu-r-spinner-edge-turn: 2800ms;
+  --mu-r-spinner-edge-tail: 0.42;
+  --mu-r-spinner-edge-opacity: 0.75;
+  --mu-r-spinner-bar-height: 2px;
+  --mu-r-spinner-bar-creep: 9000ms;
+  --mu-r-spinner-bar-reach: 0.86;
+  --mu-r-spinner-bar-finish: 260ms;
   /* number-field: the field well (recipe well field); compact button caps; the swap drum; the refusal; Base UI NumberField */
   --mu-r-number-field-self-height: 32px;
   --mu-r-number-field-self-width: 132px;

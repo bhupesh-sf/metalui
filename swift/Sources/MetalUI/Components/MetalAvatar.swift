@@ -8,10 +8,14 @@ import SwiftUI
 public struct MetalAvatar: View {
     private let name: String
     private let image: Image?
+    private let waiting: Bool
+    @Environment(\.metalColorway) private var colorway
 
-    public init(name: String, image: Image? = nil) {
+    /// `waiting`: a new photo is on its way; after the show delay a short arc travels round the rim.
+    public init(name: String, image: Image? = nil, waiting: Bool = false) {
         self.name = name
         self.image = image
+        self.waiting = waiting
     }
 
     private var initials: String {
@@ -26,7 +30,16 @@ public struct MetalAvatar: View {
             Text(initials).foregroundStyle(.secondary)
             image?.resizable().scaledToFill().clipShape(Circle())
         }
+        .metalWaitDim(waiting)
         .frame(width: size, height: size)
+        .overlay {
+            if waiting {
+                MetalSpinnerRim(waiting: waiting)
+                    .padding(-MetalRecipes.avatar.points("ring.width"))
+                    .foregroundStyle(colorway.tokens.ink2.color)
+            }
+        }
+        .accessibilityValue(waiting ? "Uploading a new photo" : "")
         .accessibilityElement()
         .accessibilityLabel(name)
     }
