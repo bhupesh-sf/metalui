@@ -538,6 +538,26 @@
       "docs": "Agent guide: https://metalui.dev/r/cascader.md. SwiftUI: MetalCascader in the MetalUI Swift package."
     },
     {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "An instrument's graph of a person's numbers: line, area or grouped bars on a sunk plot well with engraved hairlines and tabular axes, read off a readout over the plot (the values turning on the drum) that follows the pointer and the arrow keys, with a crosshair and markers or a plate at the point. Series differ by pattern and marker shape, one signal series in the intent green. Missing values break the line; loading shows skeleton bars, empty and failed say so in the well. Data rises from zero once when it arrives. A computed summary and the numbers as a table, shown with view=\"table\".",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/skeleton.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/chart/chart.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/chart/chart.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/chart.md. SwiftUI: MetalChart in the MetalUI Swift package."
+    },
+    {
       "name": "checkbox",
       "type": "registry:ui",
       "title": "Checkbox",
