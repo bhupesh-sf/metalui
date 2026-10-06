@@ -103,6 +103,7 @@ export const routes: RouteObject[] = [
       { path: 'components/attachment', lazy: lazy(() => import('../pages/components/Attachment')) },
       { path: 'blocks/studio-week', lazy: lazy(() => import('../pages/blocks/StudioWeek')) },
       { path: 'blocks/ai-composer', lazy: lazy(() => import('../pages/blocks/AiComposer')) },
+      { path: 'blocks/chat-panel', lazy: lazy(() => import('../pages/blocks/ChatPanel')) },
       { path: 'blocks/share-panel', lazy: lazy(() => import('../pages/blocks/SharePanel')) },
       { path: 'blocks/availability-picker', lazy: lazy(() => import('../pages/blocks/AvailabilityPicker')) },
       { path: 'blocks/task-inbox', lazy: lazy(() => import('../pages/blocks/TaskInbox')) },

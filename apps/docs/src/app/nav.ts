@@ -57,6 +57,7 @@ export const NAV: NavGroup[] = [
     items: [
       { to: '/blocks/studio-week', label: 'Studio week' },
       { to: '/blocks/ai-composer', label: 'AI composer' },
+      { to: '/blocks/chat-panel', label: 'Chat panel' },
       { to: '/blocks/share-panel', label: 'Share panel' },
       { to: '/blocks/availability-picker', label: 'Availability picker' },
       { to: '/blocks/task-inbox', label: 'Task inbox' },

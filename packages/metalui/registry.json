@@ -2876,6 +2876,26 @@
       "docs": "Docs: https://metalui.dev/blocks/availability-picker. Import it from components/metalui/screens/availability-picker/availability-picker. Needs @unlocalhosted/metalui@^0.3.0."
     },
     {
+      "name": "block-chat-panel",
+      "type": "registry:block",
+      "title": "Chat panel",
+      "description": "An assistant beside the work: the conversation docked as a column or floating in a popover from a corner key, with takes to move between, a checkpoint to restore and the composer's ghost text.",
+      "dependencies": [
+        "@unlocalhosted/metalui@^0.3.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "apps/docs/src/blocks/chat-panel/chat-panel.tsx",
+          "type": "registry:block",
+          "target": "components/metalui/screens/chat-panel/chat-panel.tsx"
+        }
+      ],
+      "docs": "Docs: https://metalui.dev/blocks/chat-panel. Import it from components/metalui/screens/chat-panel/chat-panel. Needs @unlocalhosted/metalui@^0.3.0."
+    },
+    {
       "name": "block-settings",
       "type": "registry:block",
       "title": "Settings",
