@@ -5800,7 +5800,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 67 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 75 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -5811,7 +5811,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 
 - **Triggering:** an icon inside any element with the class `mu-icon-trigger` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
 - **Accessibility:** icons without `title` are decorative (`aria-hidden`). Give icon-only controls an `aria-label`.
-- **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, send/stop, download/upload, eye/eye-off, save) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
+- **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, send/stop, download/upload, eye/eye-off, info/warning, folder/folder-open, sun/moon, save) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
 - **On cue:** `act` plays the glyph's act whenever it turns to a new truthy value, for a result rather than a touch: `<Icon name="check" act={saves} />` plays on each save; `act` alone plays it as the icon arrives.
 - **Static:** `animate={false}` keeps a glyph static. Reduced motion does this automatically.
 - **SwiftUI and SVG:** the same glyphs ship as SF Symbols (planned), plus static and animated SVGs at `https://metalui.dev/icons/svg/<name>.svg`.
@@ -5885,3 +5885,11 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `EyeIcon` | `eye` | Actions | The eye looks one way, then the other, and blinks; it opens wide and rays open over it. | plays the same act |
 | `EyeOffIcon` | `eye-off` | Actions | The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again. | plays the same act |
 | `LockIcon` | `lock` | Status | The shackle is lifted and pushed home into the case, which takes it, and it clicks shut. | plays the same act |
+| `InfoIcon` | `info` | Status | The stem crouches and springs up, throwing its dot; ticks open at the top of the throw and the dot lands back on its seat. | plays the same act |
+| `WarningIcon` | `warning` | Status | The mark is lifted and struck down into the sign, which takes the blow; alarm lines open off its sides. | plays the same act |
+| `CoinIcon` | `coin` | Tools | The coin is flipped: tossed up, turned edge-on at the top, and it lands on its edge with a clink. | plays the same act |
+| `SunIcon` | `sun` | Tools | The disc gathers itself and swells back, flaring its rays out; they come home. | plays the same act |
+| `MoonIcon` | `moon` | Tools | The crescent is tipped back and rocks home like a cradle; its star brightens and a second one twinkles out. | plays the same act |
+| `FolderIcon` | `folder` | Tools | The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it. | plays the same act |
+| `FolderOpenIcon` | `folder-open` | Tools | A page is lifted out of the open folder, the front tipping further to let it out, and put back. | plays the same act |
+| `SidebarIcon` | `sidebar` | Actions | The rail's edge is slid shut over its rows and springs back open; the rows come back behind it. | plays the same act |

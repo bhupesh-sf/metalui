@@ -73,6 +73,14 @@ export const ICONS = [
   { name: 'eye', cat: 'Actions', label: 'Show' },
   { name: 'eye-off', cat: 'Actions', label: 'Hide' },
   { name: 'lock', cat: 'Status', label: 'Lock · Locked' },
+  { name: 'info', cat: 'Status', label: 'Info · Note' },
+  { name: 'warning', cat: 'Status', label: 'Warning · Urgent' },
+  { name: 'coin', cat: 'Tools', label: 'Money · Coin' },
+  { name: 'sun', cat: 'Tools', label: 'Light · Day' },
+  { name: 'moon', cat: 'Tools', label: 'Dark · Night' },
+  { name: 'folder', cat: 'Tools', label: 'Folder' },
+  { name: 'folder-open', cat: 'Tools', label: 'Folder open' },
+  { name: 'sidebar', cat: 'Actions', label: 'Sidebar' },
 ];
 
 // MU_ICON_ACTS=a,b loads only those acts (the film tool, so one icon in progress never breaks another).

@@ -70,6 +70,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case eye = "eye"
     case eyeOff = "eye-off"
     case lock = "lock"
+    case info = "info"
+    case warning = "warning"
+    case coin = "coin"
+    case sun = "sun"
+    case moon = "moon"
+    case folder = "folder"
+    case folderOpen = "folder-open"
+    case sidebar = "sidebar"
 
     public enum Category: String, Sendable { case tools = "Tools", actions = "Actions", status = "Status" }
 
@@ -142,6 +150,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return "Show"
         case .eyeOff: return "Hide"
         case .lock: return "Lock · Locked"
+        case .info: return "Info · Note"
+        case .warning: return "Warning · Urgent"
+        case .coin: return "Money · Coin"
+        case .sun: return "Light · Day"
+        case .moon: return "Dark · Night"
+        case .folder: return "Folder"
+        case .folderOpen: return "Folder open"
+        case .sidebar: return "Sidebar"
         }
     }
 
@@ -214,6 +230,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return .actions
         case .eyeOff: return .actions
         case .lock: return .status
+        case .info: return .status
+        case .warning: return .status
+        case .coin: return .tools
+        case .sun: return .tools
+        case .moon: return .tools
+        case .folder: return .tools
+        case .folderOpen: return .tools
+        case .sidebar: return .actions
         }
     }
 
@@ -287,6 +311,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return 0.133
         case .eyeOff: return 0.1
         case .lock: return 0.12
+        case .info: return 0.1
+        case .warning: return 0.12
+        case .coin: return 0.14
+        case .sun: return 0.2
+        case .moon: return 0.14
+        case .folder: return 0.12
+        case .folderOpen: return 0.12
+        case .sidebar: return 0.08
         }
     }
 
@@ -360,6 +392,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return nil
         case .eyeOff: return nil
         case .lock: return nil
+        case .info: return nil
+        case .warning: return nil
+        case .coin: return nil
+        case .sun: return nil
+        case .moon: return nil
+        case .folder: return nil
+        case .folderOpen: return nil
+        case .sidebar: return nil
         }
     }
 
@@ -433,6 +473,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return false
         case .eyeOff: return false
         case .lock: return false
+        case .info: return false
+        case .warning: return false
+        case .coin: return false
+        case .sun: return false
+        case .moon: return false
+        case .folder: return false
+        case .folderOpen: return false
+        case .sidebar: return false
         }
     }
 
@@ -506,6 +554,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .eye: return 1.85
         case .eyeOff: return 1.85
         case .lock: return 1.85
+        case .info: return 1.85
+        case .warning: return 1.85
+        case .coin: return 1.85
+        case .sun: return 1.85
+        case .moon: return 1.85
+        case .folder: return 1.85
+        case .folderOpen: return 1.85
+        case .sidebar: return 1.85
         }
     }
 }
