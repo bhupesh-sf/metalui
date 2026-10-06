@@ -166,7 +166,7 @@
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalCalendar"
+        "symbol": "MetalCalendar, MetalDatePicker"
       },
       "registry": "https://metalui.dev/r/calendar.json",
       "agent": "https://metalui.dev/r/calendar.md"

@@ -13,9 +13,8 @@
     ]
   },
   "swift": {
-    "symbol": "MetalCalendar",
-    "file": "swift/Sources/MetalUI/Components/MetalCalendar.swift",
-    "status": "wip"
+    "symbol": "MetalCalendar, MetalDatePicker",
+    "file": "swift/Sources/MetalUI/Components/MetalCalendar.swift"
   },
   "agent": "calendar.agent.md",
   "page": "/components/calendar"

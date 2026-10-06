@@ -381,7 +381,7 @@
           "target": "components/metalui/components/calendar/date-picker.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/calendar.md. SwiftUI: MetalCalendar in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/calendar.md. SwiftUI: MetalCalendar, MetalDatePicker in the MetalUI Swift package."
     },
     {
       "name": "card",
