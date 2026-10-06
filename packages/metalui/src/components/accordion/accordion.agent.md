@@ -13,7 +13,7 @@ Sections that open in place. React: `Accordion` from `@unlocalhosted/metalui`, o
 ## Anatomy
 
 - Item: one section; engraved rules between items, inset to the text.
-- Trigger: a row 40 tall, padding 12, radius 12, ui type; the chevron (12, ink2) at the end.
+- Trigger: a row 40 tall, padding 12, radius 12, ui type; the set's `chevron` (12, ink2) at the end, the same glyph and turn as Collapsible's.
 - Panel: the content, body type, ink2, padding 12 at the sides and 14 below.
 
 ## States and motion

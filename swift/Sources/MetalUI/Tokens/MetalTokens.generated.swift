@@ -911,7 +911,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Sections that open in place: each header is a row (the row recipe's panel hover) with a chevron at the end, sections parted by engraved rules. Opening, the panel grows to its content on the settle spring (a control growing to new content, no overshoot) while its content fades in, and the chevron turns a quarter on the part spring (a part you touch; it may overshoot against its stop). Closing, height and content leave on the release spring and the chevron turns back. Reduce Motion: the height snaps, the content crossfades, the chevron snaps. (the row recipe (panel hover), the rule recipe, the select chevron's drawing; Base UI Accordion)
+    /// Sections that open in place: each header is a row (the row recipe's panel hover) with a chevron at the end, sections parted by engraved rules. Opening, the panel grows to its content on the settle spring (a control growing to new content, no overshoot) while its content fades in, and the chevron turns a quarter on the part spring (a part you touch; it may overshoot against its stop). Closing, height and content leave on the release spring and the chevron turns back. Reduce Motion: the height snaps, the content crossfades, the chevron snaps. (the row recipe (panel hover), the rule recipe, the set's chevron and its turn (the collapsible recipe); Base UI Accordion)
     public static let accordion = MetalObjectRecipe(
         name: "accordion",
         layers: [
@@ -924,9 +924,31 @@ public enum MetalRecipes {
             "trigger.gap": .number(8.0),
             "trigger.disabled": .text("0.4"),
             "chevron.size": .number(12.0),
-            "chevron.turn": .text("90deg"),
             "panel.pad-x": .number(12.0),
             "panel.pad-bottom": .number(14.0),
+        ]
+    )
+
+    /// Show and hide in place, on its own: a row (a title, a summary while closed, the set's chevron at the end; the row recipe's panel hover hung past the column so the title lines up with what it opens), a ghost key with the chevron, or a quiet "Show 3 more" key after the panel. Opening, the panel takes its place at once and is uncovered from its top edge (clip-path) as it slides out from one nest above on the settle spring, while everything after it travels down in step (transform only, never height); closing, it slides back under its trigger on the release spring while what follows travels up into the gap, then it goes. The chevron turns on the part spring (a part you touch; it may overshoot its stop); the summary fades as the section opens. Reduce Motion: the content crossfades in place, nothing slides or travels, the chevron snaps. (the accordion recipe (row hover, chevron turn), the table's group reveal (clip from the top edge) and the rows' travel (motion/rows.ts); Base UI Collapsible)
+    public static let collapsible = MetalObjectRecipe(
+        name: "collapsible",
+        layers: [
+
+        ],
+        props: [
+            "row.height": .number(32.0),
+            "row.pad-x": .number(12.0),
+            "row.radius": .number(10.0),
+            "row.gap": .number(8.0),
+            "row.disabled": .text("0.4"),
+            "chevron.size": .number(14.0),
+            "chevron.closed": .text("-90deg"),
+            "chevron.over": .text("180deg"),
+            "more.height": .number(28.0),
+            "more.pad-x": .number(8.0),
+            "more.radius": .number(8.0),
+            "more.gap": .number(6.0),
+            "panel.bleed": .number(24.0),
         ]
     )
 

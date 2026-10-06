@@ -183,6 +183,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -534,6 +535,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/code-card.md. SwiftUI: MetalCodeCard in the MetalUI Swift package."
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "Show and hide in place, on its own: a row with a summary and the set's chevron, a ghost key, or \"Show 3 more\" on the drum. The panel is uncovered from its top edge as it slides out on the settle spring while what follows travels in step; it slides back on release. Never animates height.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/collapsible/collapsible.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/collapsible/collapsible.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/collapsible.md. SwiftUI: MetalCollapsible in the MetalUI Swift package."
     },
     {
       "name": "combobox",

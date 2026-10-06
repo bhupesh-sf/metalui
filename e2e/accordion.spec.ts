@@ -49,8 +49,8 @@ test('the panel grows without overshoot while the chevron overshoots its stop', 
   expect(end.h).toBeGreaterThan(20);
   expect(Math.max(...frames.map((f) => f.h))).toBeLessThanOrEqual(end.h + 0.5);
   expect(frames.some((f) => f.h > 1 && f.h < end.h - 1)).toBe(true);
-  expect(Math.max(...frames.map((f) => f.r))).toBeGreaterThan(92);
-  expect(end.r).toBeCloseTo(90, 0);
+  expect(Math.max(...frames.map((f) => f.r))).toBeGreaterThan(1);
+  expect(end.r).toBeCloseTo(0, 0);
 });
 
 test('Reduce Motion: the height and chevron snap', async ({ page }) => {
@@ -63,5 +63,5 @@ test('Reduce Motion: the height and chevron snap', async ({ page }) => {
   // It lands at full height within a frame or two, not over the settle spring's 440 ms.
   await expect.poll(() => panel.evaluate((p) => Math.abs(p.getBoundingClientRect().height - p.scrollHeight)), { timeout: 150, intervals: [16] }).toBeLessThan(0.5);
   const settled = { r: await history.locator('svg').evaluate((c) => getComputedStyle(c).rotate) };
-  expect(settled.r).toBe('90deg');
+  expect(settled.r).toBe('0deg');
 });
