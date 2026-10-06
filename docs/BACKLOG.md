@@ -576,7 +576,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
   - Now, Clear, and Confirm before applying; localised labels; a form field with validation; date and time together.
 - [x] **Input OTP** (shadcn): one box per digit for a one-time code; paste fills all of them. (Built 2026-10-06 as `CodeField`; sheet in `docs/sheets/code-input.md`: Base UI's OTP field, one input per slot, autofill on the first; keycaps spring in, paste ripples; a wrong code shakes once and stays; `CodeField.Resend`. Left: SwiftUI edits only at the end; WebOTP.)
 - [ ] **Phone input**: a country picker plus number formatting; E.164 value; a default country; sizes sm, default, lg; disabled.
-- [ ] **Rating**: stars; half stars from decimals; the number shown beside them; editable or read-only; `max`; sizes sm, default, lg.
+- [x] **Rating**: stars; half stars from decimals; the number shown beside them; editable or read-only; `max`; sizes sm, default, lg. (Built 2026-10-06; sheet in `docs/sheets/rating.md`: detents, not stars — the slider's groove cut per point, decimals fill exactly; a radio group with clearing; read-only is one image with the sentence. Left: half points when rating, slide to rate on touch, a `star` glyph if a product insists.)
 - [ ] **Cascader**: a value chosen through nested levels.
   - Modes: drill down one level at a time (with Back), Miller columns side by side, a tree that expands in place.
   - One value or many (checkboxes, a `max`, selection that cascades to children); leaves only or any branch.
