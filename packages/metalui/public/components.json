@@ -342,6 +342,23 @@
       "agent": "https://metalui.dev/r/chip.md"
     },
     {
+      "name": "citation",
+      "title": "Citation",
+      "status": "alpha",
+      "description": "Where an answer's words came from: a numbered mark in the text on the link cue's pill, a link to the source that opens its preview card on a steady hover; and the sources under the answer, folded under one row (\"4 sources\"), each numbered with its title and host.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Citation",
+        "base": "@base-ui/react/preview-card (through PreviewCard)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCitation, MetalCitationSources"
+      },
+      "registry": "https://metalui.dev/r/citation.json",
+      "agent": "https://metalui.dev/r/citation.md"
+    },
+    {
       "name": "code-block",
       "title": "Code block",
       "status": "alpha",
@@ -1172,6 +1189,22 @@
       },
       "registry": "https://metalui.dev/r/phone-input.json",
       "agent": "https://metalui.dev/r/phone-input.md"
+    },
+    {
+      "name": "plan",
+      "title": "Plan",
+      "status": "alpha",
+      "description": "The agent's to-do list: a compact Progress head (\"3 of 5\"), then each step with the tool call's state words and lamps: pending, queued (what is waiting to run), running, done (the check) and failed, a detail line under a step and its own tasks nested beside a rule.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Plan"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalPlan"
+      },
+      "registry": "https://metalui.dev/r/plan.json",
+      "agent": "https://metalui.dev/r/plan.md"
     },
     {
       "name": "popover",

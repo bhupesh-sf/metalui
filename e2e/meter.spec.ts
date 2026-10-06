@@ -57,3 +57,12 @@ test('Reduce Motion: every segment changes at once', async ({ page }) => {
   });
   expect(new Set(delays)).toEqual(new Set(['0s']));
 });
+
+test('the context window: a Meter that says its tokens', async ({ page }) => {
+  await open(page, '/components/meter', 'bone');
+  const context = page.getByTestId('context-meter');
+  const meter = context.getByRole('meter', { name: 'Context' });
+  await expect(meter).toHaveAttribute('aria-valuetext', '30%, 60k of 200k tokens');
+  await expect(context).toContainText('60k of 200k tokens');
+  await expect(meter.locator('.mu-meter-segment[data-lit]')).toHaveCount(5);
+});

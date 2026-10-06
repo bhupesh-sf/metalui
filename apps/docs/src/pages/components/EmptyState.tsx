@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Attachment, Button, EmptyState } from '@unlocalhosted/metalui';
-import { RegionIcon } from '@unlocalhosted/metalui/icons';
+import { Attachment, Button, EmptyState, Message, Thread } from '@unlocalhosted/metalui';
+import { NoteIcon, RegionIcon } from '@unlocalhosted/metalui/icons';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/empty-state/empty-state.tsx?raw';
@@ -45,6 +45,45 @@ function ArrivalTuner() {
   return <div data-testid="empty-arrival-tuner" className="flex w-full justify-center" style={vars}><Place label="Tuned region" /></div>;
 }
 
+/* WELCOME: a new chat's greeting is an empty state in the thread; its starter prompts are compact Buttons
+ * in the action row. Pressing one sends it; the reply ends with follow-ups, the same Buttons in a row under
+ * the message. The Welcome panel sets how many prompts and whether the greeting says what it can do. */
+const PROMPTS = ['Summarise this board', 'Plan next week', 'Draft a release note', 'Find what is overdue'];
+const FOLLOW_UPS = ['Make it shorter', 'Add the dates'];
+
+function Welcome() {
+  const d = useDialKit('Welcome', { prompts: [3, 1, 4], description: true });
+  const [sent, setSent] = React.useState<string[]>([]);
+  const send = (words: string) => setSent((all) => [...all, words]);
+  const prompts = PROMPTS.slice(0, Math.round(d.prompts));
+  return (
+    <div data-testid="welcome" className="flex h-[360px] w-full max-w-[520px] flex-col justify-self-center rounded-card recipe-well-field">
+      <Thread aria-label="New chat" className="min-h-0 flex-1" pinKey={sent.length}>
+        {sent.length === 0 ? (
+          <EmptyState
+            key="welcome"
+            icon={<NoteIcon size={24} />}
+            title="What are we making?"
+            description={d.description ? 'Ask about your boards, notes and plans.' : undefined}
+            action={prompts.map((p) => <Button key={p} size="compact" onClick={() => send(p)}>{p}</Button>)}
+          />
+        ) : sent.flatMap((words, i) => [
+          <Message key={`u${i}`} from="user">{words}</Message>,
+          <Message key={`a${i}`} from="assistant" model="Fast">Here is a first pass at “{words.toLowerCase()}”.</Message>,
+        ])}
+        {sent.length > 0 && (
+          <div key="follow-ups" role="group" aria-label="Follow-ups" className="flex flex-wrap gap-8">
+            {FOLLOW_UPS.map((p) => <Button key={p} size="compact" onClick={() => send(p)}>{p}</Button>)}
+          </div>
+        )}
+      </Thread>
+      <div className="flex justify-end p-8">
+        <Button size="compact" disabled={sent.length === 0} onClick={() => setSent([])}>New chat</Button>
+      </div>
+    </div>
+  );
+}
+
 export default function EmptyStatePage() {
   return (
     <ComponentPage
@@ -58,7 +97,7 @@ export default function EmptyStatePage() {
           </div>
         </div>
       ) }}
-      more={[{ id: 'arrival', title: 'Tune the arrival', lede: 'The Empty arrival panel swaps the spring the empty state rises on, sets how far below it starts, and stretches time.', node: <ArrivalTuner /> }]}
+      more={[{ id: 'welcome', title: 'Welcome a new chat', lede: 'An empty thread is an empty state: a greeting, what it can do, and starter prompts as compact buttons. Press one to send it; the reply ends with follow-ups in the same buttons. The Welcome panel sets how many prompts and the description.', node: <Welcome /> }, { id: 'arrival', title: 'Tune the arrival', lede: 'The Empty arrival panel swaps the spring the empty state rises on, sets how far below it starts, and stretches time.', node: <ArrivalTuner /> }]}
       usage={`{notes.length === 0 ? (
   <EmptyState
     icon={<NoteIcon size={24} />}

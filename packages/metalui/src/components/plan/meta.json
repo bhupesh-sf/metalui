@@ -1,0 +1,19 @@
+{
+  "name": "plan",
+  "title": "Plan",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["led", "progress", "spinner"],
+  "description": "The agent's to-do list: a compact Progress head (\"3 of 5\"), then each step with the tool call's state words and lamps: pending, queued (what is waiting to run), running, done (the check) and failed, a detail line under a step and its own tasks nested beside a rule.",
+  "react": {
+    "export": "Plan",
+    "files": ["plan.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalPlan",
+    "file": "swift/Sources/MetalUI/Components/MetalPlan.swift"
+  },
+  "agent": "plan.agent.md",
+  "page": "/components/plan"
+}

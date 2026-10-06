@@ -20,3 +20,19 @@ for (const colorway of COLORWAYS) {
     await expect(page.getByRole('status').filter({ hasText: 'No comments' })).toContainText('No comments');
   });
 }
+
+test('a new chat welcomes with starter prompts; a reply ends with follow-ups', async ({ page }) => {
+  await open(page, '/components/empty-state', 'bone');
+  const chat = page.getByTestId('welcome');
+  const log = chat.getByRole('log', { name: 'New chat' });
+  await expect(log.getByRole('status')).toContainText('What are we making?');
+  await expect(log.getByRole('status').getByRole('button')).toHaveCount(3);
+  await log.getByRole('button', { name: 'Plan next week' }).click();
+  await expect(log.getByRole('status')).toHaveCount(0);
+  await expect(log.getByRole('article', { name: 'You' })).toContainText('Plan next week');
+  const followUps = log.getByRole('group', { name: 'Follow-ups' });
+  await followUps.getByRole('button', { name: 'Add the dates' }).click();
+  await expect(log.getByRole('article', { name: 'You' })).toHaveCount(2);
+  await chat.getByRole('button', { name: 'New chat' }).click();
+  await expect(log.getByRole('status')).toContainText('What are we making?');
+});

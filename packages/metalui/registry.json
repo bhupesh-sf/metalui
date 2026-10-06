@@ -626,6 +626,29 @@
       "docs": "Agent guide: https://metalui.dev/r/chip.md. SwiftUI: MetalChip in the MetalUI Swift package."
     },
     {
+      "name": "citation",
+      "type": "registry:ui",
+      "title": "Citation",
+      "description": "Where an answer's words came from: a numbered mark in the text on the link cue's pill, a link to the source that opens its preview card on a steady hover; and the sources under the answer, folded under one row (\"4 sources\"), each numbered with its title and host.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/collapsible.json",
+        "https://metalui.dev/r/link.json",
+        "https://metalui.dev/r/preview-card.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/citation/citation.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/citation/citation.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/citation.md. SwiftUI: MetalCitation, MetalCitationSources in the MetalUI Swift package."
+    },
+    {
       "name": "code-block",
       "type": "registry:ui",
       "title": "Code block",
@@ -1665,6 +1688,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/phone-input.md. SwiftUI: MetalPhoneInput in the MetalUI Swift package."
+    },
+    {
+      "name": "plan",
+      "type": "registry:ui",
+      "title": "Plan",
+      "description": "The agent's to-do list: a compact Progress head (\"3 of 5\"), then each step with the tool call's state words and lamps: pending, queued (what is waiting to run), running, done (the check) and failed, a detail line under a step and its own tasks nested beside a rule.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/progress.json",
+        "https://metalui.dev/r/spinner.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/plan/plan.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/plan/plan.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/plan.md. SwiftUI: MetalPlan in the MetalUI Swift package."
     },
     {
       "name": "popover",

@@ -86,6 +86,8 @@ export { Confirmation, type ConfirmationProps, type ConfirmationDecision } from 
 export { Markdown, type MarkdownProps } from './components/markdown/markdown';
 export { PromptInput, type PromptInputProps } from './components/prompt-input/prompt-input';
 export { MessageActions, type MessageActionsProps, type MessageFeedback } from './components/message-actions/message-actions';
+export { Plan, type PlanProps, type PlanTask, type PlanTaskState } from './components/plan/plan';
+export { Citation, type CitationProps, type CitationRootProps, type CitationSourcesProps, type CitationSource } from './components/citation/citation';
 export { Timeline, type TimelineProps, type TimelineEvent, type TimelineState, type TimelineFormat } from './components/timeline/timeline';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
 export { Combobox, type ComboboxProps, type ComboboxItem, type ComboboxGroup, type ComboboxAction } from './components/combobox/combobox';
