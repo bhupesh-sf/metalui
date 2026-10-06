@@ -721,14 +721,17 @@ The block (`apps/docs/src/blocks/ai-composer`) already does these inside itself;
 ### 3. Code and artifacts (only if MetalUI targets coding agents)
 
 - [ ] An artifact panel beside the thread (V); a web or JSX preview (V P); a terminal (V); a stack trace (V); test results (V); a commit (V); a schema view (V); environment variables (V). Code block and Tree are in "Components other libraries ship" above.
+  Parked (2026-10-06, Bhupesh): kept in the backlog, not scheduled.
 
 ### 4. Voice (V)
 
 - [ ] Speech input, transcription, an audio player, mic and voice pickers, and a persona (an animated presence for the agent).
+  Parked (2026-10-06, Bhupesh): kept in the backlog, not scheduled.
 
 ### 5. Workflow canvas (V)
 
 - [ ] Nodes, edges, a canvas, controls and panels. `Connector` and `SpatialField` already exist, so this may fit the Objects and Places layers better than anything above.
+  Parked (2026-10-06, Bhupesh): kept in the backlog, not scheduled.
 
 ### 6. Generative UI and entry points
 
