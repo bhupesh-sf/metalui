@@ -32,7 +32,7 @@ export default function ToolStripPage() {
         <Bench caption={listSaid} className="min-h-[160px]">
           <ToolStrip
             label="3 selected tasks"
-            count={<SwapText value="3 selected" />}
+            count={<span className="type-ui tabular-nums text-toolstrip-ink-hover"><SwapText value="3 selected" /></span>}
             items={[
               { label: 'Complete', icon: <Icon name="check" />, shortcut: 'E', onSelect: () => setListSaid('Completed 3 tasks · Undo') },
               { label: 'Snooze', icon: <Icon name="clock" />, menu: { heading: 'Snooze until', items: [

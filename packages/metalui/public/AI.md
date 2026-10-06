@@ -3995,7 +3995,7 @@ Verbs over a selection. A composition block on Base UI Toolbar. React: `ToolStri
 |---|---|
 | `items: { label, onSelect, destructive?, disabled?, shortcut? }[]` | `items: [MetalToolStripItem]` |
 | an item's `icon` (its glyph, before the word), `iconOnly` (only the glyph: a close key), `menu: { heading, items: { label, onSelect }[] }` (choices that open above the strip) | – (not yet) |
-| `count` (a lead before a separator: `<SwapText value="3 selected" />`), `wordClassName` (on every word: `sr-only @lg:not-sr-only` keeps only glyphs when narrow) | – (not yet) |
+| `count` (a lead before a separator, styled by you: `<span className="type-ui tabular-nums text-toolstrip-ink-hover"><SwapText value="3 selected" /></span>`), `wordClassName` (on every word: `sr-only @lg:not-sr-only` keeps only glyphs when narrow) | – (not yet) |
 | `label` (what they act on) | `label:` |
 
 ## Rules

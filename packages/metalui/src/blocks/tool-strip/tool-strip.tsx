@@ -21,7 +21,8 @@ import { Menu, MenuItem } from '../../components/menu/menu';
 /* Layout from the toolstrip group; it rises on the part spring (animate-toolstrip-in). */
 const STRIP = 'mu-toolstrip inline-flex items-center gap-toolstrip-gap p-toolstrip-pad animate-toolstrip-in [&>.mu-rule]:h-toolstrip-sep-height';
 
-const COUNT = 'mu-toolstrip-count px-toolstrip-pad type-ui whitespace-nowrap tabular-nums text-toolstrip-ink-hover';
+// The count's place only: a composition doesn't paint, so its words come styled from the host.
+const COUNT = 'mu-toolstrip-count px-toolstrip-pad whitespace-nowrap';
 
 export interface ToolStripItem {
   /** The verb. With `iconOnly` it names the key for assistive tech and the tooltip only. */
@@ -45,7 +46,7 @@ export interface ToolStripProps {
   items: ToolStripItem[];
   /** What the verbs act on, for assistive tech: "3 blocks". */
   label: string;
-  /** A lead before the verbs, set off by a separator: "3 selected" (a SwapText keeps the count turning). */
+  /** A lead before the verbs, set off by a separator, styled by you: "3 selected" (a SwapText keeps the count turning). */
   count?: React.ReactNode;
   /** A class on every verb's word, e.g. "sr-only @lg:not-sr-only" to keep only glyphs when narrow; the word still names the key. */
   wordClassName?: string;

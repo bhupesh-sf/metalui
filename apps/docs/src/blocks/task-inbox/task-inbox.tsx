@@ -571,7 +571,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
           <div ref={strip} className="col-start-1 row-start-1">
             <ToolStrip
               label={plural(stripCount, 'selected task', 'selected tasks')}
-              count={<SwapText value={`${stripCount} selected`} />}
+              count={<span className="type-ui tabular-nums text-toolstrip-ink-hover"><SwapText value={`${stripCount} selected`} /></span>}
               wordClassName="sr-only @lg/block:not-sr-only"
               items={[
                 { label: 'Complete', icon: <Icon name="check" />, shortcut: 'E', onSelect: completeTargets },

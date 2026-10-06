@@ -7,7 +7,8 @@
   "uses": [
     "surface",
     "button",
-    "rule"
+    "rule",
+    "menu"
   ],
   "description": "Verbs over a click selection: Surface(graphite-strip) with Button(strip) caps (Tasks, Summarise, Gather, Region, Export) and Send away as Button(strip-danger) after a Rule. Rises 4 on the part spring.",
   "base": "@base-ui/react/toolbar",
