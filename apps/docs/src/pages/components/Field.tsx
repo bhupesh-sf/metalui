@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Field, SearchField } from '@unlocalhosted/metalui';
-import { Icon } from '@unlocalhosted/metalui/icons';
+import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
 import { useDialKit } from 'dialkit';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
@@ -47,6 +47,21 @@ function Keys() {
         </Field.Trail>
       </Field>
       <p className="m-0 type-meta text-ink3">Filtering by “{q}”. Press / anywhere on the page to come back to it.</p>
+    </div>
+  );
+}
+
+function CopyAndReveal() {
+  return (
+    <div className={COLUMN}>
+      <Field size="regular">
+        <Field.Input readOnly defaultValue="mu_live_7Hq2v9KcX4" aria-label="API key" />
+        <Field.Trail><Field.Copy icon={<Icon name="copy" />} copiedIcon={<Icon name="check" />} /></Field.Trail>
+      </Field>
+      <Field size="regular">
+        <Field.Input defaultValue="north-light-42" autoComplete="new-password" aria-label="Password" />
+        <Field.Trail><Field.Reveal icon={<MorphIcon name="eye" />} hideIcon={<MorphIcon name="eye-off" />} /></Field.Trail>
+      </Field>
     </div>
   );
 }
@@ -118,6 +133,7 @@ export default function FieldPage() {
         ) },
         { id: 'affixes', title: 'Fixed parts of the value', lede: 'A prefix or suffix is part of what the value means but not part of what you type: "https://", "$", "kg". It is engraved into the tray, you cannot select it, and pressing it puts the caret at its end of the input. A screen reader hears it with the field.', node: <Affixes /> },
         { id: 'keys', title: 'Keys inside the field', lede: 'The trail holds small raised keys. Clear shows while there is text and takes it away; the shortcut key says how to come back to the field, and turns to Esc while you are in it. Pressing a key leaves the caret where it was.', node: <Keys /> },
+        { id: 'copy-reveal', title: 'Copy and show password', lede: 'Copy takes the whole value; its glyph turns on the drum to a check for a moment, then back, and a screen reader hears "Copied". With a show-password key the input is a password: the key shows the text and says it is pressed, and its eye morphs shut while the text shows.', node: <CopyAndReveal /> },
         { id: 'tune', title: 'Tune the keys', lede: 'The Field keys panel swaps the springs a key pops in and leaves on, and stretches time. Flip the field between text and empty.', node: <KeyTuner /> },
         { id: 'length', title: 'How much to type', lede: 'With a limit, the counter shows near the end of it, turns red at the limit, and shakes if you type past it. chars sizes a field to what goes in it, so a postcode box looks like a postcode.', node: <Sizing /> },
       ]}

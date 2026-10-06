@@ -99,8 +99,10 @@ for (const colorway of COLORWAYS) {
     expect(await style(bar, 'background-image')).toContain('gradient');
     await expect(main).toBeVisible();
     expect(await style(chevron, 'background-image')).toBe('none');
-    const glyph = () => chevron.locator('svg').evaluate((e) => getComputedStyle(e).rotate);
-    expect(await glyph()).toMatch(/^(0deg|none)$/);
+    // The chevron is a MorphIcon: opening turns it over (a half turn, edge-on midway), not a CSS spin.
+    const glyph = () => chevron.locator('svg').getAttribute('data-turn');
+    expect(await glyph()).toBeNull();
+    expect(await chevron.locator('svg').evaluate((e) => getComputedStyle(e).rotate)).toMatch(/^(0deg|none)$/);
 
     await chevron.click();
     const menu = page.getByRole('menu');
@@ -109,13 +111,13 @@ for (const colorway of COLORWAYS) {
     await expect.poll(() => lift(chevron)).toBeGreaterThan(0.5);
     expect(await style(chevron, 'background-image')).not.toBe('none');
     expect(parseFloat(await style(chevron, 'border-top-right-radius'))).toBeGreaterThan(10); // still the bar's end
-    await expect.poll(glyph).toBe('180deg');
+    await expect.poll(glyph).toBe('180');
     await page.waitForTimeout(400);
     await page.screenshot({ path: capture(`button-group-${colorway}`), clip: { ...(await play.boundingBox())! } });
 
     await menu.getByRole('menuitem', { name: 'SVG' }).click();
     await expect.poll(() => lift(chevron)).toBe(0);
-    await expect.poll(glyph).toMatch(/^(0deg|none)$/);
+    await expect.poll(glyph).toBeNull();
     await expect(play).toContainText('Exported SVG');
     await expect(play.getByRole('button', { name: /Export SVG/ })).toBeVisible();
   });
@@ -155,4 +157,11 @@ test('Reduce Motion: the rocker tips at once, a key still sinks', async ({ page 
   await hold(page, undo);
   await expect.poll(() => lift(undo)).toBeGreaterThan(0.5);
   await page.mouse.up();
+  // The split chevron turns over in place: the first frame after opening is already the turned glyph.
+  const chevron = section(page, 'Playground').getByRole('button', { name: 'More export options' });
+  await chevron.click();
+  await expect(chevron.locator('svg')).toHaveAttribute('data-turn', '180');
+  const first = await chevron.locator('svg').evaluate((e) => new Promise<string>((r) => requestAnimationFrame(() => r(e.innerHTML))));
+  await page.waitForTimeout(600);
+  expect(await chevron.locator('svg').innerHTML()).toBe(first);
 });

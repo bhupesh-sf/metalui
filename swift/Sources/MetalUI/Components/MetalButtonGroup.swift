@@ -299,8 +299,9 @@ public struct MetalSplitButton: View {
             MetalBarSeam(material: material)
             Button { open.toggle() } label: {
                 MetalIcon(.chevron, size: material.glyph)
-                    .rotationEffect(.degrees(open ? 180 : .zero))
-                    .metalAnimation(.part, value: open)
+                    // Turns over on its axis (edge-on midway), as the web's MorphIcon half turn does.
+                    .rotation3DEffect(.degrees(open ? 180 : .zero), axis: (x: 1, y: 0, z: 0))
+                    .metalAnimation(.settle, value: open)
             }
             .buttonStyle(MetalBarKeyStyle(material: material, ends: MetalBarEnds(leading: false, trailing: true), held: open, travels: true, width: CGFloat(MetalRecipes.buttonGroup.points("chevron.width"))) { _ in })
             .focusEffectDisabled()

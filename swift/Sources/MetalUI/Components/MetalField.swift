@@ -1,4 +1,9 @@
 import SwiftUI
+#if canImport(AppKit)
+import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
 // Field: text in a well. Mirrors components/field (field.agent.md) from the field and well recipes:
 // three sizes, the green caret, a prefix and suffix engraved on the well's floor, mini keys in the trail
@@ -41,6 +46,8 @@ public struct MetalField<Trail: View>: View {
     let limit: Int?
     let chars: Int?
     let clear: Bool
+    let copy: Bool
+    let secure: Bool
     let shortcut: String?
     let check: String?
     let invalid: Bool
@@ -55,18 +62,22 @@ public struct MetalField<Trail: View>: View {
     @Environment(\.metalFormInvalid) private var formInvalid
     @FocusState private var focused: Bool
     @State private var refusals = 0
+    @State private var copied = false
+    @State private var revealed = false
 
     /// - Parameters:
     ///   - prefix, suffix: fixed parts of the value ("https://", "kg"), engraved on the well's floor; not part of `text`.
     ///   - limit: a character limit; the counter shows near it and shakes when typing goes past it.
     ///   - chars: the expected length; the input is that many characters wide.
     ///   - clear: a clear key that shows while there is text.
+    ///   - copy: a copy key that shows while there is text; its glyph turns to the check for the recipe's copy.hold.
+    ///   - secure: a password: the text is hidden, and a show-password key shows it (eye ↔ eye-off).
     ///   - shortcut: the keys that focus the field ("⌘K"), on a keycap that reads Esc while the field is active.
     ///   - check: what a remote check confirmed ("Name available"); its tick acts as it arrives. nil shows nothing.
     ///   - trail: more mini keys (`MetalFieldKey`) after the built-in ones.
     public init(_ label: String, text: Binding<String>, prompt: String = "", size: MetalFieldSize = .large,
                 tone: MetalFieldTone = .light, icon: MetalIconName? = nil, prefix: String? = nil, suffix: String? = nil,
-                limit: Int? = nil, chars: Int? = nil, clear: Bool = false, shortcut: String? = nil, check: String? = nil,
+                limit: Int? = nil, chars: Int? = nil, clear: Bool = false, copy: Bool = false, secure: Bool = false, shortcut: String? = nil, check: String? = nil,
                 invalid: Bool = false, @ViewBuilder trail: () -> Trail) {
         self.label = label
         self._text = text
@@ -79,6 +90,8 @@ public struct MetalField<Trail: View>: View {
         self.limit = limit
         self.chars = chars
         self.clear = clear
+        self.copy = copy
+        self.secure = secure
         self.shortcut = shortcut
         self.check = check
         self.invalid = invalid
@@ -88,6 +101,8 @@ public struct MetalField<Trail: View>: View {
     private var recipe: MetalObjectRecipe { MetalRecipes.field }
     private var finish: MetalRecipeColorway { MetalRecipeColorway(colorway) }
     private var active: Bool { snapshot ? snapshotFocused : focused }
+    /// A password that is not being shown.
+    private var hidden: Bool { secure && !revealed }
     private var role: MetalTypeRole {
         size == .large ? recipe.typeRole("field.font", trackingKey: "field.tracking") : MetalType.ui
     }
@@ -136,7 +151,7 @@ public struct MetalField<Trail: View>: View {
         let field = Group {
             if snapshot {
                 HStack(spacing: .zero) {
-                    if !text.isEmpty { Text(text).foregroundColor(ink("ink")) }
+                    if !text.isEmpty { Text(hidden ? String(repeating: "•", count: text.count) : text).foregroundColor(ink("ink")) }
                     if snapshotFocused {
                         Rectangle().fill(recipe.color("field.caret")?.color ?? MetalShared.greenDeep.color)
                             .frame(width: MetalPaletteMetrics.caretWidth, height: role.line)
@@ -146,7 +161,13 @@ public struct MetalField<Trail: View>: View {
                 .lineLimit(1)
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
-                TextField("", text: $text, prompt: Text(prompt).foregroundColor(ink("hint")))
+                Group {
+                    if hidden {
+                        SecureField("", text: $text, prompt: Text(prompt).foregroundColor(ink("hint")))
+                    } else {
+                        TextField("", text: $text, prompt: Text(prompt).foregroundColor(ink("hint")))
+                    }
+                }
                     .textFieldStyle(.plain)
                     .foregroundColor(ink("ink"))
                     .tint(recipe.color("field.caret")?.color ?? MetalShared.greenDeep.color)
@@ -213,13 +234,24 @@ public struct MetalField<Trail: View>: View {
     }
 
     @ViewBuilder private var keys: some View {
-        let hasKeys = clear || shortcut != nil || check != nil || ObjectIdentifier(Trail.self) != ObjectIdentifier(EmptyView.self)
+        let hasKeys = clear || copy || secure || shortcut != nil || check != nil || ObjectIdentifier(Trail.self) != ObjectIdentifier(EmptyView.self)
         if hasKeys {
             HStack(spacing: recipe.points("key.gap")) {
                 if let check { MetalFieldCheck(check, glyph: metric("glyph")) }
                 if clear {
                     MetalFieldKey("Clear", icon: .close) { text = ""; focused = true }
                         .metalPresence(!text.isEmpty, pop: recipe.scalar("key.pop"))
+                }
+                if copy {
+                    MetalFieldKey("Copy", icon: copied ? .check : .copy) { copyText() }
+                        .metalAnimation(.settle, value: copied)
+                        .metalPresence(!text.isEmpty, pop: recipe.scalar("key.pop"))
+                }
+                if secure {
+                    MetalFieldKey("Show password", icon: revealed ? .eyeOff : .eye) { revealed.toggle(); focused = true }
+                        .accessibilityValue(revealed ? "Shown" : "Hidden")
+                        .accessibilityAddTraits(revealed ? .isSelected : [])
+                        .metalAnimation(.settle, value: revealed)
                 }
                 trail
                 if let shortcut {
@@ -230,6 +262,21 @@ public struct MetalField<Trail: View>: View {
                 }
             }
             .frame(maxWidth: chars == nil ? .infinity : nil, alignment: .trailing)
+        }
+    }
+
+    private func copyText() {
+        #if canImport(AppKit)
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(text, forType: .string)
+        #elseif canImport(UIKit)
+        UIPasteboard.general.string = text
+        #endif
+        copied = true
+        AccessibilityNotification.Announcement("Copied").post()
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(recipe.durationSeconds("copy.hold")))
+            copied = false
         }
     }
 
@@ -264,10 +311,10 @@ public struct MetalField<Trail: View>: View {
 extension MetalField where Trail == EmptyView {
     public init(_ label: String, text: Binding<String>, prompt: String = "", size: MetalFieldSize = .large,
                 tone: MetalFieldTone = .light, icon: MetalIconName? = nil, prefix: String? = nil, suffix: String? = nil,
-                limit: Int? = nil, chars: Int? = nil, clear: Bool = false, shortcut: String? = nil, check: String? = nil,
+                limit: Int? = nil, chars: Int? = nil, clear: Bool = false, copy: Bool = false, secure: Bool = false, shortcut: String? = nil, check: String? = nil,
                 invalid: Bool = false) {
         self.init(label, text: text, prompt: prompt, size: size, tone: tone, icon: icon, prefix: prefix, suffix: suffix,
-                  limit: limit, chars: chars, clear: clear, shortcut: shortcut, check: check, invalid: invalid) { EmptyView() }
+                  limit: limit, chars: chars, clear: clear, copy: copy, secure: secure, shortcut: shortcut, check: check, invalid: invalid) { EmptyView() }
     }
 }
 
@@ -286,7 +333,8 @@ public struct MetalFieldKey: View {
     }
 
     public var body: some View {
-        Button(action: action) { MetalIcon(icon, size: MetalRecipes.field.points("key.glyph")) }
+        // A changing glyph (copy → check, eye → eye-off) replaces in place, the symbol's own transition.
+        Button(action: action) { MetalIcon(icon, size: MetalRecipes.field.points("key.glyph")).contentTransition(.symbolEffect(.replace)) }
             .buttonStyle(MetalFieldKeyStyle())
             .focusEffectDisabled()
             .accessibilityLabel(label)

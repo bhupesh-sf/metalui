@@ -22,9 +22,6 @@ import { IconButtonSpecimenCard } from './IconButtonSpecimens';
  * ───────────────────────────────────────────────────────── */
 
 const P = tokens.recipes['icon-button'].props;
-const RL = tokens.recipes['icon-button'].layers as { part: string; prop: string; value: string; state?: string }[];
-const LED_BG = RL.find((l) => l.part === 'led' && l.prop === 'background')!.value;
-const LED_SH = RL.find((l) => l.part === 'led' && l.prop === 'shadow')!.value;
 const S = 5;
 
 export type Spot = 'press' | 'states' | 'shape' | 'surface' | 'light' | 'layers';
@@ -93,6 +90,8 @@ export function IconButtonXray({ startOpen = false }: { startOpen?: boolean }) {
   const exploded = tool && spot === 'layers';
   const press = `transform ${P.tool['press-time']} linear, box-shadow ${P.tool['shadow-time']} ease-out`;
   const led = P.led.size * S;
+  // The latch lights the LED part's live lamp (the status recipe), as the real key does.
+  const lamp = useStateLayers('status', 'live', 'led');
   // a ghost or a mini is flat: no strip, no wall, only its own footprint on the page
   const fw = (m.kind === 'ghost' ? P.ghost.size : P.mini.w) * S, fh = (m.kind === 'ghost' ? P.ghost.size : P.mini.h) * S;
   const fx = (W - fw) / 2, fy = (H - fh) / 2;
@@ -113,7 +112,7 @@ export function IconButtonXray({ startOpen = false }: { startOpen?: boolean }) {
       <div className="xr-face is-flat" data-ib-kind="tool" style={{ width: W, height: H, borderRadius: (m.radius + 6) * S, transform: 'translateZ(0.5px)', background: 'linear-gradient(#2b2b2e, #1f1f21)', boxShadow: '0 0 0 1px rgba(0,0,0,.4)' }} />
       <IsoCap x={x0} y={x0} w={w} h={w} r={r} z={z} wall={WALL} fill={fill} shadow={shadow} wallTone="#18181a" transition={press}>
         <span className="xr-ib-glyph" style={{ color: P.tool.ink, display: 'grid', placeItems: 'center' }}><Icon name="select" size={m.glyph * S} /></span>
-        {m.latched && <span className="xr-led" style={{ top: P.led.inset * S, right: P.led.inset * S, width: led, height: led, background: LED_BG, boxShadow: scalePx(LED_SH, S) }} />}
+        {m.latched && <span className="xr-led" style={{ top: P.led.inset * S, right: P.led.inset * S, width: led, height: led, background: lamp.fill, boxShadow: scalePx(lamp.shadows.join(', '), S) }} />}
       </IsoCap>
       {spot === 'shape' && (
         <svg className="xr-dims" viewBox={`-40 -40 ${W + 80} ${H + 80}`} style={{ width: W + 80, height: H + 80, left: -40, top: -40, transform: `translateZ(${top + 1}px)` }} aria-hidden>

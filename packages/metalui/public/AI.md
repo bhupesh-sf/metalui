@@ -160,7 +160,7 @@ A file someone attached. React: `Attachment` from `@unlocalhosted/metalui` (name
 - Type: a 36 sunk well with the extension engraved (PDF, PNG).
 - Name: ui type; a long name keeps its extension and cuts the middle.
 - Line: meta type, ink3: the size, "Uploading · 40 %", or the error in red.
-- Track (uploading): 3 tall, the progress fill. Try again (failed), Remove (a mini key).
+- Track (uploading): 3 tall, Progress's fill: a whole capsule slid in by transform on the settle spring (never a width, so it paints and does not lay out). Try again (failed), Remove (a mini key).
 
 ## States and motion
 
@@ -509,7 +509,7 @@ Related actions as one machined bar. React: `ButtonGroup`, `ButtonGroupReadout` 
 - Keys: Buttons (or Toggles with `latch`), bare in the bar, square inside; the end keys keep the bar's pill ends.
 - Seam: 2 wide, a dark line and a light edge beside it, between every two parts; the bar draws it, so it never moves.
 - Window (`ButtonGroupReadout`): the field well cut into the bar, 4 inside its edges, at least 56 wide, radius 4, tabular figures on the drum.
-- Split: the main Button, a seam, a 32 wide chevron key with the set's `chevron` (`Icon`).
+- Split: the main Button, a seam, a 32 wide chevron key with the set's `chevron` as a `MorphIcon`.
 
 ## States and motion
 
@@ -520,7 +520,7 @@ Related actions as one machined bar. React: `ButtonGroup`, `ButtonGroupReadout` 
 | pressed | that key in the button's pressed look, down 1; seams and the rest stay | the button's press and release |
 | rocker pressed | the whole cap tips 1° toward the pressed end; the key doesn't slide | part spring |
 | latched | the key stays sunk with its lamp lit | the toggle's latch |
-| menu open (split) | the chevron key held down; the chevron points up | the chevron turns over on the part spring |
+| menu open (split) | the chevron key held down; the chevron points up | the chevron turns over on its axis (a `MorphIcon` half turn, edge-on midway) on the settle spring, the way the combobox's does; a CSS spin would swing it through pointing sideways |
 | focus | the green ring 2 inside the key, following the bar's ends | – |
 | disabled | a key at 40 %; `disabled` sets the whole bar at 40 % and refuses | – |
 | waiting | the main key held with its arc (`Button` `state`, `useWait`) | the button's wait |
@@ -659,7 +659,7 @@ A person's thing, held on a raised plate. React: `Card` from `@unlocalhosted/met
 - Status (optional): an LED at the end of the title's line, in an 18 box (the title's line).
 - Action (optional): a ghost icon key (`more`) level with the title's first line, reaching 5 into the padding, above the stretched link.
 - Description (body type, ink2); Footer: actions, 12 apart (compact 8), above the stretched link.
-- Choice: the latch's 4 pt green LED, 12 in from the top and end corner.
+- Choice: the latch's 4 pt green LED (the LED part's live lamp), 12 in from the top and end corner.
 - Frame: separated is the field well, padding 8 (compact 6), cards 8 apart (compact 6), radius card + padding; stacked is one raised plate, sections between engraved hairlines (the rule's groove, inset by the padding); ghost is a grid with no tray. Columns fill by a 200 minimum; side cards make one column.
 - Empty slot: the track well (a step deeper than the tray), card radius, at least 120 tall, plus and a verb in ink2.
 
@@ -818,7 +818,7 @@ A small pill. React: `Chip` with parts `Chip.Root`, `Chip.Lead`, `Chip.Text`, `C
 ## Variants
 
 - `suggestion`: 20 tall, frosted, a green hairline and a small raise; a question in `Chip.Text`, a confidence `Label`, and `IconButton variant="mini"` actions (✓ accept, × dismiss).
-- `glass`: an 18 tall tag on a glass screen in the colorway (light on Bone, dark on Graphite), backdrop-blurred; `Chip.Lead led="link" | "code"` for its LED.
+- `glass`: an 18 tall tag on a glass screen in the colorway (light on Bone, dark on Graphite), backdrop-blurred; `Chip.Lead led` for its LED: the LED part's lamp (socket, glow) at 5 pt, in one of its kinds (`link` for a link's kind, `off` for a kind with no state, as the code card's tag). No other colours.
 - `glass-action`: an 18 tall light cap on glass (`as="a"` for a link out), brighter on hover.
 - `tag`: a 15 tall engraved mono tag in a hairline pill (a derived #tag); no fill.
 
@@ -1365,7 +1365,7 @@ A compact control bar for a toolbar that must stay small: it shows the current s
 
 # Field and search field
 
-React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Prefix`, `Field.Input`, `Field.Suffix`, `Field.Trail`, `Field.Key`, `Field.Clear`, `Field.Shortcut`, `Field.Check`; `SearchField`. SwiftUI: `MetalField("Website", text: $url, size: .regular, prefix: "https://", clear: true) { MetalFieldKey(…) }`, `MetalFieldKey`, `MetalSearchField`.
+React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Prefix`, `Field.Input`, `Field.Suffix`, `Field.Trail`, `Field.Key`, `Field.Clear`, `Field.Copy`, `Field.Reveal`, `Field.Shortcut`, `Field.Check`; `SearchField`. SwiftUI: `MetalField("Website", text: $url, size: .regular, prefix: "https://", clear: true) { MetalFieldKey(…) }`, `MetalFieldKey`, `MetalSearchField`.
 
 ## Field
 
@@ -1391,7 +1391,8 @@ React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Prefix`, `Field.Inp
 | shortcut | `<Field.Shortcut keys="⌘K" />` | a keycap that focuses the field from anywhere (⌘ also answers to Ctrl; `bind={false}` when the host binds it); it turns on the drum to "Esc" while the field is active; Esc clears the text, or leaves the field when it is empty. The input gets `aria-keyshortcuts` |
 | check | `<Field.Check shown={free} label="Name available"><Icon name="check" act /></Field.Check>` | a remote check that passed: the tick arrives acting, in the deep green, and is said once (`role="status"`). Ordinary valid fields show nothing |
 | any | `<Field.Key label="…" icon={…} onClick={…} />` | a mini key of your own; `shown` makes it come and go |
-| copy, show password | – | to come: `Field.Key` with `copy` → `check` and `eye` → `eye-off` morphs, once those glyphs are drawn |
+| copy | `<Field.Copy icon={<Icon name="copy" />} copiedIcon={<Icon name="check" />} />` | shows while there is text (or always, with `value`); copies the value, and its glyph turns on the drum to the check for the recipe's `copy.hold` (1400 ms, Table's), then back. Not a morph: copy → check strains 2.38, past the family's limit. "Copied" is said once (`role="status"`, `copiedLabel`) |
+| show password | `<Field.Reveal icon={<MorphIcon name="eye" />} hideIcon={<MorphIcon name="eye-off" />} />` | makes the input `type="password"`; pressing it shows the text (`type="text"`) and back. It is a toggle named "Show password" (`label`) with `aria-pressed`, so assistive tech says whether the text shows. Pass the same component for both glyphs: React keeps the element and `MorphIcon` morphs eye ↔ eye-off |
 
 - A key is a compact button cap, 20 round with a 12 glyph and a 24 hit area, as far from the well's edge as from its top and bottom in every size. Pressing one keeps focus in the input. Glyphs come from the host (`@unlocalhosted/metalui/icons`), so `Field` never ships the icon catalogue.
 - A key that comes and goes pops in from 60 % on the settle spring and leaves on the release spring, keeping its place so the trail never shifts. A field that loads with text shows its clear key at rest (no pop on load).
@@ -1415,7 +1416,7 @@ Keys fade without the pop, the shortcut's drum crossfades, and the counter does 
 
 ## SwiftUI
 
-`MetalField` draws the same well, sizes, caret, prefix and suffix, counter (trimming past `limit` and shaking), `chars`, `clear`, `shortcut` (a key equivalent; Esc clears or leaves), `check`, and any `MetalFieldKey` in `trail`. Inside a `MetalFormField` with an error it draws the invalid ring.
+`MetalField` draws the same well, sizes, caret, prefix and suffix, counter (trimming past `limit` and shaking), `chars`, `clear`, `copy` (the pasteboard; the glyph replaces to the check for `copy.hold` and "Copied" is announced), `secure` (a `SecureField` with a show-password key whose eye replaces to eye-off; the key's value says "Shown" or "Hidden"), `shortcut` (a key equivalent; Esc clears or leaves), `check`, and any `MetalFieldKey` in `trail`. Inside a `MetalFormField` with an error it draws the invalid ring.
 
 ---
 
@@ -1710,7 +1711,7 @@ A pressable cap with only a glyph. React: `IconButton`. SwiftUI: `MetalIconButto
 
 ## Variants
 
-- `tool`: a 38 graphite cap (radius 15). Pressed sinks 1 into a dark well (50 ms linear, back on release). `pressed={true}` latches it down with a 4 pt green LED 5 in from the top right.
+- `tool`: a 38 graphite cap (radius 15). Pressed sinks 1 into a dark well (50 ms linear, back on release). `pressed={true}` latches it down with the LED part's live lamp (the status recipe: sunk socket and glow) at 4 pt, 5 in from the top right.
 - `ghost`: a 28 flat round button; hover fills it faintly and darkens the glyph.
 - `mini`: an 18 × 16 flat pill inside a chip; `accept` turns its glyph green on hover.
 
@@ -2426,10 +2427,10 @@ Arithmetic is read back under the field before it commits ("= 96 px", or "= 120 
 ## Variations
 
 - **Sizes**: `size` large, regular (default), compact.
-- **Fine and coarse**: ⌥ steps by `smallStep` (Base UI's default 0.1), ⇧ by `largeStep` (10), on the keycaps, arrows and scrub. Give a whole count `smallStep={1}`: a step equal to `step` shows no legend.
+- **Fine and coarse**: ⌥ steps by `smallStep`, ⇧ by `largeStep` (10), on the keycaps, arrows and scrub. `smallStep` defaults to `step` when `step` is a whole number (a count has no tenths) and to 0.1 otherwise; pass it to override. A step equal to `step` shows no legend.
 - **Unit**: `unit` ("px", "%", "°"); `format` and `locale` for currency and grouping.
 - **Soft limits**: `allowOutOfRange`. A typed value past a limit is kept and invalid; the keys and the scrub still clamp.
-- **Back to default**: give `defaultValue` (it is the reset target even when `value` is controlled). Double-click the label (or the inspector's letter), or ⌘-click (Ctrl-click) a keycap. The changed mark shows while the value differs; a screen reader hears "Font size off its default".
+- **Back to default**: give `defaultValue` (it is the reset target even when `value` is controlled). Double-click the label (or the inspector's letter), ⌘-click (Ctrl-click) a keycap, or press ⌘⌫ (Ctrl+Backspace) in the input: the keyboard twin of ⌘-click, so ⌘ always means "back to default" here; it overrides only the delete-to-line-start of a value a few characters long. The input says it in `aria-keyshortcuts`. The changed mark shows while the value differs; a screen reader hears "Font size off its default".
 - **Mixed**: `mixed` with `value={null}`. A step calls `onStep(amount)` (signed, with the modifier's step); add it to each item from its own value and keep `mixed` while they still differ. Typing (or Home / End) calls `onValueChange` with one value for all.
 - **Inspector**: `kind="inspector"` with a one-letter `label` and an `aria-label` ("W", "Width"). Regular or compact (large falls back to regular).
 - **Wheel**: `allowWheelScrub`: the wheel steps the value only while the field has focus, so scrolling the page never changes it.
@@ -2454,7 +2455,7 @@ Arithmetic is read back under the field before it commits ("= 96 px", or "= 120 
 - The input is a text input described as "Number field" (Base UI): ↑ ↓ step, ⇧ by the large step, ⌥ by the small one, Home and End go to the limits; Enter commits a draft and Esc drops it. The keycaps are named "Decrease" and "Increase" and are skipped by Tab.
 - `label` names the input (aria-labelledby); without it, or in the inspector, pass `aria-label`.
 - The readback and the limit line describe the input (aria-describedby) while they show.
-- Back to default has no key of its own: type the default, or use the label or a keycap.
+- Back to default: ⌘⌫ (Ctrl+Backspace) in the input, while there is a `defaultValue`.
 
 ## Thumbwheel: prototyped, not shipped
 
@@ -4731,7 +4732,7 @@ A strip of tools. React: `Toolbar`, `ToolButton`, `ToolbarSeparator`, `ToolbarSe
 ## Anatomy
 
 - **Strip**: 48 tall (36 tools in a 6 nest), radius 24, so a true capsule; the strip frost in the colorway, or graphite (`variant="graphite"`) as the canvas uses in both colorways.
-- **Tool**: a circular 36 cap (the button material), a 16 glyph in the icon ink; latched: pressed (`pressed-bg`, `pressed-sh`) with a 4 pt green LED 5 in from its top right.
+- **Tool**: a circular 36 cap (the button material), a 16 glyph in the icon ink; latched: pressed (`pressed-bg`, `pressed-sh`) with the LED part's live lamp (the status recipe: sunk socket and glow) at 4 pt, 5 in from its top right.
 - **Separator**: a 1 × 22 engraved rule.
 - **Search well**: a 36 tall pill well with the placeholder in ink3 and a `⌘K` keycap.
 - **Tooltip**: a graphite label chip with the key, 10 above, after 120 ms: `SELECT · V`.
@@ -4770,7 +4771,7 @@ A strip of tools. React: `Toolbar`, `ToolButton`, `ToolbarSeparator`, `ToolbarSe
 
 ## Tokens
 
-`--mu-toolbar-*`, `.mu-frost-strip`, `.mu-frost-graphite`, `--mu-btn-*`, `--mu-pressed-*`, `--mu-led-green`, `--mu-radius-card`. Swift: `MetalToolbarMetrics`.
+`--mu-toolbar-*`, `.mu-frost-strip`, `.mu-frost-graphite`, `--mu-btn-*`, `--mu-pressed-*`, `--mu-r-status-led-live-*` (the LED part's lamp), `--mu-radius-card`. Swift: `MetalToolbarMetrics`.
 
 ---
 

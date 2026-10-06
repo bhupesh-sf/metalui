@@ -14,7 +14,7 @@ A strip of tools. React: `Toolbar`, `ToolButton`, `ToolbarSeparator`, `ToolbarSe
 ## Anatomy
 
 - **Strip**: 48 tall (36 tools in a 6 nest), radius 24, so a true capsule; the strip frost in the colorway, or graphite (`variant="graphite"`) as the canvas uses in both colorways.
-- **Tool**: a circular 36 cap (the button material), a 16 glyph in the icon ink; latched: pressed (`pressed-bg`, `pressed-sh`) with a 4 pt green LED 5 in from its top right.
+- **Tool**: a circular 36 cap (the button material), a 16 glyph in the icon ink; latched: pressed (`pressed-bg`, `pressed-sh`) with the LED part's live lamp (the status recipe: sunk socket and glow) at 4 pt, 5 in from its top right.
 - **Separator**: a 1 × 22 engraved rule.
 - **Search well**: a 36 tall pill well with the placeholder in ink3 and a `⌘K` keycap.
 - **Tooltip**: a graphite label chip with the key, 10 above, after 120 ms: `SELECT · V`.
@@ -53,4 +53,4 @@ A strip of tools. React: `Toolbar`, `ToolButton`, `ToolbarSeparator`, `ToolbarSe
 
 ## Tokens
 
-`--mu-toolbar-*`, `.mu-frost-strip`, `.mu-frost-graphite`, `--mu-btn-*`, `--mu-pressed-*`, `--mu-led-green`, `--mu-radius-card`. Swift: `MetalToolbarMetrics`.
+`--mu-toolbar-*`, `.mu-frost-strip`, `.mu-frost-graphite`, `--mu-btn-*`, `--mu-pressed-*`, `--mu-r-status-led-live-*` (the LED part's lamp), `--mu-radius-card`. Swift: `MetalToolbarMetrics`.

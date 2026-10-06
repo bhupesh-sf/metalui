@@ -5,7 +5,7 @@ import { Field as BaseField } from '@base-ui/react/field';
 import { Well } from '../well/well';
 import { Kbd } from '../kbd/kbd';
 import { buttonParts } from '../button/button';
-import { SwapText } from '../../motion/swap';
+import { SwapIcon, SwapText } from '../../motion/swap';
 import { refuse } from '../../motion/refuse';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
@@ -23,6 +23,10 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  *             from the top and bottom in every size; pressing one keeps the caret in the input
  *   clear     a key that shows while there is text: it pops in on the settle spring (from 60 %) and
  *             leaves on the release spring, keeping its place so the trail never shifts
+ *   copy      shows while there is text; copies it, and its glyph turns on the drum to a check for the
+ *             recipe's copy.hold (copy → check strains too far to morph); "Copied" is said once
+ *   reveal    show password: the input is a password; pressing it shows the text (aria-pressed), and
+ *             its glyph morphs eye ↔ eye-off
  *   shortcut  a keycap ("⌘K") that focuses the field, and turns on the drum to "Esc" while the field is
  *             active; Esc clears the text, or leaves the field when it is empty
  *   check     a remote check that passed ("name available"): the host's check glyph acts as it arrives;
@@ -33,7 +37,7 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  * Reduce Motion: keys fade without the pop; the drum crossfades; nothing shakes.
  * SEARCH FIELD: a button in a well that opens search (the dock's search well), light or graphite.
  * Field slots: Field.Root, Field.Icon, Field.Prefix, Field.Input, Field.Suffix, Field.Trail, Field.Key,
- * Field.Clear, Field.Shortcut, Field.Check.
+ * Field.Clear, Field.Copy, Field.Reveal, Field.Shortcut, Field.Check.
  * ───────────────────────────────────────────────────────── */
 
 export type FieldSize = 'large' | 'regular' | 'compact';
@@ -61,7 +65,7 @@ const INPUT = {
 const AFFIX = { large: 'field-affix type-field-field', form: 'field-affix type-ui' };
 const COUNT = 'mu-field-count order-2 flex-none field-count type-meta tabular-nums text-ink3 data-at-limit:text-red';
 const TRAIL = 'mu-field-trail order-3 inline-flex items-center gap-field-key-gap ml-auto';
-const KEY = `${buttonParts.FRAME} mu-field-key mu-icon-trigger relative flex-none size-field-key-size p-0 rounded-pill text-ink2 hover:text-ink recipe-button-compact transition-button-compact field-key-hit [&>svg]:size-field-key-glyph not-disabled:active:translate-y-button-travel not-disabled:active:duration-button-press not-disabled:active:ease-linear not-disabled:active:recipe-button-compact-pressed disabled:cursor-default disabled:opacity-button-disabled`;
+const KEY = `${buttonParts.FRAME} mu-field-key mu-icon-trigger relative flex-none size-field-key-size p-0 rounded-pill text-ink2 hover:text-ink recipe-button-compact transition-button-compact field-key-hit [&_svg]:size-field-key-glyph not-disabled:active:translate-y-button-travel not-disabled:active:duration-button-press not-disabled:active:ease-linear not-disabled:active:recipe-button-compact-pressed disabled:cursor-default disabled:opacity-button-disabled`;
 const CHECK = 'mu-field-check inline-grid flex-none place-items-center text-green-deep';
 const SEARCH = {
   graphite: 'mu-search-field box-border flex items-center gap-field-search-gap h-field-search-height min-w-field-search-min-width pl-field-search-pad-left pr-field-search-pad-right border-0 rounded-field-search-radius type-field-search cursor-text [&>.mu-field-icon>svg]:size-field-search-glyph [&>.mu-kbd]:ml-auto focus-visible:focus-ring-flush text-field-search-ink recipe-well-graphite',
@@ -88,12 +92,17 @@ interface FieldContext {
   /** The shortcut a Field.Shortcut shows ("⌘K"): Esc then clears or leaves. */
   shortcut?: string;
   setShortcut: (keys: string | undefined) => void;
+  /** A Field.Reveal is in the trail: the input is a password, shown as text while `revealed`. */
+  revealable: boolean;
+  setRevealable: (on: boolean) => void;
+  revealed: boolean;
+  setRevealed: (on: boolean) => void;
 }
 
 const noop = () => {};
 const FieldCtx = React.createContext<FieldContext>({
   size: 'large', input: { current: null }, filled: false, setFilled: noop, active: false, setActive: noop,
-  affix: {}, setAffix: noop, setShortcut: noop,
+  affix: {}, setAffix: noop, setShortcut: noop, revealable: false, setRevealable: noop, revealed: false, setRevealed: noop,
 });
 
 /** Empties an input the way typing would, so a controlled host's onChange hears it, and keeps the caret there. */
@@ -129,10 +138,12 @@ const Root = React.forwardRef<HTMLElement, FieldRootProps>(function FieldRoot({ 
   const [active, setActive] = React.useState(false);
   const [affix, setAffixState] = React.useState<FieldContext['affix']>({});
   const [shortcut, setShortcut] = React.useState<string>();
+  const [revealable, setRevealable] = React.useState(false);
+  const [revealed, setRevealed] = React.useState(false);
   const setAffix = React.useCallback((end: 'prefix' | 'suffix', id: string | undefined) => setAffixState((a) => (a[end] === id ? a : { ...a, [end]: id })), []);
   const ctx = React.useMemo<FieldContext>(
-    () => ({ size, invalid, disabled, chars, input, filled, setFilled, active, setActive, affix, setAffix, shortcut, setShortcut }),
-    [size, invalid, disabled, chars, filled, active, affix, setAffix, shortcut],
+    () => ({ size, invalid, disabled, chars, input, filled, setFilled, active, setActive, affix, setAffix, shortcut, setShortcut, revealable, setRevealable, revealed, setRevealed }),
+    [size, invalid, disabled, chars, filled, active, affix, setAffix, shortcut, revealable, revealed],
   );
   const own = cx(FRAME, SIZES[size], chars != null && 'w-max', className);
   const sized = chars != null ? ({ ...style, '--mu-field-chars': chars } as React.CSSProperties) : style;
@@ -189,10 +200,10 @@ export interface FieldInputProps extends React.InputHTMLAttributes<HTMLInputElem
 }
 
 const Input = React.forwardRef<HTMLInputElement, FieldInputProps>(function FieldInput(
-  { className, maxLength, countFrom, value, defaultValue, onChange, onKeyDown, onPaste, onFocus, onBlur, 'aria-describedby': describedBy, ...props },
+  { className, type, maxLength, countFrom, value, defaultValue, onChange, onKeyDown, onPaste, onFocus, onBlur, 'aria-describedby': describedBy, ...props },
   ref,
 ) {
-  const { size, invalid, disabled, chars, input, setFilled, setActive, affix, shortcut } = React.useContext(FieldCtx);
+  const { size, invalid, disabled, chars, input, setFilled, setActive, affix, shortcut, revealable, revealed } = React.useContext(FieldCtx);
   const [typed, setTyped] = React.useState(() => String(defaultValue ?? ''));
   const [refusals, setRefusals] = React.useState(0);
   const count = React.useRef<HTMLSpanElement>(null);
@@ -224,6 +235,8 @@ const Input = React.forwardRef<HTMLInputElement, FieldInputProps>(function Field
         aria-invalid={invalid || undefined}
         aria-describedby={described}
         aria-keyshortcuts={shortcut ? ariaKeys(shortcut) : undefined}
+        // With a Field.Reveal the input is a password, shown as text while revealed.
+        type={revealable ? (revealed ? 'text' : 'password') : type}
         disabled={disabled}
         value={value as BaseField.Control.Props['value']}
         defaultValue={defaultValue as BaseField.Control.Props['defaultValue']}
@@ -335,6 +348,77 @@ const Clear = React.forwardRef<HTMLButtonElement, FieldClearProps>(function Fiel
   );
 });
 
+export interface FieldCopyProps extends Omit<FieldKeyProps, 'label' | 'icon' | 'shown'> {
+  /** The accessible name. Default "Copy". */
+  label?: string;
+  /** Said once after a copy. Default "Copied". */
+  copiedLabel?: string;
+  /** What to copy. Default the input's value. */
+  value?: string;
+  /** The copy glyph: `<Icon name="copy" />`. */
+  icon: React.ReactNode;
+  /** The glyph while the copy holds: `<Icon name="check" />`. It turns on the drum (copy → check strains too far to morph). */
+  copiedIcon: React.ReactNode;
+}
+
+/** The copy key: shows while there is text; copies it, and its glyph turns on the drum to the check for the recipe's copy.hold. */
+const Copy = React.forwardRef<HTMLButtonElement, FieldCopyProps>(function FieldCopy({ label = 'Copy', copiedLabel = 'Copied', value, icon, copiedIcon, onClick, ...props }, ref) {
+  const { input, filled } = React.useContext(FieldCtx);
+  const [copied, setCopied] = React.useState(0);
+  React.useEffect(() => {
+    if (!copied) return;
+    const hold = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-r-field-copy-hold')) || 1400;
+    const t = setTimeout(() => setCopied(0), hold);
+    return () => clearTimeout(t);
+  }, [copied]);
+  return (
+    <>
+      <Key
+        ref={ref}
+        label={label}
+        shown={filled || value != null}
+        icon={<SwapIcon swapKey={copied ? 'copied' : 'copy'}>{copied ? copiedIcon : icon}</SwapIcon>}
+        onClick={(e) => {
+          onClick?.(e);
+          if (e.defaultPrevented) return;
+          navigator.clipboard?.writeText(value ?? input.current?.value ?? '').then(() => setCopied((n) => n + 1), () => setCopied(0));
+        }}
+        {...props}
+      />
+      <span role="status" className="sr-only">{copied ? copiedLabel : ''}</span>
+    </>
+  );
+});
+
+export interface FieldRevealProps extends Omit<FieldKeyProps, 'label' | 'icon' | 'shown'> {
+  /** The accessible name of the toggle. Default "Show password". */
+  label?: string;
+  /** The glyph while the password is hidden: `<MorphIcon name="eye" />`. */
+  icon: React.ReactNode;
+  /** The glyph while it shows: `<MorphIcon name="eye-off" />`. The same component as `icon`, so it morphs. */
+  hideIcon: React.ReactNode;
+}
+
+/** The show-password key: makes the input a password and toggles it to text; aria-pressed says which. */
+const Reveal = React.forwardRef<HTMLButtonElement, FieldRevealProps>(function FieldReveal({ label = 'Show password', icon, hideIcon, onClick, ...props }, ref) {
+  const { revealed, setRevealed, setRevealable } = React.useContext(FieldCtx);
+  useIsoLayoutEffect(() => {
+    setRevealable(true);
+    return () => { setRevealable(false); setRevealed(false); };
+  }, [setRevealable, setRevealed]);
+  return (
+    <Key
+      ref={ref}
+      label={label}
+      aria-pressed={revealed}
+      // One slot for both glyphs: React keeps the element, so a MorphIcon morphs eye ↔ eye-off.
+      icon={revealed ? hideIcon : icon}
+      onClick={(e) => { onClick?.(e); if (!e.defaultPrevented) setRevealed(!revealed); }}
+      {...props}
+    />
+  );
+});
+
 const MODIFIERS: Record<string, { aria: string; held: (e: KeyboardEvent) => boolean }> = {
   '⌘': { aria: 'Meta', held: (e) => e.metaKey || e.ctrlKey },
   '⌃': { aria: 'Control', held: (e) => e.ctrlKey },
@@ -403,7 +487,7 @@ function Check({ shown, label, children, className, ...props }: FieldCheckProps)
   );
 }
 
-export const Field = Object.assign(Root, { Icon, Prefix, Input, Suffix, Trail, Key, Clear, Shortcut, Check, Root });
+export const Field = Object.assign(Root, { Icon, Prefix, Input, Suffix, Trail, Key, Clear, Copy, Reveal, Shortcut, Check, Root });
 
 export interface SearchFieldProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** What the well says: "Lens or action". */

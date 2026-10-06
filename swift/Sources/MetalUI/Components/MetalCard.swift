@@ -479,9 +479,7 @@ private struct MetalCardChoiceStyle: ButtonStyle {
                 }
             }
             .overlay(alignment: .topTrailing) {
-                Color.clear
-                    .frame(width: led, height: led)
-                    .metalObjectRecipe(MetalRecipes.iconButton, part: "led", in: Circle())
+                MetalLED(.live, diameter: led)
                     .padding(MetalRecipes.card.points("latch.inset"))
                     .opacity(on ? .one : .zero)
             }

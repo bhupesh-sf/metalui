@@ -1483,17 +1483,15 @@ public enum MetalRecipes {
             .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.7)))), // mu-recipe:toolbar:15 inset 0 1px 3px rgba(0,0,0,.7)
             .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.8)))), // mu-recipe:toolbar:16 inset 0 0 0 .5px rgba(0,0,0,.8)
             .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:toolbar:17 0 1px 0 rgba(255,255,255,.06)
-            .init(part: "led", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(217.0, 255.0, 233.0, 1.0)), 0.18), .init(.color(MetalRGBA(123.0, 234.0, 174.0, 1.0)), 0.42), .init(.color(MetalRGBA(47.0, 182.0, 115.0, 1.0)), 1.0)])), // mu-recipe:toolbar:18 radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673)
-            .init(part: "led", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(123.0, 234.0, 174.0, 0.6)))), // mu-recipe:toolbar:19 0 0 2px rgba(123,234,174,.6)
-            .init(part: "sep", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:toolbar:20 rgba(0,0,0,.55)
-            .init(part: "sep", state: nil, colorway: nil, shadow: .init(inset: false, x: 1.0, y: 0.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:toolbar:21 1px 0 0 rgba(255,255,255,.055)
-            .init(part: "search", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(18.0, 18.0, 19.0, 1.0)), 0.0), .init(.color(MetalRGBA(23.0, 23.0, 24.0, 1.0)), 1.0)])), // mu-recipe:toolbar:22 linear-gradient(#121213, #171718)
-            .init(part: "search", state: nil, colorway: nil, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 5.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:toolbar:23 inset 1px 2px 5px -1px rgba(0,0,0,.6)
-            .init(part: "search", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:toolbar:24 inset 0 0 0 .5px rgba(0,0,0,.55)
-            .init(part: "search", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.07)))), // mu-recipe:toolbar:25 0 .5px 0 rgba(255,255,255,.07)
-            .init(part: "kbd", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(48.0, 48.0, 51.0, 1.0)), 0.0), .init(.color(MetalRGBA(38.0, 38.0, 40.0, 1.0)), 1.0)])), // mu-recipe:toolbar:26 linear-gradient(#303033, #262628)
-            .init(part: "kbd", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.09)))), // mu-recipe:toolbar:27 inset 0 1px 0 rgba(255,255,255,.09)
-            .init(part: "kbd", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.8)))), // mu-recipe:toolbar:28 0 0 0 .5px rgba(0,0,0,.8)
+            .init(part: "sep", state: nil, colorway: nil, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:toolbar:18 rgba(0,0,0,.55)
+            .init(part: "sep", state: nil, colorway: nil, shadow: .init(inset: false, x: 1.0, y: 0.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.055)))), // mu-recipe:toolbar:19 1px 0 0 rgba(255,255,255,.055)
+            .init(part: "search", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(18.0, 18.0, 19.0, 1.0)), 0.0), .init(.color(MetalRGBA(23.0, 23.0, 24.0, 1.0)), 1.0)])), // mu-recipe:toolbar:20 linear-gradient(#121213, #171718)
+            .init(part: "search", state: nil, colorway: nil, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 5.0, spread: -1.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:toolbar:21 inset 1px 2px 5px -1px rgba(0,0,0,.6)
+            .init(part: "search", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:toolbar:22 inset 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "search", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.07)))), // mu-recipe:toolbar:23 0 .5px 0 rgba(255,255,255,.07)
+            .init(part: "kbd", state: nil, colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(48.0, 48.0, 51.0, 1.0)), 0.0), .init(.color(MetalRGBA(38.0, 38.0, 40.0, 1.0)), 1.0)])), // mu-recipe:toolbar:24 linear-gradient(#303033, #262628)
+            .init(part: "kbd", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.09)))), // mu-recipe:toolbar:25 inset 0 1px 0 rgba(255,255,255,.09)
+            .init(part: "kbd", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.8)))), // mu-recipe:toolbar:26 0 0 0 .5px rgba(0,0,0,.8)
         ],
         props: [
             "self.pad": .number(7.0),
@@ -2317,12 +2315,10 @@ public enum MetalRecipes {
             .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.7)))), // mu-recipe:icon-button:7 inset 0 1px 3px rgba(0,0,0,.7)
             .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.8)))), // mu-recipe:icon-button:8 inset 0 0 0 .5px rgba(0,0,0,.8)
             .init(part: "tool", state: "pressed", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:icon-button:9 0 1px 0 rgba(255,255,255,.06)
-            .init(part: "led", state: nil, colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(217.0, 255.0, 233.0, 1.0)), 0.18), .init(.color(MetalRGBA(123.0, 234.0, 174.0, 1.0)), 0.42), .init(.color(MetalRGBA(47.0, 182.0, 115.0, 1.0)), 1.0)])), // mu-recipe:icon-button:10 radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673)
-            .init(part: "led", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(123.0, 234.0, 174.0, 0.6)))), // mu-recipe:icon-button:11 0 0 2px rgba(123,234,174,.6)
-            .init(part: "ghost", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.05)))), // mu-recipe:icon-button:12 rgba(0,0,0,.05)
-            .init(part: "ghost", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:icon-button:13 rgba(255,255,255,.08)
-            .init(part: "mini", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.06)))), // mu-recipe:icon-button:14 rgba(0,0,0,.06)
-            .init(part: "mini", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:icon-button:15 rgba(255,255,255,.08)
+            .init(part: "ghost", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.05)))), // mu-recipe:icon-button:10 rgba(0,0,0,.05)
+            .init(part: "ghost", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:icon-button:11 rgba(255,255,255,.08)
+            .init(part: "mini", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.06)))), // mu-recipe:icon-button:12 rgba(0,0,0,.06)
+            .init(part: "mini", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:icon-button:13 rgba(255,255,255,.08)
         ],
         props: [
             "tool.size": .number(38.0),
@@ -2374,10 +2370,8 @@ public enum MetalRecipes {
             .init(part: "glass-action", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.08)))), // mu-recipe:chip:16 rgba(255,255,255,.08)
             .init(part: "glass-action", state: "hover", colorway: .bone, fill: .solid(.color(MetalRGBA(0.0, 0.0, 0.0, 0.09)))), // mu-recipe:chip:17 rgba(0,0,0,.09)
             .init(part: "glass-action", state: "hover", colorway: .graphite, fill: .solid(.color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:chip:18 rgba(255,255,255,.16)
-            .init(part: "led", state: "link", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(230.0, 238.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(157.0, 185.0, 255.0, 1.0)), 0.45), .init(.color(MetalRGBA(75.0, 120.0, 240.0, 1.0)), 1.0)])), // mu-recipe:chip:19 radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0)
-            .init(part: "led", state: "code", colorway: nil, fill: .radial(center: .init(x: 0.4, y: 0.35), stops: [.init(.color(MetalRGBA(246.0, 228.0, 255.0, 1.0)), 0.18), .init(.color(MetalRGBA(212.0, 166.0, 240.0, 1.0)), 0.45), .init(.color(MetalRGBA(155.0, 92.0, 200.0, 1.0)), 1.0)])), // mu-recipe:chip:20 radial-gradient(circle at 40% 35%, #F6E4FF 0 18%, #D4A6F0 45%, #9B5CC8)
-            .init(part: "tag", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(40.0, 38.0, 32.0, 0.2)))), // mu-recipe:chip:21 inset 0 0 0 .5px rgba(40,38,32,.2)
-            .init(part: "tag", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:chip:22 inset 0 0 0 .5px rgba(255,255,255,.16)
+            .init(part: "tag", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(40.0, 38.0, 32.0, 0.2)))), // mu-recipe:chip:19 inset 0 0 0 .5px rgba(40,38,32,.2)
+            .init(part: "tag", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.16)))), // mu-recipe:chip:20 inset 0 0 0 .5px rgba(255,255,255,.16)
         ],
         props: [
             "suggestion.height": .number(20.0),
@@ -2404,7 +2398,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Text input in a well with a leading glyph and trailing keycaps, in three sizes: large (44, the palette's field, where the caret is the focus) and the form sizes regular (32) and compact (28), which match the select and show the focus ring. Invalid draws the foundation's invalid ring; disabled is 40 %. A prefix or suffix is a fixed part of the value ("https://", "kg"), engraved in ink3 on the well's floor in the input's type: not selectable, not part of the value, and pressing it puts the caret at that end of the input. The trail holds mini keys: compact button caps, 20 round with a 12 glyph and a 24 hit area, which sit as far from the well's edge as from its top and bottom in every size; a key that comes and goes (clear, a remote check that passed) pops in on the settle spring from 60 % and leaves on the release spring, keeping its place so the trail never shifts. With a limit, Textarea's counter sits in the trail (meta type, tabular, ink3) and fades in at Textarea's share of the limit; it turns red at the limit, and typing past it shakes only the counter on the refusal spring. chars sizes the input to an expected length in its own font's character width, plus a 2 slack for the caret. SearchField is a button in a well that opens search (light or graphite). Reduce Motion: keys fade without the pop; nothing shakes. (reference style.css .pal-field, .pal-field input, .tb-search)
+    /// Text input in a well with a leading glyph and trailing keycaps, in three sizes: large (44, the palette's field, where the caret is the focus) and the form sizes regular (32) and compact (28), which match the select and show the focus ring. Invalid draws the foundation's invalid ring; disabled is 40 %. A prefix or suffix is a fixed part of the value ("https://", "kg"), engraved in ink3 on the well's floor in the input's type: not selectable, not part of the value, and pressing it puts the caret at that end of the input. The trail holds mini keys: compact button caps, 20 round with a 12 glyph and a 24 hit area, which sit as far from the well's edge as from its top and bottom in every size; a key that comes and goes (clear, a remote check that passed) pops in on the settle spring from 60 % and leaves on the release spring, keeping its place so the trail never shifts. The copy key's glyph turns on the drum to a check for copy.hold (Table's hold), then back; the show-password key's eye morphs to eye-off while the text shows. With a limit, Textarea's counter sits in the trail (meta type, tabular, ink3) and fades in at Textarea's share of the limit; it turns red at the limit, and typing past it shakes only the counter on the refusal spring. chars sizes the input to an expected length in its own font's character width, plus a 2 slack for the caret. SearchField is a button in a well that opens search (light or graphite). Reduce Motion: keys fade without the pop; nothing shakes. (reference style.css .pal-field, .pal-field input, .tb-search)
     public static let field = MetalObjectRecipe(
         name: "field",
         layers: [
@@ -2451,6 +2445,7 @@ public enum MetalRecipes {
             "key.hit": .number(24.0),
             "key.pop": .text("0.6"),
             "chars.slack": .number(2.0),
+            "copy.hold": .text("1400ms"),
         ]
     )
 

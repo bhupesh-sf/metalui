@@ -16,7 +16,7 @@ A file someone attached. React: `Attachment` from `@unlocalhosted/metalui` (name
 - Type: a 36 sunk well with the extension engraved (PDF, PNG).
 - Name: ui type; a long name keeps its extension and cuts the middle.
 - Line: meta type, ink3: the size, "Uploading · 40 %", or the error in red.
-- Track (uploading): 3 tall, the progress fill. Try again (failed), Remove (a mini key).
+- Track (uploading): 3 tall, Progress's fill: a whole capsule slid in by transform on the settle spring (never a width, so it paints and does not lay out). Try again (failed), Remove (a mini key).
 
 ## States and motion
 

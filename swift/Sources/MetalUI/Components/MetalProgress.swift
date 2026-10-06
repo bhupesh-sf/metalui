@@ -156,8 +156,8 @@ public struct MetalProgress: View {
     }
 }
 
-/// One sunk well and its fill (or, unknown, the sweeping segment).
-private struct MetalProgressWell: View {
+/// One sunk well and its fill (or, unknown, the sweeping segment). Attachment's track uses it too.
+struct MetalProgressWell: View {
     let fill: Double?
     let buffer: Double?
     let state: MetalProgressState

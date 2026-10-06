@@ -27,8 +27,10 @@ const TYPE = 'mu-attachment-type grid flex-none place-items-center size-attachme
 const BODY = 'mu-attachment-body grid flex-1 min-w-0 gap-attachment-body-gap';
 const NAME = 'mu-attachment-name flex min-w-0 type-ui text-ink';
 const META = 'mu-attachment-meta truncate type-meta tabular-nums text-ink3 data-failed:text-form-field-error-ink';
-const TRACK = 'mu-attachment-track block h-attachment-track-height rounded-pill overflow-hidden recipe-switch';
-const FILL = 'block h-full rounded-pill recipe-switch-on transition-progress-fill data-indeterminate:progress-segment';
+const TRACK = 'mu-attachment-track relative block h-attachment-track-height rounded-pill overflow-hidden recipe-switch';
+// Progress's fill: full width, slid in by transform (never a width), on the settle spring.
+const FILL = 'mu-attachment-fill block recipe-switch-on progress-fill';
+const SEGMENT = 'mu-attachment-fill block rounded-pill recipe-switch-on progress-segment';
 
 /** "12.4 MB" from bytes. */
 export function formatBytes(bytes: number, locale?: string) {
@@ -74,7 +76,11 @@ export function Attachment({ name, size, progress, error, onRetry, onRemove, fil
         <span className={NAME} title={name}><span className="truncate">{base}</span><span className="flex-none">{ext}</span></span>
         {uploading && (
           <BaseProgress.Root value={progress} aria-label={`Uploading ${name}`}>
-            <BaseProgress.Track className={TRACK}><BaseProgress.Indicator className={FILL} /></BaseProgress.Track>
+            <BaseProgress.Track className={TRACK}>
+              {progress == null
+                ? <span className={SEGMENT} data-indeterminate="" />
+                : <span className={FILL} style={{ '--mu-progress-value': Math.max(0, Math.min(100, progress)) } as React.CSSProperties} />}
+            </BaseProgress.Track>
           </BaseProgress.Root>
         )}
         {/* One line beside Try again; the whole reason is in the title and in the alert. */}

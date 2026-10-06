@@ -7,10 +7,10 @@ export { Label, type LabelProps, type LabelVariant } from './components/label/la
 export { Rule, type RuleProps } from './components/rule/rule';
 export { IconButton, type IconButtonProps } from './components/icon-button/icon-button';
 export { Chip, type ChipProps } from './components/chip/chip';
-export { Field, SearchField, type SearchFieldProps, type FieldRootProps, type FieldInputProps, type FieldKeyProps, type FieldClearProps, type FieldShortcutProps, type FieldCheckProps, type FieldSize } from './components/field/field';
+export { Field, SearchField, type SearchFieldProps, type FieldRootProps, type FieldInputProps, type FieldKeyProps, type FieldClearProps, type FieldShortcutProps, type FieldCheckProps, type FieldCopyProps, type FieldRevealProps, type FieldSize } from './components/field/field';
 export { Textarea, type TextareaProps } from './components/textarea/textarea';
 export { FormField, Fieldset, Form, ChangedMark, type FormFieldRootProps, type FormFieldLabelProps, type FormFieldReadbackProps, type ChangedMarkProps, type FormProps } from './components/form-field/form-field';
-export { NumberField, type NumberFieldProps } from './components/number-field/number-field';
+export { NumberField, type NumberFieldProps, type NumberFieldSize } from './components/number-field/number-field';
 export { Calendar, type CalendarProps, type CalendarSingleProps, type CalendarRangeProps, type CalendarMultipleProps, type CalendarPeriod, type DateRange, type DayMark } from './components/calendar/calendar';
 export { DatePicker, type DatePickerProps, type DatePickerSingleProps, type DatePickerRangeProps, type DatePreset } from './components/calendar/date-picker';
 export { Avatar, AvatarGroup, initialsOf, type AvatarProps, type AvatarGroupProps, type AvatarSize } from './components/avatar/avatar';

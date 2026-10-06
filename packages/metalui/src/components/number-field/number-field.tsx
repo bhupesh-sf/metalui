@@ -18,7 +18,7 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  *   step      − and + keycaps (the set's minus and plus glyphs) at the ends of the well; each press
  *             sinks the cap and turns the value one drum step on the settle spring: + rolls up (the
  *             new number comes from below), − rolls down; holding repeats; ↑ ↓ step the same way
- *   fine      Alt steps by smallStep, Shift by largeStep. While either is held over the field (or in
+ *   fine      Alt steps by smallStep (the step itself when it is whole, else 0.1), Shift by largeStep. While either is held over the field (or in
  *   coarse    it), the keycaps' legends turn on the drum to the step they will take ("−10" "+10")
  *   scrub     drag the label sideways: each change turns the drum the way it went
  *   limit     at min or max that keycap disables; an arrow or a scrub past it shakes only the digits
@@ -30,8 +30,8 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  *             What isn't understood is refused: the digits shake and the value stays
  *   soft      allowOutOfRange: a typed value past a limit is kept, with the invalid ring and the limit
  *             said under the field ("Up to 100"); the keys and the scrub still clamp
- *   default   double-click the label, or ⌘-click a keycap: the value turns back to defaultValue on the
- *             drum. While it is off its default, the shared changed mark hangs before the label
+ *   default   double-click the label, ⌘-click a keycap, or ⌘⌫ (Ctrl+Backspace) in the input: the value
+ *             turns back to defaultValue on the drum. While it is off its default, the shared changed mark hangs before the label
  *   mixed     a multi-selection with different values: "Mixed" in ink3; a step calls onStep with the
  *             signed amount (apply it to each item), typing sets them all through onValueChange
  *   inspector kind="inspector", for tight panels: no keycaps; a letter or glyph engraved at the well's
@@ -200,7 +200,7 @@ export interface NumberFieldProps extends Omit<BaseNumberField.Root.Props, 'clas
 /** A number you step, scrub or type. */
 function Root({
   label, size = 'regular', kind = 'stepper', unit, mixed, onStep, decrementLabel = 'Decrease', incrementLabel = 'Increase', invalid, className,
-  onValueChange, onValueCommitted, value, defaultValue, min, max, step = 1, smallStep = 0.1, largeStep = 10, allowOutOfRange, format, locale,
+  onValueChange, onValueCommitted, value, defaultValue, min, max, step = 1, smallStep: smallStepProp, largeStep = 10, allowOutOfRange, format, locale,
   disabled, readOnly, 'aria-label': ariaLabel, ...props
 }: NumberFieldProps) {
   const inspector = kind === 'inspector';
@@ -222,6 +222,8 @@ function Root({
   const readbackId = React.useId();
   const limitId = React.useId();
   const stepNum = step === 'any' ? 1 : step;
+  // A whole-number step makes a count: Alt steps by the step itself, not by tenths.
+  const smallStep = smallStepProp ?? (step !== 'any' && Number.isInteger(step) ? step : 0.1);
   const scale = { unit, locale, format };
 
   // What the input shows, read after each render: the drum turns to it, and the sizer is as wide as it.
@@ -423,6 +425,7 @@ function Root({
               aria-label={ariaLabel}
               aria-labelledby={ariaLabel ? undefined : label != null ? labelId : undefined}
               aria-invalid={isInvalid || undefined}
+              aria-keyshortcuts={hasDefault && !readOnly ? 'Meta+Backspace Control+Backspace' : undefined}
               aria-describedby={[readback && readbackId, outside && limitId].filter(Boolean).join(' ') || undefined}
               {...(draft != null ? { value: draft } : {})}
               onChange={(e: React.ChangeEvent<HTMLInputElement> & { preventBaseUIHandler?: () => void }) => {
@@ -435,6 +438,8 @@ function Root({
                 const up = e.key === 'ArrowUp', down = e.key === 'ArrowDown';
                 if (draft != null && e.key === 'Escape') { e.preventBaseUIHandler?.(); e.stopPropagation(); setDraft(null); return; }
                 if (draft != null && e.key === 'Enter') { e.preventBaseUIHandler?.(); commit(e.nativeEvent); return; }
+                // ⌘⌫ (Ctrl+Backspace): back to default, the keyboard twin of ⌘-click on a keycap.
+                if (e.key === 'Backspace' && (e.metaKey || e.ctrlKey) && hasDefault && !readOnly) { e.preventBaseUIHandler?.(); e.preventDefault(); reset(e.nativeEvent); return; }
                 // A step from a draft steps from what it means.
                 if (draft != null && (up || down)) flushSync(() => commit(e.nativeEvent));
                 if (e.key.length === 1 && !e.metaKey && !e.ctrlKey) { e.preventBaseUIHandler?.(); return; }

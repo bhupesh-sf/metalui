@@ -22,7 +22,7 @@ A person's thing, held on a raised plate. React: `Card` from `@unlocalhosted/met
 - Status (optional): an LED at the end of the title's line, in an 18 box (the title's line).
 - Action (optional): a ghost icon key (`more`) level with the title's first line, reaching 5 into the padding, above the stretched link.
 - Description (body type, ink2); Footer: actions, 12 apart (compact 8), above the stretched link.
-- Choice: the latch's 4 pt green LED, 12 in from the top and end corner.
+- Choice: the latch's 4 pt green LED (the LED part's live lamp), 12 in from the top and end corner.
 - Frame: separated is the field well, padding 8 (compact 6), cards 8 apart (compact 6), radius card + padding; stacked is one raised plate, sections between engraved hairlines (the rule's groove, inset by the padding); ghost is a grid with no tray. Columns fill by a 200 minimum; side cards make one column.
 - Empty slot: the track well (a step deeper than the tray), card radius, at least 120 tall, plus and a verb in ink2.
 

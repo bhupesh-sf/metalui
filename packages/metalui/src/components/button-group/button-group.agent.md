@@ -19,7 +19,7 @@ Related actions as one machined bar. React: `ButtonGroup`, `ButtonGroupReadout` 
 - Keys: Buttons (or Toggles with `latch`), bare in the bar, square inside; the end keys keep the bar's pill ends.
 - Seam: 2 wide, a dark line and a light edge beside it, between every two parts; the bar draws it, so it never moves.
 - Window (`ButtonGroupReadout`): the field well cut into the bar, 4 inside its edges, at least 56 wide, radius 4, tabular figures on the drum.
-- Split: the main Button, a seam, a 32 wide chevron key with the set's `chevron` (`Icon`).
+- Split: the main Button, a seam, a 32 wide chevron key with the set's `chevron` as a `MorphIcon`.
 
 ## States and motion
 
@@ -30,7 +30,7 @@ Related actions as one machined bar. React: `ButtonGroup`, `ButtonGroupReadout` 
 | pressed | that key in the button's pressed look, down 1; seams and the rest stay | the button's press and release |
 | rocker pressed | the whole cap tips 1° toward the pressed end; the key doesn't slide | part spring |
 | latched | the key stays sunk with its lamp lit | the toggle's latch |
-| menu open (split) | the chevron key held down; the chevron points up | the chevron turns over on the part spring |
+| menu open (split) | the chevron key held down; the chevron points up | the chevron turns over on its axis (a `MorphIcon` half turn, edge-on midway) on the settle spring, the way the combobox's does; a CSS spin would swing it through pointing sideways |
 | focus | the green ring 2 inside the key, following the bar's ends | – |
 | disabled | a key at 40 %; `disabled` sets the whole bar at 40 % and refuses | – |
 | waiting | the main key held with its arc (`Button` `state`, `useWait`) | the button's wait |

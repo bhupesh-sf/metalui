@@ -310,7 +310,7 @@ public struct MetalCodeFace: View {
         MetalGlassBody(screen: "screen", screenRecipe: r) {
             ZStack(alignment: .topLeading) {
                 MetalChip(.glass) {
-                    MetalChipLead(led: .code) { EmptyView() }
+                    MetalChipLead(led: .off) { EmptyView() }
                     MetalChipText { Text(label.uppercased()) }
                 }
                 .padding(r.points("chip.inset"))
