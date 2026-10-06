@@ -1,0 +1,22 @@
+{
+  "name": "alert",
+  "title": "Alert",
+  "status": "alpha",
+  "layer": "component",
+  "description": "An inline message about this place (top of a form, inside a card, along a page): the kind's glyph in a sunk window with its LED in the corner, a title, a description that wraps, actions and an optional close key. Kinds note, done, waiting, urgent, failed; tones plate, quiet, strong; a banner; solid on see-through grounds. It arrives rising, morphs its glyph when its kind changes, and leaves when dismissed; never by itself.",
+  "base": "none (a live region, role alert or status; the close key is IconButton)",
+  "uses": ["led", "icon-button", "status", "well"],
+  "react": {
+    "export": "Alert",
+    "files": ["alert.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalAlert",
+    "file": "swift/Sources/MetalUI/Components/MetalAlert.swift"
+  },
+  "slots": {
+    "Alert": ["Root", "Title", "Description", "Actions"]
+  },
+  "agent": "alert.agent.md",
+  "page": "/components/alert"
+}

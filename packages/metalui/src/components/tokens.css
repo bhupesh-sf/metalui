@@ -1326,6 +1326,19 @@
   --mu-r-empty-state-well-size: 56px;
   --mu-r-empty-state-well-radius: 18px;
   --mu-r-empty-state-well-glyph: 24px;
+  /* alert: the status recipe (plates, strong inks, keyline); the well (field); the LED; IconButton ghost; Transitions T9 */
+  --mu-r-alert-self-radius: 16px;
+  --mu-r-alert-self-pad: 14px;
+  --mu-r-alert-self-gap: 12px;
+  --mu-r-alert-self-text-gap: 2px;
+  --mu-r-alert-self-text-top: 5px;
+  --mu-r-alert-self-actions-gap: 8px;
+  --mu-r-alert-self-actions-top: 10px;
+  --mu-r-alert-banner-pad: 20px;
+  --mu-r-alert-window-size: 28px;
+  --mu-r-alert-window-radius: 9px;
+  --mu-r-alert-window-glyph: 16px;
+  --mu-r-alert-window-lamp-inset: 2px;
   /* split-pane: the rule's hairline; the switch thumb (the grip); the part and settle springs; the ARIA window splitter pattern */
   --mu-r-split-pane-divider-hit: 12px;
   --mu-r-split-pane-divider-line: 1px;

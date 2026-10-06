@@ -692,6 +692,20 @@
   --spacing-empty-state-well-radius: var(--mu-r-empty-state-well-radius);
   --radius-empty-state-well-radius: var(--mu-r-empty-state-well-radius);
   --spacing-empty-state-well-glyph: var(--mu-r-empty-state-well-glyph);
+  --spacing-alert-radius: var(--mu-r-alert-self-radius);
+  --radius-alert-radius: var(--mu-r-alert-self-radius);
+  --spacing-alert-pad: var(--mu-r-alert-self-pad);
+  --spacing-alert-gap: var(--mu-r-alert-self-gap);
+  --spacing-alert-text-gap: var(--mu-r-alert-self-text-gap);
+  --spacing-alert-text-top: var(--mu-r-alert-self-text-top);
+  --spacing-alert-actions-gap: var(--mu-r-alert-self-actions-gap);
+  --spacing-alert-actions-top: var(--mu-r-alert-self-actions-top);
+  --spacing-alert-banner-pad: var(--mu-r-alert-banner-pad);
+  --spacing-alert-window-size: var(--mu-r-alert-window-size);
+  --spacing-alert-window-radius: var(--mu-r-alert-window-radius);
+  --radius-alert-window-radius: var(--mu-r-alert-window-radius);
+  --spacing-alert-window-glyph: var(--mu-r-alert-window-glyph);
+  --spacing-alert-window-lamp-inset: var(--mu-r-alert-window-lamp-inset);
   --spacing-split-pane-divider-hit: var(--mu-r-split-pane-divider-hit);
   --spacing-split-pane-divider-line: var(--mu-r-split-pane-divider-line);
   --spacing-split-pane-grip-length: var(--mu-r-split-pane-grip-length);
@@ -2136,6 +2150,15 @@
 }
 @utility empty-state-arrive {
   animation: mu-empty-state-arrive var(--mu-spring-settle-d) var(--mu-spring-settle) both;
+}
+@utility alert-frame {
+  container: alert / inline-size;
+}
+@utility alert-body {
+  display: grid; row-gap: var(--mu-r-alert-self-text-gap); padding-top: var(--mu-r-alert-self-text-top); & > .mu-alert-actions { margin-top: var(--mu-r-alert-self-actions-top); } @container alert (min-width: 480px) { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--mu-r-alert-self-gap); & > * { grid-column: 1; } & > .mu-alert-actions { grid-column: 2; grid-row: 1 / span 3; align-self: start; margin-top: calc(var(--mu-r-alert-self-text-top) * -1); } }
+}
+@utility alert-arrive {
+  animation: mu-alert-arrive var(--mu-spring-settle-d) var(--mu-spring-settle) both;
 }
 @utility split-pane-size {
   transition: flex-basis var(--mu-spring-settle-d) var(--mu-spring-settle); [data-dragging] > & { transition: none; } [data-snapping] > & { transition: flex-basis var(--mu-spring-part-d) var(--mu-spring-part); } @media (prefers-reduced-motion: reduce) { transition: none !important; }
@@ -3662,6 +3685,9 @@
   from { opacity: 0; translate: 0 calc(var(--mu-motion-nest) * -1 * var(--mu-travel-object)); } to { opacity: 1; translate: 0 0; }
 }
 @keyframes mu-empty-state-arrive {
+  from { opacity: 0; translate: 0 calc(var(--mu-motion-nest) * var(--mu-travel-settle)); } to { opacity: 1; translate: 0 0; }
+}
+@keyframes mu-alert-arrive {
   from { opacity: 0; translate: 0 calc(var(--mu-motion-nest) * var(--mu-travel-settle)); } to { opacity: 1; translate: 0 0; }
 }
 @keyframes mu-toolbar-in {

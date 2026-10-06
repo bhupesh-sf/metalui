@@ -19,6 +19,7 @@ export { Attachment, formatBytes, type AttachmentProps } from './components/atta
 export { Table, TableCell, tableUnit, type TableProps, type TableColumn, type TableCellProps, type TableCellFormat, type TableKind, type TableDensity, type TableStatus, type TablePerson, type TableAction, type TableColumnsState, type SortState } from './components/table/table';
 export { Properties, type PropertiesProps, type PropertiesRootProps, type PropertiesItemProps, type PropertiesSize } from './components/properties/properties';
 export { EmptyState, type EmptyStateProps } from './components/empty-state/empty-state';
+export { Alert, type AlertProps, type AlertRootProps, type AlertKind, type AlertTone } from './components/alert/alert';
 export { SplitPane, type SplitPaneProps } from './components/split-pane/split-pane';
 export { Sidebar, type SidebarProps, type SidebarItemProps, type SidebarToggleProps } from './components/sidebar/sidebar';
 export { DropZone, type DropZoneProps, type DropRefusal } from './components/drop-zone/drop-zone';

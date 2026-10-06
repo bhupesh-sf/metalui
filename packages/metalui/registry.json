@@ -190,6 +190,29 @@
       "docs": "Agent guide: https://metalui.dev/r/accordion.md. SwiftUI: MetalAccordion in the MetalUI Swift package."
     },
     {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "An inline message about this place (top of a form, inside a card, along a page): the kind's glyph in a sunk window with its LED in the corner, a title, a description that wraps, actions and an optional close key. Kinds note, done, waiting, urgent, failed; tones plate, quiet, strong; a banner; solid on see-through grounds. It arrives rising, morphs its glyph when its kind changes, and leaves when dismissed; never by itself.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-morph.json",
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/alert/alert.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/alert/alert.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/alert.md. SwiftUI: MetalAlert in the MetalUI Swift package."
+    },
+    {
       "name": "alert-dialog",
       "type": "registry:ui",
       "title": "Alert dialog",
