@@ -74,3 +74,13 @@ test('reduced motion: the edge lights, nothing sinks', async ({ page }) => {
   expect(Number(await zone(page).evaluate((el) => getComputedStyle(el).scale))).toBe(1);
   expect(await zone(page).evaluate((el) => getComputedStyle(el, '::before').boxShadow)).not.toContain('rgba(0, 0, 0, 0)');
 });
+
+// Squeezed, the compact title's drum ends in an ellipsis instead of cutting a word.
+test('a squeezed compact title ends in an ellipsis', async ({ page }) => {
+  await open(page, '/components/drop-zone', 'bone');
+  const zone = page.locator('.mu-drop-zone').filter({ has: page.locator('.mu-drop-zone-title.truncate') }).first();
+  await zone.evaluate((z) => { (z as HTMLElement).style.width = '200px'; (z as HTMLElement).style.maxWidth = '200px'; });
+  const face = zone.locator('.mu-drop-zone-title .mu-swap-layer').first();
+  await expect.poll(() => face.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(true);
+  expect(await face.evaluate((el) => getComputedStyle(el).textOverflow)).toBe('ellipsis');
+});

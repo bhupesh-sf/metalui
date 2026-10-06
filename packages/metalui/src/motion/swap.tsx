@@ -18,6 +18,7 @@ import { useIsoLayoutEffect } from './layout-effect';
  *   growing    0ms   width settles to the new face as the drum turns
  *   shrinking 83ms   width settles once the old face is half turned away
  * Icons ride the same drum as their label, so the whole face turns together.
+ * Narrow: the drum never outgrows its container; a face that doesn't fit ends in an ellipsis.
  * Reduced motion: a crossfade on the same spring; no turn, focus or footprint spring.
  * ───────────────────────────────────────────────────────── */
 
@@ -76,9 +77,11 @@ function useSwapLayers(key: string, node: React.ReactNode, root: React.RefObject
  * Every layer shares one cell (the drum has one window); incoming waits one step below it, out of
  * focus, and outgoing turns up out of it on the same spring. Defocus is half the turn. Reduced motion
  * keeps the change and removes the travel: a plain crossfade. */
-const TEXT = 'mu-swap-text relative inline-grid align-top justify-items-start whitespace-nowrap swap-footprint motion-reduce:transition-none';
+const TEXT = 'mu-swap-text relative inline-grid max-w-full align-top justify-items-start whitespace-nowrap swap-footprint motion-reduce:transition-none';
 const ICON = 'mu-swap-icon inline-grid align-top flex-none place-items-center';
 const LAYER = 'mu-swap-layer col-start-1 row-start-1 inline-flex swap-layer data-[state=enter]:swap-enter data-[state=out]:swap-out';
+// A text face is a block that may shrink below its words and end in an ellipsis when the drum is squeezed.
+const TEXT_LAYER = 'mu-swap-layer col-start-1 row-start-1 block min-w-0 max-w-full overflow-hidden text-ellipsis swap-layer data-[state=enter]:swap-enter data-[state=out]:swap-out';
 const MEASURE = 'mu-swap-text-measure absolute top-0 left-0 invisible pointer-events-none whitespace-nowrap';
 
 export interface SwapTextProps {
@@ -123,7 +126,7 @@ export function SwapText({ value, className }: SwapTextProps) {
   return (
     <span ref={root} className={className ? `${TEXT} ${className}` : TEXT} style={{ width }}>
       {layers.map((l) => (
-        <span key={l.id} className={LAYER} data-state={l.state} aria-hidden={l.state === 'out' || undefined}>
+        <span key={l.id} className={TEXT_LAYER} data-state={l.state} aria-hidden={l.state === 'out' || undefined}>
           {l.node}
         </span>
       ))}
