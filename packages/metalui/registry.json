@@ -59,6 +59,11 @@
           "target": "components/metalui/motion/refuse.ts"
         },
         {
+          "path": "packages/metalui/src/motion/rows.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/rows.ts"
+        },
+        {
           "path": "packages/metalui/src/motion/springs.generated.ts",
           "type": "registry:ui",
           "target": "components/metalui/motion/springs.generated.ts"

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {
   Attachment, Avatar, Button, DropZone, Field, FormField, IconButton, Select, SwapText, Switch, Tooltip, TooltipProvider,
-  type DropRefusal, motionReduced,
+  type DropRefusal, leaveRows, useRowMotion,
 } from '@unlocalhosted/metalui';
 import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
 
@@ -89,54 +89,6 @@ function stepOf(size: number) {
 
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
-/* ── Motion helpers ────────────────────────────────────────── */
-
-
-/** A spring's duration (ms, zero under Reduce Motion) and curve, read from the element's own tokens. */
-function spring(el: Element, name: 'settle' | 'object' | 'release') {
-  const s = getComputedStyle(el);
-  const ms = motionReduced(el) ? 0 : parseFloat(s.getPropertyValue(`--mu-spring-${name}-d`)) * 1000 * (parseFloat(s.getPropertyValue(`--mu-travel-${name}`)) || 0);
-  return { ms, easing: s.getPropertyValue(`--mu-spring-${name}`).trim() || 'ease-out' };
-}
-
-/**
- * Rows in one list: a row that is new lands from one nest above on the object spring; rows that
- * moved travel from where they were (FLIP, settle spring). The first render only records.
- */
-function useRows(list: React.RefObject<HTMLElement | null>, order: string, land: boolean) {
-  const tops = React.useRef<Map<string, number> | null>(null);
-  React.useLayoutEffect(() => {
-    const el = list.current;
-    if (!el) return;
-    const glide = spring(el, 'settle');
-    const drop = spring(el, 'object');
-    const nest = parseFloat(getComputedStyle(el).getPropertyValue('--mu-motion-nest')) || 6;
-    const next = new Map<string, number>();
-    el.querySelectorAll<HTMLElement>(':scope > [data-row]').forEach((row) => {
-      const key = row.dataset.row!;
-      next.set(key, row.offsetTop);
-      if (!tops.current) return;
-      const was = tops.current.get(key);
-      if (was == null) {
-        if (land && drop.ms > 0) row.animate([{ opacity: 0, transform: `translateY(${-nest}px)` }, { opacity: 1, transform: 'none' }], { duration: drop.ms, easing: drop.easing });
-      } else if (was !== row.offsetTop && glide.ms > 0) {
-        row.animate([{ transform: `translateY(${was - row.offsetTop}px)` }, { transform: 'none' }], { duration: glide.ms, easing: glide.easing });
-      }
-    });
-    tops.current = next;
-  }, [list, order, land]);
-}
-
-/** A row leaves one nest down, fading, on the release spring; then `done`. At once under Reduce Motion. */
-function leave(row: HTMLElement | null, done: () => void) {
-  if (!row) return done();
-  const { ms, easing } = spring(row, 'release');
-  if (!ms) return done();
-  const nest = parseFloat(getComputedStyle(row).getPropertyValue('--mu-motion-nest')) || 6;
-  row.style.pointerEvents = 'none';
-  row.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateY(${nest}px)` }], { duration: ms, easing, fill: 'forwards' }).finished.then(done, done);
-}
-
 /* ── Parts of the panel ────────────────────────────────────── */
 
 const X = <svg aria-hidden viewBox="0 0 10 10" className="size-attachment-remove-glyph" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round"><path d="M2.5 2.5l5 5M7.5 2.5l-5 5" /></svg>;
@@ -182,8 +134,8 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
   const [copied, setCopied] = React.useState(false);
   const [status, setStatus] = React.useState('');
 
-  useRows(peopleList, people.map((p) => p.id).join('|'), true);
-  useRows(fileList, files.map((f) => f.id).join('|'), false); // attachments land on their own
+  useRowMotion(peopleList, people.map((p) => p.id).join('|'), true);
+  useRowMotion(fileList, files.map((f) => f.id).join('|'), false); // attachments land on their own
 
   React.useEffect(() => { if (autoFocus) title.current?.focus(); }, [autoFocus]);
 
@@ -250,7 +202,7 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
     const keys = Array.from(peopleList.current?.querySelectorAll<HTMLButtonElement>('[data-remove]') ?? []);
     const at = keys.findIndex((k) => k.dataset.remove === person.id);
     const after = keys[at + 1] ?? keys[at - 1] ?? email.current;
-    leave(row, () => {
+    leaveRows([row], () => {
       setPeople((all) => all.filter((p) => p.id !== person.id));
       setStatus(`Removed ${person.name}`);
     });

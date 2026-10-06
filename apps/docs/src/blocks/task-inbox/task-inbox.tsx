@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import {
   AlertDialog, Avatar, Button, Checkbox, Chip, EmptyState, Field, IconButton, Kbd, Menu, MenuItem, Row, Rule, Surface,
-  SwapText, Switcher, useToast, motionReduced,
+  SwapText, Switcher, useToast, leaveRows, springOf, useRowMotion,
 } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 
@@ -130,59 +130,12 @@ const short = (s: string, n = 32) => (s.length > n ? `${s.slice(0, n - 1).trimEn
 /* ── Motion helpers ────────────────────────────────────────── */
 
 
-/** A spring's duration (ms, zero under Reduce Motion) and curve, read from the element's own tokens. */
-function spring(el: Element, name: 'settle' | 'object' | 'release') {
-  const s = getComputedStyle(el);
-  const ms = motionReduced(el) ? 0 : parseFloat(s.getPropertyValue(`--mu-spring-${name}-d`)) * 1000 * (parseFloat(s.getPropertyValue(`--mu-travel-${name}`)) || 0);
-  return { ms, easing: s.getPropertyValue(`--mu-spring-${name}`).trim() || 'ease-out' };
-}
 const nestOf = (el: Element) => parseFloat(getComputedStyle(el).getPropertyValue('--mu-motion-nest')) || 6;
-
-/**
- * Rows in one list: a row in `landing` lands from one nest above on the object spring; rows that
- * moved travel from where they were (FLIP, settle spring). Any other new row simply appears.
- */
-function useRows(list: React.RefObject<HTMLElement | null>, order: string, landing: React.RefObject<Set<string>>) {
-  const tops = React.useRef<Map<string, number> | null>(null);
-  React.useLayoutEffect(() => {
-    const el = list.current;
-    if (!el) return;
-    const glide = spring(el, 'settle');
-    const drop = spring(el, 'object');
-    const nest = nestOf(el);
-    const next = new Map<string, number>();
-    el.querySelectorAll<HTMLElement>(':scope > [data-row]').forEach((row) => {
-      const key = row.dataset.row!;
-      next.set(key, row.offsetTop);
-      if (!tops.current) return;
-      const was = tops.current.get(key);
-      if (was == null) {
-        if (landing.current.has(key) && drop.ms > 0) row.animate([{ opacity: 0, transform: `translateY(${-nest}px)` }, { opacity: 1, transform: 'none' }], { duration: drop.ms, easing: drop.easing });
-      } else if (was !== row.offsetTop && glide.ms > 0) {
-        row.animate([{ transform: `translateY(${was - row.offsetTop}px)` }, { transform: 'none' }], { duration: glide.ms, easing: glide.easing, composite: 'add' });
-      }
-    });
-    landing.current.clear();
-    tops.current = next;
-  }, [list, order, landing]);
-}
-
-/** Elements leave one nest down, fading, on the release spring; then `done`. At once under Reduce Motion. */
-function leave(els: HTMLElement[], done: () => void) {
-  const live = els.filter(Boolean);
-  const { ms, easing } = live[0] ? spring(live[0], 'release') : { ms: 0, easing: '' };
-  if (!ms) return done();
-  const nest = nestOf(live[0]);
-  Promise.all(live.map((el) => {
-    el.style.pointerEvents = 'none';
-    return el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateY(${nest}px)` }], { duration: ms, easing, fill: 'forwards' }).finished;
-  })).then(done, done);
-}
 
 /** An element arrives from one nest below on the object spring (the tool strip over its footer). */
 function rise(el: HTMLElement | null) {
   if (!el) return;
-  const { ms, easing } = spring(el, 'object');
+  const { ms, easing } = springOf(el, 'object');
   if (ms) el.animate([{ opacity: 0, transform: `translateY(${nestOf(el)}px)` }, { opacity: 1, transform: 'none' }], { duration: ms, easing });
 }
 
@@ -251,7 +204,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
   const activeId = active.id && order.includes(active.id) ? active.id : order[0] ?? null;
   const allDone = tasks.length > 0 && tasks.every((t) => t.done);
 
-  useRows(grid, order.join('|'), landing);
+  useRowMotion(grid, order.join('|'), landing.current);
 
   /* The count, said once typing pauses; not on arrival, where it would land late over whatever was said since. */
   const said = `${plural(counted.length, 'task', 'tasks')}${query.trim() ? ` matching “${query.trim()}”` : ''}`;
@@ -278,7 +231,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
   const any = selected.length > 0;
   React.useLayoutEffect(() => {
     if (any) { if (!stripUp) setStripUp(true); return; }
-    if (stripUp) leave([strip.current!], () => setStripUp(false));
+    if (stripUp) leaveRows([strip.current], () => setStripUp(false));
   }, [any]); // eslint-disable-line react-hooks/exhaustive-deps
   React.useLayoutEffect(() => { if (stripUp && any) rise(strip.current); }, [stripUp]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -314,7 +267,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
       const going = changed.filter((id) => { const t = now.find((x) => x.id === id); return t && !(inView(t, v) && matches(t, q)); });
       handOff(going);
       const rows = going.map((id) => grid.current?.querySelector<HTMLElement>(`[data-row="${id}"]`)).filter(Boolean) as HTMLElement[];
-      leave(rows, () => setLinger((l) => l.filter((id) => !changed.includes(id))));
+      leaveRows(rows, () => setLinger((l) => l.filter((id) => !changed.includes(id))));
     }, TIMING.beat);
     timers.current.push(t);
   };
@@ -369,7 +322,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
     setSelected([]);
     afterDelete.current = handOff(list);
     const say = list.length === 1 ? { title: 'Deleted', sub: short(tasks.find((t) => t.id === list[0])?.title ?? '') } : { title: `Deleted ${plural(list.length, 'task', 'tasks')}` };
-    leave(rows, () => commit(list, () => null, say));
+    leaveRows(rows, () => commit(list, () => null, say));
   };
 
   /* ── Selection ───────────────────────────────────────────── */

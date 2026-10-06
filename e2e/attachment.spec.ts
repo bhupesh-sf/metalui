@@ -27,7 +27,8 @@ for (const colorway of COLORWAYS) {
     await expect(failed.getByRole('progressbar')).toBeVisible();
 
     await long.getByRole('button', { name: /^Remove Tram map/ }).click();
-    await expect(long).toHaveAttribute('data-leaving', '');
+    // It leaves as rows do: a release-spring animation runs, then it is gone.
+    expect(await long.evaluate((el) => el.getAnimations().length)).toBeGreaterThan(0);
     await expect(long).toHaveCount(0);
   });
 }

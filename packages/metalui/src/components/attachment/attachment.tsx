@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Progress as BaseProgress } from '@base-ui/react/progress';
 import { IconButton } from '../icon-button/icon-button';
 import { Button } from '../button/button';
-import { motionReduced } from '../../motion/reduced';
+import { leaveRows } from '../../motion/rows';
 
 /* ─────────────────────────────────────────────────────────
  * ATTACHMENT, a file someone attached, as a small raised plate
@@ -21,7 +21,7 @@ import { motionReduced } from '../../motion/reduced';
  * An object: it stands for a person's file. It uses the raised surface, the well and the progress fill.
  * ───────────────────────────────────────────────────────── */
 
-const PLATE = 'mu-attachment relative flex w-full items-center gap-attachment-gap h-attachment-height min-w-attachment-min-width p-attachment-pad rounded-attachment-radius recipe-surface-raise-sm attachment-land data-leaving:attachment-leave reduced-motion:animate-none';
+const PLATE = 'mu-attachment relative flex w-full items-center gap-attachment-gap h-attachment-height min-w-attachment-min-width p-attachment-pad rounded-attachment-radius recipe-surface-raise-sm attachment-land reduced-motion:animate-none';
 const TYPE = 'mu-attachment-type grid flex-none place-items-center size-attachment-type-size rounded-attachment-type-radius recipe-well-field type-label text-ink2 uppercase';
 const BODY = 'mu-attachment-body grid flex-1 min-w-0 gap-attachment-body-gap';
 const NAME = 'mu-attachment-name flex min-w-0 type-ui text-ink';
@@ -55,7 +55,6 @@ export interface AttachmentProps {
 
 /** A file someone attached. (Named Attachment so it never shadows the browser's File.) */
 export function Attachment({ name, size, progress, error, onRetry, onRemove, fill, className }: AttachmentProps) {
-  const [leaving, setLeaving] = React.useState(false);
   const plate = React.useRef<HTMLDivElement>(null);
   const dot = name.lastIndexOf('.');
   const base = dot > 0 ? name.slice(0, dot) : name;
@@ -64,17 +63,11 @@ export function Attachment({ name, size, progress, error, onRetry, onRemove, fil
   const uploading = progress != null && !error;
   const meta = error ? error : uploading ? `Uploading · ${Math.round(progress)} %` : size != null ? formatBytes(size) : '';
 
-  const remove = () => {
-    const el = plate.current;
-    const ms = el ? parseFloat(getComputedStyle(el).getPropertyValue('--mu-spring-release-d')) * 1000 : 0;
-    const reduced = motionReduced(el);
-    if (!ms || reduced) return onRemove?.();
-    setLeaving(true);
-    window.setTimeout(() => onRemove?.(), ms);
-  };
+  // It leaves as rows do; a host list that moves its rows with useRowMotion closes up after it.
+  const remove = () => leaveRows([plate.current], () => onRemove?.());
 
   return (
-    <div ref={plate} role="group" aria-label={name} data-leaving={leaving ? '' : undefined} className={[PLATE, !fill && 'max-w-attachment-max-width', className].filter(Boolean).join(' ')}>
+    <div ref={plate} role="group" aria-label={name} className={[PLATE, !fill && 'max-w-attachment-max-width', className].filter(Boolean).join(' ')}>
       <span aria-hidden className={TYPE}>{type}</span>
       <span className={BODY}>
         <span className={NAME} title={name}><span className="truncate">{base}</span><span className="flex-none">{ext}</span></span>

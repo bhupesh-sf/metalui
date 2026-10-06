@@ -88,6 +88,7 @@ export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './mo
 export { SlidingIndicator, type SlidingIndicatorProps } from './motion/indicator';
 export { hop, hopPoint, type HopPoint, type HopOptions } from './motion/hop';
 export { motionReduced, onMotionChange, useReducedMotion } from './motion/reduced';
+export { springOf, leaveRows, useRowMotion } from './motion/rows';
 export { haptic, setHapticBridge, type HapticKind, type HapticPath, type HapticBridge } from './motion/haptic';
 export { LinkCard, linkHueDegrees, type LinkCardProps, type LinkPreview } from './blocks/link-card/link-card';
 export { Settings, type SettingsRowProps } from './blocks/settings/settings';

@@ -1647,9 +1647,6 @@
 @utility attachment-land {
   animation: mu-attachment-land var(--mu-spring-object-d) var(--mu-spring-object) both;
 }
-@utility attachment-leave {
-  animation: mu-attachment-leave var(--mu-spring-release-d) var(--mu-spring-release) both;
-}
 @utility table-reset {
   border-collapse: separate; border-spacing: 0; & th, & td { border: 0; background: none; } & tr { background: none; }
 }
@@ -3110,9 +3107,6 @@
 }
 @keyframes mu-attachment-land {
   from { opacity: 0; translate: 0 calc(var(--mu-motion-nest) * -1 * var(--mu-travel-object)); } to { opacity: 1; translate: 0 0; }
-}
-@keyframes mu-attachment-leave {
-  from { opacity: 1; translate: 0 0; } to { opacity: 0; translate: 0 calc(var(--mu-motion-nest) * var(--mu-travel-settle)); }
 }
 @keyframes mu-empty-state-arrive {
   from { opacity: 0; translate: 0 calc(var(--mu-motion-nest) * var(--mu-travel-settle)); } to { opacity: 1; translate: 0 0; }

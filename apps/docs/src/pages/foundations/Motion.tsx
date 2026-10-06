@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Button } from '@unlocalhosted/metalui';
+import { Button, leaveRows, useRowMotion } from '@unlocalhosted/metalui';
 import { tokens, dampingRatio, settleTime } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, TokenTable, copyJSON } from '../../ui/doc';
 import { HopDemo } from '../../ui/HopDemo';
@@ -124,6 +124,34 @@ function ReducedMotionBench() {
   );
 }
 
+const ERRANDS = ['Pick up the prints', 'Book the framer', 'Return the tripod', 'Order matte paper'];
+
+/** A list whose rows land, leave and close up with the shared row helpers. */
+function RowsBench() {
+  const [rows, setRows] = React.useState(() => ERRANDS.map((text, i) => ({ id: String(i), text })));
+  const next = React.useRef(ERRANDS.length);
+  const list = React.useRef<HTMLUListElement>(null);
+  useRowMotion(list, rows.map((r) => r.id).join('|'), true);
+  const remove = (id: string, row: HTMLElement | null) => leaveRows([row], () => setRows((all) => all.filter((r) => r.id !== id)));
+  const add = () => {
+    const n = next.current++;
+    setRows((all) => [{ id: String(n), text: ERRANDS[n % ERRANDS.length] }, ...all]);
+  };
+  return (
+    <div className="grid w-full max-w-320 gap-12" data-testid="rows-bench">
+      <Button size="compact" onClick={add} className="justify-self-start">Add a row</Button>
+      <ul ref={list} aria-label="Errands" className="m-0 grid gap-6 p-0">
+        {rows.map((r) => (
+          <li key={r.id} data-row={r.id} className="flex list-none items-center justify-between rounded-row-list-radius px-12 py-8 type-ui text-ink recipe-surface-raise-sm">
+            {r.text}
+            <Button cap="link" aria-label={`Remove ${r.text}`} onClick={(e) => remove(r.id, e.currentTarget.closest('li'))}>REMOVE</Button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function Motion() {
   const [on, setOn] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -184,6 +212,12 @@ export default function Motion() {
       <Section title="Reduce Motion" lede="Each class resolves one way under Reduce Motion, from the system setting or from data-mu-motion=&quot;reduce&quot; on any ancestor. Parts, objects, hinges and refusals apply at once; surfaces and settles lose their travel and fade in place; release plays as authored, because a press of one point is feedback. Meaning never depends on the motion. Script-driven motion asks motionReduced(el) or useReducedMotion(ref), which read both the system setting and the switch; never matchMedia alone.">
         <Bench caption="Each class arrives from one step away · Replay, then turn Reduce motion on and replay">
           <ReducedMotionBench />
+        </Bench>
+      </Section>
+
+      <Section title="Rows in a list" lede="People, files and tasks come and go the same way. A new row lands from one nest above on the object spring; a removed one leaves one nest down, fading, on release; the rows after it close the gap on the settle spring. useRowMotion(list, order, land) moves the rows (marked data-row) whenever their order changes; leaveRows(rows, done) plays the leave, then you remove them. Reduce Motion: all at once.">
+        <Bench caption="useRowMotion · leaveRows · add a row, remove one">
+          <RowsBench />
         </Bench>
       </Section>
 
