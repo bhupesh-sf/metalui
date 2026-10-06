@@ -119,11 +119,12 @@ Order of work: the rules and `Button`'s icon slot → D's `chevron` and `minus` 
 Owner, on the Fan page: "why are the tray things labels, fix them, make relevant icons"; "instead of showing this tall thing maybe show a grid of 3 × 3"; "what is this ink thing". (2026-09-30)
 
 - [x] **Tray actions are glyph keys, not worded buttons.** The text and image trays hold compact `Button`s with words (Tasks, Summarise, Gather, Region, Export, Send away; Lift subject, Copy). Add `Fan.Action` (a graphite key with the action's glyph; its name in a tooltip and as its accessible name; the glyph plays its act on hover and press) and use it on the page. Glyphs: Tasks `task`, Summarise `document`, Gather `group`, Region `region`, Export `share` (or a new `download`), Send away `send-away`, Lift subject `capture`, Copy `duplicate` (or a new `copy`). (No `Fan.Action` needed: the tray holds `IconButton variant="tool"` keys named in `title` and `label`, SwiftUI `MetalIconButton(…, variant: .tool)`; Export is the new `download`. The guide says so.)
-- [ ] **The fold key is a text "‹"**: use a glyph from the set (a `chevron`, see the icons entry), or morph the tray's own cap glyph into `close` while open. Swift's `MetalFanTray` has the same "‹".
-- [ ] **The tool picker is a tower**: 11 tools fan straight up into a column taller than the page. Lay the choices out as a grid (3 × 3, or 4 × 3) that unfolds from the cap: each key travels from behind the cap to its cell on the part spring, staggered by distance from the cap; arrows move in two dimensions; group related tools (select / text / region; pen, marker, pencil; line, arrow, rectangle, ellipse; eraser). Keep "nothing hides in a menu".
-- [ ] **The Ink tray doesn't explain itself**: "Ink" as a worded label cap, a bead that only shows the current ink, five colour beads and three width dots with no names, and a "‹". Rework it: the label cap says what the bar is about with a glyph (not a word in a cap), the colours and widths are two named groups (tooltips and accessible names: "Ink: red", "Width: fine"), the chosen ink and width read as latched, and the widths show as strokes of that width in the chosen ink rather than bare dots.
-- [ ] The "Pretend selection" switcher sits right on top of the fanned picker; give the demo room, or move the switcher beside the bar.
-- [ ] Update the Fan agent guide, Swift and the captures with each change.
+- [x] **The fold key is a text "‹"**: use a glyph from the set (a `chevron`, see the icons entry), or morph the tray's own cap glyph into `close` while open. Swift's `MetalFanTray` has the same "‹".
+- [x] **The tool picker is a tower**: 11 tools fan straight up into a column taller than the page. Lay the choices out as a grid (3 × 3, or 4 × 3) that unfolds from the cap: each key travels from behind the cap to its cell on the part spring, staggered by distance from the cap; arrows move in two dimensions; group related tools (select / text / region; pen, marker, pencil; line, arrow, rectangle, ellipse; eraser). Keep "nothing hides in a menu".
+- [x] **The Ink tray doesn't explain itself**: "Ink" as a worded label cap, a bead that only shows the current ink, five colour beads and three width dots with no names, and a "‹". Rework it: the label cap says what the bar is about with a glyph (not a word in a cap), the colours and widths are two named groups (tooltips and accessible names: "Ink: red", "Width: fine"), the chosen ink and width read as latched, and the widths show as strokes of that width in the chosen ink rather than bare dots.
+- [x] The "Pretend selection" switcher sits right on top of the fanned picker; give the demo room, or move the switcher beside the bar.
+- [x] Update the Fan agent guide, Swift and the captures with each change.
+- Done (2026-10-06): the fold is the set's `chevron`; the picker is a grid unfolding from the cap (options take a `group`, one row each; nearest keys leave first); `Fan.Label icon`; `InkStroke`; named Ink and Width groups, latched in the graphite well; the switcher sits under the bar. Left: the fold key overhangs the tray's right edge slightly; no draw-picks e2e slice (the fan slice covers them).
 
 ## Link: more states
 
@@ -392,21 +393,22 @@ Decide: is the thumbwheel worth a prototype now, or after the rest?
 
 Now: `items: string[]`; regular and compact; the menu's frosted plate, one gliding highlight, a clear mark, "No matches". No groups, item details, multiple values, loading or failure. SwiftUI is a `TextField` with plain buttons.
 
-- [ ] **SwiftUI first**: `MetalCombobox` with the plate, the gliding highlight and the clear mark.
-- [ ] **Items with detail** (ReUI avatars, shadcn custom items): items as `{ value, label, description?, icon? }`, drawn as `Row`s (glyph or avatar, a second line in ink2), so similar items can be told apart.
-- [ ] **Groups** (Base UI, shadcn, React Aria sections): engraved group labels in the plate, staying at its top while their rows scroll; long lists virtualised (Base UI).
-- [ ] **Matches you can see** (*ours*): the typed letters in each row in full ink, the rest in ink2, so you see why a row matched.
-- [ ] **Three empties, told apart** (ReUI async, research): *loading*: the small ring in the trailing slot in place of the clear mark (the Spinner entry's "In a field"), the rows kept and dimmed; *failed*: a row with `sync-error`, "Couldn't load", and Try again; *nothing matched*: "No matches for 'lisb'" with the query in it.
-- [ ] **Several values** (Base UI and shadcn chips, HIG token fields): `multiple`: chosen values become `Chip`s in the well that land on the object spring; the query stays and the plate stays open after a pick; Backspace on an empty query selects the last chip and a second Backspace removes it; chips leave with the rows' motion (`useRowMotion`).
-- [ ] **Create what's missing** (Base UI creatable, React Aria custom value): `onCreate`: when nothing matches exactly, the last row is `plus` + "Create 'Lisbon'", set apart by a hairline, so it can't be mistaken for an existing item.
-- [ ] **Recent before typing** (Raycast `storeValue`, React Aria `menuTrigger="focus"`): `recent` items shown under an engraved "Recent" label on focus, before anything is typed.
-- [ ] **Commands at the end** (React Aria `onAction`): action rows ("Manage labels…") after the items, behind a hairline, each leading with its glyph.
-- [ ] **From a button** (shadcn popup from a button): `trigger="button"`: a key opens the plate and the search sits inside it; for pickers in toolbars and rows (the task inbox's Assign).
-- [ ] **The pick shows its kind** (*ours*): a chosen item with an `icon` shows it in the well's leading slot, morphing from the search glyph.
+- [x] **SwiftUI first**: `MetalCombobox` with the plate, the gliding highlight and the clear mark.
+- [x] **Items with detail** (ReUI avatars, shadcn custom items): items as `{ value, label, description?, icon? }`, drawn as `Row`s (glyph or avatar, a second line in ink2), so similar items can be told apart.
+- [x] **Groups** (Base UI, shadcn, React Aria sections): engraved group labels in the plate, staying at its top while their rows scroll; long lists virtualised (Base UI).
+- [x] **Matches you can see** (*ours*): the typed letters in each row in full ink, the rest in ink2, so you see why a row matched.
+- [x] **Three empties, told apart** (ReUI async, research): *loading*: the small ring in the trailing slot in place of the clear mark (the Spinner entry's "In a field"), the rows kept and dimmed; *failed*: a row with `sync-error`, "Couldn't load", and Try again; *nothing matched*: "No matches for 'lisb'" with the query in it.
+- [x] **Several values** (Base UI and shadcn chips, HIG token fields): `multiple`: chosen values become `Chip`s in the well that land on the object spring; the query stays and the plate stays open after a pick; Backspace on an empty query selects the last chip and a second Backspace removes it; chips leave with the rows' motion (`useRowMotion`).
+- [x] **Create what's missing** (Base UI creatable, React Aria custom value): `onCreate`: when nothing matches exactly, the last row is `plus` + "Create 'Lisbon'", set apart by a hairline, so it can't be mistaken for an existing item.
+- [x] **Recent before typing** (Raycast `storeValue`, React Aria `menuTrigger="focus"`): `recent` items shown under an engraved "Recent" label on focus, before anything is typed.
+- [x] **Commands at the end** (React Aria `onAction`): action rows ("Manage labels…") after the items, behind a hairline, each leading with its glyph.
+- [x] **From a button** (shadcn popup from a button): `trigger="button"`: a key opens the plate and the search sits inside it; for pickers in toolbars and rows (the task inbox's Assign).
+- [x] **The pick shows its kind** (*ours*): a chosen item with an `icon` shows it in the well's leading slot, morphing from the search glyph.
 
 Not doing: a drum or rolodex results list (curved neighbours are harder to scan in a long list, and the fixed highlight fights groups); recents as a strip of keycaps above the list (a second way to choose in one control); free values that aren't in the list (that's Autocomplete, a separate entry).
 
 Decide: `trigger="button"` here, or a separate picker component?
+- Done (2026-10-06). `trigger="button"` stays in Combobox (same filter, rows and empties). No virtualiser (Base UI needs a dependency): `limit` (100) and a line saying how many more match. Chips are neutral, not the suggestion chip. Left: chips after a removed one close the gap at once (row motion is vertical only); SwiftUI's plate overlays below the field and its chevron rotates; no x-ray card.
 
 ### Table
 
@@ -583,7 +585,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 - [ ] **Number field**: sizes sm, default, lg (ours has one size today). See "Variation sheets: Number field".
 - [ ] **DropZone and Attachment → file upload layouts**: an avatar upload (one image with a preview); a compact row with thumbnails and a count; a gallery grid with a preview dialog; a table of files with round progress; image tiles with their own progress; drag to reorder (needs Sortable); retry on failure (ours has it).
 - [ ] **Card → frame** (see "Variation sheets: Card"): panels separated, stacked or dense inside one frame, with header, title, description and footer; a ghost frame without the outer border; spacing sm, default, lg.
-- [ ] **Combobox**: groups, async search with a loading state, and a trigger button beside the clear mark (from ReUI's Autocomplete). See "Variation sheets: Combobox".
+- [x] **Combobox**: groups, async search with a loading state, and a trigger button beside the clear mark (from ReUI's Autocomplete). See "Variation sheets: Combobox".
 - [ ] **Field → input group** (shadcn; see "Variation sheets: Field"): text attached to the input (a `https://` prefix, a `.com` suffix) and buttons inside the field.
 - [ ] **Collapsible** (shadcn): a standalone show/hide wrapper. `Accordion` and `SplitPane` collapse, but nothing does on its own.
 - [ ] **Icon tile**: probably `Glyph` in a `well`, as a documented recipe.
