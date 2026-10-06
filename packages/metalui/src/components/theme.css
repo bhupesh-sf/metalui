@@ -808,6 +808,8 @@
   --spacing-calendar-presets-width: var(--mu-r-calendar-presets-width);
   --spacing-calendar-presets-gap: var(--mu-r-calendar-presets-gap);
   --spacing-calendar-time-gap: var(--mu-r-calendar-time-gap);
+  --spacing-calendar-selector-width: var(--mu-r-calendar-selector-width);
+  --spacing-calendar-selector-gap: var(--mu-r-calendar-selector-gap);
   --spacing-time-picker-min-width: var(--mu-r-time-picker-self-min-width);
   --spacing-time-picker-seconds-min-width: var(--mu-r-time-picker-self-seconds-min-width);
   --spacing-time-picker-pad: var(--mu-r-time-picker-self-pad);
@@ -2666,6 +2668,18 @@
 @utility stroke-width-preview-card-width {
   stroke-width: var(--mu-r-preview-card-self-width);
 }
+@utility calendar-pages {
+  @container (max-width: 503.98px) { &:not([data-week-numbers]) { & > .mu-calendar-page ~ .mu-calendar-page { display: none; } & .calendar-step-narrow { display: contents; } & .calendar-sheet { --mu-calendar-pages: 1 !important; } } } @container (max-width: 571.98px) { &[data-week-numbers] { & > .mu-calendar-page ~ .mu-calendar-page { display: none; } & .calendar-step-narrow { display: contents; } & .calendar-sheet { --mu-calendar-pages: 1 !important; } } }
+}
+@utility calendar-step-narrow {
+  display: none;
+}
+@utility calendar-selector-popover {
+  container-type: inline-size; width: min(var(--mu-r-calendar-selector-width), calc(var(--available-width, 100vw) - 2 * var(--mu-r-popover-self-pad)));
+}
+@utility calendar-selector-dialog {
+  &.mu-dialog { width: min(calc(var(--mu-r-calendar-selector-width) + 2 * var(--mu-r-dialog-self-pad)), calc(100vw - 32px)); } & .mu-date-selector-body { container-type: inline-size; width: 100%; }
+}
 @utility calendar-grid {
   border-collapse: separate; border-spacing: var(--mu-r-calendar-day-gap); & th, & td { border: 0; background: none; padding: 0; } & tr { background: none; }
 }
@@ -2713,6 +2727,9 @@
 }
 @utility stroke-width-calendar-presets-width {
   stroke-width: var(--mu-r-calendar-presets-width);
+}
+@utility stroke-width-calendar-selector-width {
+  stroke-width: var(--mu-r-calendar-selector-width);
 }
 @utility time-picker-scroll {
   position: relative; max-height: var(--mu-r-time-picker-slots-height); overflow-y: auto; overscroll-behavior: contain; padding: var(--mu-r-time-picker-self-pad);

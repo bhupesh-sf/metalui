@@ -209,15 +209,15 @@
       "name": "calendar",
       "title": "Calendar",
       "status": "alpha",
-      "description": "A month to choose a day from, or a range, several days, a month, quarter, half year or year: chosen units land into the switcher's thumb look, a range stretches one thumb across each week, months turn on the drum and the title opens months and years. DatePicker is a field you type a date into (read back as understood) or open the calendar from, with presets and Today.",
+      "description": "A month to choose a day from, or a range, several days, a month, quarter, half year or year: chosen units land into the switcher's thumb look, a range stretches one thumb across each week, months turn on the drum and the title opens months and years. DatePicker is a field you type a date into (read back as understood) or open the calendar from, with presets and Today. DateSelector is a date condition (is, before, after, between) chosen over two months in a popover or dialog and applied.",
       "react": {
         "package": "@unlocalhosted/metalui",
-        "export": "Calendar, DatePicker",
-        "base": "table role=grid (the ARIA date grid pattern); Field, FormField and Popover"
+        "export": "Calendar, DatePicker, DateSelector",
+        "base": "table role=grid (the ARIA date grid pattern); Field, FormField, Popover, Dialog and Switcher"
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalCalendar, MetalDatePicker"
+        "symbol": "MetalCalendar, MetalDatePicker, MetalDateSelector"
       },
       "registry": "https://metalui.dev/r/calendar.json",
       "agent": "https://metalui.dev/r/calendar.md"

@@ -1482,6 +1482,8 @@
   --mu-r-calendar-presets-width: 148px;
   --mu-r-calendar-presets-gap: 8px;
   --mu-r-calendar-time-gap: 8px;
+  --mu-r-calendar-selector-width: 504px;
+  --mu-r-calendar-selector-gap: 12px;
   /* time-picker: the field and form field (readback); the popover plate; the toggle's RadioKeys and the LED lamp; the button's compact cap for Now; the date picker */
   --mu-r-time-picker-self-min-width: 136px;
   --mu-r-time-picker-self-seconds-min-width: 160px;

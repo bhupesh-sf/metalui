@@ -84,7 +84,9 @@ if (process.argv.includes('--gate')) {
   // Table 91.1 → 94.8: hierarchy rows (Tree's guides and disclosure, the Spinner's ring for a level that loads),
   // the virtual window and infinite scroll. The window is a few dozen lines, smaller than any virtualiser.
   // Slider 18.2 (16.8 before range, vertical, detents and the bubble: the detent haptic and the direction context).
-  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 96, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20, Markdown: 17, PromptInput: 57, MessageActions: 44, MarkScrub: 9, MarkPick: 95, Plan: 11, Citation: 49, Slider: 19 };
+  // DateSelector 62.7 (Popover, Dialog and Switcher's Base UI parts, both presentations in one import; the calendar is 8.7);
+  // matchesDate 1.3 (the calendar's date arithmetic only).
+  const CEILING = { DateSelector: 64, matchesDate: 2, Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 96, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20, Markdown: 17, PromptInput: 57, MessageActions: 44, MarkScrub: 9, MarkPick: 95, Plan: 11, Citation: 49, Slider: 19 };
   const over = Object.entries(CEILING).filter(([n, kb]) => !perExport[n] || perExport[n].gzip / 1024 > kb);
   if (over.length) {
     console.error(`\nbench-bundle gate: ${over.map(([n, kb]) => `${n} ${perExport[n] ? (perExport[n].gzip / 1024).toFixed(1) : 'missing'} KB gzip > ${kb}`).join(', ')}`);
