@@ -1132,6 +1132,26 @@
   --mu-r-meter-lamp-stagger: 16ms;
   --mu-r-meter-zone-warn: 0.75;
   --mu-r-meter-zone-danger: 0.9;
+  /* rating: the slider (well track, green fill), the meter (segments; the sweep's stagger and fade), the radio (one choice, Base UI RadioGroup), the drum (SwapText); the WAI-ARIA APG rating radio group */
+  --mu-r-rating-compact-width: 18px;
+  --mu-r-rating-compact-height: 6px;
+  --mu-r-rating-compact-pad: 2px;
+  --mu-r-rating-compact-row: 28px;
+  --mu-r-rating-compact-gap: 6px;
+  --mu-r-rating-regular-width: 22px;
+  --mu-r-rating-regular-height: 8px;
+  --mu-r-rating-regular-pad: 2px;
+  --mu-r-rating-regular-row: 32px;
+  --mu-r-rating-regular-gap: 8px;
+  --mu-r-rating-large-width: 28px;
+  --mu-r-rating-large-height: 10px;
+  --mu-r-rating-large-pad: 3px;
+  --mu-r-rating-large-row: 44px;
+  --mu-r-rating-large-gap: 10px;
+  --mu-r-rating-ghost-opacity: 0.38;
+  --mu-r-rating-press-scale: 0.86;
+  --mu-r-rating-count-gap: 4px;
+  --mu-r-rating-self-disabled: 0.4;
   /* sheet: the dialog scrim and plate surface; the surface, settle and release springs; Base UI Drawer */
   --mu-r-sheet-self-width: 380px;
   --mu-r-sheet-self-max-height: 85vh;

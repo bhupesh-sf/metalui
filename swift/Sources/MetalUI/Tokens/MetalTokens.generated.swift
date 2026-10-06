@@ -1018,6 +1018,35 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A rating on a short fixed scale (5 by default): the slider's groove cut into one detent per point (short pills, the meter's segments), filled with the slider's green, the colour of an amount someone set. Read-only, any decimal fills that share of its detent, cut square (a clip, so the rounded end is not squashed), and the value stands beside the detents in the figure type with the count in ink3. Editable, each detent is a radio: hover turns the detents a press would change to a ghost of their lit look (the ones it would light, or the ones it would put out) and the readout turns on the drum to the value under the pointer; a press dips the detent on the part spring and latches it; a change sweeps from the old edge one detent at a time (the meter's stagger and fade); pressing the chosen detent again, or Backspace or Delete, clears it. Sizes take the field ladder's row heights (compact 28, regular 32, large 44) as the hit area, and each detent's hit area runs into its neighbour's. Disabled: 40 %. Reduce Motion: detents light and go out at once and the dip is gone; the drum crossfades. (the slider (well track, green fill), the meter (segments; the sweep's stagger and fade), the radio (one choice, Base UI RadioGroup), the drum (SwapText); the WAI-ARIA APG rating radio group)
+    public static let rating = MetalObjectRecipe(
+        name: "rating",
+        layers: [
+
+        ],
+        props: [
+            "compact.width": .number(18.0),
+            "compact.height": .number(6.0),
+            "compact.pad": .number(2.0),
+            "compact.row": .number(28.0),
+            "compact.gap": .number(6.0),
+            "regular.width": .number(22.0),
+            "regular.height": .number(8.0),
+            "regular.pad": .number(2.0),
+            "regular.row": .number(32.0),
+            "regular.gap": .number(8.0),
+            "large.width": .number(28.0),
+            "large.height": .number(10.0),
+            "large.pad": .number(3.0),
+            "large.row": .number(44.0),
+            "large.gap": .number(10.0),
+            "ghost.opacity": .text("0.38"),
+            "press.scale": .text("0.86"),
+            "count.gap": .number(4.0),
+            "self.disabled": .text("0.4"),
+        ]
+    )
+
     /// A panel that slides in from an edge of the window (right for an inspector, bottom for a phone sheet) over the dialog's scrim: the plate surface, rounded only on its inner edge, with a grip on a bottom sheet. Opening, it slides its whole size in on the surface spring (no stop, no overshoot). Dragged, it follows the finger one to one; let go past the threshold it leaves on the release spring (a harder flick leaves faster), short of it it settles home on the settle spring. Closing, it leaves on the release spring. Reduce Motion: it fades, with no slide. (the dialog scrim and plate surface; the surface, settle and release springs; Base UI Drawer)
     public static let sheet = MetalObjectRecipe(
         name: "sheet",
