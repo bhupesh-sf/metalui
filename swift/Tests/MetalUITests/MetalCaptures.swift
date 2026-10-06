@@ -221,12 +221,12 @@ final class MetalCaptures: XCTestCase {
                 MetalCueMark("tomorrow 4pm", kind: .date, resolved: "WED 30 SEP · 16:00")
                 MetalCueMark("1h30", kind: .duration)
                 Text("for").font(.metal(MetalType.content))
-                MetalCueMark("$40", kind: .amount, glyph: .life(.spent))
+                MetalCueMark("$40", kind: .amount, glyph: .icon(.coin))
             }
             .foregroundColor(colorway.tokens.ink.color)
             HStack(alignment: .firstTextBaseline, spacing: 5) {
                 Text("slept").font(.metal(MetalType.content))
-                MetalCueMark("6h", kind: .measurement, label: "Sleep", glyph: .life(.lateNight))
+                MetalCueMark("6h", kind: .measurement, label: "Sleep", glyph: .icon(.moon))
                 MetalCueMark("8k steps", kind: .measurement, label: "Steps", glyph: .life(.steps))
                 MetalCueMark("#FF6B3D", kind: .hex, hex: MetalShared.orange)
                 Text("to").font(.metal(MetalType.content))

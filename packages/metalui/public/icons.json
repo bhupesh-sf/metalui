@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 67,
+  "count": 75,
   "icons": [
     {
       "name": "select",
@@ -1346,6 +1346,166 @@
       },
       "tuned16": false,
       "construction": "A case 14 × 9.4 r2.4 from 10.6 to 20, tinted .12, with a keyhole bead r1.3 at its centre; a shackle 7.6 wide (r3.8) standing on its top edge, legs 3 long, its crown at 3.8. Motion (study): the shackle is lifted 1.4 and pushed home .4 past its seat, squashing .92, on the part spring; the case takes it a beat later (.96 tall, 1.02 wide) on the object spring; a click opens beside its shoulders."
+    },
+    {
+      "name": "info",
+      "component": "InfoIcon",
+      "label": "Info · Note",
+      "category": "Status",
+      "hover": "The stem crouches and springs up, throwing its dot; ticks open at the top of the throw and the dot lands back on its seat.",
+      "press": "plays the same act",
+      "pressMs": 1070,
+      "motion": {
+        "caption": "The stem crouches and springs up, throwing its dot; ticks open at the top of the throw and the dot lands back on its seat.",
+        "durationMs": 1070,
+        "stages": [
+          "Crouch",
+          "Throw",
+          "Land"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A disc r8.5 (Clock's face), tinted .1; a stem from 11 to 16.6 and a dot bead r1.2 at 7.9 on the centre line, a lower-case i. Warning is the same marks in a triangle, the dot under the stem, so the two morph by the body and the dot. Motion (study): the stem crouches .82 about its foot and springs up on the part spring, throwing the dot 1.6; ticks open beside it at the top; it lands .3 past its seat, squashed, on the part spring."
+    },
+    {
+      "name": "warning",
+      "component": "WarningIcon",
+      "label": "Warning · Urgent",
+      "category": "Status",
+      "hover": "The mark is lifted and struck down into the sign, which takes the blow; alarm lines open off its sides.",
+      "press": "plays the same act",
+      "pressMs": 840,
+      "motion": {
+        "caption": "The mark is lifted and struck down into the sign, which takes the blow; alarm lines open off its sides.",
+        "durationMs": 840,
+        "stages": [
+          "Lift",
+          "Strike",
+          "Take"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A triangle on its base, 15.8 wide and 14.2 tall (apex corner r2.4, base corners r1.6), tinted .12; an exclamation mark on the centre line, a stem from 9 to 13.4 and a dot bead r1.2 at 16.2. Info is the same marks in a disc, so the two morph by the body and the dot. Motion (study): the mark is lifted 1 and struck down .5 past its seat, squashing .9, on the part spring; the sign takes the blow about its base a beat later (.95 tall, 1.02 wide) on the object spring; alarm lines open off its upper sides."
+    },
+    {
+      "name": "coin",
+      "component": "CoinIcon",
+      "label": "Money · Coin",
+      "category": "Tools",
+      "hover": "The coin is flipped: tossed up, turned edge-on at the top, and it lands on its edge with a clink.",
+      "press": "plays the same act",
+      "pressMs": 1183,
+      "motion": {
+        "caption": "The coin is flipped: tossed up, turned edge-on at the top, and it lands on its edge with a clink.",
+        "durationMs": 1183,
+        "stages": [
+          "Dip",
+          "Toss",
+          "Land"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A coin standing on its edge, turned so its thickness shows: the face an ellipse 11.2 × 16.4 about 10.6/12, tinted .14, and the edge an open wire 2.8 behind it on the right (its top and bottom on the face's). Motion (study): it dips .5, is tossed 2.4 and turned edge-on (.2 wide) at the top, and lands on its edge .3 past, squashed, on the object spring; a clink opens either side of its foot."
+    },
+    {
+      "name": "sun",
+      "component": "SunIcon",
+      "label": "Light · Day",
+      "category": "Tools",
+      "hover": "The disc gathers itself and swells back, flaring its rays out; they come home.",
+      "press": "plays the same act",
+      "pressMs": 873,
+      "motion": {
+        "caption": "The disc gathers itself and swells back, flaring its rays out; they come home.",
+        "durationMs": 873,
+        "stages": [
+          "Gather",
+          "Flare",
+          "Settle"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A disc r6 on the centre, tinted .2, and eight rays from r8.4 to r9.8, the first straight up. Nine parts, five over K2: a sun with fewer rays reads as a target or a crosshair at 16 px, so the rays stay (documented, like Sort). Moon is a crescent on the same centre. Motion (study): the disc gathers to .84 and swells back on the object spring; the rays draw in .94 and flare out to 1.1 as it swells, home on the part spring."
+    },
+    {
+      "name": "moon",
+      "component": "MoonIcon",
+      "label": "Dark · Night",
+      "category": "Tools",
+      "hover": "The crescent is tipped back and rocks home like a cradle; its star brightens and a second one twinkles out.",
+      "press": "plays the same act",
+      "pressMs": 936,
+      "motion": {
+        "caption": "The crescent is tipped back and rocks home like a cradle; its star brightens and a second one twinkles out.",
+        "durationMs": 936,
+        "stages": [
+          "Tip back",
+          "Rock",
+          "Twinkle"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A crescent opening to the upper right: a disc r8.2 about the centre less a disc r6.8 about 16.6/8, two arcs meeting in sharp horns at 11.2/3.8 and 20/13.9, tinted .14; a star bead r1.15 in its hollow at 16.9/7.4. Sun is a disc with rays on the same centre. Motion (study): the crescent is tipped back 14° about its middle and rocks home on the hinge spring; the star brightens to 1.35 on the part spring as it swings under it; a second star twinkles out above."
+    },
+    {
+      "name": "folder",
+      "component": "FolderIcon",
+      "label": "Folder",
+      "category": "Tools",
+      "hover": "The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it.",
+      "press": "plays the same act",
+      "pressMs": 673,
+      "motion": {
+        "caption": "The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it.",
+        "durationMs": 673,
+        "stages": [
+          "Tip open",
+          "Drop",
+          "Settle"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A front 16 × 9 (top corners r1.2, bottom r1.6) from 10 to 19, tinted .12; the back an open wire standing on its top corners: its sides up to 6.8, a tab 2.9 wide at 5.4 stepping down 1.4 to the back's top edge. Folder open is the same back carried down behind its front and the front tipped forward, so the two morph by the front. Motion (study): the front is tipped open to .88 about its hinge and drops shut past its seat on the hinge spring; the back takes it .4 on the part spring; a page's edge shows inside while it is open."
+    },
+    {
+      "name": "folder-open",
+      "component": "FolderOpenIcon",
+      "label": "Folder open",
+      "category": "Tools",
+      "hover": "A page is lifted out of the open folder, the front tipping further to let it out, and put back.",
+      "press": "plays the same act",
+      "pressMs": 900,
+      "motion": {
+        "caption": "A page is lifted out of the open folder, the front tipping further to let it out, and put back.",
+        "durationMs": 900,
+        "stages": [
+          "Lift out",
+          "Hold",
+          "Put back"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Folder's back carried down behind the front's left edge (from 13), its tab at 5.4; the front tipped forward over its bottom edge, a parallelogram from 10 to 19 leaning 2 right (corners r1.2 top, r1.6 bottom), tinted .12, its top edge meeting the back's right side. Motion (study): the front tips further open (.86) and a page rises 1.9 out of the folder, then sinks back as the front comes up past its seat on the part spring."
+    },
+    {
+      "name": "sidebar",
+      "component": "SidebarIcon",
+      "label": "Sidebar",
+      "category": "Actions",
+      "hover": "The rail's edge is slid shut over its rows and springs back open; the rows come back behind it.",
+      "press": "plays the same act",
+      "pressMs": 940,
+      "motion": {
+        "caption": "The rail's edge is slid shut over its rows and springs back open; the rows come back behind it.",
+        "durationMs": 940,
+        "stages": [
+          "Slide shut",
+          "Let go",
+          "Reopen"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A window 17 × 14 r2.4, tinted .08, a divider standing on its top and bottom edges at 10, and two short rows in the rail (1.6 long at 5.8, on 8.8 and 11.6). Motion (study): the rows fold away as the divider is slid 3.6 toward the window's left edge; let go, it springs back open past its seat on the part spring and the rows come back behind it."
     }
   ]
 }

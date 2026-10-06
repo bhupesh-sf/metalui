@@ -21,13 +21,13 @@ Each kind is carried by the glyph's shape, the title's words and the lamp's gest
 
 | `kind` | Means | Glyph | Lamp | Read out |
 |---|---|---|---|---|
-| `note` (default) | worth knowing, nothing is wrong | note | none | politely (`status`) |
+| `note` (default) | worth knowing, nothing is wrong | info | none | politely (`status`) |
 | `done` | finished well | check | green, steady | politely |
 | `waiting` | under way; it will update | clock | amber, breathing | politely |
-| `urgent` | act soon or something goes wrong | bell | amber, steady | at once (`alert`) |
+| `urgent` | act soon or something goes wrong | warning | amber, steady | at once (`alert`) |
 | `failed` | failed or refused | sync-error | red, two blinks, then lit | at once |
 
-No blue: blue is a link's kind. The info and warning glyphs aren't in the set yet; `note` and `bell` stand in.
+No blue: blue is a link's kind.
 
 ## Tones and placement
 

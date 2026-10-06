@@ -1666,3 +1666,191 @@ export const lockGlyph = {
   sw16: 1.85,
   motion: {"duration":840,"caption":"The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.","stages":["Lift","Push home","Catch"],"tracks":[{"part":"shackle","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.17857,"transform":"translate(0px,-1.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27381,"transform":"translate(0px,0.4px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6369,"transform":"translate(0px,-0.0348px) rotate(0deg) scale(1,1.007)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"case","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.27976,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.29167,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.96)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.71548,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"click","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.2619,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.30952,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.54762,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
 } satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
+ * INFO · NOTE · Status · one act, 1070ms
+ *
+ * Crouch → Throw → Land
+ *          The stem crouches and springs up, throwing its dot; ticks open at the top of the throw and the dot lands back on its seat.
+ *  stem       0 → 130 → 210 → 515 → 820 → 1070ms
+ *  dot        0 → 200 → 340 → 460 → 765 → 1070ms
+ *  ticks      0 → 300 → 350 → 560 → 1070ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const infoGlyph = {
+  name: "info",
+  label: "Info · Note",
+  category: "Status",
+  hover: "The stem crouches and springs up, throwing its dot; ticks open at the top of the throw and the dot lands back on its seat.",
+  press: "plays the same act",
+  pressMs: 1070,
+  defs: "",
+  body: "<path class=\"f\" style=\"--duo:.1\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><g data-part=\"stem\"><path d=\"M12 11v5.6\"/></g><g data-part=\"dot\"><circle class=\"s\" cx=\"12\" cy=\"7.9\" r=\"1.2\"/></g><path class=\"ac\" data-part=\"ticks\" opacity=\"0\" d=\"M9.3 6.6l-.8-.5M14.7 6.6l.8-.5\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+  sw16: 1.85,
+  motion: {"duration":1070,"caption":"The stem crouches and springs up, throwing its dot; ticks open at the top of the throw and the dot lands back on its seat.","stages":["Crouch","Throw","Land"],"tracks":[{"part":"stem","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.1215,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.82)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.19626,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.08)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.48131,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.993)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.76636,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"dot","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.18692,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.31776,"transform":"translate(0px,-1.6px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.42991,"transform":"translate(0px,0.3px) rotate(0deg) scale(1.15,0.85)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.71495,"transform":"translate(0px,-0.0261px) rotate(0deg) scale(0.9869,1.0131)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"ticks","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.28037,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.3271,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.52336,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+} satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
+ * WARNING · URGENT · Status · one act, 840ms
+ *
+ * Lift → Strike → Take
+ *          The mark is lifted and struck down into the sign, which takes the blow; alarm lines open off its sides.
+ *  mark       0 → 140 → 230 → 535 → 840ms
+ *  sign       0 → 235 → 245 → 601 → 840ms
+ *  alarm      0 → 220 → 260 → 470 → 840ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const warningGlyph = {
+  name: "warning",
+  label: "Warning · Urgent",
+  category: "Status",
+  hover: "The mark is lifted and struck down into the sign, which takes the blow; alarm lines open off its sides.",
+  press: "plays the same act",
+  pressMs: 840,
+  defs: "",
+  body: "<g data-part=\"sign\"><path class=\"f\" style=\"--duo:.12\" d=\"M12 5.2A2.4 2.4 0 0 1 14.11 6.44L19.9 17.03A1.6 1.6 0 0 1 18.5 19.4H5.5A1.6 1.6 0 0 1 4.1 17.03L9.89 6.44A2.4 2.4 0 0 1 12 5.2Z\"/></g><g data-part=\"mark\"><path d=\"M12 9v4.4\"/><circle class=\"s\" cx=\"12\" cy=\"16.2\" r=\"1.2\"/></g><path class=\"ac\" data-part=\"alarm\" opacity=\"0\" d=\"M6.2 8.6l-1.1-.5M17.8 8.6l1.1-.5\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+  sw16: 1.85,
+  motion: {"duration":840,"caption":"The mark is lifted and struck down into the sign, which takes the blow; alarm lines open off its sides.","stages":["Lift","Strike","Take"],"tracks":[{"part":"mark","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16667,"transform":"translate(0px,-1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27381,"transform":"translate(0px,0.5px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6369,"transform":"translate(0px,-0.0435px) rotate(0deg) scale(1,1.0087)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"sign","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.27976,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.29167,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.95)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.71548,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"alarm","keyframes":[{"offset":0,"transform":"scale(.7)","opacity":0},{"offset":0.2619,"transform":"scale(.7)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.30952,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.55952,"transform":"scale(1.2)","opacity":0},{"offset":1,"transform":"scale(.7)","opacity":0}]}]},
+} satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
+ * MONEY · COIN · Tools · one act, 1183ms
+ *
+ * Dip → Toss → Land
+ *          The coin is flipped: tossed up, turned edge-on at the top, and it lands on its edge with a clink.
+ *  coin       0 → 120 → 300 → 470 → 826 → 1183ms
+ *  clink      0 → 460 → 500 → 700 → 1183ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const coinGlyph = {
+  name: "coin",
+  label: "Money · Coin",
+  category: "Tools",
+  hover: "The coin is flipped: tossed up, turned edge-on at the top, and it lands on its edge with a clink.",
+  press: "plays the same act",
+  pressMs: 1183,
+  defs: "",
+  body: "<g data-part=\"coin\"><path class=\"f\" style=\"--duo:.14\" d=\"M11 3.8a5.6 8.2 0 1 1 0 16.4 5.6 8.2 0 1 1 0-16.4Z\"/><path d=\"M11 3.8h2.4a5.6 8.2 0 0 1 0 16.4h-2.4\"/></g><path class=\"ac\" data-part=\"clink\" opacity=\"0\" d=\"M6.8 20.9l-1 .5M17.2 20.9l1 .5\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+  sw16: 1.85,
+  motion: {"duration":1183,"caption":"The coin is flipped: tossed up, turned edge-on at the top, and it lands on its edge with a clink.","stages":["Dip","Toss","Land"],"tracks":[{"part":"coin","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.10144,"transform":"translate(0px,0.5px) rotate(0deg) scale(1,0.96)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.25359,"transform":"translate(0px,-2.4px) rotate(0deg) scale(0.2,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.3973,"transform":"translate(0px,0.3px) rotate(0deg) scale(1.06,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.69822,"transform":"translate(0px,-0.0296px) rotate(0deg) scale(0.9941,1.0079)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"clink","keyframes":[{"offset":0,"transform":"scale(.7)","opacity":0},{"offset":0.38884,"transform":"scale(.7)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.42265,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.59172,"transform":"scale(1.25)","opacity":0},{"offset":1,"transform":"scale(.7)","opacity":0}]}]},
+} satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
+ * LIGHT · DAY · Tools · one act, 873ms
+ *
+ * Gather → Flare → Settle
+ *          The disc gathers itself and swells back, flaring its rays out; they come home.
+ *  disc       0 → 160 → 516 → 873ms
+ *  rays       0 → 160 → 250 → 555 → 860 → 873ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const sunGlyph = {
+  name: "sun",
+  label: "Light · Day",
+  category: "Tools",
+  hover: "The disc gathers itself and swells back, flaring its rays out; they come home.",
+  press: "plays the same act",
+  pressMs: 873,
+  defs: "",
+  body: "<g data-part=\"disc\"><path class=\"f\" style=\"--duo:.2\" d=\"M12 6a6 6 0 1 1 0 12 6 6 0 1 1 0-12Z\"/></g><g data-part=\"rays\"><path d=\"M12 3.6L12 2.2M6.06 6.06L5.07 5.07M3.6 12L2.2 12M6.06 17.94L5.07 18.93M12 20.4L12 21.8M17.94 17.94L18.93 18.93M20.4 12L21.8 12M17.94 6.06L18.93 5.07\"/></g>",
+  sw16: 1.85,
+  motion: {"duration":873,"caption":"The disc gathers itself and swells back, flaring its rays out; they come home.","stages":["Gather","Flare","Settle"],"tracks":[{"part":"disc","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.18328,"transform":"translate(0px,0px) rotate(0deg) scale(0.84,0.84)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.59107,"transform":"translate(0px,0px) rotate(0deg) scale(1.0158,1.0158)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"rays","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.18328,"transform":"translate(0px,0px) rotate(0deg) scale(0.94,0.94)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.28637,"transform":"translate(0px,0px) rotate(0deg) scale(1.1,1.1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63574,"transform":"translate(0px,0px) rotate(0deg) scale(0.9913,0.9913)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.98511,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]}]},
+} satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
+ * DARK · NIGHT · Tools · one act, 936ms
+ *
+ * Tip back → Rock → Twinkle
+ *          The crescent is tipped back and rocks home like a cradle; its star brightens and a second one twinkles out.
+ *  crescent   0 → 190 → 563 → 936ms
+ *  star       0 → 240 → 280 → 585 → 890 → 936ms
+ *  twinkle    0 → 290 → 380 → 640 → 936ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const moonGlyph = {
+  name: "moon",
+  label: "Dark · Night",
+  category: "Tools",
+  hover: "The crescent is tipped back and rocks home like a cradle; its star brightens and a second one twinkles out.",
+  press: "plays the same act",
+  pressMs: 936,
+  defs: "",
+  body: "<g data-part=\"crescent\"><path class=\"f\" style=\"--duo:.14\" d=\"M11 4.47A6.4 6.4 0 0 0 19.4 13.74 7.6 7.6 0 1 1 11 4.47Z\"/></g><g data-part=\"star\"><circle class=\"s\" cx=\"16.9\" cy=\"7.4\" r=\"1.15\"/></g><path class=\"ac\" data-part=\"twinkle\" opacity=\"0\" d=\"M20.2 2.9v1.6M19.4 3.7H21\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+  sw16: 1.85,
+  motion: {"duration":936,"caption":"The crescent is tipped back and rocks home like a cradle; its star brightens and a second one twinkles out.","stages":["Tip back","Rock","Twinkle"],"tracks":[{"part":"crescent","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.20299,"transform":"translate(0px,0px) rotate(-14deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6015,"transform":"translate(0px,0px) rotate(1.0296deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"star","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.25641,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.29915,"transform":"translate(0px,0px) rotate(0deg) scale(1.35,1.35)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.625,"transform":"translate(0px,0px) rotate(0deg) scale(0.9695,0.9695)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.95085,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"twinkle","keyframes":[{"offset":0,"transform":"scale(.4)","opacity":0},{"offset":0.30983,"transform":"scale(.4)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.40598,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.68376,"transform":"scale(.6)","opacity":0},{"offset":1,"transform":"scale(.4)","opacity":0}]}]},
+} satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
+ * FOLDER · Tools · one act, 673ms
+ *
+ * Tip open → Drop → Settle
+ *          The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it.
+ *  front      0 → 200 → 220 → 300 → 673ms
+ *  back       0 → 290 → 310 → 615 → 673ms
+ *  page       0 → 80 → 200 → 290 → 673ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const folderGlyph = {
+  name: "folder",
+  label: "Folder",
+  category: "Tools",
+  hover: "The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it.",
+  press: "plays the same act",
+  pressMs: 673,
+  defs: "",
+  body: "<g data-part=\"back\"><path d=\"M4 11.2V6.6a1.2 1.2 0 0 1 1.2-1.2h2.9l1.4 1.4h9.3a1.2 1.2 0 0 1 1.2 1.2v3.2\"/></g><g data-part=\"front\"><path class=\"f\" style=\"--duo:.12\" d=\"M5.2 10h13.6a1.2 1.2 0 0 1 1.2 1.2v6.2a1.6 1.6 0 0 1-1.6 1.6H5.6a1.6 1.6 0 0 1-1.6-1.6v-6.2a1.2 1.2 0 0 1 1.2-1.2Z\"/></g><path class=\"ac\" data-part=\"page\" opacity=\"0\" d=\"M7.4 9h9.2\" />",
+  sw16: 1.85,
+  motion: {"duration":673,"caption":"The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it.","stages":["Tip open","Drop","Settle"],"tracks":[{"part":"front","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.29718,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.88)","easing":"linear"},{"offset":0.32689,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.88)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.44577,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.04)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"back","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.43091,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.46062,"transform":"translate(0px,0.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.91382,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"page","keyframes":[{"offset":0,"transform":"translate(0px,1.5px)","opacity":0},{"offset":0.11887,"transform":"translate(0px,1.5px)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.29718,"transform":"translate(0px,0px)","opacity":0.8,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.43091,"transform":"translate(0px,1.5px)","opacity":0},{"offset":1,"transform":"translate(0px,1.5px)","opacity":0}]}]},
+} satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
+ * FOLDER OPEN · Tools · one act, 900ms
+ *
+ * Lift out → Hold → Put back
+ *          A page is lifted out of the open folder, the front tipping further to let it out, and put back.
+ *  front      0 → 140 → 400 → 480 → 785 → 900ms
+ *  page       0 → 60 → 320 → 470 → 900ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const folderOpenGlyph = {
+  name: "folder-open",
+  label: "Folder open",
+  category: "Tools",
+  hover: "A page is lifted out of the open folder, the front tipping further to let it out, and put back.",
+  press: "plays the same act",
+  pressMs: 900,
+  defs: "",
+  body: "<g data-part=\"back\"><path d=\"M4 13V6.6a1.2 1.2 0 0 1 1.2-1.2h2.9l1.4 1.4h9.3a1.2 1.2 0 0 1 1.2 1.2v2\"/></g><g data-part=\"front\"><path class=\"f\" style=\"--duo:.12\" d=\"M6.96 10H18.5A1.2 1.2 0 0 1 19.68 11.46L18.28 17.75A1.6 1.6 0 0 1 16.72 19H5.99A1.6 1.6 0 0 1 4.43 17.05L5.79 10.94A1.2 1.2 0 0 1 6.96 10Z\"/></g><path class=\"ac\" data-part=\"page\" opacity=\"0\" d=\"M8.2 10.4h8.6\" />",
+  sw16: 1.85,
+  motion: {"duration":900,"caption":"A page is lifted out of the open folder, the front tipping further to let it out, and put back.","stages":["Lift out","Hold","Put back"],"tracks":[{"part":"front","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.15556,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.86)","easing":"linear"},{"offset":0.44444,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.86)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.53333,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.03)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.87222,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"page","keyframes":[{"offset":0,"transform":"translate(0px,1px)","opacity":0},{"offset":0.06667,"transform":"translate(0px,1px)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.35556,"transform":"translate(0px,-1.9px)","opacity":0.85,"easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.52222,"transform":"translate(0px,1px)","opacity":0},{"offset":1,"transform":"translate(0px,1px)","opacity":0}]}]},
+} satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
+ * SIDEBAR · Actions · one act, 940ms
+ *
+ * Slide shut → Let go → Reopen
+ *          The rail's edge is slid shut over its rows and springs back open; the rows come back behind it.
+ *  divider    0 → 240 → 330 → 635 → 940ms
+ *  rows       0 → 120 → 420 → 600 → 940ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const sidebarGlyph = {
+  name: "sidebar",
+  label: "Sidebar",
+  category: "Actions",
+  hover: "The rail's edge is slid shut over its rows and springs back open; the rows come back behind it.",
+  press: "plays the same act",
+  pressMs: 940,
+  defs: "",
+  body: "<path class=\"f\" style=\"--duo:.08\" d=\"M5.9 5h12.2a2.4 2.4 0 0 1 2.4 2.4v9.2a2.4 2.4 0 0 1-2.4 2.4H5.9a2.4 2.4 0 0 1-2.4-2.4V7.4A2.4 2.4 0 0 1 5.9 5Z\"/><g data-part=\"divider\"><path d=\"M10 5v14\"/></g><g data-part=\"rows\"><path d=\"M5.8 8.8h1.6M5.8 11.6h1.6\"/></g>",
+  sw16: 1.85,
+  motion: {"duration":940,"caption":"The rail's edge is slid shut over its rows and springs back open; the rows come back behind it.","stages":["Slide shut","Let go","Reopen"],"tracks":[{"part":"divider","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.25532,"transform":"translate(-3.6px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.35106,"transform":"translate(-3.6px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.67553,"transform":"translate(0.3134px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"rows","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.12766,"transform":"translate(-0.9px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"linear"},{"offset":0.44681,"transform":"translate(-0.9px,0px) rotate(0deg) scale(1,1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.6383,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","opacity":1}]}]},
+} satisfies IconRecord;

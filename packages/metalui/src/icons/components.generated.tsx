@@ -137,3 +137,19 @@ export const EyeIcon = /* @__PURE__ */ glyphIcon(glyphs.eyeGlyph, "EyeIcon");
 export const EyeOffIcon = /* @__PURE__ */ glyphIcon(glyphs.eyeOffGlyph, "EyeOffIcon");
 /** Lock · Locked. Hover: The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.. Press: plays the same act. */
 export const LockIcon = /* @__PURE__ */ glyphIcon(glyphs.lockGlyph, "LockIcon");
+/** Info · Note. Hover: The stem crouches and springs up, throwing its dot; ticks open at the top of the throw and the dot lands back on its seat.. Press: plays the same act. */
+export const InfoIcon = /* @__PURE__ */ glyphIcon(glyphs.infoGlyph, "InfoIcon");
+/** Warning · Urgent. Hover: The mark is lifted and struck down into the sign, which takes the blow; alarm lines open off its sides.. Press: plays the same act. */
+export const WarningIcon = /* @__PURE__ */ glyphIcon(glyphs.warningGlyph, "WarningIcon");
+/** Money · Coin. Hover: The coin is flipped: tossed up, turned edge-on at the top, and it lands on its edge with a clink.. Press: plays the same act. */
+export const CoinIcon = /* @__PURE__ */ glyphIcon(glyphs.coinGlyph, "CoinIcon");
+/** Light · Day. Hover: The disc gathers itself and swells back, flaring its rays out; they come home.. Press: plays the same act. */
+export const SunIcon = /* @__PURE__ */ glyphIcon(glyphs.sunGlyph, "SunIcon");
+/** Dark · Night. Hover: The crescent is tipped back and rocks home like a cradle; its star brightens and a second one twinkles out.. Press: plays the same act. */
+export const MoonIcon = /* @__PURE__ */ glyphIcon(glyphs.moonGlyph, "MoonIcon");
+/** Folder. Hover: The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it.. Press: plays the same act. */
+export const FolderIcon = /* @__PURE__ */ glyphIcon(glyphs.folderGlyph, "FolderIcon");
+/** Folder open. Hover: A page is lifted out of the open folder, the front tipping further to let it out, and put back.. Press: plays the same act. */
+export const FolderOpenIcon = /* @__PURE__ */ glyphIcon(glyphs.folderOpenGlyph, "FolderOpenIcon");
+/** Sidebar. Hover: The rail's edge is slid shut over its rows and springs back open; the rows come back behind it.. Press: plays the same act. */
+export const SidebarIcon = /* @__PURE__ */ glyphIcon(glyphs.sidebarGlyph, "SidebarIcon");

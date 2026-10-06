@@ -18,7 +18,7 @@ It is composed: every row is a `Row` (`selected`, `opened`, `waiting`), the disc
 | See where a row sits (ReUI guide lines, VS Code indent guides) | `Tree.Guides`: one engraved hairline per level at the parent's chevron centre; *ours*: the guide of the branch that holds the focus brightens from ink4 to ink3, so you see which branch you are in without a box around it | Must |
 | Open and close a branch (everyone) | the set's `chevron`, pointing right when closed and down when open, a quarter turn on the part spring (it may overshoot its stop, like the accordion's); children land from one nest above on the object spring and the rows below glide down (settle); closing, they leave one nest down (release) and the rows below close the gap | Must |
 | Chevron or plus/minus (ReUI) | chevron only | dropped: `plus` and `minus` mean add and remove in our set |
-| Folder open, folder closed, file glyphs (ReUI, shadcn) | each item takes its own `icon` (or a function of `open`), so a host shows what its rows are: `document`, `person`, `calendar` | Must (the slot); the set has no `folder` glyph yet: Later, drawn as a `folder` → `folder-open` morph pair, then the slot takes it |
+| Folder open, folder closed, file glyphs (ReUI, shadcn) | each item takes its own `icon` (or a function of `open`), so a host shows what its rows are: `document`, `person`, `calendar` | Must (the slot); the set's `folder` → `folder-open` morph pair (strain .24) goes in it as a function of `open` |
 | Indent per level (ReUI `indent`) | `indent` follows the size (regular 16, compact 14, large 20) and is a recipe prop, not a free number | Must |
 | Walk it with the keyboard (WAI-ARIA tree) | one tab stop (roving tabindex); ↑ ↓ to move; → opens, then goes to the first child; ← closes, then goes to the parent; Home / End; `*` opens every sibling; Enter is the row's action | Must |
 | Find a row in a long tree (WAI type-ahead, Finder) | type-ahead over the visible rows: letters typed within the half second go to the next row whose name starts with them; *ours*: the matched letters are underlined in ink for as long as the word is being typed, so you see what it heard | Must (type-ahead), Should (the underline) |
@@ -57,7 +57,7 @@ Not doing: lines drawn to every child (the box-drawing elbow look; the guides al
 - [ ] Drag to move with the drop line (after Sortable).
 - [ ] Virtual rows.
 - [ ] Cascading checkboxes (with the Cascader).
-- [ ] `folder` / `folder-open` glyphs in the set.
+- [x] `folder` / `folder-open` glyphs in the set (2026-10-06); the docs page's folders morph between them.
 - [ ] Table's hierarchy rows built on `Tree.Guides` and `Tree.Disclosure`.
 
 ## Decide
@@ -67,4 +67,4 @@ Not doing: lines drawn to every child (the box-drawing elbow look; the guides al
 - Turn or morph for the chevron? **Turn.** The glyph's meaning doesn't change (it is still "open this"), only its direction; a CSS rotate on the part spring is transform-only and costs nothing on a tree of hundreds of rows, where a `MorphIcon` per row would plan a morph each.
 - Where does the wait show? **In the chevron's slot**, the row's own glyph slot for "open": the ring stands in for the chevron, which is where you pressed.
 - A failed load: a child row, or on the row itself? **On the row**: the branch closes, its chevron slot shows `sync-error`, and the row's trail says "Couldn't load · Try again"; → or a click on the slot retries. Nothing is left open over a hole.
-- Default glyph for branches? **None.** Without a `folder` glyph in the set, the chevron already says "this opens"; a host passes its own `icon`.
+- Default glyph for branches? **None.** The chevron already says "this opens", and not every branch is a folder (a team, a month); a host passes its own `icon`, the folder pair when its branches are folders.

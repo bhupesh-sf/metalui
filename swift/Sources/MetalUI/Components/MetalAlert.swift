@@ -7,13 +7,12 @@ import SwiftUI
 public enum MetalAlertKind: Sendable {
     case note, done, waiting, urgent, failed
 
-    /// `note` and `bell` stand in for the info and warning glyphs the set lacks.
     var glyph: MetalIconName {
         switch self {
-        case .note: return .note
+        case .note: return .info
         case .done: return .check
         case .waiting: return .clock
-        case .urgent: return .bell
+        case .urgent: return .warning
         case .failed: return .syncError
         }
     }

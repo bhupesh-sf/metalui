@@ -21,8 +21,8 @@ Each kind has one look. The glyph says what the chunk is, at full ink just befor
 | Kind | `kind` | Glyph | Line |
 |---|---|---|---|
 | time | `date`, `duration` | clock (default) | engraved groove: a dark hairline with a light lip under it |
-| money | `amount` | coin: pass `<LifeSpentIcon size={14} />` until the set has a coin | quiet hairline; the formatted amount is in the chip (mono, tabular) |
-| body | `measurement` | pass `<LifeLateNightIcon size={14} />` for sleep (until a moon), `<LifeStepsIcon size={14} />` for steps; `label="Sleep"` | soft green, 1.5 |
+| money | `amount` | coin: pass `<CoinIcon size={14} />` | quiet hairline; the formatted amount is in the chip (mono, tabular) |
+| body | `measurement` | pass `<MoonIcon size={14} />` for sleep, `<LifeStepsIcon size={14} />` for steps; `label="Sleep"` | soft green, 1.5 |
 | colour | `hex` | the live swatch (default) | 3 pt in the colour |
 | tag | `tag` | none: the tag is its shape | a luggage tag: paper in the tag's own hue (`markTagHue(name)`, a stable hash into a 6-hue palette), the point and a punched hole on the left, the hash a quiet mark |
 | person | `person` | pass `<Avatar name size="small" label="" />` | none |
@@ -65,12 +65,12 @@ Set `fresh` only once the caret has left the words; never while it's inside them
 
 ```tsx
 import { Avatar, Cue, CueInferred, CueLife, CueUrl, Dimple } from '@unlocalhosted/metalui';
-import { LinkIcon } from '@unlocalhosted/metalui/icons';
-import { LifeCoffeeIcon, LifeLateNightIcon, LifeSpentIcon } from '@unlocalhosted/metalui/icons/life';
+import { CoinIcon, LinkIcon, MoonIcon } from '@unlocalhosted/metalui/icons';
+import { LifeCoffeeIcon } from '@unlocalhosted/metalui/icons/life';
 
 Send <Cue kind="tag">#poster</Cue> <Cue kind="date" resolved="WED 30 SEP · 16:00" fresh={justRecognised}>tomorrow 4pm</Cue>
-for <Cue kind="amount" resolved="$40.00" glyph={<LifeSpentIcon size={14} />}>$40</Cue>,
-slept <Cue kind="measurement" label="Sleep" resolved="6 H" glyph={<LifeLateNightIcon size={14} />}>6h</Cue>
+for <Cue kind="amount" resolved="$40.00" glyph={<CoinIcon size={14} />}>$40</Cue>,
+slept <Cue kind="measurement" label="Sleep" resolved="6 H" glyph={<MoonIcon size={14} />}>6h</Cue>
 to <Cue kind="person" glyph={<Avatar name="Sam Ito" size="small" label="" />}>Sam</Cue>
 <CueInferred resolved="FRI 2 OCT · RECOGNIZER 0.82" confirmed={ok} onConfirm={confirm}>fri</CueInferred>
 <CueLife label="A drink · coffee?" fresh={justRecognised}><LifeCoffeeIcon size={16} /></CueLife>

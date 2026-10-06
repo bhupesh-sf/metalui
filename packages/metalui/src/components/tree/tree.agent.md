@@ -94,7 +94,7 @@ Pointer: a click focuses and selects (⌘-click toggles, ⇧-click takes a range
 ## Rules
 
 - Flat rows, never nested groups: one list is what the rows' motion animates and what a virtual window will cut.
-- Branches carry no glyph by default; the chevron says it opens. Pass an `icon` for what your rows are. The set has no folder glyph yet.
+- Branches carry no glyph by default; the chevron says it opens. Pass an `icon` for what your rows are; for folders, a function of `open` that morphs the set's pair: `icon: (open) => <MorphIcon name={open ? 'folder-open' : 'folder'} />` (in a library component, `MorphPair` with `folderMorph` and `folderOpenMorph`).
 - One disclosure: the chevron. Never plus and minus (they mean add and remove in the set).
 - A failure says so in words on the row; colour and glyph never carry it alone.
-- Later (see the sheet): drag to move with a drop line (after Sortable), virtual rows, cascading checkboxes, a folder glyph pair.
+- Later (see the sheet): drag to move with a drop line (after Sortable), virtual rows, cascading checkboxes.

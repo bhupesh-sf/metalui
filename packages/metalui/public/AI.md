@@ -108,13 +108,13 @@ Each kind is carried by the glyph's shape, the title's words and the lamp's gest
 
 | `kind` | Means | Glyph | Lamp | Read out |
 |---|---|---|---|---|
-| `note` (default) | worth knowing, nothing is wrong | note | none | politely (`status`) |
+| `note` (default) | worth knowing, nothing is wrong | info | none | politely (`status`) |
 | `done` | finished well | check | green, steady | politely |
 | `waiting` | under way; it will update | clock | amber, breathing | politely |
-| `urgent` | act soon or something goes wrong | bell | amber, steady | at once (`alert`) |
+| `urgent` | act soon or something goes wrong | warning | amber, steady | at once (`alert`) |
 | `failed` | failed or refused | sync-error | red, two blinks, then lit | at once |
 
-No blue: blue is a link's kind. The info and warning glyphs aren't in the set yet; `note` and `bell` stand in.
+No blue: blue is a link's kind.
 
 ## Tones and placement
 
@@ -2626,8 +2626,8 @@ Each kind has one look. The glyph says what the chunk is, at full ink just befor
 | Kind | `kind` | Glyph | Line |
 |---|---|---|---|
 | time | `date`, `duration` | clock (default) | engraved groove: a dark hairline with a light lip under it |
-| money | `amount` | coin: pass `<LifeSpentIcon size={14} />` until the set has a coin | quiet hairline; the formatted amount is in the chip (mono, tabular) |
-| body | `measurement` | pass `<LifeLateNightIcon size={14} />` for sleep (until a moon), `<LifeStepsIcon size={14} />` for steps; `label="Sleep"` | soft green, 1.5 |
+| money | `amount` | coin: pass `<CoinIcon size={14} />` | quiet hairline; the formatted amount is in the chip (mono, tabular) |
+| body | `measurement` | pass `<MoonIcon size={14} />` for sleep, `<LifeStepsIcon size={14} />` for steps; `label="Sleep"` | soft green, 1.5 |
 | colour | `hex` | the live swatch (default) | 3 pt in the colour |
 | tag | `tag` | none: the tag is its shape | a luggage tag: paper in the tag's own hue (`markTagHue(name)`, a stable hash into a 6-hue palette), the point and a punched hole on the left, the hash a quiet mark |
 | person | `person` | pass `<Avatar name size="small" label="" />` | none |
@@ -2670,12 +2670,12 @@ Set `fresh` only once the caret has left the words; never while it's inside them
 
 ```tsx
 import { Avatar, Cue, CueInferred, CueLife, CueUrl, Dimple } from '@unlocalhosted/metalui';
-import { LinkIcon } from '@unlocalhosted/metalui/icons';
-import { LifeCoffeeIcon, LifeLateNightIcon, LifeSpentIcon } from '@unlocalhosted/metalui/icons/life';
+import { CoinIcon, LinkIcon, MoonIcon } from '@unlocalhosted/metalui/icons';
+import { LifeCoffeeIcon } from '@unlocalhosted/metalui/icons/life';
 
 Send <Cue kind="tag">#poster</Cue> <Cue kind="date" resolved="WED 30 SEP · 16:00" fresh={justRecognised}>tomorrow 4pm</Cue>
-for <Cue kind="amount" resolved="$40.00" glyph={<LifeSpentIcon size={14} />}>$40</Cue>,
-slept <Cue kind="measurement" label="Sleep" resolved="6 H" glyph={<LifeLateNightIcon size={14} />}>6h</Cue>
+for <Cue kind="amount" resolved="$40.00" glyph={<CoinIcon size={14} />}>$40</Cue>,
+slept <Cue kind="measurement" label="Sleep" resolved="6 H" glyph={<MoonIcon size={14} />}>6h</Cue>
 to <Cue kind="person" glyph={<Avatar name="Sam Ito" size="small" label="" />}>Sam</Cue>
 <CueInferred resolved="FRI 2 OCT · RECOGNIZER 0.82" confirmed={ok} onConfirm={confirm}>fri</CueInferred>
 <CueLife label="A drink · coffee?" fresh={justRecognised}><LifeCoffeeIcon size={16} /></CueLife>
@@ -5875,10 +5875,10 @@ Pointer: a click focuses and selects (⌘-click toggles, ⇧-click takes a range
 ## Rules
 
 - Flat rows, never nested groups: one list is what the rows' motion animates and what a virtual window will cut.
-- Branches carry no glyph by default; the chevron says it opens. Pass an `icon` for what your rows are. The set has no folder glyph yet.
+- Branches carry no glyph by default; the chevron says it opens. Pass an `icon` for what your rows are; for folders, a function of `open` that morphs the set's pair: `icon: (open) => <MorphIcon name={open ? 'folder-open' : 'folder'} />` (in a library component, `MorphPair` with `folderMorph` and `folderOpenMorph`).
 - One disclosure: the chevron. Never plus and minus (they mean add and remove in the set).
 - A failure says so in words on the row; colour and glyph never carry it alone.
-- Later (see the sheet): drag to move with a drop line (after Sortable), virtual rows, cascading checkboxes, a folder glyph pair.
+- Later (see the sheet): drag to move with a drop line (after Sortable), virtual rows, cascading checkboxes.
 
 ---
 
@@ -5971,7 +5971,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 67 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 75 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -5982,7 +5982,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 
 - **Triggering:** an icon inside any element with the class `mu-icon-trigger` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
 - **Accessibility:** icons without `title` are decorative (`aria-hidden`). Give icon-only controls an `aria-label`.
-- **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, send/stop, download/upload, eye/eye-off, save) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
+- **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, send/stop, download/upload, eye/eye-off, info/warning, folder/folder-open, sun/moon, save) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
 - **On cue:** `act` plays the glyph's act whenever it turns to a new truthy value, for a result rather than a touch: `<Icon name="check" act={saves} />` plays on each save; `act` alone plays it as the icon arrives.
 - **Static:** `animate={false}` keeps a glyph static. Reduced motion does this automatically.
 - **SwiftUI and SVG:** the same glyphs ship as SF Symbols (planned), plus static and animated SVGs at `https://metalui.dev/icons/svg/<name>.svg`.
@@ -6056,3 +6056,11 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `EyeIcon` | `eye` | Actions | The eye looks one way, then the other, and blinks; it opens wide and rays open over it. | plays the same act |
 | `EyeOffIcon` | `eye-off` | Actions | The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again. | plays the same act |
 | `LockIcon` | `lock` | Status | The shackle is lifted and pushed home into the case, which takes it, and it clicks shut. | plays the same act |
+| `InfoIcon` | `info` | Status | The stem crouches and springs up, throwing its dot; ticks open at the top of the throw and the dot lands back on its seat. | plays the same act |
+| `WarningIcon` | `warning` | Status | The mark is lifted and struck down into the sign, which takes the blow; alarm lines open off its sides. | plays the same act |
+| `CoinIcon` | `coin` | Tools | The coin is flipped: tossed up, turned edge-on at the top, and it lands on its edge with a clink. | plays the same act |
+| `SunIcon` | `sun` | Tools | The disc gathers itself and swells back, flaring its rays out; they come home. | plays the same act |
+| `MoonIcon` | `moon` | Tools | The crescent is tipped back and rocks home like a cradle; its star brightens and a second one twinkles out. | plays the same act |
+| `FolderIcon` | `folder` | Tools | The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it. | plays the same act |
+| `FolderOpenIcon` | `folder-open` | Tools | A page is lifted out of the open folder, the front tipping further to let it out, and put back. | plays the same act |
+| `SidebarIcon` | `sidebar` | Actions | The rail's edge is slid shut over its rows and springs back open; the rows come back behind it. | plays the same act |
