@@ -249,12 +249,13 @@ Owner, on the Tool strip's Swift capture: "this tool strip is static; it should 
 
 Now: `ToolStrip` takes a fixed `items` list (Tasks, Summarise, Gather, Region, Export | Send away); the page shows one set of worded verbs whatever is selected, and it doesn't place itself.
 
-- [ ] **Verbs come from the selection**: the strip asks what's selected and shows the verbs that apply: a text block (Tasks, Summarise, Region), an image (Lift subject, Copy, Crop), a link (Open, Copy link), a mix of kinds (only the verbs they share: Gather, Export, Send away), one item vs many (Rename only for one). An API like `verbsFor(selection)` or per-kind verb sets merged by intersection, with the order kept stable so muscle memory holds.
-- [ ] **Changing the selection morphs the strip**: when the verbs change, the strip's width settles on the settle spring, leaving verbs fade out, new ones fade in, and kept verbs stay in place (no jump); glyphs rather than words (the icons entry), names in tooltips.
-- [ ] **It places itself at the node**: anchored to the selection's bounds (above it, or below when there's no room; follows when the canvas pans or zooms; flips at screen edges), rising from the selection on the part spring as now.
-- [ ] **Overflow**: when the verbs don't fit, the rest go into a More key (`more`) at the end, before the destructive verb.
-- [ ] **States**: disabled verbs say why in the tooltip; a verb in progress shows the waiting language (the spinner entry) in its key; the destructive verb stays last, apart, and uses hold-to-confirm when irreversible.
-- [ ] Redo the page with a small canvas where clicking a text block, an image, a link or several shows the strip adapting; Swift twin in step and recaptured.
+- [x] **Verbs come from the selection**: the strip asks what's selected and shows the verbs that apply: a text block (Tasks, Summarise, Region), an image (Lift subject, Copy, Crop), a link (Open, Copy link), a mix of kinds (only the verbs they share: Gather, Export, Send away), one item vs many (Rename only for one). An API like `verbsFor(selection)` or per-kind verb sets merged by intersection, with the order kept stable so muscle memory holds.
+- [x] **Changing the selection morphs the strip**: when the verbs change, the strip's width settles on the settle spring, leaving verbs fade out, new ones fade in, and kept verbs stay in place (no jump); glyphs rather than words (the icons entry), names in tooltips.
+- [x] **It places itself at the node**: anchored to the selection's bounds (above it, or below when there's no room; follows when the canvas pans or zooms; flips at screen edges), rising from the selection on the part spring as now.
+- [x] **Overflow**: when the verbs don't fit, the rest go into a More key (`more`) at the end, before the destructive verb.
+- [x] **States**: disabled verbs say why in the tooltip; a verb in progress shows the waiting language (the spinner entry) in its key; the destructive verb stays last, apart, and uses hold-to-confirm when irreversible.
+- [x] Redo the page with a small canvas where clicking a text block, an image, a link or several shows the strip adapting; Swift twin in step and recaptured.
+- Done (2026-10-06): `verbsFor(kinds, sets)`; the strip morphs on the settle spring when its verbs change (transforms only: the plate animates as two halves under a clip); `anchor` places it above or below the selection inside the parent; overflow goes into More; `disabledReason`, `state`, `hold` (Button's `hold` now also works on `strip-danger`); the page is a small canvas; SwiftUI in step. Left (SwiftUI): menus open below the key; the arrival doesn't reverse when the strip sits below.
 
 ## Cues (the in-text semantic marks): meaning, tags, motion, delight
 
