@@ -20,7 +20,7 @@ Read for jobs: shadcn and ReUI code blocks, AI Elements' Code Block and Artifact
 | The same, without a frame | a reply bubble already on a plate, a tool call's result, a table cell's detail | `look="ghost"`: no plate, no head; the lines sit on a faint sunk tint (the well's top ink at low strength) and the copy key floats in the top corner, pinned over the scroll | Must |
 | Copy it | every block | a ghost `IconButton` in the head: `copy` turns to `check` on the drum (`SwapIcon`, as Field.Copy) for the recipe's hold, "Copied" said once in a status. *ours*: with lines picked it copies only those, and its name says so ("Copy lines 4–7") | Must |
 | Know where you are | long files, references in chat | `numbers` on a gutter in `syn-line` ink, tabular; `start` numbers from any line (`start={120}` for an excerpt) | Must |
-| Long lines | narrow columns, phones, a chat bubble | `wrap`: lines wrap with a hanging indent under their own first character; the gutter number stays on the first row. Off: the body scrolls sideways | Must |
+| Long lines | narrow columns, phones, a chat bubble | `wrap`: a long line continues under the start of its text column; the gutter number stays on the first row. Off: the body scrolls sideways | Must |
 | Long files | a 400-line source | `maxLines` (default none): the body stops at that many lines and scrolls inside itself; the head and the copy key stay put | Must |
 | Point at lines | "see lines 3–5" in docs, a review | `highlight={[3, [5, 7]]}`: a quiet band in the row hover's ink with a 2 rail at the gutter edge in ink3 (never green: green says live or opened) | Must |
 | Say what matters | a tutorial step, a long excerpt | `focus={[[4, 6]]}`: the other lines fall back to the recipe's dim opacity. *ours*: hovering or focusing the block brings them back on the settle spring, so focus never hides code from someone who wants it | Must |
@@ -28,7 +28,7 @@ Read for jobs: shadcn and ReUI code blocks, AI Elements' Code Block and Artifact
 | Send the reference | the composer's "add to chat" | `onReference(range)`: a ghost key with the `attach` glyph appears beside copy while lines are picked ("Reference lines 4–7") | Should |
 | See a change | a diff fence in a reply, a commit, a proposed edit | `lang="diff"` (or `diff` classes per line from the host): added lines a faint green band with a green `+`, removed a faint red band with a red `−`; the same classes and inks as the code card | Must |
 | See a patch | a unified diff with hunks | *ours*: when a diff has `@@ -a,b +c,d @@` headers and `numbers` is on, two gutters (old, new), each blank where its side has no line; the hunk header is an engraved ink3 row | Should |
-| See a problem | a type error in a snippet, a lint finding in a tool call | `diagnostics={[{ line, severity, message, action }]}`: the line's number makes way for an LED (red for `error`, amber steady for `warning`, none for `note`), and under the line a note row says the word ("Error"), the message in ink2 and an optional compact action ("Fix with AI"). Colour never alone: the word goes with it | Must |
+| See a problem | a type error in a snippet, a lint finding in a tool call | `diagnostics={[{ line, severity, message, action }]}`: a lamp column opens in the gutter beside the numbers (red for `error`, amber steady for `warning`, none for `note`), and under the line a note row says the word ("Error"), the message in ink2 and an optional compact action ("Fix with AI"). Colour never alone: the word goes with it | Must |
 | Code still arriving | an AI reply streaming | `streaming`: rows are appended, never re-rendered; each new row fades up a nest on the settle spring; a caret blinks after the last character only while streaming; the body follows the end unless you scrolled up; copy waits (disabled, "Still writing") so a half snippet never reaches a terminal | Must |
 | Fences inside a reply | Markdown arriving as text | `splitFences(markdown)` → text and code parts, `open: true` for a fence not closed yet (the host renders it `streaming`); tildes and backticks, any fence length, an info string's first word as the language | Must |
 | Highlighting from the host | Shiki on the server, twinkleplop in the docs | `html`: the host's highlighted HTML for the whole code (no `<pre>`); the block splits it into rows itself, closing and reopening spans that cross a line. No highlighter ships in the package | Must |
@@ -52,21 +52,23 @@ Not doing: a language badge in a corner over the code (the head says it, the gho
 - **Info diagnostics' lamp?** **None**, as Alert's `note`: no LED colour means "info", and an off lamp would read as "something is off". The word "Note" says it.
 
 ## Must
-- [ ] React `CodeBlock`: framed and ghost; head (label or a node); copy on the drum; `numbers` and `start`; `wrap`; `maxLines`.
-- [ ] `highlight` and `focus` (with the hover reveal).
-- [ ] `selectable` with keyboard and pointer, `selection` / `onSelect`, the label on the drum, copy of the picked lines.
-- [ ] Diff classes (shared with the code card), `diagnostics` with an action.
-- [ ] `streaming` (rows land, caret, follow the end, copy waits) and `splitFences`.
-- [ ] `html` from the host, split into rows.
-- [ ] SwiftUI `MetalCodeBlock`: framed and ghost, copy, numbers and start, wrap, max lines, highlight and focus, selectable lines, diff, diagnostics, streaming caret.
-- [ ] Recipe `code-block`, agent guide, meta.json, the page with its DialKit panel, the e2e slice; the docs' `Code` on the block; the code card on the shared tint.
+- [x] React `CodeBlock`: framed and ghost; head (label or a node); copy on the drum; `numbers` and `start`; `wrap`; `maxLines`.
+- [x] `highlight` and `focus` (with the hover reveal).
+- [x] `selectable` with keyboard and pointer, `selection` / `onSelect`, the label on the drum, copy of the picked lines.
+- [x] Diff classes (shared with the code card), `diagnostics` with an action.
+- [x] `streaming` (rows land, caret, follow the end, copy waits) and `splitFences`.
+- [x] `html` from the host, split into rows.
+- [x] SwiftUI `MetalCodeBlock`: framed and ghost, copy, numbers and start, wrap, max lines, highlight and focus, selectable lines, diff, diagnostics, streaming caret.
+- [x] Recipe `code-block`, agent guide, meta.json, the page with its DialKit panel, the e2e slice; the docs' `Code` on the block; the code card on the shared tint.
 
 ## Should
-- [ ] `onReference` key.
-- [ ] Two gutters for a unified patch.
+- [x] `onReference` key.
+- [x] Two gutters for a unified patch.
 
 ## Later
 - [ ] Fold by indent.
 - [ ] Marks inside a line.
 - [ ] The code card's screen rendered by the block (scroll and selection on the canvas).
 - [ ] `CodeScreen` (the docs' usage snippet) as a `look="screen"`.
+
+- Done (2026-10-06): Must and Should. `CodeBlock` (React) and `MetalCodeBlock` (SwiftUI) on the `code-block` recipe; `splitFences`, `splitHtmlLines` and `tintLine` exported; the code card takes the block's tint and diff classes (its look unchanged). The docs' `Code` renders the block (twinkleplop `html`), so every source, usage and token snippet on the site is the shipped component; a page's Markdown copy leaves out a block's gutter, keys and notes. A `CodeBlock` import is 17.8 KB gzip. Decided while building: a patch's two gutters are not keys (two numberings, one pick); a closing fence half arrived ("``") is held back while streaming; a hunk header is engraved, never tinted. Left: the docs' source and install tabs lost their `TabPanel` (the tabs sit in the block's head, so the code isn't tied to them by `aria-controls`); SwiftUI picks lines by click and ⇧-click only (no arrow keys) and its ghost keys show on hover; the Later items above.
