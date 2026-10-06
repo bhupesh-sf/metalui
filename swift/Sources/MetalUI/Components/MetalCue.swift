@@ -3,7 +3,7 @@ import SwiftUI
 // The cue family, in step with mark.tsx and the mark recipe.
 //
 // One grammar of kinds: time (date, duration) is an engraved groove with the clock; money a quiet
-// hairline with a coin (spent stands in); the body a soft green line with its glyph (late night for
+// hairline with a coin; the body a soft green line with its glyph (the moon for
 // sleep, steps); a colour its 3 pt line and live swatch; a person their avatar; a tag a luggage tag in
 // its own hue. The glyph sits at full ink before the words; the line is drawn under them.
 //

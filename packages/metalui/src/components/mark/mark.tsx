@@ -8,8 +8,7 @@ import { motionReduced } from '../../motion/reduced';
  * CUE FAMILY: one grammar of kinds
  *
  *   time      date, duration   an engraved groove under the words, the clock glyph before them
- *   money     amount           a quiet hairline, tabular figures, the coin glyph (the host's: the set has
- *                              no coin yet; LifeSpent stands in)
+ *   money     amount           a quiet hairline, tabular figures, the coin glyph (the host's: CoinIcon)
  *   body      measurement      a soft green line, the body's glyph (the host's: moon, steps)
  *   colour    hex              a 3 pt line in the colour, the live swatch as its glyph
  *   tag       tag              a luggage tag: a raised paper tab in the tag's own hue (a stable hash of

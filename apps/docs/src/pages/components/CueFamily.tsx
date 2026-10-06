@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Avatar, Cue, CueInferred, CueLife, CueUrgency, CueUrl, Dimple, Field, SlidingIndicator } from '@unlocalhosted/metalui';
-import { LinkIcon } from '@unlocalhosted/metalui/icons';
-import { LifeCalmIcon, LifeCoffeeIcon, LifeLateNightIcon, LifeSpentIcon, LifeStepsIcon } from '@unlocalhosted/metalui/icons/life';
+import { CoinIcon, LinkIcon, MoonIcon } from '@unlocalhosted/metalui/icons';
+import { LifeCalmIcon, LifeCoffeeIcon, LifeStepsIcon } from '@unlocalhosted/metalui/icons/life';
 import reactSource from '../../../../../packages/metalui/src/components/mark/mark.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/mark/mark.agent.md?raw';
@@ -18,9 +18,9 @@ const TABS = [
   { id: 'agent', label: 'Agent guide', code: agentGuide },
 ] as const;
 
-/* The glyphs the set has for each kind. Money and sleep stand in until the set draws a coin and a moon of their own. */
-const COIN = <LifeSpentIcon size={14} />;
-const MOON = <LifeLateNightIcon size={14} />;
+/* The host passes the body's and money's glyphs: the set's coin and moon, the life set's steps. */
+const COIN = <CoinIcon size={14} />;
+const MOON = <MoonIcon size={14} />;
 const STEPS = <LifeStepsIcon size={14} />;
 const person = (name: string) => <Avatar name={name} size="small" label="" />;
 
@@ -38,8 +38,8 @@ function Line({ cues, bare, raw, fresh }: { cues: boolean; bare?: boolean; raw?:
 const LEGEND: { kind: string; specimen: React.ReactNode; glyph: string; line: string; chip: string }[] = [
   { kind: 'time · date', specimen: <Cue kind="date" resolved="WED 30 SEP · 16:00">tomorrow 4pm</Cue>, glyph: 'clock (its act: an hour passes)', line: 'engraved groove', chip: 'DATE · WED 30 SEP · 16:00' },
   { kind: 'time · duration', specimen: <Cue kind="duration" resolved="1 H 30 · 90 MIN">1h30</Cue>, glyph: 'clock', line: 'engraved groove', chip: 'DURATION · 1 H 30 · 90 MIN' },
-  { kind: 'money', specimen: <Cue kind="amount" resolved="$40.00" glyph={COIN}>$40</Cue>, glyph: 'coin (spent stands in)', line: 'quiet hairline (tabular in the chip)', chip: 'AMOUNT · $40.00' },
-  { kind: 'body · sleep', specimen: <Cue kind="measurement" label="Sleep" resolved="6 H" glyph={MOON}>6h</Cue>, glyph: 'moon (late night stands in)', line: 'soft green', chip: 'SLEEP · 6 H' },
+  { kind: 'money', specimen: <Cue kind="amount" resolved="$40.00" glyph={COIN}>$40</Cue>, glyph: 'coin (its act: flipped, it lands)', line: 'quiet hairline (tabular in the chip)', chip: 'AMOUNT · $40.00' },
+  { kind: 'body · sleep', specimen: <Cue kind="measurement" label="Sleep" resolved="6 H" glyph={MOON}>6h</Cue>, glyph: 'moon', line: 'soft green', chip: 'SLEEP · 6 H' },
   { kind: 'body · steps', specimen: <Cue kind="measurement" label="Steps" resolved="8 000" glyph={STEPS}>8k steps</Cue>, glyph: 'steps', line: 'soft green', chip: 'STEPS · 8 000' },
   { kind: 'colour', specimen: <Cue kind="hex" color="#3F7FE0">#3F7FE0</Cue>, glyph: 'the live swatch', line: '3 pt in the colour', chip: 'COLOUR' },
   { kind: 'tag', specimen: <Cue kind="tag">#poster</Cue>, glyph: '—', line: 'a luggage tag in its own hue', chip: '—' },
