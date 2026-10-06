@@ -877,16 +877,18 @@ Type to find one of many, or several. React: `Combobox` from `@unlocalhosted/met
 
 Reduce Motion: the height snaps, chips come and go at once, glyphs change in place; the fades stay.
 
+SwiftUI: the plate is an overlay under the well (give the combobox room below, or it draws over what follows; it raises its own z-index while open); from a button it is a popover. The pick's glyph and the chevron change in place (SwiftUI has no glyph morph yet: the chevron turns by rotation). Recent shows whenever the plate opens on an empty query.
+
 ## API
 
 | React | SwiftUI |
 |---|---|
-| `items`: strings, `{ value, label, description?, icon?, disabled? }`, or `{ label, items }` groups | `items:` (`MetalComboboxItem`) or `groups:` (`MetalComboboxGroup`) |
+| `items`: strings, `{ value, label, description?, icon?, disabled? }`, or `{ label, items }` groups | `items:` (`MetalComboboxItem`, with `person:` for an avatar) and/or `groups:` (`MetalComboboxGroup`) |
 | `value`, `defaultValue`, `onValueChange` (one value or `null`) | `selection:` (`String?`) |
 | `multiple` with `value` / `onValueChange` as arrays | `selections:` (`[String]`) |
 | `placeholder`, `aria-label`, `emptyText` (string or `(query) => string`) | `prompt:`, the label |
 | `size` (`regular`, `compact`), `invalid`, `disabled` | `size:`, `invalid:`, `.disabled()` |
-| `onQueryChange`, `filter={false}` (your own search), `loading`, `failed`, `onRetry` | `query:`, `loading:`, `failed:`, `onRetry:` |
+| `onQueryChange`, `filter={false}` (your own search), `loading`, `failed`, `onRetry` | `query:` (a binding), `filter:`, `loading:`, `failed:`, `onRetry:` |
 | `recent` (values) | `recent:` |
 | `onCreate(label)`: return the new value to choose it | `onCreate:` |
 | `actions`: `{ id, label, icon, onAction }[]` | `actions:` (`MetalComboboxAction`) |

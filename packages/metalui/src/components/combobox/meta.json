@@ -13,8 +13,7 @@
   },
   "swift": {
     "symbol": "MetalCombobox",
-    "file": "swift/Sources/MetalUI/Components/MetalCombobox.swift",
-    "status": "wip"
+    "file": "swift/Sources/MetalUI/Components/MetalCombobox.swift"
   },
   "agent": "combobox.agent.md",
   "page": "/components/combobox"
