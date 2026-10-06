@@ -1094,6 +1094,20 @@
   --mu-r-collapsible-more-radius: 8px;
   --mu-r-collapsible-more-gap: 6px;
   --mu-r-collapsible-panel-bleed: 24px;
+  /* tree: the row recipe (list hover, option on, the rail); the rule recipe (the groove); the set's chevron; the spinner's small-item wait; the rows' motion (motion/rows.ts); WAI-ARIA tree pattern */
+  --mu-r-tree-large-height: 44px;
+  --mu-r-tree-large-indent: 20px;
+  --mu-r-tree-large-glyph: 18px;
+  --mu-r-tree-regular-height: 32px;
+  --mu-r-tree-regular-indent: 16px;
+  --mu-r-tree-regular-glyph: 16px;
+  --mu-r-tree-compact-height: 28px;
+  --mu-r-tree-compact-indent: 14px;
+  --mu-r-tree-compact-glyph: 14px;
+  --mu-r-tree-chevron-size: 12px;
+  --mu-r-tree-guide-width: 1px;
+  --mu-r-tree-disabled-opacity: 0.4;
+  --mu-r-tree-self-typeahead: 500ms;
   /* meter: the LED part (status recipe lamps); hardware level meters; Base UI Meter */
   --mu-r-meter-self-height: 10px;
   --mu-r-meter-self-gap: 2px;
@@ -2393,6 +2407,7 @@
   --mu-r-checkbox-self-ghost-shadow:
     /* mu-recipe:checkbox:14 */ inset 0 0 0 1px rgba(40,38,32,.16),
     /* mu-recipe:checkbox:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
+  --mu-r-tree-guide-lit: rgba(40,38,32,.26);
   --mu-r-scroll-area-thumb-ink: rgba(27,27,29,.28);
   --mu-r-combobox-chip-background:
     /* mu-recipe:combobox:0 */ rgba(252,251,249,.7);
@@ -2996,6 +3011,7 @@
   --mu-r-checkbox-self-ghost-shadow:
     /* mu-recipe:checkbox:16 */ inset 0 0 0 1px rgba(255,255,255,.18),
     /* mu-recipe:checkbox:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
+  --mu-r-tree-guide-lit: rgba(255,255,255,.16);
   --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
   --mu-r-combobox-chip-background:
     /* mu-recipe:combobox:1 */ rgba(44,44,47,.7);
@@ -3600,6 +3616,7 @@
     --mu-r-checkbox-self-ghost-shadow:
       inset 0 0 0 1px rgba(255,255,255,.18),
       inset 0 2px 4px -2px rgba(0,0,0,.4);
+    --mu-r-tree-guide-lit: rgba(255,255,255,.16);
     --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
     --mu-r-combobox-chip-background:
       rgba(44,44,47,.7);

@@ -952,6 +952,30 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Nested rows that open and close in place, walked with the keyboard (files, pages, accounts, an org). Every row is the row recipe's list row at the size's height: hover and keyboard focus raise it, a selected row holds the option's raised plate, the opened row carries the green rail. Before a row's glyph come its guides, one column per level: an engraved groove at the centre of each ancestor's chevron, running the full row so the grooves join down the list; the grooves of the branch holding the focus light from the rule to the lit ink (opacity, on the settle spring). Then the disclosure, the set's chevron: pointing right when closed, a quarter turn down on the part spring when open (it may overshoot its stop). Opening, the children land from one nest above on the object spring while the rows below glide down on the settle spring; closing, the children leave one nest down on the release spring and the rows below close the gap. A level that loads waits in the disclosure's slot on the spinner's clock: nothing for a fast load, then the ring in place of the chevron; a failed load closes the branch, the slot shows sync-error and the row says Couldn't load and Try again. A branch opened with nothing in it shows Empty in ink3 at its children's level. Disabled rows dim everything but their guides. Selected rows next to each other join into one plate (their inner corners square). Sizes: large 44, regular 32, compact 28, each with its indent and glyph. Reduce Motion: the chevron, the rows and the lit guides change at once. (the row recipe (list hover, option on, the rail); the rule recipe (the groove); the set's chevron; the spinner's small-item wait; the rows' motion (motion/rows.ts); WAI-ARIA tree pattern)
+    public static let tree = MetalObjectRecipe(
+        name: "tree",
+        layers: [
+
+        ],
+        props: [
+            "large.height": .number(44.0),
+            "large.indent": .number(20.0),
+            "large.glyph": .number(18.0),
+            "regular.height": .number(32.0),
+            "regular.indent": .number(16.0),
+            "regular.glyph": .number(16.0),
+            "compact.height": .number(28.0),
+            "compact.indent": .number(14.0),
+            "compact.glyph": .number(14.0),
+            "chevron.size": .number(12.0),
+            "guide.width": .number(1.0),
+            "guide.lit": .perColorway(bone: "rgba(40,38,32,.26)", graphite: "rgba(255,255,255,.16)"),
+            "disabled.opacity": .text("0.4"),
+            "self.typeahead": .text("500ms"),
+        ]
+    )
+
     /// A level in a range (storage used, battery, signal), not a task: a row of LED segments like a level meter. A segment's colour comes from where it sits (green through the range, amber near the top, red at the end), the way a level meter is printed. When the value changes the level sweeps from its old edge to its new one, segment by segment (16 ms apart, each lamp fading in 90 ms): rising lights upward, falling darkens downward. Reduce Motion: every segment changes at once. The lamps are the LED part's looks. (the LED part (status recipe lamps); hardware level meters; Base UI Meter)
     public static let meter = MetalObjectRecipe(
         name: "meter",

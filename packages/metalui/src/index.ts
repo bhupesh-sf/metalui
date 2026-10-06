@@ -47,6 +47,7 @@ export { Kbd, type KbdProps } from './components/kbd/kbd';
 export { Toolbar, ToolButton, ToolbarSeparator, ToolbarSearch, type ToolbarProps, type ToolButtonProps, type ToolbarSearchProps } from './components/toolbar/toolbar';
 export { Tooltip, TooltipProvider, type TooltipProps } from './components/tooltip/tooltip';
 export { QuickEdit, type QuickEditProps, type QuickEditWords } from './components/quick-edit/quick-edit';
+export { Tree, TreeGuides, TreeDisclosure, type TreeProps, type TreeItem, type TreeSelectionMode, type TreeWords, type TreeGuidesProps, type TreeDisclosureProps, type TreeSize } from './components/tree/tree';
 export { Popover, type PopoverRootProps, type PopoverTriggerProps, type PopoverContentProps } from './components/popover/popover';
 export { PreviewCard, type PreviewCardProps, type Preview } from './components/preview-card/preview-card';
 export { Menu, ContextMenu, MenuItem, MenuSeparator, menuParts, type MenuProps, type ContextMenuProps, type MenuItemProps } from './components/menu/menu';

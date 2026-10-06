@@ -2101,6 +2101,31 @@
       "docs": "Agent guide: https://metalui.dev/r/tooltip.md. SwiftUI: View.metalTooltip(_:shortcut:edge:) in the MetalUI Swift package."
     },
     {
+      "name": "tree",
+      "type": "registry:ui",
+      "title": "Tree",
+      "description": "Nested rows that open and close in place, walked with the keyboard (the WAI-ARIA tree pattern): engraved guides per level that light for the branch holding the focus, the set's chevron turning a quarter on the part spring, children landing and leaving with the rows' motion, levels that load on demand with the small-item wait, selection none / single / multiple, the opened row's rail, type-ahead, and F2 to rename with QuickEdit. Tree.Guides and Tree.Disclosure are exported for other rows at a level.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/quick-edit.json",
+        "https://metalui.dev/r/row.json",
+        "https://metalui.dev/r/spinner.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/tree/tree.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/tree/tree.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/tree.md. SwiftUI: MetalTree in the MetalUI Swift package."
+    },
+    {
       "name": "weather",
       "type": "registry:ui",
       "title": "Weather",

@@ -1565,6 +1565,23 @@
       "agent": "https://metalui.dev/r/tooltip.md"
     },
     {
+      "name": "tree",
+      "title": "Tree",
+      "status": "alpha",
+      "description": "Nested rows that open and close in place, walked with the keyboard (the WAI-ARIA tree pattern): engraved guides per level that light for the branch holding the focus, the set's chevron turning a quarter on the part spring, children landing and leaving with the rows' motion, levels that load on demand with the small-item wait, selection none / single / multiple, the opened row's rail, type-ahead, and F2 to rename with QuickEdit. Tree.Guides and Tree.Disclosure are exported for other rows at a level.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Tree",
+        "base": "none (WAI-ARIA tree pattern; Base UI has no tree)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalTree"
+      },
+      "registry": "https://metalui.dev/r/tree.json",
+      "agent": "https://metalui.dev/r/tree.md"
+    },
+    {
       "name": "weather",
       "title": "Weather",
       "status": "alpha",
