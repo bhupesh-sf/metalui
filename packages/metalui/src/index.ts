@@ -65,6 +65,7 @@ export { Connector, type ConnectorProps, type ConnectorEnd, type ConnectorLook, 
 export { Tabs, TabList, TabPanel, type TabsProps, type TabListProps, type TabPanelProps, type TabItem } from './components/tabs/tabs';
 export { Accordion } from './components/accordion/accordion';
 export { Collapsible, type CollapsibleRootProps, type CollapsibleTriggerProps, type CollapsibleKeyProps, type CollapsibleMoreProps, type CollapsiblePanelProps } from './components/collapsible/collapsible';
+export { Stepper, type StepperStep, type StepperOrientation, type StepperLayout, type StepperRootProps, type StepperListProps, type StepperPanelProps, type StepperBackProps, type StepperNextProps } from './components/stepper/stepper';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
 export { Combobox, type ComboboxProps, type ComboboxItem, type ComboboxGroup, type ComboboxAction } from './components/combobox/combobox';
 export { Folder, type FolderProps, type FolderHue, type FolderPeek } from './components/folder/folder';

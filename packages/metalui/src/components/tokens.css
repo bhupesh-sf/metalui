@@ -1094,6 +1094,19 @@
   --mu-r-collapsible-more-radius: 8px;
   --mu-r-collapsible-more-gap: 6px;
   --mu-r-collapsible-panel-bleed: 24px;
+  /* stepper: the switch (well, on look), the switcher (thumb), the checkbox (on look, tick ink), the field's invalid ring, the form field's error ink, the row's list hover, the Spinner's ring and useWait, the tabs panel's arrival; USWDS step indicator (aria-current="step") */
+  --mu-r-stepper-indicator-size: 24px;
+  --mu-r-stepper-indicator-glyph: 12px;
+  --mu-r-stepper-groove-thickness: 3px;
+  --mu-r-stepper-groove-gap: 6px;
+  --mu-r-stepper-groove-min: 20px;
+  --mu-r-stepper-step-pad: 6px;
+  --mu-r-stepper-step-radius: 10px;
+  --mu-r-stepper-step-gap: 8px;
+  --mu-r-stepper-step-text-gap: 2px;
+  --mu-r-stepper-step-disabled: 0.4;
+  --mu-r-stepper-vertical-gap: 16px;
+  --mu-r-stepper-panel-gap: 12px;
   /* meter: the LED part (status recipe lamps); hardware level meters; Base UI Meter */
   --mu-r-meter-self-height: 10px;
   --mu-r-meter-self-gap: 2px;

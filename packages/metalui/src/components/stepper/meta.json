@@ -1,0 +1,23 @@
+{
+  "name": "stepper",
+  "title": "Stepper",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["button", "spinner"],
+  "description": "The steps of a wizard: where you are (the switcher's thumb, gliding along the groove), what's done (the checkbox's on look; the groove fills green), what's left (sunk wells), a step with a problem (the invalid ring and its words), a step that waits (the Spinner's ring) and steps you can't reach yet. Panels stay mounted, so going back keeps what was typed; the new one drifts in from the way you went. Horizontal (stacked or inline) or vertical, with the panels in the list.",
+  "base": "ol with aria-current=\"step\" and buttons (Base UI has no stepper; not tabs: steps are ordered, not peers)",
+  "react": {
+    "export": "Stepper",
+    "files": ["stepper.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalStepper",
+    "file": "swift/Sources/MetalUI/Components/MetalStepper.swift"
+  },
+  "slots": {
+    "Stepper": ["Root", "List", "Panel", "Back", "Next"]
+  },
+  "agent": "stepper.agent.md",
+  "page": "/components/stepper"
+}

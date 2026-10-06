@@ -952,6 +952,28 @@ public enum MetalRecipes {
         ]
     )
 
+    /// The steps of a wizard: an ordered row (or column) of round indicators on one groove, each with a title and an optional description. The looks are borrowed, one recipe per look: an upcoming step is the switch's sunk well with its number in ink3; the current step sits under the switcher's raised thumb (Pagination's and Tabs' "you are here"), which glides from step to step along the groove on the part spring (a track with ends: it may overshoot its stop); a finished step is the checkbox's on look with the set's check; a step with a problem takes the field's invalid hairline ring and says why under its title in the form error's ink; a waiting step's number gives way to the Spinner's ring after the show delay. The groove between two steps is the switch's sunk well, and fills with the switch's on look (Progress's fill, slid in by translate) when the step before it is done: on the settle spring as it fills, the release spring as it drains. A step you can go to lifts on hover (the row's list hover). The panel of a new step drifts in one nest from the way you went and fades, on the settle spring; the old one leaves at once. Narrower than 480 px (a container query on the list), a horizontal list drops its titles to one line under the row ("Step 2 of 4 · Shipping"). Reduce Motion: the thumb, the fill and the panel move at once; the panel fades. (the switch (well, on look), the switcher (thumb), the checkbox (on look, tick ink), the field's invalid ring, the form field's error ink, the row's list hover, the Spinner's ring and useWait, the tabs panel's arrival; USWDS step indicator (aria-current="step"))
+    public static let stepper = MetalObjectRecipe(
+        name: "stepper",
+        layers: [
+
+        ],
+        props: [
+            "indicator.size": .number(24.0),
+            "indicator.glyph": .number(12.0),
+            "groove.thickness": .number(3.0),
+            "groove.gap": .number(6.0),
+            "groove.min": .number(20.0),
+            "step.pad": .number(6.0),
+            "step.radius": .number(10.0),
+            "step.gap": .number(8.0),
+            "step.text-gap": .number(2.0),
+            "step.disabled": .text("0.4"),
+            "vertical.gap": .number(16.0),
+            "panel.gap": .number(12.0),
+        ]
+    )
+
     /// A level in a range (storage used, battery, signal), not a task: a row of LED segments like a level meter. A segment's colour comes from where it sits (green through the range, amber near the top, red at the end), the way a level meter is printed. When the value changes the level sweeps from its old edge to its new one, segment by segment (16 ms apart, each lamp fading in 90 ms): rising lights upward, falling darkens downward. Reduce Motion: every segment changes at once. The lamps are the LED part's looks. (the LED part (status recipe lamps); hardware level meters; Base UI Meter)
     public static let meter = MetalObjectRecipe(
         name: "meter",

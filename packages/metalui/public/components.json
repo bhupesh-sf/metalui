@@ -1327,6 +1327,23 @@
       "agent": "https://metalui.dev/r/status.md"
     },
     {
+      "name": "stepper",
+      "title": "Stepper",
+      "status": "alpha",
+      "description": "The steps of a wizard: where you are (the switcher's thumb, gliding along the groove), what's done (the checkbox's on look; the groove fills green), what's left (sunk wells), a step with a problem (the invalid ring and its words), a step that waits (the Spinner's ring) and steps you can't reach yet. Panels stay mounted, so going back keeps what was typed; the new one drifts in from the way you went. Horizontal (stacked or inline) or vertical, with the panels in the list.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Stepper",
+        "base": "ol with aria-current=\"step\" and buttons (Base UI has no stepper; not tabs: steps are ordered, not peers)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalStepper"
+      },
+      "registry": "https://metalui.dev/r/stepper.json",
+      "agent": "https://metalui.dev/r/stepper.md"
+    },
+    {
       "name": "suggestion-chip",
       "title": "Suggestion chip",
       "status": "alpha",
