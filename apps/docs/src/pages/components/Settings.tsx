@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button, Switcher, Settings, StatusBadge, Switch } from '@unlocalhosted/metalui';
 import reactSource from '../../../../../packages/metalui/src/blocks/settings/settings.tsx?raw';
 import agentSource from '../../../../../packages/metalui/src/blocks/settings/settings.agent.md?raw';
+import { DownloadIcon, UploadIcon } from '@unlocalhosted/metalui/icons';
 import { ComponentPage } from '../../ui/ComponentPage';
 
 function SettingsView() {
@@ -29,8 +30,8 @@ function SettingsView() {
             <span className="type-readout text-ink2">38.4 MB</span>
           </Settings.Row>
           <Settings.Row name="Backup" detail="One encrypted file with everything on this device.">
-            <Button>Download</Button>
-            <Button>Restore…</Button>
+            <Button icon={<DownloadIcon />}>Download</Button>
+            <Button icon={<UploadIcon />}>Restore…</Button>
           </Settings.Row>
         </Settings.Section>
         <Settings.Section title="Shortcuts">

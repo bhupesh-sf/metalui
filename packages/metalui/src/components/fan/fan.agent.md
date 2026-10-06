@@ -11,6 +11,7 @@ A compact control bar for a toolbar that must stay small: it shows the current s
 ## Rules
 - Use it where a full strip does not fit or would crowd the canvas. Every option is one press away and in view once opened: never put options in a dropdown menu instead.
 - The picker holds one kind of choice (tools). The tray holds what goes with the current context (inks and widths while drawing; a selection's actions).
+- A selection's actions are glyph keys, not worded buttons: `<IconButton variant="tool" label="Export" title="Export" icon={<DownloadIcon />} />` (SwiftUI: `MetalIconButton("Export", icon: .download, variant: .tool)`). The name is the tooltip and the accessible name; the glyph plays its act on hover and press.
 - Motion is the part spring; Reduce Motion keeps the layout and drops the travel.
 
 ## Example

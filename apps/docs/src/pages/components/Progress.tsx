@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Button, Progress } from '@unlocalhosted/metalui';
+import { DownloadIcon, UndoIcon } from '@unlocalhosted/metalui/icons';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/progress/progress.tsx?raw';
@@ -66,8 +67,8 @@ export default function ProgressPage() {
           <Progress value={value} label="Exporting 12 photos" showValue />
           <Progress value={null} label="Syncing this canvas" />
           <div className="flex gap-8">
-            <Button onClick={() => { setValue(0); setRunning(true); }}>Run export</Button>
-            <Button onClick={() => { setRunning(false); setValue(40); }}>Reset</Button>
+            <Button icon={<DownloadIcon />} onClick={() => { setValue(0); setRunning(true); }}>Run export</Button>
+            <Button icon={<UndoIcon />} onClick={() => { setRunning(false); setValue(40); }}>Reset</Button>
           </div>
         </div>
       ) }}

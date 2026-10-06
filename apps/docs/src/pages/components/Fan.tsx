@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
-  Button,
   Fan,
+  IconButton,
   InkPicks,
   WidthPicks,
   Switcher,
@@ -10,7 +10,7 @@ import {
   type Ink,
   type InkWidth,
 } from '@unlocalhosted/metalui';
-import { SelectIcon, TextIcon, RegionIcon, PenIcon, DrawIcon, MarkerIcon, LineIcon, ArrowIcon, RectangleIcon, EllipseIcon, EraserIcon, MoreIcon, ImageIcon } from '@unlocalhosted/metalui/icons';
+import { SelectIcon, TextIcon, RegionIcon, PenIcon, DrawIcon, MarkerIcon, LineIcon, ArrowIcon, RectangleIcon, EllipseIcon, EraserIcon, MoreIcon, ImageIcon, TaskIcon, DocumentIcon, GroupIcon, DownloadIcon, SendAwayIcon, CaptureIcon, DuplicateIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/fan/fan.tsx?raw';
 import agentSource from '../../../../../packages/metalui/src/components/fan/fan.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalFan.swift?raw';
@@ -33,6 +33,25 @@ const TOOLS: FanOption<Tool>[] = [
 ];
 const INKING: Tool[] = ['pen', 'pencil', 'marker', 'line', 'arrow', 'rectangle', 'ellipse'];
 type Selection = 'none' | 'text' | 'image';
+
+/* A tray's actions are glyph keys: the name is the tooltip and the accessible name, and the glyph
+ * plays its act on hover and press. */
+const Action = ({ label, icon }: { label: string; icon: React.ReactNode }) => <IconButton variant="tool" label={label} title={label} icon={icon} />;
+const TEXT_ACTIONS = [
+  { label: 'Tasks', icon: <TaskIcon size={16} /> },
+  { label: 'Summarise', icon: <DocumentIcon size={16} /> },
+  { label: 'Gather', icon: <GroupIcon size={16} /> },
+  { label: 'Region', icon: <RegionIcon size={16} /> },
+  { label: 'Export', icon: <DownloadIcon size={16} /> },
+  { label: 'Send away', icon: <SendAwayIcon size={16} /> },
+];
+const IMAGE_ACTIONS = [
+  { label: 'Lift subject', icon: <CaptureIcon size={16} /> },
+  { label: 'Copy', icon: <DuplicateIcon size={16} /> },
+  { label: 'Gather', icon: <GroupIcon size={16} /> },
+  { label: 'Export', icon: <DownloadIcon size={16} /> },
+  { label: 'Send away', icon: <SendAwayIcon size={16} /> },
+];
 
 function Bead({ ink }: { ink: Ink }) {
   return <span aria-hidden style={{ display: 'block', width: '1em', height: '1em', borderRadius: '50%', background: inkColor(ink) }} />;
@@ -62,20 +81,11 @@ function Play() {
             </Fan.Tray>
           ) : selection === 'text' ? (
             <Fan.Tray label="Text actions" icon={<MoreIcon size={16} />}>
-              <Button size="compact">Tasks</Button>
-              <Button size="compact">Summarise</Button>
-              <Button size="compact">Gather</Button>
-              <Button size="compact">Region</Button>
-              <Button size="compact">Export</Button>
-              <Button size="compact">Send away</Button>
+              {TEXT_ACTIONS.map((a) => <Action key={a.label} {...a} />)}
             </Fan.Tray>
           ) : selection === 'image' ? (
             <Fan.Tray label="Image actions" icon={<ImageIcon size={16} />}>
-              <Button size="compact">Lift subject</Button>
-              <Button size="compact">Copy</Button>
-              <Button size="compact">Gather</Button>
-              <Button size="compact">Export</Button>
-              <Button size="compact">Send away</Button>
+              {IMAGE_ACTIONS.map((a) => <Action key={a.label} {...a} />)}
             </Fan.Tray>
           ) : null}
         </Fan>

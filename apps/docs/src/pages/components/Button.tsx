@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DialRoot, useDialKitController } from 'dialkit';
 import { Button, Kbd, Slider, SwapText, type ButtonCap } from '@unlocalhosted/metalui';
-import { DuplicateIcon, Icon, MorphIcon, PenIcon, PlusIcon, ShareIcon, TrashIcon, type IconName } from '@unlocalhosted/metalui/icons';
+import { DownloadIcon, DuplicateIcon, Icon, MorphIcon, PenIcon, PlusIcon, ShareIcon, TrashIcon, type IconName } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/button/button.tsx?raw';
 import agentGuide from '../../../../../packages/metalui/src/components/button/button.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalButton.swift?raw';
@@ -471,7 +471,7 @@ function ActionNamesItself() {
           <div className="flex flex-wrap gap-8">
             <Button icon={<PlusIcon />} onClick={act('New canvas')}>New Canvas</Button>
             <Button icon={<ShareIcon />} onClick={act('Share')}>Share</Button>
-            <Button icon={<ShareIcon />} onClick={act('Export')}>Export</Button>
+            <Button icon={<DownloadIcon />} onClick={act('Export')}>Export</Button>
             <Button icon={<DuplicateIcon />} onClick={act('Duplicate')}>Duplicate</Button>
             <Button icon={<PenIcon />} onClick={act('Rename')}>Rename</Button>
           </div>
