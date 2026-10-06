@@ -227,7 +227,7 @@ Direction:
 - [x] **Transparent mode**: define it and test it: the status parts over frost, over images, and over the dark graphite colorway, in the captures.
 - [x] **Tones**: a quiet badge (LED and words, no plate) for dense places, and a strong one (tinted plate in the state's ink) for alerts.
 - [x] Make the Swift twin match the web example (same words, the label font from the tokens) and recapture it.
-- Done (2026-10-06): the lamp sits in a sunk socket and glows; inks tuned per colorway and checked through deuteranopia and protanopia filters (worst pair ΔE 21); each state has its own gesture; `StatusBadge` `tone` quiet / plate / strong and `solid` for transparent mode; the Swift twin matches. Left: IconButton, toolbar and chip keep their own copies of the old green lamp; point them at the LED recipe. The Swift mono role is Menlo now, so other Swift captures are stale until re-run.
+- Done (2026-10-06): the lamp sits in a sunk socket and glows; inks tuned per colorway and checked through deuteranopia and protanopia filters (worst pair ΔE 21); each state has its own gesture; `StatusBadge` `tone` quiet / plate / strong and `solid` for transparent mode; the Swift twin matches. Left: IconButton, toolbar and chip keep their own copies of the old green lamp; point them at the LED recipe. The Swift mono role is Menlo now (all Swift captures re-run 2026-10-06).
 
 ## Toast: stack in depth
 
@@ -357,7 +357,7 @@ Building real screens shows what the components lack. Each was worked around ins
 
 ## Tests that fail only under a full parallel run
 
-- [ ] `xray-dialog-editing` "pulling the dialog up…" and `toast` (deck, undo) and `region`, `scroll-area`, `slider-states` focus ring, `spinner` (whole place, known or unknown), `toggle`, `tooltip`: each failed once in the 4-worker full run (2026-10-06) and passed alone. Find the race in each (AGENTS.md: sample with rAF, poll), don't retry.
+- [ ] `xray-dialog-editing` "pulling the dialog up…" and `toast` (deck, undo) and `region`, `scroll-area`, `slider-states` focus ring, `spinner` (whole place, known or unknown), `toggle`, `tooltip`: each failed once in the 4-worker full run (2026-10-06) and passed alone. Also `drop-zone` (reduced motion), `memory-scrubber`, `progress` (Reduce Motion), `table` (sorts, graphite), in the 3-worker run that closed wave 2; all passed alone. Find the race in each (AGENTS.md: sample with rAF, poll), don't retry.
 
 ## Variation sheets: existing components
 
