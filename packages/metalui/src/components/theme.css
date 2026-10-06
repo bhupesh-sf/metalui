@@ -1178,6 +1178,10 @@
   --spacing-select-led-slot: var(--mu-r-select-led-slot);
   --spacing-select-pop-offset: var(--mu-r-select-pop-offset);
   --spacing-tabs-panel-drift: var(--mu-r-tabs-panel-drift);
+  --spacing-tabs-vertical-radius: var(--mu-r-tabs-vertical-radius);
+  --radius-tabs-vertical-radius: var(--mu-r-tabs-vertical-radius);
+  --spacing-tabs-vertical-radius-compact: var(--mu-r-tabs-vertical-radius-compact);
+  --radius-tabs-vertical-radius-compact: var(--mu-r-tabs-vertical-radius-compact);
   --spacing-dot-display-pitch: var(--mu-r-dot-display-self-pitch);
   --spacing-dot-display-dot: var(--mu-r-dot-display-self-dot);
   --spacing-dot-display-mini-pitch: var(--mu-r-dot-display-mini-pitch);
@@ -3009,7 +3013,7 @@
   opacity: var(--mu-r-select-pop-scale);
 }
 @utility tabs-panel {
-  outline: none; &[data-ending-style] { display: none; } &[data-activation-direction='right'] { --mu-tabs-dir: 1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &[data-activation-direction='left'] { --mu-tabs-dir: -1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); } @media (prefers-reduced-motion: reduce) { &[data-activation-direction] { animation-name: mu-tabs-fade; } }
+  outline: none; &[data-ending-style] { display: none; } &[data-activation-direction='right'] { --mu-tabs-dir: 1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &[data-activation-direction='left'] { --mu-tabs-dir: -1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &[data-activation-direction='down'] { --mu-tabs-dir-y: 1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &[data-activation-direction='up'] { --mu-tabs-dir-y: -1; animation: mu-tabs-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); } @media (prefers-reduced-motion: reduce) { &[data-activation-direction] { animation-name: mu-tabs-fade; } }
 }
 @utility duration-dot-display-step {
   --tw-duration: var(--mu-r-dot-display-self-step);
@@ -3132,7 +3136,7 @@
   0% { transform: rotateX(var(--mu-r-folder-flap-open)); } 55% { transform: rotateX(-4deg); } 100% { transform: rotateX(var(--fx, var(--mu-r-folder-flap-rest))); }
 }
 @keyframes mu-tabs-in {
-  from { opacity: 0; transform: translateX(calc(var(--mu-tabs-dir, 0) * var(--mu-r-tabs-panel-drift))); } to { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translate(calc(var(--mu-tabs-dir, 0) * var(--mu-r-tabs-panel-drift)), calc(var(--mu-tabs-dir-y, 0) * var(--mu-r-tabs-panel-drift))); } to { opacity: 1; transform: none; }
 }
 @keyframes mu-tabs-fade {
   from { opacity: 0; } to { opacity: 1; }

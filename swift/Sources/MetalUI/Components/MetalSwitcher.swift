@@ -16,6 +16,8 @@ struct MetalSwitchTrack<Value: Hashable>: View {
     let options: [MetalTrackOption<Value>]
     let size: MetalSwitcher<Value>.Size
     let role: Role
+    /// Tabs may stand as a column; a Switcher always lies across.
+    var axis: Axis = .horizontal
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.isEnabled) private var isEnabled
@@ -47,7 +49,13 @@ struct MetalSwitchTrack<Value: Hashable>: View {
         let recipe = MetalRecipes.switcher
         let cw = MetalRecipeColorway(colorway)
         let h = recipe.points(size == .compact ? "option.height" : "option.height-regular")
-        return HStack(spacing: .zero) {
+        let across = axis == .horizontal
+        // Across, the capsule (half its height); standing up, corners concentric with the thumb's.
+        let radius = across ? h / 2 + recipe.points("self.pad")
+            : MetalRecipes.tabs.points(size == .compact ? "vertical.radius-compact" : "vertical.radius")
+        let shape = RoundedRectangle(cornerRadius: radius, style: .continuous)
+        let layout = across ? AnyLayout(HStackLayout(spacing: .zero)) : AnyLayout(VStackLayout(alignment: .leading, spacing: .zero))
+        return layout {
             ForEach(options, id: \.value) { option in
                 let on = option.value == selection
                 Button {
@@ -58,6 +66,7 @@ struct MetalSwitchTrack<Value: Hashable>: View {
                         .tracking(recipe.tracking("option.tracking", size: recipe.fontSize("option.font")))
                         .foregroundColor((recipe.color(on || hovering == option.value ? "option.ink-on" : "option.ink", colorway: cw) ?? colorway.tokens.ink).color)
                         .padding(.horizontal, recipe.points("option.pad-x"))
+                        .frame(maxWidth: across ? nil : .infinity, alignment: .leading)
                         .frame(height: h)
                         .background {
                             if on {
@@ -78,15 +87,15 @@ struct MetalSwitchTrack<Value: Hashable>: View {
                 .focused($focused, equals: option.value)
                 .focusEffectDisabled()
                 .onHover { hovering = $0 ? option.value : nil }
-                .onKeyPress(.leftArrow) { move(-1); return .handled }
-                .onKeyPress(.rightArrow) { move(1); return .handled }
+                .onKeyPress(across ? .leftArrow : .upArrow) { move(-1); return .handled }
+                .onKeyPress(across ? .rightArrow : .downArrow) { move(1); return .handled }
                 .onKeyPress(.home) { select(options.first { !$0.disabled }?.value); return .handled }
                 .onKeyPress(.end) { select(options.last { !$0.disabled }?.value); return .handled }
                 .accessibilityAddTraits(on ? [.isSelected] : [])
             }
         }
         .padding(recipe.points("self.pad"))
-        .metalObjectRecipe(recipe, part: "self", in: Capsule(style: .continuous))
+        .metalObjectRecipe(recipe, part: "self", in: shape)
         .opacity(isEnabled ? Double.one : recipe.scalar("option.disabled"))
         .accessibilityElement(children: .contain)
         .accessibilityLabel(label)

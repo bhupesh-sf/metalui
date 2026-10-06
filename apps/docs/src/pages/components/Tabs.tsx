@@ -18,6 +18,24 @@ const BODY: Record<(typeof SECTIONS)[number]['value'], { title: string; rows: st
   about: { title: 'About', rows: ['Version 0.0', 'Made on a Mac', 'Licences'] },
 };
 
+/** The same sections standing as a column beside their panel: a settings sidebar. */
+function Vertical() {
+  const [tab, setTab] = React.useState<(typeof SECTIONS)[number]['value']>('canvas');
+  return (
+    <Tabs orientation="vertical" value={tab} onValueChange={setTab} className="flex w-full max-w-520 items-start gap-16">
+      <TabList aria-label="Settings sections" items={[...SECTIONS]} className="w-140 flex-none" />
+      {SECTIONS.map((s) => (
+        <TabPanel key={s.value} value={s.value} className="min-w-0 flex-1">
+          <div className="material-stage rounded-plate px-16 py-12">
+            <p className="type-label engraved pb-8">{BODY[s.value].title}</p>
+            {BODY[s.value].rows.map((r) => <p key={r} className="type-ui py-6 text-ink2">{r}</p>)}
+          </div>
+        </TabPanel>
+      ))}
+    </Tabs>
+  );
+}
+
 function Play() {
   const [tab, setTab] = React.useState<(typeof SECTIONS)[number]['value']>('canvas');
   return (
@@ -41,6 +59,7 @@ export default function TabsPage() {
       title="Tabs"
       lede="Switch which panel is shown. The tabs sit on the same track as the Switcher, and the new panel comes in from the side you moved to."
       play={{ lede: 'Click a tab, or focus one and use ← →. Watch the panel come in from the side the thumb went.', node: <Play /> }}
+      more={[{ id: 'vertical', title: 'Standing up', lede: 'orientation="vertical" stands the track as a column beside its panels, a settings sidebar: ↑ ↓ move, the corners follow the thumb’s, and the panel comes in from above or below.', node: <div className="flex justify-center"><Vertical /></div> }]}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'agent', label: 'Agent guide', code: agentSource },

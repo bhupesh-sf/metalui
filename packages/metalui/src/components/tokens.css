@@ -2035,6 +2035,8 @@
   --mu-r-select-pop-offset: 6px;
   /* tabs: Soft Hardware switcher track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern */
   --mu-r-tabs-panel-drift: 6px;
+  --mu-r-tabs-vertical-radius: 17px;
+  --mu-r-tabs-vertical-radius-compact: 15px;
   /* dot-display: the weather widget and tiles design (Bone and Graphite), sky() and its 8 px pitch */
   --mu-r-dot-display-self-pitch: 8px;
   --mu-r-dot-display-self-dot: 6px;

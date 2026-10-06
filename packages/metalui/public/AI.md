@@ -3693,12 +3693,13 @@ Switches which panel is shown. React: `Tabs`, `TabList`, `TabPanel` from `@unloc
 | first panel | – | none |
 | focus | 1.5 ring on the tab | – |
 | disabled | 40 % | – |
+| vertical | the track as a column, corners concentric with the thumb (17, compact 15), labels at the start | the panel drifts from above or below |
 
-Keys: ← → move and choose, Home / End jump, Tab goes into the panel. Reduce Motion: the thumb moves at once, the panel only fades.
+Keys: ← → move and choose (↑ ↓ when vertical), Home / End jump, Tab goes into the panel. Reduce Motion: the thumb moves at once, the panel only fades.
 
 ## API
 
-`<Tabs value onValueChange defaultValue>` · `<TabList items size ("regular" 28 | "compact" 24) aria-label />` · `<TabPanel value keepMounted>`
+`<Tabs orientation ("horizontal" | "vertical") value onValueChange defaultValue className>` (vertical: lay the list and panels side by side with `className`, e.g. `flex gap-16`, and give the list a width) · `<TabList items size ("regular" 28 | "compact" 24) aria-label />` · `<TabPanel value keepMounted>`
 
 `items` is `[{ value, label, icon?, disabled? }]`.
 

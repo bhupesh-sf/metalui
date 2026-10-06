@@ -2897,7 +2897,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Switches which panel is shown. The tab list is the switcher track and gliding thumb (one look for 'pick one of a few'); what differs is behaviour: each tab owns a panel, and the new panel comes in from the side the thumb travelled to, a small drift and a fade on the settle spring. The first panel shows without motion. Picking a value with no panel is a Switcher. (Soft Hardware switcher track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern)
+    /// Switches which panel is shown. The tab list is the switcher track and gliding thumb (one look for 'pick one of a few'); what differs is behaviour: each tab owns a panel, and the new panel comes in from the side the thumb travelled to, a small drift and a fade on the settle spring. The first panel shows without motion. Vertical (a settings sidebar): the track stands as a column whose corners are concentric with the thumb's (the option's half height plus the track's pad: 17 regular, 15 compact), the labels sit at the start, and the panel comes in from above or below. Picking a value with no panel is a Switcher. (Soft Hardware switcher track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern)
     public static let tabs = MetalObjectRecipe(
         name: "tabs",
         layers: [
@@ -2905,6 +2905,8 @@ public enum MetalRecipes {
         ],
         props: [
             "panel.drift": .number(6.0),
+            "vertical.radius": .number(17.0),
+            "vertical.radius-compact": .number(15.0),
         ]
     )
 

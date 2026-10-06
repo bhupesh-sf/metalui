@@ -19,6 +19,8 @@ import { trackParts } from '../switcher/switcher';
  *   first     the first panel shows without motion
  *   focus     a 1.5 ring on the tab; ← → move and choose, Home / End jump; Tab goes into the panel
  *   disabled  40 %
+ *   vertical  the track stands as a column (corners concentric with the thumb), labels at the start;
+ *             ↑ ↓ move and choose; the new panel comes in from above or below
  * Reduce Motion: the thumb moves at once and the panel only fades.
  * ───────────────────────────────────────────────────────── */
 
@@ -31,6 +33,8 @@ export interface TabItem<V extends string = string> {
 }
 
 export interface TabsProps<V extends string = string> {
+  /** horizontal (the default): the list above its panels, ← → move. vertical: a column beside them, ↑ ↓ move; lay the list and panels side by side with `className`. */
+  orientation?: 'horizontal' | 'vertical';
   value?: V;
   defaultValue?: V;
   onValueChange?: (value: V) => void;
@@ -55,12 +59,14 @@ export interface TabPanelProps<V extends string = string> {
 }
 
 const PANEL = 'mu-tabs-panel tabs-panel';
+// Standing up, the pill track would round its first and last tabs away: its corners follow the thumb's instead.
+const VERTICAL = 'data-[orientation=vertical]:flex-col data-[orientation=vertical]:rounded-tabs-vertical-radius data-[orientation=vertical]:data-[size=compact]:rounded-tabs-vertical-radius-compact';
 const join = (a: string, b?: string) => (b ? `${a} ${b}` : a);
 
 /** Holds the active tab; put a TabList and one TabPanel per tab anywhere inside. */
-export function Tabs<V extends string = string>({ value, defaultValue, onValueChange, children, className }: TabsProps<V>) {
+export function Tabs<V extends string = string>({ orientation = 'horizontal', value, defaultValue, onValueChange, children, className }: TabsProps<V>) {
   return (
-    <BaseTabs.Root value={value} defaultValue={defaultValue} onValueChange={(v) => onValueChange?.(v as V)} className={className}>
+    <BaseTabs.Root orientation={orientation} value={value} defaultValue={defaultValue} onValueChange={(v) => onValueChange?.(v as V)} className={className}>
       {children}
     </BaseTabs.Root>
   );
@@ -69,7 +75,7 @@ export function Tabs<V extends string = string>({ value, defaultValue, onValueCh
 /** The tabs, on the switcher track with its gliding thumb. */
 export function TabList<V extends string = string>({ items, size = 'regular', className, ...props }: TabListProps<V>) {
   return (
-    <BaseTabs.List activateOnFocus aria-label={props["aria-label"]} data-size={size} className={join(trackParts.TRACK, className)}>
+    <BaseTabs.List activateOnFocus aria-label={props["aria-label"]} data-size={size} className={join(`${trackParts.TRACK} ${VERTICAL}`, className)}>
       <SlidingIndicator className={trackParts.THUMB} />
       {items.map((t) => (
         <BaseTabs.Tab key={t.value} value={t.value} disabled={t.disabled} className={trackParts.OPTION[size]}>
