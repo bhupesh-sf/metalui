@@ -40,6 +40,7 @@ export const routes: RouteObject[] = [
       { path: 'components/status', lazy: lazy(() => import('../pages/components/Status')) },
       { path: 'components/kbd', lazy: lazy(() => import('../pages/components/Kbd')) },
       { path: 'components/badge', lazy: lazy(() => import('../pages/components/Badge')) },
+      { path: 'components/icon-tile', lazy: lazy(() => import('../pages/components/IconTile')) },
       { path: 'components/switcher', lazy: lazy(() => import('../pages/components/Switcher')) },
       { path: 'components/fan', lazy: lazy(() => import('../pages/components/Fan')) },
       { path: 'components/swatch', lazy: lazy(() => import('../pages/components/Swatch')) },
