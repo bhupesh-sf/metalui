@@ -62,7 +62,8 @@ const HELD: Record<ButtonCap, string> = {
 const COMPACT_HELD = 'data-held:translate-y-button-travel data-held:recipe-button-compact-pressed';
 // The glyph's slot while a state is given: the glyph and the arc share it (an svg, so the cap sizes it).
 const WAIT = 'mu-button-wait button-wait';
-const ARC = <circle className="mu-button-arc" cx={12} cy={12} r={8.5} fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" pathLength={100} strokeDasharray="68 100" />;
+// The arc's radius, stroke and length are the recipe's (wait.*), set by button-wait.
+const ARC = <circle className="mu-button-arc" cx={12} cy={12} fill="none" stroke="currentColor" strokeLinecap="round" pathLength={100} />;
 
 const COMPACT_SIZE = 'gap-button-compact-gap h-button-compact-height px-button-compact-pad rounded-pill type-button-compact [&>svg]:size-button-compact-glyph';
 const COMPACT: Partial<Record<ButtonCap, string>> = {

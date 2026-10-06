@@ -63,16 +63,20 @@ private struct MetalButtonWaitSlot<Glyph: View>: View {
 
     var body: some View {
         let spinner = MetalRecipes.spinner
+        let wait = MetalRecipes.button
+        let breathe = MetalRecipes.progress
+        let unit = size / 24 // the glyph grid
+        let across = unit * (wait.points("wait.radius") + wait.points("wait.radius"))
         ZStack {
             glyph.opacity(showsArc ? .zero : .one)
             Circle()
-                .trim(from: .zero, to: 0.68)
-                .stroke(style: StrokeStyle(lineWidth: size * 1.9 / 24, lineCap: .round))
-                .padding(size * 3.5 / 24)
+                .trim(from: .zero, to: wait.scalar("wait.arc"))
+                .stroke(style: StrokeStyle(lineWidth: unit * wait.points("wait.stroke"), lineCap: .round))
+                .frame(width: across, height: across)
                 .rotationEffect(.degrees(turning && !reduceMotion ? 360 : .zero))
-                .opacity(showsArc ? (reduceMotion && turning ? 0.45 : .one) : .zero)
+                .opacity(showsArc ? (reduceMotion && turning ? breathe.scalar("segment.dim") : .one) : .zero)
                 .animation(showsArc ? (reduceMotion
-                    ? .easeInOut(duration: 1).repeatForever(autoreverses: true)
+                    ? .easeInOut(duration: breathe.durationSeconds("segment.breathe")).repeatForever(autoreverses: true)
                     : .linear(duration: spinner.durationSeconds("self.turn")).repeatForever(autoreverses: false)) : nil, value: turning)
         }
         .frame(width: size, height: size)

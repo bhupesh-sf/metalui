@@ -1565,6 +1565,9 @@ public enum MetalRecipes {
             "strip-danger.ink": .text("#FF8A7E"),
             "primary.ink": .perColorway(bone: "#FFFFFF", graphite: "#1B1B1D"),
             "destructive.ink": .text("#FFFFFF"),
+            "wait.radius": .number(8.5),
+            "wait.stroke": .number(1.9),
+            "wait.arc": .text("0.68"),
         ]
     )
 
