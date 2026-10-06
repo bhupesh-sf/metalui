@@ -48,15 +48,16 @@ It is composed. Each condition is a token on the combobox chip's frosted plate (
 
 ## Must
 
-- [ ] `Filters` with `fields`, `value` / `defaultValue` / `onValueChange`, `aria-label`, `className`.
-- [ ] Field types text, number, select, multiselect, boolean, date, with the operators above and the default per type.
-- [ ] The add key and its field menu; a new token opens its editor; an empty editor closing takes the token back.
-- [ ] Operator menu; value popover; value on the drum; remove; Clear with two or more.
-- [ ] Searchable options past 8; ticked options first.
-- [ ] Date editor with Calendar (range for between), Cancel and Apply.
-- [ ] Toolbar keys; groups named by their sentence.
-- [ ] `filterRows` and `describeFilters`; the docs page filters a real `Table` with "12 of 240".
-- [ ] SwiftUI `MetalFilters` with the same fields, conditions, operators, editors (popovers), tokens, remove and Clear, and `MetalFilters.apply`.
+- [x] `Filters` with `fields`, `value` / `defaultValue` / `onValueChange`, `aria-label`, `className`.
+- [x] Field types text, number, select, multiselect, boolean, date, with the operators above and the default per type.
+- [x] The add key and its field menu; a new token opens its editor; an empty editor closing takes the token back.
+- [x] Operator menu; value popover; value on the drum; remove; Clear with two or more.
+- [x] Searchable options past 8; ticked options first.
+- [x] Date editor with Calendar (range for between), Cancel and Apply.
+- [x] Toolbar keys; groups named by their sentence.
+- [x] `filterRows` and `describeFilters`; the docs page filters a real `Table` with "12 of 240".
+- [x] SwiftUI `MetalFilters` with the same fields, conditions, operators, editors (popovers), tokens, remove and Clear, and `MetalFilters.apply`.
+- Done (2026-10-06): Must on Base UI Toolbar with the library's Menu, Popover, Field, NumberField, CheckboxGroup, Calendar and Button; the token wears the combobox chip's plate; `MetalFilters` with `apply` and `describe`. A new or re-opened editor waits for the menu to hand focus back before it opens, so focus lands inside. 103 KB gzip on its own (it composes five Base UI parts and the calendar), the heaviest single import. Left: the Should tier; SwiftUI's popover is the system's (as Popover's and Cascader's are) and its checklist is the WIP CheckboxGroup; no x-ray card.
 
 ## Should
 

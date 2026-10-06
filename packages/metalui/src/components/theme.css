@@ -699,6 +699,19 @@
   --spacing-phone-input-key-gap: var(--mu-r-phone-input-key-gap);
   --spacing-phone-input-flag-size: var(--mu-r-phone-input-flag-size);
   --spacing-phone-input-flag-row: var(--mu-r-phone-input-flag-row);
+  --spacing-filters-bar-gap: var(--mu-r-filters-bar-gap);
+  --spacing-filters-token-height: var(--mu-r-filters-token-height);
+  --spacing-filters-token-pad-start: var(--mu-r-filters-token-pad-start);
+  --spacing-filters-token-pad-end: var(--mu-r-filters-token-pad-end);
+  --spacing-filters-token-gap: var(--mu-r-filters-token-gap);
+  --spacing-filters-seg-height: var(--mu-r-filters-seg-height);
+  --spacing-filters-seg-pad-x: var(--mu-r-filters-seg-pad-x);
+  --spacing-filters-seg-radius: var(--mu-r-filters-seg-radius);
+  --radius-filters-seg-radius: var(--mu-r-filters-seg-radius);
+  --spacing-filters-seg-glyph: var(--mu-r-filters-seg-glyph);
+  --spacing-filters-seg-glyph-gap: var(--mu-r-filters-seg-glyph-gap);
+  --spacing-filters-editor-width: var(--mu-r-filters-editor-width);
+  --spacing-filters-editor-gap: var(--mu-r-filters-editor-gap);
   --spacing-avatar-size-small: var(--mu-r-avatar-size-small);
   --spacing-avatar-size-regular: var(--mu-r-avatar-size-regular);
   --spacing-avatar-size-large: var(--mu-r-avatar-size-large);
@@ -2357,6 +2370,18 @@
 }
 @utility phone-input-row-flag {
   font-size: var(--mu-r-phone-input-flag-row); line-height: 1; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+}
+@utility filters-list {
+  max-height: calc(var(--mu-r-filters-editor-rows) * var(--mu-r-checkbox-group-row-height) + var(--mu-r-filters-editor-gap)); overflow-y: auto; overscroll-behavior: contain;
+}
+@utility stroke-width-filters-editor-width {
+  stroke-width: var(--mu-r-filters-editor-width);
+}
+@utility opacity-filters-editor-rows {
+  opacity: var(--mu-r-filters-editor-rows);
+}
+@utility opacity-filters-editor-search {
+  opacity: var(--mu-r-filters-editor-search);
 }
 @utility avatar-photo {
   opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-starting-style] { opacity: 0; } @media (prefers-reduced-motion: reduce) { transition: none; }

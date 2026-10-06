@@ -1450,6 +1450,30 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A row of conditions you build and change in place, each read as a sentence (Status is Open). The bar is a row that wraps, its tokens apart by the bar gap, the add key (the button's compact cap with the filter glyph and Filter) after them, and a compact Clear key once there are two or more. A token is the combobox chip's frosted plate with its neutral hairline, as tall as the compact field: the field's glyph and name in ink2, then the operator in ink2 and the value in ink, each a key with the menu row's hover plate inset inside the token, then the chip's mini remove key. The operator opens the menu's plate; the value opens a popover holding its editor: a compact field, a number field (two with and for between), a ticked list (the checkbox group, with a search well past its threshold, scrolling past its rows, chosen options first), or a calendar (a range for between) with Cancel and Apply. A new token lands on the object spring with its editor open; one that goes leaves one nest down on the release spring and the tokens after it close the gap on the settle spring; a changed operator or value turns on the drum and the tokens after it glide to their places. Reduce Motion: tokens come and go at once and words change in place. (the combobox chip's plate (recipe combobox chip) and the chip's mini remove key; the menu's plate and row hover (Menu); Popover; Field, NumberField, CheckboxGroup, Calendar and Button; useRowMotion; SwapText; Base UI Toolbar)
+    public static let filters = MetalObjectRecipe(
+        name: "filters",
+        layers: [
+
+        ],
+        props: [
+            "bar.gap": .number(6.0),
+            "token.height": .number(28.0),
+            "token.pad-start": .number(9.0),
+            "token.pad-end": .number(3.0),
+            "token.gap": .number(1.0),
+            "seg.height": .number(22.0),
+            "seg.pad-x": .number(6.0),
+            "seg.radius": .number(11.0),
+            "seg.glyph": .number(14.0),
+            "seg.glyph-gap": .number(5.0),
+            "editor.width": .number(248.0),
+            "editor.gap": .number(8.0),
+            "editor.rows": .text("8"),
+            "editor.search": .text("8"),
+        ]
+    )
+
     /// A person, as a small raised disc: their initials engraved in ink2 on the raised surface, or their photo. The initials are there first; the photo fades in over them on the settle spring once it has loaded (a broken photo never shows). Presence is the LED part at the lower right, on a ring of the page's own ground. A group overlaps the discs, each ringed in the ground, with a +N disc for the rest; hovering the group spreads them one grid step apart on the object spring (a stack opening), and letting go settles them back on the release spring. Reduce Motion: the photo appears at once and the stack does not spread. (the raised surface (recipe surface raise-sm); the LED part; the settle, object and release springs; Base UI Avatar)
     public static let avatar = MetalObjectRecipe(
         name: "avatar",

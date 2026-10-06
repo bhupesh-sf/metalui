@@ -1355,6 +1355,21 @@
   --mu-r-phone-input-key-gap: 2px;
   --mu-r-phone-input-flag-size: 13px;
   --mu-r-phone-input-flag-row: 15px;
+  /* filters: the combobox chip's plate (recipe combobox chip) and the chip's mini remove key; the menu's plate and row hover (Menu); Popover; Field, NumberField, CheckboxGroup, Calendar and Button; useRowMotion; SwapText; Base UI Toolbar */
+  --mu-r-filters-bar-gap: 6px;
+  --mu-r-filters-token-height: 28px;
+  --mu-r-filters-token-pad-start: 9px;
+  --mu-r-filters-token-pad-end: 3px;
+  --mu-r-filters-token-gap: 1px;
+  --mu-r-filters-seg-height: 22px;
+  --mu-r-filters-seg-pad-x: 6px;
+  --mu-r-filters-seg-radius: 11px;
+  --mu-r-filters-seg-glyph: 14px;
+  --mu-r-filters-seg-glyph-gap: 5px;
+  --mu-r-filters-editor-width: 248px;
+  --mu-r-filters-editor-gap: 8px;
+  --mu-r-filters-editor-rows: 8;
+  --mu-r-filters-editor-search: 8;
   /* avatar: the raised surface (recipe surface raise-sm); the LED part; the settle, object and release springs; Base UI Avatar */
   --mu-r-avatar-size-small: 24px;
   --mu-r-avatar-size-regular: 32px;

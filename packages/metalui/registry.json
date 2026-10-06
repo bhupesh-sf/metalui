@@ -949,6 +949,34 @@
       "docs": "Agent guide: https://metalui.dev/r/filter-bar.md. SwiftUI: MetalFilterBar in the MetalUI Swift package."
     },
     {
+      "name": "filters",
+      "type": "registry:ui",
+      "title": "Filters",
+      "description": "A row of conditions you build and change in place, each read as a sentence: Status is Open, Amount more than 500, Due between 1 Oct – 14 Oct. Filter opens the menu of fields; a new token lands with its value editor open. The operator and the value are keys (a menu, a popover holding a field, a number field, a ticked list with search, or a calendar with Cancel and Apply); words turn on the drum; tokens arrive and leave with the rows' motion; Clear with two or more. Text, number, select, multiselect, boolean and date fields. `filterRows` applies the conditions to rows for a Table, `describeFilters` says them as one sentence.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/calendar.json",
+        "https://metalui.dev/r/checkbox-group.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/number-field.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/filters/filters.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/filters/filters.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/filters.md. SwiftUI: MetalFilters in the MetalUI Swift package."
+    },
+    {
       "name": "folder",
       "type": "registry:ui",
       "title": "Folder",

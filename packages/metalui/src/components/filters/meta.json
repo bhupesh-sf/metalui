@@ -1,0 +1,20 @@
+{
+  "name": "filters",
+  "title": "Filters",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["button", "calendar", "checkbox-group", "combobox", "field", "icon-button", "menu", "number-field", "popover"],
+  "description": "A row of conditions you build and change in place, each read as a sentence: Status is Open, Amount more than 500, Due between 1 Oct – 14 Oct. Filter opens the menu of fields; a new token lands with its value editor open. The operator and the value are keys (a menu, a popover holding a field, a number field, a ticked list with search, or a calendar with Cancel and Apply); words turn on the drum; tokens arrive and leave with the rows' motion; Clear with two or more. Text, number, select, multiselect, boolean and date fields. `filterRows` applies the conditions to rows for a Table, `describeFilters` says them as one sentence.",
+  "base": "Base UI Toolbar; Menu, Popover, Field, NumberField, CheckboxGroup, Calendar and Button",
+  "react": {
+    "export": "Filters",
+    "files": ["filters.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalFilters",
+    "file": "swift/Sources/MetalUI/Components/MetalFilters.swift"
+  },
+  "agent": "filters.agent.md",
+  "page": "/components/filters"
+}

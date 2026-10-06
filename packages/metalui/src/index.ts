@@ -76,6 +76,7 @@ export { Select, type SelectProps, type SelectOption, type SelectGroup } from '.
 export { Combobox, type ComboboxProps, type ComboboxItem, type ComboboxGroup, type ComboboxAction } from './components/combobox/combobox';
 export { Autocomplete, type AutocompleteProps, type AutocompleteItem, type AutocompleteGroup } from './components/autocomplete/autocomplete';
 export { Cascader, type CascaderProps, type CascaderItem, type CascaderSize, type CascaderWords } from './components/cascader/cascader';
+export { Filters, filterRows, describeFilters, describeFilter, filterComplete, filterOpWords, filterValueWords, isoDay, type FiltersProps, type FilterField, type FilterCondition, type FilterOption, type FilterOp, type FilterType, type FilterValue } from './components/filters/filters';
 export { PhoneInput, type PhoneInputProps, type PhoneCountry, type PhoneDetails } from './components/phone-input/phone-input';
 export type { GlyphParts } from './icons/MorphIcon';
 export { Folder, type FolderProps, type FolderHue, type FolderPeek } from './components/folder/folder';
