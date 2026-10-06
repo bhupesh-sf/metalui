@@ -107,11 +107,13 @@ public struct MetalSnapGuides: View {
 
     private func update(_ next: [MetalSnapGuide]) {
         let keys = Set(next.map(EngagedLine.init))
-        #if os(macOS)
         if !keys.subtracting(engaged).isEmpty {
+            #if os(macOS)
             NSHapticFeedbackManager.defaultPerformer.perform(.alignment, performanceTime: .now)
+            #else
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            #endif
         }
-        #endif
         engaged = keys
 
         clearTask?.cancel()
