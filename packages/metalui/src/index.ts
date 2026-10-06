@@ -86,6 +86,7 @@ export { Message, type MessageProps, type MessageFrom, type MessageStatus } from
 export { Reasoning, type ReasoningProps } from './components/reasoning/reasoning';
 export { ToolCall, type ToolCallProps, type ToolCallRootProps, type ToolCallGroupProps, type ToolCallStatus } from './components/tool-call/tool-call';
 export { Confirmation, type ConfirmationProps, type ConfirmationDecision } from './components/confirmation/confirmation';
+export { Widget, parseWidget, type WidgetProps, type WidgetAction, type WidgetActionContext, type WidgetNode, type WidgetNodeOf, type WidgetType, type WidgetOption, type WidgetPair, type WidgetParsedNode, type WidgetIssue, type ParsedWidget } from './components/widget/widget';
 export { Markdown, type MarkdownProps } from './components/markdown/markdown';
 export { PromptInput, type PromptInputProps } from './components/prompt-input/prompt-input';
 export { MessageActions, type MessageActionsProps, type MessageFeedback } from './components/message-actions/message-actions';

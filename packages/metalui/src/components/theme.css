@@ -617,6 +617,7 @@
   --spacing-confirmation-hint-gap: var(--mu-r-confirmation-hint-gap);
   --spacing-confirmation-decision-gap: var(--mu-r-confirmation-decision-gap);
   --spacing-confirmation-decision-glyph: var(--mu-r-confirmation-decision-glyph);
+  --spacing-widget-gap: var(--mu-r-widget-self-gap);
   --spacing-markdown-gap: var(--mu-r-markdown-self-gap);
   --spacing-markdown-heading-gap: var(--mu-r-markdown-heading-gap);
   --spacing-markdown-list-indent: var(--mu-r-markdown-list-indent);

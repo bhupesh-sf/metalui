@@ -1217,6 +1217,17 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A piece of interface a model sent as JSON (an Object: it stands for what the model produced and stays in the thread). Composed: each node is the component it names (card, list rows, badge, button, field, select, date picker, properties, markdown, progress, meter, alert), laid out in a column; what can't be shown reads "Can't show this part" in meta type, ink3, in its place. Nothing of its own moves. (the components it names; the fallback is the meta type in ink3)
+    public static let widget = MetalObjectRecipe(
+        name: "widget",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(12.0),
+        ]
+    )
+
     /// An answer's text, set as it arrives (a Component: you read it, follow its links and copy its code). Paragraphs in the content type with a gap between blocks; # and ## in the display role, ### and #### in the doc subheading role (#### in ink2), each with a little more room above; bullets and numbers indented, nested by indent, their markers in ink3; a quote on a 2 rail in the rule ink, its words in ink2; a rule; GFM tables in the body type with tabular figures, a hairline under the head (ui type, ink2), cells padded, scrolling sideways when wide. Inline code in the code block's type on its ghost tint, padded and rounded; links in ink with an ink3 underline that darkens on hover. Every fence is a framed Code block; an open one streams. While streaming, a green pill caret follows the last word and a half-arrived mark is closed. With a pace, what has arrived is revealed a word at a time; under Reduce Motion a phrase every phrase-every, with no caret. (the content, display, doc subheading, body and ui type roles; the code block (fences, its code type and ghost tint); the rule; the green LED ink for the caret (the AI composer's caret))
     public static let markdown = MetalObjectRecipe(
         name: "markdown",

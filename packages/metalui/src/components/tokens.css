@@ -1249,6 +1249,8 @@
   --mu-r-confirmation-hint-gap: 6px;
   --mu-r-confirmation-decision-gap: 6px;
   --mu-r-confirmation-decision-glyph: 14px;
+  /* widget: the components it names; the fallback is the meta type in ink3 */
+  --mu-r-widget-self-gap: 12px;
   /* markdown: the content, display, doc subheading, body and ui type roles; the code block (fences, its code type and ghost tint); the rule; the green LED ink for the caret (the AI composer's caret) */
   --mu-r-markdown-self-gap: 12px;
   --mu-r-markdown-heading-gap: 8px;

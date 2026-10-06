@@ -1,5 +1,7 @@
-// Agent context: public/AI.md (full guide), public/llms.txt (index), public/components.json (manifest).
+// Agent context: public/AI.md (full guide), public/llms.txt (index), public/components.json (manifest),
+// public/widgets.schema.json (the widget JSON a model may send, from components/widget/spec.ts).
 import { readFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 import { root, emit, finish } from './lib/emit.mjs';
 import { components } from './lib/components.mjs';
 
@@ -68,9 +70,82 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 ${icons.icons.map((i) => `| \`${i.component}\` | \`${i.name}\` | ${i.category} | ${i.hover} | ${i.press} |`).join('\n')}
 `;
 
+// Widgets: the one spec (a .ts file of plain data, which Node reads as it is) → the JSON Schema and AI.md's vocabulary.
+const { WIDGET_SPEC, WIDGET_LIMITS, WIDGET_URL, WIDGET_NAME } = await import(pathToFileURL(root('packages/metalui/src/components/widget/spec.ts')).href);
+const widgetTypes = Object.keys(WIDGET_SPEC);
+const ref = (t) => ({ $ref: `#/$defs/${t}` });
+const propSchema = (p) => {
+  const doc = { description: p.doc };
+  switch (p.kind) {
+    case 'string': return { type: 'string', maxLength: p.max ?? WIDGET_LIMITS.text, ...doc };
+    case 'name': return { type: 'string', pattern: WIDGET_NAME.source, ...doc };
+    case 'number': return { type: 'number', ...(p.min !== undefined && { minimum: p.min }), ...(p.max !== undefined && { maximum: p.max }), ...doc };
+    case 'boolean': return { type: 'boolean', ...doc };
+    case 'enum': return { enum: p.values, ...doc };
+    case 'url': return { type: 'string', format: 'uri', pattern: WIDGET_URL.source, ...doc };
+    case 'date': return { type: 'string', format: 'date', pattern: '^\\d{4}-\\d{2}-\\d{2}$', ...doc };
+    case 'action': return { ...ref('action'), ...doc };
+    case 'nodes': return { type: 'array', maxItems: WIDGET_LIMITS.items, items: p.of ? { oneOf: p.of.map(ref) } : ref('node'), ...doc };
+    case 'options': return { type: 'array', minItems: 1, maxItems: WIDGET_LIMITS.items, items: ref('option'), ...doc };
+    case 'pairs': return { type: 'array', minItems: 1, maxItems: WIDGET_LIMITS.items, items: ref('pair'), ...doc };
+    default: throw new Error(`widget spec: unknown prop kind ${p.kind}`);
+  }
+};
+const widgetSchema = {
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  $id: `${ORIGIN}/widgets.schema.json`,
+  title: 'MetalUI widget',
+  description: `A piece of interface a model sends as JSON, rendered by MetalUI's Widget (React) and MetalWidget (SwiftUI): one node or an array of nodes. Keys never act; they hand their action to the host. At most ${WIDGET_LIMITS.depth} deep and ${WIDGET_LIMITS.nodes} nodes; URLs only http, https or mailto. Generated from components/widget/spec.ts.`,
+  oneOf: [ref('node'), { type: 'array', maxItems: WIDGET_LIMITS.items, items: ref('node') }],
+  $defs: {
+    node: { oneOf: widgetTypes.filter((t) => !WIDGET_SPEC[t].nested).map(ref) },
+    action: {
+      type: 'object',
+      description: 'What a key hands the host, with the widget\'s field values beside it.',
+      properties: { type: { const: 'action' }, name: { type: 'string', minLength: 1, maxLength: 64 }, payload: { type: 'object', description: `Plain JSON, at most ${WIDGET_LIMITS.payload} characters.` } },
+      required: ['type', 'name'],
+      additionalProperties: false,
+    },
+    option: { type: 'object', properties: { value: { type: 'string', maxLength: 200 }, label: { type: 'string', maxLength: 200 } }, required: ['value', 'label'], additionalProperties: false },
+    pair: { type: 'object', properties: { label: { type: 'string', maxLength: 200 }, value: { type: ['string', 'number'] } }, required: ['label', 'value'], additionalProperties: false },
+    ...Object.fromEntries(widgetTypes.map((t) => {
+      const { doc, props } = WIDGET_SPEC[t];
+      return [t, {
+        type: 'object',
+        description: doc,
+        properties: { type: { const: t }, ...Object.fromEntries(Object.entries(props).map(([k, p]) => [k, propSchema(p)])) },
+        required: ['type', ...Object.entries(props).filter(([, p]) => p.required).map(([k]) => k)],
+        additionalProperties: false,
+      }];
+    })),
+  },
+};
+emit('packages/metalui/public/widgets.schema.json', JSON.stringify(widgetSchema, null, 2) + '\n');
+const widgetsDoc = `
+---
+
+# Widgets: render from JSON
+
+A model can answer with interface instead of words: JSON that \`<Widget widget={json} onAction={…} />\` (React) or \`MetalWidget(json:onAction:)\` (SwiftUI) renders with the components above. The schema is ${ORIGIN}/widgets.schema.json (also \`@unlocalhosted/metalui/widgets.schema.json\`). Give it to the model as the shape of its answer (structured output or a tool's input schema).
+
+- A widget is one node or an array of nodes: \`{ "type": "Card", "title": "…", "children": [ … ] }\`.
+- A key never acts: it hands the host \`{ "type": "action", "name": "…", "payload": { … } }\`, and beside it the values of every \`Field\`, \`Select\` and \`DatePicker\` by \`name\`. The host decides what happens.
+- Only http, https and mailto URLs pass. Strings are text, never HTML. At most ${WIDGET_LIMITS.depth} deep and ${WIDGET_LIMITS.nodes} nodes. What can't be shown reads "Can't show this part" in its place; the rest renders.
+
+| Node | Renders | Props (* required) |
+|---|---|---|
+${widgetTypes.map((t) => `| \`${t}\` | ${WIDGET_SPEC[t].renders}: ${WIDGET_SPEC[t].doc} | ${Object.entries(WIDGET_SPEC[t].props).map(([k, p]) => `\`${k}\`${p.required ? '*' : ''} (${p.kind === 'enum' ? p.values.join(', ') : p.kind === 'nodes' && p.of ? p.of.join(', ') : p.kind})`).join(', ')} |`).join('\n')}
+
+\`\`\`json
+{ "type": "Card", "title": "Table for 2, Friday", "description": "Casa Lume, 20:30",
+  "children": [{ "type": "DatePicker", "name": "day", "label": "Day", "defaultValue": "2026-10-09" }],
+  "footer": [{ "type": "Button", "label": "Book", "cap": "primary", "action": { "type": "action", "name": "book", "payload": { "venue": "casa-lume" } } }] }
+\`\`\`
+`;
+
 const guides = list.map((m) => readFileSync(root('packages/metalui/src', m.dir, m.agent ?? `${m.name}.agent.md`), 'utf8').trim()).join('\n\n---\n\n');
 
-emit('packages/metalui/public/AI.md', `${intro}\n${guides}\n${iconsDoc}`);
+emit('packages/metalui/public/AI.md', `${intro}\n${guides}\n${widgetsDoc}${iconsDoc}`);
 
 emit('packages/metalui/public/llms.txt', `# MetalUI
 
@@ -79,6 +154,7 @@ emit('packages/metalui/public/llms.txt', `# MetalUI
 - [Full agent guide](${ORIGIN}/AI.md)
 - [Component manifest](${ORIGIN}/components.json)
 - [Icon manifest](${ORIGIN}/icons.json)
+- [Widget schema](${ORIGIN}/widgets.schema.json): the JSON a model sends to render MetalUI components (\`Widget\`, \`MetalWidget\`)
 - [Changelog](${ORIGIN}/changelog)
 
 ## Install

@@ -15,6 +15,7 @@
     "public/components.json",
     "public/icons.json",
     "public/icons-life.json",
+    "public/widgets.schema.json",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
@@ -60,7 +61,8 @@
     "./theme.css": "./src/components/theme.css",
     "./components.json": "./public/components.json",
     "./icons.json": "./public/icons.json",
-    "./icons-life.json": "./public/icons-life.json"
+    "./icons-life.json": "./public/icons-life.json",
+    "./widgets.schema.json": "./public/widgets.schema.json"
   },
   "scripts": {
     "build": "tsup && rm -f dist/index.css dist/components/*/*.css dist/blocks/*/*.css && tailwindcss -i styles.input.css -o dist/styles.css --minify && node ../../scripts/build-unlayered.mjs",

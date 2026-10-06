@@ -2916,6 +2916,42 @@
       "docs": "Agent guide: https://metalui.dev/r/well.md. SwiftUI: MetalWell in the MetalUI Swift package."
     },
     {
+      "name": "widget",
+      "type": "registry:ui",
+      "title": "Widget",
+      "description": "A piece of interface a model sends as JSON (a card with a date and a Confirm key, a list of results, a progress line), rendered with MetalUI's own components. The JSON is untrusted: only the nodes and props in the published schema (widgets.schema.json) pass, URLs only http, https or mailto, and what can't be shown reads quietly in place. Keys never act: they hand { type: \"action\", name, payload } and the fields' values to the host.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/alert.json",
+        "https://metalui.dev/r/badge.json",
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/calendar.json",
+        "https://metalui.dev/r/card.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/form-field.json",
+        "https://metalui.dev/r/markdown.json",
+        "https://metalui.dev/r/meter.json",
+        "https://metalui.dev/r/progress.json",
+        "https://metalui.dev/r/properties.json",
+        "https://metalui.dev/r/row.json",
+        "https://metalui.dev/r/select.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/widget/widget.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/widget/widget.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/widget/spec.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/components/widget/spec.ts"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/widget.md. SwiftUI: MetalWidget in the MetalUI Swift package."
+    },
+    {
       "name": "block-ai-composer",
       "type": "registry:block",
       "title": "AI composer",
