@@ -581,7 +581,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
   - Modes: drill down one level at a time (with Back), Miller columns side by side, a tree that expands in place.
   - One value or many (checkboxes, a `max`, selection that cascades to children); leaves only or any branch.
   - Levels loaded on demand; virtualised long lists.
-- [ ] **Autocomplete**: free text with suggestions, where the value isn't limited to the list. A thin wrapper on Base UI Autocomplete.
+- [x] **Autocomplete**: free text with suggestions, where the value isn't limited to the list. A thin wrapper on Base UI Autocomplete. (Built 2026-10-06; sheet in `docs/sheets/autocomplete.md`: a separate component whose value is the text; shares Combobox's plate, rows, groups and empties through new exports; inline completion after the caret, Tab takes it. 70 KB gzip, mostly Base UI.)
   - Highlight the first match; a clear button, a trigger button, or both; groups; async search with a loading state; sizes; in a form; disabled.
 - [ ] **Signature pad**: a form field that captures a signature. `BrushCursor` and `DrawPicks` are canvas tools, not a field.
   - Undo and redo; draw or type the name; stylus with pressure and palm rejection (`sizing`: auto, pressure, velocity); smoothing and min/max width.
@@ -606,7 +606,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 - [ ] **Icon tile**: probably `Glyph` in a `well`, as a documented recipe.
   - Looks: outline, elevated, soft, solid, framed; sizes xs to xl; square or round; tones and brand colours.
   - Holds an icon, initials or short text; a status overlay; interactive; used in a list row, a feature card and an empty state.
-- [ ] **Code block**: `CodeCard` lives only in the docs; decide whether it ships in the package.
+- [x] **Code block**: `CodeCard` lives only in the docs; decide whether it ships in the package. (Built 2026-10-06 as `CodeBlock`, a Component; sheet in `docs/sheets/code-block.md`. The code card stays a separate Object but shares its tint and diff; no highlighter in the package (the host passes `html`); the docs' `Code` renders it. Left: the docs' Source/Install tabs aren't linked to their code; SwiftUI picks lines by click only; folding is Later.)
   - Looks: framed or ghost; line numbers from a start line; wrap; a max height with its own scroll or a `ScrollArea`; a copy button pinned over the scroll.
   - Lines: highlighted lines and words, focused lines, selectable lines (reference them in a chat), folding by indent.
   - Diff (added and removed lines), a unified patch with two gutters, diagnostics per line (error, warning, info) with an action ("Fix with AI").
