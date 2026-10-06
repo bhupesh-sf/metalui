@@ -1,35 +1,125 @@
 import SwiftUI
 
-// The cue family. Mirrors the reference cue components and the colorway cue-* tokens.
-// In a TextKit editor the in-flow cues are rendering attributes drawn by the host from MetalCue; the
-// views here are for SwiftUI surfaces (lens rows, panels, previews) and the margin objects.
+// The cue family, in step with mark.tsx and the mark recipe.
+//
+// One grammar of kinds: time (date, duration) is an engraved groove with the clock; money a quiet
+// hairline with a coin (spent stands in); the body a soft green line with its glyph (late night for
+// sleep, steps); a colour its 3 pt line and live swatch; a person their avatar; a tag a luggage tag in
+// its own hue. The glyph sits at full ink before the words; the line is drawn under them.
+//
+// Recognition (`fresh`), once: the line draws in from the leading edge (settle), the glyph pops in from
+// motion.pop with an overshoot (object, after settle's half), money's figures turn up one step
+// (settle), a date shows its resolved value in a graphite chip for motion.chip-hold, and the glyph's own
+// act plays once (its host hover, held for motion.act). Inferred: a dashed line, ink2. Raw: the drawing
+// and the glyph fade, nothing moves. Reduce Motion: everything is there at once, no act.
+// In a TextKit editor the host draws the lines and tags itself from the mark recipe.
 
 /// An in-flow cue kind.
-public enum MetalCueKind: Sendable { case date, duration, amount, measurement, tag, derivedTag, hex }
+public enum MetalCueKind: Sendable { case date, duration, amount, measurement, tag, derivedTag, hex, person }
+
+/// What sits before a cue's words.
+public enum MetalCueGlyph: Sendable {
+    /// The kind's own: the clock for time, the swatch for a colour, nothing for the rest.
+    case kind
+    case icon(MetalIconName)
+    case life(MetalLifeIconName)
+    /// A person's avatar, from their name.
+    case person(String)
+    case none
+}
 
 extension Text {
-    /// Marks recognised text with its cue. Underline cues keep the text's metrics; tags are drawn by
-    /// `MetalCueTag` (a pill needs a background, which `Text` cannot carry).
+    /// Marks recognised text with its cue's line, for text that can't carry a view (a TextKit fallback).
+    /// `MetalCueMark` draws the full cue: the glyph, the engraved groove and the recognition moment.
     public func metalCue(_ kind: MetalCueKind, colorway: MetalColorway, hex: MetalRGBA? = nil) -> Text {
+        let cw = MetalRecipeColorway(colorway)
         switch kind {
-        case .date:
-            return underline(pattern: .dot, color: MetalCue.dateUnderline.color)
-        case .duration, .amount:
+        case .date, .duration:
+            return underline(pattern: .solid, color: (MetalRecipes.mark.color("groove.ink", colorway: cw) ?? colorway.tokens.cueQuiet).color)
+        case .amount:
             return underline(pattern: .solid, color: colorway.tokens.cueQuiet.color)
         case .measurement:
             return underline(pattern: .solid, color: MetalCue.measureUnderline.color)
         case .hex:
             let base = hex ?? colorway.tokens.ink3
             return underline(pattern: .solid, color: base.color.opacity(MetalCue.hexMix))
-        case .tag:
-            return foregroundColor(colorway.tokens.ink2.color)
-        case .derivedTag:
-            return foregroundColor(colorway.tokens.ink3.color)
+        case .tag, .derivedTag:
+            return foregroundColor(MetalCueTagLook(name: "", colorway: colorway).ink.color)
+        case .person:
+            return self
         }
     }
 }
 
-/// A tag cue as a view: the soft pill (or the hollow derived pill).
+/// HSL (degrees, 0–1, 0–1) to the shared colour type.
+private func metalHSL(_ h: Double, _ s: Double, _ l: Double) -> MetalRGBA {
+    let c = (1 - abs(2 * l - 1)) * s
+    let hp = (h.truncatingRemainder(dividingBy: 360) + 360).truncatingRemainder(dividingBy: 360) / 60
+    let x = c * (1 - abs(hp.truncatingRemainder(dividingBy: 2) - 1))
+    let (r, g, b): (Double, Double, Double) = switch Int(hp) {
+    case 0: (c, x, 0)
+    case 1: (x, c, 0)
+    case 2: (0, c, x)
+    case 3: (0, x, c)
+    case 4: (x, 0, c)
+    default: (c, 0, x)
+    }
+    let m = l - c / 2
+    return MetalRGBA((r + m) * 255, (g + m) * 255, (b + m) * 255, 1)
+}
+
+private func metalPercent(_ s: String?) -> Double { (Double(s?.replacingOccurrences(of: "%", with: "") ?? "") ?? .zero) / 100 }
+
+/// The tag palette's size (recipe mark: tag.hue-0 … tag.hue-5), as on the web.
+private let metalTagHues = 6
+
+/// A tag's place in the palette, stable for its name (case and hash ignored), the same hash as the web's `markTagHue`.
+public func metalTagHue(_ tag: String) -> Int {
+    var h = 0
+    for c in tag.drop(while: { $0 == "#" }).lowercased().unicodeScalars { h = (h * 31 + Int(c.value)) % 9973 }
+    return h % metalTagHues
+}
+
+/// A tag's colours from the recipe: paper, edge and ink in its hue.
+struct MetalCueTagLook {
+    let paper: MetalRGBA, edge: MetalRGBA, ink: MetalRGBA
+
+    init(name: String, colorway: MetalColorway) {
+        let r = MetalRecipes.mark, cw = MetalRecipeColorway(colorway)
+        let hue = Double(r.text("tag.hue-\(metalTagHue(name))")?.replacingOccurrences(of: "deg", with: "") ?? "") ?? .zero
+        let sat = metalPercent(r.text("tag.saturation"))
+        paper = metalHSL(hue, sat, metalPercent(r.text("tag.lightness", colorway: cw)))
+        edge = metalHSL(hue, sat, metalPercent(r.text("tag.edge-lightness", colorway: cw)))
+        ink = metalHSL(hue, sat, metalPercent(r.text("tag.ink-lightness", colorway: cw)))
+    }
+}
+
+/// The luggage tag's outline: the point on the leading edge, round corners at the far end, a punched
+/// hole near the point (fill it with `eoFill`).
+struct MetalTagShape: Shape {
+    var point: CGFloat
+    var radius: CGFloat
+    var hole: CGFloat
+    var holeX: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        p.move(to: CGPoint(x: rect.minX + point, y: rect.minY))
+        p.addLine(to: CGPoint(x: rect.maxX - radius, y: rect.minY))
+        p.addQuadCurve(to: CGPoint(x: rect.maxX, y: rect.minY + radius), control: CGPoint(x: rect.maxX, y: rect.minY))
+        p.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - radius))
+        p.addQuadCurve(to: CGPoint(x: rect.maxX - radius, y: rect.maxY), control: CGPoint(x: rect.maxX, y: rect.maxY))
+        p.addLine(to: CGPoint(x: rect.minX + point, y: rect.maxY))
+        p.addLine(to: CGPoint(x: rect.minX, y: rect.midY))
+        p.closeSubpath()
+        p.addEllipse(in: CGRect(x: rect.minX + holeX - hole, y: rect.midY - hole, width: hole * 2, height: hole * 2))
+        return p
+    }
+}
+
+/// A tag cue as a view: the luggage tag in its own hue, the hash a quiet mark. `derived` (inferred by
+/// the model) is hollow and dashed until confirmed. The tag's overhang is paid back, so a row of text
+/// keeps its advance.
 public struct MetalCueTag: View {
     let text: String
     let derived: Bool
@@ -41,23 +131,247 @@ public struct MetalCueTag: View {
     }
 
     public var body: some View {
-        let t = colorway.tokens
-        Text(text)
+        let r = MetalRecipes.mark
+        let look = MetalCueTagLook(name: text, colorway: colorway)
+        let start = r.points("tag.pad-start"), end = r.points("tag.pad-end")
+        let shape = MetalTagShape(point: r.points("tag.point"), radius: r.points("tag.radius"), hole: r.points("tag.hole"), holeX: r.points("tag.hole-x"))
+        let hash = text.hasPrefix("#")
+        (Text(hash ? "#" : "").foregroundColor((derived ? colorway.tokens.ink2 : look.ink).color.opacity(metalPercent(r.text("tag.hash"))))
+            + Text(hash ? String(text.dropFirst()) : text).foregroundColor((derived ? colorway.tokens.ink2 : look.ink).color))
             .font(.metal(MetalType.content))
-            .foregroundColor((derived ? t.ink3 : t.ink2).color)
-            .padding(.horizontal, MetalCue.tagPadX)
+            .padding(.leading, start)
+            .padding(.trailing, end)
             .padding(.vertical, MetalCue.tagPadY)
             .background {
-                let shape = Capsule(style: .continuous)
                 if derived {
-                    Color.clear.metalRecipe(MetalRecipe(fill: .solid(MetalRGBA(0, 0, 0, 0)), shadows: t.cueDerivedSh), in: shape)
+                    RoundedRectangle(cornerRadius: r.points("tag.radius"), style: .continuous)
+                        .strokeBorder((r.color("inferred.ring", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink3).color,
+                                      style: StrokeStyle(lineWidth: r.points("inferred.dash"), dash: [MetalCueLine.dash, MetalCueLine.dash]))
                 } else {
-                    Color.clear.metalRecipe(MetalRecipe(fill: .solid(t.cueTagBg), shadows: t.cueTagSh), in: shape)
+                    let edge = r.scalar("tag.edge")
+                    ZStack {
+                        shape.fill(look.edge.color, style: FillStyle(eoFill: true))
+                        MetalTagShape(point: shape.point, radius: shape.radius, hole: shape.hole + edge, holeX: shape.holeX - edge)
+                            .inset(edge)
+                            .fill(look.paper.color, style: FillStyle(eoFill: true))
+                    }
                 }
             }
-            // The pill's padding is paid back, as on the web, so a row of text keeps its advance.
-            .padding(.horizontal, -MetalCue.tagPadX)
+            .padding(.leading, -start)
+            .padding(.trailing, -end)
+            .accessibilityLabel(derived ? "\(text), suggested tag" : "\(text), tag")
     }
+}
+
+extension MetalTagShape {
+    /// The same cut, `amount` inside the rect.
+    func inset(_ amount: CGFloat) -> some Shape { MetalInsetTag(base: self, amount: amount) }
+}
+
+private struct MetalInsetTag: Shape {
+    let base: MetalTagShape
+    let amount: CGFloat
+    func path(in rect: CGRect) -> Path { base.path(in: rect.insetBy(dx: amount, dy: amount)) }
+}
+
+enum MetalCueLine {
+    /// The dash of an inferred line, as on the web (2 on, 2 off).
+    static let dash: CGFloat = 2
+}
+
+/// A recognised chunk as a view: the glyph before the words, the kind's line under them, and the
+/// moment of recognition when `fresh`. The chip (the glyph's name, then `resolved`) shows on hover and,
+/// for a fresh date, once.
+public struct MetalCueMark: View {
+    let text: String
+    let kind: MetalCueKind
+    let resolved: String?
+    let label: String?
+    let glyph: MetalCueGlyph
+    let hex: MetalRGBA?
+    let fresh: Bool
+    let inferred: Bool
+    let raw: Bool
+
+    @Environment(\.metalColorway) private var colorway
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var drawn: CGFloat
+    @State private var popped: Bool
+    @State private var turned: Bool
+    @State private var acting = false
+    @State private var chipOnce = false
+    @State private var hovering = false
+
+    public init(_ text: String, kind: MetalCueKind, resolved: String? = nil, label: String? = nil, glyph: MetalCueGlyph = .kind,
+                hex: MetalRGBA? = nil, fresh: Bool = false, inferred: Bool = false, raw: Bool = false) {
+        self.text = text
+        self.kind = kind
+        self.resolved = resolved
+        self.label = label
+        self.glyph = glyph
+        self.hex = hex
+        self.fresh = fresh
+        self.inferred = inferred
+        self.raw = raw
+        _drawn = State(initialValue: fresh ? .zero : 1)
+        _popped = State(initialValue: !fresh)
+        _turned = State(initialValue: !fresh || kind != .amount)
+    }
+
+    private var hasGlyph: Bool {
+        switch glyph {
+        case .none: return false
+        case .kind: return kind == .date || kind == .duration || kind == .hex
+        default: return true
+        }
+    }
+
+    private var name: String? {
+        label ?? (hasGlyph ? ["Date", "Duration", "Amount", "Measure", "Tag", "Tag", "Colour", "Person"][[MetalCueKind.date, .duration, .amount, .measurement, .tag, .derivedTag, .hex, .person].firstIndex(of: kind) ?? 0] : nil)
+    }
+
+    private var chip: String? {
+        switch (name, resolved) {
+        case let (n?, v?): return "\(n) · \(v)".uppercased()
+        case let (n?, nil): return n.uppercased()
+        case let (nil, v?): return v.uppercased()
+        default: return nil
+        }
+    }
+
+    @ViewBuilder private var glyphView: some View {
+        let r = MetalRecipes.mark
+        let size = r.points("glyph.size")
+        switch glyph {
+        case .none: EmptyView()
+        case .icon(let icon): MetalIcon(icon, size: size)
+        case .life(let icon): MetalLifeIcon(icon, size: size)
+        case .person(let who):
+            // The avatar at the glyph's size: the regular disc, scaled.
+            let side = r.points("glyph.person")
+            MetalAvatar(name: who)
+                .scaleEffect(side / MetalRecipes.avatar.points("size.regular"))
+                .frame(width: side, height: side)
+        case .kind:
+            if kind == .hex {
+                RoundedRectangle(cornerRadius: MetalCue.swatchRadius, style: .continuous)
+                    .fill((hex ?? colorway.tokens.ink3).color)
+                    .frame(width: MetalCue.swatch, height: MetalCue.swatch)
+                    .metalObjectRecipe(r, part: "swatch", in: RoundedRectangle(cornerRadius: MetalCue.swatchRadius, style: .continuous))
+            } else if kind == .date || kind == .duration {
+                MetalIcon(.clock, size: size)
+            }
+        }
+    }
+
+    @ViewBuilder private var line: some View {
+        let r = MetalRecipes.mark, cw = MetalRecipeColorway(colorway)
+        switch kind {
+        case .tag, .derivedTag, .person: EmptyView()
+        default:
+            let thickness: CGFloat = switch kind {
+            case .date, .duration: r.points("groove.thickness")
+            case .measurement: r.points("line.body")
+            case .hex: r.points("line.hex")
+            default: r.points("line.thickness")
+            }
+            let ink: MetalRGBA = switch kind {
+            case .date, .duration: r.color("groove.ink", colorway: cw) ?? colorway.tokens.cueQuiet
+            case .measurement: MetalCue.measureUnderline
+            case .hex: (hex ?? colorway.tokens.ink3).withAlpha(MetalCue.hexMix)
+            default: colorway.tokens.cueQuiet
+            }
+            VStack(spacing: .zero) {
+                if inferred {
+                    Rectangle().fill(.clear).frame(height: thickness)
+                        .overlay(Line().stroke((r.color("inferred.ring", colorway: cw) ?? ink).color,
+                                               style: StrokeStyle(lineWidth: thickness, dash: [MetalCueLine.dash, MetalCueLine.dash])))
+                } else {
+                    Rectangle().fill(ink.color).frame(height: thickness)
+                    if kind == .date || kind == .duration {
+                        Rectangle().fill((r.color("groove.lip", colorway: cw) ?? ink).color).frame(height: thickness)
+                    }
+                }
+            }
+            .scaleEffect(x: drawn, y: 1, anchor: .leading)
+        }
+    }
+
+    private struct Line: Shape {
+        func path(in rect: CGRect) -> Path {
+            var p = Path()
+            p.move(to: CGPoint(x: rect.minX, y: rect.midY))
+            p.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+            return p
+        }
+    }
+
+    public var body: some View {
+        let r = MetalRecipes.mark
+        let offset = r.points("line.offset")
+        HStack(alignment: .firstTextBaseline, spacing: r.points("glyph.gap")) {
+            if hasGlyph {
+                glyphView
+                    .foregroundStyle(colorway.tokens.ink.color)
+                    .alignmentGuide(.firstTextBaseline) { d in d[.bottom] + r.points("glyph.drop") }
+                    .scaleEffect(popped ? 1 : r.scalar("motion.pop"))
+                    .opacity(popped && !raw ? .one : .zero)
+                    .metalIconInteraction(acting ? MetalIconInteraction(isHovered: true) : nil)
+            }
+            Text(text)
+                .font(.metal(MetalType.content))
+                .foregroundColor((inferred && !raw ? colorway.tokens.ink2 : colorway.tokens.ink).color)
+                .offset(y: turned ? .zero : MetalCue.chipRise)
+                .opacity(turned ? .one : .zero)
+                .overlay(alignment: Alignment(horizontal: .leading, vertical: .firstTextBaseline)) {
+                    line.opacity(raw ? .zero : .one).alignmentGuide(.firstTextBaseline) { _ in -offset }
+                }
+        }
+        .overlay(alignment: .top) {
+            if let chip, hovering || chipOnce, !raw {
+                Text(chip)
+                    .font(.metal(r.typeRole("chip.font", trackingKey: "chip.tracking")))
+                    .foregroundColor(MetalCue.chipInk.color)
+                    .padding(.horizontal, MetalCue.chipPadX)
+                    .padding(.vertical, MetalCue.chipPadY)
+                    .metalFrost(.graphite, in: Capsule(style: .continuous))
+                    .fixedSize()
+                    .alignmentGuide(.top) { d in d[.bottom] + MetalCue.chipGap }
+                    .transition(.opacity)
+                    .allowsHitTesting(false)
+            }
+        }
+        .onHover { hovering = $0 }
+        .metalAnimation(.part, value: hovering)
+        .metalAnimation(.settle, value: raw)
+        .onAppear(perform: recognise)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel([text, name, resolved].compactMap { $0 }.joined(separator: ", "))
+    }
+
+    /// The moment of recognition, once.
+    private func recognise() {
+        guard fresh, drawn == .zero || !popped else { return }
+        guard !reduceMotion else { drawn = 1; popped = true; turned = true; return }
+        let r = MetalRecipes.mark
+        withMetalAnimation(.settle, reduceMotion: reduceMotion) { drawn = 1; turned = true }
+        DispatchQueue.main.asyncAfter(deadline: .now() + r.durationSeconds("motion.glyph-delay")) {
+            withMetalAnimation(.object, reduceMotion: reduceMotion) { popped = true }
+            acting = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + r.durationSeconds("motion.act")) { acting = false }
+        }
+        if kind == .date, resolved != nil {
+            withMetalAnimation(.part, reduceMotion: reduceMotion) { chipOnce = true }
+            DispatchQueue.main.asyncAfter(deadline: .now() + r.durationSeconds("motion.chip-hold")) {
+                withMetalAnimation(.release, reduceMotion: reduceMotion) { chipOnce = false }
+            }
+        }
+    }
+}
+
+extension MetalRGBA {
+    /// The same colour at `alpha` of its own opacity.
+    func withAlpha(_ share: Double) -> MetalRGBA { MetalRGBA(red, green, blue, alpha * share) }
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -324,32 +638,115 @@ public struct MetalCueURLPill: View {
     }
 }
 
-/// A value the recognizer read that is not in the text: a hollow pill in the label role.
+/// A value the recognizer read that is not in the text: a dashed pill in the label role, a suggestion
+/// until confirmed. With `onConfirm` it is a button; confirming stamps it solid with a small press and
+/// one sparkle (none under Reduce Motion).
 public struct MetalCueInferred: View {
     let text: String
+    let confirmed: Bool
+    let onConfirm: (() -> Void)?
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var pressed = false
+    @State private var sparkle = false
 
-    public init(_ text: String) { self.text = text }
+    public init(_ text: String, confirmed: Bool = false, onConfirm: (() -> Void)? = nil) {
+        self.text = text
+        self.confirmed = confirmed
+        self.onConfirm = onConfirm
+    }
 
     public var body: some View {
-        Text(text.uppercased())
+        let r = MetalRecipes.mark, cw = MetalRecipeColorway(colorway)
+        let ring = (confirmed ? r.color("inferred.confirmed", colorway: cw) : r.color("inferred.ring", colorway: cw)) ?? colorway.tokens.ink3
+        let shape = Capsule(style: .continuous)
+        let pill = Text(text.uppercased())
             .font(.metal(MetalType.readout))
             .tracking(MetalType.readout.trackingPoints)
-            .foregroundColor(colorway.tokens.ink2.color)
+            .foregroundColor((confirmed ? colorway.tokens.ink : colorway.tokens.ink2).color)
             .padding(.horizontal, MetalCue.inferredPad)
             .frame(height: MetalCue.inferredHeight)
-            .metalRecipe(MetalRecipe(fill: .solid(MetalRGBA(0, 0, 0, 0)), shadows: MetalCue.inferredRing), in: Capsule(style: .continuous))
+            .overlay {
+                shape.strokeBorder(ring.color, style: StrokeStyle(lineWidth: r.points("inferred.dash"), dash: confirmed ? [] : [MetalCueLine.dash, MetalCueLine.dash]))
+            }
+            .overlay(alignment: .topTrailing) {
+                if sparkle { MetalCueSparkle() }
+            }
+            .scaleEffect(pressed ? r.scalar("motion.stamp") : 1)
+            .onChange(of: confirmed) { was, now in
+                guard !was, now, !reduceMotion else { return }
+                withMetalAnimation(.part, reduceMotion: reduceMotion) { pressed = true }
+                sparkle = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + MetalSpringClass.part.spring.duration / 3) {
+                    withMetalAnimation(.part, reduceMotion: reduceMotion) { pressed = false }
+                }
+            }
+        if let onConfirm, !confirmed {
+            Button(action: onConfirm) { pill }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Confirm \(text)")
+        } else {
+            pill
+        }
     }
 }
 
-/// The life glyph trailing a block: a middle dot, then the glyph at 16 (tuned cut), ink3 at rest.
+/// One four-point sparkle: grows and turns on the object spring, then fades on release, once.
+struct MetalCueSparkle: View {
+    @State private var grown = false
+    @State private var gone = false
+
+    var body: some View {
+        let size = MetalRecipes.mark.points("motion.sparkle")
+        MetalSparkleShape()
+            .fill(MetalShared.green.color)
+            .frame(width: size, height: size)
+            .scaleEffect(grown ? 1 : 0.001)
+            .rotationEffect(.degrees(grown ? .zero : -45))
+            .opacity(gone ? .zero : .one)
+            .offset(x: size / 2, y: -size * 0.6)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+            .onAppear {
+                withAnimation(MetalSpringClass.object.spring.animation) { grown = true }
+                DispatchQueue.main.asyncAfter(deadline: .now() + MetalRecipes.mark.durationSeconds("motion.sparkle-ms")) {
+                    withAnimation(MetalSpringClass.release.spring.animation) { gone = true }
+                }
+            }
+    }
+}
+
+private struct MetalSparkleShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        let w = rect.width, h = rect.height
+        let pts = [(0.5, 0.0), (0.61, 0.39), (1.0, 0.5), (0.61, 0.61), (0.5, 1.0), (0.39, 0.61), (0.0, 0.5), (0.39, 0.39)]
+        var p = Path()
+        for (i, (x, y)) in pts.enumerated() {
+            let pt = CGPoint(x: rect.minX + x * w, y: rect.minY + y * h)
+            if i == 0 { p.move(to: pt) } else { p.addLine(to: pt) }
+        }
+        p.closeSubpath()
+        return p
+    }
+}
+
+/// The life glyph trailing a block, for the whole line's kind: a middle dot, then the glyph at 16 (tuned
+/// cut), ink3 at rest, its `label` on hover. `fresh`: the glyph plays its own act once.
 public struct MetalCueLife: View {
     let icon: MetalLifeIconName
+    let label: String?
+    let fresh: Bool
     @Environment(\.metalColorway) private var colorway
     @Environment(\.metalIconInteraction) private var hostInteraction
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var ownHover = false
+    @State private var acting = false
 
-    public init(_ icon: MetalLifeIconName) { self.icon = icon }
+    public init(_ icon: MetalLifeIconName, label: String? = nil, fresh: Bool = false) {
+        self.icon = icon
+        self.label = label
+        self.fresh = fresh
+    }
 
     public var body: some View {
         let hovered = hostInteraction?.isHovered ?? ownHover
@@ -361,8 +758,15 @@ public struct MetalCueLife: View {
             MetalLifeIcon(icon)
                 .foregroundStyle((hovered ? colorway.tokens.ink2 : colorway.tokens.ink3).color)
                 .offset(y: -MetalCue.lifeDrop)
+                .metalIconInteraction(acting ? MetalIconInteraction(isHovered: true) : nil)
         }
         .onHover { ownHover = $0 }
-        .accessibilityLabel(icon.label)
+        .help(label ?? icon.label)
+        .onAppear {
+            guard fresh, !reduceMotion else { return }
+            acting = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + MetalRecipes.mark.durationSeconds("motion.act")) { acting = false }
+        }
+        .accessibilityLabel(label ?? icon.label)
     }
 }

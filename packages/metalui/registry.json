@@ -1022,9 +1022,11 @@
       "name": "mark",
       "type": "registry:ui",
       "title": "Mark",
-      "description": "Inline, metric-neutral text marks: dated and quiet underlines, a tag pill, a derived-tag ring, a hex underline with its swatch, a URL host pill, an inferred pill, the urgency LED and a trailing glyph.",
+      "description": "Inline text marks in one grammar of kinds: a glyph at full ink before the words (clock, coin, moon, swatch, avatar) and a line behind them (an engraved groove, a hairline, a soft green line, the colour), a luggage tag in its own colour, a URL host pill, a dashed inferred pill that stamps solid when confirmed, the urgency LED and a labelled trailing glyph; recognition plays once.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1034,7 +1036,7 @@
           "target": "components/metalui/components/mark/mark.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/mark.md. SwiftUI: MetalMark, MetalMarkURLPill, MetalMarkInferred, MetalMarkUrgency, MetalMarkLife, Text.metalMark(_:) in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/mark.md. SwiftUI: MetalCueMark, MetalCueTag, MetalCueInferred, MetalCueURLPill, MetalCueUrgency, MetalCueLife, Text.metalCue(_:colorway:) in the MetalUI Swift package."
     },
     {
       "name": "menu",

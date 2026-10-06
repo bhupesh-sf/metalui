@@ -2,17 +2,17 @@
   "name": "mark",
   "title": "Mark",
   "status": "alpha",
-  "description": "Inline, metric-neutral text marks: dated and quiet underlines, a tag pill, a derived-tag ring, a hex underline with its swatch, a URL host pill, an inferred pill, the urgency LED and a trailing glyph.",
+  "description": "Inline text marks in one grammar of kinds: a glyph at full ink before the words (clock, coin, moon, swatch, avatar) and a line behind them (an engraved groove, a hairline, a soft green line, the colour), a luggage tag in its own colour, a URL host pill, a dashed inferred pill that stamps solid when confirmed, the urgency LED and a labelled trailing glyph; recognition plays once.",
   "base": "none",
   "react": {
-    "export": "Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife (Cue*)",
+    "export": "Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, markTagHue (Cue*)",
     "files": [
       "mark.tsx"
     ]
   },
   "swift": {
-    "symbol": "MetalMark, MetalMarkURLPill, MetalMarkInferred, MetalMarkUrgency, MetalMarkLife, Text.metalMark(_:)",
-    "file": "swift/Sources/MetalUI/Components/MetalMark.swift"
+    "symbol": "MetalCueMark, MetalCueTag, MetalCueInferred, MetalCueURLPill, MetalCueUrgency, MetalCueLife, Text.metalCue(_:colorway:)",
+    "file": "swift/Sources/MetalUI/Components/MetalCue.swift"
   },
   "agent": "mark.agent.md",
   "layer": "part"
