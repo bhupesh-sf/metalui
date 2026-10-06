@@ -210,7 +210,10 @@ test('with reduced motion, rows go and the strip comes at once', async ({ page }
   await strip(page).getByRole('button', { name: 'Delete' }).click();
   await page.getByRole('alertdialog').getByRole('button', { name: 'Delete' }).click();
   await expect(row(page, 'Plan the team offsite')).toHaveCount(0);
-  expect(await grid(page).evaluate((el) => [...el.querySelectorAll('[role=row]')].flatMap((r) => r.getAnimations()).length)).toBe(0);
+  // Nothing travels or fades (a hover's colour easing under the pointer isn't motion).
+  expect(await grid(page).evaluate((el) => [...el.querySelectorAll('[role=row]')].flatMap((r) => r.getAnimations())
+    .map((a) => (a instanceof CSSTransition ? a.transitionProperty : 'animation'))
+    .filter((p) => !/color|background|shadow|outline/.test(p)))).toEqual([]);
   await expect(strip(page)).toHaveCount(0);
 });
 
