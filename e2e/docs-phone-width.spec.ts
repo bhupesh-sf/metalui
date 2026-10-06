@@ -16,7 +16,7 @@ for (const colorway of COLORWAYS) {
         await Promise.all(Array.from(document.images, (image) => image.decode().catch(() => {})));
       });
       if (['menu', 'status', 'command-palette', 'toolbar'].includes(name)) {
-        await expect(page.locator('main img[alt^="SwiftUI"]')).toHaveAttribute('style', /width:/);
+        for (const img of await page.locator('main img[alt^="SwiftUI"]').all()) await expect(img).toHaveAttribute('style', /width:/);
       }
 
       const { scrollWidth, innerWidth } = await page.evaluate(() => ({

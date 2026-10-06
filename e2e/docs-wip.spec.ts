@@ -28,7 +28,7 @@ for (const colorway of COLORWAYS) {
     await expect(swift.getByRole('link', { name: 'Button', exact: true })).toHaveCount(0);
     // Blocks and open backlog topics.
     await expect(page.locator('#blocks').getByRole('link', { name: 'Studio week' })).toBeVisible();
-    await expect(page.locator('#reworks')).toContainText(/Library gaps found by building blocks\s*\d+ open/);
+    await expect(page.locator('#reworks')).toContainText(/Slider: redesign\s*\d+ open/);
     await page.screenshot({ path: capture(`docs-wip-${colorway}`), fullPage: true });
   });
 }
