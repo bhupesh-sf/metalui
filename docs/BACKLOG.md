@@ -598,7 +598,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 - [ ] **Card → frame** (see "Variation sheets: Card"): panels separated, stacked or dense inside one frame, with header, title, description and footer; a ghost frame without the outer border; spacing sm, default, lg.
 - [x] **Combobox**: groups, async search with a loading state, and a trigger button beside the clear mark (from ReUI's Autocomplete). See "Variation sheets: Combobox".
 - [ ] **Field → input group** (shadcn; see "Variation sheets: Field"): text attached to the input (a `https://` prefix, a `.com` suffix) and buttons inside the field.
-- [ ] **Collapsible** (shadcn): a standalone show/hide wrapper. `Accordion` and `SplitPane` collapse, but nothing does on its own.
+- [x] **Collapsible** (shadcn): a standalone show/hide wrapper. (Built 2026-10-06; sheet in `docs/sheets/collapsible.md`. Height never animates: the panel is uncovered from its top edge and what follows travels by transform (`useTravelAfter` in `motion/rows.ts`). Accordion takes the set's chevron; moving it onto the shared reveal is Later. A plate around it resizes in one step.) `Accordion` and `SplitPane` collapse, but nothing does on its own.
 - [ ] **Icon tile**: probably `Glyph` in a `well`, as a documented recipe.
   - Looks: outline, elevated, soft, solid, framed; sizes xs to xl; square or round; tones and brand colours.
   - Holds an icon, initials or short text; a status overlay; interactive; used in a list row, a feature card and an empty state.
