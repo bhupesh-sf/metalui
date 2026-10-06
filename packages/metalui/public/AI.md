@@ -490,50 +490,65 @@ MetalButton("Delete", icon: .trash, cap: .destructive) { remove() }
 
 # Button group and split button
 
-Related actions set together. React: `ButtonGroup` and `SplitButton` from `@unlocalhosted/metalui`. SwiftUI: `MetalButtonGroup` (work in progress). The caps are the `button` recipe; the `button-group` recipe adds the tray (the `switch` track's well) and the chevron.
+Related actions as one machined bar. React: `ButtonGroup`, `ButtonGroupReadout` and `SplitButton` from `@unlocalhosted/metalui`. SwiftUI: `MetalButtonGroup` and `MetalSplitButton`. The bar and its keys are the `button` recipe; the `button-group` recipe adds the seams, the hover light, the readout window and the rocker.
 
 ## Use it for
 
 - A few actions on the same thing, side by side: Undo · Redo; Zoom out · 100 % · Zoom in.
-- `SplitButton`: one main action with a few variants: Export (PDF) and a chevron for PNG, SVG, Copy link.
+- `latch`: a choice that stays, as latching keys in one bar: alignment (`one`), text marks (`several`).
+- `SplitButton`: one main action with a few variants: Export PDF, and a chevron for PNG, SVG, Copy link.
 
 ## Don't use it for
 
-- A choice that stays chosen (use a switcher, or a toggle group for modes), or more than four actions (use a toolbar or a menu).
+- More than four actions (use a toolbar or a menu), or unrelated actions that happen to sit together.
+- A value you can't change in place as a key: put it in a `ButtonGroupReadout`, never a Button that does nothing.
 
 ## Anatomy
 
-- Tray: a sunk pill, padding 2, keys 2 apart.
-- Keys: button caps; the outer ends stay round, the inner corners are 8.
-- Split: the main cap, then a 30 wide chevron key; the chevron is 12.
+- Bar: one raised cap in the keys' material (standard, compact, or primary when the keys are primary), the outer pill radius only, clipped to it.
+- Keys: Buttons (or Toggles with `latch`), bare in the bar, square inside; the end keys keep the bar's pill ends.
+- Seam: 2 wide, a dark line and a light edge beside it, between every two parts; the bar draws it, so it never moves.
+- Window (`ButtonGroupReadout`): the field well cut into the bar, 4 inside its edges, at least 56 wide, radius 4, tabular figures on the drum.
+- Split: the main Button, a seam, a 32 wide chevron key with the set's `chevron` (`Icon`).
 
 ## States and motion
 
 | State | Look | Motion |
 |---|---|---|
-| rest | caps in the tray | – |
-| pressed | that key sinks 1 | the button's press; neighbours stay still |
-| menu open (split) | the chevron turned over | part spring; back when it closes |
-| focus | the green ring on the key | – |
-| disabled | a key at 40 % | – |
+| rest | one cap, seams | – |
+| hover | that key's light lifts; not the bar | fade 180 ms |
+| pressed | that key in the button's pressed look, down 1; seams and the rest stay | the button's press and release |
+| rocker pressed | the whole cap tips 1° toward the pressed end; the key doesn't slide | part spring |
+| latched | the key stays sunk with its lamp lit | the toggle's latch |
+| menu open (split) | the chevron key held down; the chevron points up | the chevron turns over on the part spring |
+| focus | the green ring 2 inside the key, following the bar's ends | – |
+| disabled | a key at 40 %; `disabled` sets the whole bar at 40 % and refuses | – |
+| waiting | the main key held with its arc (`Button` `state`, `useWait`) | the button's wait |
 
-Reduce Motion: the chevron turns at once.
+Reduce Motion: the rocker and the chevron turn at once; the drum cross-fades.
 
 ## API
 
 | React | SwiftUI |
 |---|---|
-| `ButtonGroup` `aria-label`, children (Buttons) | `MetalButtonGroup { … }` |
-| `SplitButton` children (the main Button), `menu` (MenuItem…), `menuLabel`, `heading`, `disabled` | `primary:`, `menu:` |
+| `ButtonGroup` `aria-label`, `disabled`, `rocker`, children (Buttons, a `ButtonGroupReadout`) | `MetalButtonGroup(_:cap:size:rocker:parts:)` with `.key(…)`, `.readout(…)` |
+| `ButtonGroup` `latch="one" \| "several"`, `value`, `defaultValue`, `onValueChange`, children (Toggles with `value`) | `.latch(_:isOn:)` parts |
+| `ButtonGroupReadout` children (the value as words) | `.readout("100 %")` |
+| `SplitButton` children (the main Button; its `cap` and `size` dress the bar), `menu` (MenuItem…), `menuLabel`, `heading`, `disabled` | `MetalSplitButton(_:icon:cap:size:menuLabel:heading:items:action:)` |
+
+The bar takes its material from the keys: give every key the same `cap` and `size`. Pass Buttons directly (no fragments) so the bar can cut a seam between each.
 
 ## Keyboard and accessibility
 
-- A `group` named by `aria-label`; each key is its own tab stop. The chevron is a menu button named by `menuLabel`; ↓ or Enter opens the menu, Esc closes it and returns focus.
+- A `group` named by `aria-label` (a fieldset, so `disabled` disables every key). Each key is its own tab stop; with `latch` the bar is a toggle group (arrows move, Space latches).
+- The readout is a polite `status`: a step is announced. Glyph-only keys need `aria-label`.
+- The chevron is a menu button named by `menuLabel`; ↓ or Enter opens the menu, Esc closes it and returns focus.
 
 ## Rules
 
-- Keep them related: one object, one kind of action.
-- The main action of a split button is the one most people want; the menu holds the rest.
+- Keep them related: one object, one kind of action. One primary bar at most per place.
+- An action names itself with a glyph and a verb (`icon`); a stepper may be glyph-only.
+- When a choice changes what the main action does (the last format chosen becomes the main action), turn its words with `SwapText` and morph its glyph with `MorphIcon`; while it works, hold it with `state` from `useWait`.
 
 ---
 

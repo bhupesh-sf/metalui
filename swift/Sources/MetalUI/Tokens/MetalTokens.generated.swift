@@ -1085,18 +1085,28 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Related actions as one cluster of keys: the button caps set side by side in a sunk tray (the switch track's well), the inner corners tightened so the caps read as one set; each key presses on its own (the button's 1 press), and its neighbours stay still. A split button is the main action plus a chevron key that opens a menu of the other ways to do it; while the menu is open the chevron turns over on the part spring, and turns back when it closes. (the button cap; the switch track (recipe switch) as the tray; the menu; the part spring)
+    /// Related actions as one machined bar: a single raised cap in the button's material (standard, compact or primary) with the outer pill radius only, its segments cut apart by engraved seams (a dark line, a light edge beside it) with square inner edges. Pressing a segment sinks only that segment (its own shading goes to the button's pressed look and it travels the button's 1); the seams and the rest of the bar stay put. Hover lifts the segment's light, not the bar's. A readout between steppers is a sunk window in the bar (the field well), tabular, turning on the drum. A pair can be a rocker: the whole cap tips toward the pressed end on the part spring. A split button is the main action and a chevron segment behind a seam in one material; the chevron stays pressed while its menu is open and the set's chevron turns over on the part spring. Latched segments (a toggle group in the bar) stay sunk with their lamp. Focus is the ring inside the segment. Reduce Motion: the rocker tips at once. (the button cap and its pressed look; the field well (the window); the set's chevron; the menu; the part spring; hardware rockers and transport keys cut from one block (Braun, Teenage Engineering))
     public static let buttonGroup = MetalObjectRecipe(
         name: "button-group",
         layers: [
-
+            .init(part: "seam", state: nil, colorway: .bone, fill: .linear(angle: 90.0, stops: [.init(.color(MetalRGBA(60.0, 55.0, 40.0, 0.16)), 0.5), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 1.0)), 0.5)])), // mu-recipe:button-group:0 linear-gradient(90deg, rgba(60,55,40,.16) 50%, #FFFFFF 50%)
+            .init(part: "seam", state: nil, colorway: .graphite, fill: .linear(angle: 90.0, stops: [.init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.6)), 0.5), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.07)), 0.5)])), // mu-recipe:button-group:1 linear-gradient(90deg, rgba(0,0,0,.6) 50%, rgba(255,255,255,.07) 50%)
+            .init(part: "seam", state: "primary", colorway: .bone, fill: .linear(angle: 90.0, stops: [.init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.6)), 0.5), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.1)), 0.5)])), // mu-recipe:button-group:2 linear-gradient(90deg, rgba(0,0,0,.6) 50%, rgba(255,255,255,.1) 50%)
+            .init(part: "seam", state: "primary", colorway: .graphite, fill: .linear(angle: 90.0, stops: [.init(.color(MetalRGBA(0.0, 0.0, 0.0, 0.2)), 0.5), .init(.color(MetalRGBA(255.0, 255.0, 255.0, 0.85)), 0.5)])), // mu-recipe:button-group:3 linear-gradient(90deg, rgba(0,0,0,.2) 50%, rgba(255,255,255,.85) 50%)
+            .init(part: "hover", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(255.0, 255.0, 255.0, 1.0)), 0.0), .init(.color(MetalRGBA(251.0, 250.0, 248.0, 1.0)), 1.0)])), // mu-recipe:button-group:4 linear-gradient(#FFFFFF,#FBFAF8)
+            .init(part: "hover", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(58.0, 58.0, 62.0, 1.0)), 0.0), .init(.color(MetalRGBA(47.0, 47.0, 51.0, 1.0)), 1.0)])), // mu-recipe:button-group:5 linear-gradient(#3A3A3E,#2F2F33)
+            .init(part: "hover", state: "primary", colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(69.0, 69.0, 74.0, 1.0)), 0.0), .init(.color(MetalRGBA(45.0, 45.0, 49.0, 1.0)), 1.0)])), // mu-recipe:button-group:6 linear-gradient(#45454A,#2D2D31)
+            .init(part: "hover", state: "primary", colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(251.0, 250.0, 248.0, 1.0)), 0.0), .init(.color(MetalRGBA(236.0, 235.0, 231.0, 1.0)), 1.0)])), // mu-recipe:button-group:7 linear-gradient(#FBFAF8,#ECEBE7)
         ],
         props: [
-            "tray.pad": .number(2.0),
-            "tray.gap": .number(2.0),
-            "key.radius": .number(8.0),
-            "chevron.width": .number(30.0),
-            "chevron.glyph": .number(12.0),
+            "seam.width": .number(2.0),
+            "window.inset": .number(4.0),
+            "window.pad": .number(8.0),
+            "window.min": .number(56.0),
+            "window.radius": .number(4.0),
+            "chevron.width": .number(32.0),
+            "focus.offset": .number(-4.0),
+            "rocker.tip": .text("1deg"),
         ]
     )
 

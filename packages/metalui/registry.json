@@ -334,12 +334,15 @@
       "name": "button-group",
       "type": "registry:ui",
       "title": "Button group",
-      "description": "Related actions as one cluster of keys in a sunk tray, each pressing on its own; a split button adds a chevron key that opens a menu of the other ways to do the main action.",
+      "description": "Related actions as one machined bar: a single raised cap whose segments are cut apart by engraved seams, each sinking on its own; a readout is a sunk window in the bar, a pair can be a rocker, latched keys stay sunk with their lamp, and a split button adds a chevron segment that opens a menu of the other ways to do the main action.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/menu.json",
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/well.json"
       ],
       "files": [
         {
