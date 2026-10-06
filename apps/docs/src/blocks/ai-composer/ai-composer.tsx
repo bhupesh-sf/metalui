@@ -1,11 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { Attachment, Button, IconButton, Led, ScrollArea, Select, Skeleton, SwapText, Textarea, Tooltip, type LedKind, motionReduced } from '@unlocalhosted/metalui';
+import { Attachment, Button, IconButton, Message, Select, SwapText, Textarea, Thread, Tooltip, motionReduced } from '@unlocalhosted/metalui';
 import { AttachIcon, MorphIcon, RetryIcon } from '@unlocalhosted/metalui/icons';
 
 /* ─────────────────────────────────────────────────────────
- * AI COMPOSER · a chat thread with a composer at its foot
+ * AI COMPOSER · a chat thread with a composer at its foot (Thread and Message, with the composer's own parts)
  *
  *   rest      a raised slab: the thread (a log that scrolls) over the composer, a raised plate
  *             holding the attached files, the text well, and a strip of keys: attach, the model,
@@ -54,7 +54,6 @@ const MODELS = [
 
 const THREAD = {
   height:     560, // px, the whole block; the thread takes what the composer leaves
-  followSlop: 24,  // px from the foot that still counts as "at the foot"
   chunkWords: 10,  // words per phrase under Reduce Motion
   minRows:    1,
   maxRows:    6,
@@ -65,7 +64,7 @@ const THREAD = {
 type ModelId = (typeof MODELS)[number]['value'];
 type Status = 'waiting' | 'writing' | 'done' | 'stopped';
 type Attached = { id: number; name: string; size: number };
-type Message =
+type Turn =
   | { id: number; role: 'user'; text: string; files: Attached[] }
   | { id: number; role: 'assistant'; model: ModelId; words: string[]; shown: number; status: Status; take: number };
 
@@ -76,67 +75,18 @@ const REPLIES = [
   'Another angle, for people upgrading:\n\nNothing to change in your code. If you hard-coded a duration next to a MetalUI spring, replace it with the token, and it will follow the spring from now on. Reduce Motion is handled for you.',
 ];
 
-const OPENING: Message[] = [
+const OPENING: Turn[] = [
   { id: 1, role: 'user', text: 'Can you draft a release note for the spring token change?', files: [] },
   { id: 2, role: 'assistant', model: 'thorough', words: REPLIES[0].split(' '), shown: Infinity, status: 'done', take: 0 },
 ];
 
-/* ── Motion helpers ────────────────────────────────────────── */
-
-/** A spring's duration (ms, zero under Reduce Motion) and curve, read from the element's own tokens. */
-function spring(el: Element, name: 'settle' | 'object') {
-  const s = getComputedStyle(el);
-  const ms = parseFloat(s.getPropertyValue(`--mu-spring-${name}-d`)) * 1000 * (parseFloat(s.getPropertyValue(`--mu-travel-${name}`)) || 0);
-  return { ms, easing: s.getPropertyValue(`--mu-spring-${name}`).trim() || 'ease-out' };
-}
-
-/** Reduce Motion, as the tokens see it (the media query or the site's own switch). */
-
-/** A message lands: from one nest below, on the object spring. */
-function useLand<T extends HTMLElement>(on: boolean) {
-  const ref = React.useRef<T>(null);
-  React.useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el || !on) return;
-    const { ms, easing } = spring(el, 'object');
-    const nest = getComputedStyle(el).getPropertyValue('--mu-nest').trim() || '6px';
-    if (ms > 0) el.animate([{ opacity: 0, translate: `0 ${nest}` }, { opacity: 1, translate: '0 0' }], { duration: ms, easing });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  return ref;
-}
-
 /* ── Messages ──────────────────────────────────────────────── */
 
-function UserMessage({ message, land }: { message: Extract<Message, { role: 'user' }>; land: boolean }) {
-  const ref = useLand<HTMLElement>(land);
-  return (
-    <article ref={ref} aria-label="You" className="grid justify-items-end gap-6 pl-48 @max-md/block:pl-32">
-      {message.files.length > 0 && (
-        <div className="flex flex-wrap justify-end gap-6">
-          {message.files.map((f) => <Attachment key={f.id} name={f.name} size={f.size} />)}
-        </div>
-      )}
-      {message.text && (
-        <p className="m-0 max-w-full whitespace-pre-wrap break-words px-14 py-10 rounded-card recipe-surface-raise-sm type-content text-ink">{message.text}</p>
-      )}
-    </article>
-  );
-}
-
-const HEADER: Record<Status, { led: LedKind; words: string }> = {
-  waiting: { led: 'waiting', words: 'Thinking' },
-  writing: { led: 'live', words: 'Writing' },
-  done: { led: 'off', words: '' },
-  stopped: { led: 'off', words: 'Stopped' },
-};
-
-function Reply({ message, last, busy, still, onRetry }: { message: Extract<Message, { role: 'assistant' }>; last: boolean; busy: boolean; still: boolean; onRetry: () => void }) {
+function Reply({ message, last, busy, still, onRetry }: { message: Extract<Turn, { role: 'assistant' }>; last: boolean; busy: boolean; still: boolean; onRetry: () => void }) {
   const [copied, setCopied] = React.useState(false);
   const text = message.words.slice(0, message.shown).join(' ');
   const settled = message.status === 'done' || message.status === 'stopped';
-  const header = HEADER[message.status];
   const model = MODELS.find((m) => m.value === message.model)!.label;
-  const actions = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     if (!copied) return;
@@ -144,49 +94,34 @@ function Reply({ message, last, busy, still, onRetry }: { message: Extract<Messa
     return () => window.clearTimeout(t);
   }, [copied]);
 
-  // Copy and Retry fade in once the reply has settled (not for the replies already there).
-  const wasSettled = React.useRef(settled);
-  React.useLayoutEffect(() => {
-    const el = actions.current;
-    if (!el || wasSettled.current || !settled) return;
-    wasSettled.current = true;
-    const { ms, easing } = spring(el, 'settle');
-    el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ms || 1, easing });
-  }, [settled]);
-
   const copy = async () => {
     try { await navigator.clipboard.writeText(text); } catch { /* a page without clipboard access still says so */ }
     setCopied(true);
   };
 
+  // Copy and Retry are the footer: Message fades them in once the reply settles.
+  const footer = settled && (
+    <>
+      <Button size="compact" onClick={copy} icon={<MorphIcon name={copied ? 'check' : 'paste'} />}>
+        <SwapText value={copied ? 'Copied' : 'Copy'} />
+      </Button>
+      {last && (
+        <Button size="compact" onClick={onRetry} disabled={busy} icon={<RetryIcon />}>Retry</Button>
+      )}
+    </>
+  );
+
   return (
-    <article aria-label={`Assistant, ${model}`} aria-busy={!settled} className="grid gap-8">
-      <header className="flex items-center gap-8 type-meta text-ink2">
-        <Led kind={header.led} size="small" gesture={message.status === 'waiting' ? 'breathe' : 'steady'} />
-        <span>Assistant · {model}</span>
-        <span className="text-ink3" data-status={message.status}><SwapText value={header.words} /></span>
-      </header>
-      {message.status === 'waiting' ? (
-        <Skeleton.Text lines={1} width="62%" />
-      ) : (
-        <p className="m-0 whitespace-pre-wrap break-words type-content text-ink" data-reply-text>
+    <Message from="assistant" model={model} status={message.status} footer={footer}>
+      {message.status !== 'waiting' && (
+        <span data-reply-text>
           {text}
           {message.status === 'writing' && !still && (
             <span aria-hidden data-caret className="ml-2 inline-block h-16 w-2 translate-y-2 rounded-pill bg-green-deep" />
           )}
-        </p>
+        </span>
       )}
-      {settled && (
-        <div ref={actions} className="flex items-center gap-6">
-          <Button size="compact" onClick={copy} icon={<MorphIcon name={copied ? 'check' : 'paste'} />}>
-            <SwapText value={copied ? 'Copied' : 'Copy'} />
-          </Button>
-          {last && (
-            <Button size="compact" onClick={onRetry} disabled={busy} icon={<RetryIcon />}>Retry</Button>
-          )}
-        </div>
-      )}
-    </article>
+    </Message>
   );
 }
 
@@ -202,56 +137,20 @@ export interface AiComposerProps {
 
 /** A chat thread with a composer: attachments, a model, and replies that stream in with stop, copy and retry. */
 export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) {
-  const [messages, setMessages] = React.useState<Message[]>(OPENING);
+  const [messages, setMessages] = React.useState<Turn[]>(OPENING);
   const [draft, setDraft] = React.useState('');
   const [files, setFiles] = React.useState<Attached[]>([]);
   const [model, setModel] = React.useState<ModelId>('fast');
-  const [away, setAway] = React.useState(false); // scrolled up, away from the foot
   const root = React.useRef<HTMLElement>(null);
-  const content = React.useRef<HTMLDivElement>(null);
   const well = React.useRef<HTMLTextAreaElement>(null);
   const picker = React.useRef<HTMLInputElement>(null);
   const seq = React.useRef(OPENING.length + 1);
-  const pinned = React.useRef(true);
-  const jumping = React.useRef(false);
-  const landed = React.useRef(new Set<number>(OPENING.map((m) => m.id)));
 
-  const live = [...messages].reverse().find((m) => m.role === 'assistant' && (m.status === 'waiting' || m.status === 'writing')) as Extract<Message, { role: 'assistant' }> | undefined;
+  const live = [...messages].reverse().find((m) => m.role === 'assistant' && (m.status === 'waiting' || m.status === 'writing')) as Extract<Turn, { role: 'assistant' }> | undefined;
   const still = motionReduced(root.current);
   const busy = !!live;
   const empty = draft.trim() === '' && files.length === 0;
-
-  const viewportRef = React.useRef<HTMLDivElement>(null);
-  const viewport = () => viewportRef.current;
-
-  const toFoot = (smooth: boolean) => {
-    const v = viewport();
-    if (!v) return;
-    v.scrollTo({ top: v.scrollHeight, behavior: smooth && !motionReduced(v) ? 'smooth' : 'auto' });
-  };
-
-  // Where the person is: at the foot the thread follows; away, it stays put and offers a way back.
-  React.useEffect(() => {
-    const v = viewport();
-    if (!v) return;
-    const onScroll = () => {
-      const atFoot = v.scrollHeight - v.scrollTop - v.clientHeight <= THREAD.followSlop;
-      if (jumping.current) { if (atFoot) jumping.current = false; else return; }
-      pinned.current = atFoot;
-      setAway(!atFoot);
-    };
-    const onPerson = () => { jumping.current = false; };
-    v.addEventListener('scroll', onScroll, { passive: true });
-    v.addEventListener('wheel', onPerson, { passive: true });
-    v.addEventListener('touchmove', onPerson, { passive: true });
-    toFoot(false);
-    return () => { v.removeEventListener('scroll', onScroll); v.removeEventListener('wheel', onPerson); v.removeEventListener('touchmove', onPerson); };
-  }, []);
-
-  // Follow the words while at the foot.
-  React.useLayoutEffect(() => {
-    if (pinned.current && !jumping.current) toFoot(false);
-  }, [messages]);
+  const sent = [...messages].reverse().find((m) => m.role === 'user')?.id;
 
   // The live reply: think, then words at the model's pace (a phrase at a time under Reduce Motion).
   React.useEffect(() => {
@@ -270,7 +169,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
     return () => window.clearTimeout(t);
   }, [live, pace, think]);
 
-  const reply = (take: number): Message => ({ id: seq.current++, role: 'assistant', model, words: REPLIES[take % REPLIES.length].split(' '), shown: 0, status: 'waiting', take });
+  const reply = (take: number): Turn => ({ id: seq.current++, role: 'assistant', model, words: REPLIES[take % REPLIES.length].split(' '), shown: 0, status: 'waiting', take });
 
   const send = () => {
     if (empty || busy) return;
@@ -278,8 +177,6 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
     setMessages((all) => [...all, { id: seq.current++, role: 'user', text: draft.trim(), files }, reply(takes)]);
     setDraft('');
     setFiles([]);
-    pinned.current = true;
-    setAway(false);
   };
 
   const stop = () => {
@@ -292,7 +189,6 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
     const last = messages[messages.length - 1];
     if (busy || last?.role !== 'assistant') return;
     setMessages((all) => [...all.slice(0, -1), reply(last.take + 1)]);
-    pinned.current = true;
   };
 
   const keys = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -309,13 +205,6 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
     well.current?.focus();
   };
 
-  const jump = () => {
-    jumping.current = true;
-    pinned.current = true;
-    setAway(false);
-    toFoot(true);
-  };
-
   return (
     <section ref={root} aria-label="Assistant" className={`@container/block group/block flex w-full flex-col overflow-hidden rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`} style={{ height: THREAD.height }}>
       <header className="relative flex items-baseline justify-between gap-12 px-20 pt-16 pb-8 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-rule after:opacity-0 after:transition-opacity after:duration-settle after:ease-settle group-has-[[data-overflow-y-start]]/block:after:opacity-100">
@@ -323,31 +212,15 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
         <span className="type-meta text-ink3">Sample replies</span>
       </header>
 
-      <div className="relative flex min-h-0 flex-1 flex-col">
-        <ScrollArea className="min-h-0 flex-1" viewportRef={viewportRef}>
-          <div ref={content} role="log" aria-live="polite" aria-label="Conversation" className="grid gap-20 px-20 py-12 @max-md/block:px-14">
-            {messages.map((m, i) => {
-              const land = !landed.current.has(m.id);
-              landed.current.add(m.id);
-              return m.role === 'user'
-                ? <UserMessage key={m.id} message={m} land={land} />
-                : <Reply key={m.id} message={m} last={i === messages.length - 1} busy={busy} still={still} onRetry={retry} />;
-            })}
-          </div>
-        </ScrollArea>
-        <div className="pointer-events-none absolute inset-x-0 bottom-8 flex justify-end px-20 @max-md/block:px-14">
-          <Button
-            size="compact"
-            onClick={jump}
-            inert={!away}
-            aria-hidden={!away}
-            icon={<MorphIcon name="chevron" />}
-            className={`transition-[opacity,translate] duration-settle ease-settle reduced-motion:transition-none ${away ? 'pointer-events-auto opacity-100' : 'translate-y-6 opacity-0'}`}
-          >
-            Jump to latest
-          </Button>
-        </div>
-      </div>
+      <Thread className="min-h-0 flex-1" pinKey={sent}>
+        {messages.map((m, i) => (m.role === 'user'
+          ? (
+            <Message key={m.id} from="user" attachments={m.files.length > 0 && m.files.map((f) => <Attachment key={f.id} name={f.name} size={f.size} />)}>
+              {m.text || null}
+            </Message>
+          )
+          : <Reply key={m.id} message={m} last={i === messages.length - 1} busy={busy} still={still} onRetry={retry} />))}
+      </Thread>
 
       <div role="group" aria-label="Composer" className="m-12 mt-4 grid gap-8 p-8 rounded-card recipe-surface-raise-sm">
         {files.length > 0 && (
