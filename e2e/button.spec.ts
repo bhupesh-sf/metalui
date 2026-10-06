@@ -69,12 +69,12 @@ for (const colorway of COLORWAYS) {
 test('a copy button morphs its glyph and turns its label', async ({ page }) => {
   await open(page, '/components/button', 'bone');
   const copy = page.locator('#label-turns').getByRole('button').filter({ has: page.locator('.mu-morph-icon') });
-  await expect(copy.locator('svg')).toHaveAttribute('data-glyph', 'paste');
+  await expect(copy.locator('svg')).toHaveAttribute('data-glyph', 'copy');
   await copy.click();
   await expect(copy.locator('svg')).toHaveAttribute('data-glyph', 'check');
   await expect(copy).toHaveAccessibleName('Copied');
   // the pause over, it becomes Copy again
-  await expect(copy.locator('svg')).toHaveAttribute('data-glyph', 'paste', { timeout: 4000 });
+  await expect(copy.locator('svg')).toHaveAttribute('data-glyph', 'copy', { timeout: 4000 });
 });
 
 test('under reduced motion an action glyph stays still', async ({ page }) => {

@@ -93,7 +93,7 @@ for (const colorway of COLORWAYS) {
     await expect(palette).toBeFocused();
   });
 
-  // Copy takes the value and its glyph turns on the drum to the check, then back; show password makes the input
+  // Copy takes the value and its glyph morphs to the check, then back; show password makes the input
   // a password, toggles it to text, says so with aria-pressed, and morphs its eye.
   test(`copy and show password keys in ${colorway}`, async ({ page, context }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
@@ -103,9 +103,10 @@ for (const colorway of COLORWAYS) {
     await copy.click();
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('mu_live_7Hq2v9KcX4');
     await expect(area.getByRole('status')).toHaveText('Copied');
-    await expect(copy.locator('[data-state="in"] svg')).toHaveClass(/mu-ic-check/);
-    // The check holds for the recipe's copy.hold (1400 ms), then the copy glyph comes back.
-    await expect(copy.locator('[data-state="in"] svg')).toHaveClass(/mu-ic-copy/, { timeout: 5000 });
+    await expect(copy.locator('svg')).toHaveAttribute('data-glyph', 'check');
+    await expect(copy.locator('svg')).toHaveCount(1);
+    // The check holds for the recipe's copy.hold (1400 ms), then the copy glyph morphs back.
+    await expect(copy.locator('svg')).toHaveAttribute('data-glyph', 'copy', { timeout: 5000 });
 
     const password = page.getByLabel('Password', { exact: true });
     const reveal = area.getByRole('button', { name: 'Show password' });

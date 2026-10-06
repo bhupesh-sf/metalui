@@ -99,7 +99,7 @@ export function ShareSheet({ onClose }: { onClose: () => void }) {
         { id: 'A3', title: 'Focus never falls to the page', body: 'Removing a person moves focus to the next ×; closing returns it to the key that opened the panel.', origin: 'Accessibility' },
         { id: 'M1', title: 'Arrivals land', body: 'A new file or person drops one nest into place on the object spring: it was put there.', origin: 'Motion' },
         { id: 'M2', title: 'Leaving closes the gap', body: 'A removed row steps down and fades on the release spring, then the rows under it travel up.', origin: 'Motion' },
-        { id: 'M3', title: 'A state change morphs', body: 'Copy link morphs paste → check and turns to “Copied” on the drum; it turns back after 1.6 s.', origin: 'Motion' },
+        { id: 'M3', title: 'A state change morphs', body: 'Copy link morphs copy → check and turns to “Copied” on the drum; it turns back after 1.6 s.', origin: 'Motion' },
         { id: 'M4', title: 'Reduce Motion', body: 'Everything changes at once; the drum crossfades; upload tracks still fill.', origin: 'Motion' },
         { id: 'R1', title: 'It measures itself', body: 'The block is a container: under 28rem the invite row wraps, with the email on its own line.', origin: 'Responsive' },
       ]}

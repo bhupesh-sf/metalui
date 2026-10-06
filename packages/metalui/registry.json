@@ -681,12 +681,13 @@
       "name": "code-block",
       "type": "registry:ui",
       "title": "Code block",
-      "description": "Code to read and copy in the flow: framed (a plate with a head) or ghost; numbers from any start line, wrap, a max height with its own scroll, the copy glyph turning to the check on the drum. Highlighted and focused lines, lines picked by their numbers to reference in a chat, diff and unified patch (two gutters), diagnostics with an action, streaming from an AI reply with splitFences for Markdown. Highlighting is the host's (pass html); a light tint is built in.",
+      "description": "Code to read and copy in the flow: framed (a plate with a head) or ghost; numbers from any start line, wrap, a max height with its own scroll, the copy glyph morphing to the check. Highlighted and focused lines, lines picked by their numbers to reference in a chat, diff and unified patch (two gutters), diagnostics with an action, streaming from an AI reply with splitFences for Markdown. Highlighting is the host's (pass html); a light tint is built in.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/icon-button.json",
         "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/icon-morph.json",
         "https://metalui.dev/r/led.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
@@ -1615,12 +1616,13 @@
       "name": "message-actions",
       "type": "registry:ui",
       "title": "Message actions",
-      "description": "The keys that act on a message, in Message's footer: Copy (turning to Copied on the drum), Retry, Edit, and Good and Bad as latching thumbs, with an optional row of reasons after Bad that says Thanks and goes.",
+      "description": "The keys that act on a message, in Message's footer: Copy (its glyph morphing to the check, Copied), Retry, Edit, and Good and Bad as latching thumbs, with an optional row of reasons after Bad that says Thanks and goes.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/icon-button.json",
         "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/icon-morph.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json",
         "https://metalui.dev/r/tooltip.json"

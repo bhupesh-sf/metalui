@@ -16,6 +16,8 @@ for (const colorway of COLORWAYS) {
 
     await bar.getByRole('button', { name: 'Copy' }).click();
     await expect(bar.getByRole('button', { name: 'Copied' })).toBeVisible();
+    // The glyph morphs copy → check in one svg, and back.
+    await expect(bar.getByRole('button', { name: 'Copied' }).locator('svg')).toHaveAttribute('data-glyph', 'check');
     expect(await page.evaluate(() => navigator.clipboard.readText())).toContain('Springs now ship');
     await expect(bar.getByRole('button', { name: 'Copy' })).toBeVisible({ timeout: 4000 });
 

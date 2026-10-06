@@ -32,7 +32,7 @@ import { Attachment, Markdown, Message, MessageActions, PromptInput, Select, Thr
  *             pressing it glides down and follows again
  *   under     while words run under the title (the thread is scrolled), a hairline fades in below
  *             the title (settle), so the faded top line reads as passing under it, not cut off
- *   copy      Copy writes the reply to the clipboard: copy → check on the drum, named "Copied";
+ *   copy      Copy writes the reply to the clipboard: the copy glyph morphs to the check, "Copied" on the drum;
  *             after 1.6 s it turns back
  *   judge     the thumbs latch; Bad offers reasons, and one says Thanks
  *   retry     the last reply is written again, as a new take

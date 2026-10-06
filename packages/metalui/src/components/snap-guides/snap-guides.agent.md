@@ -72,6 +72,16 @@ On the native side, perform it at once (`performanceTime: .now`), mapping the ki
 | `detent` | `.levelChange` |
 | `refusal` | `.generic` |
 
+For a `WKWebView` the SwiftUI package ships that end: `MetalHapticBridge`, a `WKScriptMessageHandler` named `"haptic"` that performs the table above. Install it once on the web view's configuration, and the page's WKWebView line above reaches it:
+
+```swift
+import MetalUI
+let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
+MetalHapticBridge.install(in: webView.configuration.userContentController)
+```
+
+Electron and Tauri have no haptic API of their own: the main process (Electron, through a native addon) or a Tauri command (Rust, through `objc2-app-kit`) calls `NSHapticFeedbackManager.defaultPerformer` itself, with the same table.
+
 `setHapticBridge(null)` returns to the web paths. The bridge is a setter rather than a global so it is typed, and so a page never picks up a haptic it did not ask for.
 
 ## API

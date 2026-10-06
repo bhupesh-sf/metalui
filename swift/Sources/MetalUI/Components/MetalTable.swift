@@ -339,7 +339,11 @@ public struct MetalTableCell: View {
                 case .code(let code):
                     HStack(spacing: r.points("row.gap")) {
                         Text(code).font(.metal(MetalType.code)).foregroundStyle(t.ink.color)
-                        MetalIconButton(copied ? "Copied \(code)" : "Copy \(code)", icon: copied ? .check : .copy) { copy(code) }
+                        MetalIconButton(copied ? "Copied \(code)" : "Copy \(code)", action: { copy(code) }) {
+                            MetalIcon(copied ? .check : .copy, size: MetalRecipes.iconButton.points("ghost.glyph"))
+                                .contentTransition(.symbolEffect(.replace))
+                                .metalAnimation(.settle, value: copied)
+                        }
                     }
                 case .text(let s, _):
                     Text(s).lineLimit(1).truncationMode(.tail).help(s)

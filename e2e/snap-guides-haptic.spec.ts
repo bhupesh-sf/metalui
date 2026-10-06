@@ -31,6 +31,24 @@ test('a desktop browser has no haptics and says so, and still counts the catch',
   expect(await page.locator('audio, [data-mu-haptic]').count()).toBe(0);
 });
 
+test('in a Mac app\'s web view, each catch goes to the host once', async ({ page }) => {
+  // What a WKWebView with MetalHapticBridge installed gives the page: a "haptic" message handler.
+  await page.addInitScript(() => {
+    const kinds: string[] = [];
+    (window as unknown as { __kinds: string[] }).__kinds = kinds;
+    (window as unknown as { webkit: unknown }).webkit = { messageHandlers: { haptic: { postMessage: (k: string) => kinds.push(k) } } };
+  });
+  await open(page, '/components/snap-guides', 'bone');
+  await catchALine(page);
+  await expect(caption(page)).toHaveAttribute('data-haptic-path', 'bridge');
+  await expect(caption(page)).toContainText('the app tapped');
+  const taps = Number((await caption(page).textContent())!.match(/haptic taps · (\d+)/)![1]);
+  const kinds = await page.evaluate(() => (window as unknown as { __kinds: string[] }).__kinds);
+  expect(kinds.length).toBe(taps);
+  expect(kinds[0]).toBe('alignment');
+  await expect(page.locator('#mac-app')).toContainText('MetalHapticBridge.install');
+});
+
 test.describe('on a touch device', () => {
   test.use({ hasTouch: true, isMobile: true });
 

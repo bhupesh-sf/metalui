@@ -398,7 +398,7 @@ function LabelTurns() {
     <Beat
       id="label-turns"
       title="A changing label turns"
-      setup="Copy becoming Copied is one step on a drum, its glyph morphs from paste into check, and the cap's width follows on the settle spring."
+      setup="Copy becoming Copied is one step on a drum, its glyph morphs from copy into check, and the cap's width follows on the settle spring."
       slow={slow}
       bar={<SlowSwitch slow={slow} onChange={setSlow} />}
       caption="Press both buttons and watch the glyph and the width. Ours becomes the tick and grows smoothly to fit the new word. The other one swaps its glyph and jumps."
@@ -406,8 +406,8 @@ function LabelTurns() {
     >
       <div className="grid w-full grid-cols-1 gap-y-32 sm:grid-cols-2 sm:divide-x sm:divide-rule">
         {[
-          { tag: 'SwapText', lit: true, pts: settle, node: <Button onClick={() => flip(setA)} icon={<MorphIcon name={a ? 'check' : 'paste'} />}><SwapText value={a ? 'Copied' : 'Copy'} /></Button> },
-          { tag: 'replaced', lit: false, pts: step, node: <Button onClick={() => flip(setB)} icon={<Icon name={b ? 'check' : 'paste'} />}>{b ? 'Copied' : 'Copy'}</Button> },
+          { tag: 'SwapText', lit: true, pts: settle, node: <Button onClick={() => flip(setA)} icon={<MorphIcon name={a ? 'check' : 'copy'} />}><SwapText value={a ? 'Copied' : 'Copy'} /></Button> },
+          { tag: 'replaced', lit: false, pts: step, node: <Button onClick={() => flip(setB)} icon={<Icon name={b ? 'check' : 'copy'} />}>{b ? 'Copied' : 'Copy'}</Button> },
         ].map((v) => (
           <div key={v.tag} className="flex flex-col items-center gap-16 px-16">
             <Tag tone={v.lit ? 'lit' : 'quiet'}>{v.tag}</Tag>

@@ -28,7 +28,7 @@ Code to read and copy in the flow: a docs page, a README, an AI reply. React: `C
 
 ## Behaviour
 
-- **Copy** (ghost key): copies the code, or the picked lines only ("Copy lines 4–7"). The copy glyph turns to the check on the drum for `copy.hold` (1400 ms), then back; "Copied" is said once in a status. While `streaming` the key is disabled and named "Still writing".
+- **Copy** (ghost key): copies the code, or the picked lines only ("Copy lines 4–7"). The copy glyph morphs to the check (`MorphPair`, copy ↔ check strains 1.96) for `copy.hold` (1400 ms), then back; "Copied" is said once in a status. While `streaming` the key is disabled and named "Still writing".
 - **Pick lines** (`selectable`, turns `numbers` on): the numbers are one roving tab stop. ↑ ↓ Home End move; Space or ↩ picks a line (again clears it); ⇧ with a move or a click extends from the first pick; Esc clears. Each number is a toggle (`aria-pressed`, "Line 4"). The head's label turns on the drum to `poster.ts · 4–7`. Controlled with `selection` / `onSelect`, or `defaultSelection`. A patch's two gutters are not selectable.
 - **Reference** (`onReference`): while lines are picked, an `attach` key beside copy: "Reference lines 4–7".
 - **Diagnostics' action**: a compact button; the host does the fix and drops the diagnostic.

@@ -230,7 +230,7 @@ export function CopyButton({ text, label = 'Copy' }: { text: string; label?: str
         } catch {}
       }}
     >
-      <MorphIcon name={copied ? 'check' : 'paste'} size={12} />
+      <MorphIcon name={copied ? 'check' : 'copy'} size={12} />
       <span aria-live="polite"><SwapText value={copied ? 'Copied' : label} /></span>
     </Button>
   );
@@ -259,7 +259,7 @@ export function CopyPageButton() {
         } catch {}
       }}
     >
-      <MorphIcon name={copied ? 'check' : 'paste'} size={12} />
+      <MorphIcon name={copied ? 'check' : 'copy'} size={12} />
       <span aria-live="polite"><SwapText value={copied ? 'Copied' : 'Copy page'} /></span>
     </Button>
   );
