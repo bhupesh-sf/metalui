@@ -5,7 +5,7 @@ import { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';
 import { Menu } from '../menu/menu';
 import { Button, type ButtonProps } from '../button/button';
 import { Well } from '../well/well';
-import { Icon } from '../../icons/Icon';
+import { MorphIcon } from '../../icons/MorphIcon';
 import { SwapText } from '../../motion/swap';
 
 /* ─────────────────────────────────────────────────────────
@@ -20,7 +20,7 @@ import { SwapText } from '../../motion/swap';
  *   window    a readout between steppers is a sunk window in the bar, tabular; it turns on the drum
  *   rocker    a pair as one cap: it tips toward the pressed end on the part spring, and back
  *   split     the main action, a seam, the chevron; while the menu is open the chevron segment stays
- *             pressed and the set's chevron turns over on the part spring; back when it closes
+ *             pressed and the set's chevron turns over (MorphIcon's half turn) on the settle spring; back when it closes
  *   latched   toggles in the bar (`latch`) stay sunk with their lamp lit
  *   focus     the ring inside the segment, within the bar's shape
  *   disabled  a key at 40 %; the whole bar at 40 % (`disabled`)
@@ -114,13 +114,15 @@ export interface SplitButtonProps {
 /** The main action, a seam, and a chevron that opens the other ways to do it, in one material. */
 export function SplitButton({ children, menu, menuLabel, heading, disabled }: SplitButtonProps) {
   const { cap, size } = children.props;
+  const [open, setOpen] = React.useState(false);
   return (
     <ButtonGroup aria-label={menuLabel} disabled={disabled}>
       {children}
       <Menu
         heading={heading}
         align="end"
-        trigger={<Button cap={cap} size={size} aria-label={menuLabel} className={CHEVRON} icon={<Icon name="chevron" className="button-group-chevron" />} />}
+        onOpenChange={setOpen}
+        trigger={<Button cap={cap} size={size} aria-label={menuLabel} className={CHEVRON} icon={<MorphIcon name="chevron" turn={open ? 180 : 0} />} />}
       >
         {menu}
       </Menu>

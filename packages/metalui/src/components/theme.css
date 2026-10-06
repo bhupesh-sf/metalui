@@ -1864,9 +1864,6 @@
 @utility button-group-window {
   flex: none; align-self: center; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; height: calc(100% - var(--mu-r-button-group-window-inset) * 2); min-width: var(--mu-r-button-group-window-min); margin-inline: var(--mu-r-button-group-window-inset); padding-inline: var(--mu-r-button-group-window-pad); border-radius: var(--mu-r-button-group-window-radius); font-variant-numeric: tabular-nums; white-space: nowrap; cursor: default; user-select: none;
 }
-@utility button-group-chevron {
-  transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-popup-open] > & { rotate: 180deg; } @media (prefers-reduced-motion: reduce) { transition: none; } [data-mu-motion=reduce] & { transition: none; }
-}
 @utility stroke-width-button-group-seam-width {
   stroke-width: var(--mu-r-button-group-seam-width);
 }
