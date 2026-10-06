@@ -6,18 +6,19 @@ Feedback, bugs and performance notes to work on later. The owner's word is in th
 
 Owner: "no select date range; add option for min legit date, option for max legit date, and like everything which should be there for date." (2026-09-30)
 
-- [ ] **Range selection**: `mode="range"`, `{ start, end }` value; the thumb stretches across the range, with ends and a hover preview of the range before the second click; `minDays` / `maxDays`.
-- [ ] **Min and max on the page**: `Calendar` already takes `min` / `max` (out-of-range days disabled, month steps stop), but the docs page doesn't show them and `DatePicker` does not pass them through. Wire them through, demo them, and let the DialKit set them.
+- [x] **Range selection**: `mode="range"`, `{ start, end }` value; the thumb stretches across the range, with ends and a hover preview of the range before the second click; `minDays` / `maxDays`.
+- [x] **Min and max on the page**: `Calendar` already takes `min` / `max` (out-of-range days disabled, month steps stop), but the docs page doesn't show them and `DatePicker` does not pass them through. Wire them through, demo them, and let the DialKit set them.
 - [x] **Unavailable days**: `isDateUnavailable(date)` (weekends, booked days), distinct from out of range, and said to assistive tech. (Quiet in ink3, described "Unavailable", still choosable; out of range stays the unchoosable case. On the page as Quiet days.)
-- [ ] **Multiple days**: `mode="multiple"`.
-- [ ] **Week start** (`weekStartsOn`) beyond the locale default; **week numbers**.
-- [ ] **More than one month** side by side (`months={2}`, for ranges).
-- [ ] **Jump to a month or year**: the title opens a month/year picker (birthdays, far dates).
-- [ ] **Controlled month**: `month` / `onMonthChange`.
-- [ ] **Marked days**: a dot or LED for days with something on them (events).
-- [ ] **Date picker**: typed entry (segments, locale aware), a clear button, Today, presets for ranges ("Last 7 days"), `required`, `name` (a hidden input for forms), `readOnly`, and it works inside `FormField`.
-- [ ] **Time** (later): date and time together, and time zones.
-- [ ] Check on the Calendar page: a pill-shaped plate cut off at the left edge of the viewport, level with the playground (seen in the owner's screenshot); find what it is.
+- [x] **Multiple days**: `mode="multiple"`.
+- [x] **Week start** (`weekStartsOn`) beyond the locale default; **week numbers**.
+- [x] **More than one month** side by side (`months={2}`, for ranges).
+- [x] **Jump to a month or year**: the title opens a month/year picker (birthdays, far dates).
+- [x] **Controlled month**: `month` / `onMonthChange`.
+- [x] **Marked days**: a dot or LED for days with something on them (events).
+- [x] **Date picker**: typed entry (segments, locale aware), a clear button, Today, presets for ranges ("Last 7 days"), `required`, `name` (a hidden input for forms), `readOnly`, and it works inside `FormField`.
+- [x] **Time** (later): date and time together, and time zones.
+- [x] Check on the Calendar page: a pill-shaped plate cut off at the left edge of the viewport, level with the playground (seen in the owner's screenshot); find what it is.
+- Done (2026-10-06): range (a stretched thumb per week, `minDays`/`maxDays`), multiple, `weekStartsOn`, ISO week numbers, `months={2}`, month/year views, `marks` (ink dot or amber/red LED), `period` day/month/quarter/half/year; DatePicker is a typed `Field` with a readback, ↑/↓ per part, presets, `required`/`name`; the set's glyphs; real `MetalCalendar` and `MetalDatePicker`. Left: the operator picker (is/before/after/between) as its own component; time and zones (Later); "Q"/"H" names are English; SwiftUI has no presets or range in the picker.
 
 ## Checkbox (and Checkbox group)
 
@@ -268,14 +269,15 @@ What's wrong now:
 - Recognising a chunk has no moment: marks are simply there.
 
 Direction:
-- [ ] **Glyphs say what they mean and sit where they belong**: a glyph attaches to the chunk it explains (a clock at "tomorrow 4pm", a coin at "$40", a moon at "slept 6h", a swatch of the actual colour at "#FF6B3D"), at full ink next to the words, with its name in a tooltip ("A meal · breakfast?"). The trailing "· glyph" pattern is for the whole line's kind only, and gets a label on hover.
-- [ ] **One grammar of kinds**: time (date, duration) → an engraved underline plus a clock glyph; money → a coin and tabular figures; body (sleep, steps) → a moon or a step; colour → a live swatch; link → the link chip; person → a small avatar. Each kind is one look, documented on the page as a legend.
-- [ ] **Tags as tags**: `#tag` becomes a small raised tab with a punched hole (a luggage tag), the hash kept as a quiet mark; the tag's colour is its own (stable hash to a palette); one look everywhere. Typing `#` shows the tags you've used.
-- [ ] **A moment of recognition (motion first)**: when a chunk is recognised as you type, its underline draws in from left to right (settle spring) and its glyph pops in beside it with a tiny overshoot (object spring); colour chunks bloom their swatch; money flips its figures on the drum into the formatted amount; dates show their resolved day as a chip that slides up and settles. Once, on recognition, never looping; nothing while the caret is still inside the word.
-- [ ] **Whimsy, with restraint**: a glyph's own act plays on first recognition (the cup steams once, the moon tilts, the coin spins a quarter turn); rare, short, and off under Reduce Motion; a tiny sparkle when an inferred cue is confirmed.
-- [ ] **Inferred vs confirmed**: inferred cues (the "FRI" chip at 0.82) read as a suggestion (dashed, ink2) until confirmed by a click or Tab; confirming stamps them solid with a small press.
-- [ ] **Raw vs cued**: the toggle between raw text and cues keeps every chunk exactly in place (already a rule); add the glyphs fading, not jumping.
-- [ ] Redo the page with a legend of kinds, a live typing demo that shows recognition, and the DialKit for the motion; Swift in step.
+- [x] **Glyphs say what they mean and sit where they belong**: a glyph attaches to the chunk it explains (a clock at "tomorrow 4pm", a coin at "$40", a moon at "slept 6h", a swatch of the actual colour at "#FF6B3D"), at full ink next to the words, with its name in a tooltip ("A meal · breakfast?"). The trailing "· glyph" pattern is for the whole line's kind only, and gets a label on hover.
+- [x] **One grammar of kinds**: time (date, duration) → an engraved underline plus a clock glyph; money → a coin and tabular figures; body (sleep, steps) → a moon or a step; colour → a live swatch; link → the link chip; person → a small avatar. Each kind is one look, documented on the page as a legend.
+- [x] **Tags as tags**: `#tag` becomes a small raised tab with a punched hole (a luggage tag), the hash kept as a quiet mark; the tag's colour is its own (stable hash to a palette); one look everywhere. Typing `#` shows the tags you've used.
+- [x] **A moment of recognition (motion first)**: when a chunk is recognised as you type, its underline draws in from left to right (settle spring) and its glyph pops in beside it with a tiny overshoot (object spring); colour chunks bloom their swatch; money flips its figures on the drum into the formatted amount; dates show their resolved day as a chip that slides up and settles. Once, on recognition, never looping; nothing while the caret is still inside the word.
+- [x] **Whimsy, with restraint**: a glyph's own act plays on first recognition (the cup steams once, the moon tilts, the coin spins a quarter turn); rare, short, and off under Reduce Motion; a tiny sparkle when an inferred cue is confirmed.
+- [x] **Inferred vs confirmed**: inferred cues (the "FRI" chip at 0.82) read as a suggestion (dashed, ink2) until confirmed by a click or Tab; confirming stamps them solid with a small press.
+- [x] **Raw vs cued**: the toggle between raw text and cues keeps every chunk exactly in place (already a rule); add the glyphs fading, not jumping.
+- [x] Redo the page with a legend of kinds, a live typing demo that shows recognition, and the DialKit for the motion; Swift in step.
+- Done (2026-10-06): glyphs at full ink before their words, named in the family's chip; one grammar (time, money, body, colour, person, link) with a legend; luggage tags hashed to six hues; recognition plays once after the caret leaves; one act and a sparkle on confirm; raw vs cued keeps every word in place; SwiftUI in step. Left: draw `coin` and `moon` (stand-ins used); Chip's `tag` variant should take the luggage look; Swift captures don't render life glyphs.
 
 ## Lasso demo: buggy selection and an unreliable trigger
 
@@ -583,7 +585,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
   - Columns: resize, move, show/hide; pin rows to the top or bottom.
   - Rows: tree rows that expand; virtualised rows.
   - Spreadsheet editing: select cells, copy and paste, edit in place.
-- [ ] **Calendar and DatePicker → date selector** (beyond the Calendar entry above): period types (day, month, quarter, half year, year); operators (is, before, after, between); in a dialog as well as a popover, with Apply and Cancel; two months side by side; localised.
+- [ ] **Calendar and DatePicker → date selector** (beyond the Calendar entry above): period types (day, month, quarter, half year, year: done 2026-10-06); operators (is, before, after, between); in a dialog as well as a popover, with Apply and Cancel; two months side by side; localised.
 - [ ] **Number field**: sizes sm, default, lg (ours has one size today). See "Variation sheets: Number field".
 - [ ] **DropZone and Attachment → file upload layouts**: an avatar upload (one image with a preview); a compact row with thumbnails and a count; a gallery grid with a preview dialog; a table of files with round progress; image tiles with their own progress; drag to reorder (needs Sortable); retry on failure (ours has it).
 - [ ] **Card → frame** (see "Variation sheets: Card"): panels separated, stacked or dense inside one frame, with header, title, description and footer; a ghost frame without the outer border; spacing sm, default, lg.
