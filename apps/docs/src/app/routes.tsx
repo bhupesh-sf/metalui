@@ -65,7 +65,7 @@ export const routes: RouteObject[] = [
       { path: 'components/prompt-input', lazy: lazy(() => import('../pages/components/PromptInput')) },
       { path: 'components/message-actions', lazy: lazy(() => import('../pages/components/MessageActions')) },
       { path: 'components/branch-picker', lazy: lazy(() => import('../pages/components/BranchPicker')) },
-      { path: 'components/conversation-list', lazy: lazy(() => import('../pages/components/ConversationList')) },      { path: 'components/timeline', lazy: lazy(() => import('../pages/components/Timeline')) },
+      { path: 'components/conversation-list', lazy: lazy(() => import('../pages/components/ConversationList')) },
       { path: 'components/chart', lazy: lazy(() => import('../pages/components/Chart')) },
       { path: 'components/popover', lazy: lazy(() => import('../pages/components/Popover')) },
       { path: 'components/alert-dialog', lazy: lazy(() => import('../pages/components/AlertDialog')) },
