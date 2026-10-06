@@ -54,6 +54,7 @@ Button(action: undo) { MetalIcon(.undo, size: 16) }
 ## Accessibility
 
 - The trigger carries `aria-label` (and `aria-keyshortcuts` when it has a key). Keyboard focus shows the tooltip as hover does.
+- While a tooltip shows, the first ⎋ hides it and goes no further (WCAG 1.4.13: hover content is dismissable without moving focus); the next ⎋ reaches the panel around it. A panel that should close on the first ⎋ even over a tooltip listens in the capture phase (`onKeyDownCapture`), as the share panel block does.
 
 ## Tokens
 
