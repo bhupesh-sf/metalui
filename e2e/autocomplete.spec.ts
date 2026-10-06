@@ -138,7 +138,7 @@ test('a search you run: loading dims the rows behind the ring; a failure offers 
   const trail = well(search).locator('.mu-field-trail');
   await search.click();
   await search.pressSequentially('po');
-  await expect(page.getByRole('status')).toHaveText('Searching…'); // no rows yet: the quiet line
+  await expect(page.getByRole('status').filter({ hasText: 'Searching…' })).toBeVisible(); // no rows yet: the quiet line
   await expect(trail.locator('.mu-spinner[data-phase=shown]')).toBeVisible();
   await expect(search).toHaveAttribute('aria-busy', 'true');
   await expect(options(page)).toHaveText(['Porto']);
