@@ -1382,6 +1382,28 @@ public enum MetalRecipes {
         ]
     )
 
+    /// An inline message about this place: the kind's glyph engraved in a 28 sunk window with the kind's LED seated in its top right corner, a title (title type), a description (body type, ink2), its actions, and a quiet close key when it can be dismissed. The plates are the status recipe's: plate (raised, a defined edge), quiet (no plate, for cards and panels) and strong (tinted in the kind's ink, the title and glyph in its deep ink); solid adds the badge's keyline for transparent grounds, and Reduce Transparency turns it on. A banner is square-ended and spans its container. Kinds: note (no lamp), done (green steady), waiting (amber breathing), urgent (amber steady), failed (red, two blinks, then lit). It arrives rising one nest from below on the settle spring (T9); a new kind morphs the glyph and plays the new lamp's gesture; dismissed, it leaves one nest down on the release spring. From 480 wide the actions sit beside the words; narrower, under them. Reduce Motion: it fades in and goes without travel. (the status recipe (plates, strong inks, keyline); the well (field); the LED; IconButton ghost; Transitions T9)
+    public static let alert = MetalObjectRecipe(
+        name: "alert",
+        layers: [
+
+        ],
+        props: [
+            "self.radius": .number(16.0),
+            "self.pad": .number(14.0),
+            "self.gap": .number(12.0),
+            "self.text-gap": .number(2.0),
+            "self.text-top": .number(5.0),
+            "self.actions-gap": .number(8.0),
+            "self.actions-top": .number(10.0),
+            "banner.pad": .number(20.0),
+            "window.size": .number(28.0),
+            "window.radius": .number(9.0),
+            "window.glyph": .number(16.0),
+            "window.lamp-inset": .number(2.0),
+        ]
+    )
+
     /// Two places side by side (or stacked) with a divider you can move: an engraved hairline with a small raised grip at its middle, which lifts under the pointer and presses while held. Dragging, the panes follow the pointer one to one. Let go near the default size and it snaps there on the part spring, a detent; a collapsible pane dragged past half its minimum snaps shut the same way. Keys step it (8) on the settle spring; Home and End go to the limits; Enter or a double-click restores the default. Reduce Motion: snaps and steps land at once. (the rule's hairline; the switch thumb (the grip); the part and settle springs; the ARIA window splitter pattern)
     public static let splitPane = MetalObjectRecipe(
         name: "split-pane",

@@ -42,8 +42,8 @@ Blue is not used: it means a link's kind, and "info" is not a link. No new LED c
 ## Where it sits
 
 - **Top of a form** (*inline*, the default): a plate the width of the form, above the first field; a form that fails to save says why here, and each field still carries its own error.
-- **Inside a card or a panel**: `tone="quiet"`, no plate (a raised plate on a raised card is one plate too many): the glyph window, the words and a hairline under.
-- **A page banner**: `banner`: the full width of its container, square ends, a hairline below instead of a shadow, actions at the end of the line. One per page.
+- **Inside a card or a panel**: `tone="quiet"`, no plate (a raised plate on a raised card is one plate too many): the glyph window and the words; the card's own padding frames it.
+- **A page banner**: `banner`: the full width of its container, square ends, wider padding at the sides, actions at the end of the line. One per page.
 
 ## Must
 
@@ -57,7 +57,7 @@ Blue is not used: it means a link's kind, and "info" is not a link. No new LED c
 
 ## Should
 
-- [ ] **Banner** placement (`banner`): full width, square ends, hairline below, actions at the end of the line.
+- [ ] **Banner** placement (`banner`): full width, square ends, actions at the end of the line.
 - [ ] **Solid** (as Status badge): on frost or an image the plate keeps a keyline; Reduce Transparency turns it on.
 
 ## Later
