@@ -108,6 +108,7 @@ export const routes: RouteObject[] = [
       { path: 'blocks/task-inbox', lazy: lazy(() => import('../pages/blocks/TaskInbox')) },
       { path: 'blocks/settings', lazy: lazy(() => import('../pages/blocks/Settings')) },
       { path: 'components/table', lazy: lazy(() => import('../pages/components/Table')) },
+      { path: 'components/data-grid', lazy: lazy(() => import('../pages/components/DataGrid')) },
       { path: 'components/properties', lazy: lazy(() => import('../pages/components/Properties')) },
       { path: 'components/empty-state', lazy: lazy(() => import('../pages/components/EmptyState')) },
       { path: 'components/alert', lazy: lazy(() => import('../pages/components/Alert')) },

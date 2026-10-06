@@ -155,6 +155,20 @@ export interface TableColumn<Row> extends TableCellFormat {
 export interface TableColumnsState {
   hidden?: string[];
   widths?: Record<string, number>;
+  /** The columns' keys in the person's order (DataGrid's reorder); keys left out keep their place after these. */
+  order?: string[];
+}
+
+type DataAttrs = { [data: `data-${string}`]: string | undefined };
+
+/** DataGrid's hooks into the table: `role="grid"`, each cell's focus and range state, the head row as a Sortable list. */
+export interface TableGrid<Row> {
+  table: React.TableHTMLAttributes<HTMLTableElement>;
+  cell: (row: Row, column: TableColumn<Row>) => React.TdHTMLAttributes<HTMLTableCellElement> & DataAttrs;
+  headRow?: React.HTMLAttributes<HTMLTableRowElement> & DataAttrs & { ref?: React.Ref<HTMLTableRowElement> };
+  headCell?: (column: TableColumn<Row>) => React.ThHTMLAttributes<HTMLTableCellElement> & DataAttrs;
+  /** Drawn first in a header (a reorder grip). */
+  headGrip?: (column: TableColumn<Row>) => React.ReactNode;
 }
 
 /** A row in the order it shows: its level in the hierarchy (1 at the top), or an opened branch's empty line. */
@@ -232,6 +246,8 @@ export interface TableProps<Row> {
   hasMore?: boolean;
   /** Adds the next rows to `rows`, then resolves. A rejection shows Try again. */
   loadMore?: () => Promise<void>;
+  /** DataGrid's hooks (use DataGrid rather than setting this). */
+  grid?: TableGrid<Row>;
   className?: string;
 }
 
@@ -595,7 +611,7 @@ export function Table<Row>({
   selected, onSelectedChange, rowLabel, onRowAction, opened, filter, loading, loadingRows = 5, error, empty = 'Nothing here yet.',
   emptyFiltered = 'Nothing matches.', maxHeight, now, footer = 'Total', groupBy, defaultCollapsed, live, expandRow,
   columnsMenu, resizable, columnsState, defaultColumnsState, onColumnsChange, childRows, hasChildRows, loadChildRows,
-  expandedRows, defaultExpandedRows, onExpandedRowsChange, virtual, hasMore, loadMore, className,
+  expandedRows, defaultExpandedRows, onExpandedRowsChange, virtual, hasMore, loadMore, grid, className,
 }: TableProps<Row>) {
   const [ownSort, setOwnSort] = React.useState<SortState>(defaultSort);
   const current = sort !== undefined ? sort : ownSort;
@@ -654,7 +670,8 @@ export function Table<Row>({
 
   const primaryAt = Math.max(0, columns.findIndex((c) => c.primary));
   const primary = columns[primaryAt];
-  const shown = columns.filter((c) => c === primary || !hidden.has(c.key));
+  const rank = (c: TableColumn<Row>) => { const i = layout.order?.indexOf(c.key) ?? -1; return i < 0 ? Infinity : i; };
+  const shown = (layout.order ? [...columns].sort((a, b) => rank(a) - rank(b)) : columns).filter((c) => c === primary || !hidden.has(c.key));
   const primaryIndex = shown.indexOf(primary);
   const labelOf = (r: Row) => (rowLabel ? rowLabel(r) : String(valueOf(primary, r) ?? rowKey(r)));
   const moved = shown.filter((c, i) => i !== primaryIndex && (c.priority ?? 1) > 1 && c.kind !== 'actions');
@@ -1086,6 +1103,7 @@ export function Table<Row>({
           return (
             <Cell
               key={c.key}
+              {...grid?.cell(r, c)}
               scope={c.rowHeader ? 'row' : undefined}
               data-leave={leave(c)}
               data-kind={c.kind ?? 'text'}
@@ -1201,7 +1219,7 @@ export function Table<Row>({
         </div>
       )}
       <table ref={table} className={TABLE} aria-busy={wait.busy || (loading && rows.length === 0) || more === 'working' || undefined}
-        aria-rowcount={windowed ? (moreShown ? -1 : n + 1) : undefined} data-density={density} onKeyDown={onKeyDown}>
+        aria-rowcount={windowed ? (moreShown ? -1 : n + 1) : undefined} data-density={density} onKeyDown={onKeyDown} {...grid?.table}>
         <caption className={captionHidden && !filtered && !menu ? 'sr-only' : CAPTION}>
           <span className={CAPTION_ROW}>
             <span className={captionHidden ? 'sr-only' : 'type-title text-ink'}>{caption}</span>
@@ -1215,7 +1233,7 @@ export function Table<Row>({
           </span>
         </caption>
         <thead ref={head}>
-          <tr>
+          <tr {...grid?.headRow}>
             {selectable || expandRow ? leadCells('head', {
               check: <Checkbox size="row" aria-label="Select all" checked={all} doing={some} disabled={rows.length === 0} onCheckedChange={(on) => setAll(!!on)} />,
             }) : null}
@@ -1226,8 +1244,9 @@ export function Table<Row>({
               const sortable = !!(c.sortBy || c.sortable);
               const sizable = resizable && ci !== primaryIndex && c.kind !== 'actions';
               return (
-                <th key={c.key} scope="col" data-col={c.key} aria-sort={sortable ? dir ?? 'none' : undefined} data-leave={leave(c)}
+                <th key={c.key} {...grid?.headCell?.(c)} scope="col" data-col={c.key} aria-sort={sortable ? dir ?? 'none' : undefined} data-leave={leave(c)}
                   style={ci === 0 ? pinAt(leads) : undefined} className={join(TH, ALIGN[align(c)], ci === 0 && pinned && PIN)}>
+                  {grid?.headGrip?.(c)}
                   {sized(c, sortable ? (
                     <button type="button" className={SORT} onClick={() => toggleSort(c.key)}>
                       {label}

@@ -1611,6 +1611,10 @@
   --mu-r-table-tree-gap: 4px;
   --mu-r-table-virtual-overscan: 320px;
   --mu-r-table-more-slop: 240px;
+  /* data-grid: the table recipe (rows, rule, frost); the focus ring's colour; the table's select tint; Field, NumberField and Select (compact) as editors; Sortable's grip and the raised surface (recipe surface raise) for a lifted header; the refusal and settle springs */
+  --mu-r-data-grid-active-width: 2px;
+  --mu-r-data-grid-editor-inset: 4px;
+  --mu-r-data-grid-saving-dim: 0.55px;
   /* properties: the label's engraving; the rule; the table's cell looks */
   --mu-r-properties-self-min-height: 32px;
   --mu-r-properties-self-pad-y: 6px;
@@ -2806,6 +2810,7 @@
   --mu-r-table-select-tint: rgba(63,185,122,.08);
   --mu-r-table-total-shade: rgba(60,55,40,.10);
   --mu-r-table-pin-shade: rgba(24,22,16,.08);
+  --mu-r-data-grid-range-tint: rgba(63,185,122,.12);
   --mu-r-sortable-grip-lip: rgba(255,255,255,.85);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
@@ -3418,6 +3423,7 @@
   --mu-r-table-select-tint: rgba(63,185,122,.12);
   --mu-r-table-total-shade: rgba(0,0,0,.45);
   --mu-r-table-pin-shade: rgba(0,0,0,.40);
+  --mu-r-data-grid-range-tint: rgba(63,185,122,.18);
   --mu-r-sortable-grip-lip: rgba(255,255,255,.06);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
@@ -4031,6 +4037,7 @@
     --mu-r-table-select-tint: rgba(63,185,122,.12);
     --mu-r-table-total-shade: rgba(0,0,0,.45);
     --mu-r-table-pin-shade: rgba(0,0,0,.40);
+    --mu-r-data-grid-range-tint: rgba(63,185,122,.18);
     --mu-r-sortable-grip-lip: rgba(255,255,255,.06);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);

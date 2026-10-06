@@ -83,7 +83,9 @@ if (process.argv.includes('--gate')) {
   // Plan 10.1 (Progress and Spinner), Citation 46.9 (PreviewCard 33.4 and Link 37.9 share Base UI's floating parts; Collapsible).
   // Table 91.1 → 94.8: hierarchy rows (Tree's guides and disclosure, the Spinner's ring for a level that loads),
   // the virtual window and infinite scroll. The window is a few dozen lines, smaller than any virtualiser.
-  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 96, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20, Markdown: 17, PromptInput: 57, MessageActions: 44, MarkScrub: 9, MarkPick: 95, Plan: 11, Citation: 48 };
+  // Table 94.8 → 95.0: the grid hooks and the columns' order. DataGrid 135.7 is Table with its editors (Select 47.7 and
+  // NumberField 27.1, mostly Base UI's, shared with every select and number field in an app) and Sortable for the columns.
+  const CEILING = { DataGrid: 137, Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 96, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20, Markdown: 17, PromptInput: 57, MessageActions: 44, MarkScrub: 9, MarkPick: 95, Plan: 11, Citation: 48 };
   const over = Object.entries(CEILING).filter(([n, kb]) => !perExport[n] || perExport[n].gzip / 1024 > kb);
   if (over.length) {
     console.error(`\nbench-bundle gate: ${over.map(([n, kb]) => `${n} ${perExport[n] ? (perExport[n].gzip / 1024).toFixed(1) : 'missing'} KB gzip > ${kb}`).join(', ')}`);

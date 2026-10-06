@@ -495,6 +495,23 @@
       "agent": "https://metalui.dev/r/connector.md"
     },
     {
+      "name": "data-grid",
+      "title": "Data grid",
+      "status": "alpha",
+      "description": "Table in grid mode, for a price list or a bulk edit: a role=\"grid\" whose cells you walk with the arrow keys (one cell holds focus, a ring inside it), edit where they stand (Field, NumberField or Select by the column's kind; check cells toggle) with onCellCommit that saves and rolls back on a rejection, select as a range (Shift, a drag, ⌘A) and copy, cut, paste or clear as tab-separated text; columns reorder by a grip on Sortable's lift. Everything else is Table's: kinds, sort, selection, totals, groups, sizing.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "DataGrid",
+        "base": "table (role=grid, the APG grid pattern); Field, NumberField and Select as the cell editors; useSortable for the header row"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalDataGrid"
+      },
+      "registry": "https://metalui.dev/r/data-grid.json",
+      "agent": "https://metalui.dev/r/data-grid.md"
+    },
+    {
       "name": "day",
       "title": "Day",
       "status": "alpha",

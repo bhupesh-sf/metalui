@@ -832,6 +832,31 @@
       "docs": "Agent guide: https://metalui.dev/r/connector.md. SwiftUI: MetalConnector in the MetalUI Swift package."
     },
     {
+      "name": "data-grid",
+      "type": "registry:ui",
+      "title": "Data grid",
+      "description": "Table in grid mode, for a price list or a bulk edit: a role=\"grid\" whose cells you walk with the arrow keys (one cell holds focus, a ring inside it), edit where they stand (Field, NumberField or Select by the column's kind; check cells toggle) with onCellCommit that saves and rolls back on a rejection, select as a range (Shift, a drag, ⌘A) and copy, cut, paste or clear as tab-separated text; columns reorder by a grip on Sortable's lift. Everything else is Table's: kinds, sort, selection, totals, groups, sizing.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/checkbox.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/number-field.json",
+        "https://metalui.dev/r/select.json",
+        "https://metalui.dev/r/sortable.json",
+        "https://metalui.dev/r/table.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/data-grid/data-grid.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/data-grid/data-grid.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/data-grid.md. SwiftUI: MetalDataGrid in the MetalUI Swift package."
+    },
+    {
       "name": "day",
       "type": "registry:ui",
       "title": "Day",

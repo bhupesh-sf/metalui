@@ -18,7 +18,8 @@ export { TimePicker, type TimePickerProps, type TimeGranularity } from './compon
 export { Avatar, AvatarGroup, initialsOf, type AvatarProps, type AvatarGroupProps, type AvatarSize } from './components/avatar/avatar';
 export { Card, type CardRootProps, type CardTitleProps, type CardActionProps, type CardFrameProps, type CardChoicesProps, type CardChoiceProps, type CardEmptySlotProps, type CardSize, type CardOrientation, type CardStatus, type CardFrameVariant } from './components/card/card';
 export { Attachment, formatBytes, type AttachmentProps, type AttachmentKind } from './components/attachment/attachment';
-export { Table, TableCell, tableUnit, type TableProps, type TableColumn, type TableCellProps, type TableCellFormat, type TableKind, type TableDensity, type TableStatus, type TablePerson, type TableAction, type TableColumnsState, type SortState } from './components/table/table';
+export { Table, TableCell, tableUnit, type TableProps, type TableColumn, type TableCellProps, type TableCellFormat, type TableKind, type TableDensity, type TableStatus, type TablePerson, type TableAction, type TableColumnsState, type TableGrid, type SortState } from './components/table/table';
+export { DataGrid, type DataGridProps, type DataGridColumn, type DataGridChange } from './components/data-grid/data-grid';
 export { Properties, type PropertiesProps, type PropertiesRootProps, type PropertiesItemProps, type PropertiesSize } from './components/properties/properties';
 export { EmptyState, type EmptyStateProps } from './components/empty-state/empty-state';
 export { Alert, type AlertProps, type AlertRootProps, type AlertKind, type AlertTone } from './components/alert/alert';

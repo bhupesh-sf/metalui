@@ -62,6 +62,9 @@ export interface SelectProps<V extends string = string> {
   'aria-label'?: string;
   /** For a form. */
   name?: string;
+  /** Opens its list as it mounts (a data grid's cell editor). */
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
   className?: string;
 }
 
@@ -108,7 +111,7 @@ function Row<V extends string>({ option }: { option: SelectOption<V> }) {
 
 /** One value from a list of named options: a raised cap that opens a frosted list. */
 export function Select<V extends string = string>({
-  options, value, defaultValue, onValueChange, placeholder, size = 'regular', disabled, invalid, className, name, ...aria
+  options, value, defaultValue, onValueChange, placeholder, size = 'regular', disabled, invalid, className, name, defaultOpen, onOpenChange, ...aria
 }: SelectProps<V>) {
   const flat = isGroups(options) ? options.flatMap((g) => g.options) : options;
   const byValue = React.useMemo(() => new Map(flat.map((o) => [o.value, o])), [flat]);
@@ -120,6 +123,8 @@ export function Select<V extends string = string>({
       onValueChange={(v) => { if (v != null) onValueChange?.(v as V); }}
       disabled={disabled}
       name={name}
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange && ((open) => onOpenChange(open))}
     >
       <BaseSelect.Trigger
         ref={trigger.ref}
