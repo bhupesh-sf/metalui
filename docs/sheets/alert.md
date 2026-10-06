@@ -47,18 +47,18 @@ Blue is not used: it means a link's kind, and "info" is not a link. No new LED c
 
 ## Must
 
-- [ ] **Kinds** `note` / `done` / `waiting` / `urgent` / `failed`, each with its glyph, words and lamp gesture (table above).
-- [ ] **Parts** (ReUI's `Alert.Title`, `Alert.Description`, `Alert.Action`): `Alert.Root`, `Alert.Title`, `Alert.Description`, `Alert.Actions`; title only, description only, or all; a long message wraps; title-only alerts keep their actions on the same line, and actions wrap under the words when the alert is narrow.
-- [ ] **The glyph window** (*ours*): the kind's glyph engraved in a small sunk well, its lamp seated in the well's top right corner, as a latched tool key wears its LED. The window is the alert's one mark: shape (glyph) and light (lamp) in one place.
-- [ ] **Tones**, the same three as Status badge: `plate` (a raised plate with a defined edge, the default), `quiet` (no plate, for cards and panels), `strong` (the plate tinted in the kind's ink, the words in its deep ink: one per view). The plates are the Status recipe's, not a new look.
-- [ ] **Arrive, update, dismiss** as above, Reduce Motion honoured.
-- [ ] **Reading**: `failed` and `urgent` are `role="alert"` (read out at once); `note`, `done` and `waiting` are `role="status"` (polite). The glyph is decorative; the title carries the meaning.
-- [ ] **SwiftUI** `MetalAlert` with the same kinds, tones, slots and motion.
+- [x] **Kinds** `note` / `done` / `waiting` / `urgent` / `failed`, each with its glyph, words and lamp gesture (table above).
+- [x] **Parts** (ReUI's `Alert.Title`, `Alert.Description`, `Alert.Action`): `Alert.Root`, `Alert.Title`, `Alert.Description`, `Alert.Actions`; title only, description only, or all; a long message wraps; title-only alerts keep their actions on the same line, and actions wrap under the words when the alert is narrow.
+- [x] **The glyph window** (*ours*): the kind's glyph engraved in a small sunk well, its lamp seated in the well's top right corner, as a latched tool key wears its LED. The window is the alert's one mark: shape (glyph) and light (lamp) in one place.
+- [x] **Tones**, the same three as Status badge: `plate` (a raised plate with a defined edge, the default), `quiet` (no plate, for cards and panels), `strong` (the plate tinted in the kind's ink, the words in its deep ink: one per view). The plates are the Status recipe's, not a new look.
+- [x] **Arrive, update, dismiss** as above, Reduce Motion honoured.
+- [x] **Reading**: `failed` and `urgent` are `role="alert"` (read out at once); `note`, `done` and `waiting` are `role="status"` (polite). The glyph is decorative; the title carries the meaning.
+- [x] **SwiftUI** `MetalAlert` with the same kinds, tones, slots and motion.
 
 ## Should
 
-- [ ] **Banner** placement (`banner`): full width, square ends, actions at the end of the line.
-- [ ] **Solid** (as Status badge): on frost or an image the plate keeps a keyline; Reduce Transparency turns it on.
+- [x] **Banner** placement (`banner`): full width, square ends, actions at the end of the line.
+- [x] **Solid** (as Status badge): on frost or an image the plate keeps a keyline; Reduce Transparency turns it on.
 
 ## Later
 
@@ -82,3 +82,4 @@ Draw both in the act format (`icons/src/acts/`) with morph partners `clock`, `ch
 
 Decide: where does the lamp go: in the glyph window's corner, or beside the title as on a badge?
 - Decided: **in the window's corner.** Beside the title, a lamp and a glyph would be two marks for one meaning, split across the alert; in the corner of the window they read as one instrument (what kind, and whether it's live), the way a latched tool key wears its LED. The title then starts flush with the description, so a long message reads as one column.
+- Done (2026-10-06): every Must and both Shoulds, in React, SwiftUI (`MetalAlert`), the agent guide, the page (the Alert panel) and `e2e/alert.spec.ts`. SwiftUI picks beside-or-under with `ViewThatFits` rather than the web's 480 container query, and posts an announcement (high priority for failed and urgent) in place of the live region. Left: the info and warning glyphs; a Swift capture on the page.
