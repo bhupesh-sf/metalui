@@ -34,16 +34,17 @@ Owner: "the tick animation is boring, it just makes it appear; it should make th
 
 Owner, on the Alert dialog's "Delete regions" button: "this should have motion like hold to delete, and proper icon animation." (2026-09-30)
 
-- [ ] **Hold to confirm** as a Button behaviour (`hold` on a destructive cap, e.g. `<Button cap="destructive" hold>`), used by `AlertDialog.Confirm` for irreversible acts:
+- [x] **Hold to confirm** as a Button behaviour (`hold` on a destructive cap, e.g. `<Button cap="destructive" hold>`), used by `AlertDialog.Confirm` for irreversible acts:
   - press: the cap presses as now, and a darker red fill runs across it from the leading edge over the hold time (a token, about 800 ms, linear, so it reads as time and not as a spring);
   - let go early: the fill drains back on the release spring, and nothing happens; a short line under the actions says "Hold to delete" the first time;
   - complete: the fill reaches the end, the cap gives one small settle (object spring), and the act fires; then the dialog closes;
   - keyboard: holding Space or Enter fills it the same way; a single tap only shows the hint.
-- [ ] **The trash glyph acts**: the cap leads with the trash icon; while held, its lid lifts a little in step with the fill; at complete, the lid drops shut (a short timeline in the icon set's motion format, from `icons.mjs`, not a CSS pose).
-- [ ] **Accessibility**: say the hold in the button's name or description ("Delete regions, hold to confirm"); announce the progress sparingly; WCAG 2.5.7 needs a single-pointer path; for pointers that can't hold, offer a setting or `hold={false}`, and the alert dialog's question still guards the act.
-- [ ] Reduce Motion: the fill still shows the time passing (it is information), with no settle bounce and no lid travel.
-- [ ] SwiftUI in step (a long-press gesture with the same fill and timing).
-- [ ] Decide where it applies: irreversible deletes only; a delete that goes to the past (undoable) stays a plain press.
+- [x] **The trash glyph acts**: the cap leads with the trash icon; while held, its lid lifts a little in step with the fill; at complete, the lid drops shut (a short timeline in the icon set's motion format, from `icons.mjs`, not a CSS pose).
+- [x] **Accessibility**: say the hold in the button's name or description ("Delete regions, hold to confirm"); announce the progress sparingly; WCAG 2.5.7 needs a single-pointer path; for pointers that can't hold, offer a setting or `hold={false}`, and the alert dialog's question still guards the act.
+- [x] Reduce Motion: the fill still shows the time passing (it is information), with no settle bounce and no lid travel.
+- [x] SwiftUI in step (a long-press gesture with the same fill and timing).
+- [x] Decide where it applies: irreversible deletes only; a delete that goes to the past (undoable) stays a plain press.
+- Done (2026-10-06): `<Button cap="destructive" hold>` (800 ms token) and `AlertDialog.Confirm hold`; trash has a held act (`act.hold`); "Hold to confirm" is the description; a click with no press first (switch, screen reader) confirms at once; opt-in, irreversible deletes only. Left: SwiftUI's alert is the system one (can't host a hold); the Swift hold has no capture or test, doesn't cancel when the pointer slides off, and isn't mirrored for right-to-left.
 
 ## Button group and Split button: redesign
 
@@ -157,12 +158,13 @@ Owner, on the Popover page's "Rename" button: "same, add better semantic action.
 
 Owner, on the Progress page: "few more variations for reset." (2026-09-30) The page shows one known bar, one unknown bar, and worded "Run export" / "Reset" buttons.
 
-- [ ] **Reset reads as reset**: the key leads with `undo` (or a new `reset` glyph); the fill drains back to empty on the release spring, not a jump; the value turns back to 0 % on the drum. "Run export" leads with its glyph, and while running it becomes "Cancel" (the glyph morphs to `close`). (Started: Run export leads with `download` and Reset with `undo`; the drain, the drum and Cancel are open.)
-- [ ] **End states**: complete (the fill finishes, then the head morphs to `check` and says "Exported"), failed (the fill stops where it was in the invalid ink, `sync-error`, Try again), paused (the fill holds and dims; Resume), cancelled (drains back).
-- [ ] **Shapes**: a slim bar with no head (under a toolbar or a card's edge), a ring (circular, for a key or an avatar), a segmented bar for known steps ("Step 2 of 4"), and a buffered bar (a lighter second fill ahead, for media).
-- [ ] **Detail**: time left or items done in the head ("8 of 12 · about 20 s"), `tabular-nums`, and the value turning on the drum.
-- [ ] **Sizes**: compact and regular, to sit in a row, a toast or a dialog.
-- [ ] Show them on the page as a states strip with a DialKit panel to scrub the value and flip the state; Swift in step.
+- [x] **Reset reads as reset**: the key leads with `undo` (or a new `reset` glyph); the fill drains back to empty on the release spring, not a jump; the value turns back to 0 % on the drum. "Run export" leads with its glyph, and while running it becomes "Cancel" (the glyph morphs to `close`). (Started: Run export leads with `download` and Reset with `undo`; the drain, the drum and Cancel are open.)
+- [x] **End states**: complete (the fill finishes, then the head morphs to `check` and says "Exported"), failed (the fill stops where it was in the invalid ink, `sync-error`, Try again), paused (the fill holds and dims; Resume), cancelled (drains back).
+- [x] **Shapes**: a slim bar with no head (under a toolbar or a card's edge), a ring (circular, for a key or an avatar), a segmented bar for known steps ("Step 2 of 4"), and a buffered bar (a lighter second fill ahead, for media).
+- [x] **Detail**: time left or items done in the head ("8 of 12 · about 20 s"), `tabular-nums`, and the value turning on the drum.
+- [x] **Sizes**: compact and regular, to sit in a row, a toast or a dialog.
+- [x] Show them on the page as a states strip with a DialKit panel to scrub the value and flip the state; Swift in step.
+- Done (2026-10-06): the fill drains on the release spring; Run export morphs to Cancel; `state` complete / failed / paused; `shape` slim and ring (the Spinner's ring), `steps`, `buffer`; `detail` and `icon`; `size` compact; a real `MetalProgress`. Left: Attachment still uses the old width transition; re-baseline `bench/budgets.json`; the ring takes the Spinner's fixed sizes.
 
 ## Slider: redesign
 
@@ -481,23 +483,24 @@ Decided (Bhupesh Gupta, 2026-10-06): a roomy 48 density, yes; `Properties` now; 
 
 Now: the raised surface; `Card.Media`, `Title` (a link stretched over the card), `Description`, `Footer`; a linked card lifts one step on hover; selected has the green ring. No sizes, header action, status, waiting, or side-by-side media. SwiftUI is a plain rounded rectangle.
 
-- [ ] **SwiftUI first**: `MetalCard` on the raised recipe, with media, a link, the lift and selected.
-- [ ] **A corner action** (shadcn `CardAction`): `Card.Action`: a ghost icon key (`more`) level with the title's first line, above the stretched link.
-- [ ] **Size** (shadcn `size="sm"`, ReUI spacing): `size` regular (16) / compact (12).
-- [ ] **Media at the side** (research): `orientation="horizontal"`: square media at the start, for result lists.
-- [ ] **Status** (*ours*): `status` live / waiting / failed lights an LED in the card's top-right corner, with the word in its accessible name and tooltip, so a wall of cards can be scanned for trouble.
-- [ ] **Choice cards that latch** (shadcn choice cards; *ours*: the icon key's latch): a card as a radio or checkbox; the chosen one sinks and stays down with the 4 pt green LED, the same latch as `IconButton`'s tool.
-- [ ] **Waiting**: the Spinner entry's "On a large item" (the card's own shape waits), not a spinner in the middle.
-- [ ] **A frame of cards** (ReUI Frame), in our materials:
+- [x] **SwiftUI first**: `MetalCard` on the raised recipe, with media, a link, the lift and selected.
+- [x] **A corner action** (shadcn `CardAction`): `Card.Action`: a ghost icon key (`more`) level with the title's first line, above the stretched link.
+- [x] **Size** (shadcn `size="sm"`, ReUI spacing): `size` regular (16) / compact (12).
+- [x] **Media at the side** (research): `orientation="horizontal"`: square media at the start, for result lists.
+- [x] **Status** (*ours*): `status` live / waiting / failed lights an LED in the card's top-right corner, with the word in its accessible name and tooltip, so a wall of cards can be scanned for trouble.
+- [x] **Choice cards that latch** (shadcn choice cards; *ours*: the icon key's latch): a card as a radio or checkbox; the chosen one sinks and stays down with the 4 pt green LED, the same latch as `IconButton`'s tool.
+- [x] **Waiting**: the Spinner entry's "On a large item" (the card's own shape waits), not a spinner in the middle.
+- [x] **A frame of cards** (ReUI Frame), in our materials:
   - *separated*: a sunk tray (well) that holds raised cards: peers to compare;
   - *stacked*: one raised plate with engraved hairlines between its sections: parts of one whole (a settings page);
   - *ghost*: the cards with no tray;
   - `size` regular / compact, as the cards.
-- [ ] **An empty slot** (*ours*, from a rack): an empty place in the tray, sunk, with `plus` and a verb ("New canvas"); it shows where a new card will go.
+- [x] **An empty slot** (*ours*, from a rack): an empty place in the tray, sunk, with `plus` and a verb ("New canvas"); it shows where a new card will go.
 
 Not doing: screws, rack ears or other ornament (decoration with no job); a custom radius per frame (one look); a large spacing.
 
 Decide: name the frame `Card.Frame`, `CardTray` or `Frame`?
+- Done (2026-10-06). The frame is `Card.Frame` (a slot of the Card object: it arranges peers, you don't go into it); the status LED sits at the end of the title's line (a corner lamp collides with the action at compact). Left (SwiftUI): stacked sections clip the waiting edge at the outer corners; a footer without media needs `media: { EmptyView() }`; `MetalCardChoice` has no horizontal; frame items don't stretch to equal heights.
 
 ### Field and FormField
 
