@@ -16,6 +16,16 @@ The pre-commit hook lints staged component files. CI runs `npm run check` and bo
 
 `check:recipes` parses the CSS and Swift frost shadow/fill/opaque layers and compares numbers, color channels, order, blur and backdrop values. New component recipes go in `componentRecipes` (or `components`/`recipes`) as named entries with an ordered `layers` array. Each generated layer needs `/* mu-recipe:<name>:<index> */` on its CSS line and `// mu-recipe:<name>:<index>` on its Swift line. The checker parses numbers from both output lines. It also requires a matching React and Swift component file for each entry, and one recipe entry for each component file. A recipe marker on only one platform fails.
 
+## Now, 2026-10-06
+
+| Gate | Result |
+| --- | --- |
+| Literal lint | 0 findings (171 on 2026-09-24); the remaining exceptions are named in `scripts/lint-literals.allow.json`. |
+| Recipe parity | 0 findings, 27 known gaps (components without a recipe entry on one platform). |
+| `npm run check` | green. |
+
+The 2026-09-24 baseline below is kept for history.
+
 ## Baseline, 2026-09-24
 
 Run against current `main` while component migration was active:
