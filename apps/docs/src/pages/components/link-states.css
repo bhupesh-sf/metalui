@@ -1,0 +1,7 @@
+/* THE LINK'S STATES STRIP: every state held still, on its colorway's own page ground. */
+.link-states { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 22px 16px; padding: 26px 22px; background: var(--mu-page); }
+.link-states[data-mu-colorway="graphite"] { background: var(--mu-page-dark); }
+.link-state { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0; }
+.link-state-specimen { min-height: 22px; white-space: nowrap; }
+/* loading is held at one moment of its run: a still asks for no frames */
+.link-state[data-state="loading"] .mu-link-line { animation-play-state: paused; animation-delay: -450ms; }

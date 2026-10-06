@@ -954,13 +954,14 @@
       "name": "link",
       "type": "registry:ui",
       "title": "Link",
-      "description": "An inline link in text: always underlined with an engraved hairline that darkens on hover; an external link's arrow nudges toward where it goes.",
+      "description": "An inline link in text: always underlined with an engraved hairline that rises and darkens over a faint tint on hover; pressed it sinks a step; visited, current, disabled and loading states; external and download glyphs that act; quiet and standalone kinds.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
         "https://metalui.dev/r/icons.json",
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
       ],
       "files": [
         {

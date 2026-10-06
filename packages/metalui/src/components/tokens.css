@@ -1104,17 +1104,23 @@
   --mu-r-skeleton-self-last: 0.62;
   --mu-r-skeleton-self-delay: 300ms;
   --mu-r-skeleton-self-sweep: 1600ms;
-  /* link: the rule's engraved hairline; the part spring; Base UI useRender (router links keep the look) */
+  /* link: the rule's engraved hairline; the settle spring; the button's press travel; the button's waiting breath; Base UI useRender (router links keep the look) */
   --mu-r-link-underline-thickness: 1px;
-  --mu-r-link-underline-offset: 3px;
+  --mu-r-link-underline-offset: 0px;
   --mu-r-link-underline-fade: 160ms;
-  --mu-r-link-out-size: 0.72em;
-  --mu-r-link-out-gap: 0.18em;
-  --mu-r-link-out-nudge: 2px;
+  --mu-r-link-hover-thickness: 1.5px;
+  --mu-r-link-hover-rise: 1.5px;
+  --mu-r-link-hover-tint: 7%;
+  --mu-r-link-hover-pad: 2px;
+  --mu-r-link-hover-radius: 3px;
   --mu-r-link-self-pressed: 0.64;
-  --mu-r-link-file-size: 0.95em;
-  --mu-r-link-file-gap: 0.24em;
-  --mu-r-link-file-drop: -0.14em;
+  --mu-r-link-self-travel: 1px;
+  --mu-r-link-loading-run: 40%;
+  --mu-r-link-loading-sweep: 1100ms;
+  --mu-r-link-loading-breathe: 1600ms;
+  --mu-r-link-glyph-size: 0.95em;
+  --mu-r-link-glyph-gap: 0.24em;
+  --mu-r-link-glyph-drop: -0.14em;
   --mu-r-link-file-quiet: 62%;
   /* button-group: the button cap; the switch track (recipe switch) as the tray; the menu; the part spring */
   --mu-r-button-group-tray-pad: 2px;
