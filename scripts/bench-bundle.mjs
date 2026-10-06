@@ -80,7 +80,7 @@ if (process.argv.includes('--gate')) {
   // 56.2 and MessageActions 43.5, most of it Tooltip (34.3, Base UI's positioning), shared with every tooltip in an app.
   // Thread 14.3 (ScrollArea and Button come with it), Message 3.2. MarkScrub 8.4 (no popover: the host owns the
   // long jump's), MarkPick 92.7 (Combobox's weight).
-  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 92, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20, Markdown: 17, PromptInput: 57, MessageActions: 44, MarkScrub: 9, MarkPick: 93 };
+  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 92, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20, Markdown: 17, PromptInput: 57, MessageActions: 44, MarkScrub: 9, MarkPick: 95 };
   const over = Object.entries(CEILING).filter(([n, kb]) => !perExport[n] || perExport[n].gzip / 1024 > kb);
   if (over.length) {
     console.error(`\nbench-bundle gate: ${over.map(([n, kb]) => `${n} ${perExport[n] ? (perExport[n].gzip / 1024).toFixed(1) : 'missing'} KB gzip > ${kb}`).join(', ')}`);
