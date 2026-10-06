@@ -473,13 +473,14 @@ Plan it by the **kind of data**, not by features: each kind below is a real situ
 - Must done (2026-10-06): every cell kind (`kind`, `unit`, `TableCell` exported), densities 48/40/32, the gliding guide, the sort arrow morphs, sticky head, `onRowAction` with the rail, row actions, "12 of 240", loading/empty/filtered/error, `priority` for narrow widths (`@container/table`, 720 and 560), `Properties` (a Part; the host passes a `TableCell` as its value), a real `MetalTable` and `MetalProperties`. Left (SwiftUI): the guide follows hover only; the sort arrow rotates; avatars scale until `MetalAvatar` has sizes.
 
 **Should**
-- [ ] **Totals**: `footer`, a sunk readout row, sticky; totals turn on the drum when rows change.
-- [ ] **Grouped rows**: `groupBy` with engraved group headers (the name and a count), collapsing with a chevron on the part spring, subtotals, the header sticky under the table header.
-- [ ] **Pinned first column**: `pin: 'start'` on the raised plate; a shadow at its edge only while content is under it (the composer's scrolled hairline).
-- [ ] **Row headers and a matrix**: `rowHeader` column (`<th scope="row">`); yes/no cells; checkbox cells for a permissions matrix.
-- [ ] **Live rows**: new rows arrive with the rows' motion (`useRowMotion`); if you've scrolled down, they wait behind a "4 new" key at the top instead of pushing you.
-- [ ] **Row detail in place**: `expandRow` opens a panel under the row (the error row's grow, settle spring) for a little more without leaving the list.
-- [ ] **Columns to hide and size**: hide and show from a column `Menu` with checkboxes; drag the hairline between headers to resize (it thickens to a grip, part spring); `onColumnsChange` so the host keeps them.
+- [x] **Totals**: `footer`, a sunk readout row, sticky; totals turn on the drum when rows change.
+- [x] **Grouped rows**: `groupBy` with engraved group headers (the name and a count), collapsing with a chevron on the part spring, subtotals, the header sticky under the table header.
+- [x] **Pinned first column**: `pin: 'start'` on the raised plate; a shadow at its edge only while content is under it (the composer's scrolled hairline).
+- [x] **Row headers and a matrix**: `rowHeader` column (`<th scope="row">`); yes/no cells; checkbox cells for a permissions matrix.
+- [x] **Live rows**: new rows arrive with the rows' motion (`useRowMotion`); if you've scrolled down, they wait behind a "4 new" key at the top instead of pushing you.
+- [x] **Row detail in place**: `expandRow` opens a panel under the row (the error row's grow, settle spring) for a little more without leaving the list.
+- [x] **Columns to hide and size**: hide and show from a column `Menu` with checkboxes; drag the hairline between headers to resize (it thickens to a grip, part spring); `onColumnsChange` so the host keeps them.
+- Should done (2026-10-06): `total` (sum, mean, a function) in a sticky sunk footer on the drum; `groupBy` with sticky `rowgroup` headers, chevrons and subtotals; `pin: 'start'` with a shade only while scrolled under; `rowHeader` and a `check` kind for a permissions matrix; `live` rows behind "N new"; `expandRow`; `columnsMenu` and `resizable` with `onColumnsChange`. The head, group headers and pinned cells are opaque frost (blur doesn't apply on table cells). Left: `Menu` should get its own `MenuCheckboxItem`; SwiftUI `total` takes no function and live rows can overlap while landing.
 
 **Later**
 - [ ] Tree rows (after Tree, sharing its parts).
