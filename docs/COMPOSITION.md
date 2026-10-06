@@ -37,7 +37,7 @@ The generators emit CSS custom properties and classes, and Swift `MetalTokens` /
 <!-- layers:start (generated from each meta.json `layer` by scripts/build-agent-docs.mjs; don't edit) -->
 | Layer | Members |
 |---|---|
-| **Parts** | Badge, Chip, Dot display, Glass face, Glyph, Keycap, LED, Label, Mark, Properties, Row, Rule, Skeleton, Sparkline, Spatial field, Surface, Well |
+| **Parts** | Badge, Chip, Dot display, Glass face, Glyph, Icon tile, Keycap, LED, Label, Mark, Properties, Row, Rule, Skeleton, Sparkline, Spatial field, Surface, Well |
 | **Components** | Accordion, Alert, Alert dialog, Autocomplete, Breadcrumbs, Button, Button group, Calendar, Cascader, Checkbox, Checkbox group, Code block, Code field, Collapsible, Combobox, Command palette, Dialog, Draw picks, Draw tools, Fan, Field, Filters, Form field, Icon button, Link, Menu and correction popover, Menubar, Meter, Navigation menu, Number field, Pagination, Phone input, Popover, Preview card, Progress, Quick edit, Radio group, Rating, Scroll area, Scrollspy, Select, Settings, Sheet, Slider, Spinner, Status badge, Stepper, Switch, Switcher, Tabs, Textarea, Time picker, Toast, Toggle, Tool strip, Toolbar and tool button, Tooltip, Tree |
 | **Objects** | Attachment, Avatar, Block silhouette, Card, Code card, Connector, Day, Folder, Link card, Table, Timeline, Weather |
 | **Instruments** | Brush cursor, Hover engraving, Lasso, Line handles, Perfect preview, Provenance tooltip, Selection frame, Size readout, Snap guides, Sortable, Suggestion chip |

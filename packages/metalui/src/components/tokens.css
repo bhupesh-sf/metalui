@@ -1676,6 +1676,28 @@
   --mu-r-badge-corner-offset: -5px;
   --mu-r-badge-corner-ring: 1.5px;
   --mu-r-badge-corner-from: 0.6;
+  /* icon-tile: Alert's window (the well, field; 28, radius 9, glyph 16; the lamp's seat); EmptyState's well (56, radius 18, glyph 24); the small raised surface (recipe surface raise-sm); the engraved label's lip; the LED part */
+  --mu-r-icon-tile-compact-size: 28px;
+  --mu-r-icon-tile-compact-radius: 9px;
+  --mu-r-icon-tile-compact-glyph: 16px;
+  --mu-r-icon-tile-compact-font: 600 10px/1 var(--mu-mono);
+  --mu-r-icon-tile-compact-tracking: 0.06em;
+  --mu-r-icon-tile-regular-size: 32px;
+  --mu-r-icon-tile-regular-radius: 10px;
+  --mu-r-icon-tile-regular-glyph: 16px;
+  --mu-r-icon-tile-regular-font: 600 11px/1 var(--mu-mono);
+  --mu-r-icon-tile-regular-tracking: 0.06em;
+  --mu-r-icon-tile-large-size: 44px;
+  --mu-r-icon-tile-large-radius: 14px;
+  --mu-r-icon-tile-large-glyph: 20px;
+  --mu-r-icon-tile-large-font: 600 14px/1 var(--mu-mono);
+  --mu-r-icon-tile-large-tracking: 0.05em;
+  --mu-r-icon-tile-hero-size: 56px;
+  --mu-r-icon-tile-hero-radius: 18px;
+  --mu-r-icon-tile-hero-glyph: 24px;
+  --mu-r-icon-tile-hero-font: 600 17px/1 var(--mu-mono);
+  --mu-r-icon-tile-hero-tracking: 0.04em;
+  --mu-r-icon-tile-lamp-inset: 2px;
   /* status: reference style.css .pill, .pill.status, .led-g, .led-a, .led-r, .led-off */
   --mu-r-status-led-size: 6px;
   --mu-r-status-led-size-small: 4px;

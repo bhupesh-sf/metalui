@@ -1095,6 +1095,25 @@
       "docs": "Agent guide: https://metalui.dev/r/icon-button.md. SwiftUI: MetalIconButton in the MetalUI Swift package."
     },
     {
+      "name": "icon-tile",
+      "type": "registry:ui",
+      "title": "Icon tile",
+      "description": "A mark for what a row, a card or an empty place is about: a glyph, or one to three characters in the engraved mono, in a sunk window (or a small raised plate) beside the words that name it. Compact 28, regular 32, large 44, hero 56; square or round; a thing's state as the LED seated on the top-right rim, flickering once when it changes. Never pressed, never tinted; decorative unless labelled.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/icon-tile/icon-tile.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/icon-tile/icon-tile.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/icon-tile.md. SwiftUI: MetalIconTile in the MetalUI Swift package."
+    },
+    {
       "name": "kbd",
       "type": "registry:ui",
       "title": "Keycap",

@@ -1,0 +1,21 @@
+{
+  "name": "icon-tile",
+  "title": "Icon tile",
+  "status": "alpha",
+  "layer": "part",
+  "uses": ["well", "surface", "led"],
+  "description": "A mark for what a row, a card or an empty place is about: a glyph, or one to three characters in the engraved mono, in a sunk window (or a small raised plate) beside the words that name it. Compact 28, regular 32, large 44, hero 56; square or round; a thing's state as the LED seated on the top-right rim, flickering once when it changes. Never pressed, never tinted; decorative unless labelled.",
+  "base": "none (a span; role img only when labelled)",
+  "react": {
+    "export": "IconTile",
+    "files": [
+      "icon-tile.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalIconTile",
+    "file": "swift/Sources/MetalUI/Components/MetalIconTile.swift"
+  },
+  "agent": "icon-tile.agent.md",
+  "page": "/components/icon-tile"
+}

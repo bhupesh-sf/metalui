@@ -1979,6 +1979,37 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A mark for what a row, a card or an empty place is about: a glyph, or one to three characters in the engraved mono, set in a tile beside the words that name it. Sunk (the well: the window Alert draws) by default, or raised (the small raised plate) where it stands out of a flat card. Its sizes are the field ladder, compact 28, regular 32, large 44, plus hero 56 for an empty state or a feature card; square (radius from the window's 9 at 28) or round. A thing's state is the LED part seated on the top-right rim (Alert's seat), steady, flickering once when the state changes; the words beside it always say the state. No tones and no hover: a tile is never pressed, the row or card around it is. (Alert's window (the well, field; 28, radius 9, glyph 16; the lamp's seat); EmptyState's well (56, radius 18, glyph 24); the small raised surface (recipe surface raise-sm); the engraved label's lip; the LED part)
+    public static let iconTile = MetalObjectRecipe(
+        name: "icon-tile",
+        layers: [
+
+        ],
+        props: [
+            "compact.size": .number(28.0),
+            "compact.radius": .number(9.0),
+            "compact.glyph": .number(16.0),
+            "compact.font": .text("600 10px/1 mono"),
+            "compact.tracking": .text("0.06em"),
+            "regular.size": .number(32.0),
+            "regular.radius": .number(10.0),
+            "regular.glyph": .number(16.0),
+            "regular.font": .text("600 11px/1 mono"),
+            "regular.tracking": .text("0.06em"),
+            "large.size": .number(44.0),
+            "large.radius": .number(14.0),
+            "large.glyph": .number(20.0),
+            "large.font": .text("600 14px/1 mono"),
+            "large.tracking": .text("0.05em"),
+            "hero.size": .number(56.0),
+            "hero.radius": .number(18.0),
+            "hero.glyph": .number(24.0),
+            "hero.font": .text("600 17px/1 mono"),
+            "hero.tracking": .text("0.04em"),
+            "lamp.inset": .number(2.0),
+        ]
+    )
+
     /// A lamp in a small sunk socket, and the status badge. The lamp sits in a dark bezel with a light lip under it, so it carries its own ground on light, dark, frosted and image grounds; a lit lamp glows in its ink, an off lamp is a dull lens. The badge is a raised pill (plate), a lamp and words with no plate (quiet), or a plate tinted in the state's ink (strong); solid adds a keyline for transparent grounds. Not pressable. (reference style.css .pill, .pill.status, .led-g, .led-a, .led-r, .led-off)
     public static let status = MetalObjectRecipe(
         name: "status",
