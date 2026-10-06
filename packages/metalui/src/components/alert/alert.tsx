@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Icon } from '../../icons/Icon';
-import { MorphIcon } from '../../icons/MorphIcon';
-import type { MorphIconName } from '../../icons/morph.generated';
+import { CloseIcon } from '../../icons/components.generated';
+import { MorphPair } from '../../icons/MorphIcon';
+import { bellMorph, checkMorph, clockMorph, noteMorph, syncErrorMorph, type MorphIconName } from '../../icons/morph.generated';
 import { leaveRows } from '../../motion/rows';
 import { IconButton } from '../icon-button/icon-button';
 import { Led, type LedGesture, type LedKind } from '../led/led';
@@ -29,6 +29,8 @@ export type AlertKind = 'note' | 'done' | 'waiting' | 'urgent' | 'failed';
 export type AlertTone = 'plate' | 'quiet' | 'strong';
 
 // ponytail: `note` and `bell` stand in for the info and warning glyphs the set lacks (docs/sheets/alert.md).
+// Only the five glyphs an alert morphs between (MorphPair ships just their parts).
+const GLYPHS = { note: noteMorph, check: checkMorph, clock: clockMorph, bell: bellMorph, 'sync-error': syncErrorMorph };
 const glyphOf: Record<AlertKind, MorphIconName> = { note: 'note', done: 'check', waiting: 'clock', urgent: 'bell', failed: 'sync-error' };
 const lampOf: Record<AlertKind, { led: LedKind; gesture: LedGesture } | null> = {
   note: null,
@@ -120,11 +122,11 @@ const Root = React.forwardRef<HTMLDivElement, AlertRootProps>(function AlertRoot
         {...props}
       >
         <span aria-hidden className={`${WINDOW} ${strong ? DEEP[kind] : 'text-ink2'}`}>
-          <MorphIcon name={glyphOf[kind]} size={16} />
+          <MorphPair glyphs={GLYPHS} name={glyphOf[kind]} size={16} />
           {lamp && <Led kind={lamp.led} gesture={lamp.gesture} className={LAMP_SEAT} />}
         </span>
         <div className={BODY}>{children}</div>
-        {onDismiss && <IconButton variant="ghost" label={dismissLabel} icon={<Icon name="close" />} onClick={dismiss} />}
+        {onDismiss && <IconButton variant="ghost" label={dismissLabel} icon={<CloseIcon />} onClick={dismiss} />}
       </div>
     </AlertContext.Provider>
   );

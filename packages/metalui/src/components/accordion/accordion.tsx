@@ -1,7 +1,7 @@
 'use client';
 
 import { Accordion as BaseAccordion } from '@base-ui/react/accordion';
-import { Icon } from '../../icons/Icon';
+import { ChevronIcon } from '../../icons/components.generated';
 
 /* ─────────────────────────────────────────────────────────
  * ACCORDION, sections that open in place, on Base UI Accordion
@@ -39,7 +39,7 @@ function Trigger({ className, children, ...props }: BaseAccordion.Trigger.Props 
     <BaseAccordion.Header className={HEADER}>
       <BaseAccordion.Trigger className={className ? `${TRIGGER} ${className}` : TRIGGER} {...props}>
         {children}
-        <Icon name="chevron" animate={false} className={CHEVRON} />
+        <ChevronIcon animate={false} className={CHEVRON} />
       </BaseAccordion.Trigger>
     </BaseAccordion.Header>
   );

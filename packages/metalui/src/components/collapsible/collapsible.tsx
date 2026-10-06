@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Collapsible as BaseCollapsible } from '@base-ui/react/collapsible';
-import { Icon } from '../../icons/Icon';
+import { ChevronIcon } from '../../icons/components.generated';
 import { IconButton } from '../icon-button/icon-button';
 import { SwapText } from '../../motion/swap';
 import { useTravelAfter } from '../../motion/rows';
@@ -93,7 +93,7 @@ function Trigger({ className, children, summary, ...props }: CollapsibleTriggerP
     <BaseCollapsible.Trigger className={join(ROW, className)} {...props}>
       <span className={TITLE}>{children}</span>
       {summary != null && <span className={SUMMARY}>{summary}</span>}
-      <Icon name="chevron" animate={false} className={CHEVRON} />
+      <ChevronIcon animate={false} className={CHEVRON} />
     </BaseCollapsible.Trigger>
   );
 }
@@ -109,7 +109,7 @@ function Key({ className, label, ...props }: CollapsibleKeyProps) {
   useCollapsible('Key');
   return (
     <BaseCollapsible.Trigger
-      render={<IconButton variant="ghost" label={label} icon={<Icon name="chevron" animate={false} className={CHEVRON} />} />}
+      render={<IconButton variant="ghost" label={label} icon={<ChevronIcon animate={false} className={CHEVRON} />} />}
       className={join(KEY, className)}
       {...props}
     />
@@ -133,7 +133,7 @@ function More({ className, count, more, less = 'Show less', ...props }: Collapsi
   return (
     <BaseCollapsible.Trigger className={join(MORE, className)} {...props}>
       <SwapText value={open ? less : closed} />
-      <Icon name="chevron" animate={false} className={OVER} />
+      <ChevronIcon animate={false} className={OVER} />
     </BaseCollapsible.Trigger>
   );
 }

@@ -557,9 +557,9 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 
 ### 2. Common form and data controls
 
-- [ ] **Tree**: nested rows that expand and collapse, with keyboard navigation (ARIA tree pattern).
+- [x] **Tree**: nested rows that expand and collapse, with keyboard navigation (ARIA tree pattern). (Built 2026-10-06; sheet in `docs/sheets/tree.md`: flat rows with `aria-level`, selection never follows focus, loading in the chevron's slot, F2 renames with QuickEdit; `Tree.Guides` and `Tree.Disclosure` exported for Table and the Cascader. Left: drag to move (on Sortable), virtual rows, a `folder` glyph pair.)
   - Guide lines per level; folder open, folder closed and file icons; chevron or plus/minus toggles; `indent` per level; drag to move with a drop line.
-- [ ] **Sortable**: drag to reorder, with a keyboard path. Nothing in the library reorders today.
+- [x] **Sortable**: drag to reorder, with a keyboard path. Nothing in the library reorders today. (Built 2026-10-06 as an Instrument; sheet in `docs/sheets/sortable.md`: live reorder, `onValueCommit(next, previous)` rolls back a failed save; `useSortable` for Tree, Kanban, Table columns and uploads; `useRowMotion` now glides sideways too. Left: between lists (Kanban), into a level (Tree), several at once, right-to-left keys.)
   - Vertical list, horizontal, grid with mixed sizes, nested levels; a grip handle or the whole item; disabled items.
   - `onValueCommit` with the previous order, so a failed save can roll back.
 - [ ] **Stepper** (ReUI) / **Questionnaire** (shadcn): the steps of a wizard.

@@ -8,7 +8,7 @@ import { popoverParts } from '../popover/popover';
 import { InheritColorway, type ColorwayAnchor } from '../../theme/colorway';
 import { useRowMotion, leaveRows } from '../../motion/rows';
 import { Spinner } from '../spinner/spinner';
-import { Icon } from '../../icons/Icon';
+import { ChevronIcon, SyncErrorIcon } from '../../icons/components.generated';
 import { useWait, type WaitWork, type WaitPhase } from '../../motion/wait';
 
 /* ─────────────────────────────────────────────────────────
@@ -106,8 +106,8 @@ export function TreeDisclosure({ branch = true, open, phase, failed, label, clas
       {...props}
     >
       {branch && (failed && !showing
-        ? <Icon name="sync-error" animate={false} className="mu-tree-failed" />
-        : <Icon name="chevron" animate={false} className="mu-tree-chevron" />)}
+        ? <SyncErrorIcon animate={false} className="mu-tree-failed" />
+        : <ChevronIcon animate={false} className="mu-tree-chevron" />)}
       {branch && phase && phase !== 'idle' && phase !== 'failed' && <Spinner size="small" phase={phase} label={label} />}
     </span>
   );
