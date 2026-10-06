@@ -111,6 +111,11 @@
           "target": "components/metalui/icons/Icon.tsx"
         },
         {
+          "path": "packages/metalui/src/icons/glyphs.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/glyphs.generated.ts"
+        },
+        {
           "path": "packages/metalui/src/icons/catalog.generated.ts",
           "type": "registry:ui",
           "target": "components/metalui/icons/catalog.generated.ts"
@@ -338,7 +343,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
-        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json",
@@ -363,7 +368,7 @@
         "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/field.json",
         "https://metalui.dev/r/form-field.json",
-        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/popover.json",
@@ -391,7 +396,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/icon-button.json",
-        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/led.json",
         "https://metalui.dev/r/tokens.json",
         "https://metalui.dev/r/tooltip.json"
@@ -985,7 +990,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
-        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/tokens.json",
         "https://metalui.dev/r/tooltip.json"
       ],
@@ -1025,7 +1030,7 @@
       "description": "Inline text marks in one grammar of kinds: a glyph at full ink before the words (clock, coin, moon, swatch, avatar) and a line behind them (an engraved groove, a hairline, a soft green line, the colour), a luggage tag in its own colour, a URL host pill, a dashed inferred pill that stamps solid when confirmed, the urgency LED and a labelled trailing glyph; recognition plays once.",
       "dependencies": [],
       "registryDependencies": [
-        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -1135,7 +1140,7 @@
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/form-field.json",
-        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -1808,8 +1813,8 @@
         "https://metalui.dev/r/checkbox.json",
         "https://metalui.dev/r/chip.json",
         "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/icon-morph.json",
-        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/led.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/meter.json",
@@ -1902,7 +1907,7 @@
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
-        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/kbd.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"

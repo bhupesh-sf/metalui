@@ -13,14 +13,18 @@ import { IconButton } from '../icon-button/icon-button';
 import { Button } from '../button/button';
 import { Menu, MenuItem, ListGlide, menuParts } from '../menu/menu';
 import { Menu as BaseMenu } from '@base-ui/react/menu';
-import { Icon } from '../../icons/Icon';
-import { MorphIcon } from '../../icons/MorphIcon';
-import type { IconName } from '../../icons/catalog.generated';
+import { ArrowIcon, CheckIcon, ChevronIcon, EyeIcon, MoreIcon, SyncErrorIcon } from '../../icons/components.generated';
+import { MorphPair } from '../../icons/MorphIcon';
+import { arrowMorph, checkMorph, copyMorph } from '../../icons/morph.generated';
 import { SwapText } from '../../motion/swap';
 import { useWait } from '../../motion/wait';
 import { useRowMotion, springOf } from '../../motion/rows';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 import { motionReduced } from '../../motion/reduced';
+
+// The glyphs the table morphs between, and only those (MorphPair ships just their parts).
+const COPY = { copy: copyMorph, check: checkMorph };
+const ARROW_GLYPH = { arrow: arrowMorph };
 
 /* ─────────────────────────────────────────────────────────
  * TABLE, rows of a person's things, read across and compared down
@@ -77,8 +81,9 @@ export interface TablePerson { name: string; src?: string }
 export interface TableAction {
   label: string;
   onSelect: () => void;
-  /** The 14 glyph: in the menu row, and on the key for the primary action. */
-  icon?: IconName;
+  /** The 14 glyph, as an element (`<SendIcon />`, so the table ships only the glyphs given): in the menu row,
+   *  and on the key for the primary action. */
+  icon?: React.ReactElement;
   danger?: boolean;
   /** Shown as its own key beside `more` on hover (one per row; it needs an icon). */
   primary?: boolean;
@@ -334,7 +339,7 @@ function CopyKey({ text }: { text: string }) {
   const copy = () => navigator.clipboard?.writeText(text).then(() => setCopied(true), () => setCopied(false));
   return (
     <span className={join(LIFT, 'table-reveal')} data-copied={copied ? '' : undefined}>
-      <IconButton variant="ghost" label={copied ? `Copied ${text}` : `Copy ${text}`} icon={<MorphIcon name={copied ? 'check' : 'copy'} />} onClick={copy} />
+      <IconButton variant="ghost" label={copied ? `Copied ${text}` : `Copy ${text}`} icon={<MorphPair glyphs={COPY} name={copied ? 'check' : 'copy'} />} onClick={copy} />
     </span>
   );
 }
@@ -345,10 +350,10 @@ function Actions({ actions, name }: { actions: TableAction[]; name: string }) {
   const rest = actions;
   return (
     <span className={join(LIFT, 'inline-flex items-center table-reveal')}>
-      {primary && <IconButton variant="ghost" className="mu-table-primary-key" label={`${primary.label} ${name}`} icon={<Icon name={primary.icon!} />} onClick={primary.onSelect} />}
+      {primary && <IconButton variant="ghost" className="mu-table-primary-key" label={`${primary.label} ${name}`} icon={primary.icon} onClick={primary.onSelect} />}
       {rest.length > 0 && (
-        <Menu align="end" trigger={<IconButton variant="ghost" label={`More for ${name}`} icon={<Icon name="more" />} />}>
-          {rest.map((a) => <MenuItem key={a.label} icon={a.icon && <Icon name={a.icon} />} danger={a.danger} onSelect={a.onSelect}>{a.label}</MenuItem>)}
+        <Menu align="end" trigger={<IconButton variant="ghost" label={`More for ${name}`} icon={<MoreIcon />} />}>
+          {rest.map((a) => <MenuItem key={a.label} icon={a.icon} danger={a.danger} onSelect={a.onSelect}>{a.label}</MenuItem>)}
         </Menu>
       )}
     </span>
@@ -389,7 +394,7 @@ export function TableCell({ kind = 'text', value, label = '', now, actions, inli
       const good = up === ((f.better ?? 'up') === 'up');
       return (
         <span className={join(INLINE, 'tabular-nums')} data-trend={up ? 'up' : 'down'}>
-          <span aria-hidden className={join('inline-flex table-arrow', good ? 'text-green' : 'text-red')}><Icon name="arrow" animate={false} turn={up ? 0 : 180} className="size-table-glyph-size" /></span>
+          <span aria-hidden className={join('inline-flex table-arrow', good ? 'text-green' : 'text-red')}><ArrowIcon animate={false} turn={up ? 0 : 180} className="size-table-glyph-size" /></span>
           {plainNumber(kind, n, f)}
         </span>
       );
@@ -449,7 +454,7 @@ export function TableCell({ kind = 'text', value, label = '', now, actions, inli
       );
     }
     case 'yes':
-      return value ? <><Icon name="check" animate={false} className="inline-block size-table-glyph-size align-top text-ink" /><span className="sr-only">Yes</span></> : <span className="sr-only">No</span>;
+      return value ? <><CheckIcon animate={false} className="inline-block size-table-glyph-size align-top text-ink" /><span className="sr-only">Yes</span></> : <span className="sr-only">No</span>;
     case 'code':
       if (inline) return <span className="type-label-cell">{String(value)}</span>;
       return <span className={INLINE}><span className="type-label-cell text-ink">{String(value)}</span><CopyKey text={String(value)} /></span>;
@@ -761,7 +766,7 @@ export function Table<Row>({
         {leadCells('body', {
           rail: opened === key,
           check: <Checkbox size="row" className={LIFT} aria-label={`Select ${name}`} checked={on} onCheckedChange={(v) => setOne(key, !!v)} />,
-          expand: <IconButton variant="ghost" className={join(LIFT, 'align-middle')} label={`Details for ${name}`} aria-expanded={isOpen} aria-controls={isOpen ? detailId : undefined} icon={<Icon name="chevron" animate={false} className={CHEVRON} />} onClick={() => toggleRow(key)} />,
+          expand: <IconButton variant="ghost" className={join(LIFT, 'align-middle')} label={`Details for ${name}`} aria-expanded={isOpen} aria-controls={isOpen ? detailId : undefined} icon={<ChevronIcon animate={false} className={CHEVRON} />} onClick={() => toggleRow(key)} />,
         })}
         {shown.map((c, ci) => {
           const isPrimary = ci === primaryIndex;
@@ -821,7 +826,7 @@ export function Table<Row>({
 
   let content: React.ReactNode;
   if (error) {
-    content = <tbody>{stateRow(<><Icon name="sync-error" animate={false} className="size-table-glyph-size text-red" />{error.message}{error.onRetry && <Button size="compact" onClick={error.onRetry}>Try again</Button>}</>, 'error')}</tbody>;
+    content = <tbody>{stateRow(<><SyncErrorIcon animate={false} className="size-table-glyph-size text-red" />{error.message}{error.onRetry && <Button size="compact" onClick={error.onRetry}>Try again</Button>}</>, 'error')}</tbody>;
   } else if (loading && rows.length === 0) {
     content = (
       <tbody>
@@ -842,7 +847,7 @@ export function Table<Row>({
           <tr data-row={`group:${g.name}`} data-group={g.name} className="mu-table-group">
             <th scope="rowgroup" colSpan={leads + primaryIndex + 1} className={join(GROUP, pinned && PIN)} style={pinAt(0)}>
               <button type="button" className={GROUP_TOGGLE} aria-expanded={open(g.name)} onClick={() => toggleGroup(g)}>
-                <Icon name="chevron" animate={false} className={CHEVRON} />
+                <ChevronIcon animate={false} className={CHEVRON} />
                 {g.name}
                 <span className="text-ink3 tabular-nums"><SwapText value={String(g.rows.length)} /></span>
               </button>
@@ -858,7 +863,7 @@ export function Table<Row>({
   }
 
   const menu = columnsMenu && (
-    <Menu align="end" heading="Columns" trigger={<IconButton variant="ghost" label="Columns" className={join(LIFT, 'ms-auto self-center')} icon={<Icon name="eye" />} />}>
+    <Menu align="end" heading="Columns" trigger={<IconButton variant="ghost" label="Columns" className={join(LIFT, 'ms-auto self-center')} icon={<EyeIcon />} />}>
       {columns.filter((c) => c.kind !== 'actions').map((c) => (
         <ColumnItem key={c.key} checked={c === primary || !hidden.has(c.key)} disabled={c === primary}
           onCheckedChange={(on) => setLayout({ ...layout, hidden: on ? [...hidden].filter((k) => k !== c.key) : [...hidden, c.key] })}>
@@ -881,7 +886,7 @@ export function Table<Row>({
       <ListGlide />
       {live && (
         <div className={NEWS}>
-          <Button size="compact" inert={!waiting} aria-hidden={!waiting} onClick={release} icon={<span className="inline-flex table-arrow"><Icon name="arrow" animate={false} className="size-table-glyph-size" /></span>}>
+          <Button size="compact" inert={!waiting} aria-hidden={!waiting} onClick={release} icon={<span className="inline-flex table-arrow"><ArrowIcon animate={false} className="size-table-glyph-size" /></span>}>
             <SwapText value={`${waiting} new`} />
           </Button>
         </div>
@@ -916,7 +921,7 @@ export function Table<Row>({
                   {sized(c, sortable ? (
                     <button type="button" className={SORT} onClick={() => toggleSort(c.key)}>
                       {label}
-                      <MorphIcon name="arrow" turn={dir === 'descending' ? 180 : 0} className={ARROW} />
+                      <MorphPair glyphs={ARROW_GLYPH} name="arrow" turn={dir === 'descending' ? 180 : 0} className={ARROW} />
                     </button>
                   ) : label)}
                   {sizable && (

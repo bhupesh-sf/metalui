@@ -33,7 +33,7 @@ const shared = {
     title: 'MetalUI icon runtime',
     description: 'The Icon element, the icon catalog and the tick drawing that components such as Checkbox and Toast use.',
     dependsOn: ['motion'],
-    files: ['icons/Icon.tsx', 'icons/catalog.generated.ts', 'icons/icons.generated.css', 'icons/tick.generated.ts'],
+    files: ['icons/Icon.tsx', 'icons/glyphs.generated.ts', 'icons/catalog.generated.ts', 'icons/icons.generated.css', 'icons/tick.generated.ts'],
   },
   'icon-morph': {
     title: 'MetalUI glyph morph',

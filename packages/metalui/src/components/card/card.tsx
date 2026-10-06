@@ -6,7 +6,7 @@ import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
 import { Radio as BaseRadio } from '@base-ui/react/radio';
 import { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-group';
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
-import { Icon } from '../../icons/Icon';
+import { MoreIcon, PlusIcon } from '../../icons/components.generated';
 import { IconButton } from '../icon-button/icon-button';
 import { Led, type LedGesture } from '../led/led';
 import { Tooltip } from '../tooltip/tooltip';
@@ -175,7 +175,7 @@ export interface CardActionProps extends Omit<React.ButtonHTMLAttributes<HTMLBut
 
 /** The corner action: a ghost icon key level with the title's first line, above the stretched link. */
 const Action = React.forwardRef<HTMLButtonElement, CardActionProps>(function Action({ label, icon, className, ...props }, ref) {
-  return <IconButton ref={ref} variant="ghost" label={label} icon={icon ?? <Icon name="more" />} className={className ? `${ACTION} ${className}` : ACTION} {...props} />;
+  return <IconButton ref={ref} variant="ghost" label={label} icon={icon ?? <MoreIcon />} className={className ? `${ACTION} ${className}` : ACTION} {...props} />;
 });
 
 function Description({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
@@ -289,7 +289,7 @@ export interface CardEmptySlotProps extends React.ButtonHTMLAttributes<HTMLButto
 const EmptySlot = React.forwardRef<HTMLButtonElement, CardEmptySlotProps>(function EmptySlot({ className, children, type = 'button', ...props }, ref) {
   return (
     <button ref={ref} type={type} className={className ? `${SLOT} ${className}` : SLOT} {...props}>
-      <Icon name="plus" />
+      <PlusIcon />
       <span>{children}</span>
     </button>
   );

@@ -6,7 +6,7 @@ import { FormField } from '../form-field/form-field';
 import { Popover } from '../popover/popover';
 import { buttonClasses } from '../button/button';
 import { menuParts } from '../menu/menu';
-import { Icon } from '../../icons/Icon';
+import { CalendarIcon, CloseIcon } from '../../icons/components.generated';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 import { Calendar, addMonths, sameDay, startOfDay, type CalendarSingleProps, type DateRange } from './calendar';
 
@@ -292,10 +292,10 @@ export function DatePicker(props: DatePickerProps) {
           onKeyDown={onKeyDown}
         />
         <Field.Trail>
-          {!readOnly && <Field.Clear icon={<Icon name="close" />} />}
+          {!readOnly && <Field.Clear icon={<CloseIcon />} />}
           <Popover open={open} onOpenChange={setOpen}>
             <Popover.Trigger>
-              <Field.Key label={range ? 'Choose dates' : 'Choose a day'} icon={<Icon name="calendar" />} disabled={disabled || readOnly} />
+              <Field.Key label={range ? 'Choose dates' : 'Choose a day'} icon={<CalendarIcon />} disabled={disabled || readOnly} />
             </Popover.Trigger>
             <Popover.Content align="end" className={PLATE} finalFocus={input}>
               <div className={LAYOUT}>

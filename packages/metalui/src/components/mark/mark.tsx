@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Icon } from '../../icons/Icon';
+import { ClockIcon } from '../../icons/components.generated';
 import { motionReduced } from '../../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
@@ -124,7 +124,7 @@ export const Mark = React.forwardRef<HTMLSpanElement, MarkProps>(function Mark(
 
   const own =
     glyph !== undefined ? glyph
-    : kind === 'date' || kind === 'duration' ? <Icon name="clock" size={14} act={fresh || undefined} />
+    : kind === 'date' || kind === 'duration' ? <ClockIcon size={14} act={fresh || undefined} />
     : kind === 'hex' && swatch !== false ? <i className="mu-cue-swatch mark-swatch" />
     : null;
   const named = own ? label ?? LABELS[kind] : label;

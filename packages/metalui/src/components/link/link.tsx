@@ -2,8 +2,10 @@
 
 import * as React from 'react';
 import { useRender } from '@base-ui/react/use-render';
-import { Icon } from '../../icons/Icon';
+import { ChevronIcon, DownloadIcon, ExternalIcon } from '../../icons/components.generated';
 import { Tooltip } from '../tooltip/tooltip';
+
+const TRAIL = { download: DownloadIcon, external: ExternalIcon, chevron: ChevronIcon };
 
 /* ─────────────────────────────────────────────────────────
  * LINK, an inline link in text
@@ -64,6 +66,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
   const trail = file ? 'download' : external ? 'external' : kind === 'standalone' && !current ? 'chevron' : null;
   // A link with a glyph is the glyph's trigger, so hovering anywhere on it plays the act.
   const base = trail ? `${LINK} mu-icon-trigger` : LINK;
+  const Trail = trail && TRAIL[trail];
   const own = className ? `${base} ${className}` : base;
   // Unavailable: no destination at all (not even a router's), but still a focusable link that refuses.
   const off = disabled
@@ -94,7 +97,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
             // the word joiner): they never part from the words, and punctuation after stays on its line.
             <span aria-hidden className={GLYPH}>
               {'\u2060'}
-              <Icon name={trail} size={16} turn={trail === 'chevron' ? 270 : undefined} />
+              {Trail && <Trail size={16} turn={trail === 'chevron' ? 270 : undefined} />}
               {file && fileSize && <span className={SIZE}>· {fileSize}</span>}
             </span>
           )}

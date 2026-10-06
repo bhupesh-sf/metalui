@@ -5,7 +5,7 @@ import { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';
 import { Menu } from '../menu/menu';
 import { Button, type ButtonProps } from '../button/button';
 import { Well } from '../well/well';
-import { Icon } from '../../icons/Icon';
+import { ChevronIcon } from '../../icons/components.generated';
 import { SwapText } from '../../motion/swap';
 
 /* ─────────────────────────────────────────────────────────
@@ -120,7 +120,7 @@ export function SplitButton({ children, menu, menuLabel, heading, disabled }: Sp
       <Menu
         heading={heading}
         align="end"
-        trigger={<Button cap={cap} size={size} aria-label={menuLabel} className={CHEVRON} icon={<Icon name="chevron" className="button-group-chevron" />} />}
+        trigger={<Button cap={cap} size={size} aria-label={menuLabel} className={CHEVRON} icon={<ChevronIcon className="button-group-chevron" />} />}
       >
         {menu}
       </Menu>
