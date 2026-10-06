@@ -896,7 +896,7 @@
       },
       "swift": {
         "package": "MetalUI",
-        "symbol": "MetalCueScrub"
+        "symbol": "MetalMarkScrub"
       },
       "registry": "https://metalui.dev/r/mark-scrub.json",
       "agent": "https://metalui.dev/r/mark-scrub.md"

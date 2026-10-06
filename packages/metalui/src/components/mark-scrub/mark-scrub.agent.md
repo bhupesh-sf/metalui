@@ -1,6 +1,6 @@
 # Mark scrub
 
-A recognised number, duration or time of day that the person changes in place, inside their own text. React: `MarkScrub` and `markScrubRead` from `@unlocalhosted/metalui`. SwiftUI: `MetalCueScrub` and `MetalCueScrubScale`. It composes `Mark` (the cue family) for its look; at rest it is that Mark exactly.
+A recognised number, duration or time of day that the person changes in place, inside their own text. React: `MarkScrub` and `markScrubRead` from `@unlocalhosted/metalui`. SwiftUI: `MetalMarkScrub` and `MetalMarkScrubScale`. It composes `Mark` (the cue family) for its look; at rest it is that Mark exactly.
 
 ## Use it for
 

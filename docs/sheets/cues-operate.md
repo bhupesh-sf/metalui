@@ -46,7 +46,7 @@ Read for jobs: Bret Victor's Tangle (scrubbable numbers in prose), Apple Numbers
 | One undo step per gesture | live `onWordsChange` while dragging; `onWordsCommit` once on release (and once per key press) | Must |
 | A limit says no | at min or max a push shakes only the words, once (the refusal spring) | Must |
 | Reduce Motion | the words change without the drum's travel (a crossfade); the scale appears and goes at once | Must |
-| SwiftUI | `MetalCueScrub`: the same scales, steps, keys (arrows, ⌥, ⇧, and the accessibility adjustable action), the scale while dragging, the alignment haptic per detent on a trackpad | Must |
+| SwiftUI | `MetalMarkScrub`: the same scales, steps, keys (arrows, ⌥, ⇧, and the accessibility adjustable action), the scale while dragging, the alignment haptic per detent on a trackpad | Must |
 
 Not doing: **scroll to change a value.** The wheel over inline text belongs to the page; a sentence that eats the wheel traps the reader. `NumberField` takes the wheel only while focused; an operable cue doesn't take it at all. Not doing: pointer lock while scrubbing. A cue sits in text the eye is reading, and hiding the cursor there loses its place; a drag holds pointer capture instead.
 
@@ -65,7 +65,7 @@ Not doing: **scroll to change a value.** The wheel over inline text belongs to t
 - [x] Drag up / down in detents, the drum, width held, the engraved scale while dragging, the haptic per detent (`haptic('detent')`), refusal at a limit.
 - [x] Keys: ↑ ↓, Shift, Alt, Page Up / Down, Home / End; `spinbutton` with a name; one commit per gesture or key.
 - [x] Reduce Motion.
-- [x] SwiftUI `MetalCueScrub` in step.
+- [x] SwiftUI `MetalMarkScrub` in step.
 - [x] Recipe props (`mark-scrub`), the agent guide, a section on the Cue family page with its DialKit panel, a Playwright slice.
 
 **Should**

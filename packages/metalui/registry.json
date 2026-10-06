@@ -1307,7 +1307,7 @@
           "target": "components/metalui/components/mark-scrub/mark-scrub.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/mark-scrub.md. SwiftUI: MetalCueScrub in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/mark-scrub.md. SwiftUI: MetalMarkScrub in the MetalUI Swift package."
     },
     {
       "name": "menu",

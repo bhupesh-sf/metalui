@@ -11,8 +11,8 @@
     "files": ["mark-scrub.tsx"]
   },
   "swift": {
-    "symbol": "MetalCueScrub",
-    "file": "swift/Sources/MetalUI/Components/MetalCueScrub.swift"
+    "symbol": "MetalMarkScrub",
+    "file": "swift/Sources/MetalUI/Components/MetalMarkScrub.swift"
   },
   "agent": "mark-scrub.agent.md",
   "page": "/components/cue#scrub"
