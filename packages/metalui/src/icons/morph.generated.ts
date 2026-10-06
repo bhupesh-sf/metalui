@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette", "copy", "external"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette", "copy", "external", "settings", "filter", "sort"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -313,5 +313,20 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M6.9 7.5L14.1 7.5C15.43 7.5 16.5 8.57 16.5 9.9L16.5 17.1C16.5 18.43 15.43 19.5 14.1 19.5L6.9 19.5C5.57 19.5 4.5 18.43 4.5 17.1L4.5 9.9C4.5 8.57 5.57 7.5 6.9 7.5Z", 1.7, 0.1, 0, 1, [["behind",1,1.85]]],
     ["M11.4 12.6L19.4 4.6", 1.7, 0, 0, 1],
     ["M14.2 4.6L19.4 4.6L19.4 9.8", 1.7, 0, 0, 1],
+  ],
+  "settings": [
+    ["M12 4C12.37 4 12.82 3.72 13.11 4.08C13.41 4.44 13.28 5.59 13.78 6.17C14.29 6.74 15.41 7.39 16.16 7.54C16.91 7.69 17.84 7 18.3 7.07C18.77 7.15 18.74 7.68 18.93 8C19.11 8.32 19.58 8.57 19.42 9C19.25 9.44 18.19 9.9 17.94 10.63C17.7 11.36 17.7 12.64 17.94 13.37C18.19 14.1 19.25 14.56 19.42 15C19.58 15.43 19.11 15.68 18.93 16C18.74 16.32 18.77 16.85 18.3 16.93C17.84 17 16.91 16.31 16.16 16.46C15.41 16.61 14.29 17.26 13.78 17.83C13.28 18.41 13.41 19.56 13.11 19.92C12.82 20.28 12.37 20 12 20C11.63 20 11.18 20.28 10.89 19.92C10.59 19.56 10.72 18.41 10.22 17.83C9.71 17.26 8.59 16.61 7.84 16.46C7.09 16.31 6.16 17 5.7 16.93C5.23 16.85 5.26 16.32 5.07 16C4.89 15.68 4.42 15.43 4.58 15C4.75 14.56 5.81 14.1 6.06 13.37C6.3 12.64 6.3 11.36 6.06 10.63C5.81 9.9 4.75 9.44 4.58 9C4.42 8.57 4.89 8.32 5.07 8C5.26 7.68 5.23 7.15 5.7 7.07C6.16 7 7.09 7.69 7.84 7.54C8.59 7.39 9.71 6.74 10.22 6.17C10.72 5.59 10.59 4.44 10.89 4.08C11.18 3.72 11.63 4 12 4Z", 1.7, 0.12, 0, 1],
+    ["M12 9.5C13.38 9.5 14.5 10.62 14.5 12C14.5 13.38 13.38 14.5 12 14.5C10.62 14.5 9.5 13.38 9.5 12C9.5 10.62 10.62 9.5 12 9.5Z", 1.7, 0, 0, 1],
+  ],
+  "filter": [
+    ["M5.6 4.6L18.4 4.6C18.87 4.6 19.31 4.88 19.5 5.31C19.69 5.74 19.62 6.25 19.3 6.6L14.4 12.1L14.4 16.7L9.6 16.7L9.6 12.1L4.7 6.6C4.38 6.25 4.31 5.74 4.5 5.31C4.69 4.88 5.13 4.6 5.6 4.6Z", 1.7, 0.12, 0, 1],
+    ["M12 8.4", 2.6, 0, 0, 1],
+  ],
+  "sort": [
+    ["M12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 16.69 16.69 20.5 12 20.5C7.31 20.5 3.5 16.69 3.5 12C3.5 7.31 7.31 3.5 12 3.5Z", 1.7, 0.1, 0, 1],
+    ["M7.2 10L9.4 7.8L11.6 10", 1.7, 0, 0, 1],
+    ["M9.4 7.8L9.4 16.4", 1.7, 0, 0, 1],
+    ["M14.6 7.6L14.6 16.2", 1.7, 0, 0, 1],
+    ["M12.4 14L14.6 16.2L16.8 14", 1.7, 0, 0, 1],
   ],
 };

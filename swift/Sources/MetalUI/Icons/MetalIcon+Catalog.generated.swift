@@ -64,6 +64,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case palette = "palette"
     case copy = "copy"
     case external = "external"
+    case settings = "settings"
+    case filter = "filter"
+    case sort = "sort"
 
     public enum Category: String, Sendable { case tools = "Tools", actions = "Actions", status = "Status" }
 
@@ -130,6 +133,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .palette: return "Appearance"
         case .copy: return "Copy"
         case .external: return "Open elsewhere · External"
+        case .settings: return "Settings"
+        case .filter: return "Filter"
+        case .sort: return "Sort"
         }
     }
 
@@ -196,6 +202,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .palette: return .tools
         case .copy: return .actions
         case .external: return .actions
+        case .settings: return .tools
+        case .filter: return .tools
+        case .sort: return .tools
         }
     }
 
@@ -263,6 +272,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .palette: return 0.12
         case .copy: return 0.12
         case .external: return 0.1
+        case .settings: return 0.12
+        case .filter: return 0.12
+        case .sort: return 0.1
         }
     }
 
@@ -330,6 +342,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .palette: return nil
         case .copy: return nil
         case .external: return nil
+        case .settings: return nil
+        case .filter: return nil
+        case .sort: return nil
         }
     }
 
@@ -397,6 +412,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .palette: return false
         case .copy: return false
         case .external: return false
+        case .settings: return false
+        case .filter: return false
+        case .sort: return false
         }
     }
 
@@ -464,6 +482,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .palette: return 1.85
         case .copy: return 1.85
         case .external: return 1.85
+        case .settings: return 1.85
+        case .filter: return 1.85
+        case .sort: return 1.85
         }
     }
 }

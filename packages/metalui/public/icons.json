@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 61,
+  "count": 64,
   "icons": [
     {
       "name": "select",
@@ -1221,6 +1221,66 @@
       },
       "tuned16": false,
       "construction": "A 14 frame r2.4, tinted .1, open at its top-right corner (a chord-closed wire); an arrow 11.3 long on the diagonal, its head (5.2 arms) out past the corner. Motion (study): the arrow is drawn back 1 into the frame and thrown out 1.6 along its diagonal on the part spring; the frame gives .3 behind it on the object spring; a streak shows behind the tail."
+    },
+    {
+      "name": "settings",
+      "component": "SettingsIcon",
+      "label": "Settings",
+      "category": "Tools",
+      "hover": "The gear is wound back and turned forward a notch against a detent, clicks, and springs back home.",
+      "press": "plays the same act",
+      "pressMs": 1026,
+      "motion": {
+        "caption": "The gear is wound back and turned forward a notch against a detent, clicks, and springs back home.",
+        "durationMs": 1026,
+        "stages": [
+          "Wind back",
+          "Turn",
+          "Return"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A six-tooth gear, tips at r8 and roots at r6.1, five points a tooth joined by a Catmull-Rom curve so tips and roots are round, tinted .12, on a 2.5 hub ring. Motion (study): wound back 8°, turned forward to 30° (half a tooth) against a detent and sprung back home on the hinge spring; the hub gives .9 at the catch on the part spring; a click opens where the top tooth meets the detent."
+    },
+    {
+      "name": "filter",
+      "component": "FilterIcon",
+      "label": "Filter",
+      "category": "Tools",
+      "hover": "The funnel is shaken down once; the drop in its bowl is tossed up and falls back in.",
+      "press": "plays the same act",
+      "pressMs": 1030,
+      "motion": {
+        "caption": "The funnel is shaken down once; the drop in its bowl is tossed up and falls back in.",
+        "durationMs": 1030,
+        "stages": [
+          "Shake",
+          "Toss",
+          "Land"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A funnel 15.6 wide, tinted .12, its rim at 4.6 with r1.2 shoulders, narrowing to a 4.8 spout from 12.1 to 16.7; a drop bead r1.3 in its bowl at 8.4. (The first draft had the drop under the spout; with the spout it read as an exclamation mark.) Motion (study): the funnel is jerked down .8 and snaps back .3 past rest on the object spring; the drop lags, is tossed 1.1 up and falls back into the bowl .3 past its place, squashing .86, on the part spring; a splash opens beside it."
+    },
+    {
+      "name": "sort",
+      "component": "SortIcon",
+      "label": "Sort",
+      "category": "Tools",
+      "hover": "The up arrow is pushed up and the down arrow answers, pushed down: they pass like rows changing places.",
+      "press": "plays the same act",
+      "pressMs": 585,
+      "motion": {
+        "caption": "The up arrow is pushed up and the down arrow answers, pushed down: they pass like rows changing places.",
+        "durationMs": 585,
+        "stages": [
+          "Crouch",
+          "Pass",
+          "Settle"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Disc r8.5, tinted .1 (the key of Send, Download and Upload), holding an up arrow at 9.4 and a down arrow at 14.6, each 8.6 long with 2.2 arms, their heads at opposite ends so they pass without touching. Five parts, one over K2: as harpoons (one arm each, four parts) the pair read as a 1 and an N at 16 px, so the full heads stay; the disc keeps it next to Download and Upload (.39 each way). Motion (study): the up arrow crouches .8 and strikes 1.1 up; the down arrow answers 60 ms later, 1.1 down; each comes back on the part spring; two puffs open under the up arrow's tail."
     }
   ]
 }

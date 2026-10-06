@@ -4231,7 +4231,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 61 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 64 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4310,3 +4310,6 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `PaletteIcon` | `palette` | Tools | The palette is lifted on its thumb and each paint is dabbed in turn. | plays the same act |
 | `CopyIcon` | `copy` | Actions | The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place. | plays the same act |
 | `ExternalIcon` | `external` | Actions | The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it. | plays the same act |
+| `SettingsIcon` | `settings` | Tools | The gear is wound back and turned forward a notch against a detent, clicks, and springs back home. | plays the same act |
+| `FilterIcon` | `filter` | Tools | The funnel is shaken down once; the drop in its bowl is tossed up and falls back in. | plays the same act |
+| `SortIcon` | `sort` | Tools | The up arrow is pushed up and the down arrow answers, pushed down: they pass like rows changing places. | plays the same act |
