@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Avatar, Combobox, type ComboboxGroup, type ComboboxItem } from '@unlocalhosted/metalui';
+import {
+  SettingsIcon, calendarGlyph, calendarMorph, documentGlyph, documentMorph, imageGlyph, imageMorph, linkGlyph, linkMorph,
+  noteGlyph, noteMorph, taskGlyph, taskMorph,
+} from '@unlocalhosted/metalui/icons';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/combobox/combobox.tsx?raw';
@@ -37,12 +41,12 @@ const PEOPLE: ComboboxItem[] = [
 ].map(([value, label, description]) => ({ value, label, description, icon: <Avatar name={label} size="small" /> }));
 
 const KINDS: ComboboxItem[] = [
-  { value: 'note', label: 'Note', icon: 'note', description: 'Text you write' },
-  { value: 'task', label: 'Task', icon: 'task', description: 'Something to do, with a due date' },
-  { value: 'event', label: 'Event', icon: 'calendar', description: 'A time on the calendar' },
-  { value: 'image', label: 'Image', icon: 'image', description: 'A photo or a drawing' },
-  { value: 'link', label: 'Link', icon: 'link', description: 'A page on the web' },
-  { value: 'document', label: 'Document', icon: 'document', description: 'A file: PDF, sheet, deck' },
+  { value: 'note', label: 'Note', icon: { glyph: noteGlyph, morph: noteMorph }, description: 'Text you write' },
+  { value: 'task', label: 'Task', icon: { glyph: taskGlyph, morph: taskMorph }, description: 'Something to do, with a due date' },
+  { value: 'event', label: 'Event', icon: { glyph: calendarGlyph, morph: calendarMorph }, description: 'A time on the calendar' },
+  { value: 'image', label: 'Image', icon: { glyph: imageGlyph, morph: imageMorph }, description: 'A photo or a drawing' },
+  { value: 'link', label: 'Link', icon: { glyph: linkGlyph, morph: linkMorph }, description: 'A page on the web' },
+  { value: 'document', label: 'Document', icon: { glyph: documentGlyph, morph: documentMorph }, description: 'A file: PDF, sheet, deck' },
 ];
 
 /** Every time zone this browser knows, grouped by region: a long list. */
@@ -156,7 +160,7 @@ function Several() {
         value={chosen}
         onValueChange={setChosen}
         onCreate={(label) => { setLabels((l) => [...l, label]); return label; }}
-        actions={[{ id: 'manage', label: 'Manage labels…', icon: 'settings', onAction: () => setManaged((n) => n + 1) }]}
+        actions={[{ id: 'manage', label: 'Manage labels…', icon: <SettingsIcon />, onAction: () => setManaged((n) => n + 1) }]}
         placeholder="Add labels"
         aria-label="Labels"
         className="w-[320px]"

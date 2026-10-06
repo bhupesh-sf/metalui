@@ -51,7 +51,7 @@ SwiftUI: the plate is an overlay under the well (give the combobox room below, o
 
 | React | SwiftUI |
 |---|---|
-| `items`: strings, `{ value, label, description?, icon?, disabled? }`, or `{ label, items }` groups | `items:` (`MetalComboboxItem`, with `person:` for an avatar) and/or `groups:` (`MetalComboboxGroup`) |
+| `items`: strings, `{ value, label, description?, icon?, disabled? }`, or `{ label, items }` groups. `icon` is a glyph as its parts, `{ glyph: tagGlyph, morph: tagMorph }` (both from `@unlocalhosted/metalui/icons`; it plays its act on row hover and morphs from search into the well), or an element such as an `Avatar` | `items:` (`MetalComboboxItem`, with `person:` for an avatar) and/or `groups:` (`MetalComboboxGroup`) |
 | `value`, `defaultValue`, `onValueChange` (one value or `null`) | `selection:` (`String?`) |
 | `multiple` with `value` / `onValueChange` as arrays | `selections:` (`[String]`) |
 | `placeholder`, `aria-label`, `emptyText` (string or `(query) => string`) | `prompt:`, the label |
@@ -59,7 +59,7 @@ SwiftUI: the plate is an overlay under the well (give the combobox room below, o
 | `onQueryChange`, `filter={false}` (your own search), `loading`, `failed`, `onRetry` | `query:` (a binding), `filter:`, `loading:`, `failed:`, `onRetry:` |
 | `recent` (values) | `recent:` |
 | `onCreate(label)`: return the new value to choose it | `onCreate:` |
-| `actions`: `{ id, label, icon, onAction }[]` | `actions:` (`MetalComboboxAction`) |
+| `actions`: `{ id, label, icon, onAction }[]`, `icon` an element (`<SettingsIcon />`) | `actions:` (`MetalComboboxAction`) |
 | `limit` (100) | – |
 | `trigger` (`field`, `button`) | `trigger:` (`.field`, `.button`) |
 
@@ -76,5 +76,6 @@ SwiftUI: the plate is an overlay under the well (give the combobox room below, o
 - The plate grows and shrinks with the matches; it never jumps.
 - Tell the three empties apart: loading keeps the rows, a failure offers Try again, nothing matched says the query back.
 - Create and commands come last, behind a hairline, each with its glyph; they never become the value.
+- Pass glyphs as their parts or elements, never by name: the combobox ships only the glyphs you give it (and search, chevron, check, close, plus, sync-error), not the catalog.
 - Give items with the same name a `description` (or an avatar) so they can be told apart.
 - Pass `trigger="button"` for pickers in toolbars and rows; keep the field for forms.
