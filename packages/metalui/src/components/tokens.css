@@ -1220,6 +1220,8 @@
   --mu-r-combobox-button-min-width: 160px;
   --mu-r-combobox-button-max-width: 260px;
   --mu-r-combobox-button-plate: 260px;
+  /* autocomplete: the combobox recipe and its exported parts (comboboxParts, ComboboxFit, ComboboxMatched, ComboboxGlyph); the field and menu recipes; Base UI Autocomplete */
+  --mu-r-autocomplete-self-limit: 8;
   /* form-field: Base UI Field and Fieldset; the invalid foundation; the settle and release springs */
   --mu-r-form-field-self-gap: 6px;
   --mu-r-form-field-self-fieldset-gap: 16px;

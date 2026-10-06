@@ -66,6 +66,7 @@ export const routes: RouteObject[] = [
       { path: 'components/scroll-area', lazy: lazy(() => import('../pages/components/ScrollArea')) },
       { path: 'components/checkbox-group', lazy: lazy(() => import('../pages/components/CheckboxGroup')) },
       { path: 'components/combobox', lazy: lazy(() => import('../pages/components/Combobox')) },
+      { path: 'components/autocomplete', lazy: lazy(() => import('../pages/components/Autocomplete')) },
       { path: 'components/form-field', lazy: lazy(() => import('../pages/components/FormField')) },
       { path: 'components/skeleton', lazy: lazy(() => import('../pages/components/Skeleton')) },
       { path: 'components/link', lazy: lazy(() => import('../pages/components/Link')) },

@@ -70,6 +70,23 @@
       "agent": "https://metalui.dev/r/attachment.md"
     },
     {
+      "name": "autocomplete",
+      "title": "Autocomplete",
+      "status": "alpha",
+      "description": "Free text with suggestions: the text is the value, and the list only helps finish it. Combobox's well, frosted plate and rows; suggestions that start with what you typed come first, and the rest of the best match is drawn after the caret, where Tab or → takes it. Nothing matched closes the plate; a search you run has Combobox's loading and failed rows; recent searches before typing.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Autocomplete",
+        "base": "@base-ui/react/autocomplete"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalAutocomplete"
+      },
+      "registry": "https://metalui.dev/r/autocomplete.json",
+      "agent": "https://metalui.dev/r/autocomplete.md"
+    },
+    {
       "name": "avatar",
       "title": "Avatar",
       "status": "alpha",

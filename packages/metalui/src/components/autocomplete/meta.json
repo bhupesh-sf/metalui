@@ -1,0 +1,20 @@
+{
+  "name": "autocomplete",
+  "title": "Autocomplete",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["combobox", "field", "menu", "row", "spinner"],
+  "description": "Free text with suggestions: the text is the value, and the list only helps finish it. Combobox's well, frosted plate and rows; suggestions that start with what you typed come first, and the rest of the best match is drawn after the caret, where Tab or → takes it. Nothing matched closes the plate; a search you run has Combobox's loading and failed rows; recent searches before typing.",
+  "base": "@base-ui/react/autocomplete",
+  "react": {
+    "export": "Autocomplete",
+    "files": ["autocomplete.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalAutocomplete",
+    "file": "swift/Sources/MetalUI/Components/MetalAutocomplete.swift"
+  },
+  "agent": "autocomplete.agent.md",
+  "page": "/components/autocomplete"
+}
