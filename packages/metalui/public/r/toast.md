@@ -14,16 +14,16 @@ The result of a person's own action, with Undo. React: `ToastProvider` + `useToa
 
 ## Anatomy
 
-A 44 tall glass pill in the colorway (blur 22, its stack), padding 0 6 0 16, gap 12, the `ui` role; a detail after a middle dot; a count after a repeat (`×3`); an Undo cap (28 tall, a light top lip) with a sunk `⌘Z` keycap; a quiet 28 close key (×) that shows its cap on hover. Bone: a bone pill (`rgba(251,250,248,.92)`), ink `#1B1B1D`, detail `#6E6E72`, a bone cap (`#FFFFFF → #F0EFEB`). Graphite: a smoked pill (`rgba(30,30,33,.92)`), ink `#F2F2F0`, detail `#9A9AA0`, a graphite cap (`#3A3A3E → #2C2C2F`). Bottom centre, 92 above the dock. Success carries its check; an error its red mark.
+A 44 tall glass pill in the colorway (blur 22, its stack), padding 0 6 0 16, gap 12, the `ui` role; a detail after a middle dot; a count after a repeat (`×3`); an Undo cap (28 tall, a light top lip) with a sunk `⌘Z` keycap; a quiet 28 close key (×) that shows its cap on hover. Bone: a bone pill (`rgba(251,250,248,.92)`), ink `#1B1B1D`, detail `#6E6E72`, a bone cap (`#FFFFFF → #F0EFEB`). Graphite: a smoked pill (`rgba(30,30,33,.92)`), ink `#F2F2F0`, detail `#9A9AA0`, a graphite cap (`#3A3A3E → #2C2C2F`). Bottom centre, 92 above the dock. Success carries the set's `check` in green; an error the set's `sync-error` in red (React and SwiftUI).
 
-The deck: toasts stack in depth, newest in front. Each card behind is a step smaller (×.95), peeks 8 past the card in front on the side away from the screen edge (a bottom deck peeks upward) and is 20 % dimmer, its words hidden. Three are drawn; the rest are counted above the back card (`+2`) and come forward as the front ones go. Fanned out, the cards stand 8 apart in a readable column.
+The deck: toasts stack in depth, newest in front. Each card behind is a step smaller (×.95), peeks 8 past the card in front on the side away from the screen edge (a bottom deck peeks upward) and is 20 % dimmer, its words hidden, and as wide as the front card (a short front toast never sits on wider cards). Three are drawn; the rest are counted on a small tab in the back card's top edge (`+2`, `deck.more-height` 16, `deck.more-pad` 6, in the toast's glass) and come forward as the front ones go. Fanned out, the cards stand 8 apart in a readable column, each as wide as its own words.
 
 ## States and motion
 
 | State | Motion |
 |---|---|
 | arrive | rises 8 from below, from .97, into the front on the object spring; every card behind steps back one on the same spring, in the same frame |
-| fan out | pointer on the deck, or focus into it (Tab, F6): the cards spread into a column on the surface spring; every timer pauses |
+| fan out | pointer on the deck, or focus into it (Tab, F6; SwiftUI: the deck is one focus stop, and focus on a card's keys keeps it open): the cards spread into a column on the surface spring; every timer pauses |
 | fold | pointer or focus leaves: back into the deck on the surface spring; timers resume |
 | swipe | follows the pointer (down or right); past 40 on release it leaves the way it was thrown on release; short of it, springs home |
 | close | the close key, or Esc on the focused toast: leaves on release; the next card comes forward |

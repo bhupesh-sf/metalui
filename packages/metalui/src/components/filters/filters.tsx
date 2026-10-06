@@ -10,7 +10,8 @@ import { Field } from '../field/field';
 import { NumberField } from '../number-field/number-field';
 import { CheckboxGroup } from '../checkbox-group/checkbox-group';
 import { Calendar, type DateRange } from '../calendar/calendar';
-import { CheckIcon, CloseIcon, FilterIcon, SearchIcon } from '../../icons/components.generated';
+import { CloseIcon, FilterIcon, SearchIcon } from '../../icons/components.generated';
+import { Tick } from '../../icons/pen';
 import { leaveRows, useRowMotion } from '../../motion/rows';
 import { SwapText } from '../../motion/swap';
 
@@ -458,7 +459,7 @@ export function Filters<Row = unknown>({ fields, value, defaultValue, onValueCha
                 {ops.map((op) => (
                   <MenuItem
                     key={op}
-                    icon={op === c.op ? <CheckIcon /> : <span className={GLYPH_SLOT} />}
+                    icon={<Tick on={op === c.op} />}
                     onSelect={() => {
                       if (op === c.op) return;
                       const next = { ...c, op, value: reshape(c, field.type, op) };
@@ -485,7 +486,7 @@ export function Filters<Row = unknown>({ fields, value, defaultValue, onValueCha
             ) : (
               <Menu heading={field.label} trigger={<Toolbar.Button className={VALUE} aria-label={`Value: ${filterValueWords(c, field)}`}><SwapText value={filterValueWords(c, field)} /></Toolbar.Button>}>
                 {[true, false].map((b) => (
-                  <MenuItem key={String(b)} icon={c.value === b ? <CheckIcon /> : <span className={GLYPH_SLOT} />} onSelect={() => update(c.id, { value: b })}>{b ? 'Yes' : 'No'}</MenuItem>
+                  <MenuItem key={String(b)} icon={<Tick on={c.value === b} />} onSelect={() => update(c.id, { value: b })}>{b ? 'Yes' : 'No'}</MenuItem>
                 ))}
               </Menu>
             ))}

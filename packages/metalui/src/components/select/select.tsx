@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Select as BaseSelect } from '@base-ui/react/select';
 import { menuParts, ListGlide } from '../menu/menu';
+import { Tick } from '../../icons/pen';
 import { InheritColorway, useColorwayAnchor } from '../../theme/colorway';
 
 /* ─────────────────────────────────────────────────────────
@@ -26,7 +27,7 @@ import { InheritColorway, useColorwayAnchor } from '../../theme/colorway';
  *   rows      the menu's rows under one highlight that glides row to row on the settle spring;
  *             pointer and keys move it; ↑ ↓, Home, End,
  *             type-ahead; ↩ or a click chooses and closes; ⎋ closes without choosing
- *   chosen    the green LED the system uses for latched, in a slot before the label
+ *   chosen    the tick, drawn by the Checkbox's pen in a slot before the label (a chosen value, not a live state)
  * Two sizes: regular 32 (forms, settings rows), compact 28 (dense strips, toolbars).
  * Reduce Motion: the list fades only.
  * ───────────────────────────────────────────────────────── */
@@ -77,8 +78,7 @@ const POP = `${menuParts.PLATE} relative mu-select-pop select-pop`;
 const ROW = menuParts.LIVE_ROW;
 const HEADING = menuParts.HEADING;
 const SEP = menuParts.SEP;
-const SLOT = 'select-led-slot';
-const LED = 'mu-select-led select-led';
+const SLOT = 'mu-select-tick select-tick-slot';
 
 const isGroups = <V extends string>(o: SelectOption<V>[] | SelectGroup<V>[]): o is SelectGroup<V>[] => o.length > 0 && 'options' in o[0];
 
@@ -99,7 +99,7 @@ function Chevron() {
 function Row<V extends string>({ option }: { option: SelectOption<V> }) {
   return (
     <BaseSelect.Item value={option.value} disabled={option.disabled} className={ROW}>
-      <span className={SLOT}><BaseSelect.ItemIndicator className={LED}>{null}</BaseSelect.ItemIndicator></span>
+      <BaseSelect.ItemIndicator keepMounted className={SLOT} render={(p, state) => <span {...p} aria-hidden><Tick on={state.selected} /></span>} />
       {option.lead && <span aria-hidden className={menuParts.GLYPH}>{option.lead}</span>}
       <BaseSelect.ItemText className={menuParts.LABEL}>{option.label}</BaseSelect.ItemText>
     </BaseSelect.Item>

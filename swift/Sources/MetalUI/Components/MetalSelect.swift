@@ -201,11 +201,8 @@ public struct MetalSelect<Value: Hashable>: View {
             choose()
         } label: {
             HStack(spacing: recipe.points("row.gap")) {
-                Group {
-                    if selection == option.value { MetalLED(.live, diameter: select.points("led.size")) }
-                    else { Color.clear }
-                }
-                .frame(width: select.points("led.slot"))
+                MetalTick(isOn: selection == option.value, size: select.points("tick.slot"))
+                    .foregroundStyle(colorway.tokens.ink2.color)
                 if let lead = option.lead { MetalIcon(lead, size: recipe.points("row.glyph")) }
                 Text(option.label).frame(maxWidth: .infinity, alignment: .leading)
             }

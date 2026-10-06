@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Toast } from '@base-ui/react/toast';
-import { CloseIcon } from '../../icons/components.generated';
+import { CheckIcon, CloseIcon, SyncErrorIcon } from '../../icons/components.generated';
 import { Kbd } from '../kbd/kbd';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
@@ -12,7 +12,9 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  * rest      the newest toast in front; each older one a step back behind it:
  *           scale .95 per step, peeking 8 past the card in front on the side away
  *           from the screen edge (a bottom deck peeks upward), 20% dimmer, its
- *           words hidden; 3 drawn, the rest counted (+2) above the back card
+ *           words hidden, and as wide as the front card (fanned out, each its own
+ *           width); 3 drawn, the rest counted (+2) on a tab in the back card's edge
+ * marks     success leads with the set's check in green, an error with sync-error in red
  * arrive
  *     0ms   the new toast rises 8 from below, from .97 and opacity 0, into the
  *           front on the object spring (0.92 s); in the same frame every card
@@ -104,10 +106,11 @@ const CONTENT = 'mu-toast-content toast-content';
 const TEXT = 'mu-toast-text inline-flex items-center gap-toast-text-gap';
 const SUB = 'mu-toast-sub text-toast-sub-ink';
 const COUNT = 'mu-toast-count text-toast-sub-ink tabular-nums';
-const CHECK = 'mu-toast-check text-success';
+const CHECK = 'mu-toast-check inline-grid text-success';
+const FAILED = 'mu-toast-error inline-grid text-red';
 const UNDO = 'mu-toast-undo inline-flex items-center gap-toast-undo-gap h-toast-undo-height pl-toast-undo-pad-left pr-toast-undo-pad-right border-0 rounded-pill type-toast-undo text-inherit recipe-toast-undo cursor-pointer transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
 const CLOSE = 'mu-toast-close inline-grid place-items-center size-toast-close-size p-0 border-0 rounded-pill bg-transparent text-toast-close-ink cursor-pointer hover:recipe-toast-undo hover:text-toast-ink transition-transform ease-release duration-release active:translate-y-press active:duration-toast-undo-press focus-visible:toast-undo-focus';
-const MORE = 'mu-toast-more toast-more type-readout text-toast-sub-ink';
+const MORE = 'mu-toast-more toast-more type-readout text-toast-sub-ink recipe-toast';
 const KEY = 'text-toast-kbd-ink recipe-toast-kbd';
 
 /** The toast's part classes, for stills of it outside the toast region (docs, previews). */
@@ -151,16 +154,29 @@ function ToastList({ visible }: { visible: number }) {
   }, []);
   const more = Math.max(0, live.length - visible);
   const back = more > 0 ? live[visible - 1]?.id : undefined;
+  // The cards behind take the front card's width (its layout width, not the drawn one, so its arrival
+  // scale doesn't narrow them).
+  const front = live[0]?.id;
+  const [frontWidth, setFrontWidth] = React.useState<number>();
+  const watching = React.useRef<ResizeObserver | null>(null);
+  const measureFront = React.useCallback((el: HTMLElement | null) => {
+    watching.current?.disconnect();
+    watching.current = null;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    watching.current = new ResizeObserver(() => { if (el.offsetWidth) setFrontWidth(el.offsetWidth); });
+    watching.current.observe(el);
+  }, []);
   return (
     <Toast.Portal>
-      <Toast.Viewport className={VIEWPORT} render={(props, state) => <DeckViewport {...props} expanded={state.expanded} />}>
+      <Toast.Viewport className={VIEWPORT} style={frontWidth ? ({ '--mu-toast-front-w': `${frontWidth}px` } as React.CSSProperties) : undefined} render={(props, state) => <DeckViewport {...props} expanded={state.expanded} />}>
         {toasts.map((t) => {
           const times = (t.data as ToastData | undefined)?.count ?? 1;
           return (
-            <Toast.Root key={t.id} toast={t} className={`${TOAST} ${DECK}`} data-type={t.type} data-bump={times > 1 ? (times % 2 ? 'a' : 'b') : undefined}>
+            <Toast.Root key={t.id} ref={t.id === front ? measureFront : undefined} toast={t} className={`${TOAST} ${DECK}`} data-type={t.type} data-back={t.id !== front ? '' : undefined} data-bump={times > 1 ? (times % 2 ? 'a' : 'b') : undefined}>
               <Toast.Content className={CONTENT}>
                 <span className={TEXT}>
-                  {t.type === 'success' && <span aria-hidden className={CHECK}>✓</span>}
+                  {t.type === 'success' && <span aria-hidden className={CHECK}><CheckIcon size={14} animate={false} /></span>}
+                  {t.type === 'error' && <span aria-hidden className={FAILED}><SyncErrorIcon size={14} animate={false} /></span>}
                   <Toast.Title render={<span />}>{t.title}</Toast.Title>
                   {t.description && <Toast.Description render={<span className={SUB} />}>· {t.description}</Toast.Description>}
                   {times > 1 && <span className={COUNT}>×{times}</span>}

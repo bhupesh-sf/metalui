@@ -129,6 +129,11 @@
           "path": "packages/metalui/src/icons/tick.generated.ts",
           "type": "registry:ui",
           "target": "components/metalui/icons/tick.generated.ts"
+        },
+        {
+          "path": "packages/metalui/src/icons/pen.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/pen.tsx"
         }
       ]
     },
@@ -359,6 +364,7 @@
       "description": "Where you are, as a path you can climb: levels above in ink2, the current in ink, engraved chevrons between; a new level arrives from the right on the settle spring; long paths fold the middle into a menu.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -522,6 +528,7 @@
         "https://metalui.dev/r/icon-button.json",
         "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/icon-morph.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/row.json",
@@ -567,7 +574,6 @@
       ],
       "registryDependencies": [
         "https://metalui.dev/r/icons.json",
-        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1004,6 +1010,7 @@
         "https://metalui.dev/r/field.json",
         "https://metalui.dev/r/icon-button.json",
         "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/number-field.json",
@@ -1360,6 +1367,7 @@
       ],
       "registryDependencies": [
         "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/kbd.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
@@ -1446,6 +1454,7 @@
       ],
       "registryDependencies": [
         "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/icon-morph.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1488,6 +1497,7 @@
       "description": "Moving through pages of results: page numbers in the switcher's track with previous and next keys; the current page's thumb glides to the chosen page on the part spring.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/switcher.json",
         "https://metalui.dev/r/tokens.json"
@@ -1840,12 +1850,13 @@
       "name": "select",
       "type": "registry:ui",
       "title": "Select",
-      "description": "One value from a list of named options: a raised cap showing the value and an up-down chevron, opening the menu's frosted list with the chosen row over the trigger; the chosen row carries the latched green LED.",
+      "description": "One value from a list of named options: a raised cap showing the value and an up-down chevron, opening the menu's frosted list with the chosen row over the trigger; the chosen row carries the tick the Checkbox draws.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
         "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -2194,6 +2205,7 @@
       "registryDependencies": [
         "https://metalui.dev/r/chip.json",
         "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/label.json",
         "https://metalui.dev/r/tokens.json"
       ],

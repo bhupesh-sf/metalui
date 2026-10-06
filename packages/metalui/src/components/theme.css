@@ -1386,6 +1386,8 @@
   --spacing-toast-deck-peek: var(--mu-r-toast-deck-peek);
   --spacing-toast-deck-gap: var(--mu-r-toast-deck-gap);
   --spacing-toast-deck-swipe: var(--mu-r-toast-deck-swipe);
+  --spacing-toast-deck-more-height: var(--mu-r-toast-deck-more-height);
+  --spacing-toast-deck-more-pad: var(--mu-r-toast-deck-more-pad);
   --spacing-toast-close-size: var(--mu-r-toast-close-size);
   --color-toast-close-ink: var(--mu-r-toast-close-ink);
   --spacing-toast-text-gap: var(--mu-r-toast-text-gap);
@@ -1662,8 +1664,7 @@
   --spacing-select-chevron-size: var(--mu-r-select-chevron-size);
   --color-select-chevron-ink: var(--mu-r-select-chevron-ink);
   --color-select-veil-hover: var(--mu-r-select-veil-hover);
-  --spacing-select-led-size: var(--mu-r-select-led-size);
-  --spacing-select-led-slot: var(--mu-r-select-led-slot);
+  --spacing-select-tick-slot: var(--mu-r-select-tick-slot);
   --spacing-select-pop-offset: var(--mu-r-select-pop-offset);
   --spacing-tabs-panel-drift: var(--mu-r-tabs-panel-drift);
   --spacing-tabs-vertical-radius: var(--mu-r-tabs-vertical-radius);
@@ -1792,6 +1793,9 @@
 @utility checkbox-tick {
   position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; fill: none; stroke: var(--mu-r-checkbox-tick-color); stroke-width: var(--mu-r-checkbox-tick-pen); stroke-linecap: round; stroke-linejoin: round; transform: rotate(var(--mu-r-checkbox-tick-rotate));
 }
+@utility checkbox-tick-bare {
+  display: block; overflow: visible; pointer-events: none; fill: none; stroke: currentColor; stroke-width: var(--mu-r-checkbox-tick-bare-pen); stroke-linecap: round; stroke-linejoin: round;
+}
 @utility checkbox-doing {
   &::before { content: ''; position: absolute; inset: var(--mu-r-checkbox-doing-inset); border-radius: var(--mu-r-checkbox-doing-radius); background: var(--mu-r-checkbox-doing-background); opacity: var(--mu-r-checkbox-doing-opacity); }
 }
@@ -1827,6 +1831,9 @@
 @utility duration-checkbox-tick-withdraw {
   --tw-duration: var(--mu-r-checkbox-tick-withdraw);
   transition-duration: var(--mu-r-checkbox-tick-withdraw);
+}
+@utility opacity-checkbox-tick-bare-pen {
+  opacity: var(--mu-r-checkbox-tick-bare-pen);
 }
 @utility opacity-checkbox-doing-opacity {
   opacity: var(--mu-r-checkbox-doing-opacity);
@@ -2579,9 +2586,6 @@
 }
 @utility navigation-menu-content {
   transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle), translate var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-starting-style], &[data-ending-style] { opacity: 0; } &[data-starting-style][data-activation-direction=left] { translate: calc(var(--mu-motion-content) * -1 * var(--mu-travel-settle)) 0; } &[data-starting-style][data-activation-direction=right] { translate: calc(var(--mu-motion-content) * var(--mu-travel-settle)) 0; } &[data-ending-style][data-activation-direction=left] { translate: calc(var(--mu-motion-content) * var(--mu-travel-settle)) 0; } &[data-ending-style][data-activation-direction=right] { translate: calc(var(--mu-motion-content) * -1 * var(--mu-travel-settle)) 0; }
-}
-@utility navigation-menu-chevron {
-  transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-popup-open] > & { rotate: 180deg; }
 }
 @utility stroke-width-preview-card-width {
   stroke-width: var(--mu-r-preview-card-self-width);
@@ -3906,7 +3910,7 @@
   --mu-toast-spring: var(--mu-spring-object); --mu-toast-spring-d: calc(var(--mu-spring-object-d) * var(--mu-travel-object)); &[data-expanded], &[data-folding] { --mu-toast-spring: var(--mu-spring-surface); --mu-toast-spring-d: calc(var(--mu-spring-surface-d) * var(--mu-travel-surface)); }
 }
 @utility toast-deck {
-  --mu-toast-i: var(--toast-index, 0); --mu-toast-x: var(--toast-swipe-movement-x, 0px); --mu-toast-y: var(--toast-swipe-movement-y, 0px); --mu-toast-back: calc(var(--mu-toast-i) * var(--mu-r-toast-deck-peek) * -1); --mu-toast-fan: calc((var(--toast-offset-y, 0px) + var(--mu-toast-i) * var(--mu-r-toast-deck-gap)) * -1); position: absolute; bottom: 0; inset-inline: 0; margin-inline: auto; width: max-content; z-index: calc(var(--mu-r-toast-deck-visible) + 1 - var(--mu-toast-i)); transform-origin: 50% 0; transform: translateX(var(--mu-toast-x)) translateY(calc(var(--mu-toast-y) + var(--mu-toast-back))) scale(calc(1 - (1 - var(--mu-r-toast-deck-step-scale)) * var(--mu-toast-i))); opacity: calc(1 - var(--mu-r-toast-deck-dim) * var(--mu-toast-i)); &::after { content: ''; position: absolute; inset-inline: 0; top: 100%; height: calc(var(--mu-r-toast-deck-gap) + 1px); } &[data-expanded] { transform: translateX(var(--mu-toast-x)) translateY(calc(var(--mu-toast-y) + var(--mu-toast-fan))); opacity: 1; } &[data-limited] { opacity: 0; pointer-events: none; } &[data-starting-style] { opacity: 0; transform: translateY(calc(var(--mu-r-toast-self-rise) * var(--mu-travel-object))) scale(calc(1 - (1 - var(--mu-r-toast-self-scale)) * var(--mu-travel-object))); } &[data-ending-style] { opacity: 0; transform: translateY(calc(var(--mu-toast-back) + var(--mu-r-toast-self-rise) * var(--mu-travel-settle))) scale(calc(1 - (1 - var(--mu-r-toast-deck-step-scale)) * var(--mu-toast-i))); transition: opacity var(--mu-spring-release-d) var(--mu-spring-release), transform var(--mu-spring-release-d) var(--mu-spring-release); } &[data-ending-style][data-expanded] { transform: translateY(calc(var(--mu-toast-fan) + var(--mu-r-toast-self-rise) * var(--mu-travel-settle))); } &[data-ending-style][data-swipe-direction=right] { transform: translateX(calc(var(--mu-toast-x) + 60% * var(--mu-travel-release))) translateY(calc(var(--mu-toast-y) + var(--mu-toast-back))); } &[data-ending-style][data-expanded][data-swipe-direction=right] { transform: translateX(calc(var(--mu-toast-x) + 60% * var(--mu-travel-release))) translateY(calc(var(--mu-toast-y) + var(--mu-toast-fan))); } &[data-ending-style][data-swipe-direction=down] { transform: translateY(calc(var(--mu-toast-y) + 100% * var(--mu-travel-release))); }
+  --mu-toast-i: var(--toast-index, 0); --mu-toast-x: var(--toast-swipe-movement-x, 0px); --mu-toast-y: var(--toast-swipe-movement-y, 0px); --mu-toast-back: calc(var(--mu-toast-i) * var(--mu-r-toast-deck-peek) * -1); --mu-toast-fan: calc((var(--toast-offset-y, 0px) + var(--mu-toast-i) * var(--mu-r-toast-deck-gap)) * -1); position: absolute; bottom: 0; inset-inline: 0; margin-inline: auto; width: max-content; z-index: calc(var(--mu-r-toast-deck-visible) + 1 - var(--mu-toast-i)); &[data-back]:not([data-expanded]) { width: var(--mu-toast-front-w, max-content); } transform-origin: 50% 0; transform: translateX(var(--mu-toast-x)) translateY(calc(var(--mu-toast-y) + var(--mu-toast-back))) scale(calc(1 - (1 - var(--mu-r-toast-deck-step-scale)) * var(--mu-toast-i))); opacity: calc(1 - var(--mu-r-toast-deck-dim) * var(--mu-toast-i)); &::after { content: ''; position: absolute; inset-inline: 0; top: 100%; height: calc(var(--mu-r-toast-deck-gap) + 1px); } &[data-expanded] { transform: translateX(var(--mu-toast-x)) translateY(calc(var(--mu-toast-y) + var(--mu-toast-fan))); opacity: 1; } &[data-limited] { opacity: 0; pointer-events: none; } &[data-starting-style] { opacity: 0; transform: translateY(calc(var(--mu-r-toast-self-rise) * var(--mu-travel-object))) scale(calc(1 - (1 - var(--mu-r-toast-self-scale)) * var(--mu-travel-object))); } &[data-ending-style] { opacity: 0; transform: translateY(calc(var(--mu-toast-back) + var(--mu-r-toast-self-rise) * var(--mu-travel-settle))) scale(calc(1 - (1 - var(--mu-r-toast-deck-step-scale)) * var(--mu-toast-i))); transition: opacity var(--mu-spring-release-d) var(--mu-spring-release), transform var(--mu-spring-release-d) var(--mu-spring-release); } &[data-ending-style][data-expanded] { transform: translateY(calc(var(--mu-toast-fan) + var(--mu-r-toast-self-rise) * var(--mu-travel-settle))); } &[data-ending-style][data-swipe-direction=right] { transform: translateX(calc(var(--mu-toast-x) + 60% * var(--mu-travel-release))) translateY(calc(var(--mu-toast-y) + var(--mu-toast-back))); } &[data-ending-style][data-expanded][data-swipe-direction=right] { transform: translateX(calc(var(--mu-toast-x) + 60% * var(--mu-travel-release))) translateY(calc(var(--mu-toast-y) + var(--mu-toast-fan))); } &[data-ending-style][data-swipe-direction=down] { transform: translateY(calc(var(--mu-toast-y) + 100% * var(--mu-travel-release))); }
 }
 @utility toast-content {
   display: flex; align-items: center; gap: var(--mu-r-toast-self-gap); transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-behind]:not([data-expanded]) { opacity: 0; }
@@ -3915,7 +3919,7 @@
   &[data-bump=a] { animation: mu-toast-bump-a var(--mu-spring-part-d) var(--mu-spring-part); } &[data-bump=b] { animation: mu-toast-bump-b var(--mu-spring-part-d) var(--mu-spring-part); }
 }
 @utility toast-more {
-  position: absolute; bottom: calc(100% + var(--mu-r-toast-deck-peek)); inset-inline: 0; margin-inline: auto; width: max-content; pointer-events: none;
+  position: absolute; top: 0; inset-inline: 0; margin-inline: auto; width: max-content; height: var(--mu-r-toast-deck-more-height); padding-inline: var(--mu-r-toast-deck-more-pad); display: inline-flex; align-items: center; border-radius: 999px; translate: 0 -50%; pointer-events: none;
 }
 @utility toast-undo-focus {
   outline: var(--mu-focus-width) solid var(--mu-green); outline-offset: var(--mu-focus-offset);
@@ -4434,11 +4438,8 @@
 @utility select-pop {
   min-width: var(--anchor-width); max-height: var(--available-height); overflow-y: auto; transform-origin: var(--transform-origin); transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface); &[data-starting-style] { opacity: 0; transform: scale(var(--mu-r-select-pop-scale)); } &[data-ending-style] { opacity: 0; transition: opacity .12s ease; } @media (prefers-reduced-motion: reduce) { transition: opacity .12s ease; &[data-starting-style] { transform: none; } }
 }
-@utility select-led-slot {
-  flex: none; display: inline-grid; place-items: center; width: var(--mu-r-select-led-slot);
-}
-@utility select-led {
-  display: block; width: var(--mu-r-select-led-size); height: var(--mu-r-select-led-size); border-radius: 50%; background: var(--mu-led-green); box-shadow: var(--mu-led-ring), var(--mu-status-bloom);
+@utility select-tick-slot {
+  flex: none; display: inline-grid; place-items: center; width: var(--mu-r-select-tick-slot); color: var(--mu-ink2); & > svg { width: var(--mu-r-select-tick-slot); height: var(--mu-r-select-tick-slot); }
 }
 @utility type-select-regular {
   font: var(--mu-r-select-regular-font);

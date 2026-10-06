@@ -934,6 +934,7 @@
   --mu-r-checkbox-tick-down: 90ms;
   --mu-r-checkbox-tick-pace: 30ms;
   --mu-r-checkbox-tick-withdraw: 140ms;
+  --mu-r-checkbox-tick-bare-pen: 1.85;
   --mu-r-checkbox-ghost-x: -27px;
   --mu-r-checkbox-ghost-y: 3.5px;
   --mu-r-checkbox-ghost-size: 14px;
@@ -1361,7 +1362,7 @@
   /* breadcrumbs: the menu; the settle spring; the WAI breadcrumb pattern */
   --mu-r-breadcrumbs-self-gap: 6px;
   --mu-r-breadcrumbs-self-max: 4px;
-  --mu-r-breadcrumbs-sep-size: 10px;
+  --mu-r-breadcrumbs-sep-size: 14px;
   --mu-r-breadcrumbs-fold-height: 22px;
   --mu-r-breadcrumbs-fold-pad: 6px;
   --mu-r-breadcrumbs-fold-radius: 6px;
@@ -1384,7 +1385,7 @@
   /* pagination: the switcher (track, thumb, options) and its sliding thumb; the WAI pagination landmark */
   --mu-r-pagination-page-min-width: 28px;
   --mu-r-pagination-self-siblings: 1px;
-  --mu-r-pagination-arrow-size: 10px;
+  --mu-r-pagination-arrow-size: 14px;
   /* menubar: the menu (plates, rows, ListGlide); the row recipe's list hover; Base UI Menubar */
   --mu-r-menubar-key-height: 26px;
   --mu-r-menubar-key-pad-x: 10px;
@@ -1398,7 +1399,7 @@
   --mu-r-navigation-menu-link-pad-y: 10px;
   --mu-r-navigation-menu-link-radius: 12px;
   --mu-r-navigation-menu-link-gap: 2px;
-  --mu-r-navigation-menu-chevron-size: 10px;
+  --mu-r-navigation-menu-chevron-size: 14px;
   /* preview-card: the popover (plate and rise); Base UI Preview Card */
   --mu-r-preview-card-self-width: 300px;
   --mu-r-preview-card-self-delay: 600px;
@@ -2294,6 +2295,8 @@
   --mu-r-toast-deck-gap: 8px;
   --mu-r-toast-deck-swipe: 40px;
   --mu-r-toast-deck-press: 0.96;
+  --mu-r-toast-deck-more-height: 16px;
+  --mu-r-toast-deck-more-pad: 6px;
   --mu-r-toast-close-size: 28px;
   --mu-r-toast-text-gap: 6px;
   --mu-r-toast-undo-height: 28px;
@@ -2574,8 +2577,7 @@
   --mu-r-select-compact-font: 500 12.5px/1.3 var(--mu-sans);
   --mu-r-select-compact-min-width: 112px;
   --mu-r-select-chevron-size: 12px;
-  --mu-r-select-led-size: 6px;
-  --mu-r-select-led-slot: 14px;
+  --mu-r-select-tick-slot: 14px;
   --mu-r-select-pop-scale: 0.97;
   --mu-r-select-pop-offset: 6px;
   /* tabs: Soft Hardware switcher track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern */

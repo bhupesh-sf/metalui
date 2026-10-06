@@ -15,7 +15,7 @@ One value from a list of named options. React: `Select` from `@unlocalhosted/met
 
 ## Anatomy
 
-A trigger that is a raised cap (the button cap, it is clicked): the value (with its lead, if any) and an up-down chevron. The list is the menu's frosted plate: rows 30 tall, an LED slot (14), an optional lead, the label; groups get an engraved heading and a separator.
+A trigger that is a raised cap (the button cap, it is clicked): the value (with its lead, if any) and an up-down chevron. The list is the menu's frosted plate: rows 30 tall, a tick slot (14), an optional lead, the label; groups get an engraved heading and a separator.
 
 ## States and motion
 
@@ -31,7 +31,7 @@ A trigger that is a raised cap (the button cap, it is clicked): the value (with 
 | list opens | the chosen row over the trigger when there is room, else below | scale .97 → 1 and fade, surface spring |
 | list closes | – | fade .12 s |
 | highlight | one soft highlight shared by pointer and keys | glides row to row, settle spring, no bounce |
-| chosen row | green LED before the label | – |
+| chosen row | the tick before the label, in ink2 (the Checkbox's pen; not an LED: green means live) | at rest when the list opens |
 
 Keys: ↵, Space or ↓ opens; ↑ ↓, Home, End, type-ahead move; ↵ chooses; ⎋ closes. Reduce Motion: fade only.
 

@@ -5,6 +5,7 @@ import { SlidingIndicator } from '../../motion/indicator';
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import { Kbd } from '../kbd/kbd';
+import { Tick } from '../../icons/pen';
 import { InheritColorway, useColorwayAnchor } from '../../theme/colorway';
 
 /* ─────────────────────────────────────────────────────────
@@ -136,6 +137,27 @@ export function MenuItem({ onSelect, icon, shortcut, danger, disabled, children 
       <span className={LABEL}>{children}</span>
       {shortcut && <Kbd size="small" className={KEY}>{shortcut}</Kbd>}
     </BaseMenu.Item>
+  );
+}
+
+export interface MenuCheckboxItemProps {
+  checked?: boolean;
+  defaultChecked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  /** The key at the right: "⌘⇧H". */
+  shortcut?: string;
+  disabled?: boolean;
+  children: React.ReactNode;
+}
+
+/** A 30 row that turns a setting on or off and stays open: the Checkbox's pen draws the tick in the glyph slot. */
+export function MenuCheckboxItem({ checked, defaultChecked, onCheckedChange, shortcut, disabled, children }: MenuCheckboxItemProps) {
+  return (
+    <BaseMenu.CheckboxItem className={LIVE_ROW} checked={checked} defaultChecked={defaultChecked} onCheckedChange={(on) => onCheckedChange?.(on)} disabled={disabled}>
+      <BaseMenu.CheckboxItemIndicator keepMounted className={GLYPH} render={(p, state) => <span {...p} aria-hidden><Tick on={state.checked} /></span>} />
+      <span className={LABEL}>{children}</span>
+      {shortcut && <Kbd size="small" className={KEY}>{shortcut}</Kbd>}
+    </BaseMenu.CheckboxItem>
   );
 }
 

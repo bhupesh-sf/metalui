@@ -16,11 +16,11 @@ public struct MetalPagination: View {
 
     public var body: some View {
         HStack {
-            Button { page -= 1 } label: { Image(systemName: "chevron.left") }.disabled(page <= 1).accessibilityLabel("Previous page")
+            Button { page -= 1 } label: { MetalIcon(.chevron, size: MetalRecipes.pagination.points("arrow.size")).rotationEffect(.degrees(90)) }.disabled(page <= 1).accessibilityLabel("Previous page")
             ForEach(1...max(count, 1), id: \.self) { p in
                 Button("\(p)") { page = p }.fontWeight(p == page ? .semibold : .regular).accessibilityLabel("Page \(p)")
             }
-            Button { page += 1 } label: { Image(systemName: "chevron.right") }.disabled(page >= count).accessibilityLabel("Next page")
+            Button { page += 1 } label: { MetalIcon(.chevron, size: MetalRecipes.pagination.points("arrow.size")).rotationEffect(.degrees(-90)) }.disabled(page >= count).accessibilityLabel("Next page")
         }
         .buttonStyle(.plain)
     }

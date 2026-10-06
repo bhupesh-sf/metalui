@@ -13,6 +13,8 @@ public struct MetalMenuItem: Identifiable {
     let shortcut: String?
     let danger: Bool
     let disabled: Bool
+    /// Set for a checkbox row: on or off; choosing it toggles and the menu stays open.
+    let checked: Bool?
     let action: (() -> Void)?
 
     /// A 30 row.
@@ -23,6 +25,20 @@ public struct MetalMenuItem: Identifiable {
         self.shortcut = shortcut
         self.danger = danger
         self.disabled = disabled
+        self.checked = nil
+        self.action = action
+    }
+
+    /// A 30 row that turns a setting on or off: the checkbox's pen draws the tick in the glyph slot,
+    /// and choosing it runs `action` (flip `checked` there) without closing the menu.
+    public init(_ label: String, checked: Bool, shortcut: String? = nil, disabled: Bool = false, action: @escaping () -> Void) {
+        self.id = label
+        self.label = label
+        self.icon = nil
+        self.shortcut = shortcut
+        self.danger = false
+        self.disabled = disabled
+        self.checked = checked
         self.action = action
     }
 
@@ -33,6 +49,7 @@ public struct MetalMenuItem: Identifiable {
         shortcut = nil
         danger = false
         disabled = true
+        checked = nil
         action = nil
     }
 
@@ -61,7 +78,7 @@ public struct MetalMenuPanel: View {
         self.onClose = onClose
     }
 
-    private var hasIcons: Bool { items.contains { $0.icon != nil } }
+    private var hasIcons: Bool { items.contains { $0.icon != nil || $0.checked != nil } }
 
     private var choosable: [Int] { items.indices.filter { !items[$0].isSeparator && !items[$0].disabled } }
 
@@ -141,7 +158,7 @@ public struct MetalMenuPanel: View {
 
     private func choose(_ index: Int?) {
         guard let index, items.indices.contains(index), !items[index].disabled, let action = items[index].action else { return }
-        onClose()
+        if items[index].checked == nil { onClose() }
         action()
     }
 
@@ -153,6 +170,9 @@ public struct MetalMenuPanel: View {
             if let icon = item.icon {
                 MetalIcon(icon, size: recipe.points("row.glyph"))
                     .foregroundStyle((item.danger ? MetalShared.red : t.ink2).color)
+            } else if let checked = item.checked {
+                MetalTick(isOn: checked, size: recipe.points("row.glyph"))
+                    .foregroundStyle(t.ink2.color)
             } else if hasIcons {
                 // Rows without a glyph keep the glyph's slot: every label starts on one line.
                 Color.clear.frame(width: recipe.points("row.glyph"), height: recipe.points("row.glyph"))
@@ -178,7 +198,8 @@ public struct MetalMenuPanel: View {
         .onHover { hovering in if hovering && !item.disabled { highlighted = index } }
         .onTapGesture { choose(index) }
         .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(.isButton)
+        .accessibilityAddTraits(item.checked == nil ? .isButton : .isToggle)
+        .accessibilityValue(item.checked.map { $0 ? "on" : "off" } ?? "")
         .accessibilityAction { choose(index) }
     }
 }

@@ -942,7 +942,7 @@
       "description": "A frosted plate of 30 rows (frost-strong at .92, radius 18, padding 6, at least 200 wide) from a trigger or at the pointer: an engraved heading says what it acts on, pointer and keyboard share one highlight, keys at the right, destructive rows red, engraved separators; fades on settle. The correction popover is its right-click form. Built on Base UI Menu and Context Menu.",
       "react": {
         "package": "@unlocalhosted/metalui",
-        "export": "Menu, ContextMenu, MenuItem, MenuSeparator",
+        "export": "Menu, ContextMenu, MenuItem, MenuCheckboxItem, MenuSeparator",
         "base": "@base-ui/react/menu"
       },
       "swift": {
@@ -1330,7 +1330,7 @@
       "name": "select",
       "title": "Select",
       "status": "alpha",
-      "description": "One value from a list of named options: a raised cap showing the value and an up-down chevron, opening the menu's frosted list with the chosen row over the trigger; the chosen row carries the latched green LED.",
+      "description": "One value from a list of named options: a raised cap showing the value and an up-down chevron, opening the menu's frosted list with the chosen row over the trigger; the chosen row carries the tick the Checkbox draws.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Select",

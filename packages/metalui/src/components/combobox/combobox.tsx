@@ -11,7 +11,8 @@ import { IconButton } from '../icon-button/icon-button';
 import { Spinner } from '../spinner/spinner';
 import { buttonClasses } from '../button/button';
 import { GlyphIcon } from '../../icons/Icon';
-import { CheckIcon, CloseIcon, PlusIcon, SyncErrorIcon } from '../../icons/components.generated';
+import { CloseIcon, PlusIcon, SyncErrorIcon } from '../../icons/components.generated';
+import { Tick } from '../../icons/pen';
 import { MorphPair, type GlyphParts } from '../../icons/MorphIcon';
 import { chevronMorph, searchMorph, type MorphIconName } from '../../icons/morph.generated';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
@@ -251,7 +252,7 @@ function Option({ row, query }: { row: ViewRow; query: string }) {
         {row.description && <span className={DESC}>{row.description}</span>}
       </Row.Text>
       {row.kind === 'retry' && <Row.Trail className={TRY}>Try again</Row.Trail>}
-      {row.kind === 'item' && <BaseCombobox.ItemIndicator className={CHECK}><CheckIcon /></BaseCombobox.ItemIndicator>}
+      {row.kind === 'item' && <BaseCombobox.ItemIndicator keepMounted className={CHECK} render={(p, state) => <span {...p} aria-hidden><Tick on={state.selected} /></span>} />}
     </BaseCombobox.Item>
   );
 }

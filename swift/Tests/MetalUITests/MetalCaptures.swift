@@ -712,6 +712,11 @@ final class MetalCaptures: XCTestCase {
                     .separator,
                     MetalMenuItem("Delete", icon: .trash, shortcut: "⌫", danger: true) {},
                 ], onClose: {})
+                MetalMenuPanel(heading: "View", items: [
+                    MetalMenuItem("Show Grid", checked: true, shortcut: "⌘'") {},
+                    MetalMenuItem("Show Rulers", checked: false, shortcut: "⌘R") {},
+                    MetalMenuItem("Snap to Objects", checked: true) {},
+                ], onClose: {})
             }
             .padding(28)
             .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)

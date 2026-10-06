@@ -1282,6 +1282,8 @@ Interrupted (ticked again mid-withdraw, say), the pen starts from the length on 
 
 The tick is the icon set's `check` tick (`icons/src/acts/check.mjs`, read into `icons/tick.generated.ts` and `MetalTickRoute`), drawn on the 24 grid across the whole well, so it is the same mark as the `check` icon at 16 or 14. Its pen is `tick.pen` (2.4 grid units: 1.6 pt at 16). `tick.rotate` turns it about its corner (0 by default). Durations and curves are tokens: `tick.delay`, `tick.down`, `tick.pace`, `tick.withdraw`, `--mu-ease-press` and the part and settle springs; in a group, the pen also waits for its key's cascade delay.
 
+One tick, one pen: everything else that ticks draws this tick with the same pen (`icons/pen.tsx`: `Ink` for the key, `Tick` bare in the row's ink at `tick.bare-pen`, 1.85, the check glyph's small cut). The menu's `MenuCheckboxItem`, the select's, combobox's and cascader's chosen row and the filter menu's chosen operator use `Tick`; SwiftUI uses `MetalTick(isOn:size:)` on `MetalTickShape`. Never draw a tick with the `check` icon or by hand.
+
 ## Keyboard and accessibility
 
 - Space toggles; the focus ring is the 2 pt green ring at offset 2.
@@ -3247,7 +3249,7 @@ The `mark-scrub` recipe's props: `scrub.pixels`, `number.*`, `duration.*`, `cloc
 
 # Menu and correction popover
 
-A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparator` from `@unlocalhosted/metalui` (Base UI Menu and Context Menu). SwiftUI: `MetalMenuPanel`, `MetalMenuItem`, `.metalMenu(isPresented:at:heading:items:)`. 
+A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuCheckboxItem`, `MenuSeparator` from `@unlocalhosted/metalui` (Base UI Menu and Context Menu). SwiftUI: `MetalMenuPanel`, `MetalMenuItem`, `.metalMenu(isPresented:at:heading:items:)`.
 
 ## Use it for
 
@@ -3266,6 +3268,7 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
 - **Heading** (optional): the label role, engraved: what the menu acts on.
 - **Row**: 30 tall at the row radius (12, the plate nests 6), the ui role, a 14 glyph in ink2, the key on a small cap at the right. Destructive: red.
 - **Separator**: an engraved 1 rule, inset 5 × 8.
+- **Checkbox row** (`MenuCheckboxItem`; SwiftUI `MetalMenuItem(_:checked:action:)`): a setting on or off. The Checkbox's pen draws the tick in the glyph slot (ink2) when it turns on and withdraws it when it turns off; choosing it keeps the menu open.
 
 ## States and motion
 
@@ -3485,7 +3488,7 @@ A site's sections across the top, with panels of links. React: `NavigationMenu` 
 
 ## Anatomy
 
-- Keys: the menubar's words; a key with a panel has a 10 chevron; `NavigationMenu.Link top` is a plain key that goes somewhere.
+- Keys: the menubar's words; a key with a panel has the set's chevron at 14; `NavigationMenu.Link top` is a plain key that goes somewhere.
 - Panel: the menu's frosted plate, 8 below the key, padding 8.
 - Links in a panel: rows (padding 10 × 12, radius 12) with a title (ui type) and a line (body type, ink2).
 
@@ -3494,7 +3497,7 @@ A site's sections across the top, with panels of links. React: `NavigationMenu` 
 | State | Look | Motion |
 |---|---|---|
 | hover / open key | the key lifts | – |
-| open | the plate under the key; chevron turned over | rises one nest on the surface spring; chevron on the part spring |
+| open | the plate under the key; chevron turned over | rises one nest on the surface spring; the chevron turns over as a morph of its own parts (MorphPair, not a CSS rotation) |
 | to the next key | the plate under it at the new panel's size | slides and resizes on the settle spring; content moves two grid steps the way you went and crossfades |
 | close | – | fades on the release spring |
 | current page | its link lifted (`active`) | – |
@@ -4580,7 +4583,7 @@ One value from a list of named options. React: `Select` from `@unlocalhosted/met
 
 ## Anatomy
 
-A trigger that is a raised cap (the button cap, it is clicked): the value (with its lead, if any) and an up-down chevron. The list is the menu's frosted plate: rows 30 tall, an LED slot (14), an optional lead, the label; groups get an engraved heading and a separator.
+A trigger that is a raised cap (the button cap, it is clicked): the value (with its lead, if any) and an up-down chevron. The list is the menu's frosted plate: rows 30 tall, a tick slot (14), an optional lead, the label; groups get an engraved heading and a separator.
 
 ## States and motion
 
@@ -4596,7 +4599,7 @@ A trigger that is a raised cap (the button cap, it is clicked): the value (with 
 | list opens | the chosen row over the trigger when there is room, else below | scale .97 → 1 and fade, surface spring |
 | list closes | – | fade .12 s |
 | highlight | one soft highlight shared by pointer and keys | glides row to row, settle spring, no bounce |
-| chosen row | green LED before the label | – |
+| chosen row | the tick before the label, in ink2 (the Checkbox's pen; not an LED: green means live) | at rest when the list opens |
 
 Keys: ↵, Space or ↓ opens; ↑ ↓, Home, End, type-ahead move; ↵ chooses; ⎋ closes. Reduce Motion: fade only.
 
@@ -6343,16 +6346,16 @@ The result of a person's own action, with Undo. React: `ToastProvider` + `useToa
 
 ## Anatomy
 
-A 44 tall glass pill in the colorway (blur 22, its stack), padding 0 6 0 16, gap 12, the `ui` role; a detail after a middle dot; a count after a repeat (`×3`); an Undo cap (28 tall, a light top lip) with a sunk `⌘Z` keycap; a quiet 28 close key (×) that shows its cap on hover. Bone: a bone pill (`rgba(251,250,248,.92)`), ink `#1B1B1D`, detail `#6E6E72`, a bone cap (`#FFFFFF → #F0EFEB`). Graphite: a smoked pill (`rgba(30,30,33,.92)`), ink `#F2F2F0`, detail `#9A9AA0`, a graphite cap (`#3A3A3E → #2C2C2F`). Bottom centre, 92 above the dock. Success carries its check; an error its red mark.
+A 44 tall glass pill in the colorway (blur 22, its stack), padding 0 6 0 16, gap 12, the `ui` role; a detail after a middle dot; a count after a repeat (`×3`); an Undo cap (28 tall, a light top lip) with a sunk `⌘Z` keycap; a quiet 28 close key (×) that shows its cap on hover. Bone: a bone pill (`rgba(251,250,248,.92)`), ink `#1B1B1D`, detail `#6E6E72`, a bone cap (`#FFFFFF → #F0EFEB`). Graphite: a smoked pill (`rgba(30,30,33,.92)`), ink `#F2F2F0`, detail `#9A9AA0`, a graphite cap (`#3A3A3E → #2C2C2F`). Bottom centre, 92 above the dock. Success carries the set's `check` in green; an error the set's `sync-error` in red (React and SwiftUI).
 
-The deck: toasts stack in depth, newest in front. Each card behind is a step smaller (×.95), peeks 8 past the card in front on the side away from the screen edge (a bottom deck peeks upward) and is 20 % dimmer, its words hidden. Three are drawn; the rest are counted above the back card (`+2`) and come forward as the front ones go. Fanned out, the cards stand 8 apart in a readable column.
+The deck: toasts stack in depth, newest in front. Each card behind is a step smaller (×.95), peeks 8 past the card in front on the side away from the screen edge (a bottom deck peeks upward) and is 20 % dimmer, its words hidden, and as wide as the front card (a short front toast never sits on wider cards). Three are drawn; the rest are counted on a small tab in the back card's top edge (`+2`, `deck.more-height` 16, `deck.more-pad` 6, in the toast's glass) and come forward as the front ones go. Fanned out, the cards stand 8 apart in a readable column, each as wide as its own words.
 
 ## States and motion
 
 | State | Motion |
 |---|---|
 | arrive | rises 8 from below, from .97, into the front on the object spring; every card behind steps back one on the same spring, in the same frame |
-| fan out | pointer on the deck, or focus into it (Tab, F6): the cards spread into a column on the surface spring; every timer pauses |
+| fan out | pointer on the deck, or focus into it (Tab, F6; SwiftUI: the deck is one focus stop, and focus on a card's keys keeps it open): the cards spread into a column on the surface spring; every timer pauses |
 | fold | pointer or focus leaves: back into the deck on the surface spring; timers resume |
 | swipe | follows the pointer (down or right); past 40 on release it leaves the way it was thrown on release; short of it, springs home |
 | close | the close key, or Esc on the focused toast: leaves on release; the next card comes forward |

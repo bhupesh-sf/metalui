@@ -44,6 +44,15 @@ for (const colorway of COLORWAYS) {
     await expect(drawn(page).first()).toContainText('Ticked');
     // The two not drawn are counted above the back card.
     await expect(page.locator('.mu-toast-more')).toHaveText('+2');
+    // Folded, the cards behind take the front card's width, and the count is a tab on the back card's top edge.
+    const widths = await drawn(page).evaluateAll((els) => els.map((el) => (el as HTMLElement).offsetWidth));
+    expect(new Set(widths).size).toBe(1);
+    const tab = (await page.locator('.mu-toast-more').boundingBox())!;
+    const backCard = (await drawn(page).nth(2).boundingBox())!;
+    expect(Math.abs(tab.y + tab.height / 2 - backCard.y)).toBeLessThan(2);
+    // The error carries its red mark (the set's sync-error), as success carries its check.
+    await expect(live(page).filter({ hasText: 'Could not export' }).locator('.mu-toast-error svg.mu-ic-sync-error')).toHaveCount(1);
+    await expect(live(page).filter({ hasText: 'Pinned' }).locator('.mu-toast-check svg.mu-ic-check')).toHaveCount(1);
     await page.screenshot({ path: capture(`toast-deck-${colorway}`), clip: DECK_CLIP });
 
     // Pointing at the deck fans it out into a column you can read, and holds every timer.
@@ -52,6 +61,8 @@ for (const colorway of COLORWAYS) {
     await settled(live(page));
     const boxes = await Promise.all([0, 1, 2].map(async (i) => (await drawn(page).nth(i).boundingBox())!));
     for (let i = 1; i < boxes.length; i++) expect(boxes[i].y + boxes[i].height).toBeLessThanOrEqual(boxes[i - 1].y + 0.5);
+    // Fanned out, each card is as wide as its own words.
+    expect(new Set(boxes.map((b) => Math.round(b.width))).size).toBeGreaterThan(1);
     await page.screenshot({ path: capture(`toast-fan-${colorway}`), clip: DECK_CLIP });
 
     // Leaving folds it back.

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { ContextMenu, Cue, IconButton, Menu, MenuItem, MenuSeparator, ToastProvider, useToast } from '@unlocalhosted/metalui';
+import { ContextMenu, Cue, IconButton, Menu, MenuCheckboxItem, MenuItem, MenuSeparator, ToastProvider, useToast } from '@unlocalhosted/metalui';
 import { DuplicateIcon, MoreIcon, PinIcon, SearchIcon, ShareIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/menu/menu.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
@@ -45,6 +45,7 @@ function Corrections() {
 export default function MenuPage() {
   const d = useDialKit('Menu', { heading: true });
   const [ran, setRan] = React.useState('–');
+  const [view, setView] = React.useState({ Grid: true, Rulers: false, Snap: false });
   return (
     <ToastProvider>
       <PageHeader title="Menu and correction popover" lede="A frosted plate of rows, denser than the palette. From a trigger it opens 6 below; from a right-click it opens at the pointer, and that is the correction popover: right-click a cue to say what it is not. Pointer and keyboard share one highlighted row. Built on Base UI Menu and Context Menu." />
@@ -68,6 +69,17 @@ export default function MenuPage() {
           } />
         </Bench>
         <SwiftCapture name="menu" maxWidth={500} />
+      </Section>
+      <Section id="checkbox-items" title="Settings that switch" lede="A checkbox row turns a setting on or off and the menu stays open. The Checkbox's pen draws the tick in the glyph slot: down into the corner, a beat, then up and out; turning it off withdraws it the same way.">
+        <Bench caption={`on · ${Object.entries(view).filter(([, on]) => on).map(([k]) => k).join(', ') || 'nothing'}`} className="min-h-[220px] items-start">
+          <Host action={
+            <Menu heading="View" trigger={<IconButton variant="ghost" label="View options" icon={<MoreIcon size={16} />} />}>
+              <MenuCheckboxItem checked={view.Grid} onCheckedChange={(on) => setView((v) => ({ ...v, Grid: on }))} shortcut="⌘'">Show Grid</MenuCheckboxItem>
+              <MenuCheckboxItem checked={view.Rulers} onCheckedChange={(on) => setView((v) => ({ ...v, Rulers: on }))} shortcut="⌘R">Show Rulers</MenuCheckboxItem>
+              <MenuCheckboxItem checked={view.Snap} onCheckedChange={(on) => setView((v) => ({ ...v, Snap: on }))}>Snap to Objects</MenuCheckboxItem>
+            </Menu>
+          } />
+        </Bench>
       </Section>
       <UsageSection
         agent={agentGuide}
@@ -102,6 +114,7 @@ export default function MenuPage() {
             ['Menu', 'trigger, heading?, side?, align?, open?, onOpenChange?', '6 from the trigger.'],
             ['ContextMenu', 'menu, heading?, children (the target)', 'At the pointer: the correction popover.'],
             ['MenuItem', 'onSelect, icon?, shortcut?, danger?, disabled?', '30 tall; Title Case.'],
+            ['MenuCheckboxItem', 'checked?, defaultChecked?, onCheckedChange?, shortcut?, disabled?', 'Stays open; the pen draws the tick.'],
             ['MenuSeparator', '–', 'An engraved rule.'],
           ]}
         />
@@ -112,6 +125,7 @@ export default function MenuPage() {
           { id: 'M2', title: 'Say what it acts on', body: 'A correction popover’s heading is the cue’s provenance: RULE, MODEL 0.82, YOU.', origin: 'Reference design 04 §8' },
           { id: 'M3', title: 'One highlight', body: 'Pointer and keyboard share one highlighted row; it is instant.', origin: 'Reference design 04 §18' },
           { id: 'M4', title: 'It nests', body: 'Radius 18 with padding 6 makes rows of radius 12.', origin: 'FOUNDATIONS containers' },
+          { id: 'M5', title: 'One tick, one pen', body: 'A checkbox row draws the Checkbox’s tick with the same pen and timing, bare in the row’s ink. It stays open, so you see it draw.', origin: 'Ours' },
         ]} />
       </Section>
     </ToastProvider>
