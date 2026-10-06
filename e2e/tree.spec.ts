@@ -153,6 +153,9 @@ test('a level loads in the chevron\'s slot; a failed one says Try again, and ret
   const box = demo(page, 'tree-loading');
   const tree = box.getByRole('tree', { name: 'Drive' });
   const archive = item(tree, 'Archive');
+  const glyph = archive.locator('.mu-tree-disclosure .mu-morph-icon');
+  // One glyph for the whole story: mark it, and the same node must come back as sync-error (a morph, not a remount).
+  await glyph.evaluate((el) => { (el as unknown as { muMark: boolean }).muMark = true; });
   await archive.click();
   // Waiting: held, then the ring after the show delay.
   await expect(archive).toHaveAttribute('aria-busy', 'true');
@@ -160,13 +163,15 @@ test('a level loads in the chevron\'s slot; a failed one says Try again, and ret
   await expect(archive.locator('.mu-spinner')).toBeVisible();
   // It fails: closed, sync-error, words on the row.
   await expect(archive).toHaveAttribute('aria-expanded', 'false');
-  await expect(archive.locator('.mu-tree-failed')).toBeVisible();
+  await expect(glyph).toHaveAttribute('data-glyph', 'sync-error');
+  expect(await glyph.evaluate((el) => (el as unknown as { muMark?: boolean }).muMark)).toBe(true);
   await expect(archive).toHaveAccessibleDescription('Couldn’t load · Try again');
   await box.screenshot({ path: capture('tree-failed-bone') });
   // Again: it lands.
   await page.keyboard.press('ArrowRight');
   await expect(item(tree, '2025')).toBeVisible();
-  await expect(archive.locator('.mu-tree-failed')).toHaveCount(0);
+  await expect(glyph).toHaveAttribute('data-glyph', 'chevron');
+  expect(await glyph.evaluate((el) => (el as unknown as { muMark?: boolean }).muMark)).toBe(true);
   await expect(archive).not.toHaveAttribute('aria-busy', 'true');
   // A fast load shows nothing but its result.
   await item(tree, 'New folder').click();
