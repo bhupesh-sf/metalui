@@ -337,7 +337,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Icon: no way to play a glyph's act on demand** (a celebration, a result): add `play()` via a ref or an `act` prop; the inbox dispatches a synthetic click. (`act`: plays whenever it turns to a new truthy value, `act` alone on arrival; StrictMode-safe. The inbox uses it; the Icons page shows it under On cue.)
 - [x] **AlertDialog.Popup** doesn't type Base UI's `finalFocus` (it passes it through); type it.
 - [x] **Avatar**: no accessible label separate from the name its initials come from. (`label`; `''` makes it decorative.)
-- [ ] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes.
+- [x] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes. (`selected` raises any variant, `opened` carries the rail; SwiftUI too. The inbox uses them.)
 - [ ] **Task inbox polish**: while selecting, the selection box (14) and the completion box (16) sit side by side and look alike; make completion a distinct task dimple or a status glyph, or show selection only as the row's plate.
 - [ ] **Icons blocks keep missing** (highest-value icon work; with the icons entry's D list): `person`, `bell`, `palette`, `save`, `send`, `stop`, `attach`, `retry`, `download`, `upload`. The settings block shows a chart glyph for Profile, a clock for Notifications and a document for Save because nothing better exists.
 - [x] **Sidebar item icons take their own Tab stop in Chrome** (also on /components/sidebar). Cause: an `Icon` outside any `.mu-icon-trigger` put its focus listener on the bare svg, which Chrome then makes focusable. Fixed in `Icon`; Sidebar items are icon triggers now.

@@ -6,20 +6,28 @@ import * as React from 'react';
  *   list     a compact row of a pinned query (5 / 8, radius 12, 13 pt); hover raises it
  *   panel    a row of a gathered panel (8 / 12, radius 14, 14 pt); hover raises it
  *   option   a palette row (36 tall, radius 12); the active one raises with a green rail
- * checked strikes the text in ink3; maybe fades a weak match. Slots: Row.Root, Row.Lead, Row.Text, Row.Trail.
+ * checked strikes the text in ink3; maybe fades a weak match.
+ * selected  any variant: the option's raised plate, held through hover (a picked row in a list)
+ * opened    any variant: the green rail at the left (the row whose detail is showing) Slots: Row.Root, Row.Lead, Row.Text, Row.Trail.
  * Styled with the theme's utilities (the row recipe). */
 
 export interface RowRootProps extends React.HTMLAttributes<HTMLElement> {
   variant?: 'list' | 'panel' | 'option';
   checked?: boolean;
-  /** option: the active row. */
+  /** option: the active row (raised, with the rail). */
   active?: boolean;
+  /** Picked (one of several in a list): the raised plate, held through hover. Visual only: the host sets aria-selected where its role allows it. */
+  selected?: boolean;
+  /** Its detail is showing: the green rail at the left. */
+  opened?: boolean;
   /** a weak match, faded. */
   maybe?: boolean;
   as?: 'div' | 'li' | 'tr' | 'button';
 }
 
 const FRAME = 'group/row relative box-border flex text-ink cursor-pointer outline-none data-maybe:opacity-row-maybe';
+const SELECTED = 'data-selected:recipe-row-option-on data-selected:hover:recipe-row-option-on data-selected:focus-visible:recipe-row-option-on';
+const OPENED = 'data-open:before:absolute data-open:before:left-row-rail-offset data-open:before:top-row-rail-inset data-open:before:bottom-row-rail-inset data-open:before:w-row-rail-w data-open:before:rounded-row-rail-radius data-open:before:bg-row-rail-color';
 const VARIANTS = {
   list: 'items-start gap-row-list-gap py-row-list-pad-y px-row-list-pad-x rounded-row-list-radius type-row-list transition-row hover:recipe-row-list-hover focus-visible:recipe-row-list-hover',
   panel: 'items-start gap-row-panel-gap py-row-panel-pad-y px-row-panel-pad-x rounded-row-panel-radius type-row-panel transition-row hover:recipe-row-panel-hover focus-visible:recipe-row-panel-hover',
@@ -29,15 +37,17 @@ const LEAD = 'mu-row-lead inline-flex flex-none';
 const TEXT = 'mu-row-text flex-1 min-w-0 group-data-checked/row:text-row-text-checked group-data-checked/row:line-through';
 const TRAIL = 'mu-row-trail inline-flex items-center gap-row-option-gap ml-auto';
 
-const Root = React.forwardRef<HTMLElement, RowRootProps>(function RowRoot({ variant = 'list', checked, active, maybe, as = 'div', className, ...props }, ref) {
+const Root = React.forwardRef<HTMLElement, RowRootProps>(function RowRoot({ variant = 'list', checked, active, selected, opened, maybe, as = 'div', className, ...props }, ref) {
   const Tag = as as React.ElementType;
-  const own = `mu-row ${FRAME} ${VARIANTS[variant]}`;
+  const own = `mu-row ${FRAME} ${VARIANTS[variant]} ${SELECTED} ${OPENED}`;
   return (
     <Tag
       ref={ref}
       data-variant={variant}
       data-checked={checked ? '' : undefined}
       data-active={active ? '' : undefined}
+      data-selected={selected ? '' : undefined}
+      data-open={opened ? '' : undefined}
       data-maybe={maybe ? '' : undefined}
       className={className ? `${own} ${className}` : own}
       {...props}

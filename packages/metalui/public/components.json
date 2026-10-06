@@ -956,7 +956,7 @@
       "name": "row",
       "title": "Row",
       "status": "alpha",
-      "description": "A row in a list: list, panel and option (the active one raises with a green rail); checked rows strike their text.",
+      "description": "A row in a list: list, panel and option (the active one raises with a green rail); selected rows raise, an opened row carries the rail, checked rows strike their text.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Row",

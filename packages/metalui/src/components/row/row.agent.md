@@ -11,6 +11,8 @@ A row in a list. React: `Row` with parts `Row.Root`, `Row.Lead`, `Row.Text`, `Ro
 ## States
 
 - `checked`: `Row.Text` is struck through in ink3. `maybe`: a weak match at 55 %.
+- `selected` (any variant): a picked row, one of several (a task in a multi-select): the option's raised plate, held through hover. Visual only: set `aria-selected` yourself where the row's role allows it (`row`, `option`).
+- `opened` (any variant): the row whose detail is showing: the 2.5 green rail at its left edge, without the raise.
 
 ## Keyboard and accessibility
 

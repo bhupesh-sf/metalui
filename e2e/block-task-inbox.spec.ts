@@ -140,6 +140,10 @@ test('the keyboard moves, selects, completes, opens and clears', async ({ page }
   await page.keyboard.press('x');
   await page.keyboard.press('Shift+ArrowDown');
   await expect(strip(page)).toContainText('2 selected');
+  // A selected row wears the raised plate (Row's selected), an unselected one none.
+  const plate = (title: string) => row(page, title).evaluate((el) => getComputedStyle(el).boxShadow);
+  await expect(row(page, 'Fix the cropped invoice PDF')).toHaveAttribute('data-selected', '');
+  expect(await plate('Fix the cropped invoice PDF')).not.toBe('none');
   await page.keyboard.press('Escape');
   await expect(strip(page)).toHaveCount(0, { timeout: 3000 });
   await expect(task('Fix the cropped invoice PDF')).toBeFocused();
@@ -147,6 +151,7 @@ test('the keyboard moves, selects, completes, opens and clears', async ({ page }
   // ↩ opens (a rail marks the row); e completes and focus moves on when the row leaves.
   await page.keyboard.press('Enter');
   await expect(row(page, 'Fix the cropped invoice PDF')).toHaveAttribute('data-open', '');
+  expect(await row(page, 'Fix the cropped invoice PDF').evaluate((el) => getComputedStyle(el, '::before').width)).not.toBe('auto');
   await page.keyboard.press('e');
   await expect(row(page, 'Fix the cropped invoice PDF')).toHaveCount(0, { timeout: 3000 });
   await expect(task('Draft the Q4 roadmap notes')).toBeFocused();

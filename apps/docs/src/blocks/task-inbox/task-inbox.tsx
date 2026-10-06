@@ -195,10 +195,9 @@ const X = <svg aria-hidden viewBox="0 0 10 10" className="size-attachment-remove
 
 // The row: gutter (selection), completion, then one cell with everything a person reads. Narrow, the
 // tag and due date go under the title; from 32rem they take their own columns.
-const ROW = 'grid grid-cols-[1.25rem_1.25rem_minmax(0,1fr)] items-start gap-x-10 cursor-default aria-selected:recipe-row-option-on aria-selected:hover:recipe-row-option-on';
+const ROW = 'grid grid-cols-[1.25rem_1.25rem_minmax(0,1fr)] items-start gap-x-10 cursor-default';
 const CELL = 'grid min-h-[1.375rem] items-center';
 const MAIN = 'grid min-w-0 -mx-6 px-6 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-12 gap-y-4 rounded-row-list-radius outline-none focus-visible:focus-ring @lg/block:grid-cols-[minmax(0,1fr)_auto_6.5rem_auto]';
-const RAIL = 'data-open:before:absolute data-open:before:left-row-rail-offset data-open:before:top-row-rail-inset data-open:before:bottom-row-rail-inset data-open:before:w-row-rail-w data-open:before:rounded-row-rail-radius data-open:before:bg-row-rail-color';
 // The gutter's box shows on hover, on focus, while anything is selected, and always on a touch screen.
 const GUTTER = `${CELL} opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 group-aria-selected/row:opacity-100 group-data-selecting/grid:opacity-100 pointer-coarse:opacity-100`;
 
@@ -581,11 +580,12 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
               role="row"
               aria-rowindex={i + 1}
               aria-selected={isSelected}
+              selected={isSelected}
+              opened={opened === t.id}
               data-row={t.id}
-              data-open={opened === t.id ? '' : undefined}
               onClick={(e) => onRowClick(e, t.id)}
               onMouseDown={(e) => { if (e.shiftKey) e.preventDefault(); }}
-              className={`${ROW} ${RAIL}`}
+              className={ROW}
             >
               <span role="gridcell" className={GUTTER}>
                 <Checkbox

@@ -10,6 +10,8 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
     let variant: MetalRowVariant
     let checked: Bool
     let active: Bool
+    let selected: Bool
+    let opened: Bool
     let maybe: Bool
     @ViewBuilder let lead: Lead
     @ViewBuilder let content: Content
@@ -19,13 +21,15 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
     @State private var hovering = false
 
     public init(_ variant: MetalRowVariant = .list, checked: Bool = false,
-                active: Bool = false, maybe: Bool = false,
+                active: Bool = false, selected: Bool = false, opened: Bool = false, maybe: Bool = false,
                 @ViewBuilder lead: () -> Lead,
                 @ViewBuilder text: () -> Content,
                 @ViewBuilder trail: () -> Trail) {
         self.variant = variant
         self.checked = checked
         self.active = active
+        self.selected = selected
+        self.opened = opened
         self.maybe = maybe
         self.lead = lead()
         self.content = text()
@@ -35,8 +39,10 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
     public var body: some View {
         let recipe = MetalRecipes.row
         let part = variant.rawValue
-        let raised = variant == .option ? active : hovering
-        let state = raised ? (variant == .option ? "on" : "hover") : nil
+        // Selected wears the option's raised plate in any variant, and holds it through hover.
+        let on = selected || (variant == .option && active)
+        let state = on ? "on" : (variant != .option && hovering ? "hover" : nil)
+        let look = on ? "option" : part
         let shape = RoundedRectangle(cornerRadius: recipe.points("\(part).radius"), style: .continuous)
         HStack(alignment: variant == .option ? .center : .top,
                spacing: recipe.points("\(part).gap")) {
@@ -50,9 +56,9 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
         .foregroundColor(colorway.tokens.ink.color)
         .padding(.horizontal, recipe.points("\(part).pad-x"))
         .modifier(MetalRowVerticalLayout(variant: variant, recipe: recipe))
-        .metalObjectRecipe(recipe, part: part, state: state, in: shape)
+        .metalObjectRecipe(recipe, part: look, state: state, in: shape)
         .overlay(alignment: .leading) {
-            if variant == .option && active {
+            if opened || (variant == .option && active) {
                 RoundedRectangle(cornerRadius: recipe.points("rail.radius"), style: .continuous)
                     .fill((recipe.color("rail.color") ?? MetalShared.greenDeep).color)
                     .frame(width: recipe.points("rail.w"))
