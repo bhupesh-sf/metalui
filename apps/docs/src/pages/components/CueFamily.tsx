@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Avatar, Cue, CueInferred, CueLife, CueUrgency, CueUrl, Dimple, Field, SlidingIndicator } from '@unlocalhosted/metalui';
+import { Avatar, Cue, CueInferred, CueLife, CueUrgency, CueUrl, Dimple, Field, MarkScrub, markScrubRead, SlidingIndicator } from '@unlocalhosted/metalui';
 import { CoinIcon, LinkIcon, MoonIcon } from '@unlocalhosted/metalui/icons';
 import { LifeCalmIcon, LifeCoffeeIcon, LifeStepsIcon } from '@unlocalhosted/metalui/icons/life';
 import reactSource from '../../../../../packages/metalui/src/components/mark/mark.tsx?raw';
@@ -135,6 +135,10 @@ due <CueInferred resolved="FRI 2 OCT · RECOGNIZER 0.82" confirmed={ok} onConfir
         </Bench>
       </Section>
 
+      <Section id="scrub" title="Operable: numbers and times" lede="A number, a duration or a time in the text is a control. Press and drag up or down on it: one detent per few points, Shift for big steps, Alt for fine ones. The digits turn on the drum, the rest of the line holds still, and an engraved scale stands beside the words only while you drag. Focus it and the arrows do the same. The words are the value: each change rewrites them in the text below, and each gesture is one undo step (⌘Z here). In “tomorrow 4pm” only the time turns, in 15-minute detents.">
+        <ScrubDemo />
+      </Section>
+
       <Section title="The dimple" lede="A task's checkbox on Base UI Checkbox: rest, hover, checked (a pen draws the tick: the short leg, a beat at the corner, then the long leg on a spring), doing (announced as mixed), ghost, and disabled.">
         <Bench tone="page" caption="rest · checked · doing · ghost · disabled">
           <div className="flex items-center gap-40">
@@ -176,6 +180,7 @@ due <CueInferred resolved="FRI 2 OCT · RECOGNIZER 0.82" confirmed={ok} onConfir
             ['CueLife', 'children (a Life*Icon at 16), label?, fresh?', 'One per block, trailing: the kind of the whole line, named on hover.'],
             ['Dimple', 'checked, onCheckedChange, doing?, ghost?, disabled?', 'Base UI Checkbox. The host writes [x] into the text on tick.'],
             ['CueUrgency', '–', 'An open task due soon.'],
+            ['MarkScrub', 'children (the words), scale?, step?, smallStep?, largeStep?, min?, max?, onWordsChange?, onWordsCommit?, every Cue prop', 'number · duration · clock. A spinbutton in the text; the words are the value and are rewritten in place, one commit per gesture.'],
           ]}
         />
       </Section>
@@ -192,6 +197,63 @@ due <CueInferred resolved="FRI 2 OCT · RECOGNIZER 0.82" confirmed={ok} onConfir
         />
       </Section>
     </div>
+  );
+}
+
+/* ── Operable cues: the words are the source, one undo step per gesture. ── */
+
+type Words = { when: string; dur: string; amount: string; sleep: string };
+const START: Words = { when: 'tomorrow 4pm', dur: '1h30', amount: '$40', sleep: '6h' };
+const sourceOf = (w: Words) => `Send #poster ${w.when}, ${w.dur} for ${w.amount}, slept ${w.sleep}`;
+const at = (minutes: number) => `${pad(Math.floor(minutes / 60))}:${pad(minutes % 60)}`;
+const pad = (n: number) => String(n).padStart(2, '0');
+
+function ScrubDemo() {
+  const [words, setWords] = React.useState(START);
+  const [history, setHistory] = React.useState<Words[]>([]);
+  const committed = React.useRef(START);
+  const undo = React.useRef(() => {});
+  undo.current = () => {
+    const prev = history.at(-1);
+    if (!prev) return;
+    setHistory((h) => h.slice(0, -1));
+    setWords(prev);
+    committed.current = prev;
+  };
+  const d = useDialKit(
+    'Scrub',
+    { pixels: [4, 2, 12], tick: [3, 2, 6], slow: [1, 1, 6], undo: { type: 'action', label: 'Undo' } },
+    { onAction: (a) => a === 'undo' && undo.current() },
+  );
+  const bind = (key: keyof Words) => ({
+    children: words[key],
+    onWordsChange: (w: string) => setWords((s) => ({ ...s, [key]: w })),
+    onWordsCommit: (w: string) => {
+      const before = committed.current;
+      setHistory((h) => [...h, before]);
+      committed.current = { ...committed.current, [key]: w };
+    },
+  });
+  const time = markScrubRead(words.when, 'clock');
+  const vars = { ...springVars('settle', 'settle', d.slow), '--mu-r-mark-scrub-scrub-pixels': `${d.pixels}px`, '--mu-r-mark-scrub-scale-tick': `${d.tick}px` } as React.CSSProperties;
+
+  return (
+    <Bench caption={`${history.length} undo step${history.length === 1 ? '' : 's'} · drag, or focus and press ↑ ↓ (⇧ ×10, ⌥ fine)`} className="min-h-[200px]">
+      <div
+        className="flex flex-col gap-16 pl-40"
+        style={vars}
+        data-testid="scrub-demo"
+        onKeyDown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'z') { e.preventDefault(); undo.current(); } }}
+      >
+        <span className="type-content whitespace-nowrap text-ink" data-testid="scrub-line">
+          Send <Cue kind="tag">#poster</Cue> <MarkScrub kind="date" scale="clock" label="Time" resolved={time ? `WED 30 SEP · ${at(time.value)}` : undefined} {...bind('when')} />,{' '}
+          <MarkScrub kind="duration" scale="duration" label="Duration" {...bind('dur')} /> for{' '}
+          <MarkScrub kind="amount" label="Amount" glyph={COIN} min={0} {...bind('amount')} />, slept{' '}
+          <MarkScrub kind="measurement" label="Sleep" glyph={MOON} step={0.5} smallStep={0.25} largeStep={2} min={0} max={24} {...bind('sleep')} />
+        </span>
+        <span className="type-readout text-ink2" data-testid="scrub-source">{sourceOf(words)}</span>
+      </div>
+    </Bench>
   );
 }
 

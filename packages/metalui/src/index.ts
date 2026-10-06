@@ -62,6 +62,7 @@ export { StatusBadge, type StatusBadgeProps, type StatusTone } from './component
 export { Badge, type BadgeProps, type BadgeAnchorProps, type BadgeSize } from './components/badge/badge';
 export { IconTile, type IconTileProps, type IconTileSize } from './components/icon-tile/icon-tile';
 export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, markTagHue, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
+export { MarkScrub, markScrubRead, type MarkScrubProps, type MarkScrubScale, type MarkScrubReading } from './components/mark-scrub/mark-scrub';
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
 export { RadioGroup, Radio, type RadioGroupProps, type RadioProps } from './components/radio/radio';
 export { Rating, type RatingProps, type RatingSize } from './components/rating/rating';
