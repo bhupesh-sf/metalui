@@ -411,12 +411,42 @@
   --spacing-spinner-size: var(--mu-r-spinner-self-size);
   --spacing-spinner-small: var(--mu-r-spinner-self-small);
   --spacing-spinner-ring: var(--mu-r-spinner-self-ring);
-  --spacing-number-field-height: var(--mu-r-number-field-self-height);
-  --spacing-number-field-width: var(--mu-r-number-field-self-width);
-  --spacing-number-field-pad: var(--mu-r-number-field-self-pad);
   --spacing-number-field-gap: var(--mu-r-number-field-self-gap);
-  --spacing-number-field-key-size: var(--mu-r-number-field-key-size);
-  --spacing-number-field-key-glyph: var(--mu-r-number-field-key-glyph);
+  --spacing-number-field-large-height: var(--mu-r-number-field-large-height);
+  --spacing-number-field-large-radius: var(--mu-r-number-field-large-radius);
+  --radius-number-field-large-radius: var(--mu-r-number-field-large-radius);
+  --spacing-number-field-large-pad: var(--mu-r-number-field-large-pad);
+  --spacing-number-field-large-width: var(--mu-r-number-field-large-width);
+  --spacing-number-field-large-key: var(--mu-r-number-field-large-key);
+  --spacing-number-field-large-key-radius: var(--mu-r-number-field-large-key-radius);
+  --radius-number-field-large-key-radius: var(--mu-r-number-field-large-key-radius);
+  --spacing-number-field-large-glyph: var(--mu-r-number-field-large-glyph);
+  --spacing-number-field-regular-height: var(--mu-r-number-field-regular-height);
+  --spacing-number-field-regular-radius: var(--mu-r-number-field-regular-radius);
+  --radius-number-field-regular-radius: var(--mu-r-number-field-regular-radius);
+  --spacing-number-field-regular-pad: var(--mu-r-number-field-regular-pad);
+  --spacing-number-field-regular-width: var(--mu-r-number-field-regular-width);
+  --spacing-number-field-regular-key: var(--mu-r-number-field-regular-key);
+  --spacing-number-field-regular-key-radius: var(--mu-r-number-field-regular-key-radius);
+  --radius-number-field-regular-key-radius: var(--mu-r-number-field-regular-key-radius);
+  --spacing-number-field-regular-glyph: var(--mu-r-number-field-regular-glyph);
+  --spacing-number-field-compact-height: var(--mu-r-number-field-compact-height);
+  --spacing-number-field-compact-radius: var(--mu-r-number-field-compact-radius);
+  --radius-number-field-compact-radius: var(--mu-r-number-field-compact-radius);
+  --spacing-number-field-compact-pad: var(--mu-r-number-field-compact-pad);
+  --spacing-number-field-compact-width: var(--mu-r-number-field-compact-width);
+  --spacing-number-field-compact-key: var(--mu-r-number-field-compact-key);
+  --spacing-number-field-compact-key-radius: var(--mu-r-number-field-compact-key-radius);
+  --radius-number-field-compact-key-radius: var(--mu-r-number-field-compact-key-radius);
+  --spacing-number-field-compact-glyph: var(--mu-r-number-field-compact-glyph);
+  --spacing-number-field-unit-gap: var(--mu-r-number-field-unit-gap);
+  --spacing-number-field-unit-caret: var(--mu-r-number-field-unit-caret);
+  --spacing-number-field-scrub-pixels: var(--mu-r-number-field-scrub-pixels);
+  --spacing-number-field-inspector-regular: var(--mu-r-number-field-inspector-regular);
+  --spacing-number-field-inspector-compact: var(--mu-r-number-field-inspector-compact);
+  --spacing-number-field-inspector-pad: var(--mu-r-number-field-inspector-pad);
+  --spacing-number-field-inspector-gap: var(--mu-r-number-field-inspector-gap);
+  --spacing-number-field-inspector-mark: var(--mu-r-number-field-inspector-mark);
   --spacing-toggle-catch: var(--mu-r-toggle-self-catch);
   --spacing-toggle-latch: var(--mu-r-toggle-self-latch);
   --spacing-toggle-gap: var(--mu-r-toggle-self-gap);
@@ -1463,11 +1493,20 @@
 @utility opacity-spinner-tail {
   opacity: var(--mu-r-spinner-self-tail);
 }
-@utility stroke-width-number-field-width {
-  stroke-width: var(--mu-r-number-field-self-width);
+@utility number-field-row-gap {
+  &::before { content: ''; display: block; height: var(--mu-r-number-field-self-gap); }
 }
 @utility opacity-number-field-disabled {
   opacity: var(--mu-r-number-field-self-disabled);
+}
+@utility stroke-width-number-field-large-width {
+  stroke-width: var(--mu-r-number-field-large-width);
+}
+@utility stroke-width-number-field-regular-width {
+  stroke-width: var(--mu-r-number-field-regular-width);
+}
+@utility stroke-width-number-field-compact-width {
+  stroke-width: var(--mu-r-number-field-compact-width);
 }
 @utility toggle-travel {
   translate: 0 0; transition: translate var(--mu-spring-release-d) var(--mu-spring-release), background var(--mu-r-button-self-fade), box-shadow var(--mu-r-button-self-fade), color var(--mu-r-button-self-fade); &[data-pressed] { translate: 0 var(--mu-r-toggle-self-latch); transition: translate var(--mu-spring-part-d) var(--mu-spring-part), background var(--mu-r-button-self-fade), box-shadow var(--mu-r-button-self-fade), color var(--mu-r-button-self-fade); } &:active:not([data-disabled]) { translate: 0 var(--mu-r-toggle-self-catch); transition: translate var(--mu-r-toggle-self-press) linear; }
