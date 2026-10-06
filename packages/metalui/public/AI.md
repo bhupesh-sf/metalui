@@ -5693,7 +5693,7 @@ The field keeps a quiet visible grid at rest. Marks clear Region paper and objec
 
 # Spinner
 
-Waiting, shown where it happens, with one clock. React: `Spinner`, `Spinner.Bar`, `Spinner.Status` and the `useWait` hook from `@unlocalhosted/metalui`. SwiftUI: `MetalSpinner`, `MetalSpinnerBar` and `.metalWait(_:into:)`. The `spinner` recipe holds the timing and every look; the ring reuses the button's wait arc (`button` recipe, `wait.*`) and draws the check glyph's tick.
+Waiting, shown where it happens, with one clock. React: `Spinner`, `Spinner.Bar`, `Spinner.Text`, `Spinner.Status` and the `useWait` hook from `@unlocalhosted/metalui`. SwiftUI: `MetalSpinner`, `MetalSpinnerBar`, `MetalSpinnerText` and `.metalWait(_:into:)`. The `spinner` recipe holds the timing and every look; the ring reuses the button's wait arc (`button` recipe, `wait.*`) and draws the check glyph's tick.
 
 ## Where the wait is (pick the placement, not a widget)
 
@@ -5705,6 +5705,7 @@ Waiting, shown where it happens, with one clock. React: `Spinner`, `Spinner.Bar`
 | In a field (search, combobox, validation) | a ring in the trailing slot, in place of the clear key | `{wait.showing ? <Spinner phase={wait.phase} /> : clearKey}` in `Field.Trail` |
 | For the whole place (a page, a view) | first load: skeletons of what will arrive; a route change: a thin bar across the top, the old view kept and dimmed | `Skeleton.Swap loading={wait.busy}`; `<Spinner.Bar phase={wait.phase} />` in a positioned host |
 | Background work (sync, upload) | the status lamp breathes; nothing is held | `<Led kind="waiting" gesture="breathe" />` while `wait.phase === 'shown'`, `live` + `flicker` when done, `failed` + `blink2` on failure, with words |
+| In words (a working line with no lamp of its own: under a reply, a tool's progress) | the words: a light passes across them after the show delay | `<Spinner.Text>Searching the web</Spinner.Text>` while it works, `active={false}` (or the result) after |
 | Known amount | it fills instead of turning | `value` (0–100) on the ring or the bar; a card hands over to `Progress`; an `Attachment` takes `progress={null}` until the amount is known |
 
 Never a spinner floating in the middle of a card or in a corner of the page.
@@ -5736,6 +5737,7 @@ The button: `state={wait.busy ? 'waiting' : wait.phase === 'done' ? 'done' : 're
 - Item: every direct part except the one holding the ring dims to 50 %; pointer events off.
 - Rim (avatar): a 26 % arc on the avatar's ring, ink2, 1.6 s a turn.
 - Edge (card): a 1.5 lit edge in the card's ink at 75 %, a 42 % comet tail, 2.8 s a lap; the card's border, not a box over it.
+- Words: the host's type in ink2; a window of the words in full ink slides across (translate) while its copy slides back so it stays put; the window's soft edges are a band 40 % of its width; one pass every 1.8 s (`text.sweep`), after the show delay. Only the light moves.
 - Bar: 2 tall, the switch's lit fill, creeping to 86 % over 9 s (easing out, never arriving), completing in 260 ms and fading.
 
 ## States and motion
@@ -5751,7 +5753,7 @@ The button: `state={wait.busy ? 'waiting' : wait.phase === 'done' ? 'done' : 're
 
 A bare `<Spinner />` (no `phase`) shows itself after the show delay on mount: for code that can't use the hook.
 
-Reduce Motion: nothing turns, creeps or travels; the arc, rim, edge and bar breathe in place (the progress breathe); the tick is whole at once.
+Reduce Motion: nothing turns, creeps or travels; the arc, rim, edge, bar and words breathe in place (the progress breathe); the tick is whole at once.
 
 ## API
 
@@ -5763,6 +5765,7 @@ Reduce Motion: nothing turns, creeps or travels; the arc, rim, edge and bar brea
 | `size` (`regular` 16, `small` 12) | `size:` |
 | children: the glyph it stands in for | `glyph:` view builder |
 | `Spinner.Bar` `phase`, `value`, `label` | `MetalSpinnerBar(phase:value:)` |
+| `Spinner.Text` children (the words), `active` (true) | `MetalSpinnerText(_:active:)` |
 | `Spinner.Status` `phase`, `label`, `result` | (the ring says it; `.accessibilityValue` on hosts) |
 | `useWait(work, ref?)` | `.metalWait(work, into: $wait)` |
 | `Row` / `Chip` / `Avatar` / `Card` `waiting` | `waiting:` on `MetalRow`, `MetalChip`, `MetalAvatar`, `MetalCard` |
@@ -5792,6 +5795,7 @@ const wait = useWait(work);
 - Measure when you can: switch to filling as soon as the amount is known.
 - Say what is working ("Lifting the subject…"), and more after a long wait ("Still lifting…").
 - Don't restyle the ring's colour: it is the slot's ink.
+- A sheen means waiting: don't put `Spinner.Text` on words that aren't working, and not beside a lamp that already says it (Message's header word stays plain).
 
 ---
 

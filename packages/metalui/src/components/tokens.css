@@ -1035,6 +1035,8 @@
   --mu-r-spinner-bar-creep: 9000ms;
   --mu-r-spinner-bar-reach: 0.86;
   --mu-r-spinner-bar-finish: 260ms;
+  --mu-r-spinner-text-sweep: 1800ms;
+  --mu-r-spinner-text-band: 0.4;
   /* code-field: the field well and Field's sizes (recipe field), the compact button cap (recipe button), the field caret, the label's engraved lip, the refusal, the spinner's small ring and item dim, the swap drum; Base UI OTP Field */
   --mu-r-code-field-large-height: 44px;
   --mu-r-code-field-large-width: 38px;

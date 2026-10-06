@@ -2254,7 +2254,7 @@
       "name": "spinner",
       "type": "registry:ui",
       "title": "Spinner",
-      "description": "Steady work in a small space: a sunk round well with a lit green arc turning at a constant speed; it shows only after a beat so quick actions never flash it.",
+      "description": "Waiting, shown where it happens on one clock (useWait): a ring in an item's glyph slot, a bar across a place, a light passing across working words (Spinner.Text); nothing shows for fast work.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/icons.json",

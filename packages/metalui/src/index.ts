@@ -34,7 +34,7 @@ export { Glyph, type GlyphProps } from './components/glyph/glyph';
 export { Row, type RowProps, type RowRootProps } from './components/row/row';
 export { Slider, type SliderRootProps, type SliderSize } from './components/slider/slider';
 export { Progress, type ProgressProps, type ProgressState, type ProgressShape, type ProgressSize } from './components/progress/progress';
-export { Spinner, type SpinnerProps, type SpinnerBarProps, type SpinnerStatusProps } from './components/spinner/spinner';
+export { Spinner, type SpinnerProps, type SpinnerBarProps, type SpinnerStatusProps, type SpinnerTextProps } from './components/spinner/spinner';
 export { Skeleton, type SkeletonProps, type SkeletonSwapProps } from './components/skeleton/skeleton';
 export { Link, type LinkKind, type LinkProps } from './components/link/link';
 export { ButtonGroup, ButtonGroupReadout, SplitButton, type ButtonGroupProps, type ButtonGroupReadoutProps, type SplitButtonProps } from './components/button-group/button-group';

@@ -824,7 +824,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// One waiting language, placed where the wait is. The ring: an arc in the host's own ink (the button's wait arc, wait.*) turning at a constant speed in the host's glyph slot, sized by the host; it stands in for the item's glyph after the show delay, fills instead of turning once the amount is known, and draws the check glyph's tick when the work is done. The item: dims its other parts and refuses actions while it waits. The rim: a short arc travelling round an avatar. The edge: a lit edge travelling round a large item's own border (a card), not a spinner in its middle. The bar: a thin bar across the top of a place for a route change, creeping toward the end and completing when the page arrives. Timing (self.delay, minimum, result, still): nothing for fast work, at least `minimum` on screen once shown, then the result, and more words after `still`; useWait reads them. Reduce Motion: nothing turns or travels; the arc, rim, edge and bar breathe in place. (the button's wait arc (recipe button, wait.*); the check glyph's tick (icons/src/acts/check.mjs); the progress breathe; the switch's lit fill for the bar)
+    /// One waiting language, placed where the wait is. The ring: an arc in the host's own ink (the button's wait arc, wait.*) turning at a constant speed in the host's glyph slot, sized by the host; it stands in for the item's glyph after the show delay, fills instead of turning once the amount is known, and draws the check glyph's tick when the work is done. The item: dims its other parts and refuses actions while it waits. The rim: a short arc travelling round an avatar. The edge: a lit edge travelling round a large item's own border (a card), not a spinner in its middle. The bar: a thin bar across the top of a place for a route change, creeping toward the end and completing when the page arrives. The words (text.*): a working line said in words ("Searching the web"), in the host's type and ink2, with the skeleton's light passing across them after the show delay: a window of the words in full ink slides across (translate) while its copy slides back so it stays put, the window's soft edges a band `text.band` of its width, one pass every `text.sweep`. Timing (self.delay, minimum, result, still): nothing for fast work, at least `minimum` on screen once shown, then the result, and more words after `still`; useWait reads them. Reduce Motion: nothing turns or travels; the arc, rim, edge, bar and words breathe in place. (the button's wait arc (recipe button, wait.*); the check glyph's tick (icons/src/acts/check.mjs); the progress breathe; the switch's lit fill for the bar)
     public static let spinner = MetalObjectRecipe(
         name: "spinner",
         layers: [
@@ -854,6 +854,8 @@ public enum MetalRecipes {
             "bar.creep": .text("9000ms"),
             "bar.reach": .text("0.86"),
             "bar.finish": .text("260ms"),
+            "text.sweep": .text("1800ms"),
+            "text.band": .text("0.4"),
         ]
     )
 

@@ -340,3 +340,67 @@ extension View {
             .animation(.easeOut(duration: MetalRecipes.spinner.durationSeconds("self.fade")), value: waiting)
     }
 }
+
+/// A wait said in words ("Searching the web"), in ink2 with a light passing across them after the show
+/// delay: a working line under a reply, a tool's progress. `active: false` stops the light; the words stay.
+/// Reduce Motion: the words breathe in place.
+public struct MetalSpinnerText: View {
+    private let words: String
+    private let active: Bool
+    @Environment(\.metalColorway) private var colorway
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.metalWaitFrozen) private var frozen
+    @State private var arrived = false
+    @State private var swept = false
+
+    public init(_ words: String, active: Bool = true) {
+        self.words = words
+        self.active = active
+    }
+
+    public var body: some View {
+        let recipe = MetalRecipes.spinner
+        let breathe = MetalRecipes.progress
+        let t = colorway.tokens
+        let band = recipe.scalar("text.band")
+        let lit = active && (arrived || frozen)
+        Text(words)
+            .foregroundColor(t.ink2.color)
+            .opacity(lit && reduceMotion && swept ? breathe.scalar("segment.dim") : .one)
+            .overlay {
+                if lit && !reduceMotion {
+                    GeometryReader { box in
+                        let w = box.size.width
+                        Text(words)
+                            .foregroundColor(t.ink.color)
+                            .frame(width: w, alignment: .leading)
+                            .mask {
+                                LinearGradient(stops: [.init(color: .clear, location: .zero),
+                                                       .init(color: .black, location: band / 2),
+                                                       .init(color: .clear, location: band)],
+                                               startPoint: .leading, endPoint: .trailing)
+                                    .frame(width: w)
+                                    .offset(x: swept ? w : -band * w)
+                            }
+                    }
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+                }
+            }
+            .animation(lit ? (reduceMotion
+                ? .easeInOut(duration: breathe.durationSeconds("segment.breathe")).repeatForever(autoreverses: true)
+                : .linear(duration: recipe.durationSeconds("text.sweep")).repeatForever(autoreverses: false)) : nil, value: swept)
+            .task(id: active) {
+                swept = false
+                arrived = false
+                guard active else { return }
+                try? await Task.sleep(for: .seconds(recipe.durationSeconds("self.delay")))
+                guard !Task.isCancelled else { return }
+                arrived = true
+                swept = true
+            }
+            .accessibilityElement()
+            .accessibilityLabel(words)
+            .accessibilityAddTraits(.updatesFrequently)
+    }
+}
