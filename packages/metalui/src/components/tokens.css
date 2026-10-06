@@ -1284,6 +1284,21 @@
   --mu-r-table-state-gap: 8px;
   --mu-r-table-state-pad-y: 20px;
   --mu-r-table-copy-hold: 1400ms;
+  --mu-r-table-total-radius: 10px;
+  --mu-r-table-total-depth: 3px;
+  --mu-r-table-group-height: 32px;
+  --mu-r-table-group-gap: 6px;
+  --mu-r-table-pin-shadow: 12px;
+  --mu-r-table-live-slop: 24px;
+  --mu-r-table-live-inset: 8px;
+  --mu-r-table-detail-inset: 8px;
+  --mu-r-table-detail-pad: 12px;
+  --mu-r-table-detail-radius: 12px;
+  --mu-r-table-resize-hit: 10px;
+  --mu-r-table-resize-line: 1px;
+  --mu-r-table-resize-grip: 3px;
+  --mu-r-table-resize-min: 64px;
+  --mu-r-table-resize-step: 8px;
   /* properties: the label's engraving; the rule; the table's cell looks */
   --mu-r-properties-self-min-height: 32px;
   --mu-r-properties-self-pad-y: 6px;
@@ -2314,6 +2329,8 @@
   --mu-r-card-rule-lip: rgba(255,255,255,.8);
   --mu-r-card-section-hover: rgba(0,0,0,.03);
   --mu-r-table-select-tint: rgba(63,185,122,.08);
+  --mu-r-table-total-shade: rgba(60,55,40,.10);
+  --mu-r-table-pin-shade: rgba(24,22,16,.08);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
   --mu-r-glass-face-self-shadow:
@@ -2895,6 +2912,8 @@
   --mu-r-card-rule-lip: rgba(255,255,255,.035);
   --mu-r-card-section-hover: rgba(255,255,255,.035);
   --mu-r-table-select-tint: rgba(63,185,122,.12);
+  --mu-r-table-total-shade: rgba(0,0,0,.45);
+  --mu-r-table-pin-shade: rgba(0,0,0,.40);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
   --mu-r-glass-face-self-shadow:
@@ -3477,6 +3496,8 @@
     --mu-r-card-rule-lip: rgba(255,255,255,.035);
     --mu-r-card-section-hover: rgba(255,255,255,.035);
     --mu-r-table-select-tint: rgba(63,185,122,.12);
+    --mu-r-table-total-shade: rgba(0,0,0,.45);
+    --mu-r-table-pin-shade: rgba(0,0,0,.40);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
     --mu-r-glass-face-self-shadow:
