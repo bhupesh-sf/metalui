@@ -668,10 +668,14 @@ The block (`apps/docs/src/blocks/ai-composer`) already does these inside itself;
 
 ### 2. Agent parts (missing; most libraries ship them)
 
-- [ ] **Reasoning** (V P A X): a collapsible "Thought for 4 s" that streams open while the model thinks and folds shut when the answer starts; consecutive reasoning parts grouped (A).
-- [ ] **Chain of thought / steps** (V P X): a list of steps, each pending, running, done or failed, with detail under each.
-- [ ] **Tool call** (V P A): the tool's name, its inputs, a status (queued, running, done, failed) and its result, folded by default; consecutive calls grouped (A); a fallback look for tools with no UI of their own.
-- [ ] **Confirmation** (V C): the agent asks before it acts ("Delete 3 files?"), with Allow and Deny, and what was decided kept in the thread. Destructive ones can use the hold to confirm from "Destructive confirm".
+- [x] **Reasoning** (V P A X): a collapsible "Thought for 4 s" that streams open while the model thinks and folds shut when the answer starts; consecutive reasoning parts grouped (A).
+  Done (2026-10-06): `Reasoning` streams open with the amber lamp and "Thinking", folds to "Thought for N s" on the drum; once pressed, the person owns it. Sheet: `docs/sheets/agent-parts.md`.
+- [x] **Chain of thought / steps** (V P X): a list of steps, each pending, running, done or failed, with detail under each.
+  Done (2026-10-06) as a `Timeline` inside a `Reasoning` (no new component: a step has nothing inside to open); state words and LEDs shared with ToolCall.
+- [x] **Tool call** (V P A): the tool's name, its inputs, a status (queued, running, done, failed) and its result, folded by default; consecutive calls grouped (A); a fallback look for tools with no UI of their own.
+  Done (2026-10-06): `ToolCall` folded by default (lamp or ring, name, state, summary; input as Properties, result in the well), `ToolCall.Group` for consecutive calls, `children` for a tool's own UI.
+- [x] **Confirmation** (V C): the agent asks before it acts ("Delete 3 files?"), with Allow and Deny, and what was decided kept in the thread. Destructive ones can use the hold to confirm from "Destructive confirm".
+  Done (2026-10-06): `Confirmation` on Alert and Button; `destructive` uses `hold`; the decision stays as a quiet note. Later: Allow always, editing inputs first.
 - [ ] **Plan, task and queue** (V A): the agent's to-do list with progress, tasks nested under a step, and what is waiting to run.
 - [ ] **Sources and inline citations** (V P X): numbered marks in the text that open the source in a preview card; a list of sources under the answer. Builds on the `ProvenanceTooltip` block.
 - [ ] **Thinking indicator / shimmer** (V P S): shimmering placeholder text and a thinking bar. Do it inside "Spinner: rethink as waiting" rather than as its own thing.
