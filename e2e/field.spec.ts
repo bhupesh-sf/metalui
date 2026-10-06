@@ -1,5 +1,8 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { COLORWAYS, capture, open } from './helpers';
+
+const section = (page: Page, id: string) => page.locator(`section#${id}`);
+const caret = (page: Page, name: string) => page.getByRole('textbox', { name, exact: true }).evaluate((el) => (el as HTMLInputElement).selectionStart);
 
 // Field in a form: the select's sizes, a visible focus ring, the shared invalid ring with
 // aria-invalid, and disabled; the palette's large field keeps the caret as its focus.
@@ -21,6 +24,123 @@ for (const colorway of COLORWAYS) {
     await expect(page.getByRole('textbox', { name: 'Locked region name' })).toBeDisabled();
     await expect(well('Locked region name')).toHaveCSS('opacity', '0.4');
 
-    await page.locator('section', { hasText: 'Form sizes and states' }).first().screenshot({ path: capture(`field-form-${colorway}`) });
+    await section(page, 'form').screenshot({ path: capture(`field-form-${colorway}`) });
+  });
+
+  // Prefix and suffix: engraved in the well, not selectable, not part of the value; pressing one puts the
+  // caret at its end of the input, and a screen reader hears them with the field.
+  test(`prefix and suffix are fixed parts of the value in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/field', colorway);
+    const site = page.getByRole('textbox', { name: 'Website' });
+    const prefix = section(page, 'affixes').locator('.mu-field-prefix').first();
+    const suffix = section(page, 'affixes').locator('.mu-field-suffix').first();
+    await expect(prefix).toHaveCSS('user-select', 'none');
+    expect(await prefix.evaluate((el) => getComputedStyle(el).textShadow)).not.toBe('none');
+    await expect(site).toHaveAccessibleDescription('https:// .metalui.dev');
+
+    await site.pressSequentially('north');
+    await expect(site).toHaveValue('north');
+    await prefix.click();
+    await expect(site).toBeFocused();
+    expect(await caret(page, 'Website')).toBe(0);
+    await suffix.click();
+    await expect(site).toBeFocused();
+    expect(await caret(page, 'Website')).toBe(5);
+
+    // The prefix sits on the input's baseline: same type, same line box.
+    const [p, i] = await Promise.all([prefix.boundingBox(), site.boundingBox()]);
+    expect(Math.abs(p!.y + p!.height / 2 - (i!.y + i!.height / 2))).toBeLessThan(1);
+    await section(page, 'affixes').screenshot({ path: capture(`field-affixes-${colorway}`) });
+  });
+
+  // The trail's keys: clear shows while there is text and keeps the caret in the field; the shortcut keycap
+  // focuses the field from anywhere, turns to Esc while it is active, and Esc clears, then leaves.
+  test(`clear and shortcut keys in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/field', colorway);
+    const filter = page.getByRole('textbox', { name: 'Filter regions' });
+    const clear = section(page, 'keys').getByRole('button', { name: 'Clear', includeHidden: true });
+    const key = section(page, 'keys').locator('.mu-field-shortcut');
+    expect((await clear.boundingBox())!.height).toBe(20);
+    await expect(clear).toBeVisible();
+    await section(page, 'keys').screenshot({ path: capture(`field-keys-${colorway}`) });
+
+    await filter.focus();
+    await clear.click();
+    await expect(filter).toHaveValue('');
+    await expect(filter).toBeFocused();
+    await expect(section(page, 'keys').getByText('Filtering by “”')).toBeVisible();
+    await expect(clear).toBeHidden();
+
+    await filter.blur();
+    await expect(filter).toHaveAttribute('aria-keyshortcuts', '/');
+    await expect(key.locator('[data-state="in"]')).toHaveText('/');
+    await page.locator('main h1').click();
+    await page.keyboard.press('/');
+    await expect(filter).toBeFocused();
+    await expect(key.locator('[data-state="in"]')).toHaveText('Esc');
+    await filter.pressSequentially('dawn');
+    await expect(clear).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(filter).toHaveValue('');
+    await expect(filter).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(filter).not.toBeFocused();
+
+    // ⌘K reaches the palette's field.
+    const palette = page.getByRole('textbox', { name: 'Lens or action' }).first();
+    await expect(palette).toHaveAttribute('aria-keyshortcuts', 'Meta+K');
+    await page.keyboard.press('Meta+K');
+    await expect(palette).toBeFocused();
+  });
+
+  // The counter: Textarea's, in the trail. It shows near the limit, turns red at it, and only the counter
+  // shakes when typing goes past it. chars sizes the input to an expected length.
+  test(`counter and chars in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/field', colorway);
+    const name = page.getByRole('textbox', { name: 'Display name' });
+    const count = section(page, 'length').locator('.mu-field-count');
+    await expect(count).toHaveText('22/24');
+    await expect(count).toHaveAttribute('data-shown', '');
+    await expect(name).toHaveAccessibleDescription(/22\/24/);
+    await name.focus();
+    await page.keyboard.press('End');
+    await page.keyboard.type('!!');
+    await expect(count).toHaveText('24/24');
+    await expect(count).toHaveAttribute('data-at-limit', '');
+    await page.keyboard.press('?');
+    await expect(name).toHaveValue('Morning pages, kitchen!!');
+    expect(await count.evaluate((el) => el.getAnimations().some((a) => a.id === 'mu-refusal'))).toBe(true);
+
+    const width = (label: string) => page.getByRole('textbox', { name: label }).evaluate((el) => el.getBoundingClientRect().width);
+    const slack = 2;
+    const [eight, four] = [await width('Postcode'), await width('Year')];
+    expect(Math.abs((eight - slack) - 2 * (four - slack))).toBeLessThan(1);
+    await section(page, 'length').screenshot({ path: capture(`field-length-${colorway}`) });
   });
 }
+
+// Reduce Motion: a key that comes and goes fades without the pop, and the counter does not shake.
+test('keys fade without the pop and nothing shakes under Reduce Motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '/components/field', 'bone');
+  const filter = page.getByRole('textbox', { name: 'Filter regions' });
+  const clear = section(page, 'keys').getByRole('button', { name: 'Clear', includeHidden: true });
+  await filter.fill('');
+  await expect(clear).toBeHidden();
+  await expect(clear).toHaveCSS('scale', '1');
+
+  const name = page.getByRole('textbox', { name: 'Display name' });
+  await name.press('End');
+  await name.pressSequentially('!!?');
+  const count = section(page, 'length').locator('.mu-field-count');
+  await expect(count).toHaveText(/^24\/24/);
+  expect(await count.evaluate((el) => el.getAnimations().some((a) => a.id === 'mu-refusal'))).toBe(false);
+});
+
+test('a hidden clear key pops from 60 % with motion on', async ({ page }) => {
+  await open(page, '/components/field', 'bone');
+  await page.getByRole('textbox', { name: 'Filter regions' }).fill('');
+  const clear = section(page, 'keys').getByRole('button', { name: 'Clear', includeHidden: true });
+  await expect(clear).toBeHidden();
+  await expect(clear).toHaveCSS('scale', '0.6');
+});

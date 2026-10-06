@@ -7,7 +7,7 @@ export { Label, type LabelProps, type LabelVariant } from './components/label/la
 export { Rule, type RuleProps } from './components/rule/rule';
 export { IconButton, type IconButtonProps } from './components/icon-button/icon-button';
 export { Chip, type ChipProps } from './components/chip/chip';
-export { Field, SearchField, type SearchFieldProps, type FieldRootProps, type FieldSize } from './components/field/field';
+export { Field, SearchField, type SearchFieldProps, type FieldRootProps, type FieldInputProps, type FieldKeyProps, type FieldClearProps, type FieldShortcutProps, type FieldCheckProps, type FieldSize } from './components/field/field';
 export { Textarea, type TextareaProps } from './components/textarea/textarea';
 export { FormField, Fieldset, Form, type FormFieldRootProps, type FormProps } from './components/form-field/form-field';
 export { NumberField, type NumberFieldProps } from './components/number-field/number-field';
