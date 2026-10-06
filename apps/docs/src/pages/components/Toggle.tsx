@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Toggle, ToggleGroup } from '@unlocalhosted/metalui';
+import { RadioKey, RadioKeys, Toggle, ToggleGroup } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/toggle/toggle.tsx?raw';
@@ -38,6 +38,19 @@ function LatchTuner() {
   );
 }
 
+function OneDown() {
+  const [length, setLength] = React.useState('30');
+  return (
+    <div className="grid justify-items-center gap-12" style={{ zoom: 1.2 }}>
+      <RadioKeys aria-label="Call length" value={length} onValueChange={(v) => setLength(v as string)}>
+        <RadioKey value="15">15 min</RadioKey>
+        <RadioKey value="30">30 min</RadioKey>
+        <RadioKey value="60">60 min</RadioKey>
+      </RadioKeys>
+    </div>
+  );
+}
+
 export default function TogglePage() {
   const [grid, setGrid] = React.useState(true);
   const [marks, setMarks] = React.useState<string[]>(['bold']);
@@ -59,7 +72,7 @@ export default function TogglePage() {
           </ToggleGroup>
         </div>
       ) }}
-      more={[{ id: 'latch', title: 'Tune the latch', lede: 'The Toggle latch panel sets how far past the catch a press goes, where an on key rests, and the springs it rises on.', node: <LatchTuner /> }]}
+      more={[{ id: 'radio', title: 'Exactly one down', lede: 'RadioKeys latches one key of a set, like the preset buttons on an old radio: pressing one lets the other rise. It is a radio group, so arrows move and choose at once. For time slots or a length; a set where none may be down is a ToggleGroup.', node: <OneDown /> }, { id: 'latch', title: 'Tune the latch', lede: 'The Toggle latch panel sets how far past the catch a press goes, where an on key rests, and the springs it rises on.', node: <LatchTuner /> }]}
       usage={`<Toggle pressed={grid} onPressedChange={setGrid}>Grid</Toggle>
 
 <ToggleGroup multiple value={marks} onValueChange={setMarks} aria-label="Text marks">

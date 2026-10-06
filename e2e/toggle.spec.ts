@@ -70,3 +70,20 @@ test('Reduce Motion: the latch snaps to its depth', async ({ page }) => {
   })).toBeCloseTo(1, 1);
   await expect(snap.locator('.mu-led')).toHaveAttribute('data-kind', 'live');
 });
+
+// RadioKeys: exactly one key down, as a radio group; arrows move and choose, and the old key rises.
+test('radio keys latch exactly one, and arrows choose', async ({ page }) => {
+  await open(page, '/components/toggle', 'bone');
+  const group = page.getByRole('radiogroup', { name: 'Call length' });
+  const key = (name: string) => group.getByRole('radio', { name });
+  await expect(key('30 min')).toBeChecked();
+  await expect(key('30 min')).toHaveAttribute('data-pressed', '');
+  await expect(key('30 min').locator('.mu-led')).toHaveAttribute('data-kind', 'live');
+  await key('60 min').click();
+  await expect(key('60 min')).toBeChecked();
+  await expect(key('30 min')).not.toHaveAttribute('data-pressed', '');
+  await expect(key('30 min').locator('.mu-led')).toHaveAttribute('data-kind', 'off');
+  await page.keyboard.press('ArrowLeft');
+  await expect(key('30 min')).toBeChecked();
+  await expect(key('30 min')).toBeFocused();
+});

@@ -6,6 +6,7 @@ A latching push button, alone or in a row. React: `Toggle` and `ToggleGroup` fro
 
 - A mode or a tool that stays on until you turn it off, shown as a key: "Grid", "Snap", Bold / Italic / Underline.
 - `ToggleGroup` for a set of such keys, several at once (`multiple`) or at most one.
+- `RadioKeys` with `RadioKey` when exactly one of the set is down (time slots, a call length): a radio group with the same latching keys.
 
 ## Don't use it for
 
@@ -36,11 +37,13 @@ Reduce Motion: the latch snaps to its depth; the lamp still lights.
 |---|---|
 | `Toggle` `pressed`, `defaultPressed`, `onPressedChange`, `value` (in a group), `lamp` | `isOn:` |
 | `ToggleGroup` `value` (array), `defaultValue`, `onValueChange`, `multiple` | `selection:` |
+| `RadioKeys` `value`, `defaultValue`, `onValueChange`, `className` (replaces the row layout); `RadioKey` `value`, `lamp`: exactly one down, as a radio group | – (a `Picker`) |
 | `disabled` | `.disabled()` |
 
 ## Keyboard and accessibility
 
 - A button with `aria-pressed`. Space or Enter latch and unlatch. In a group, arrow keys move between keys and Tab leaves the group.
+- `RadioKeys` is a `radiogroup` of `radio` keys: one Tab stop (the chosen key), arrows move and choose at once.
 - The label names it; an icon key needs `aria-label`.
 
 ## Rules

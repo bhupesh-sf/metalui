@@ -1398,10 +1398,10 @@
       "name": "toggle",
       "title": "Toggle",
       "status": "alpha",
-      "description": "A latching push button: the button cap with a lamp; pressing sinks it past the catch, releasing into on settles it at the latch on the part spring with the lamp lit. Toggle group puts the keys in a row.",
+      "description": "A latching push button: the button cap with a lamp; pressing sinks it past the catch, releasing into on settles it at the latch on the part spring with the lamp lit. Toggle group puts the keys in a row; RadioKeys latches exactly one, as a radio group.",
       "react": {
         "package": "@unlocalhosted/metalui",
-        "export": "Toggle, ToggleGroup",
+        "export": "Toggle, ToggleGroup, RadioKeys, RadioKey",
         "base": "@base-ui/react/toggle"
       },
       "swift": {
