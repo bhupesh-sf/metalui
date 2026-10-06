@@ -462,6 +462,15 @@
   --spacing-form-field-legend-gap: var(--mu-r-form-field-self-legend-gap);
   --spacing-form-field-form-gap: var(--mu-r-form-field-self-form-gap);
   --color-form-field-error-ink: var(--mu-r-form-field-error-ink);
+  --spacing-form-field-side-label-width: var(--mu-r-form-field-side-label-width);
+  --spacing-form-field-side-gap: var(--mu-r-form-field-side-gap);
+  --spacing-form-field-side-min: var(--mu-r-form-field-side-min);
+  --spacing-form-field-mark-gap: var(--mu-r-form-field-mark-gap);
+  --spacing-form-field-required-size: var(--mu-r-form-field-required-size);
+  --spacing-form-field-required-lift: var(--mu-r-form-field-required-lift);
+  --spacing-form-field-changed-size: var(--mu-r-form-field-changed-size);
+  --spacing-form-field-changed-gap: var(--mu-r-form-field-changed-gap);
+  --spacing-form-field-changed-top: var(--mu-r-form-field-changed-top);
   --spacing-skeleton-radius: var(--mu-r-skeleton-self-radius);
   --radius-skeleton-radius: var(--mu-r-skeleton-self-radius);
   --spacing-skeleton-line: var(--mu-r-skeleton-self-line);
@@ -843,6 +852,11 @@
   --spacing-field-search-glyph: var(--mu-r-field-search-glyph);
   --tracking-field-search-tracking: var(--mu-r-field-search-tracking);
   --color-field-search-ink: var(--mu-r-field-search-ink);
+  --spacing-field-key-size: var(--mu-r-field-key-size);
+  --spacing-field-key-glyph: var(--mu-r-field-key-glyph);
+  --spacing-field-key-gap: var(--mu-r-field-key-gap);
+  --spacing-field-key-hit: var(--mu-r-field-key-hit);
+  --spacing-field-chars-slack: var(--mu-r-field-chars-slack);
   --spacing-sparkline-line-width: var(--mu-r-sparkline-line-width);
   --color-sparkline-line-color: var(--mu-r-sparkline-line-color);
   --spacing-sparkline-dot-r: var(--mu-r-sparkline-dot-r);
@@ -1541,11 +1555,29 @@
 @utility combobox-fit {
   overflow: hidden; transition: height calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
 }
+@utility form-field-side {
+  container: form-field / inline-size;
+}
+@utility form-field-side-grid {
+  display: grid; row-gap: var(--mu-r-form-field-self-gap); @container form-field (min-width: 400px) { grid-template-columns: var(--mu-r-form-field-side-label-width) minmax(0, 1fr); column-gap: var(--mu-r-form-field-side-gap); align-items: baseline; & > * { grid-column: 2; } & > .mu-form-field-label { grid-column: 1; justify-self: end; width: fit-content; max-width: 100%; text-align: end; } }
+}
+@utility form-field-required {
+  display: inline-block; flex: none; width: var(--mu-r-form-field-required-size); height: var(--mu-r-form-field-required-size); border-radius: 50%; background: var(--mu-ink2); translate: 0 calc(var(--mu-r-form-field-required-lift) * -1);
+}
+@utility changed-mark {
+  display: inline-block; flex: none; width: var(--mu-r-form-field-changed-size); height: var(--mu-r-form-field-changed-size); border-radius: 50%; background: var(--mu-engrave); box-shadow: var(--mu-lip-shadow); opacity: 0; scale: calc(1 - (1 - var(--mu-r-form-field-changed-pop)) * var(--mu-travel-settle)); transition: opacity var(--mu-spring-release-d) var(--mu-spring-release), scale calc(var(--mu-spring-release-d) * var(--mu-travel-settle)) var(--mu-spring-release); &[data-changed] { opacity: 1; scale: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle), scale calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle); }
+}
+@utility form-field-changed-hang {
+  position: absolute; right: 100%; top: var(--mu-r-form-field-changed-top); margin-right: var(--mu-r-form-field-changed-gap);
+}
 @utility form-field-legend {
   margin-bottom: calc(var(--mu-r-form-field-self-legend-gap) - var(--mu-r-form-field-self-fieldset-gap));
 }
 @utility form-field-error {
   display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle); & > * { overflow: hidden; min-height: 0; } &[data-starting-style] { grid-template-rows: 0fr; opacity: 0; } &[data-ending-style] { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows calc(var(--mu-spring-release-d) * var(--mu-travel-settle)) var(--mu-spring-release), opacity var(--mu-spring-release-d) var(--mu-spring-release); }
+}
+@utility opacity-form-field-changed-pop {
+  opacity: var(--mu-r-form-field-changed-pop);
 }
 @utility skeleton-arrive {
   animation: mu-skeleton-arrive var(--mu-spring-settle-d) var(--mu-r-skeleton-self-delay) var(--mu-spring-settle) both;
@@ -2345,6 +2377,21 @@
   font: var(--mu-r-chip-tag-font);
   letter-spacing: var(--mu-r-chip-tag-tracking);
 }
+@utility field-affix {
+  flex: none; white-space: nowrap; color: var(--mu-ink3); text-shadow: var(--mu-lip-shadow); user-select: none; -webkit-user-select: none; cursor: text;
+}
+@utility field-chars {
+  flex: none; width: calc(var(--mu-field-chars) * 1ch + var(--mu-r-field-chars-slack));
+}
+@utility field-key-hit {
+  &::after { content: ""; position: absolute; left: 50%; top: 50%; width: var(--mu-r-field-key-hit); height: var(--mu-r-field-key-hit); translate: -50% -50%; }
+}
+@utility field-presence {
+  opacity: 0; scale: calc(1 - (1 - var(--mu-r-field-key-pop)) * var(--mu-travel-settle)); visibility: hidden; &[data-shown] { opacity: 1; scale: 1; visibility: visible; } &[data-ready] { transition: opacity var(--mu-spring-release-d) var(--mu-spring-release), scale calc(var(--mu-spring-release-d) * var(--mu-travel-settle)) var(--mu-spring-release), visibility 0s linear var(--mu-spring-release-d); } &[data-ready][data-shown] { transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle), scale calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), visibility 0s; }
+}
+@utility field-count {
+  opacity: 0; transition: opacity var(--mu-r-textarea-count-fade); &[data-shown] { opacity: 1; }
+}
 @utility type-field-field {
   font: var(--mu-r-field-field-font);
   letter-spacing: var(--mu-r-field-field-tracking);
@@ -2355,6 +2402,9 @@
 @utility type-field-search {
   font: var(--mu-r-field-search-font);
   letter-spacing: var(--mu-r-field-search-tracking);
+}
+@utility opacity-field-key-pop {
+  opacity: var(--mu-r-field-key-pop);
 }
 @utility stroke-width-sparkline-line-width {
   stroke-width: var(--mu-r-sparkline-line-width);

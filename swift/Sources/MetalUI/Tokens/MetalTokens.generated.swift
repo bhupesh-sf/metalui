@@ -951,7 +951,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A control with its words: a label above (ui type, ink), an optional description below (meta type, ink3), and an error that says why a value is not accepted (meta type, red). The label, description and error are tied to the control for assistive tech, and the field's invalid and disabled states reach every control inside. The error comes out from under the control: its row grows open on the settle spring as it fades in, so the layout below moves rather than jumps; it leaves on the release spring. A fieldset groups fields under a legend; a form validates every field when it is submitted, moves focus to the first one that is not accepted, and takes errors back from a server by field name. Reduce Motion: the row snaps; the fade stays. (Base UI Field and Fieldset; the invalid foundation; the settle and release springs)
+    /// A control with its words: a label above (ui type, ink), an optional description below (meta type, ink3), and an error that says why a value is not accepted (meta type, red). The label, description and error are tied to the control for assistive tech, and the field's invalid and disabled states reach every control inside. The error comes out from under the control: its row grows open on the settle spring as it fades in, so the layout below moves rather than jumps; it leaves on the release spring. A fieldset groups fields under a legend; a form validates every field when it is submitted, moves focus to the first one that is not accepted, and takes errors back from a server by field name. Errors come at the right moment: a field checks when you leave it (or on submit) and its error goes the moment you change the value. Side by side (horizontal), the label sits in a 136 column, end-aligned and on the control's baseline, 16 from it, with the description, readback and error under the control; when the field is narrower than 400 it stacks like a vertical one. Mark the minority: "Optional" in ink3 after the label when most fields are required, or a 4 required dot in ink2, lifted 5 off the baseline, when most are optional; never both, 6 from the label. Changed: a 6 engraved dot (the engraved ink with its lip) hangs 6 before the label, its centre on the label's first line, for a value changed since it was saved; it pops in from 40 % on the settle spring and leaves on the release spring. The readback is a line under the control in the readout type, ink2, saying what was understood; its text turns on the drum and its row grows open and closes like the error's. Reduce Motion: the rows snap and the marks fade without the pop; the fades stay. (Base UI Field and Fieldset; the invalid foundation; the settle and release springs)
     public static let formField = MetalObjectRecipe(
         name: "form-field",
         layers: [
@@ -963,6 +963,16 @@ public enum MetalRecipes {
             "self.legend-gap": .number(10.0),
             "self.form-gap": .number(20.0),
             "error.ink": .perColorway(bone: "#C23B30", graphite: "#FF8A77"),
+            "side.label-width": .number(136.0),
+            "side.gap": .number(16.0),
+            "side.min": .number(400.0),
+            "mark.gap": .number(6.0),
+            "required.size": .number(4.0),
+            "required.lift": .number(5.0),
+            "changed.size": .number(6.0),
+            "changed.gap": .number(6.0),
+            "changed.top": .number(5.0),
+            "changed.pop": .text("0.4"),
         ]
     )
 
@@ -2166,7 +2176,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Text input in a well with a leading glyph and trailing keycaps, in three sizes: large (44, the palette's field, where the caret is the focus) and the form sizes regular (32) and compact (28), which match the select and show the focus ring. Invalid draws the foundation's invalid ring; disabled is 40 %. SearchField is a button in a well that opens search (light or graphite). (reference style.css .pal-field, .pal-field input, .tb-search)
+    /// Text input in a well with a leading glyph and trailing keycaps, in three sizes: large (44, the palette's field, where the caret is the focus) and the form sizes regular (32) and compact (28), which match the select and show the focus ring. Invalid draws the foundation's invalid ring; disabled is 40 %. A prefix or suffix is a fixed part of the value ("https://", "kg"), engraved in ink3 on the well's floor in the input's type: not selectable, not part of the value, and pressing it puts the caret at that end of the input. The trail holds mini keys: compact button caps, 20 round with a 12 glyph and a 24 hit area, which sit as far from the well's edge as from its top and bottom in every size; a key that comes and goes (clear, a remote check that passed) pops in on the settle spring from 60 % and leaves on the release spring, keeping its place so the trail never shifts. With a limit, Textarea's counter sits in the trail (meta type, tabular, ink3) and fades in at Textarea's share of the limit; it turns red at the limit, and typing past it shakes only the counter on the refusal spring. chars sizes the input to an expected length in its own font's character width, plus a 2 slack for the caret. SearchField is a button in a well that opens search (light or graphite). Reduce Motion: keys fade without the pop; nothing shakes. (reference style.css .pal-field, .pal-field input, .tb-search)
     public static let field = MetalObjectRecipe(
         name: "field",
         layers: [
@@ -2207,6 +2217,12 @@ public enum MetalRecipes {
             "search.font": .text("500 13px/1 sans"),
             "search.tracking": .text("-0.012em"),
             "search.ink": .text("#8E8E93"),
+            "key.size": .number(20.0),
+            "key.glyph": .number(12.0),
+            "key.gap": .number(4.0),
+            "key.hit": .number(24.0),
+            "key.pop": .text("0.6"),
+            "chars.slack": .number(2.0),
         ]
     )
 

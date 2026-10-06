@@ -1067,6 +1067,16 @@
   --mu-r-form-field-self-fieldset-gap: 16px;
   --mu-r-form-field-self-legend-gap: 10px;
   --mu-r-form-field-self-form-gap: 20px;
+  --mu-r-form-field-side-label-width: 136px;
+  --mu-r-form-field-side-gap: 16px;
+  --mu-r-form-field-side-min: 400px;
+  --mu-r-form-field-mark-gap: 6px;
+  --mu-r-form-field-required-size: 4px;
+  --mu-r-form-field-required-lift: 5px;
+  --mu-r-form-field-changed-size: 6px;
+  --mu-r-form-field-changed-gap: 6px;
+  --mu-r-form-field-changed-top: 5px;
+  --mu-r-form-field-changed-pop: 0.4;
   /* skeleton: the field well (recipe well field); the spinner's beat; the settle spring */
   --mu-r-skeleton-self-radius: 8px;
   --mu-r-skeleton-self-line: 12px;
@@ -1640,6 +1650,12 @@
   --mu-r-field-search-font: 500 13px/1 var(--mu-sans);
   --mu-r-field-search-tracking: -0.012em;
   --mu-r-field-search-ink: #8E8E93;
+  --mu-r-field-key-size: 20px;
+  --mu-r-field-key-glyph: 12px;
+  --mu-r-field-key-gap: 4px;
+  --mu-r-field-key-hit: 24px;
+  --mu-r-field-key-pop: 0.6;
+  --mu-r-field-chars-slack: 2px;
   /* sparkline: reference style.css .spark path, .spark circle, .spark circle.last, .spark .base */
   --mu-r-sparkline-line-width: 1.5px;
   --mu-r-sparkline-dot-r: 2px;

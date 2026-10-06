@@ -666,10 +666,12 @@
       "name": "field",
       "type": "registry:ui",
       "title": "Field",
-      "description": "Text input in a well with a leading glyph and trailing keycaps; SearchField, a button in a well that opens search.",
+      "description": "Text input in a well with a leading glyph, a fixed prefix and suffix, and mini keys in the trail (clear, a shortcut keycap that turns to Esc, a remote check that passed); a counter and a width by expected length. SearchField, a button in a well that opens search.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/kbd.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json",
         "https://metalui.dev/r/well.json"
       ],
@@ -731,11 +733,12 @@
       "name": "form-field",
       "type": "registry:ui",
       "title": "Form field",
-      "description": "A control with its words: label, description and an error that grows open from under the control on the settle spring; invalid and disabled reach every control inside. Fieldset groups fields under a legend.",
+      "description": "A control with its words: a label above or beside it (with an optional or required mark, and the changed mark), a description, a readback of what was understood, and an error that grows open from under the control on the settle spring; invalid and disabled reach every control inside. Fieldset groups fields under a legend. ChangedMark is shared with other controls.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -745,7 +748,7 @@
           "target": "components/metalui/components/form-field/form-field.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/form-field.md. SwiftUI: MetalFormField in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/form-field.md. SwiftUI: MetalFormField, MetalFieldset, MetalChangedMark in the MetalUI Swift package."
     },
     {
       "name": "glass-face",
