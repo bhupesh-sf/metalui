@@ -23,10 +23,10 @@ LED meanings stay the library's: green live or ok, amber waiting or urgent, red 
 
 | ReUI | The job | Our kind | Glyph | Lamp |
 |---|---|---|---|---|
-| default, info | tell something worth knowing, nothing is wrong | `note` | `note` (stand-in for **info**) | none: nothing to signal, and an off lamp would read as "something is off" |
+| default, info | tell something worth knowing, nothing is wrong | `note` | `info` | none: nothing to signal, and an off lamp would read as "something is off" |
 | success | something finished well; often an alert that was `waiting` resolving | `done` | `check` | green, steady |
 | *(none)* | something is under way and the alert will update (*ours*) | `waiting` | `clock` | amber, breathing while it lasts |
-| warning | act soon or something will go wrong | `urgent` | `bell` (stand-in for **warning**) | amber, steady (urgent is amber that doesn't breathe, as on Status) |
+| warning | act soon or something will go wrong | `urgent` | `warning` | amber, steady (urgent is amber that doesn't breathe, as on Status) |
 | destructive | something failed or was refused | `failed` | `sync-error` (the broken ring with "!") | red, two blinks, then lit |
 | invert | be seen above everything else | dropped → `tone="strong"` | | |
 
@@ -73,12 +73,9 @@ Blue is not used: it means a link's kind, and "info" is not a link. No new LED c
 - **Sizes** (large / regular / compact): an alert is reading text, at the body size; a compact alert is a title-only one.
 - **A blue info kind**: blue is a link's kind.
 
-## Glyphs the set lacks
+## Glyphs
 
-- **info** (an "i" in a ring): `note` stands in.
-- **warning** (a triangle with "!"): `bell` stands in.
-
-Draw both in the act format (`icons/src/acts/`) with morph partners `clock`, `check` and `sync-error`, so every kind change still morphs.
+- [x] **info** (an "i" in a disc) and **warning** (a triangle with "!") are drawn (2026-10-06); they replace the `note` and `bell` stand-ins, and morph into each other at .78.
 
 Decide: where does the lamp go: in the glyph window's corner, or beside the title as on a badge?
 - Decided: **in the window's corner.** Beside the title, a lamp and a glyph would be two marks for one meaning, split across the alert; in the corner of the window they read as one instrument (what kind, and whether it's live), the way a latched tool key wears its LED. The title then starts flush with the description, so a long message reads as one column.
