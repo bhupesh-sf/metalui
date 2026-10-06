@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Menu, MenuItem } from '../menu/menu';
+import { ChevronIcon } from '../../icons/components.generated';
 
 /* ─────────────────────────────────────────────────────────
  * BREADCRUMBS, where you are, as a path you can climb
@@ -46,9 +47,7 @@ const FOLD = 'mu-breadcrumb-fold inline-grid place-items-center h-breadcrumbs-fo
 
 function Sep() {
   return (
-    <svg aria-hidden viewBox="0 0 10 10" className={SEP} fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3.75 2 6.75 5l-3 3" />
-    </svg>
+    <ChevronIcon animate={false} turn={270} className={SEP} />
   );
 }
 

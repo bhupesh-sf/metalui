@@ -1350,7 +1350,7 @@ public enum MetalRecipes {
         props: [
             "self.gap": .number(6.0),
             "self.max": .number(4.0),
-            "sep.size": .number(10.0),
+            "sep.size": .number(14.0),
             "fold.height": .number(22.0),
             "fold.pad": .number(6.0),
             "fold.radius": .number(6.0),
@@ -1400,7 +1400,7 @@ public enum MetalRecipes {
         props: [
             "page.min-width": .number(28.0),
             "self.siblings": .number(1.0),
-            "arrow.size": .number(10.0),
+            "arrow.size": .number(14.0),
         ]
     )
 
@@ -1419,7 +1419,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A site's sections across the top, with panels of links: the menubar's quiet keys, each with a chevron that turns over on the part spring while its panel is open; the panel is the menu's frosted plate. Opening, the plate rises one nest into place on the surface spring. Moving from one key to the next, the plate slides under the new key and takes the new panel's size on the settle spring, while the content moves two grid steps the way you went and crossfades. Links in a panel are rows with a title and a line of description that lift on hover. Reduce Motion: size and place snap; content crossfades without travel. (the menubar's keys; the menu plate; the row recipe; the surface and settle springs; Base UI Navigation Menu)
+    /// A site's sections across the top, with panels of links: the menubar's quiet keys, each with the set's chevron, which turns over (a morph of its own parts) while its panel is open; the panel is the menu's frosted plate. Opening, the plate rises one nest into place on the surface spring. Moving from one key to the next, the plate slides under the new key and takes the new panel's size on the settle spring, while the content moves two grid steps the way you went and crossfades. Links in a panel are rows with a title and a line of description that lift on hover. Reduce Motion: size and place snap; content crossfades without travel. (the menubar's keys; the menu plate; the row recipe; the surface and settle springs; Base UI Navigation Menu)
     public static let navigationMenu = MetalObjectRecipe(
         name: "navigation-menu",
         layers: [
@@ -1432,7 +1432,7 @@ public enum MetalRecipes {
             "link.pad-y": .number(10.0),
             "link.radius": .number(12.0),
             "link.gap": .number(2.0),
-            "chevron.size": .number(10.0),
+            "chevron.size": .number(14.0),
         ]
     )
 

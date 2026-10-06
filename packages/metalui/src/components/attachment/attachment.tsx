@@ -6,7 +6,7 @@ import { Avatar as BasePicture } from '@base-ui/react/avatar';
 import { IconButton } from '../icon-button/icon-button';
 import { Button } from '../button/button';
 import { Progress } from '../progress/progress';
-import { RetryIcon, ZoomInIcon } from '../../icons/components.generated';
+import { CloseIcon, RetryIcon, ZoomInIcon } from '../../icons/components.generated';
 import { leaveRows } from '../../motion/rows';
 
 /* ─────────────────────────────────────────────────────────
@@ -112,7 +112,6 @@ function Face({ type, preview }: { type: string; preview?: string }) {
   );
 }
 
-const close = <svg aria-hidden viewBox="0 0 10 10" className={GLYPH} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round"><path d="M2.5 2.5l5 5M7.5 2.5l-5 5" /></svg>;
 
 /** A file someone attached. (Named Attachment so it never shadows the browser's File.) */
 export function Attachment(props: AttachmentProps) {
@@ -154,7 +153,7 @@ function Row({ name, size, progress, error, onRetry, onRemove, fill, preview, cl
           variant="mini"
           label={`Remove ${name}`}
           onClick={remove}
-          icon={close}
+          icon={<CloseIcon className={GLYPH} />}
         />
       )}
     </div>
@@ -199,7 +198,7 @@ function Tile({ name, size: bytes, progress, error, onRetry, onRemove, onOpen, p
       )}
       {onRemove && (
         <span className={`${CAP} ${CAP_AT[size].end}`}>
-          <IconButton variant="mini" label={`Remove ${name}`} onClick={remove} icon={close} />
+          <IconButton variant="mini" label={`Remove ${name}`} onClick={remove} icon={<CloseIcon className={GLYPH} />} />
         </span>
       )}
       {compact

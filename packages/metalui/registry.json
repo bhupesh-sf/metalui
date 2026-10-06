@@ -364,6 +364,7 @@
       "description": "Where you are, as a path you can climb: levels above in ink2, the current in ink, engraved chevrons between; a new level arrives from the right on the settle spring; long paths fold the middle into a menu.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -1371,6 +1372,7 @@
       ],
       "registryDependencies": [
         "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/icon-morph.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
@@ -1413,6 +1415,7 @@
       "description": "Moving through pages of results: page numbers in the switcher's track with previous and next keys; the current page's thumb glides to the chosen page on the part spring.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/switcher.json",
         "https://metalui.dev/r/tokens.json"
@@ -2120,6 +2123,7 @@
       "registryDependencies": [
         "https://metalui.dev/r/chip.json",
         "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/label.json",
         "https://metalui.dev/r/tokens.json"
       ],

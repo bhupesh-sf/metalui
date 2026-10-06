@@ -2,6 +2,7 @@
 
 import { SlidingIndicator } from '../../motion/indicator';
 import { trackParts } from '../switcher/switcher';
+import { ChevronIcon } from '../../icons/components.generated';
 
 /* ─────────────────────────────────────────────────────────
  * PAGINATION, moving through pages of results
@@ -48,9 +49,7 @@ export function pageWindow(page: number, count: number, siblings = 1): (number |
 
 function Arrow({ back }: { back?: boolean }) {
   return (
-    <svg aria-hidden viewBox="0 0 10 10" className={ARROW} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d={back ? 'M6.25 2 3.25 5l3 3' : 'M3.75 2 6.75 5l-3 3'} />
-    </svg>
+    <ChevronIcon turn={back ? 90 : 270} className={ARROW} />
   );
 }
 
