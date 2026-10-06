@@ -79,6 +79,7 @@ export const routes: RouteObject[] = [
       { path: 'components/button-group', lazy: lazy(() => import('../pages/components/ButtonGroup')) },
       { path: 'components/breadcrumbs', lazy: lazy(() => import('../pages/components/Breadcrumbs')) },
       { path: 'components/scrollspy', lazy: lazy(() => import('../pages/components/Scrollspy')) },
+      { path: 'components/carousel', lazy: lazy(() => import('../pages/components/Carousel')) },
       { path: 'components/pagination', lazy: lazy(() => import('../pages/components/Pagination')) },
       { path: 'components/menubar', lazy: lazy(() => import('../pages/components/Menubar')) },
       { path: 'components/navigation-menu', lazy: lazy(() => import('../pages/components/NavigationMenu')) },

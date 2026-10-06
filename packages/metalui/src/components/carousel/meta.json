@@ -1,0 +1,23 @@
+{
+  "name": "carousel",
+  "title": "Carousel",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["icon-button"],
+  "description": "A few peers looked at one or a few at a time in a box narrower than all of them: a gallery of pictures, onboarding cards, a shelf of cards on a narrow screen. Slides scroll natively with scroll snap (touch, trackpad, wheel) and the next one peeks at the edge; Previous and Next are the graphite tool keys with the chevron, off at the ends; the readout says where you are (\"3 / 8\", or the range in view) on the drum, and a polite status says it once the scroll settles. Never rotates on its own.",
+  "base": "section, aria-roledescription=\"carousel\"; slides are groups, roledescription \"slide\" (WAI-ARIA APG carousel, basic); CSS Scroll Snap and IntersectionObserver (Base UI has no carousel)",
+  "react": {
+    "export": "Carousel",
+    "files": ["carousel.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalCarousel",
+    "file": "swift/Sources/MetalUI/Components/MetalCarousel.swift"
+  },
+  "slots": {
+    "Carousel": ["Root", "Slide"]
+  },
+  "agent": "carousel.agent.md",
+  "page": "/components/carousel"
+}

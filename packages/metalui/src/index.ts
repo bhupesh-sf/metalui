@@ -40,6 +40,7 @@ export { Link, type LinkKind, type LinkProps } from './components/link/link';
 export { ButtonGroup, ButtonGroupReadout, SplitButton, type ButtonGroupProps, type ButtonGroupReadoutProps, type SplitButtonProps } from './components/button-group/button-group';
 export { Breadcrumbs, type BreadcrumbsProps, type Crumb } from './components/breadcrumbs/breadcrumbs';
 export { Scrollspy, type ScrollspyProps, type ScrollspyItem } from './components/scrollspy/scrollspy';
+export { Carousel, type CarouselProps, type CarouselSlideProps } from './components/carousel/carousel';
 export { Pagination, pageWindow, type PaginationProps } from './components/pagination/pagination';
 export { Menubar, type MenubarProps, type MenubarMenuProps } from './components/menubar/menubar';
 export { NavigationMenu, type NavigationMenuProps, type NavigationMenuItemProps, type NavigationMenuLinkProps } from './components/navigation-menu/navigation-menu';

@@ -1326,6 +1326,11 @@
   --mu-r-scrollspy-entry-indent: 12px;
   --mu-r-scrollspy-rail-inset: 8px;
   --mu-r-scrollspy-rail-inset-compact: 7px;
+  /* carousel: the icon button (tool), the chevron glyph, the drum (SwapText); CSS Scroll Snap; WAI-ARIA APG carousel (basic) */
+  --mu-r-carousel-slide-peek: 40px;
+  --mu-r-carousel-slide-gap: 12px;
+  --mu-r-carousel-box-bleed: 10px;
+  --mu-r-carousel-controls-gap: 8px;
   /* pagination: the switcher (track, thumb, options) and its sliding thumb; the WAI pagination landmark */
   --mu-r-pagination-page-min-width: 28px;
   --mu-r-pagination-self-siblings: 1px;
