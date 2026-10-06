@@ -26,7 +26,8 @@ import { Icon } from '@unlocalhosted/metalui/icons';
  *    900 ms   the beat: the row steps one nest down and fades (release spring); the rows under it
  *             travel up to close the gap (settle spring). In Done, un-ticking settles it back out.
  *
- *   select    the gutter box, x, Space, ⌘-click or ⇧-click (a range): the row takes the lifted plate
+ *   select    the gutter's round box, x, Space, ⌘-click or ⇧-click (a range): the row takes the lifted
+ *             plate (the round box is selection; the square dimple beside it is the task's completion)
  *      0 ms   the first one: the tool strip rises over the footer (ToolStrip's own arrival, part spring);
  *             its count turns on the drum as more are picked
  *   clear     ⎋ or the strip's ×: the strip sinks one nest and fades (release spring)
@@ -527,8 +528,10 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
               className={ROW}
             >
               <span role="gridcell" className={GUTTER}>
+                {/* Selecting is round, completing is the task's square dimple: side by side they never read alike. */}
                 <Checkbox
                   size="row"
+                  className="[&>.mu-dimple]:rounded-full"
                   data-col={0}
                   tabIndex={stop(0)}
                   aria-label={`Select ${t.title}`}

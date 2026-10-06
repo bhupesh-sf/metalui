@@ -22,7 +22,7 @@ import { Menu, MenuItem } from '../../components/menu/menu';
 const STRIP = 'mu-toolstrip inline-flex items-center gap-toolstrip-gap p-toolstrip-pad animate-toolstrip-in [&>.mu-rule]:h-toolstrip-sep-height';
 
 // The count's place only: a composition doesn't paint, so its words come styled from the host.
-const COUNT = 'mu-toolstrip-count px-toolstrip-pad whitespace-nowrap';
+const COUNT = 'mu-toolstrip-count inline-flex items-center px-toolstrip-pad whitespace-nowrap';
 
 export interface ToolStripItem {
   /** The verb. With `iconOnly` it names the key for assistive tech and the tooltip only. */
