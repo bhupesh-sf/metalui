@@ -145,11 +145,12 @@ Now: rest (engraved hairline underline), hover (underline darkens), pressed (dim
 
 Owner, on the Popover page's "Rename" button: "same, add better semantic action." (2026-09-30)
 
-- [ ] **The confirm names itself with a glyph**: "Rename" leads with `pen` (its act plays on hover and press), the same rule as the icons entry.
-- [ ] **It behaves like a rename**: the field opens with the name selected (the extension kept out of the selection for a file); Enter renames, Escape cancels; Rename is disabled while the name is empty or unchanged; an invalid name (taken, too long) shows the invalid ring and says why under the field instead of closing.
-- [ ] **Done shows it's done**: on Rename the glyph morphs `pen` → `check` and the label turns "Renamed" on the drum, then the popover closes after a beat; offer undo in a toast: "Renamed to Lisbon · Undo".
-- [ ] **Saving**: when the rename is async, the key shows the spinner and the field locks until it lands; a failure morphs to `sync-error` with Try again.
-- [ ] Apply the same pattern to Dialog's "Rename canvas…" and to every confirm that commits a small edit (Save region, Tag, Comment).
+- [x] **The confirm names itself with a glyph**: "Rename" leads with `pen` (its act plays on hover and press), the same rule as the icons entry.
+- [x] **It behaves like a rename**: the field opens with the name selected (the extension kept out of the selection for a file); Enter renames, Escape cancels; Rename is disabled while the name is empty or unchanged; an invalid name (taken, too long) shows the invalid ring and says why under the field instead of closing.
+- [x] **Done shows it's done**: on Rename the glyph morphs `pen` → `check` and the label turns "Renamed" on the drum, then the popover closes after a beat; offer undo in a toast: "Renamed to Lisbon · Undo".
+- [x] **Saving**: when the rename is async, the key shows the spinner and the field locks until it lands; a failure morphs to `sync-error` with Try again.
+- [x] Apply the same pattern to Dialog's "Rename canvas…" and to every confirm that commits a small edit (Save region, Tag, Comment).
+- Done (2026-10-06) as `QuickEdit`, a Component the popover's Rename and Dialog's "Rename canvas…" use; the rule for every small-edit confirm is in its guide. Left: SwiftUI crossfades the glyph (no morph yet); validation is synchronous only; the Dialog x-ray specimen still shows the old Save layout; Save region, Tag and Comment use it when built (Comment needs a multiline kind).
 
 ## Progress: more variations, and Reset
 
@@ -349,6 +350,10 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **RadioGroup disabled**: the checked radio stays in the Tab order; decide (reachable to explain, or skipped) and document. (Reachable, as the settings block's held frequency needs: one stop on its choice, marked disabled, its description saying why. Shown on the Radio page, documented and tested.)
 - [x] **Container queries in blocks**: unnamed `@container` matches the nearest container; blocks should name theirs (`@container/block`). Write it into the block page guide. (Every block names its container; the rule is in `docs/DOCS_ARCHITECTURE.md`, block page.)
 - [x] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message. (A hairline fades in under the title while the thread runs under it, so the faded line reads as passing beneath.)
+
+## Tests that fail only under a full parallel run
+
+- [ ] `xray-dialog-editing` "pulling the dialog up…" and `toast` (deck, undo) and `region`, `scroll-area`, `slider-states` focus ring, `spinner` (whole place, known or unknown), `toggle`, `tooltip`: each failed once in the 4-worker full run (2026-10-06) and passed alone. Find the race in each (AGENTS.md: sample with rAF, poll), don't retry.
 
 ## Variation sheets: existing components
 
