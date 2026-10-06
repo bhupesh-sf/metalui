@@ -61,6 +61,7 @@ export { Badge, type BadgeProps, type BadgeAnchorProps, type BadgeSize } from '.
 export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, markTagHue, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
 export { RadioGroup, Radio, type RadioGroupProps, type RadioProps } from './components/radio/radio';
+export { Rating, type RatingProps, type RatingSize } from './components/rating/rating';
 export { CheckboxGroup, type CheckboxGroupProps, type CheckboxGroupItemProps } from './components/checkbox-group/checkbox-group';
 export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch';
 export { InkPicks, WidthPicks, InkStroke, INKS, INK_WIDTHS, inkColor, type Ink, type InkWidth, type InkPicksProps, type WidthPicksProps } from './components/draw-picks/draw-picks';

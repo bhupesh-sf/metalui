@@ -1038,6 +1038,23 @@
       "agent": "https://metalui.dev/r/radio.md"
     },
     {
+      "name": "rating",
+      "title": "Rating",
+      "status": "alpha",
+      "description": "How good something is on a short scale: the slider's groove cut into one detent per point and filled with its green. Read-only, a decimal fills that share of its detent and the value and count stand beside it; editable, each detent is a radio: hover ghosts what a press would change, a press dips and latches, pressing the chosen one again clears it.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Rating",
+        "base": "@base-ui/react/radio-group"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalRating"
+      },
+      "registry": "https://metalui.dev/r/rating.json",
+      "agent": "https://metalui.dev/r/rating.md"
+    },
+    {
       "name": "region",
       "title": "Region",
       "status": "alpha",

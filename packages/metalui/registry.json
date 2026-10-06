@@ -1455,6 +1455,27 @@
       "docs": "Agent guide: https://metalui.dev/r/radio.md. SwiftUI: MetalRadioGroup in the MetalUI Swift package."
     },
     {
+      "name": "rating",
+      "type": "registry:ui",
+      "title": "Rating",
+      "description": "How good something is on a short scale: the slider's groove cut into one detent per point and filled with its green. Read-only, a decimal fills that share of its detent and the value and count stand beside it; editable, each detent is a radio: hover ghosts what a press would change, a press dips and latches, pressing the chosen one again clears it.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/rating/rating.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/rating/rating.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/rating.md. SwiftUI: MetalRating in the MetalUI Swift package."
+    },
+    {
       "name": "region",
       "type": "registry:ui",
       "title": "Region",

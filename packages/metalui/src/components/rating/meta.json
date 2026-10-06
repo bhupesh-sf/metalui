@@ -1,0 +1,18 @@
+{
+  "name": "rating",
+  "title": "Rating",
+  "status": "alpha",
+  "layer": "component",
+  "description": "How good something is on a short scale: the slider's groove cut into one detent per point and filled with its green. Read-only, a decimal fills that share of its detent and the value and count stand beside it; editable, each detent is a radio: hover ghosts what a press would change, a press dips and latches, pressing the chosen one again clears it.",
+  "base": "@base-ui/react/radio-group",
+  "react": {
+    "export": "Rating",
+    "files": ["rating.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalRating",
+    "file": "swift/Sources/MetalUI/Components/MetalRating.swift"
+  },
+  "agent": "rating.agent.md",
+  "page": "/components/rating"
+}

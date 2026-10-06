@@ -116,7 +116,9 @@ export function SwapText({ value, className }: SwapTextProps) {
       clearTimeout(shrinkTimer.current);
       setWidth((cur) => {
         if (cur === undefined || next >= cur) return next; // growing: the surface moves first
-        shrinkTimer.current = window.setTimeout(() => setWidth(next), readMs(root.current, '--mu-swap-shrink-delay', 83));
+        // Re-measure when it fires: the face may have grown back since (A → B → A in a few frames, or
+        // StrictMode running this updater twice and leaving a timer nobody clears).
+        shrinkTimer.current = window.setTimeout(() => setWidth(target()), readMs(root.current, '--mu-swap-shrink-delay', 83));
         return cur; // shrinking: wait until the old words have mostly left
       });
     });

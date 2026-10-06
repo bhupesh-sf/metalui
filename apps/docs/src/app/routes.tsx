@@ -60,6 +60,7 @@ export const routes: RouteObject[] = [
       { path: 'components/collapsible', lazy: lazy(() => import('../pages/components/Collapsible')) },
       { path: 'components/stepper', lazy: lazy(() => import('../pages/components/Stepper')) },
       { path: 'components/meter', lazy: lazy(() => import('../pages/components/Meter')) },
+      { path: 'components/rating', lazy: lazy(() => import('../pages/components/Rating')) },
       { path: 'components/sheet', lazy: lazy(() => import('../pages/components/Sheet')) },
       { path: 'components/scroll-area', lazy: lazy(() => import('../pages/components/ScrollArea')) },
       { path: 'components/checkbox-group', lazy: lazy(() => import('../pages/components/CheckboxGroup')) },
