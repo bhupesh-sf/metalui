@@ -46,6 +46,7 @@ export const routes: RouteObject[] = [
       { path: 'components/radio', lazy: lazy(() => import('../pages/components/Radio')) },
       { path: 'components/textarea', lazy: lazy(() => import('../pages/components/Textarea')) },
       { path: 'components/quick-edit', lazy: lazy(() => import('../pages/components/QuickEdit')) },
+      { path: 'components/sortable', lazy: lazy(() => import('../pages/components/Sortable')) },
       { path: 'components/popover', lazy: lazy(() => import('../pages/components/Popover')) },
       { path: 'components/alert-dialog', lazy: lazy(() => import('../pages/components/AlertDialog')) },
       { path: 'components/progress', lazy: lazy(() => import('../pages/components/Progress')) },

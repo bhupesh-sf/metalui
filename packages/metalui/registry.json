@@ -1621,6 +1621,25 @@
       "docs": "Agent guide: https://metalui.dev/r/snap-guides.md. SwiftUI: MetalSnapGuides in the MetalUI Swift package."
     },
     {
+      "name": "sortable",
+      "type": "registry:ui",
+      "title": "Sortable",
+      "description": "The drag that reorders a list, a row or a grid, hosted by any list: the item lifts onto a raised plate on the surface spring and follows the hand, the others glide out of the way, a sunk recess shows where it lands, and it lands on the object spring. Keys lift, move and drop it with every step announced; Escape puts it back; a failed save glides back to the previous order. useSortable is the engine for Tree, Kanban, Table and uploads.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/sortable/sortable.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/sortable/sortable.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/sortable.md. SwiftUI: MetalSortable in the MetalUI Swift package."
+    },
+    {
       "name": "sparkline",
       "type": "registry:ui",
       "title": "Sparkline",
