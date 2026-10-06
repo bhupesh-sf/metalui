@@ -2,7 +2,7 @@ import * as React from 'react';
 import { WipNotice } from '../ui/WipNotice';
 import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { DialRoot } from 'dialkit';
-import { SlidingIndicator } from '@unlocalhosted/metalui';
+import { Scrollspy, SlidingIndicator, type ScrollspyItem } from '@unlocalhosted/metalui';
 import { NAV } from './nav';
 import { useColorway, type Colorway } from './colorway';
 import { Wordmark } from '../ui/Wordmark';
@@ -12,7 +12,7 @@ import { SocialLinks } from '../ui/SocialLinks';
  *   masthead   brand · search well (⌘K) · colorway pill of pills · MOTION switch · GitHub, X, LinkedIn
  *   side       engraved groups, rows with readout counts, the current row sunk with a green bar
  *   main       the page
- *   toc        ON THIS PAGE, built from the page's h2 ids, the section in view lit */
+ *   toc        ON THIS PAGE, built from the page's h2 ids: the library's Scrollspy (the section being read, the hash follows) */
 
 function ColorwaySeg() {
   const { colorway, setColorway } = useColorway();
@@ -63,33 +63,20 @@ function openSearch() {
 
 function Toc() {
   const { pathname } = useLocation();
-  const [items, setItems] = React.useState<{ id: string; text: string }[]>([]);
-  const [active, setActive] = React.useState<string | null>(null);
+  const [items, setItems] = React.useState<ScrollspyItem[]>([]);
   React.useEffect(() => {
     const t = window.setTimeout(() => {
       const hs = [...document.querySelectorAll<HTMLElement>('main section[id] > h2, main h2[id]')];
-      setItems(hs.map((h) => ({ id: h.id || h.parentElement!.id, text: h.textContent?.replace(/^#|#$/g, '').trim() ?? '' })).filter((i) => i.id && i.text));
+      setItems(hs.map((h) => ({ id: h.id || h.parentElement!.id, label: h.textContent?.replace(/^#|#$/g, '').trim() ?? '' })).filter((i) => i.id && i.label));
     }, 60);
     return () => window.clearTimeout(t);
   }, [pathname]);
-  React.useEffect(() => {
-    if (!items.length) return;
-    const onScroll = () => {
-      let cur = items[0].id;
-      for (const i of items) { const el = document.getElementById(i.id); if (el && el.getBoundingClientRect().top < 120) cur = i.id; }
-      setActive(cur);
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [items]);
   if (!items.length) return <aside className="toc" aria-label="On this page" />;
+  // The library's Scrollspy: the window, the offset from html's scroll-padding-top (clear of the masthead), the hash follows.
   return (
-    <aside className="toc" aria-label="On this page">
-      <span className="eng">On this page</span>
-      {items.map((i) => (
-        <a key={i.id} href={`#${i.id}`} className={active === i.id ? 'on' : undefined}>{i.text}</a>
-      ))}
+    <aside className="toc">
+      <span className="eng" aria-hidden="true">On this page</span>
+      <Scrollspy key={pathname} aria-label="On this page" items={items} size="compact" hash />
     </aside>
   );
 }
