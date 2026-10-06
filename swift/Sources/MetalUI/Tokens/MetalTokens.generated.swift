@@ -1340,6 +1340,24 @@ public enum MetalRecipes {
             "unit.sub-gap": .number(2.0),
             "presets.width": .number(148.0),
             "presets.gap": .number(8.0),
+            "time.gap": .number(8.0),
+        ]
+    )
+
+    /// A time of day you type or choose from slots; the date picker's sibling. The field's well holds the time in the reader's words ("14:30", "2:30 PM"), a zone engraved as its suffix, the clear key and a clock key; under it the form field's readback says what a typed time was understood as, with its part of the day ("2:30 in the afternoon"), on the drum. Up and down step the part under the caret. The clock key opens a plate of slots: the toggle's latching keys in a radio group, four to a row (so at 15 minutes each row is an hour), six and a half rows tall so the cut row says it scrolls, opened on the chosen slot or the one nearest now; the chosen one latches with its lamp lit. Unavailable slots are ink3 and still choosable. The end of a pair shows each slot's length in ink3, two to a row. Now sits under the slots, as Today does under the calendar. Reduce Motion: the field's, the popover's and the keys' own. (the field and form field (readback); the popover plate; the toggle's RadioKeys and the LED lamp; the button's compact cap for Now; the date picker)
+    public static let timePicker = MetalObjectRecipe(
+        name: "time-picker",
+        layers: [
+
+        ],
+        props: [
+            "self.min-width": .number(136.0),
+            "self.seconds-min-width": .number(160.0),
+            "self.pad": .number(4.0),
+            "slots.columns": .text("4"),
+            "slots.length-columns": .text("2"),
+            "slots.gap": .number(4.0),
+            "slots.height": .number(236.0),
         ]
     )
 

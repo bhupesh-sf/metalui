@@ -13,7 +13,8 @@ export { FormField, Fieldset, Form, ChangedMark, type FormFieldRootProps, type F
 export { NumberField, type NumberFieldProps, type NumberFieldSize } from './components/number-field/number-field';
 export { CodeField, type CodeFieldRootProps, type CodeFieldSlotProps, type CodeFieldResendProps, type CodeFieldSize } from './components/code-field/code-field';
 export { Calendar, type CalendarProps, type CalendarSingleProps, type CalendarRangeProps, type CalendarMultipleProps, type CalendarPeriod, type DateRange, type DayMark } from './components/calendar/calendar';
-export { DatePicker, type DatePickerProps, type DatePickerSingleProps, type DatePickerRangeProps, type DatePreset } from './components/calendar/date-picker';
+export { DatePicker, type DatePickerProps, type DatePickerSingleProps, type DatePickerRangeProps, type DatePreset, type DatePickerTime } from './components/calendar/date-picker';
+export { TimePicker, type TimePickerProps, type TimeGranularity } from './components/time-picker/time-picker';
 export { Avatar, AvatarGroup, initialsOf, type AvatarProps, type AvatarGroupProps, type AvatarSize } from './components/avatar/avatar';
 export { Card, type CardRootProps, type CardTitleProps, type CardActionProps, type CardFrameProps, type CardChoicesProps, type CardChoiceProps, type CardEmptySlotProps, type CardSize, type CardOrientation, type CardStatus, type CardFrameVariant } from './components/card/card';
 export { Attachment, formatBytes, type AttachmentProps } from './components/attachment/attachment';

@@ -74,6 +74,7 @@ export const routes: RouteObject[] = [
       { path: 'components/navigation-menu', lazy: lazy(() => import('../pages/components/NavigationMenu')) },
       { path: 'components/preview-card', lazy: lazy(() => import('../pages/components/PreviewCard')) },
       { path: 'components/calendar', lazy: lazy(() => import('../pages/components/Calendar')) },
+      { path: 'components/time-picker', lazy: lazy(() => import('../pages/components/TimePicker')) },
       { path: 'components/avatar', lazy: lazy(() => import('../pages/components/Avatar')) },
       { path: 'components/card', lazy: lazy(() => import('../pages/components/Card')) },
       { path: 'components/attachment', lazy: lazy(() => import('../pages/components/Attachment')) },

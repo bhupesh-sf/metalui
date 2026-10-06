@@ -712,15 +712,22 @@ public struct MetalDatePicker: View {
     let size: MetalFieldSize
     let isUnavailable: ((Date) -> Bool)?
     let marks: ((Date) -> MetalDayMark?)?
+    let time: Bool
+    let timeStep: Int?
 
     @Environment(\.locale) private var locale
     @Environment(\.metalColorway) private var colorway
     @State private var text = ""
     @State private var open = false
     @State private var left = false
+    /// The time of day as the time field holds it; a time typed before the day waits for it.
+    @State private var clock: String?
 
+    /// - time: a time field beside the date (MetalTimePicker); the selection's hours and minutes are the time.
     public init(_ label: String, selection: Binding<Date?>, in bounds: ClosedRange<Date>? = nil, size: MetalFieldSize = .regular,
-                isUnavailable: ((Date) -> Bool)? = nil, marks: ((Date) -> MetalDayMark?)? = nil) {
+                isUnavailable: ((Date) -> Bool)? = nil, marks: ((Date) -> MetalDayMark?)? = nil, time: Bool = false, timeStep: Int? = nil) {
+        self.time = time
+        self.timeStep = timeStep
         self.label = label
         self._selection = selection
         self.bounds = bounds
@@ -784,7 +791,38 @@ public struct MetalDatePicker: View {
         return math.format(d, "EEEdMMMyyyy")
     }
 
+    /// A day, at the time the time field holds when there is one.
+    private func pick(_ d: Date?) {
+        guard time, let d else { selection = d; return }
+        selection = at(d, clock)
+    }
+    /// The day at a time of day ("14:30"; nil is its start), by the calendar's clock (safe across DST).
+    private func at(_ d: Date, _ t: String?) -> Date? {
+        let s = t.map(MetalTimeMath.seconds) ?? .zero
+        return math.cal.date(bySettingHour: s / 3600, minute: s / 60 % 60, second: s % 60, of: d)
+    }
+
     public var body: some View {
+        if time {
+            HStack(alignment: .top, spacing: MetalRecipes.calendar.points("time.gap")) {
+                date
+                MetalTimePicker("\(label), time", selection: Binding(get: { clock }, set: { t in
+                    clock = t
+                    if let d = selection { selection = at(d, t) }
+                }), step: timeStep, size: size)
+            }
+            .onAppear {
+                if let d = selection {
+                    let c = math.cal.dateComponents([.hour, .minute], from: d)
+                    clock = String(format: "%02d:%02d", c.hour ?? .zero, c.minute ?? .zero)
+                }
+            }
+        } else {
+            date
+        }
+    }
+
+    private var date: some View {
         VStack(alignment: .leading, spacing: MetalRecipes.formField.points("self.gap")) {
             MetalField(label, text: $text, prompt: hint, size: size, clear: true, invalid: left && message != nil) {
                 MetalFieldKey("Choose a day", icon: .calendar) { open = true }
@@ -792,7 +830,7 @@ public struct MetalDatePicker: View {
             }
             .onSubmit { leave() }
             .onChange(of: text) { _, t in
-                if case .some(let d) = parse(t), message == nil, d != selection { selection = d }
+                if case .some(let d) = parse(t), message == nil, d.map(math.day) != selection.map(math.day) { pick(d) }
             }
             if let reading {
                 Text(reading).font(.metal(MetalType.readout)).foregroundColor(colorway.tokens.ink2.color)
@@ -802,7 +840,7 @@ public struct MetalDatePicker: View {
             }
         }
         .onAppear { text = show(selection) }
-        .onChange(of: selection) { _, d in if parsed.flatMap({ $0 }) != d { text = show(d) } }
+        .onChange(of: selection) { _, d in if parsed.flatMap({ $0 }) != d.map(math.day) { text = show(d) } }
     }
 
     private func leave() {
@@ -816,14 +854,14 @@ public struct MetalDatePicker: View {
         let todayOut = bounds.map { t < math.day($0.lowerBound) || t > math.day($0.upperBound) } ?? false
         return VStack(alignment: .trailing, spacing: .zero) {
             MetalCalendar(label: label, selection: .single(Binding(get: { selection }, set: { d in
-                selection = d
+                pick(d)
                 text = show(d)
                 left = false
                 open = false
             })), bounds: bounds, period: .day, months: 1, weekStartsOn: nil, weekNumbers: false, month: nil,
                           isUnavailable: isUnavailable, marks: marks, autoFocus: true)
             MetalButton("Today", size: .compact) {
-                selection = t
+                pick(t)
                 text = show(t)
                 open = false
             }

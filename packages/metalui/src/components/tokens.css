@@ -1302,6 +1302,15 @@
   --mu-r-calendar-unit-sub-gap: 2px;
   --mu-r-calendar-presets-width: 148px;
   --mu-r-calendar-presets-gap: 8px;
+  --mu-r-calendar-time-gap: 8px;
+  /* time-picker: the field and form field (readback); the popover plate; the toggle's RadioKeys and the LED lamp; the button's compact cap for Now; the date picker */
+  --mu-r-time-picker-self-min-width: 136px;
+  --mu-r-time-picker-self-seconds-min-width: 160px;
+  --mu-r-time-picker-self-pad: 4px;
+  --mu-r-time-picker-slots-columns: 4;
+  --mu-r-time-picker-slots-length-columns: 2;
+  --mu-r-time-picker-slots-gap: 4px;
+  --mu-r-time-picker-slots-height: 236px;
   /* avatar: the raised surface (recipe surface raise-sm); the LED part; the settle, object and release springs; Base UI Avatar */
   --mu-r-avatar-size-small: 24px;
   --mu-r-avatar-size-regular: 32px;

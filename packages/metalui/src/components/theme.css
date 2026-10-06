@@ -658,6 +658,12 @@
   --spacing-calendar-unit-sub-gap: var(--mu-r-calendar-unit-sub-gap);
   --spacing-calendar-presets-width: var(--mu-r-calendar-presets-width);
   --spacing-calendar-presets-gap: var(--mu-r-calendar-presets-gap);
+  --spacing-calendar-time-gap: var(--mu-r-calendar-time-gap);
+  --spacing-time-picker-min-width: var(--mu-r-time-picker-self-min-width);
+  --spacing-time-picker-seconds-min-width: var(--mu-r-time-picker-self-seconds-min-width);
+  --spacing-time-picker-pad: var(--mu-r-time-picker-self-pad);
+  --spacing-time-picker-slots-gap: var(--mu-r-time-picker-slots-gap);
+  --spacing-time-picker-slots-height: var(--mu-r-time-picker-slots-height);
   --spacing-avatar-size-small: var(--mu-r-avatar-size-small);
   --spacing-avatar-size-regular: var(--mu-r-avatar-size-regular);
   --spacing-avatar-size-large: var(--mu-r-avatar-size-large);
@@ -2215,6 +2221,18 @@
 }
 @utility stroke-width-calendar-presets-width {
   stroke-width: var(--mu-r-calendar-presets-width);
+}
+@utility time-picker-scroll {
+  position: relative; max-height: var(--mu-r-time-picker-slots-height); overflow-y: auto; overscroll-behavior: contain; padding: var(--mu-r-time-picker-self-pad);
+}
+@utility time-picker-grid {
+  display: grid; grid-template-columns: repeat(var(--mu-r-time-picker-slots-columns), minmax(max-content, 1fr)); gap: var(--mu-r-time-picker-slots-gap); &[data-lengths] { grid-template-columns: repeat(var(--mu-r-time-picker-slots-length-columns), minmax(max-content, 1fr)); }
+}
+@utility opacity-time-picker-slots-columns {
+  opacity: var(--mu-r-time-picker-slots-columns);
+}
+@utility opacity-time-picker-slots-length-columns {
+  opacity: var(--mu-r-time-picker-slots-length-columns);
 }
 @utility avatar-photo {
   opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-starting-style] { opacity: 0; } @media (prefers-reduced-motion: reduce) { transition: none; }
