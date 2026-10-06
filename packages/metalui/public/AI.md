@@ -4237,12 +4237,12 @@ Reduce Motion: rows jump to their places, land and open at once; the arrow, the 
 | `now` | `now:` |
 | `TableCell` (`kind`, `value`, the format props, `onCheckedChange`) | `MetalTableCell(_:format:)` |
 | column `total`, `footer` | `MetalTableColumn(total:)`, `footer:` |
-| `groupBy`, `defaultCollapsed` | `groupBy:` |
+| `groupBy`, `defaultCollapsed` | `groupBy:`, `collapsed:` |
 | column `pin: 'start'`, `rowHeader` | `pin: true`, `rowHeader: true` |
 | kind `check`, column `onCheckedChange` | `.check`, `MetalTableColumn(check:…, onChange:)` |
 | `live` | `live:` |
-| `expandRow` | `detail:` |
-| `columnsMenu`, `resizable`, `columnsState`, `defaultColumnsState`, `onColumnsChange` | `columns:` binding (`MetalTableColumnsState`), `columnsMenu:`, `resizable:` |
+| `expandRow` | `detail:` (returns `AnyView`) |
+| `columnsMenu`, `resizable`, `columnsState`, `defaultColumnsState`, `onColumnsChange` | `columnsState:` binding (`MetalTableColumnsState`), `columnsMenu:`, `resizable:` |
 
 ## Patterns
 
@@ -4274,6 +4274,13 @@ Reduce Motion: rows jump to their places, land and open at once; the arrow, the 
 - Sort only columns where order means something.
 - Give every column but the name a `priority` when the table can get narrow; never scroll records sideways (a matrix with `pin` may).
 - Never push a reader: live rows wait while you're scrolled away.
+
+## SwiftUI differences
+
+- `total` is `.sum` or `.mean` (no function); figures turn with numeric text, not the drum.
+- Pinned: only the first column and the lead cells hold; the sideways scroll is a `ScrollView`, so the caption stays above it.
+- The columns menu is the system menu with toggles; resizing is a drag (and the adjustable action), with the resize cursor on macOS.
+- Live rows land with an insertion transition (one nest above, object spring); the rest move with SwiftUI's layout animation.
 
 ---
 
