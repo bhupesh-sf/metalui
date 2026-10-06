@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { haptic, Lasso, Switcher, SelectionFrame, SnapGuides, Surface, type HapticPath, type LassoRect, type SnapGuide } from '@unlocalhosted/metalui';
+import { haptic, setHapticBridge, Lasso, Switcher, SelectionFrame, SnapGuides, Surface, type HapticPath, type LassoRect, type SnapGuide } from '@unlocalhosted/metalui';
 import { snapMove, type Box } from './snapdemo';
 
 /* A tiny canvas for the Snap guides page: three notes stay put, one you drag. It snaps to their
@@ -53,6 +53,13 @@ export function SnapCanvas({ height = 360, lasso = false }: { height?: number; l
   const [taps, setTaps] = React.useState(0);
   const [path, setPath] = React.useState<HapticPath | null>(null);
   const engage = React.useCallback(() => { setTaps((n) => n + 1); setPath(haptic('alignment')); }, []);
+  // Inside a Mac app's WKWebView with MetalHapticBridge installed, the trackpad taps (snap-guides.agent.md).
+  React.useEffect(() => {
+    const post = (window as Window & { webkit?: { messageHandlers?: { haptic?: { postMessage: (kind: string) => void } } } }).webkit?.messageHandlers?.haptic;
+    if (!post) return;
+    setHapticBridge((kind) => post.postMessage(kind));
+    return () => setHapticBridge(null);
+  }, []);
 
   // Lasso: a press anywhere on the canvas that is not on a note is empty space (the guides layer,
   // the canvas outside the scaled world at 50 %, the gap next to a note). A drag from there draws
