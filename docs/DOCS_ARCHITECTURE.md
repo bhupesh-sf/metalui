@@ -138,6 +138,7 @@ Same skeleton, with these differences:
 - `composition` points **down**: the parts list, from `uses`, with each component small and live. `check:layers` guarantees the list is true.
 - `api` documents only what the block adds; inherited props link to the component page rather than being repeated.
 - `states` are the block's own (over, dim, past, renaming); a part's states are on the part's page.
+- A block that lays itself out by its own width names its container: `@container/block` on its root, and `@md/block:`, `@max-md/block:`, `@min-[34rem]/block:` on what changes. An unnamed `@md:` matches the nearest container, which may be a component inside the block or the host around it. An inner region with its own breakpoints takes its own name (`@container/panel`).
 
 ### 3.3 Foundation page
 
