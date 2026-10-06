@@ -1376,6 +1376,27 @@
       "docs": "Agent guide: https://metalui.dev/r/menubar.md. SwiftUI: MetalMenubar in the MetalUI Swift package."
     },
     {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "One turn of a conversation: the person's at the end on a raised plate, the assistant's at the start on the page, with an avatar, a header (name, model, time) whose lamp and word say a reply's state, a footer for actions, consecutive turns grouped, and a system message between rules.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/skeleton.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/message/message.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/message/message.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/message.md. SwiftUI: MetalMessage in the MetalUI Swift package."
+    },
+    {
       "name": "meter",
       "type": "registry:ui",
       "title": "Meter",
@@ -2296,6 +2317,30 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/textarea.md. SwiftUI: MetalTextarea in the MetalUI Swift package."
+    },
+    {
+      "name": "thread",
+      "type": "registry:ui",
+      "title": "Thread",
+      "description": "A conversation that scrolls, newest at the foot: it follows a reply while you are at the foot, stays put when you scroll up to read, and offers Jump to latest to come back. New messages rise from below.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/scroll-area.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/thread/thread.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/thread/thread.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/thread.md. SwiftUI: MetalThread in the MetalUI Swift package."
     },
     {
       "name": "time-picker",

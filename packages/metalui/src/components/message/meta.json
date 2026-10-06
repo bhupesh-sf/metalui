@@ -1,0 +1,20 @@
+{
+  "name": "message",
+  "title": "Message",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["led", "skeleton"],
+  "description": "One turn of a conversation: the person's at the end on a raised plate, the assistant's at the start on the page, with an avatar, a header (name, model, time) whose lamp and word say a reply's state, a footer for actions, consecutive turns grouped, and a system message between rules.",
+  "base": "article (a turn named by its speaker); a note for the system",
+  "react": {
+    "export": "Message",
+    "files": ["message.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalMessage",
+    "file": "swift/Sources/MetalUI/Components/MetalMessage.swift"
+  },
+  "agent": "message.agent.md",
+  "page": "/components/message"
+}

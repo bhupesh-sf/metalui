@@ -76,6 +76,8 @@ export { CodeBlock, splitFences, splitHtmlLines, tintLine, escapeCode, type Code
 export { Collapsible, type CollapsibleRootProps, type CollapsibleTriggerProps, type CollapsibleKeyProps, type CollapsibleMoreProps, type CollapsiblePanelProps } from './components/collapsible/collapsible';
 export { Stepper, type StepperStep, type StepperOrientation, type StepperLayout, type StepperRootProps, type StepperListProps, type StepperPanelProps, type StepperBackProps, type StepperNextProps } from './components/stepper/stepper';
 export { Chart, niceTicks, type ChartProps, type ChartSeries, type ChartKind } from './components/chart/chart';
+export { Thread, type ThreadProps } from './components/thread/thread';
+export { Message, type MessageProps, type MessageFrom, type MessageStatus } from './components/message/message';
 export { Timeline, type TimelineProps, type TimelineEvent, type TimelineState, type TimelineFormat } from './components/timeline/timeline';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
 export { Combobox, type ComboboxProps, type ComboboxItem, type ComboboxGroup, type ComboboxAction } from './components/combobox/combobox';
