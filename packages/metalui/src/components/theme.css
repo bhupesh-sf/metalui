@@ -595,6 +595,21 @@
   --spacing-message-plate-pad-y: var(--mu-r-message-plate-pad-y);
   --spacing-message-footer-gap: var(--mu-r-message-footer-gap);
   --spacing-message-system-gap: var(--mu-r-message-system-gap);
+  --spacing-markdown-gap: var(--mu-r-markdown-self-gap);
+  --spacing-markdown-heading-gap: var(--mu-r-markdown-heading-gap);
+  --spacing-markdown-list-indent: var(--mu-r-markdown-list-indent);
+  --spacing-markdown-list-gap: var(--mu-r-markdown-list-gap);
+  --spacing-markdown-quote-rail: var(--mu-r-markdown-quote-rail);
+  --spacing-markdown-quote-pad: var(--mu-r-markdown-quote-pad);
+  --spacing-markdown-code-pad-x: var(--mu-r-markdown-code-pad-x);
+  --spacing-markdown-code-radius: var(--mu-r-markdown-code-radius);
+  --radius-markdown-code-radius: var(--mu-r-markdown-code-radius);
+  --spacing-markdown-table-pad-x: var(--mu-r-markdown-table-pad-x);
+  --spacing-markdown-table-pad-y: var(--mu-r-markdown-table-pad-y);
+  --spacing-markdown-caret-width: var(--mu-r-markdown-caret-width);
+  --spacing-markdown-caret-height: var(--mu-r-markdown-caret-height);
+  --spacing-markdown-caret-gap: var(--mu-r-markdown-caret-gap);
+  --spacing-markdown-caret-drop: var(--mu-r-markdown-caret-drop);
   --spacing-meter-height: var(--mu-r-meter-self-height);
   --spacing-meter-gap: var(--mu-r-meter-self-gap);
   --spacing-meter-radius: var(--mu-r-meter-self-radius);
@@ -2280,6 +2295,16 @@
 }
 @utility thread-jump {
   opacity: 0; translate: 0 calc(var(--mu-motion-nest) * var(--mu-travel-settle)); transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle), translate var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-away] { opacity: 1; translate: 0 0; pointer-events: auto; }
+}
+@utility markdown-quote {
+  box-shadow: inset var(--mu-r-markdown-quote-rail) 0 0 var(--mu-rule);
+}
+@utility stroke-width-markdown-caret-width {
+  stroke-width: var(--mu-r-markdown-caret-width);
+}
+@utility duration-markdown-stream-phrase-every {
+  --tw-duration: var(--mu-r-markdown-stream-phrase-every);
+  transition-duration: var(--mu-r-markdown-stream-phrase-every);
 }
 @utility meter-lamp {
   position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity var(--mu-r-meter-lamp-fade) ease-out; transition-delay: calc(var(--mu-meter-step, 0) * var(--mu-r-meter-lamp-stagger) * var(--mu-travel-part)); [data-lit] > & { opacity: 1; }

@@ -54,7 +54,7 @@ export const routes: RouteObject[] = [
       { path: 'components/cascader', lazy: lazy(() => import('../pages/components/Cascader')) },
       { path: 'components/thread', lazy: lazy(() => import('../pages/components/Thread')) },
       { path: 'components/message', lazy: lazy(() => import('../pages/components/Message')) },
-      { path: 'components/timeline', lazy: lazy(() => import('../pages/components/Timeline')) },
+      { path: 'components/markdown', lazy: lazy(() => import('../pages/components/Markdown')) },      { path: 'components/timeline', lazy: lazy(() => import('../pages/components/Timeline')) },
       { path: 'components/chart', lazy: lazy(() => import('../pages/components/Chart')) },
       { path: 'components/popover', lazy: lazy(() => import('../pages/components/Popover')) },
       { path: 'components/alert-dialog', lazy: lazy(() => import('../pages/components/AlertDialog')) },

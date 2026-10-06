@@ -1142,6 +1142,31 @@ public enum MetalRecipes {
         ]
     )
 
+    /// An answer's text, set as it arrives (a Component: you read it, follow its links and copy its code). Paragraphs in the content type with a gap between blocks; # and ## in the display role, ### and #### in the doc subheading role (#### in ink2), each with a little more room above; bullets and numbers indented, nested by indent, their markers in ink3; a quote on a 2 rail in the rule ink, its words in ink2; a rule; GFM tables in the body type with tabular figures, a hairline under the head (ui type, ink2), cells padded, scrolling sideways when wide. Inline code in the code block's type on its ghost tint, padded and rounded; links in ink with an ink3 underline that darkens on hover. Every fence is a framed Code block; an open one streams. While streaming, a green pill caret follows the last word and a half-arrived mark is closed. With a pace, what has arrived is revealed a word at a time; under Reduce Motion a phrase every phrase-every, with no caret. (the content, display, doc subheading, body and ui type roles; the code block (fences, its code type and ghost tint); the rule; the green LED ink for the caret (the AI composer's caret))
+    public static let markdown = MetalObjectRecipe(
+        name: "markdown",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(12.0),
+            "heading.gap": .number(8.0),
+            "list.indent": .number(22.0),
+            "list.gap": .number(4.0),
+            "quote.rail": .number(2.0),
+            "quote.pad": .number(12.0),
+            "code.pad-x": .number(4.0),
+            "code.radius": .number(4.0),
+            "table.pad-x": .number(12.0),
+            "table.pad-y": .number(6.0),
+            "caret.width": .number(2.0),
+            "caret.height": .number(16.0),
+            "caret.gap": .number(2.0),
+            "caret.drop": .number(2.0),
+            "stream.phrase-every": .text("450ms"),
+        ]
+    )
+
     /// A level in a range (storage used, battery, signal), not a task: a row of LED segments like a level meter. A segment's colour comes from where it sits (green through the range, amber near the top, red at the end), the way a level meter is printed. When the value changes the level sweeps from its old edge to its new one, segment by segment (16 ms apart, each lamp fading in 90 ms): rising lights upward, falling darkens downward. Reduce Motion: every segment changes at once. The lamps are the LED part's looks. (the LED part (status recipe lamps); hardware level meters; Base UI Meter)
     public static let meter = MetalObjectRecipe(
         name: "meter",

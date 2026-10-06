@@ -936,6 +936,23 @@
       "agent": "https://metalui.dev/r/mark-scrub.md"
     },
     {
+      "name": "markdown",
+      "title": "Markdown",
+      "status": "alpha",
+      "description": "An answer's text, set as it arrives: headings, paragraphs, nested lists, quotes, tables, inline code and safe links, with every fence in a Code block. While it streams a green caret follows the last word, a half-arrived mark is closed, and a pace reveals what has arrived a word at a time.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Markdown",
+        "base": "none (real elements, never HTML from the source)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalMarkdown"
+      },
+      "registry": "https://metalui.dev/r/markdown.json",
+      "agent": "https://metalui.dev/r/markdown.md"
+    },
+    {
       "name": "menu",
       "title": "Menu and correction popover",
       "status": "alpha",

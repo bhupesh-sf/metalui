@@ -1351,6 +1351,26 @@
       "docs": "Agent guide: https://metalui.dev/r/mark-scrub.md. SwiftUI: MetalMarkScrub in the MetalUI Swift package."
     },
     {
+      "name": "markdown",
+      "type": "registry:ui",
+      "title": "Markdown",
+      "description": "An answer's text, set as it arrives: headings, paragraphs, nested lists, quotes, tables, inline code and safe links, with every fence in a Code block. While it streams a green caret follows the last word, a half-arrived mark is closed, and a pace reveals what has arrived a word at a time.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/code-block.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/markdown/markdown.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/markdown/markdown.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/markdown.md. SwiftUI: MetalMarkdown in the MetalUI Swift package."
+    },
+    {
       "name": "menu",
       "type": "registry:ui",
       "title": "Menu and correction popover",
