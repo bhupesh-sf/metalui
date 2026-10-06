@@ -1,0 +1,20 @@
+{
+  "name": "message-actions",
+  "title": "Message actions",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["icon-button", "button", "tooltip"],
+  "description": "The keys that act on a message, in Message's footer: Copy (turning to Copied on the drum), Retry, Edit, and Good and Bad as latching thumbs, with an optional row of reasons after Bad that says Thanks and goes.",
+  "base": "a toolbar of buttons",
+  "react": {
+    "export": "MessageActions",
+    "files": ["message-actions.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalMessageActions",
+    "file": "swift/Sources/MetalUI/Components/MetalMessageActions.swift"
+  },
+  "agent": "message-actions.agent.md",
+  "page": "/components/message-actions"
+}

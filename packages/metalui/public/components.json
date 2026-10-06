@@ -1004,6 +1004,23 @@
       "agent": "https://metalui.dev/r/message.md"
     },
     {
+      "name": "message-actions",
+      "title": "Message actions",
+      "status": "alpha",
+      "description": "The keys that act on a message, in Message's footer: Copy (turning to Copied on the drum), Retry, Edit, and Good and Bad as latching thumbs, with an optional row of reasons after Bad that says Thanks and goes.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "MessageActions",
+        "base": "a toolbar of buttons"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalMessageActions"
+      },
+      "registry": "https://metalui.dev/r/message-actions.json",
+      "agent": "https://metalui.dev/r/message-actions.md"
+    },
+    {
       "name": "meter",
       "title": "Meter",
       "status": "alpha",
@@ -1172,6 +1189,23 @@
       },
       "registry": "https://metalui.dev/r/progress.json",
       "agent": "https://metalui.dev/r/progress.md"
+    },
+    {
+      "name": "prompt-input",
+      "title": "Prompt input",
+      "status": "alpha",
+      "description": "Where a message is written and sent: a raised plate with the host's attached files, a well that grows from one line, attach (picked, dropped or pasted), the host's tools such as a model select, and Send that becomes Stop while a reply writes. ↩ sends and ⇧↩ breaks the line; disabled with a reason when offline.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "PromptInput",
+        "base": "a group around Textarea (Base UI Field control)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalPromptInput"
+      },
+      "registry": "https://metalui.dev/r/prompt-input.json",
+      "agent": "https://metalui.dev/r/prompt-input.md"
     },
     {
       "name": "properties",

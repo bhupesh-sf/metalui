@@ -1235,6 +1235,16 @@
   --mu-r-markdown-caret-gap: 2px;
   --mu-r-markdown-caret-drop: 2px;
   --mu-r-markdown-stream-phrase-every: 450ms;
+  /* prompt-input: the raised surface (raise-sm); Textarea; Button (primary, compact) with MorphPair and SwapText; IconButton; Tooltip; the LED; the drop zone's edge; the AI composer block's composer */
+  --mu-r-prompt-input-self-gap: 8px;
+  --mu-r-prompt-input-self-pad: 8px;
+  --mu-r-prompt-input-files-gap: 6px;
+  --mu-r-prompt-input-strip-gap: 6px;
+  /* message-actions: IconButton (ghost) and Tooltip; the copy, check, retry, pen and thumb glyphs; SwapIcon and SwapText (the drum); Button (compact); the settle spring; the AI composer block's Copy and Retry */
+  --mu-r-message-actions-self-gap: 2px;
+  --mu-r-message-actions-reasons-gap: 6px;
+  --mu-r-message-actions-copy-hold: 1600ms;
+  --mu-r-message-actions-thanks-hold: 1600ms;
   /* meter: the LED part (status recipe lamps); hardware level meters; Base UI Meter */
   --mu-r-meter-self-height: 10px;
   --mu-r-meter-self-gap: 2px;

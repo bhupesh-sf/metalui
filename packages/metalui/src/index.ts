@@ -80,6 +80,8 @@ export { Chart, niceTicks, type ChartProps, type ChartSeries, type ChartKind } f
 export { Thread, type ThreadProps } from './components/thread/thread';
 export { Message, type MessageProps, type MessageFrom, type MessageStatus } from './components/message/message';
 export { Markdown, type MarkdownProps } from './components/markdown/markdown';
+export { PromptInput, type PromptInputProps } from './components/prompt-input/prompt-input';
+export { MessageActions, type MessageActionsProps, type MessageFeedback } from './components/message-actions/message-actions';
 export { Timeline, type TimelineProps, type TimelineEvent, type TimelineState, type TimelineFormat } from './components/timeline/timeline';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
 export { Combobox, type ComboboxProps, type ComboboxItem, type ComboboxGroup, type ComboboxAction } from './components/combobox/combobox';

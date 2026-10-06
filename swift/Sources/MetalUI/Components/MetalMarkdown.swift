@@ -33,6 +33,13 @@ public struct MetalMarkdown: View {
     private var paced: Bool { streaming && pace != nil }
     private var end: Int { paced ? min(shown, source.count) : source.count }
     private static let phrase = 10
+    /// The content role at the display role's weight: strong words and the small headings (the roles' fonts are
+    /// fixed weights, so `.bold()` has no face to reach).
+    static let strong: MetalTypeRole = {
+        let c = MetalType.content
+        return MetalTypeRole(name: "content-strong", family: c.family, size: c.size, line: c.line, weight: MetalType.display.weight,
+                             tracking: c.tracking, stretch: c.stretch, uppercase: c.uppercase, tabular: c.tabular, maxSize: c.maxSize)
+    }()
 
     public var body: some View {
         let text = String(source.prefix(end))
@@ -68,8 +75,7 @@ public struct MetalMarkdown: View {
         case .heading(let level, let s):
             let big = level <= 2
             line(s, caret: caret)
-                .font(.metal(big ? MetalType.display : MetalType.content))
-                .fontWeight(big ? nil : .semibold)
+                .font(.metal(big ? MetalType.display : Self.strong))
                 .foregroundColor((level >= 4 ? t.ink2 : t.ink).color)
                 .padding(.top, recipe.points("heading.gap"))
                 .accessibilityAddTraits(.isHeader)
@@ -99,14 +105,12 @@ public struct MetalMarkdown: View {
                 }
             }
         case .table(let head, let rows):
-            ScrollView(.horizontal, showsIndicators: false) {
-                Grid(alignment: .leading, horizontalSpacing: recipe.points("table.pad-x") * 2, verticalSpacing: recipe.points("table.pad-y") * 2) {
+            Grid(alignment: .leading, horizontalSpacing: recipe.points("table.pad-x") * 2, verticalSpacing: recipe.points("table.pad-y") * 2) {
                     GridRow { ForEach(Array(head.enumerated()), id: \.offset) { _, c in inline(c).font(.metal(MetalType.ui)).foregroundColor(t.ink2.color) } }
                     Divider().gridCellUnsizedAxes(.horizontal)
                     ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
                         GridRow { ForEach(Array(head.indices), id: \.self) { j in inline(j < row.count ? row[j] : "").font(.metal(MetalType.body)).monospacedDigit().foregroundColor(t.ink.color) } }
                     }
-                }
             }
         case .code(let lang, let code, let open):
             MetalCodeBlock(code, lang: lang, streaming: streaming && open)
@@ -124,6 +128,10 @@ public struct MetalMarkdown: View {
         let options = AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
         guard var attr = try? AttributedString(markdown: s.replacingOccurrences(of: "\n", with: " "), options: options) else { return Text(s) }
         let code = MetalRecipes.codeBlock
+        // Strong runs take the strong role (the fonts are fixed weights).
+        for run in attr.runs where run.inlinePresentationIntent?.contains(.stronglyEmphasized) == true {
+            attr[run.range].font = .metal(Self.strong)
+        }
         for run in attr.runs where run.inlinePresentationIntent?.contains(.code) == true {
             attr[run.range].font = .metal(code.typeRole("code.font"))
             attr[run.range].backgroundColor = (code.color("ghost.tint", colorway: MetalRecipeColorway(colorway)) ?? MetalRGBA(0, 0, 0, 0)).color

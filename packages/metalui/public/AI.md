@@ -3479,6 +3479,59 @@ Reduce Motion: the footer appears at once; the lamp holds steady; the drum chang
 
 ---
 
+# Message actions
+
+The keys that act on a message, in `Message`'s footer. React: `MessageActions` from `@unlocalhosted/metalui`. SwiftUI: `MetalMessageActions`. A component: each key changes something else (the clipboard, the thread, the person's turn, the feedback the host keeps). Every look is borrowed: ghost `IconButton`s with `Tooltip`s, the copy, check, retry, pen and thumb glyphs (Bad is the thumb turned over), the drum (`SwapIcon`, `SwapText`), compact `Button`s for reasons. The `message-actions` recipe holds the gaps and the two holds.
+
+## Use it for
+
+- Copy and Retry under a reply; Edit under the person's last turn; Good and Bad on replies.
+
+## Don't use it for
+
+- Actions on something that isn't a message (a card's menu, a row's keys).
+- Delivery ("Sent", "Not sent · Try again"): that is words in the footer.
+
+## Anatomy
+
+- A `toolbar`: the keys 2 apart, each only when given: Copy (`copy`, the text), Retry (`onRetry`), Edit (`onEdit`), Good and Bad (`onFeedback`); then the host's `children`.
+- Under the keys, 6 below, the reasons row after Bad (`reasons`), its buttons 6 apart.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| copied | the check, named "Copied", for `copy.hold` (1.6 s); "Copied" said once | the glyph and the name turn on the drum |
+| `retryDisabled` | Retry dimmed | – |
+| `feedback` up or down | that thumb latched (aria-pressed, the ghost's lit look) | – |
+| asking | after Bad with `reasons`: a row of compact buttons | fades in on the settle spring |
+| thanked | the row says "Thanks" for `thanks.hold`, then goes | the word on the drum |
+
+Reduce Motion: the row appears at once; glyphs and words change in place.
+
+## Rules
+
+- Show the actions once a reply has settled (pass them to `Message` `footer` only then), so they fade in and nothing offers to copy half an answer.
+- Retry only the last reply, and disable it (`retryDisabled`) while another writes.
+- Keep `feedback` in the host when it is stored; pressing the chosen thumb again clears it (`null`).
+- Offer reasons as a few words ("Not accurate", "Too long", "Other"); "Other" is the host's moment to ask more.
+- Copy the message's source (its Markdown), not its rendered text.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `MessageActions` `copy`, `onRetry`, `retryDisabled`, `onEdit`, `feedback`, `onFeedback(feedback, reason?)`, `reasons`, `children` | `MetalMessageActions(copy:, onRetry:, retryDisabled:, onEdit:, feedback:, onFeedback:, reasons:)` |
+| `MessageFeedback` `'up'`, `'down'`, `null` | `MetalMessageFeedback` `.up`, `.down` (optional) |
+
+## Keyboard and accessibility
+
+- A `toolbar` named "Message actions"; each key is a button named by its tooltip ("Copy", "Retry", "Edit", "Good response", "Bad response").
+- The thumbs are toggle buttons (`aria-pressed`).
+- The reasons are a `group` named "What went wrong?"; "Copied" and "Thanks for the feedback" are said through a status.
+
+---
+
 # Meter
 
 A level in a range. React: `Meter` from `@unlocalhosted/metalui`, on Base UI Meter. SwiftUI: `MetalMeter` (work in progress). The lamps are the LED part's looks (the `status` recipe); the `meter` recipe adds the segments and the sweep.
@@ -4067,6 +4120,60 @@ Reduce Motion: the edge snaps; the unknown segment sits in the middle and breath
 - The fill never moves backward unless the task really did (reset, cancel, a real rollback); when it does, it drains, never jumps.
 - Say what is in progress in the label, not "Loading…"; when you can count, say so in `detail`.
 - Only `transform` and `opacity` animate: the fill slides, the failed ink and the pause fade.
+
+---
+
+# Prompt input
+
+Where a message is written and sent. React: `PromptInput` from `@unlocalhosted/metalui`. SwiftUI: `MetalPromptInput`. A component: you operate it to send a message into a `Thread`, or to stop a reply. Every look is borrowed: the plate is the raised surface (raise-sm), the well is `Textarea`, Send is a primary `Button` whose glyph morphs send → stop (`MorphPair`) and whose word turns on the drum, attach is a ghost `IconButton` with a `Tooltip`, the offline lamp is the `Led`, and files over it light the drop zone's edge. The `prompt-input` recipe holds the gaps and the padding.
+
+## Use it for
+
+- The composer at the foot of a chat, an assistant panel, a comment box that sends.
+
+## Don't use it for
+
+- A form field that is submitted with others: use `Textarea` in a `FormField`.
+- Search: use a field or `CommandPalette`.
+
+## Anatomy
+
+- A plate, padded 8, its parts 8 apart: the host's `attachments` (`Attachment`s, 6 apart), the well (a large `Textarea`, one row growing to `maxRows`, 6, then scrolling), the strip (6 apart).
+- The strip: the attach key (with `onAttach`), the host's `tools` (a compact `Select` for the model), a gap, the hint ("⇧↩ new line", meta ink3, hidden under 28 rem) or, while disabled, the reason with the amber lamp, then Send.
+- A hidden file input behind the attach key (`data-attach-input`), taking `accept`.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| empty | Send disabled | – |
+| writing | the well grows a row at a time to `maxRows`, then scrolls | the settle spring (the Textarea's) |
+| `busy` | Send reads Stop; ↩ doesn't send; ⎋ in the well or Stop calls `onStop` and focus returns to the well | the glyph morphs send → stop, the word turns on the drum |
+| files over it | the plate's edge lit green | the drop zone's edge, on the settle spring |
+| `disabled` | the well, attach and Send dimmed and refusing; `disabledReason` with the amber lamp in the hint's place | – |
+
+Reduce Motion: the well snaps to its height; the glyph and the word change in place.
+
+## Rules
+
+- Keep the text in the host (`value`, `onValueChange`) and clear it in `onSend`, or leave it uncontrolled and it clears itself.
+- Hand over files and show them yourself: `onAttach(files)` → your list → `attachments={files.map((f) => <Attachment … onRemove />)}`. An attached file lets Send send an empty text.
+- Pass `busy` while the reply writes and stop it in `onStop`; the person can keep writing the next message.
+- Say why it's disabled (`disabledReason="You're offline"`); the lamp never says it alone.
+- Focus the well after your own actions (removing a file) through the ref (it is the textarea).
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `PromptInput` `value`, `defaultValue`, `onValueChange`, `onSend(text)`, `busy`, `onStop`, `onAttach(files)`, `accept`, `attachments`, `tools`, `canSend`, `disabled`, `disabledReason`, `placeholder`, `label`, `hint`, `maxRows`, `maxLength`; ref: the textarea | `MetalPromptInput(_ label:, text:, busy:, canSend:, disabledReason:, hint:, maxRows:, onSend:, onStop:, onAttach:) { files } tools: { … }`; disable with `.disabled(_:)` |
+
+## Keyboard and accessibility
+
+- A `group` named by `label` ("Message"); the well is the textbox of that name.
+- ↩ sends, ⇧↩ breaks the line, ↩ while an IME composes is the IME's; ⎋ stops a reply.
+- Send's name is "Send" or "Stop"; it is disabled (not hidden) while there is nothing to send.
+- Pasting files into the well attaches them when `onAttach` is set; text pastes as text.
 
 ---
 

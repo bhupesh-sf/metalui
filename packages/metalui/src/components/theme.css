@@ -610,6 +610,12 @@
   --spacing-markdown-caret-height: var(--mu-r-markdown-caret-height);
   --spacing-markdown-caret-gap: var(--mu-r-markdown-caret-gap);
   --spacing-markdown-caret-drop: var(--mu-r-markdown-caret-drop);
+  --spacing-prompt-input-gap: var(--mu-r-prompt-input-self-gap);
+  --spacing-prompt-input-pad: var(--mu-r-prompt-input-self-pad);
+  --spacing-prompt-input-files-gap: var(--mu-r-prompt-input-files-gap);
+  --spacing-prompt-input-strip-gap: var(--mu-r-prompt-input-strip-gap);
+  --spacing-message-actions-gap: var(--mu-r-message-actions-self-gap);
+  --spacing-message-actions-reasons-gap: var(--mu-r-message-actions-reasons-gap);
   --spacing-meter-height: var(--mu-r-meter-self-height);
   --spacing-meter-gap: var(--mu-r-meter-self-gap);
   --spacing-meter-radius: var(--mu-r-meter-self-radius);
@@ -2305,6 +2311,14 @@
 @utility duration-markdown-stream-phrase-every {
   --tw-duration: var(--mu-r-markdown-stream-phrase-every);
   transition-duration: var(--mu-r-markdown-stream-phrase-every);
+}
+@utility duration-message-actions-copy-hold {
+  --tw-duration: var(--mu-r-message-actions-copy-hold);
+  transition-duration: var(--mu-r-message-actions-copy-hold);
+}
+@utility duration-message-actions-thanks-hold {
+  --tw-duration: var(--mu-r-message-actions-thanks-hold);
+  transition-duration: var(--mu-r-message-actions-thanks-hold);
 }
 @utility meter-lamp {
   position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity var(--mu-r-meter-lamp-fade) ease-out; transition-delay: calc(var(--mu-meter-step, 0) * var(--mu-r-meter-lamp-stagger) * var(--mu-travel-part)); [data-lit] > & { opacity: 1; }

@@ -1,0 +1,20 @@
+{
+  "name": "prompt-input",
+  "title": "Prompt input",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["textarea", "button", "icon-button", "tooltip", "led"],
+  "description": "Where a message is written and sent: a raised plate with the host's attached files, a well that grows from one line, attach (picked, dropped or pasted), the host's tools such as a model select, and Send that becomes Stop while a reply writes. ↩ sends and ⇧↩ breaks the line; disabled with a reason when offline.",
+  "base": "a group around Textarea (Base UI Field control)",
+  "react": {
+    "export": "PromptInput",
+    "files": ["prompt-input.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalPromptInput",
+    "file": "swift/Sources/MetalUI/Components/MetalPromptInput.swift"
+  },
+  "agent": "prompt-input.agent.md",
+  "page": "/components/prompt-input"
+}
