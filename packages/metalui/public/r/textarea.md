@@ -28,6 +28,8 @@ Several lines of text. React: `Textarea` from `@unlocalhosted/metalui` (a native
 | refused | typing or pasting past the limit leaves the text alone | only the counter shakes on the refusal spring (reach: one nest, 6) |
 | invalid | a red hairline ring | – |
 | disabled | 40 % | – |
+| ghost (`suggestion`) | while focused with the caret at the end, the words that would come next after the text in the placeholder's ink, wrapping as the text will; the well grows to hold them | – (they are there or not; nothing slides) |
+| ghost taken (Tab) | the words become text | the well keeps its height |
 
 Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 
@@ -41,13 +43,15 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 | `minRows`, `maxRows` | `minRows:`, `maxRows:` |
 | `maxLength` | `limit:` |
 | `invalid` | `invalid:` |
+| `suggestion`, `onSuggestionDismiss` | `suggestion:`, `onSuggestionDismiss:` |
 | `disabled`, `readOnly`, `placeholder`, and every textarea attribute | `.disabled()` |
 
 `className` goes on the well; `style` and the rest go on the textarea.
 
 ## Keyboard and accessibility
 
-- A native textarea: every editing key works as the platform expects. Tab leaves it.
+- A native textarea: every editing key works as the platform expects. Tab leaves it, except while a suggestion shows: then Tab takes it (inserted as typed, so ⌘Z takes it back) and Escape lets it go (`onSuggestionDismiss`). Typing the suggestion's next letters eats them; typing anything else hides it.
+- A suggestion is said once through a polite status: "Suggestion: … Tab to accept."
 - Give it a label: a visible `<label htmlFor>` or `aria-label`. The counter is linked by `aria-describedby`; reaching the limit is announced once ("Limit reached, N characters"), not on every keystroke.
 - `invalid` sets `aria-invalid`; say what is wrong in text near it.
 
@@ -57,3 +61,4 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 - A refusal is local: only the counter moves, and the text is never trimmed or changed.
 - Show the counter only when it helps (near the limit), or from the start (`countFrom={0}`) when the form states its limit.
 - In a form of regular or compact Fields, give the textarea the same `size`.
+- A suggestion is the host's: fetch it after a pause in typing, pass the words that would follow the text (not the whole text), and clear it when the text moves on. Only suggest at the end of the text.

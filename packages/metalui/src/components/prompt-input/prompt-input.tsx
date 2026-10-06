@@ -64,6 +64,10 @@ export interface PromptInputProps {
   /** Rows before the well scrolls (6). */
   maxRows?: number;
   maxLength?: number;
+  /** The words that would come next, in grey after the text; Tab takes them (Textarea's ghost). */
+  suggestion?: string;
+  /** Escape let the suggestion go. */
+  onSuggestionDismiss?: () => void;
   className?: string;
 }
 
@@ -80,7 +84,7 @@ const hasFiles = (e: React.DragEvent) => Array.from(e.dataTransfer?.types ?? [])
 export const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProps>(function PromptInput(
   {
     value, defaultValue = '', onValueChange, onSend, busy = false, onStop, onAttach, accept, attachments, tools, canSend,
-    disabled = false, disabledReason, placeholder, label = 'Message', hint = '⇧↩ new line', maxRows = 6, maxLength, className,
+    disabled = false, disabledReason, placeholder, label = 'Message', hint = '⇧↩ new line', maxRows = 6, maxLength, suggestion, onSuggestionDismiss, className,
   },
   ref,
 ) {
@@ -156,6 +160,8 @@ export const PromptInput = React.forwardRef<HTMLTextAreaElement, PromptInputProp
         minRows={1}
         maxRows={maxRows}
         maxLength={maxLength}
+        suggestion={suggestion}
+        onSuggestionDismiss={onSuggestionDismiss}
         value={text}
         disabled={disabled}
         onChange={(e) => change(e.target.value)}

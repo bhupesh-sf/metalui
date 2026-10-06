@@ -69,6 +69,39 @@ function GrowthTuner() {
   );
 }
 
+/* GHOST TEXT: a pretend assistant that knows how a few sentences end. After a pause in typing (the
+ * Textarea ghost panel's pause) it offers the rest of the sentence; Tab takes it, Escape lets it go. */
+const ENDINGS: [string, string][] = [
+  ['Could you', ' send the matte prints by Friday?'],
+  ['Thanks for', ' the proofs, they look sharp.'],
+  ['by Friday?', ' The framer opens on Saturday.'],
+];
+
+function useSuggestion(text: string, pause: number) {
+  const [suggestion, setSuggestion] = React.useState('');
+  React.useEffect(() => {
+    // A new ending replaces the suggestion; otherwise it stays, and the well shows what is left of it.
+    const t = window.setTimeout(() => {
+      const next = ENDINGS.find(([end]) => text.endsWith(end))?.[1];
+      if (next) setSuggestion(next);
+    }, pause);
+    return () => window.clearTimeout(t);
+  }, [text, pause]);
+  return [suggestion, () => setSuggestion('')] as const;
+}
+
+function Ghost() {
+  const d = useDialKit('Textarea ghost', { pause: [400, 0, 1500, 50] });
+  const [text, setText] = React.useState('Thanks for');
+  const [suggestion, dismiss] = useSuggestion(text, d.pause);
+  return (
+    <div data-testid="textarea-ghost" className="grid w-full max-w-[440px] gap-8">
+      <Textarea aria-label="Reply to the print shop" value={text} onChange={(e) => setText(e.target.value)} suggestion={suggestion} onSuggestionDismiss={dismiss} minRows={2} />
+      <p className="m-0 type-meta text-ink3">Put the caret at the end. Tab takes the grey words; ⎋ lets them go.</p>
+    </div>
+  );
+}
+
 export default function TextareaPage() {
   const [note, setNote] = React.useState('');
   return (
@@ -82,7 +115,7 @@ export default function TextareaPage() {
           <Textarea aria-label="Disabled note" disabled defaultValue="Read only for now." minRows={2} />
         </div>
       ) }}
-      more={[{ id: 'sizes', title: 'Beside fields', lede: 'Field’s sizes: regular and compact write in the ui role at the field’s padding and radius, so a bio sits level with name and email. Here the counter shows from the start (countFrom 0).', node: <Sizes /> }, { id: 'growth', title: 'Tune the growth', lede: 'The Textarea growth panel swaps the grow and refusal springs, changes the rows and the limit, and stretches time. Add lines and watch the well settle; write past the limit and only the counter answers.', node: <GrowthTuner /> }]}
+      more={[{ id: 'sizes', title: 'Beside fields', lede: 'Field’s sizes: regular and compact write in the ui role at the field’s padding and radius, so a bio sits level with name and email. Here the counter shows from the start (countFrom 0).', node: <Sizes /> }, { id: 'ghost', title: 'Ghost text', lede: 'An assistant’s next words, in grey after yours while the caret is at the end: Tab takes them as if typed (⌘Z takes them back), ⎋ lets them go, and typing the same letters eats them. The well grows to hold them. The Textarea ghost panel sets the pause before a suggestion comes.', node: <Ghost /> }, { id: 'growth', title: 'Tune the growth', lede: 'The Textarea growth panel swaps the grow and refusal springs, changes the rows and the limit, and stretches time. Add lines and watch the well settle; write past the limit and only the counter answers.', node: <GrowthTuner /> }]}
       usage={`<Textarea aria-label="Note" placeholder="Write a note…" maxLength={280} />`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
@@ -93,6 +126,7 @@ export default function TextareaPage() {
         { id: 'TA1', title: 'The well grows, the page does not jump', body: 'Height follows the text on the settle spring: growing to new content, with no overshoot.', origin: 'Ours' },
         { id: 'TA2', title: 'A refusal is local', body: 'Past the limit only the counter shakes; the text is never trimmed or changed.', origin: 'Ours' },
         { id: 'TA3', title: 'Count only near the end', body: 'The counter appears at 80 % of the limit, where it starts to matter. A form that states its limit up front shows it from the start (countFrom 0).', origin: 'Ours' },
+        { id: 'TA5', title: 'A suggestion is a guest', body: 'Grey, after the caret, gone at the first other letter; Tab takes it, ⎋ sends it away. Nothing is inserted until you say so.', origin: 'CopilotKit CopilotTextarea' },
         { id: 'TA4', title: 'Same size as the fields beside it', body: 'In a form of regular or compact fields, the textarea takes that size: one type role and one inset down the column.', origin: 'Ours' },
       ]}
     />

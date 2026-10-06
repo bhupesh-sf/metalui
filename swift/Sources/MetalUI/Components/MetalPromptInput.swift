@@ -25,6 +25,8 @@ public struct MetalPromptInput<Files: View, Tools: View>: View {
     let onAttach: (([URL]) -> Void)?
     let files: Files
     let tools: Tools
+    let suggestion: String?
+    let onSuggestionDismiss: (() -> Void)?
     @State private var importing = false
     @State private var over = false
     @Environment(\.isEnabled) private var isEnabled
@@ -36,7 +38,10 @@ public struct MetalPromptInput<Files: View, Tools: View>: View {
     public init(_ label: String = "Message", text: Binding<String>, busy: Bool = false, canSend: Bool? = nil,
                 disabledReason: String? = nil, hint: String? = "⇧↩ new line", maxRows: Int = 6,
                 onSend: @escaping (String) -> Void, onStop: (() -> Void)? = nil, onAttach: (([URL]) -> Void)? = nil,
+                suggestion: String? = nil, onSuggestionDismiss: (() -> Void)? = nil,
                 @ViewBuilder files: () -> Files, @ViewBuilder tools: () -> Tools) {
+        self.suggestion = suggestion
+        self.onSuggestionDismiss = onSuggestionDismiss
         self._text = text
         self.label = label
         self.busy = busy
@@ -65,7 +70,7 @@ public struct MetalPromptInput<Files: View, Tools: View>: View {
             if Files.self != EmptyView.self {
                 HStack(spacing: recipe.points("files.gap")) { files }
             }
-            MetalTextarea(label, text: $text, minRows: 1, maxRows: maxRows)
+            MetalTextarea(label, text: $text, minRows: 1, maxRows: maxRows, suggestion: suggestion, onSuggestionDismiss: onSuggestionDismiss)
                 .onKeyPress(.return, phases: .down) { press in
                     if press.modifiers.contains(.shift) { return .ignored }
                     send()
@@ -122,8 +127,10 @@ public struct MetalPromptInput<Files: View, Tools: View>: View {
 extension MetalPromptInput where Files == EmptyView, Tools == EmptyView {
     public init(_ label: String = "Message", text: Binding<String>, busy: Bool = false, canSend: Bool? = nil,
                 disabledReason: String? = nil, hint: String? = "⇧↩ new line", maxRows: Int = 6,
-                onSend: @escaping (String) -> Void, onStop: (() -> Void)? = nil, onAttach: (([URL]) -> Void)? = nil) {
+                onSend: @escaping (String) -> Void, onStop: (() -> Void)? = nil, onAttach: (([URL]) -> Void)? = nil,
+                suggestion: String? = nil, onSuggestionDismiss: (() -> Void)? = nil) {
         self.init(label, text: text, busy: busy, canSend: canSend, disabledReason: disabledReason, hint: hint, maxRows: maxRows,
-                  onSend: onSend, onStop: onStop, onAttach: onAttach, files: { EmptyView() }, tools: { EmptyView() })
+                  onSend: onSend, onStop: onStop, onAttach: onAttach, suggestion: suggestion, onSuggestionDismiss: onSuggestionDismiss,
+                  files: { EmptyView() }, tools: { EmptyView() })
     }
 }

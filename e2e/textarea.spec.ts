@@ -102,3 +102,53 @@ test('a regular or compact textarea matches the field above it and can count fro
     await expect(bio).toHaveAccessibleDescription(/\/160/);
   }
 });
+
+test.describe('ghost text', () => {
+  for (const colorway of COLORWAYS) {
+    test(`the next words show in grey at the end; typing them eats them, Tab takes the rest, in ${colorway}`, async ({ page }) => {
+      await open(page, '/components/textarea', colorway);
+      const section = page.locator('#ghost');
+      const well = section.getByRole('textbox', { name: 'Reply to the print shop' });
+      const ghost = section.locator('.mu-textarea-ghost-words');
+      await well.click();
+      await well.press('ArrowDown');
+      await expect(ghost).toHaveText(' the proofs, they look sharp.');
+      await expect(section.getByRole('status')).toHaveText('Suggestion:  the proofs, they look sharp.. Tab to accept.');
+      await section.screenshot({ path: capture(`textarea-ghost-${colorway}`) });
+
+      await well.pressSequentially(' the');
+      await expect(ghost).toHaveText(' proofs, they look sharp.');
+      await well.press('Tab');
+      await expect(well).toHaveValue('Thanks for the proofs, they look sharp.');
+      await expect(well).toBeFocused();
+      await expect(ghost).toHaveCount(0);
+      // Taken as typed: one undo takes it back.
+      await well.press('ControlOrMeta+z');
+      await expect(well).toHaveValue('Thanks for the');
+    });
+  }
+
+  test('anything else hides it; Escape lets it go; away from the end it hides', async ({ page }) => {
+    await open(page, '/components/textarea', 'bone');
+    const section = page.locator('#ghost');
+    const well = section.getByRole('textbox', { name: 'Reply to the print shop' });
+    const ghost = section.locator('.mu-textarea-ghost-words');
+    await well.click();
+    await well.press('ArrowDown');
+    await expect(ghost).toBeVisible();
+    await well.press('ArrowLeft');
+    await expect(ghost).toHaveCount(0);
+    await well.press('ArrowRight');
+    await expect(ghost).toBeVisible();
+    await well.press('Escape');
+    await expect(ghost).toHaveCount(0);
+    await expect(well).toHaveValue('Thanks for');
+    // Tab with nothing showing leaves the well, as it always does.
+    await well.press('Tab');
+    await expect(well).not.toBeFocused();
+    await well.focus();
+    await well.press('ArrowDown');
+    await well.pressSequentially(' x');
+    await expect(ghost).toHaveCount(0);
+  });
+});
