@@ -70,11 +70,10 @@ for (const n of ['Button', 'Switch', 'Tooltip']) if (perExport[n]) console.log(`
 // --gate: a consumer that imports one small component must ship one small component. Ceilings are gzip KB,
 // set just above today's cost; lower them as the shared graph shrinks.
 if (process.argv.includes('--gate')) {
-  // Button 10 (was 9, 2026-10-06): it now waits (`state`) and holds to confirm (`hold`) in itself; 9.4 KB measured.
-  // Table, ToolStrip, Card, Link (2026-10-06): one module per glyph, so they ship the glyphs they draw, not the catalog
-  // (was 122, 95, 79, 67). Combobox and QuickEdit take the glyph itself (its record and morph parts), not a name, so they
-  // no longer ship the catalog and the morph family (was 111.9 and 37.3; 81.4 and 31.5 measured).
-  const CEILING = { Button: 10, Switch: 12, Led: 6, Well: 6, Surface: 6, Table: 94, Combobox: 82, QuickEdit: 32, ToolStrip: 72, Card: 55, Link: 44 };
+  // 2026-10-06: every component is its own module in dist (tsup.config.ts), so an import no longer carries the
+  // module-level work of every other component (was Button 10.0, Led 6.0, Switch 11.9, Well 5.8, Surface 5.7,
+  // Table 93.5, Combobox 81.9, QuickEdit 32.0, ToolStrip 71.3, Card 55.0, Link 43.7). Each ceiling sits just above its cost.
+  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 92, Combobox: 80, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39 };
   const over = Object.entries(CEILING).filter(([n, kb]) => !perExport[n] || perExport[n].gzip / 1024 > kb);
   if (over.length) {
     console.error(`\nbench-bundle gate: ${over.map(([n, kb]) => `${n} ${perExport[n] ? (perExport[n].gzip / 1024).toFixed(1) : 'missing'} KB gzip > ${kb}`).join(', ')}`);
