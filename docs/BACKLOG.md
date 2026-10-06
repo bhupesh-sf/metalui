@@ -597,11 +597,11 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
   - Rows: tree rows that expand; virtualised rows.
   - Spreadsheet editing: select cells, copy and paste, edit in place.
 - [ ] **Calendar and DatePicker → date selector** (beyond the Calendar entry above): period types (day, month, quarter, half year, year: done 2026-10-06); operators (is, before, after, between); in a dialog as well as a popover, with Apply and Cancel; two months side by side; localised.
-- [ ] **Number field**: sizes sm, default, lg (ours has one size today). See "Variation sheets: Number field".
+- [x] **Number field**: sizes sm, default, lg (ours has one size today). See "Variation sheets: Number field".
 - [ ] **DropZone and Attachment → file upload layouts**: an avatar upload (one image with a preview); a compact row with thumbnails and a count; a gallery grid with a preview dialog; a table of files with round progress; image tiles with their own progress; drag to reorder (needs Sortable); retry on failure (ours has it).
-- [ ] **Card → frame** (see "Variation sheets: Card"): panels separated, stacked or dense inside one frame, with header, title, description and footer; a ghost frame without the outer border; spacing sm, default, lg.
+- [x] **Card → frame** (see "Variation sheets: Card"): panels separated, stacked or dense inside one frame, with header, title, description and footer; a ghost frame without the outer border; spacing sm, default, lg.
 - [x] **Combobox**: groups, async search with a loading state, and a trigger button beside the clear mark (from ReUI's Autocomplete). See "Variation sheets: Combobox".
-- [ ] **Field → input group** (shadcn; see "Variation sheets: Field"): text attached to the input (a `https://` prefix, a `.com` suffix) and buttons inside the field.
+- [x] **Field → input group** (shadcn; see "Variation sheets: Field"): text attached to the input (a `https://` prefix, a `.com` suffix) and buttons inside the field.
 - [x] **Collapsible** (shadcn): a standalone show/hide wrapper. (Built 2026-10-06; sheet in `docs/sheets/collapsible.md`. Height never animates: the panel is uncovered from its top edge and what follows travels by transform (`useTravelAfter` in `motion/rows.ts`). Accordion takes the set's chevron; moving it onto the shared reveal is Later. A plate around it resizes in one step.) `Accordion` and `SplitPane` collapse, but nothing does on its own.
 - [ ] **Icon tile**: probably `Glyph` in a `well`, as a documented recipe.
   - Looks: outline, elevated, soft, solid, framed; sizes xs to xl; square or round; tones and brand colours.
