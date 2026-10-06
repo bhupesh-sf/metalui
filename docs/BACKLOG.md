@@ -369,6 +369,10 @@ Building real screens shows what the components lack. Each was worked around ins
 
 - [ ] Seen on several docs pages (Collapsible, Stepper) as of 2026-10-06; not from either component. Find the width written from an unmeasured element and guard it.
 
+## Docs pages without a Usage section
+
+- [ ] `e2e/docs-usage.spec.ts` never checked a page until 2026-10-06 (it read `nav a`; the side nav is an `aside`). It now does, and lists 20 known gaps: 18 component pages with no Usage section, Swatch's Usage with no import line, and Selection frame (needs the surface-field build). Give each page its Usage and remove it from the list.
+
 ## Tests that fail only under a full parallel run
 
 - [ ] `xray-slider-editing` "track: dragging the bottom edge down…" fails about half the time even alone (2026-10-06): a drag race, fix first. `xray-dialog-editing` "pulling the dialog up…" and `toast` (deck, undo) and `region`, `scroll-area`, `slider-states` focus ring, `spinner` (whole place, known or unknown), `toggle`, `tooltip`: each failed once in the 4-worker full run (2026-10-06) and passed alone. Also `drop-zone` (reduced motion), `memory-scrubber`, `progress` (Reduce Motion), `table` (sorts, graphite), in the 3-worker run that closed wave 2; all passed alone. Wave 3's run added `cue` (reduced motion tick), `fan` (graphite), `icon-turn`, `icons` (acts from keys), `scroll-area` (bar leaves), `table-should` captures: all passed alone. Find the race in each (AGENTS.md: sample with rAF, poll), don't retry.
@@ -587,7 +591,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
   - Undo and redo; draw or type the name; stylus with pressure and palm rejection (`sizing`: auto, pressure, velocity); smoothing and min/max width.
   - Export PNG, JPEG, SVG or the strokes as JSON; `name`, `required` and validation in a form.
   - In a dialog, on an agreement card, initials per clause, proof of delivery.
-- [ ] **Scrollspy**: marks the section being read in a table of contents; horizontal and vertical; a scroll container other than the window; an offset; smooth scrolling; the URL hash follows.
+- [x] **Scrollspy**: marks the section being read in a table of contents; horizontal and vertical; a scroll container other than the window; an offset; smooth scrolling; the URL hash follows. (Built 2026-10-06; sheet in `docs/sheets/scrollspy.md`: links with `aria-current="location"`, a gliding plate or the switcher's thumb, an IntersectionObserver line (nothing at rest), opt-in hash by `replaceState`; the docs' On this page uses it.)
 
 ### 3. Extend what exists rather than adding new components
 
