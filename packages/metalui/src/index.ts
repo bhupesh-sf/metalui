@@ -59,6 +59,7 @@ export { ToastProvider, useToast, toastParts, type ToastOptions, type ToastTone 
 export { Led, type LedProps, type LedKind, type LedGesture } from './components/led/led';
 export { StatusBadge, type StatusBadgeProps, type StatusTone } from './components/status/status';
 export { Badge, type BadgeProps, type BadgeAnchorProps, type BadgeSize } from './components/badge/badge';
+export { IconTile, type IconTileProps, type IconTileSize } from './components/icon-tile/icon-tile';
 export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, markTagHue, Cue, CueUrl, CueInferred, CueUrgency, CueLife, type MarkKind, type MarkProps, type MarkUrlProps, type MarkInferredProps, type MarkLifeProps, type CueKind, type CueProps, type CueUrlProps, type CueInferredProps, type CueLifeProps } from './components/mark/mark';
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
 export { RadioGroup, Radio, type RadioGroupProps, type RadioProps } from './components/radio/radio';

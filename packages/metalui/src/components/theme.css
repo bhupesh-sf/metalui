@@ -935,6 +935,27 @@
   --spacing-badge-corner-offset: var(--mu-r-badge-corner-offset);
   --spacing-badge-corner-ring: var(--mu-r-badge-corner-ring);
   --color-badge-corner-ink: var(--mu-r-badge-corner-ink);
+  --spacing-icon-tile-compact-size: var(--mu-r-icon-tile-compact-size);
+  --spacing-icon-tile-compact-radius: var(--mu-r-icon-tile-compact-radius);
+  --radius-icon-tile-compact-radius: var(--mu-r-icon-tile-compact-radius);
+  --spacing-icon-tile-compact-glyph: var(--mu-r-icon-tile-compact-glyph);
+  --tracking-icon-tile-compact-tracking: var(--mu-r-icon-tile-compact-tracking);
+  --spacing-icon-tile-regular-size: var(--mu-r-icon-tile-regular-size);
+  --spacing-icon-tile-regular-radius: var(--mu-r-icon-tile-regular-radius);
+  --radius-icon-tile-regular-radius: var(--mu-r-icon-tile-regular-radius);
+  --spacing-icon-tile-regular-glyph: var(--mu-r-icon-tile-regular-glyph);
+  --tracking-icon-tile-regular-tracking: var(--mu-r-icon-tile-regular-tracking);
+  --spacing-icon-tile-large-size: var(--mu-r-icon-tile-large-size);
+  --spacing-icon-tile-large-radius: var(--mu-r-icon-tile-large-radius);
+  --radius-icon-tile-large-radius: var(--mu-r-icon-tile-large-radius);
+  --spacing-icon-tile-large-glyph: var(--mu-r-icon-tile-large-glyph);
+  --tracking-icon-tile-large-tracking: var(--mu-r-icon-tile-large-tracking);
+  --spacing-icon-tile-hero-size: var(--mu-r-icon-tile-hero-size);
+  --spacing-icon-tile-hero-radius: var(--mu-r-icon-tile-hero-radius);
+  --radius-icon-tile-hero-radius: var(--mu-r-icon-tile-hero-radius);
+  --spacing-icon-tile-hero-glyph: var(--mu-r-icon-tile-hero-glyph);
+  --tracking-icon-tile-hero-tracking: var(--mu-r-icon-tile-hero-tracking);
+  --spacing-icon-tile-lamp-inset: var(--mu-r-icon-tile-lamp-inset);
   --spacing-status-led-size: var(--mu-r-status-led-size);
   --spacing-status-led-size-small: var(--mu-r-status-led-size-small);
   --spacing-status-badge-height: var(--mu-r-status-badge-height);
@@ -2791,6 +2812,25 @@
 }
 @utility opacity-badge-corner-from {
   opacity: var(--mu-r-badge-corner-from);
+}
+@utility icon-tile-centre {
+  &[data-size=compact] { text-indent: var(--mu-r-icon-tile-compact-tracking); } &[data-size=regular] { text-indent: var(--mu-r-icon-tile-regular-tracking); } &[data-size=large] { text-indent: var(--mu-r-icon-tile-large-tracking); } &[data-size=hero] { text-indent: var(--mu-r-icon-tile-hero-tracking); }
+}
+@utility type-icon-tile-compact {
+  font: var(--mu-r-icon-tile-compact-font);
+  letter-spacing: var(--mu-r-icon-tile-compact-tracking);
+}
+@utility type-icon-tile-regular {
+  font: var(--mu-r-icon-tile-regular-font);
+  letter-spacing: var(--mu-r-icon-tile-regular-tracking);
+}
+@utility type-icon-tile-large {
+  font: var(--mu-r-icon-tile-large-font);
+  letter-spacing: var(--mu-r-icon-tile-large-tracking);
+}
+@utility type-icon-tile-hero {
+  font: var(--mu-r-icon-tile-hero-font);
+  letter-spacing: var(--mu-r-icon-tile-hero-tracking);
 }
 @utility recipe-status-led {
   box-shadow: var(--mu-r-status-led-shadow);
