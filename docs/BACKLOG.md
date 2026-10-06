@@ -361,7 +361,9 @@ Building real screens shows what the components lack. Each was worked around ins
 
 ## Bundle weight: one glyph pulls the whole icon catalog
 
-- [ ] `Icon` imports the whole catalog, so any component with one glyph ships every glyph: Table 122 KB gzip, Combobox 111, ToolStrip 95, Card 79, Link 67 (2026-10-06, fresh build). Split the catalog per glyph (each `<Name>Icon` and `Icon name` resolving only what it draws), then put ceilings on these in `scripts/bench-bundle.mjs`. Button's ceiling went from 9 to 10 KB the same day for `state` and `hold`.
+- [x] `Icon` imports the whole catalog, so any component with one glyph ships every glyph: Table 122 KB gzip, Combobox 111, ToolStrip 95, Card 79, Link 67 (2026-10-06, fresh build). Split the catalog per glyph (each `<Name>Icon` and `Icon name` resolving only what it draws), then put ceilings on these in `scripts/bench-bundle.mjs`. Button's ceiling went from 9 to 10 KB the same day for `state` and `hold`.
+- Done (2026-10-06): one glyph ships one glyph (per-glyph records and morph parts; `MorphPair` takes only the parts it is given; `<Icon name>` still works for apps). Gzip KB, fresh build: Table 122 → 93, ToolStrip 95 → 71, Card 79 → 54, Link 67 → 43, DatePicker 89 → 65, AlertDialog 57 → 33, Fan 41 → 17, Calendar 37 → 13, `DownloadIcon` ~27 → 2.7; ceilings set. Breaking: Table's action `icon` is an element now. Left: Combobox (112) and QuickEdit still ship the catalog because their items take a glyph *name* that morphs into the well — decide an API that passes the glyph itself.
+- [ ] Combobox and QuickEdit: take the glyph itself (record and morph parts) instead of a name, so they stop shipping the whole catalog.
 
 ## Tests that fail only under a full parallel run
 
