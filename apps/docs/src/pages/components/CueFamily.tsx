@@ -160,7 +160,7 @@ due <CueInferred resolved="FRI 2 OCT · RECOGNIZER 0.82" confirmed={ok} onConfir
         </Bench>
       </Section>
 
-      <Section title="SwiftUI" lede="MetalCueMark (the glyph, the line and the recognition moment), MetalCueTag (the luggage tag), MetalCueInferred (dashed until confirmed), MetalCueLife (with its label), MetalCueURLPill, MetalCueUrgency and MetalDimple, from the same recipe. In a TextKit editor the host draws the lines and tags itself from the mark recipe.">
+      <Section title="SwiftUI" lede="MetalCueMark (the glyph, the line and the recognition moment), MetalCueTag (the luggage tag), MetalCueInferred (dashed until confirmed), MetalCueLife (with its label), MetalCueURLPill, MetalCueUrgency and MetalDimple, from the same recipe; the operable cues are MetalMarkScrub (every scale, its picker in a popover) and MetalMarkPick. In a TextKit editor the host draws the lines and tags itself from the mark recipe.">
         <SwiftCapture name="cue" />
       </Section>
 
