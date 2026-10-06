@@ -11,6 +11,7 @@ export { Field, SearchField, type SearchFieldProps, type FieldRootProps, type Fi
 export { Textarea, type TextareaProps } from './components/textarea/textarea';
 export { FormField, Fieldset, Form, ChangedMark, type FormFieldRootProps, type FormFieldLabelProps, type FormFieldReadbackProps, type ChangedMarkProps, type FormProps } from './components/form-field/form-field';
 export { NumberField, type NumberFieldProps, type NumberFieldSize } from './components/number-field/number-field';
+export { CodeField, type CodeFieldRootProps, type CodeFieldSlotProps, type CodeFieldResendProps, type CodeFieldSize } from './components/code-field/code-field';
 export { Calendar, type CalendarProps, type CalendarSingleProps, type CalendarRangeProps, type CalendarMultipleProps, type CalendarPeriod, type DateRange, type DayMark } from './components/calendar/calendar';
 export { DatePicker, type DatePickerProps, type DatePickerSingleProps, type DatePickerRangeProps, type DatePreset } from './components/calendar/date-picker';
 export { Avatar, AvatarGroup, initialsOf, type AvatarProps, type AvatarGroupProps, type AvatarSize } from './components/avatar/avatar';

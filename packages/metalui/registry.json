@@ -537,6 +537,29 @@
       "docs": "Agent guide: https://metalui.dev/r/code-card.md. SwiftUI: MetalCodeCard in the MetalUI Swift package."
     },
     {
+      "name": "code-field",
+      "type": "registry:ui",
+      "title": "Code field",
+      "description": "A one-time code, one slot per character, at Field's sizes: each slot is the field well and a filled one holds a keycap that springs in as it is typed; a paste or the phone's autofill (autocomplete one-time-code) sets them in one ripple. Groups with an engraved dash; digits, letters or both; a refused character shakes its slot; a wrong code rings every slot and shakes the row; the spinner's small ring while it is checked, then the tick; Resend counts down on the drum.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/spinner.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/code-field/code-field.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/code-field/code-field.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/code-field.md. SwiftUI: MetalCodeField, MetalCodeFieldResend in the MetalUI Swift package."
+    },
+    {
       "name": "collapsible",
       "type": "registry:ui",
       "title": "Collapsible",

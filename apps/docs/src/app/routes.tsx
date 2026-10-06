@@ -54,6 +54,7 @@ export const routes: RouteObject[] = [
       { path: 'components/progress', lazy: lazy(() => import('../pages/components/Progress')) },
       { path: 'components/spinner', lazy: lazy(() => import('../pages/components/Spinner')) },
       { path: 'components/number-field', lazy: lazy(() => import('../pages/components/NumberField')) },
+      { path: 'components/code-field', lazy: lazy(() => import('../pages/components/CodeField')) },
       { path: 'components/toggle', lazy: lazy(() => import('../pages/components/Toggle')) },
       { path: 'components/accordion', lazy: lazy(() => import('../pages/components/Accordion')) },
       { path: 'components/collapsible', lazy: lazy(() => import('../pages/components/Collapsible')) },
