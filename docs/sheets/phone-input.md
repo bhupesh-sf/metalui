@@ -45,7 +45,7 @@ Not doing: an LED for valid (colour would carry a state alone; the readback says
 
 **Decide**
 
-- **A dependency (libphonenumber-js) or our own table?** Our own. libphonenumber-js's smallest build is ~80 KB min (~40 KB gzip) before our code, and its "max" metadata is 145 KB; Combobox's core already costs most of the budget. A table of ~245 regions (ISO and dial code, the area codes that split a shared code) plus rules for ~45 countries that carry most traffic (trunk prefix, lengths, mobile prefixes, groupings by leading digits) is ~5 KB, and `countries` lets a host add the rest. Names come from the platform (`Intl.DisplayNames`, `Locale.localizedString(forRegionCode:)`), so they are in the reader's language and cost nothing. The ceiling, written where the table is: grouping and lengths, not number-plan validity.
+- **A dependency (libphonenumber-js) or our own table?** Our own. libphonenumber-js's smallest build is ~80 KB min (~40 KB gzip) before our code, and its "max" metadata is 145 KB; Combobox's core already costs most of the budget. A table of ~245 regions (ISO and dial code, the area codes that split a shared code) plus rules for 52 countries that carry most traffic (trunk prefix, lengths, mobile prefixes, groupings by leading digits) is ~5 KB, and `countries` lets a host add the rest. Names come from the platform (`Intl.DisplayNames`, `Locale.localizedString(forRegionCode:)`), so they are in the reader's language and cost nothing. The ceiling, written where the table is: grouping and lengths, not number-plan validity.
 - **Flags: emoji, images or none?** Emoji, drawn from the ISO code; no images. A key with only "+1" would not tell the US from Canada, and an ISO code ("US") is less glanceable than a flag where flags draw. Windows draws them as letters, which still works; the readback names the country in words.
 - **Where does the picker sit?** Inside the well, leading, as a key (the field's mini key, widened to hold the flag and a chevron), with the dial code engraved after it: one well reads "🇬🇧⌄ +44 7700 900123", the way the number is said. Not a separate cap beside the field (Combobox `trigger="button"` would draw "United Kingdom" at 160 wide before the number); its plate is Combobox's button plate, anchored to the whole well.
 - **The value while incomplete?** `null`. "The value is a number you can dial, or nothing" is the clean contract; `details.valid` and the input's validity say why. A controlled host that echoes `null` back doesn't wipe what is being typed (the text is only rewritten when the value changes to a different number).
@@ -66,5 +66,9 @@ Not doing: an LED for valid (colour would carry a state alone; the readback says
 
 **Later**
 - [ ] Extensions.
-- [ ] A per-country example as the placeholder (now a generic one from the country's grouping).
+- [ ] A per-country example as the placeholder (now the country's first grouping in zeros, "0000 000000").
 - [ ] SwiftUI: the caret is not re-placed mid-number on macOS (SwiftUI's TextField has no selection API before macOS 15); the number is regrouped and the caret goes to the end.
+- [ ] SwiftUI: the list is a system popover with its own rows (no keyboard highlight that glides; ↑ ↓ are the list's own focus).
+- [ ] Rules for more countries (the table has dial codes for ~245 regions, full rules for 52).
+
+- Done (2026-10-06): Must and Should. A national number whose area code belongs to a sibling moves there too (416 typed in the US becomes Canada), since NANP and +44/+7 area codes are exclusive. 82.3 KB gzip for a lone import, nearly all Base UI's combobox core (Combobox is 81.6, Autocomplete 70.4); the table is ~4 KB of it. The e2e slice also checks that React and SwiftUI carry the same table strings.

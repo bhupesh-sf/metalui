@@ -1359,6 +1359,34 @@
       "docs": "Agent guide: https://metalui.dev/r/perfect-preview.md. SwiftUI: MetalPerfectPreview in the MetalUI Swift package."
     },
     {
+      "name": "phone-input",
+      "type": "registry:ui",
+      "title": "Phone input",
+      "description": "A phone number the way you'd say it, with its country: one well led by a country key (flag and chevron), the dial code engraved after it, the number grouped as you type with the caret kept by digits. Pasting \"+44…\", \"0044…\" or typing \"+\" moves the country (area codes split +1, +44, +7). The key opens Combobox's plate: search by name, dial code or ISO code, Recent first. The value is E.164 once complete (null before); too short or too long is said on leaving; the readback names the country and \"mobile\". Sizes, disabled, `only`, and `countries` to add a market's rules.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/combobox.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/form-field.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/icon-morph.json",
+        "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/row.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/phone-input/phone-input.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/phone-input/phone-input.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/phone-input.md. SwiftUI: MetalPhoneInput in the MetalUI Swift package."
+    },
+    {
       "name": "popover",
       "type": "registry:ui",
       "title": "Popover",

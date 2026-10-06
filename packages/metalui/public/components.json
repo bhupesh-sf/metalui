@@ -953,6 +953,23 @@
       "agent": "https://metalui.dev/r/perfect-preview.md"
     },
     {
+      "name": "phone-input",
+      "title": "Phone input",
+      "status": "alpha",
+      "description": "A phone number the way you'd say it, with its country: one well led by a country key (flag and chevron), the dial code engraved after it, the number grouped as you type with the caret kept by digits. Pasting \"+44…\", \"0044…\" or typing \"+\" moves the country (area codes split +1, +44, +7). The key opens Combobox's plate: search by name, dial code or ISO code, Recent first. The value is E.164 once complete (null before); too short or too long is said on leaving; the readback names the country and \"mobile\". Sizes, disabled, `only`, and `countries` to add a market's rules.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "PhoneInput",
+        "base": "Field, FormField and Base UI Combobox (Combobox's parts)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalPhoneInput"
+      },
+      "registry": "https://metalui.dev/r/phone-input.json",
+      "agent": "https://metalui.dev/r/phone-input.md"
+    },
+    {
       "name": "popover",
       "title": "Popover",
       "status": "alpha",
