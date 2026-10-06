@@ -1203,13 +1203,30 @@
   --mu-r-avatar-ring-width: 2px;
   --mu-r-avatar-group-overlap: 8px;
   --mu-r-avatar-group-spread: 4px;
-  /* card: the raised surface (recipe surface raise); the hover lift (Transitions T5a); the settle spring */
+  /* card: the raised surface (recipe surface raise); the well (field for the tray, track for an empty slot); the rule's groove; the icon key's latch and its LED (recipe icon-button led); the hover lift (Transitions T5a); the settle and release springs */
   --mu-r-card-self-pad: 16px;
   --mu-r-card-self-gap: 6px;
   --mu-r-card-self-footer-gap: 12px;
   --mu-r-card-self-media: 160px;
+  --mu-r-card-self-side: 72px;
   --mu-r-card-self-select-width: 2px;
   --mu-r-card-self-select-offset: 3px;
+  --mu-r-card-compact-pad: 12px;
+  --mu-r-card-compact-gap: 4px;
+  --mu-r-card-compact-footer-gap: 8px;
+  --mu-r-card-compact-media: 120px;
+  --mu-r-card-compact-side: 56px;
+  --mu-r-card-action-inset: 5px;
+  --mu-r-card-status-box: 18px;
+  --mu-r-card-latch-inset: 12px;
+  --mu-r-card-frame-pad: 8px;
+  --mu-r-card-frame-gap: 8px;
+  --mu-r-card-frame-compact-pad: 6px;
+  --mu-r-card-frame-compact-gap: 6px;
+  --mu-r-card-frame-column: 200px;
+  --mu-r-card-slot-height: 120px;
+  --mu-r-card-slot-gap: 6px;
+  --mu-r-card-slot-glyph: 16px;
   /* attachment: the raised surface (recipe surface raise-sm); the well; the progress fill; Transitions T5b (land) and T9 (leave) */
   --mu-r-attachment-self-height: 52px;
   --mu-r-attachment-self-pad: 8px;
@@ -2215,7 +2232,16 @@
   --mu-r-skeleton-sheen-ink: rgba(255,255,255,.6);
   --mu-r-link-underline-ink: rgba(27,27,29,.3);
   --mu-r-avatar-ring-ink: #F6F5F2;
-  --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(40,34,24,.28);
+  --mu-r-card-lift-shadow:
+    /* mu-recipe:card:0 */ 0 14px 28px -12px rgba(40,34,24,.28);
+  --mu-r-card-self-chosen-background:
+    /* mu-recipe:card:2 */ linear-gradient(#ECEBE7, #F1F0EC);
+  --mu-r-card-self-chosen-shadow:
+    /* mu-recipe:card:4 */ inset 0 1px 3px rgba(60,55,40,.14),
+    /* mu-recipe:card:5 */ inset 0 0 0 .5px rgba(24,22,16,.10),
+    /* mu-recipe:card:6 */ 0 .5px 0 rgba(255,255,255,.9);
+  --mu-r-card-rule-lip: rgba(255,255,255,.8);
+  --mu-r-card-section-hover: rgba(0,0,0,.03);
   --mu-r-table-select-tint: rgba(63,185,122,.08);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
@@ -2772,7 +2798,16 @@
   --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
   --mu-r-link-underline-ink: rgba(255,255,255,.3);
   --mu-r-avatar-ring-ink: #252527;
-  --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(0,0,0,.6);
+  --mu-r-card-lift-shadow:
+    /* mu-recipe:card:1 */ 0 14px 28px -12px rgba(0,0,0,.6);
+  --mu-r-card-self-chosen-background:
+    /* mu-recipe:card:3 */ linear-gradient(#1B1B1D, #202022);
+  --mu-r-card-self-chosen-shadow:
+    /* mu-recipe:card:7 */ inset 0 1px 3px rgba(0,0,0,.6),
+    /* mu-recipe:card:8 */ inset 0 0 0 .5px rgba(0,0,0,.6),
+    /* mu-recipe:card:9 */ 0 .5px 0 rgba(255,255,255,.06);
+  --mu-r-card-rule-lip: rgba(255,255,255,.035);
+  --mu-r-card-section-hover: rgba(255,255,255,.035);
   --mu-r-table-select-tint: rgba(63,185,122,.12);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
@@ -3330,7 +3365,16 @@
     --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
     --mu-r-link-underline-ink: rgba(255,255,255,.3);
     --mu-r-avatar-ring-ink: #252527;
-    --mu-r-card-lift-shadow: 0 14px 28px -12px rgba(0,0,0,.6);
+    --mu-r-card-lift-shadow:
+      0 14px 28px -12px rgba(0,0,0,.6);
+    --mu-r-card-self-chosen-background:
+      linear-gradient(#1B1B1D, #202022);
+    --mu-r-card-self-chosen-shadow:
+      inset 0 1px 3px rgba(0,0,0,.6),
+      inset 0 0 0 .5px rgba(0,0,0,.6),
+      0 .5px 0 rgba(255,255,255,.06);
+    --mu-r-card-rule-lip: rgba(255,255,255,.035);
+    --mu-r-card-section-hover: rgba(255,255,255,.035);
     --mu-r-table-select-tint: rgba(63,185,122,.12);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);

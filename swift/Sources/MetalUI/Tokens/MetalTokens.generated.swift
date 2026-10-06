@@ -1204,20 +1204,47 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A person's thing, held on a raised plate: optional media on top, a title, a line of description, and a footer for its actions. A card that goes somewhere takes its link on the title, stretched over the whole card (one clear link for assistive tech); only such a card moves: hovered, it lifts one grid step on the settle spring while its ambient shadow grows (the hover lift, T5a), still again by the time the pointer leaves; pressed, it comes back down. Footer actions stay their own buttons above the stretched link. Selected (one of a set) carries the green ring. A card that goes nowhere is still. Reduce Motion: no lift; the shadow still grows. (the raised surface (recipe surface raise); the hover lift (Transitions T5a); the settle spring)
+    /// A person's thing, held on a raised plate: optional media on top (or square at the start, horizontal, for result lists), a title with an optional corner action level with its first line, a line of description, and a footer for its actions; regular (pad 16) or compact (pad 12). A card that goes somewhere takes its link on the title, stretched over the whole card (one clear link for assistive tech); only such a card moves: hovered, it lifts one grid step on the settle spring while its ambient shadow grows (the hover lift, T5a), still again by the time the pointer leaves; pressed, it comes back down. Footer actions and the corner action stay their own buttons above the stretched link. Selected (one of a set) carries the green ring. Status lights an LED at the end of the title's line (live, waiting, failed, with the word as its name and tooltip). A choice card is a radio or a checkbox: pressed, it sinks at once (press time); chosen, it stays down, seated flush, with a 4 pt green LED in its corner (the icon key's latch), crossfading its raised look for the seated one; the card it replaces rises on the release spring. A card that goes nowhere is still. The frame holds cards: separated (a sunk tray of raised peers), stacked (one raised plate, its sections between engraved hairlines; sections never lift, a linked one washes on hover) or ghost (no tray); an empty slot is a recess where a new card will go, with plus and a verb. Reduce Motion: no lift; the shadow grows, and a choice still seats its 1 pt (a key's depth on the release spring, as the tool key's). (the raised surface (recipe surface raise); the well (field for the tray, track for an empty slot); the rule's groove; the icon key's latch and its LED (recipe icon-button led); the hover lift (Transitions T5a); the settle and release springs)
     public static let card = MetalObjectRecipe(
         name: "card",
         layers: [
-
+            .init(part: "lift", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 14.0, blur: 28.0, spread: -12.0, paint: .color(MetalRGBA(40.0, 34.0, 24.0, 0.28)))), // mu-recipe:card:0 0 14px 28px -12px rgba(40,34,24,.28)
+            .init(part: "lift", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 14.0, blur: 28.0, spread: -12.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:card:1 0 14px 28px -12px rgba(0,0,0,.6)
+            .init(part: "self", state: "chosen", colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(236.0, 235.0, 231.0, 1.0)), 0.0), .init(.color(MetalRGBA(241.0, 240.0, 236.0, 1.0)), 1.0)])), // mu-recipe:card:2 linear-gradient(#ECEBE7, #F1F0EC)
+            .init(part: "self", state: "chosen", colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(27.0, 27.0, 29.0, 1.0)), 0.0), .init(.color(MetalRGBA(32.0, 32.0, 34.0, 1.0)), 1.0)])), // mu-recipe:card:3 linear-gradient(#1B1B1D, #202022)
+            .init(part: "self", state: "chosen", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.14)))), // mu-recipe:card:4 inset 0 1px 3px rgba(60,55,40,.14)
+            .init(part: "self", state: "chosen", colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.1)))), // mu-recipe:card:5 inset 0 0 0 .5px rgba(24,22,16,.10)
+            .init(part: "self", state: "chosen", colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.9)))), // mu-recipe:card:6 0 .5px 0 rgba(255,255,255,.9)
+            .init(part: "self", state: "chosen", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 3.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:card:7 inset 0 1px 3px rgba(0,0,0,.6)
+            .init(part: "self", state: "chosen", colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.6)))), // mu-recipe:card:8 inset 0 0 0 .5px rgba(0,0,0,.6)
+            .init(part: "self", state: "chosen", colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:card:9 0 .5px 0 rgba(255,255,255,.06)
         ],
         props: [
             "self.pad": .number(16.0),
             "self.gap": .number(6.0),
             "self.footer-gap": .number(12.0),
             "self.media": .number(160.0),
+            "self.side": .number(72.0),
             "self.select-width": .number(2.0),
             "self.select-offset": .number(3.0),
-            "lift.shadow": .perColorway(bone: "0 14px 28px -12px rgba(40,34,24,.28)", graphite: "0 14px 28px -12px rgba(0,0,0,.6)"),
+            "compact.pad": .number(12.0),
+            "compact.gap": .number(4.0),
+            "compact.footer-gap": .number(8.0),
+            "compact.media": .number(120.0),
+            "compact.side": .number(56.0),
+            "action.inset": .number(5.0),
+            "status.box": .number(18.0),
+            "latch.inset": .number(12.0),
+            "frame.pad": .number(8.0),
+            "frame.gap": .number(8.0),
+            "frame.compact-pad": .number(6.0),
+            "frame.compact-gap": .number(6.0),
+            "frame.column": .number(200.0),
+            "slot.height": .number(120.0),
+            "slot.gap": .number(6.0),
+            "slot.glyph": .number(16.0),
+            "rule.lip": .perColorway(bone: "rgba(255,255,255,.8)", graphite: "rgba(255,255,255,.035)"),
+            "section.hover": .perColorway(bone: "rgba(0,0,0,.03)", graphite: "rgba(255,255,255,.035)"),
         ]
     )
 

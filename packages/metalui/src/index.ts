@@ -13,7 +13,7 @@ export { FormField, Fieldset, Form, ChangedMark, type FormFieldRootProps, type F
 export { NumberField, type NumberFieldProps } from './components/number-field/number-field';
 export { Calendar, DatePicker, type CalendarProps, type DatePickerProps } from './components/calendar/calendar';
 export { Avatar, AvatarGroup, initialsOf, type AvatarProps, type AvatarGroupProps, type AvatarSize } from './components/avatar/avatar';
-export { Card, type CardRootProps, type CardTitleProps } from './components/card/card';
+export { Card, type CardRootProps, type CardTitleProps, type CardActionProps, type CardFrameProps, type CardChoicesProps, type CardChoiceProps, type CardEmptySlotProps, type CardSize, type CardOrientation, type CardStatus, type CardFrameVariant } from './components/card/card';
 export { Attachment, formatBytes, type AttachmentProps } from './components/attachment/attachment';
 export { Table, type TableProps, type TableColumn, type SortState } from './components/table/table';
 export { EmptyState, type EmptyStateProps } from './components/empty-state/empty-state';

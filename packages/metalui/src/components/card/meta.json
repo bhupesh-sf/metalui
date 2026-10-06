@@ -4,20 +4,19 @@
   "status": "alpha",
   "layer": "object",
   "kind": "composed",
-  "uses": ["surface"],
-  "description": "A person's thing on a raised plate: media, title, a line, actions. A card with a link lifts one grid step on the settle spring as its shadow grows; a card that goes nowhere is still.",
-  "base": "article; useRender",
+  "uses": ["surface", "well", "rule", "icon-button", "led", "tooltip", "spinner"],
+  "description": "A person's thing on a raised plate: media (on top, or square at the start), title, a corner action, a line, actions; regular or compact; a status LED; waiting on its own edge. A card with a link lifts one grid step on the settle spring as its shadow grows; a card that goes nowhere is still. A choice card latches down with the icon key's green LED. The frame holds cards: a sunk tray of peers, one plate of sections, or no tray, with an empty slot where a new card will go.",
+  "base": "article; useRender; @base-ui/react/radio-group and checkbox-group (choice cards); @base-ui/react/tooltip (the status word)",
   "react": {
     "export": "Card",
     "files": ["card.tsx"]
   },
   "swift": {
     "symbol": "MetalCard",
-    "file": "swift/Sources/MetalUI/Components/MetalCard.swift",
-    "status": "wip"
+    "file": "swift/Sources/MetalUI/Components/MetalCard.swift"
   },
   "slots": {
-    "Card": ["Root", "Media", "Title", "Description", "Footer"]
+    "Card": ["Root", "Media", "Title", "Action", "Description", "Footer", "Frame", "Choices", "Choice", "EmptySlot"]
   },
   "agent": "card.agent.md",
   "page": "/components/card"
