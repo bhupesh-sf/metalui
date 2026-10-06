@@ -29,7 +29,7 @@ One choice from a short list. React: `RadioGroup` and `Radio` from `@unlocalhost
 | cancel (press, drag off) | back to rest | the well fades back; nothing latches |
 | focus | the green ring on the well | keyboard only |
 | invalid | a red hairline ring on unchosen wells | – |
-| disabled | 40 %, no hover, no press; a disabled group takes no Tab stop (screen readers still read it and its choice) | – |
+| disabled | 40 %, no hover, no press; a disabled group keeps one Tab stop (its choice, announced as dimmed) so a keyboard user can reach it and hear why: give it an `aria-describedby` that says what turns it on | – |
 
 Arrow keys choose without the press phase: the latch and release are the same. Reduce Motion: the pip is there or not at once; the well colour still fades.
 

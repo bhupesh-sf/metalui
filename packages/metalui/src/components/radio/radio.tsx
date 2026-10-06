@@ -17,7 +17,8 @@ import { Radio as BaseRadio } from '@base-ui/react/radio';
  *   cancel    press and drag off: nothing latches and the well fades back
  *   focus     the green ring on the well (keyboard only); arrows move and choose, with no press
  *   invalid   a red hairline ring (inside a Base UI Field marked invalid)
- *   disabled  the whole row at 40 %, no hover, no press; a disabled group takes no Tab stop
+ *   disabled  the whole row at 40 %, no hover, no press; a disabled group keeps one Tab stop (its
+ *             choice), so a keyboard user reaches it and hears why (its description)
  * Reduce Motion: the pip is there or not at once; the well colour still fades.
  * The well's look is the checkbox recipe; the radio recipe adds the pip, the row and the motion.
  * ───────────────────────────────────────────────────────── */
@@ -50,24 +51,16 @@ const WELL = [
 ].join(' ');
 const PIP = 'mu-radio-pip radio-pip data-checked:radio-pip-on reduced-motion:transition-none';
 
-// A disabled group takes no Tab stop, like a native disabled radio (Base UI keeps the checked one in the order).
-const GroupDisabled = React.createContext(false);
-
 /** One choice from a short list. Wrap `Radio` options; `value` and `onValueChange` hold the choice. */
 function Root({ orientation = 'vertical', className, ...props }: RadioGroupProps) {
-  return (
-    <GroupDisabled.Provider value={!!props.disabled}>
-      <BaseRadioGroup data-orientation={orientation} className={className ? `${GROUP[orientation]} ${className}` : GROUP[orientation]} {...props} />
-    </GroupDisabled.Provider>
-  );
+  return <BaseRadioGroup data-orientation={orientation} className={className ? `${GROUP[orientation]} ${className}` : GROUP[orientation]} {...props} />;
 }
 
 /** One option: the round well and its label. The label is part of the hit area. */
 const Item = React.forwardRef<HTMLSpanElement, RadioProps>(function Radio({ children, className, ...props }, ref) {
-  const groupDisabled = React.useContext(GroupDisabled);
   return (
     <label className={className ? `${ROW} ${className}` : ROW}>
-      <BaseRadio.Root ref={ref} className={WELL} {...(groupDisabled && { tabIndex: -1 })} {...props}>
+      <BaseRadio.Root ref={ref} className={WELL} {...props}>
         <BaseRadio.Indicator keepMounted className={PIP} />
       </BaseRadio.Root>
       {children != null && <span className="mu-radio-label">{children}</span>}

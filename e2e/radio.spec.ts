@@ -84,15 +84,18 @@ test('Reduce Motion: the pip is there or not at once', async ({ page }) => {
   expect(await scaleOf(radios.nth(1))).toBe(0);
 });
 
-// A disabled group is read but not reached: Tab passes it, as it passes a native disabled radio.
-test('a disabled group takes no Tab stop and stays readable', async ({ page }) => {
+// A disabled group keeps one Tab stop, its choice, marked disabled: a keyboard user reaches it to hear why.
+test('a disabled group is reached on its choice and cannot change', async ({ page }) => {
   await open(page, '/components/radio', 'bone');
   const units = page.getByRole('radiogroup', { name: 'Units, set by your workspace' });
+  const metric = units.getByRole('radio', { name: 'Metric' });
   await expect(units).toHaveAttribute('aria-disabled', 'true');
-  await expect(units.getByRole('radio', { name: 'Metric' })).toBeChecked();
-  await page.getByRole('radiogroup', { name: 'Grid' }).getByRole('radio').first().focus();
+  await page.getByRole('radiogroup', { name: 'Grid' }).getByRole('radio', { name: 'Dots' }).focus();
   await page.keyboard.press('Tab');
-  expect(await units.evaluate((g) => g.contains(document.activeElement))).toBe(false);
-  await page.keyboard.press('Shift+Tab');
-  await expect(page.getByRole('radiogroup', { name: 'Grid' }).getByRole('radio', { name: 'Dots' })).toBeFocused();
+  await expect(metric).toBeFocused();
+  await expect(metric).toBeDisabled();
+  await page.keyboard.press('ArrowDown');
+  await expect(metric).toBeChecked();
+  await page.keyboard.press('Space');
+  await expect(units.getByRole('radio', { name: 'Imperial' })).not.toBeChecked();
 });
