@@ -102,7 +102,8 @@ export function SwapText({ value, className }: SwapTextProps) {
   const layers = useSwapLayers(value, value, root);
   const shrinkTimer = React.useRef(0);
 
-  const target = () => measure.current?.getBoundingClientRect().width;
+  // The layout width (computed), not the drawn one: a plate still rising at .97 would measure the words short and cut them.
+  const target = () => (measure.current ? parseFloat(getComputedStyle(measure.current).width) : undefined);
 
   // Size before first paint; follow late font loads and later value changes.
   useIsoLayoutEffect(() => {

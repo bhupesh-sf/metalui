@@ -771,6 +771,19 @@ public enum MetalRecipes {
         ]
     )
 
+    /// One short value edited where it stands and committed with one key: rename, tag, a label. It sits in a popover's body or a dialog. The field opens with the value selected (a file keeps its extension out); Enter commits and Escape cancels; the key is off while the value is empty or unchanged. A value that is not accepted keeps the plate open with the field's invalid ring and the reason under it. Committing, the key holds down (the spinner after its delay, the field locked); done, its glyph morphs to check and its word turns on the drum (Rename → Renamed), and the plate closes after the hold. A failed save morphs the glyph to sync-error and the key says Try again. The looks are the field, form field and button recipes; this recipe adds the gaps and the hold. (the field, form-field and button recipes; MorphIcon (settle); SwapText (the drum); the toast's Undo)
+    public static let quickEdit = MetalObjectRecipe(
+        name: "quick-edit",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(10.0),
+            "self.hold": .text("800ms"),
+            "actions.gap": .number(8.0),
+        ]
+    )
+
     /// A question that must be answered: the dialog's plate, scrim and motion, with the question as the title, what happens if you agree 4 below it, then Cancel and the confirm button. A click outside does not close it: the plate shakes once on the refusal spring, one nest aside. Focus starts on Cancel; Esc is Cancel. Reduce Motion: no shake. (the dialog recipe; the refusal spring; Base UI AlertDialog)
     public static let alertDialog = MetalObjectRecipe(
         name: "alert-dialog",

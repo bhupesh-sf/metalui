@@ -919,6 +919,23 @@
       "agent": "https://metalui.dev/r/provenance-tooltip.md"
     },
     {
+      "name": "quick-edit",
+      "title": "Quick edit",
+      "status": "alpha",
+      "description": "One short value edited where it stands and committed with one key (Rename, Tag): the value selected on open, Enter and Escape, the key off while empty or unchanged, the reason under the field when it is not accepted; committing, the key waits, then morphs to check and says Renamed on the drum before the plate closes, or to sync-error with Try again.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "QuickEdit",
+        "base": "form (Base UI Field, Button)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalQuickEdit"
+      },
+      "registry": "https://metalui.dev/r/quick-edit.json",
+      "agent": "https://metalui.dev/r/quick-edit.md"
+    },
+    {
       "name": "radio",
       "title": "Radio group",
       "status": "alpha",

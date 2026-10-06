@@ -128,6 +128,32 @@
       ]
     },
     {
+      "name": "icon-morph",
+      "type": "registry:lib",
+      "title": "MetalUI glyph morph",
+      "description": "MorphIcon: a glyph whose meaning changes morphs into the next one on the settle spring (Rename → Renamed: pen → check).",
+      "registryDependencies": [
+        "https://metalui.dev/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/icons/MorphIcon.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/MorphIcon.tsx"
+        },
+        {
+          "path": "packages/metalui/src/icons/morph.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/morph.ts"
+        },
+        {
+          "path": "packages/metalui/src/icons/morph.generated.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/icons/morph.generated.ts"
+        }
+      ]
+    },
+    {
       "name": "icon-components",
       "type": "registry:lib",
       "title": "MetalUI icon components",
@@ -1234,6 +1260,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/provenance-tooltip.md. SwiftUI: MetalProvenanceTooltip, .metalProvenance(_:detail:) in the MetalUI Swift package."
+    },
+    {
+      "name": "quick-edit",
+      "type": "registry:ui",
+      "title": "Quick edit",
+      "description": "One short value edited where it stands and committed with one key (Rename, Tag): the value selected on open, Enter and Escape, the key off while empty or unchanged, the reason under the field when it is not accepted; committing, the key waits, then morphs to check and says Renamed on the drum before the plate closes, or to sync-error with Try again.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/form-field.json",
+        "https://metalui.dev/r/icon-morph.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/quick-edit/quick-edit.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/quick-edit/quick-edit.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/quick-edit.md. SwiftUI: MetalQuickEdit in the MetalUI Swift package."
     },
     {
       "name": "radio",
