@@ -3,21 +3,20 @@
   "title": "Form field",
   "status": "alpha",
   "layer": "component",
-  "description": "A control with its words: label, description and an error that grows open from under the control on the settle spring; invalid and disabled reach every control inside. Fieldset groups fields under a legend.",
+  "description": "A control with its words: a label above or beside it (with an optional or required mark, and the changed mark), a description, a readback of what was understood, and an error that grows open from under the control on the settle spring; invalid and disabled reach every control inside. Fieldset groups fields under a legend. ChangedMark is shared with other controls.",
   "base": "@base-ui/react/field",
   "react": {
-    "export": "FormField, Fieldset, Form",
+    "export": "FormField, Fieldset, Form, ChangedMark",
     "files": [
       "form-field.tsx"
     ]
   },
   "swift": {
-    "symbol": "MetalFormField",
-    "file": "swift/Sources/MetalUI/Components/MetalFormField.swift",
-    "status": "wip"
+    "symbol": "MetalFormField, MetalFieldset, MetalChangedMark",
+    "file": "swift/Sources/MetalUI/Components/MetalFormField.swift"
   },
   "slots": {
-    "FormField": ["Root", "Label", "Description", "Error"],
+    "FormField": ["Root", "Label", "Description", "Readback", "Error"],
     "Fieldset": ["Root", "Legend"]
   },
   "agent": "form-field.agent.md",
