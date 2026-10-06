@@ -845,20 +845,44 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A number you step, scrub or type: the field well as a pill with a compact keycap at each end (minus, plus) and the value between them. Each step turns the value one drum step on the settle spring (the swap drum): plus rolls up, minus rolls down. Dragging the label sideways scrubs it, on the same drum. At a limit the keycap disables, and an arrow key past it shakes only the digits on the refusal spring. Typing is plain text and commits on blur. Reduce Motion: the drum crossfades and nothing shakes. (the field well (recipe well field); compact button caps; the swap drum; the refusal; Base UI NumberField)
+    /// A number you step, scrub or type, at Field's three sizes and radii: the field well with a keycap at each end (the set's minus and plus glyphs), concentric with the well, and the value between them. Each step turns the value one drum step on the settle spring (the swap drum): plus rolls up, minus rolls down. Dragging the label sideways scrubs it. Holding Alt or Shift over the field turns the keycaps' legends on the drum to the fine or coarse step. A unit is engraved after the value in ink3. At a limit the keycap disables; an arrow or a scrub past it shakes only the digits on the refusal spring. Typing is a draft: plain numbers, the unit and arithmetic (+10, *2, =8*12, read back under the field) commit on Enter or blur. The inspector kind has no keycaps: a letter engraved at the well's start is the scrub handle. Reduce Motion: the drum crossfades and nothing shakes. (the field well (recipe well field) at the field recipe's sizes and radii; compact button caps; the swap drum; the refusal; the form field's changed mark, readback and error row; Base UI NumberField)
     public static let numberField = MetalObjectRecipe(
         name: "number-field",
         layers: [
 
         ],
         props: [
-            "self.height": .number(32.0),
-            "self.width": .number(132.0),
-            "self.pad": .number(3.0),
             "self.gap": .number(6.0),
             "self.disabled": .text("0.4"),
-            "key.size": .number(26.0),
-            "key.glyph": .number(12.0),
+            "large.height": .number(44.0),
+            "large.radius": .number(17.0),
+            "large.pad": .number(4.0),
+            "large.width": .number(168.0),
+            "large.key": .number(36.0),
+            "large.key-radius": .number(13.0),
+            "large.glyph": .number(30.0),
+            "regular.height": .number(32.0),
+            "regular.radius": .number(11.0),
+            "regular.pad": .number(3.0),
+            "regular.width": .number(132.0),
+            "regular.key": .number(26.0),
+            "regular.key-radius": .number(8.0),
+            "regular.glyph": .number(24.0),
+            "compact.height": .number(28.0),
+            "compact.radius": .number(9.0),
+            "compact.pad": .number(3.0),
+            "compact.width": .number(112.0),
+            "compact.key": .number(22.0),
+            "compact.key-radius": .number(6.0),
+            "compact.glyph": .number(20.0),
+            "unit.gap": .number(3.0),
+            "unit.caret": .number(1.0),
+            "scrub.pixels": .number(2.0),
+            "inspector.regular": .number(96.0),
+            "inspector.compact": .number(84.0),
+            "inspector.pad": .number(8.0),
+            "inspector.gap": .number(6.0),
+            "inspector.mark": .number(8.0),
         ]
     )
 

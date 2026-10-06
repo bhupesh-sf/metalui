@@ -1020,14 +1020,38 @@
   --mu-r-spinner-bar-creep: 9000ms;
   --mu-r-spinner-bar-reach: 0.86;
   --mu-r-spinner-bar-finish: 260ms;
-  /* number-field: the field well (recipe well field); compact button caps; the swap drum; the refusal; Base UI NumberField */
-  --mu-r-number-field-self-height: 32px;
-  --mu-r-number-field-self-width: 132px;
-  --mu-r-number-field-self-pad: 3px;
+  /* number-field: the field well (recipe well field) at the field recipe's sizes and radii; compact button caps; the swap drum; the refusal; the form field's changed mark, readback and error row; Base UI NumberField */
   --mu-r-number-field-self-gap: 6px;
   --mu-r-number-field-self-disabled: 0.4;
-  --mu-r-number-field-key-size: 26px;
-  --mu-r-number-field-key-glyph: 12px;
+  --mu-r-number-field-large-height: 44px;
+  --mu-r-number-field-large-radius: 17px;
+  --mu-r-number-field-large-pad: 4px;
+  --mu-r-number-field-large-width: 168px;
+  --mu-r-number-field-large-key: 36px;
+  --mu-r-number-field-large-key-radius: 13px;
+  --mu-r-number-field-large-glyph: 30px;
+  --mu-r-number-field-regular-height: 32px;
+  --mu-r-number-field-regular-radius: 11px;
+  --mu-r-number-field-regular-pad: 3px;
+  --mu-r-number-field-regular-width: 132px;
+  --mu-r-number-field-regular-key: 26px;
+  --mu-r-number-field-regular-key-radius: 8px;
+  --mu-r-number-field-regular-glyph: 24px;
+  --mu-r-number-field-compact-height: 28px;
+  --mu-r-number-field-compact-radius: 9px;
+  --mu-r-number-field-compact-pad: 3px;
+  --mu-r-number-field-compact-width: 112px;
+  --mu-r-number-field-compact-key: 22px;
+  --mu-r-number-field-compact-key-radius: 6px;
+  --mu-r-number-field-compact-glyph: 20px;
+  --mu-r-number-field-unit-gap: 3px;
+  --mu-r-number-field-unit-caret: 1px;
+  --mu-r-number-field-scrub-pixels: 2px;
+  --mu-r-number-field-inspector-regular: 96px;
+  --mu-r-number-field-inspector-compact: 84px;
+  --mu-r-number-field-inspector-pad: 8px;
+  --mu-r-number-field-inspector-gap: 6px;
+  --mu-r-number-field-inspector-mark: 8px;
   /* toggle: the button cap (recipe button); the LED part; latching push buttons; Base UI Toggle and ToggleGroup */
   --mu-r-toggle-self-catch: 2px;
   --mu-r-toggle-self-latch: 1px;

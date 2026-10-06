@@ -1100,12 +1100,14 @@
       "name": "number-field",
       "type": "registry:ui",
       "title": "Number field",
-      "description": "A number you step, scrub or type: keycaps at each end of a pill well; each step turns the value one drum step (plus up, minus down) and an arrow past a limit shakes only the digits.",
+      "description": "A number you step, scrub or type, at Field's sizes: keycaps (the set's minus and plus) concentric with the well; each step turns the value on the drum and a step past a limit shakes only the digits. Alt and Shift step fine and coarse and say so on the keycaps; an engraved unit; typed arithmetic read back before it commits; soft limits; back to default with the changed mark; mixed values; an inspector kind with a letter as the scrub handle; the wheel only when focused.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/form-field.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],

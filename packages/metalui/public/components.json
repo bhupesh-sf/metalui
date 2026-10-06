@@ -786,7 +786,7 @@
       "name": "number-field",
       "title": "Number field",
       "status": "alpha",
-      "description": "A number you step, scrub or type: keycaps at each end of a pill well; each step turns the value one drum step (plus up, minus down) and an arrow past a limit shakes only the digits.",
+      "description": "A number you step, scrub or type, at Field's sizes: keycaps (the set's minus and plus) concentric with the well; each step turns the value on the drum and a step past a limit shakes only the digits. Alt and Shift step fine and coarse and say so on the keycaps; an engraved unit; typed arithmetic read back before it commits; soft limits; back to default with the changed mark; mixed values; an inspector kind with a letter as the scrub handle; the wheel only when focused.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "NumberField",
