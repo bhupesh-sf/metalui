@@ -1011,6 +1011,20 @@
   --spacing-kanban-header-height: var(--mu-r-kanban-header-height);
   --spacing-kanban-header-gap: var(--mu-r-kanban-header-gap);
   --spacing-kanban-header-inset: var(--mu-r-kanban-header-inset);
+  --spacing-gantt-side: var(--mu-r-gantt-self-side);
+  --spacing-gantt-scale-day: var(--mu-r-gantt-scale-day);
+  --spacing-gantt-scale-week: var(--mu-r-gantt-scale-week);
+  --spacing-gantt-scale-month: var(--mu-r-gantt-scale-month);
+  --spacing-gantt-bar-height: var(--mu-r-gantt-bar-height);
+  --spacing-gantt-bar-edge: var(--mu-r-gantt-bar-edge);
+  --spacing-gantt-bar-min: var(--mu-r-gantt-bar-min);
+  --spacing-gantt-bar-inset: var(--mu-r-gantt-bar-inset);
+  --spacing-gantt-bar-track: var(--mu-r-gantt-bar-track);
+  --spacing-gantt-milestone-size: var(--mu-r-gantt-milestone-size);
+  --spacing-gantt-milestone-corner: var(--mu-r-gantt-milestone-corner);
+  --spacing-gantt-unit-pad: var(--mu-r-gantt-unit-pad);
+  --spacing-gantt-dates-gap: var(--mu-r-gantt-dates-gap);
+  --spacing-gantt-now-pad: var(--mu-r-gantt-now-pad);
   --spacing-drop-zone-pad: var(--mu-r-drop-zone-self-pad);
   --spacing-drop-zone-gap: var(--mu-r-drop-zone-self-gap);
   --spacing-drop-zone-radius: var(--mu-r-drop-zone-self-radius);
@@ -3017,6 +3031,61 @@
 }
 @utility stroke-width-kanban-column-width {
   stroke-width: var(--mu-r-kanban-column-width);
+}
+@utility gantt {
+  position: relative; display: block; min-height: 0; min-width: 0; overflow: auto; overscroll-behavior: contain; --mu-gantt-day: var(--mu-r-gantt-scale-week); &[data-scale=day] { --mu-gantt-day: var(--mu-r-gantt-scale-day); } &[data-scale=month] { --mu-gantt-day: var(--mu-r-gantt-scale-month); } &[data-dragging] { cursor: grabbing; user-select: none; -webkit-user-select: none; } &[aria-busy=true] .mu-gantt-bar { cursor: progress; }
+}
+@utility gantt-grid {
+  position: relative; display: grid; grid-template-columns: [side] var(--mu-r-gantt-self-side) [track] calc(var(--mu-gantt-days) * var(--mu-gantt-day)); width: max-content; min-width: 100%; margin: 0; padding: 0; list-style: none;
+}
+@utility gantt-head {
+  position: sticky; top: 0; z-index: 3; display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; height: calc(var(--mu-r-table-head-height) * 2); background: var(--mu-frost-opaque); box-shadow: inset 0 -1px 0 var(--mu-rule);
+}
+@utility gantt-corner {
+  position: sticky; left: 0; z-index: 1; display: flex; align-items: flex-end; height: calc(var(--mu-r-table-head-height) * 2); padding: 0 var(--mu-r-table-row-pad-x) calc((var(--mu-r-table-head-height) - 1lh) / 2); background: var(--mu-frost-opaque); box-shadow: inset -1px 0 0 var(--mu-rule);
+}
+@utility gantt-scale {
+  position: relative;
+}
+@utility gantt-unit {
+  position: absolute; top: 0; left: calc(var(--at) * var(--mu-gantt-day)); width: calc(var(--span) * var(--mu-gantt-day)); height: var(--mu-r-table-head-height); display: flex; align-items: center; white-space: nowrap; box-shadow: inset 1px 0 0 var(--mu-rule); &[data-tier=lower] { top: var(--mu-r-table-head-height); } & > span { position: sticky; left: var(--mu-r-gantt-self-side); min-width: 0; padding-inline: var(--mu-r-gantt-unit-pad); overflow: hidden; }
+}
+@utility gantt-row {
+  position: relative; display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; height: var(--mu-r-table-row-height);
+}
+@utility gantt-name {
+  position: sticky; left: 0; z-index: 2; display: flex; align-items: center; min-width: 0; padding: 0 var(--mu-r-table-row-pad-x); background: var(--mu-frost-opaque); box-shadow: inset 0 -1px 0 var(--mu-rule), inset -1px 0 0 var(--mu-rule); & > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+@utility gantt-track {
+  position: relative; box-shadow: inset 0 -1px 0 var(--mu-rule);
+}
+@utility gantt-lines {
+  position: absolute; top: calc(var(--mu-r-table-head-height) * 2); bottom: 0; left: var(--mu-r-gantt-self-side); width: calc(var(--mu-gantt-days) * var(--mu-gantt-day)); pointer-events: none; & > i { position: absolute; top: 0; bottom: 0; left: calc(var(--at) * var(--mu-gantt-day)); width: var(--mu-r-rule-self-thickness); background: var(--mu-rule); }
+}
+@utility gantt-now {
+  position: absolute; top: 0; bottom: 0; left: calc(var(--at) * var(--mu-gantt-day)); z-index: 1; width: var(--mu-r-rule-self-thickness); background: var(--mu-ink3); pointer-events: none; & > span { position: absolute; top: var(--mu-r-gantt-now-pad); left: 0; translate: -50% 0; padding-inline: var(--mu-r-gantt-now-pad); border-radius: var(--mu-r-surface-radius-pill); background: var(--mu-frost-opaque); white-space: nowrap; }
+}
+@utility gantt-slot {
+  position: absolute; top: 50%; left: calc(var(--at) * var(--mu-gantt-day)); width: max(var(--mu-r-gantt-bar-min), calc(var(--span) * var(--mu-gantt-day))); height: var(--mu-r-gantt-bar-height); margin-top: calc(var(--mu-r-gantt-bar-height) / -2); border-radius: var(--mu-r-surface-radius-pill); background: var(--mu-r-well-self-track-background); box-shadow: var(--mu-r-well-self-track-shadow); pointer-events: none; &[data-milestone] { left: calc((var(--at) + .5) * var(--mu-gantt-day) - var(--mu-r-gantt-milestone-size) / 2); width: var(--mu-r-gantt-milestone-size); height: var(--mu-r-gantt-milestone-size); margin-top: calc(var(--mu-r-gantt-milestone-size) / -2); border-radius: var(--mu-r-gantt-milestone-corner); rotate: 45deg; scale: .7; }
+}
+@utility gantt-bar {
+  position: absolute; top: 50%; z-index: 1; left: calc(var(--at) * var(--mu-gantt-day)); width: max(var(--mu-r-gantt-bar-min), calc(var(--span) * var(--mu-gantt-day))); height: var(--mu-r-gantt-bar-height); margin-top: calc(var(--mu-r-gantt-bar-height) / -2); border-radius: var(--mu-r-surface-radius-pill); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; translate: var(--mu-gantt-follow, 0px) 0; scale: 1; transition: translate calc(var(--mu-spring-object-d) * var(--mu-travel-object)) var(--mu-spring-object), scale calc(var(--mu-spring-object-d) * var(--mu-travel-object)) var(--mu-spring-object); &[data-milestone] { left: calc((var(--at) + .5) * var(--mu-gantt-day) - var(--mu-r-gantt-milestone-size) / 2); width: var(--mu-r-gantt-milestone-size); height: var(--mu-r-gantt-milestone-size); margin-top: calc(var(--mu-r-gantt-milestone-size) / -2); border-radius: var(--mu-r-gantt-milestone-corner); } &[data-lifted] { z-index: 2; scale: calc(1 + (var(--mu-r-sortable-lift-scale) - 1) * var(--mu-travel-surface)); transition: translate calc(var(--mu-spring-object-d) * var(--mu-travel-object)) var(--mu-spring-object), scale calc(var(--mu-spring-surface-d) * var(--mu-travel-surface)) var(--mu-spring-surface); } &[data-following] { transition: scale calc(var(--mu-spring-surface-d) * var(--mu-travel-surface)) var(--mu-spring-surface); } &[data-lifted], &[data-following] { will-change: translate, scale; cursor: grabbing; } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); } &[data-locked] { cursor: not-allowed; }
+}
+@utility gantt-plate {
+  position: absolute; inset: 0; border-radius: inherit; background: var(--mu-r-surface-self-raise-sm-background); box-shadow: var(--mu-r-surface-self-raise-sm-shadow); &::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: var(--mu-r-surface-self-raise-background); box-shadow: var(--mu-r-surface-self-raise-shadow); opacity: 0; transition: opacity var(--mu-spring-release-d) var(--mu-spring-release); } [data-lifted] > &::before { opacity: 1; transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface); } [data-milestone] > & { inset: 15%; rotate: 45deg; }
+}
+@utility gantt-well {
+  position: absolute; top: 50%; inset-inline: var(--mu-r-gantt-bar-inset); height: var(--mu-r-gantt-bar-track); margin-top: calc(var(--mu-r-gantt-bar-track) / -2); border-radius: var(--mu-r-surface-radius-pill); overflow: hidden; pointer-events: none;
+}
+@utility gantt-edge {
+  position: absolute; top: 0; bottom: 0; width: var(--mu-r-gantt-bar-edge); cursor: ew-resize; &[data-edge=start] { left: calc(var(--mu-r-gantt-bar-edge) / -2); } &[data-edge=end] { right: calc(var(--mu-r-gantt-bar-edge) / -2); } [data-locked] > & { cursor: not-allowed; }
+}
+@utility gantt-dates {
+  position: absolute; top: 50%; left: 100%; translate: 0 -50%; margin-inline-start: var(--mu-r-gantt-dates-gap); white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity var(--mu-spring-release-d) var(--mu-spring-release); [data-lifted] > &, :focus-visible > & { opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); }
+}
+@utility duration-gantt-commit {
+  --tw-duration: var(--mu-r-gantt-self-commit);
+  transition-duration: var(--mu-r-gantt-self-commit);
 }
 @utility drop-zone-edge {
   &::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 var(--mu-r-drop-zone-self-edge) transparent; transition: box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle); } &[data-armed]::before { box-shadow: inset 0 0 0 var(--mu-r-drop-zone-self-edge) color-mix(in oklab, var(--mu-green) calc(var(--mu-r-drop-zone-self-armed) * 100%), transparent); } &[data-over]::before { box-shadow: inset 0 0 0 var(--mu-r-drop-zone-self-edge) var(--mu-green); transition-duration: var(--mu-spring-part-d); } &[data-refused]::before { box-shadow: inset 0 0 0 var(--mu-r-drop-zone-self-edge) var(--mu-invalid); } @media (prefers-reduced-motion: reduce) { &::before { transition: none; } }

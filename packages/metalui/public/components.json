@@ -749,6 +749,23 @@
       "agent": "https://metalui.dev/r/form-field.md"
     },
     {
+      "name": "gantt",
+      "title": "Gantt",
+      "status": "alpha",
+      "description": "A plan laid out against dates: tasks down, days across, under a sticky two-tier header (months over days or weeks, years over months) beside a sticky name column with Table's look. Each task is a bar on the raised plate with Progress's well inside, a milestone a diamond, today a line with NOW. Press a bar and it lifts and follows the hand while its slot, snapped to whole days, shows as a recess; it lands there. Its ends resize a day at a time. Keys move it a day, Shift its end, Alt Shift its start, said in a polite status. A failed save puts the dates back.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Gantt",
+        "base": "div role=group, a list of rows; each bar a focusable button (aria-roledescription task) with pointer capture; a polite status"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalGantt"
+      },
+      "registry": "https://metalui.dev/r/gantt.json",
+      "agent": "https://metalui.dev/r/gantt.md"
+    },
+    {
       "name": "glass-face",
       "title": "Glass face",
       "status": "alpha",
