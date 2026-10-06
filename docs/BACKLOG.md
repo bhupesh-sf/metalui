@@ -545,10 +545,10 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 
 ### 1. Small, used everywhere (in both libraries)
 
-- [ ] **Alert**: an inline message in the page. Today only `AlertDialog`, `Toast` and `StatusBadge` exist.
+- [x] **Alert**: an inline message in the page. (Built 2026-10-06; sheet in `docs/sheets/alert.md`. Left: draw `info` and `warning` — `note` and `bell` stand in; a SwiftUI capture on the page.) Today only `AlertDialog`, `Toast` and `StatusBadge` exist.
   - Kinds: default, info, success, warning, destructive, invert.
   - Parts: icon, title, description, actions (`Alert.Title`, `Alert.Description`, `Alert.Action`); title only, description only, or all of them; a long message that wraps.
-- [ ] **Badge**: a plain label or count. `Chip` and `StatusBadge` are both specialised.
+- [x] **Badge**: a plain label or count. (Built 2026-10-06 as a Part; sheet in `docs/sheets/badge.md`: Badge describes, Chip is acted on, StatusBadge is the system speaking. `Badge.Anchor` puts a count on a control's corner.) `Chip` and `StatusBadge` are both specialised.
   - Tones: default, secondary, info, success, warning, destructive, invert; each as solid, outline and light (soft).
   - Sizes xs, sm, default, lg, xl; default or full radius.
   - With an icon, an icon button (remove), a dot (our LED), or as a link.
