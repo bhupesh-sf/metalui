@@ -9,6 +9,7 @@ import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalIc
 import { CodeScreen, PageHeader, Rules, Section, SourceTabs, Stage, TokenTable } from '../../ui/doc';
 import { Beat, Compare, LayerTrail, SpecLine } from '../../ui/beat';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { UsageSection } from '../../ui/Usage';
 import { tokens } from '../../lib/tokens';
 
 /* ─────────────────────────────────────────────────────────
@@ -123,6 +124,15 @@ export default function IconTilePage() {
         </Stage>
         <CodeScreen tabs={USAGE} />
       </section>
+
+      <UsageSection
+        agent={agentGuide}
+        example={`import { FolderIcon } from '@unlocalhosted/metalui/icons';
+
+<IconTile><FolderIcon /></IconTile>
+<IconTile led="failed">AC</IconTile>
+<IconTile size="hero" shape="round" look="raised"><FolderIcon /></IconTile>`}
+      />
 
       <Section id="details" title="Details">
         <div className="flex flex-col gap-56">
