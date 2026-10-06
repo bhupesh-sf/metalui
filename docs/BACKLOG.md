@@ -365,7 +365,7 @@ Building real screens shows what the components lack. Each was worked around ins
 
 ## Tests that fail only under a full parallel run
 
-- [ ] `xray-dialog-editing` "pulling the dialog up…" and `toast` (deck, undo) and `region`, `scroll-area`, `slider-states` focus ring, `spinner` (whole place, known or unknown), `toggle`, `tooltip`: each failed once in the 4-worker full run (2026-10-06) and passed alone. Also `drop-zone` (reduced motion), `memory-scrubber`, `progress` (Reduce Motion), `table` (sorts, graphite), in the 3-worker run that closed wave 2; all passed alone. Find the race in each (AGENTS.md: sample with rAF, poll), don't retry.
+- [ ] `xray-dialog-editing` "pulling the dialog up…" and `toast` (deck, undo) and `region`, `scroll-area`, `slider-states` focus ring, `spinner` (whole place, known or unknown), `toggle`, `tooltip`: each failed once in the 4-worker full run (2026-10-06) and passed alone. Also `drop-zone` (reduced motion), `memory-scrubber`, `progress` (Reduce Motion), `table` (sorts, graphite), in the 3-worker run that closed wave 2; all passed alone. Wave 3's run added `cue` (reduced motion tick), `fan` (graphite), `icon-turn`, `icons` (acts from keys), `scroll-area` (bar leaves), `table-should` captures: all passed alone. Find the race in each (AGENTS.md: sample with rAF, poll), don't retry.
 
 ## Variation sheets: existing components
 
