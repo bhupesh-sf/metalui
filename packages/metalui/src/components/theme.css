@@ -1970,6 +1970,9 @@
 @utility opacity-combobox-max-rows {
   opacity: var(--mu-r-combobox-self-max-rows);
 }
+@utility opacity-autocomplete-limit {
+  opacity: var(--mu-r-autocomplete-self-limit);
+}
 @utility form-field-side {
   container: form-field / inline-size;
 }

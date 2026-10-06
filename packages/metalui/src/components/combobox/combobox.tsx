@@ -87,13 +87,16 @@ const CAP_CHEVRON = 'mu-combobox-chevron flex-none text-ink2';
 
 const cx = (...parts: (string | false | undefined)[]) => parts.filter(Boolean).join(' ');
 
-function offset() {
+/** Combobox's drawing, shared with Autocomplete: the well, the plate, its rows, labels and quiet line. */
+export const comboboxParts = { GROUP, SIZE, INPUT, POSITIONER, POP, SCROLL, LIST, LABEL, ROW, DETAIL, LEAD, TEXT, DESC, TRY, QUIET } as const;
+
+export function comboboxOffset() {
   if (typeof window === 'undefined') return 6;
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-menu-offset')) || 6;
 }
 
 /** The plate's height follows its content on the settle spring. */
-function Fit({ children }: { children: React.ReactNode }) {
+export function ComboboxFit({ children }: { children: React.ReactNode }) {
   const inner = React.useRef<HTMLDivElement>(null);
   const [height, setHeight] = React.useState<number>();
   useIsoLayoutEffect(() => {
@@ -207,7 +210,7 @@ const toItem = <V extends string>(i: ComboboxItem<V> | V): ComboboxItem<V> => (t
 const fold = (s: string) => s.toLocaleLowerCase();
 
 /** The label with the typed letters in ink and the rest in ink2. */
-function Matched({ label, query }: { label: string; query: string }) {
+export function ComboboxMatched({ label, query }: { label: string; query: string }) {
   const at = query ? fold(label).indexOf(fold(query)) : -1;
   if (at < 0) return <>{label}</>;
   // ponytail: assumes lower-casing keeps lengths (true outside a few scripts, e.g. Turkish İ)
@@ -222,7 +225,8 @@ function Matched({ label, query }: { label: string; query: string }) {
 
 const isParts = (icon: GlyphParts | React.ReactElement | undefined): icon is GlyphParts => !!icon && 'glyph' in icon && 'morph' in icon;
 
-function Glyph({ icon }: { icon: GlyphParts | React.ReactElement }) {
+/** An item's glyph: its parts drawn as a glyph, or the element as it is. */
+export function ComboboxGlyph({ icon }: { icon: GlyphParts | React.ReactElement }) {
   return isParts(icon) ? <GlyphIcon glyph={icon.glyph} /> : icon;
 }
 
@@ -241,9 +245,9 @@ function Option({ row, query }: { row: ViewRow; query: string }) {
       // Create, commands and Try again run instead of choosing.
       onClick={row.run ? (e) => { e.preventBaseUIHandler(); row.run?.(); } : undefined}
     >
-      {lead && <Row.Lead aria-hidden className={LEAD}><Glyph icon={lead} /></Row.Lead>}
+      {lead && <Row.Lead aria-hidden className={LEAD}><ComboboxGlyph icon={lead} /></Row.Lead>}
       <Row.Text className={TEXT}>
-        <span className={menuParts.LABEL}>{row.kind === 'item' ? <Matched label={row.label} query={query} /> : row.label}</span>
+        <span className={menuParts.LABEL}>{row.kind === 'item' ? <ComboboxMatched label={row.label} query={query} /> : row.label}</span>
         {row.description && <span className={DESC}>{row.description}</span>}
       </Row.Text>
       {row.kind === 'retry' && <Row.Trail className={TRY}>Try again</Row.Trail>}
@@ -398,7 +402,7 @@ export function Combobox<V extends string = string>(props: ComboboxProps<V>) {
   const plate = (
     <BaseCombobox.Portal>
       <InheritColorway anchor={at} />
-      <BaseCombobox.Positioner className={POSITIONER} sideOffset={offset()} align="start" collisionPadding={8}>
+      <BaseCombobox.Positioner className={POSITIONER} sideOffset={comboboxOffset()} align="start" collisionPadding={8}>
         <BaseCombobox.Popup className={cx(POP, button ? 'combobox-pop-button' : 'combobox-pop-width')} aria-busy={wait.busy || undefined}>
           {button && (
             <div className={cx(GROUP, SIZE.regular, 'mu-combobox-search mb-menu-pad')}>
@@ -407,7 +411,7 @@ export function Combobox<V extends string = string>(props: ComboboxProps<V>) {
               <Field.Trail>{ring || <Field.Key label="Clear" icon={<CloseIcon />} shown={query.length > 0} onClick={() => setQuery('')} />}</Field.Trail>
             </div>
           )}
-          <Fit>
+          <ComboboxFit>
             <div className={SCROLL} data-waiting={wait.showing && matched ? '' : undefined}>
               <ListGlide />
               {quiet && <div role="status" className={QUIET}>{quiet}</div>}
@@ -424,7 +428,7 @@ export function Combobox<V extends string = string>(props: ComboboxProps<V>) {
                 )}
               </BaseCombobox.List>
             </div>
-          </Fit>
+          </ComboboxFit>
         </BaseCombobox.Popup>
       </BaseCombobox.Positioner>
     </BaseCombobox.Portal>
@@ -460,7 +464,7 @@ export function Combobox<V extends string = string>(props: ComboboxProps<V>) {
     return (
       <BaseCombobox.Root<string, boolean, ViewRow> multiple={multiple} {...root}>
         <BaseCombobox.Trigger ref={at.ref} className={cap} aria-label={props['aria-label']} data-invalid={invalid ? '' : undefined}>
-          {pick?.icon && <span aria-hidden className={LEAD}><Glyph icon={pick.icon} /></span>}
+          {pick?.icon && <span aria-hidden className={LEAD}><ComboboxGlyph icon={pick.icon} /></span>}
           <span className={cx(CAP_TEXT, !said && CAP_HINT)}>{said || placeholder}</span>
           <span aria-hidden className={CAP_CHEVRON}>{chevron}</span>
         </BaseCombobox.Trigger>

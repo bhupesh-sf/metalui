@@ -264,6 +264,34 @@
       "docs": "Agent guide: https://metalui.dev/r/attachment.md. SwiftUI: MetalAttachment in the MetalUI Swift package."
     },
     {
+      "name": "autocomplete",
+      "type": "registry:ui",
+      "title": "Autocomplete",
+      "description": "Free text with suggestions: the text is the value, and the list only helps finish it. Combobox's well, frosted plate and rows; suggestions that start with what you typed come first, and the rest of the best match is drawn after the caret, where Tab or → takes it. Nothing matched closes the plate; a search you run has Combobox's loading and failed rows; recent searches before typing.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/combobox.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/row.json",
+        "https://metalui.dev/r/spinner.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/autocomplete/autocomplete.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/autocomplete/autocomplete.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/autocomplete.md. SwiftUI: MetalAutocomplete in the MetalUI Swift package."
+    },
+    {
       "name": "avatar",
       "type": "registry:ui",
       "title": "Avatar",

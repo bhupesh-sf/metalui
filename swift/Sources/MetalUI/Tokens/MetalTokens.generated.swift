@@ -1097,6 +1097,17 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Free text with suggestions: the text is the value, and the list only helps finish it. Everything drawn is Combobox's (the field well and its keys in large, regular or compact; the menu's frosted plate with its gliding highlight; detail rows; sticky group labels; the matched letters; the plate's height settling; the loading ring and the failed row). Suggestions that start with the text come first, at most `self.limit` of them; nothing matched closes the plate. The rest of the best match is drawn after the caret in ink3, in the input's own type; Tab or the right arrow at the end takes it. Reduce Motion: the height snaps; the fades stay. (the combobox recipe and its exported parts (comboboxParts, ComboboxFit, ComboboxMatched, ComboboxGlyph); the field and menu recipes; Base UI Autocomplete)
+    public static let autocomplete = MetalObjectRecipe(
+        name: "autocomplete",
+        layers: [
+
+        ],
+        props: [
+            "self.limit": .text("8"),
+        ]
+    )
+
     /// A control with its words: a label above (ui type, ink), an optional description below (meta type, ink3), and an error that says why a value is not accepted (meta type, red). The label, description and error are tied to the control for assistive tech, and the field's invalid and disabled states reach every control inside. The error comes out from under the control: its row grows open on the settle spring as it fades in, so the layout below moves rather than jumps; it leaves on the release spring. A fieldset groups fields under a legend; a form validates every field when it is submitted, moves focus to the first one that is not accepted, and takes errors back from a server by field name. Errors come at the right moment: a field checks when you leave it (or on submit) and its error goes the moment you change the value. Side by side (horizontal), the label sits in a 136 column, end-aligned and on the control's baseline, 16 from it, with the description, readback and error under the control; when the field is narrower than 400 it stacks like a vertical one. Mark the minority: "Optional" in ink3 after the label when most fields are required, or a 4 required dot in ink2, lifted 5 off the baseline, when most are optional; never both, 6 from the label. Changed: a 6 engraved dot (the engraved ink with its lip) hangs 6 before the label, its centre on the label's first line, for a value changed since it was saved; it pops in from 40 % on the settle spring and leaves on the release spring. The readback is a line under the control in the readout type, ink2, saying what was understood; its text turns on the drum and its row grows open and closes like the error's. Reduce Motion: the rows snap and the marks fade without the pop; the fades stay. (Base UI Field and Fieldset; the invalid foundation; the settle and release springs)
     public static let formField = MetalObjectRecipe(
         name: "form-field",
