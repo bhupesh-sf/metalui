@@ -64,6 +64,7 @@ export const routes: RouteObject[] = [
       { path: 'components/code-block', lazy: lazy(() => import('../pages/components/CodeBlock')) },
       { path: 'components/meter', lazy: lazy(() => import('../pages/components/Meter')) },
       { path: 'components/rating', lazy: lazy(() => import('../pages/components/Rating')) },
+      { path: 'components/signature-pad', lazy: lazy(() => import('../pages/components/SignaturePad')) },
       { path: 'components/sheet', lazy: lazy(() => import('../pages/components/Sheet')) },
       { path: 'components/scroll-area', lazy: lazy(() => import('../pages/components/ScrollArea')) },
       { path: 'components/checkbox-group', lazy: lazy(() => import('../pages/components/CheckboxGroup')) },

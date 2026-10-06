@@ -38,7 +38,7 @@ Read for jobs: ReUI Signature Pad, `signature_pad` (szimek), `react-signature-ca
 | Export PNG or JPEG (ReUI) | older back ends | `signatureToImage(value, { type, scale, background })` → a Blob, drawn straight onto a canvas (typed names keep the page's font) | Should |
 | Stylus palm rejection | a tablet with a pen | once a pen has touched the pad, touches are ignored until the pad is cleared; a second pointer never inks while one is drawing | Should |
 | Show a signature already given (proof of delivery) | a receipt, a delivery record | `readOnly` with `defaultValue`: the mark on the paper, no keys, no hint; one image "Signature, drawn" | Should |
-| Initials per clause | contracts | `size="compact"`: a short well (88) with the same keys; one per clause on the agreement card | Should |
+| Initials per clause | contracts | `size="compact"`: a short well (88) whose keys are glyphs (Type, Undo, Clear as the eraser; Redo by keyboard), so it fits a 160 column; one per clause on the agreement card | Should |
 | In a dialog | "Adopt your signature" | covered: the pad in `Dialog`, sized by its container; the page shows it on an agreement card, which is the common case | covered |
 | Disabled | a form not yet open | `disabled`: 40 %, no ink, keys disabled | Must |
 | Reduce Motion | every lift and hint | the settle swaps at once (no cross-fade); the hint hides at once | Must |
@@ -61,19 +61,21 @@ Read for jobs: ReUI Signature Pad, `signature_pad` (szimek), `react-signature-ca
 - **Export ink.** Dark ink on transparent (or `background`), whatever the colorway on screen: a signature on a document is dark ink on paper.
 
 **Must**
-- [ ] React: `SignaturePad` (`defaultValue`, `onValueChange`, `mode` / `defaultMode` / `onModeChange`, `sizing`, `minWidth`, `maxWidth`, `name`, `required`, `disabled`, `readOnly`, `size`, `hint`, `aria-label`), inside `FormField` for its words and errors.
-- [ ] The paper: field well, engraved baseline and "Sign here"; ink in the text's ink; strokes that settle on lift; width from pressure or speed.
-- [ ] Undo, Redo, Clear (one history; keys and shortcuts); Type instead (the keyboard path).
-- [ ] `signatureToSvg`; the form posts SVG; strokes JSON in the value.
-- [ ] SwiftUI `MetalSignaturePad` (a Canvas with a DragGesture, width from speed, the settle, typed mode, Undo, Clear).
-- [ ] Recipe `signature-pad`, agent guide, meta.json, the page with its DialKit panel (in a form, on an agreement card), the e2e slice.
+- [x] React: `SignaturePad` (`defaultValue`, `onValueChange`, `mode` / `defaultMode` / `onModeChange`, `sizing`, `minWidth`, `maxWidth`, `name`, `required`, `disabled`, `readOnly`, `size`, `hint`, `aria-label`), inside `FormField` for its words and errors.
+- [x] The paper: field well, engraved baseline and "Sign here"; ink in the text's ink; strokes that settle on lift; width from pressure or speed.
+- [x] Undo, Redo, Clear (one history; keys and shortcuts); Type instead (the keyboard path).
+- [x] `signatureToSvg`; the form posts SVG; strokes JSON in the value.
+- [x] SwiftUI `MetalSignaturePad` (a Canvas with a DragGesture, width from speed, the settle, typed mode, Undo, Clear).
+- [x] Recipe `signature-pad`, agent guide, meta.json, the page with its DialKit panel (in a form, on an agreement card), the e2e slice.
 
 **Should**
-- [ ] `signatureToImage` (PNG, JPEG).
-- [ ] Palm rejection.
-- [ ] `readOnly` (proof of delivery); `size="compact"` (initials per clause).
+- [x] `signatureToImage` (PNG, JPEG).
+- [x] Palm rejection.
+- [x] `readOnly` (proof of delivery); `size="compact"` (initials per clause).
 
 **Later**
 - [ ] Upload a picture of a signature.
 - [ ] Time in the strokes, for replay.
 - [ ] SwiftUI pressure (PencilKit is iOS only, and the package builds for macOS only today).
+
+- Done (2026-10-06): Must and Should. The paper wears the invalid ring while the form refuses it. Compact pads (initials in a 160 column) take glyph keys: text or pen, Undo, Clear as the eraser; Redo is the keyboard's there. SwiftUI: width from speed only (its drag has no pressure), "Type instead" is a compact cap (the link cap is web-only), the typed name exports as SVG text in a generic sans, and no palm rejection (one drag at a time). Left: the Later tier; no x-ray card.
