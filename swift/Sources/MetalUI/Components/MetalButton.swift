@@ -244,7 +244,8 @@ public struct MetalButton<Icon: View>: View {
         let button = Button(action: { if holds { tapped() } else if state == .ready { action() } }) {
             HStack(spacing: recipe.points(compact ? "compact.gap" : "self.gap")) {
                 if let icon { MetalButtonWaitSlot(glyph: icon, size: glyph) }
-                Text(title)
+                // A changed title turns on the drum when the change is animated (Copy → Copied); in place under Reduce Motion.
+                Text(title).contentTransition(reduceMotion ? .opacity : .numericText())
             }
         }
         .buttonStyle(MetalButtonStyle(cap: cap, size: size))

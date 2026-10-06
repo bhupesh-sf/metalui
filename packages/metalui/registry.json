@@ -2147,6 +2147,7 @@
         "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/icon-button.json",
         "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/rule.json",
         "https://metalui.dev/r/tokens.json",
         "https://metalui.dev/r/well.json"
@@ -2776,7 +2777,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/colorway.json",
-        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/icon-morph.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/popover.json",
         "https://metalui.dev/r/quick-edit.json",

@@ -114,7 +114,7 @@ public struct MetalQuickEdit: View {
                 Spacer(minLength: .zero)
                 MetalButton("Cancel", action: onClose).disabled(phase == .saving)
                 MetalButton(word, cap: .primary, action: commit) {
-                    MetalIcon(glyph, size: MetalRecipes.button.points("self.glyph")).id(glyph).transition(.opacity)
+                    MetalIcon(glyph, size: MetalRecipes.button.points("self.glyph"))
                 }
                 .metalButtonState(phase == .saving ? .waiting : phase == .done ? .done : .ready)
                 .disabled(!settled && !fresh)

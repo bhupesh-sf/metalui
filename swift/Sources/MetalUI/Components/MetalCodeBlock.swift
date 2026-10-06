@@ -211,6 +211,7 @@ public struct MetalCodeBlock: View {
         MetalIconButton(name, action: copy) {
             MetalIcon(copied ? .check : .copy, size: MetalRecipes.iconButton.points("ghost.glyph"))
                 .contentTransition(.symbolEffect(.replace))
+                .metalAnimation(.settle, value: copied)
         }
         .disabled(streaming)
     }
