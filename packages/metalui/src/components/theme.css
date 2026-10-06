@@ -589,6 +589,9 @@
   --spacing-combobox-button-min-width: var(--mu-r-combobox-button-min-width);
   --spacing-combobox-button-max-width: var(--mu-r-combobox-button-max-width);
   --spacing-combobox-button-plate: var(--mu-r-combobox-button-plate);
+  --spacing-cascader-min-width: var(--mu-r-cascader-self-min-width);
+  --spacing-cascader-column-width: var(--mu-r-cascader-column-width);
+  --spacing-cascader-path-gap: var(--mu-r-cascader-path-gap);
   --spacing-form-field-gap: var(--mu-r-form-field-self-gap);
   --spacing-form-field-fieldset-gap: var(--mu-r-form-field-self-fieldset-gap);
   --spacing-form-field-legend-gap: var(--mu-r-form-field-self-legend-gap);
@@ -2123,6 +2126,36 @@
 }
 @utility opacity-autocomplete-limit {
   opacity: var(--mu-r-autocomplete-self-limit);
+}
+@utility cascader-pop {
+  min-width: var(--anchor-width); max-width: var(--available-width);
+}
+@utility cascader-drill {
+  width: max(var(--anchor-width), var(--mu-r-cascader-column-width)); & .mu-cascader-column { width: 100%; }
+}
+@utility cascader-columns {
+  display: flex; align-items: stretch; overflow-x: auto; overscroll-behavior: contain; scrollbar-width: none;
+}
+@utility cascader-column {
+  position: relative; flex: none; width: var(--mu-r-cascader-column-width); max-height: calc(var(--mu-r-cascader-self-max-rows) * var(--mu-r-menu-row-height)); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; &:last-child { flex-grow: 1; }
+}
+@utility cascader-divide {
+  flex: none; align-self: stretch; width: var(--mu-r-menu-sep-thickness); margin-inline: var(--mu-r-menu-sep-inset-y);
+}
+@utility cascader-in {
+  animation: mu-cascader-in var(--mu-spring-settle-d) var(--mu-spring-settle) both;
+}
+@utility cascader-back {
+  animation: mu-cascader-back var(--mu-spring-settle-d) var(--mu-spring-settle) both;
+}
+@utility cascader-path {
+  display: flex; align-items: center; gap: var(--mu-r-cascader-path-gap); min-width: 0; overflow: hidden; white-space: nowrap; & > * { flex: none; } & > .mu-cascader-crumb { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+}
+@utility opacity-cascader-max-rows {
+  opacity: var(--mu-r-cascader-self-max-rows);
+}
+@utility stroke-width-cascader-column-width {
+  stroke-width: var(--mu-r-cascader-column-width);
 }
 @utility form-field-side {
   container: form-field / inline-size;
@@ -4059,6 +4092,12 @@
 }
 @keyframes mu-spinner-creep {
   from { scale: 0 1; } to { scale: var(--mu-r-spinner-bar-reach) 1; }
+}
+@keyframes mu-cascader-in {
+  from { opacity: 0; translate: calc(var(--mu-motion-step) * var(--mu-travel-settle)) 0; } to { opacity: 1; translate: 0 0; }
+}
+@keyframes mu-cascader-back {
+  from { opacity: 0; translate: calc(var(--mu-motion-step) * var(--mu-travel-settle) * -1) 0; } to { opacity: 1; translate: 0 0; }
 }
 @keyframes mu-skeleton-arrive {
   from { opacity: 0; } to { opacity: 1; }
