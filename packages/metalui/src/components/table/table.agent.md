@@ -9,6 +9,8 @@ Rows of a person's things, read across and compared down. React: `Table` (and `T
 - Grouped (issues by status, payments by day): `groupBy` with counts and subtotals.
 - A comparison matrix (plans × features, roles × permissions): `rowHeader`, `pin: 'start'`, `yes` and `check` cells.
 - A live log (CI output, audit log, events): `live`, a level as `status`, time as `date` `format: 'time'`, ids as `code`.
+- A hierarchy with columns (folders with sizes, a chart of accounts, an org with roles): `childRows`. Without columns to compare, use `Tree`.
+- Very long lists (logs, sign-ins, a big export): `virtual`, with `hasMore` and `loadMore` for a feed that loads as you reach its end.
 
 ## Don't use it for
 
@@ -26,6 +28,9 @@ Rows of a person's things, read across and compared down. React: `Table` (and `T
 - Group header (`groupBy`): a 32 row on opaque frost, sticky under the head: a chevron, the name (engraved) and the count, then each totals column's subtotal.
 - Pinned column (`pin: 'start'` on the first column): opaque frost; with selection or detail keys, those lead cells pin with it. The frame scrolls sideways; the caption stays put.
 - Detail key (`expandRow`): a ghost chevron key in a lead column; the panel is a sunk well (radius 12, padding 12) inset 8 under its row.
+- Hierarchy (`childRows`): the primary cell starts with `Tree.Guides` (an engraved groove per ancestor, the tree's size for the density: roomy large, regular, compact) and `Tree.Disclosure` as a key (a leaf keeps the empty column), 4 before the name.
+- Virtual (`virtual`): only the rows in view, and 320 above and below, are in the page, between two spacer rows as tall as the rows they stand for (measured as they show; unseen rows are guessed at the mean).
+- Loading more (`hasMore`, `loadMore`): a skeleton row in the columns' shapes at the end; it loads when it comes within 240 of view.
 - Columns key (`columnsMenu`): a ghost `eye` key at the caption's end opening a `Menu` of checkbox rows (the primary column can't hide). Resize grips (`resizable`): the hairline at a header's end.
 
 ## Cell kinds
@@ -74,9 +79,17 @@ Real minus signs everywhere. Numbers are never red alone: a sign or a glyph carr
 | live, scrolled away | rows wait; "N new" key under the head (the count on the drum) | the key rises from a nest above (settle); pressing it scrolls to the top (smooth) and the rows land; coming back to the top does too |
 | detail open | a sunk panel under the row, chevron down | the panel is revealed from its top edge (settle) while the rows below travel down in step; closing, the rows travel up |
 | column sizing | the hairline thickens to a 3 grip | grip on the part spring under the pointer, focus or drag; the column follows the pointer one to one |
+| row opened (hierarchy) | chevron down; its children a level deeper, sorted among themselves | chevron turns a quarter on the part spring; children land from one nest above (object); the rows below travel (settle) |
+| row closed | chevron along | its children leave one nest down (release), then the rows below close the gap |
+| level loading | the row stays; the ring in the chevron's slot after the show delay (`useWait`) | nothing for a fast load; the children land when they come |
+| level failed | the row closes; `sync-error` in the slot; "Couldn't load · Try again" under the name | opening it again retries |
+| opened, empty | one "Empty" row in ink3 at the children's level | it lands |
+| virtual, scrolling | rows come and go at the window's edges; the head stays | none: rows that stay don't move |
+| loading more | a skeleton row at the end; the table is `aria-busy` | the skeleton's own sheen |
+| more failed | the end row says "Couldn't load more." with Try again | – |
 | narrow | under 720 priority 3 columns leave, under 560 priority 2 (and the side padding narrows to 8); their values join a line under the primary cell, each after its header in ink3 | – |
 
-Reduce Motion: rows jump to their places, land and open at once; the arrow, the chevrons and the guide change at once.
+Reduce Motion: rows jump to their places, land, open and leave at once; the arrow, the chevrons and the guide change at once.
 
 ## API
 
@@ -100,11 +113,16 @@ Reduce Motion: rows jump to their places, land and open at once; the arrow, the 
 | `live` | `live:` |
 | `expandRow` | `detail:` (returns `AnyView`) |
 | `columnsMenu`, `resizable`, `columnsState`, `defaultColumnsState`, `onColumnsChange` | `columnsState:` binding (`MetalTableColumnsState`), `columnsMenu:`, `resizable:` |
+| `childRows`, `hasChildRows`, `loadChildRows`, `expandedRows`, `defaultExpandedRows`, `onExpandedRowsChange` | `children:`, `hasChildren:`, `loadChildren:` (async throws), `expandedRows:` binding |
+| `virtual` | lazy rows in a `maxHeight` table (always) |
+| `hasMore`, `loadMore` (a promise) | `hasMore:`, `loadMore:` (async throws) |
 
 ## Patterns
 
 - **Many rows at once**: `selected` plus a `ToolStrip` over the list with its `count` on the drum ("3 selected", `SwapText`), destructive verb last, × to clear. The table doesn't own the strip.
-- **Pages**: `Pagination` under the table for records (sort across all pages on the host, show one page); a "Load more" `Button` for feeds. No infinite scroll until virtual rows.
+- **Pages**: `Pagination` under the table for records (sort across all pages on the host, show one page); a feed scrolls on: `virtual`, `maxHeight`, `hasMore` and `loadMore` (resolve after adding the rows; reject to show Try again). A "Load more" `Button` still suits a short feed.
+- **A hierarchy**: `rows` are the top rows; `childRows(row)` gives a row's children (undefined for a leaf, [] for an empty branch). A level that loads: `hasChildRows` true and `childRows` undefined until `loadChildRows(row)` resolves. Sort, selection (select-all takes the rows that show) and `onRowAction` reach every level; totals and groups count the top rows.
+- **Thousands of rows**: `virtual` with `maxHeight` (or the page scrolls it). Every feature keeps working except `groupBy` (a grouped table is never virtual). Keep `rows` and `columns` stable (memoised) so a scroll doesn't rebuild them.
 - **Details**: open a row (`onRowAction`), mark it `opened`, and show its fields as `Properties` with `TableCell` values. For a little more without leaving the list, `expandRow` (a `Properties` in the panel reads well).
 - **Totals**: give each summable column `total: 'sum'` (or `'mean'`, or a function); a column with a total should keep priority 1 (a leaving total joins the line under the label). Groups show the same totals as subtotals.
 - **A permissions matrix**: rows are permissions (`rowHeader`), one `check` column per role with `onCheckedChange`; a role that always has it gets no handler (read-only); null where it can't apply.
@@ -115,7 +133,10 @@ Reduce Motion: rows jump to their places, land and open at once; the arrow, the 
 ## Keyboard and accessibility
 
 - A real `table` with a caption and column headers; a sortable header says `aria-sort` and its button is in the tab order. Row checkboxes are named "Select Lisbon"; select-all is mixed when some are chosen.
-- With `onRowAction`, the primary cell is a button: Tab reaches it, ↩ or a click anywhere on the row opens, ↑ ↓ move between rows. The keys at the row's end are their own buttons ("More for Lisbon", "Copy INV-2045").
+- With `onRowAction`, the primary cell is a button: Tab reaches it, ↩ or a click anywhere on the row opens, ↑ ↓ move between rows.
+- Hierarchy: the disclosure is a button "Rows under <row>" with `aria-expanded`; on it or the open button, → opens the row (or goes to its first child) and ← closes it (or goes to its parent); ↑ ↓ move between rows (to the disclosure of a row without an open button). Closing a row that holds focus brings focus to it. The table stays a `table` (not a `treegrid`): cells aren't a grid you walk.
+- Virtual: the table says `aria-rowcount` (−1 while more can load) and each row its `aria-rowindex`; ↑ ↓ scroll the next row in and focus it; the row holding focus stays in the page while you scroll away.
+- Loading more: the skeleton row is hidden from assistive tech; the table is `aria-busy` while the next rows come. The keys at the row's end are their own buttons ("More for Lisbon", "Copy INV-2045").
 - Meters and trends are named by their column; a yes/no cell says Yes or No; an empty cell says none.
 - While loading, the table is `aria-busy`.
 - Group headers are `<th scope="rowgroup">` holding a button with `aria-expanded`; each group is its own `<tbody>`.
@@ -131,6 +152,8 @@ Reduce Motion: rows jump to their places, land and open at once; the arrow, the 
 - Sort only columns where order means something.
 - Give every column but the name a `priority` when the table can get narrow; never scroll records sideways (a matrix with `pin` may).
 - Never push a reader: live rows wait while you're scrolled away.
+- A hierarchy's name column comes first or is `primary`: the indent belongs to the row's name, not to a figure.
+- Reach for `virtual` past a few hundred rows; below that, the whole list is cheaper than the window's bookkeeping.
 
 ## SwiftUI differences
 
@@ -138,3 +161,6 @@ Reduce Motion: rows jump to their places, land and open at once; the arrow, the 
 - Pinned: only the first column and the lead cells hold; the sideways scroll is a `ScrollView`, so the caption stays above it.
 - The columns menu is the system menu with toggles; resizing is a drag (and the adjustable action), with the resize cursor on macOS.
 - Live rows land with an insertion transition (one nest above, object spring); the rest move with SwiftUI's layout animation.
+- Virtual: a `maxHeight` table is always lazy (a `LazyVStack`); without `maxHeight` every row is built. Column widths are measured from the rows built so far.
+- Hierarchy: the disclosure is the tree's chevron in the indent (the same `MetalTreeDisclosure` the tree draws); there are no ← → keys on the table (the chevron, and the row's Expand and Collapse actions for VoiceOver).
+- Loading more: the skeleton row's `onAppear` calls `loadMore`.

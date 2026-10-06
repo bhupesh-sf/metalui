@@ -551,4 +551,4 @@ function TreeRow({ rowRef, id, row, lit, tabbable, selectable, selected, opened,
 }
 
 /** The tree, with its pieces for other rows at a level (Table's hierarchy, the Cascader): Tree.Guides, Tree.Disclosure. */
-export const Tree = Object.assign(TreeRoot, { Root: TreeRoot, Guides: TreeGuides, Disclosure: TreeDisclosure });
+export const Tree = /* @__PURE__ */ Object.assign(TreeRoot, { Root: TreeRoot, Guides: TreeGuides, Disclosure: TreeDisclosure });

@@ -514,6 +514,144 @@ function Columns() {
   );
 }
 
+/* HIERARCHY: a project's files. Folders open in place (Tree's guides and chevron in the name cell);
+ * Archive's level loads when opened (and fails once when the Table rows panel says so). */
+interface FileRow { id: string; name: string; kind: string; size: number | null; modified: Date; children?: FileRow[]; lazy?: boolean }
+const file = (id: string, name: string, kind: string, size: number, minutes: number): FileRow => ({ id, name, kind, size, modified: ago(minutes) });
+const folder = (id: string, name: string, children: FileRow[] | undefined, minutes: number, lazy?: boolean): FileRow => ({
+  id, name, kind: 'Folder', size: children ? Math.round(children.reduce((n, c) => n + (c.size ?? 0), 0) * 10) / 10 : null, modified: ago(minutes), children, lazy,
+});
+const FILES: FileRow[] = [
+  folder('brief', 'Brief', [file('brief/goals', 'Goals.md', 'Text', 0.1, 90), file('brief/audience', 'Audience.md', 'Text', 0.2, 300), file('brief/budget', 'Budget.xlsx', 'Sheet', 1.4, 2900)], 90),
+  folder('design', 'Design', [
+    folder('design/screens', 'Screens', [file('design/screens/home', 'Home.fig', 'Design', 18.2, 40), file('design/screens/search', 'Search.fig', 'Design', 12.6, 220), file('design/screens/settings', 'Settings.fig', 'Design', 9.8, 1500)], 40),
+    folder('design/drafts', 'Drafts', [], 6000),
+    file('design/tokens', 'Tokens.json', 'Data', 0.3, 700),
+  ], 40),
+  folder('archive', 'Archive', undefined, 20000, true),
+  file('readme', 'Readme.md', 'Text', 0.1, 9000),
+];
+const FILE_COLUMNS: TableColumn<FileRow>[] = [
+  { key: 'name', header: 'Name', sortable: true },
+  { key: 'kind', header: 'Kind', priority: 3 },
+  { key: 'size', header: 'Size', kind: 'number', unit: 'MB', digits: 1, sortable: true },
+  { key: 'modified', header: 'Modified', kind: 'date', sortable: true, priority: 2 },
+];
+const ARCHIVE = [file('archive/2024', 'Report 2024.pdf', 'PDF', 4.1, 300000), file('archive/2025', 'Report 2025.pdf', 'PDF', 5.3, 50000)];
+
+function Hierarchy({ delay, fails }: { delay: number; fails: boolean }) {
+  const [archive, setArchive] = React.useState<FileRow[] | undefined>(undefined);
+  const [opened, setOpened] = React.useState<string | null>(null);
+  const failed = React.useRef(false);
+  const rows = React.useMemo(() => FILES.map((f) => (f.id === 'archive' ? { ...f, children: archive } : f)), [archive]);
+  const load = async () => {
+    await new Promise((r) => setTimeout(r, delay));
+    if (fails && !failed.current) { failed.current = true; throw new Error('offline'); }
+    setArchive(ARCHIVE);
+  };
+  return (
+    <div data-testid="table-tree" className="w-full max-w-[720px]">
+      <Table
+        caption="Project files"
+        columns={FILE_COLUMNS}
+        rows={rows}
+        rowKey={(f) => f.id}
+        childRows={(f) => f.children}
+        hasChildRows={(f) => !!f.lazy}
+        loadChildRows={load}
+        defaultExpandedRows={['design']}
+        onRowAction={(f) => setOpened(f.id)}
+        opened={opened}
+        defaultSort={{ key: 'name', direction: 'ascending' }}
+        now={NOW}
+      />
+    </div>
+  );
+}
+
+/* VIRTUAL: ten thousand sign-ins. Only the rows in view are in the page; the readout counts them. */
+interface Signin { id: string; who: string; place: string; status: TableStatus; at: Date; ms: number }
+const PLACES = ['Lisbon', 'Osaka', 'Berlin', 'Austin', 'Nairobi', 'Lima', 'Oslo', 'Pune'];
+const signin = (i: number): Signin => ({
+  id: `S-${String(i + 1).padStart(5, '0')}`,
+  who: `${PEOPLE[i % PEOPLE.length].name}`,
+  place: PLACES[(i * 5) % PLACES.length],
+  status: STATES[(i * 7) % 13 % 3],
+  at: ago(i * 3 + ((i * 7) % 3)),
+  ms: 80 + ((i * 7919) % 900),
+});
+const SIGNIN_COLUMNS: TableColumn<Signin>[] = [
+  { key: 'id', header: 'Sign-in', sortable: true, detail: (s) => s.who },
+  { key: 'place', header: 'Place', priority: 2 },
+  { key: 'status', header: 'Result', kind: 'status', words: { live: 'Signed in', waiting: 'Challenged', failed: 'Refused' }, sortable: true },
+  { key: 'at', header: 'When', kind: 'date', sortable: true, priority: 3 },
+  { key: 'ms', header: 'Took', kind: 'number', unit: 'ms', sortable: true },
+];
+
+/** How many rows of the table below are in the page right now. */
+function InPage({ of, children }: { of: number; children: React.ReactNode }) {
+  const box = React.useRef<HTMLDivElement>(null);
+  const [count, setCount] = React.useState(0);
+  React.useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const read = () => setCount(el.querySelectorAll('tbody tr[data-key]').length);
+    read();
+    const watch = new MutationObserver(read);
+    watch.observe(el, { childList: true, subtree: true });
+    return () => watch.disconnect();
+  }, []);
+  return (
+    <div ref={box} className="grid w-full max-w-[720px] gap-8">
+      {children}
+      <p data-testid="table-in-page" className="m-0 type-meta tabular-nums text-ink3">{count} of {of.toLocaleString('en-US')} rows in the page</p>
+    </div>
+  );
+}
+
+function VirtualRows({ count }: { count: number }) {
+  const rows = React.useMemo(() => Array.from({ length: count }, (_, i) => signin(i)), [count]);
+  const [selected, setSelected] = React.useState(new Set<string>());
+  const [opened, setOpened] = React.useState<string | null>(null);
+  return (
+    <InPage of={count}>
+      <Table caption="Sign-ins" density="compact" virtual maxHeight={360} columns={SIGNIN_COLUMNS} rows={rows} rowKey={(s) => s.id}
+        selected={selected} onSelectedChange={setSelected} onRowAction={(s) => setOpened(s.id)} opened={opened} now={NOW} />
+    </InPage>
+  );
+}
+
+/* INFINITE: a feed of sign-ins that loads forty more as its end comes into view, up to four hundred. */
+function Infinite({ delay, fails }: { delay: number; fails: boolean }) {
+  const [rows, setRows] = React.useState(() => Array.from({ length: 40 }, (_, i) => signin(i)));
+  const loads = React.useRef(0);
+  const loadMore = async () => {
+    await new Promise((r) => setTimeout(r, delay));
+    if (fails && ++loads.current === 2) throw new Error('offline');
+    setRows((all) => [...all, ...Array.from({ length: 40 }, (_, i) => signin(all.length + i))]);
+  };
+  return (
+    <InPage of={rows.length}>
+      <Table caption="Sign-ins, as they load" density="compact" virtual maxHeight={360} columns={SIGNIN_COLUMNS} rows={rows} rowKey={(s) => s.id}
+        hasMore={rows.length < 400} loadMore={loadMore} now={NOW} />
+    </InPage>
+  );
+}
+
+/* ROWS PANEL: the page's second DialKit panel, for the hierarchy, virtual and infinite sections. count
+ * sets how many rows the virtual table holds, load how long a level or a page takes, fails makes the
+ * first Archive load and the second page fail (on by default, so the page shows how; Try again then works). */
+function useRowsDials() {
+  return useDialKit('Table rows', {
+    count: [10000, 1000, 50000],
+    load: [700, 0, 3000],
+    fails: true,
+  }, { id: 'table-rows' }); // one panel, read by the three sections
+}
+function HierarchySection() { const d = useRowsDials(); return <Hierarchy key={String(d.fails)} delay={d.load} fails={d.fails} />; }
+function VirtualSection() { const d = useRowsDials(); return <VirtualRows count={Math.round(d.count / 1000) * 1000} />; }
+function InfiniteSection() { const d = useRowsDials(); return <Infinite key={String(d.fails)} delay={d.load} fails={d.fails} />; }
+
 /* TABLE TUNER: the page's DialKit panel. spring is the one the guide and the rows ride (settle by
  * default), slow stretches it, density sets the rows' height. */
 function TableTuner() {
@@ -550,6 +688,9 @@ export default function TablePage() {
         { id: 'waiting', title: 'Waiting and empty, told apart', lede: 'Loading shows rows in the columns’ shapes; a refresh keeps the rows and dims them after a beat; no rows, nothing matching and a failure each say so, with the one thing to do next.', node: <States /> },
         { id: 'narrow', title: 'Narrow widths', lede: 'Drag the frame’s corner. Under 720 the third-priority columns leave, under 560 the second; their values move to a line under the customer. No sideways scrolling.', node: <Narrow /> },
         { id: 'many', title: 'Many rows', lede: 'In a scroll container the head stays, on frost, over the rows passing under it. A feed loads more at its end; records take pages.', node: <ManyRows /> },
+        { id: 'tree', title: 'Hierarchy', lede: 'Rows that hold rows: folders, accounts, an org. The name cell starts with the tree’s guides and chevron; → opens a row, ← closes it or goes to its parent. Children sort among themselves; a level can load when it is opened (Archive), and a failed load says so on the row (Archive’s first does). The Table rows panel sets how long a load takes and whether the first one fails.', node: <HierarchySection /> },
+        { id: 'virtual', title: 'Virtual rows', lede: 'Ten thousand rows, and only those in view are in the page (the line under it counts them). Sort, select, open with ↩ and walk with ↑ ↓: the window follows, the head stays, and the row holding focus is kept. The Table rows panel sets the count.', node: <VirtualSection /> },
+        { id: 'infinite', title: 'Infinite scroll', lede: 'A feed loads forty more as its end comes into view: a row in the columns’ shapes waits there while they come. A failed load (the second, here) says so in that row with Try again, and nothing else moves.', node: <InfiniteSection /> },
         { id: 'tune', title: 'Tune the motion', lede: 'The Table panel swaps the spring the reading guide and the sorted rows ride, stretches time, and sets the density.', node: <TableTuner /> },
       ]}
       usage={`<Table

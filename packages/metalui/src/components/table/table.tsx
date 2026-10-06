@@ -17,8 +17,9 @@ import { ArrowIcon, CheckIcon, ChevronIcon, EyeIcon, MoreIcon, SyncErrorIcon } f
 import { MorphPair } from '../../icons/MorphIcon';
 import { arrowMorph, checkMorph, copyMorph } from '../../icons/morph.generated';
 import { SwapText } from '../../motion/swap';
-import { useWait } from '../../motion/wait';
-import { useRowMotion, springOf } from '../../motion/rows';
+import { useWait, type WaitWork } from '../../motion/wait';
+import { useRowMotion, springOf, leaveRows } from '../../motion/rows';
+import { TreeGuides, TreeDisclosure, type TreeSize } from '../tree/tree';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 import { motionReduced } from '../../motion/reduced';
 
@@ -67,6 +68,15 @@ const ARROW_GLYPH = { arrow: arrowMorph };
  *   columns   `columnsMenu`: hide and show columns from a menu of checkboxes; `resizable`: drag the
  *             hairline at a header's end (it thickens to a grip on the part spring), ← → step it,
  *             a double-click or ↩ gives it back its own width; `onColumnsChange` keeps both
+ *   tree      `childRows`: the primary cell starts with Tree's guides and disclosure (Tree.Guides,
+ *             Tree.Disclosure at the density's tree size); → opens, ← closes or goes to the parent;
+ *             children land (object) and leave (release) with the rows' motion; a level that loads
+ *             waits in the chevron's slot (`loadChildRows`, useWait), a failed one says Try again
+ *   virtual   `virtual`: only the rows in view (and the overscan) are in the page, between two
+ *             spacer rows as tall as the rows they stand for, measured as they show; the row holding
+ *             focus stays drawn, and ↑ ↓ scroll the next one in
+ *   more      `hasMore` and `loadMore`: a skeleton row at the end calls loadMore as it comes within
+ *             the slop of view; a failed load is one row with Try again
  * Reduce Motion: rows jump to their places and land at once; the arrow, chevrons and guide change at once.
  * An object: it stands for a person's things.
  * ───────────────────────────────────────────────────────── */
@@ -147,6 +157,11 @@ export interface TableColumnsState {
   widths?: Record<string, number>;
 }
 
+/** A row in the order it shows: its level in the hierarchy (1 at the top), or an opened branch's empty line. */
+type Entry<Row> =
+  | { kind: 'row'; key: string; row: Row; level: number; parent: string | null; branch: boolean; open: boolean }
+  | { kind: 'empty'; key: string; level: number; parent: string };
+
 export interface TableProps<Row> {
   columns: TableColumn<Row>[];
   rows: Row[];
@@ -201,6 +216,22 @@ export interface TableProps<Row> {
   defaultColumnsState?: TableColumnsState;
   /** Hidden columns and dragged widths, for the host to keep. */
   onColumnsChange?: (state: TableColumnsState) => void;
+  /** Hierarchy (folders, accounts, an org): a row's children, shown under it, indented, when it is opened. */
+  childRows?: (row: Row) => Row[] | undefined;
+  /** A row whose children aren't loaded yet: opening it calls `loadChildRows`. */
+  hasChildRows?: (row: Row) => boolean;
+  /** Loads a level: make `childRows` return the row's children, then resolve. A rejection shows Try again. */
+  loadChildRows?: (row: Row) => Promise<void>;
+  /** The keys of the opened rows (hierarchy). */
+  expandedRows?: string[];
+  defaultExpandedRows?: string[];
+  onExpandedRowsChange?: (keys: string[]) => void;
+  /** Very long lists: only the rows in view are in the page. Scrolls in `maxHeight`, or with the page. Not with `groupBy`. */
+  virtual?: boolean;
+  /** Infinite scroll: there are more rows; a loading row at the end calls `loadMore` as it comes into view. */
+  hasMore?: boolean;
+  /** Adds the next rows to `rows`, then resolves. A rejection shows Try again. */
+  loadMore?: () => Promise<void>;
   className?: string;
 }
 
@@ -230,6 +261,8 @@ const PIN = 'table-pin';
 const RESIZE = 'mu-table-resize table-resize';
 const NEWS = 'mu-table-news table-news';
 const DETAIL_CELL = 'mu-table-detail-cell table-detail type-ui text-ink';
+const TREE_CELL = 'mu-table-tree table-tree';
+const BRANCH = 'mu-table-branch table-branch relative z-1';
 const SIZED = 'block overflow-hidden';
 const NUMERIC = new Set<TableKind>(['number', 'currency', 'percent', 'delta']);
 const LIFT = 'relative z-1';
@@ -539,12 +572,30 @@ function Body({ order, land, open = true, waiting, children }: { order: string; 
   return <tbody ref={ref} data-waiting={waiting ? '' : undefined} className="spinner-item">{children}</tbody>;
 }
 
+/** A hierarchy row's disclosure: Tree's chevron as a key, with its own wait clock (each loading level keeps its own time). */
+function Branch({ open, work, name, onToggle }: { open: boolean; work: WaitWork; name: string; onToggle: () => void }) {
+  const wait = useWait(work);
+  return (
+    <button type="button" data-stop className={BRANCH} aria-expanded={open} aria-label={`Rows under ${name}`} onClick={onToggle}>
+      <TreeDisclosure open={open} phase={wait.phase} failed={work === 'failed'} label={`Loading ${name}`} />
+    </button>
+  );
+}
+
+/** The first index whose offset lies past `y` (offsets ascend). */
+function firstAbove(offsets: Float64Array, y: number) {
+  let lo = 0, hi = offsets.length;
+  while (lo < hi) { const mid = (lo + hi) >> 1; if (offsets[mid] > y) hi = mid; else lo = mid + 1; }
+  return lo;
+}
+
 /** Rows of things: kinds of cells, sort, selection, open, actions, and every way of having none. */
 export function Table<Row>({
   columns, rows, rowKey, caption, captionHidden, density = 'regular', sort, defaultSort = null, onSortChange,
   selected, onSelectedChange, rowLabel, onRowAction, opened, filter, loading, loadingRows = 5, error, empty = 'Nothing here yet.',
   emptyFiltered = 'Nothing matches.', maxHeight, now, footer = 'Total', groupBy, defaultCollapsed, live, expandRow,
-  columnsMenu, resizable, columnsState, defaultColumnsState, onColumnsChange, className,
+  columnsMenu, resizable, columnsState, defaultColumnsState, onColumnsChange, childRows, hasChildRows, loadChildRows,
+  expandedRows, defaultExpandedRows, onExpandedRowsChange, virtual, hasMore, loadMore, className,
 }: TableProps<Row>) {
   const [ownSort, setOwnSort] = React.useState<SortState>(defaultSort);
   const current = sort !== undefined ? sort : ownSort;
@@ -558,6 +609,37 @@ export function Table<Row>({
   const known = React.useRef<Set<string> | null>(null);
   // Keys to land on their next arrival (live rows, an opened group's rows, a detail panel), taken out as they land.
   const [landing] = React.useState(() => new Set<string>());
+
+  // Hierarchy: the opened rows (the host's or ours), each level's load, and branches whose children land when they show.
+  const [ownTree, setOwnTree] = React.useState(defaultExpandedRows ?? []);
+  const treeNow = React.useRef(ownTree);
+  treeNow.current = expandedRows ?? ownTree;
+  const treeOpen = new Set(treeNow.current);
+  const setTreeOpen = (next: string[]) => {
+    treeNow.current = next;
+    if (expandedRows === undefined) setOwnTree(next);
+    onExpandedRowsChange?.(next);
+  };
+  const [loads, setLoads] = React.useState<Record<string, WaitWork>>({});
+  const setLoad = (key: string, work: WaitWork) => setLoads((was) => ({ ...was, [key]: work }));
+  const [landUnder] = React.useState(() => new Set<string>());
+
+  // Virtual: the window of rows drawn, their measured heights, and the row holding focus (it stays drawn).
+  const windowed = !!virtual && !groupBy;
+  const [win, setWin] = React.useState<readonly [number, number]>([0, 0]);
+  const heights = React.useRef(new Map<string, number>());
+  const [, setMeasured] = React.useState(0);
+  const offsetsNow = React.useRef(new Float64Array(1));
+  const topSpacer = React.useRef<HTMLTableRowElement>(null);
+  const head = React.useRef<HTMLTableSectionElement>(null);
+  const [held, setHeld] = React.useState<string | null>(null);
+  const pending = React.useRef<{ key: string; like: string } | null>(null);
+
+  // Infinite: the next rows' load.
+  const [more, setMore] = React.useState<WaitWork>('idle');
+  const moreRow = React.useRef<HTMLTableRowElement>(null);
+  const loadMoreNow = React.useRef(loadMore);
+  loadMoreNow.current = loadMore;
 
   // Columns the person hid or sized.
   const [ownLayout, setOwnLayout] = React.useState<TableColumnsState>(defaultColumnsState ?? {});
@@ -615,30 +697,74 @@ export function Table<Row>({
     el.scrollTo({ top: 0, behavior });
   };
 
-  const sorted = React.useMemo(() => {
-    const col = current && columns.find((c) => c.key === current.key);
-    if (!col || !(col.sortBy || col.sortable)) return present;
-    const by = col.sortBy ?? ((r: Row) => sortValue(col.kind ?? 'text', valueOf(col, r)));
+  // Siblings sort among themselves: the top rows, and each opened row's children.
+  const sortCol = current && columns.find((c) => c.key === current.key && (c.sortBy || c.sortable));
+  const sortRows = (list: Row[]) => {
+    if (!sortCol) return list;
+    const by = sortCol.sortBy ?? ((r: Row) => sortValue(sortCol.kind ?? 'text', valueOf(sortCol, r)));
     const dir = current!.direction === 'ascending' ? 1 : -1;
-    return [...present].sort((a, b) => {
+    return [...list].sort((a, b) => {
       const x = by(a), y = by(b);
       return (typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y))) * dir;
     });
-  }, [present, columns, current]);
+  };
+  const sorted = React.useMemo(() => sortRows(present), [present, columns, current]);
+
+  /** The rows as they show: each opened row's children after it, a level deeper (sorted, or loading, or empty). */
+  const flatten = (list: Row[], level = 1, parent: string | null = null, out: Entry<Row>[] = []) => {
+    for (const row of list) {
+      const key = rowKey(row);
+      const kids = childRows?.(row);
+      const branch = kids != null || !!hasChildRows?.(row);
+      const isOpen = branch && treeOpen.has(key);
+      out.push({ kind: 'row', key, row, level, parent, branch, open: isOpen });
+      if (!isOpen || !kids) continue;
+      // A branch that opened (or whose level just loaded): its children land as they show.
+      const lands = landUnder.delete(key);
+      if (kids.length) {
+        if (lands) kids.forEach((k) => landing.add(rowKey(k)));
+        flatten(sortRows(kids), level + 1, key, out);
+      } else {
+        if (lands) landing.add(`${key}:empty`);
+        out.push({ kind: 'empty', key: `${key}:empty`, level: level + 1, parent: key });
+      }
+    }
+    return out;
+  };
 
   // Groups in the order they first appear in the host's rows; each group's rows in the sorted order.
-  const groups: { name: string | null; rows: Row[] }[] = [];
+  const groups: { name: string | null; rows: Row[]; entries: Entry<Row>[] }[] = [];
   if (groupBy) {
     const at = new Map<string, Row[]>();
-    for (const r of present) { const g = groupBy(r); if (!at.has(g)) { at.set(g, []); groups.push({ name: g, rows: at.get(g)! }); } }
+    for (const r of present) { const g = groupBy(r); if (!at.has(g)) { at.set(g, []); groups.push({ name: g, rows: at.get(g)!, entries: [] }); } }
     for (const r of sorted) at.get(groupBy(r))!.push(r);
-  } else groups.push({ name: null, rows: sorted });
+  } else groups.push({ name: null, rows: sorted, entries: [] });
+  for (const g of groups) g.entries = childRows ? flatten(g.rows) : g.rows.map((row) => ({ kind: 'row', key: rowKey(row), row, level: 1, parent: null, branch: false, open: false }));
 
   const open = (g: string | null) => g == null || !collapsed.has(g);
-  const order = groups.map((g) => [g.name == null ? '' : `group:${g.name}`, ...(open(g.name) ? g.rows.flatMap((r) => {
-    const k = rowKey(r);
-    return expandRow && expanded.has(k) ? [k, `${k}:detail`] : [k];
-  }) : [])].join(' ')).join(' ');
+  const keysOf = (e: Entry<Row>) => (e.kind === 'row' && expandRow && expanded.has(e.key) ? [e.key, `${e.key}:detail`] : [e.key]);
+  const shownEntries = groups.flatMap((g) => (open(g.name) ? g.entries : []));
+  const entryAt = new Map(shownEntries.map((e, i) => [e.key, i]));
+
+  // Virtual: where each row starts (measured, or the density's row height until it shows), and the window drawn.
+  const flat = groups[0].entries;
+  const n = windowed ? flat.length : 0;
+  // Rows not yet seen are guessed at the mean of those measured (the density's row height before any).
+  const seen = heights.current;
+  let est = 0;
+  seen.forEach((h) => { est += h; });
+  est = seen.size ? est / seen.size : (windowed && frame.current && cssPx(frame.current, '--mu-r-table-row-height')) || 40;
+  const offsets = new Float64Array(n + 1);
+  for (let i = 0; i < n; i++) offsets[i + 1] = offsets[i] + (heights.current.get(flat[i].key) ?? est);
+  offsetsNow.current = offsets;
+  const start = Math.min(win[0], n), end = Math.min(Math.max(win[1], start), n);
+  const heldAt = held != null ? entryAt.get(held) ?? -1 : -1;
+  const parts: [number, number][] = [[start, end]];
+  if (windowed && heldAt >= 0 && (heldAt < start || heldAt >= end)) parts.push([heldAt, heldAt + 1]);
+  parts.sort((a, b) => a[0] - b[0]);
+  const drawn = windowed ? parts.flatMap(([a, b]) => flat.slice(a, b)) : null;
+
+  const order = groups.map((g) => [g.name == null ? '' : `group:${g.name}`, ...(open(g.name) ? (drawn ?? g.entries).flatMap(keysOf) : [])].join(' ')).join(' ');
 
   const toggleGroup = (g: { name: string | null; rows: Row[] }) => {
     if (g.name == null) return;
@@ -659,9 +785,11 @@ export function Table<Row>({
   };
 
   const selectable = selected != null;
-  const all = rows.length > 0 && selectable && rows.every((r) => selected!.has(rowKey(r)));
-  const some = selectable && !all && rows.some((r) => selected!.has(rowKey(r)));
-  const setAll = (on: boolean) => onSelectedChange?.(on ? new Set(rows.map(rowKey)) : new Set());
+  // With a hierarchy, select-all takes the rows that show (every top row, and the children of opened ones).
+  const every = childRows ? groups.flatMap((g) => g.entries.flatMap((e) => (e.kind === 'row' ? [e.key] : []))) : rows.map(rowKey);
+  const all = every.length > 0 && selectable && every.every((k) => selected!.has(k));
+  const some = selectable && !all && every.some((k) => selected!.has(k));
+  const setAll = (on: boolean) => onSelectedChange?.(on ? new Set(every) : new Set());
   const setOne = (key: string, on: boolean) => {
     const next = new Set(selected);
     if (on) next.add(key); else next.delete(key);
@@ -712,13 +840,137 @@ export function Table<Row>({
 
   // The guide follows the pointer, and focus inside a row (keyboard included).
   const rowOf = (el: EventTarget | null) => (el instanceof Element ? el.closest<HTMLElement>('tr[data-key]')?.dataset.key ?? null : null);
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    if ((e.key !== 'ArrowDown' && e.key !== 'ArrowUp') || !(e.target as Element).classList?.contains('mu-table-open')) return;
-    const opens = [...(table.current?.querySelectorAll<HTMLElement>('tbody .mu-table-open') ?? [])];
-    const at = opens.indexOf(e.target as HTMLElement);
-    const to = opens[at + (e.key === 'ArrowDown' ? 1 : -1)];
-    if (to) { e.preventDefault(); to.focus(); }
+  const trOf = (key: string) => table.current?.querySelector<HTMLElement>(`tr[data-key="${CSS.escape(key)}"]`);
+
+  /** Focuses a row's stop (the same kind as `like` when it has one); a row out of the window scrolls in first. */
+  const focusRow = (key: string, like: string) => {
+    const tr = trOf(key);
+    const stop = tr?.querySelector<HTMLElement>(`[data-stop].${like}`) ?? tr?.querySelector<HTMLElement>('[data-stop]');
+    if (stop) { stop.focus(); return; }
+    const i = entryAt.get(key);
+    const el = frame.current, top = topSpacer.current;
+    if (!windowed || i == null || !el || !top) return;
+    pending.current = { key, like };
+    const f = el.getBoundingClientRect();
+    const y = top.getBoundingClientRect().top + offsets[i] - (maxHeight != null ? f.top : Math.max(f.top, 0)) - (head.current?.offsetHeight ?? 0);
+    (maxHeight != null ? el : window).scrollBy({ top: y });
   };
+
+  const expandBranch = (e: Extract<Entry<Row>, { kind: 'row' }>) => {
+    if (!e.branch || e.open) return;
+    const kids = childRows?.(e.row);
+    landUnder.add(e.key);
+    if (kids == null && loadChildRows) {
+      if (loads[e.key] === 'working') return;
+      setLoad(e.key, 'working');
+      setTreeOpen([...treeNow.current, e.key]);
+      loadChildRows(e.row).then(
+        () => setLoad(e.key, 'idle'),
+        () => { setLoad(e.key, 'failed'); setTreeOpen(treeNow.current.filter((k) => k !== e.key)); },
+      );
+      return;
+    }
+    setTreeOpen([...treeNow.current, e.key]);
+  };
+  const collapseBranch = (e: Extract<Entry<Row>, { kind: 'row' }>) => {
+    if (!e.open) return;
+    const at = entryAt.get(e.key) ?? 0;
+    const inside: Entry<Row>[] = [];
+    for (let i = at + 1; i < shownEntries.length && shownEntries[i].level > e.level; i++) inside.push(shownEntries[i]);
+    const rowsOut = inside.flatMap((x) => [...(table.current?.querySelectorAll<HTMLElement>(`tr[data-entry="${CSS.escape(x.key)}"]`) ?? [])]);
+    if (rowsOut.some((tr) => tr.contains(document.activeElement))) focusRow(e.key, 'mu-table-branch');
+    leaveRows(rowsOut, () => setTreeOpen(treeNow.current.filter((k) => k !== e.key)));
+  };
+  const toggleBranch = (e: Extract<Entry<Row>, { kind: 'row' }>) => (e.open ? collapseBranch(e) : expandBranch(e));
+
+  // ↑ ↓ go from row to row (the open button, or the disclosure of a row without one); → opens a row or goes
+  // to its first child, ← closes it or goes to its parent.
+  const stops = shownEntries.filter((e): e is Extract<Entry<Row>, { kind: 'row' }> => e.kind === 'row' && (!!onRowAction || e.branch));
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    const target = e.target as HTMLElement;
+    if (!target.matches?.('[data-stop]')) return;
+    const at = stops.findIndex((s) => s.key === rowOf(target));
+    const here = stops[at];
+    if (!here) return;
+    const like = target.classList.contains('mu-table-branch') ? 'mu-table-branch' : 'mu-table-open';
+    let to: string | undefined;
+    switch (e.key) {
+      case 'ArrowDown': to = stops[at + 1]?.key; break;
+      case 'ArrowUp': to = stops[at - 1]?.key; break;
+      case 'ArrowRight':
+        if (!here.branch) return;
+        if (!here.open) expandBranch(here);
+        else if (stops[at + 1]?.parent === here.key) to = stops[at + 1].key;
+        break;
+      case 'ArrowLeft':
+        if (here.open) collapseBranch(here);
+        else if (here.parent) to = here.parent;
+        else return;
+        break;
+      default: return;
+    }
+    e.preventDefault();
+    if (to) focusRow(to, like);
+  };
+
+  // Virtual: the window follows the scroll (the frame's, or the page's) and the rows' measured heights.
+  const measureWindow = React.useRef(() => {});
+  measureWindow.current = () => {
+    const el = frame.current, top = topSpacer.current;
+    if (!windowed || !el || !top) return;
+    const o = offsetsNow.current;
+    const f = el.getBoundingClientRect();
+    const listTop = top.getBoundingClientRect().top;
+    const over = cssPx(el, '--mu-r-table-virtual-overscan');
+    // In its own scroll container the window is the frame's view (even off screen); with the page, the screen's.
+    const own = maxHeight != null;
+    const from = (own ? f.top : Math.max(f.top, 0)) + (head.current?.offsetHeight ?? 0) - listTop - over;
+    const to = (own ? f.bottom : Math.min(f.bottom, window.innerHeight)) - listTop + over;
+    const a = Math.max(0, firstAbove(o, from) - 1);
+    const b = Math.max(a, Math.min(o.length - 1, firstAbove(o, to)));
+    setWin((w) => (w[0] === a && w[1] === b ? w : [a, b]));
+  };
+  useIsoLayoutEffect(() => {
+    if (!windowed) return;
+    let changed = false;
+    const sums = new Map<string, number>();
+    table.current?.querySelectorAll<HTMLElement>('tbody tr[data-entry]').forEach((tr) => {
+      const k = tr.dataset.entry!;
+      sums.set(k, (sums.get(k) ?? 0) + tr.offsetHeight);
+    });
+    sums.forEach((h, k) => {
+      if (Math.abs((heights.current.get(k) ?? est) - h) > 0.5) { heights.current.set(k, h); changed = true; }
+    });
+    if (changed) setMeasured((v) => v + 1);
+    else measureWindow.current();
+    const p = pending.current;
+    if (p && trOf(p.key)) { pending.current = null; focusRow(p.key, p.like); }
+  });
+  React.useEffect(() => {
+    const el = frame.current;
+    if (!windowed || !el) return;
+    const on = () => measureWindow.current();
+    el.addEventListener('scroll', on, { passive: true });
+    window.addEventListener('scroll', on, { passive: true });
+    window.addEventListener('resize', on);
+    return () => { el.removeEventListener('scroll', on); window.removeEventListener('scroll', on); window.removeEventListener('resize', on); };
+  }, [windowed]);
+
+  // Infinite: the loading row at the end calls loadMore as it comes within the slop of view (again after each
+  // load while it is still in view); a failed load waits for Try again.
+  const moreShown = !!hasMore && !!loadMore && rows.length > 0 && !error;
+  React.useEffect(() => {
+    const el = moreRow.current;
+    if (!moreShown || !el || more !== 'idle') return;
+    const io = new IntersectionObserver(([hit]) => {
+      if (!hit?.isIntersecting) return;
+      io.disconnect();
+      setMore('working');
+      loadMoreNow.current!().then(() => setMore('idle'), () => setMore('failed'));
+    }, { root: maxHeight != null ? frame.current : null, rootMargin: `${cssPx(el, '--mu-r-table-more-slop')}px` });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [moreShown, more, rows.length, maxHeight]);
 
   const leads = (selectable ? 1 : 0) + (expandRow ? 1 : 0);
   const span = shown.length + leads;
@@ -745,8 +997,35 @@ export function Table<Row>({
     );
   };
 
-  const rowOfData = (r: Row) => {
-    const key = rowKey(r);
+  const treeSize: TreeSize = density === 'roomy' ? 'large' : density;
+  /** The primary cell's start in a hierarchy: the indent's grooves, then the disclosure (a leaf keeps its column). */
+  const indent = (e: Entry<Row>, node: React.ReactNode, name = '') => (
+    <span className={TREE_CELL}>
+      <TreeGuides level={e.level} size={treeSize}>
+        {e.kind === 'row' && e.branch
+          ? <Branch open={e.open} work={loads[e.key] ?? 'idle'} name={name} onToggle={() => toggleBranch(e)} />
+          : <TreeDisclosure branch={false} />}
+      </TreeGuides>
+      <span>{node}</span>
+    </span>
+  );
+
+  const rowsOf = (e: Entry<Row>) => {
+    const index = windowed ? entryAt.get(e.key)! : -1;
+    if (e.kind === 'empty') {
+      return [
+        <tr key={e.key} data-row={e.key} data-entry={e.key} data-empty="" aria-hidden className={TR}>
+          {leadCells('body')}
+          {shown.map((c, ci) => (
+            <td key={c.key} data-leave={leave(c)} className={join(TD, ci === primaryIndex && PRIMARY)}>
+              {ci === primaryIndex && indent(e, <span className="text-ink3">Empty</span>)}
+            </td>
+          ))}
+        </tr>,
+      ];
+    }
+    const r = e.row;
+    const key = e.key;
     const on = selectable && selected!.has(key);
     const name = labelOf(r);
     const isOpen = expanded.has(key);
@@ -756,6 +1035,9 @@ export function Table<Row>({
         key={key}
         data-key={key}
         data-row={key}
+        data-entry={key}
+        data-level={childRows ? e.level : undefined}
+        aria-rowindex={windowed ? index + 2 : undefined}
         data-selected={on ? '' : undefined}
         data-open={opened === key ? '' : undefined}
         data-highlighted={guide === key ? '' : undefined}
@@ -778,12 +1060,14 @@ export function Table<Row>({
           if (isPrimary) {
             const detail = c.detail?.(r);
             if (onRowAction && !c.cell) {
-              inner = <Truncated render={<button type="button" className={OPEN} onClick={() => onRowAction(r)} />}>{isEmpty(value) ? key : String(value)}</Truncated>;
+              inner = <Truncated render={<button type="button" data-stop className={OPEN} onClick={() => onRowAction(r)} />}>{isEmpty(value) ? key : String(value)}</Truncated>;
             }
+            const work = loads[key];
             inner = (
               <>
                 {inner}
                 {detail != null && <span className={DETAIL}>{detail}</span>}
+                {work === 'failed' && <span className={DETAIL}>Couldn’t load · Try again</span>}
                 {moved.length > 0 && (
                   <span className={MORE}>
                     {moved.map((m) => (
@@ -796,6 +1080,7 @@ export function Table<Row>({
                 )}
               </>
             );
+            if (childRows) inner = indent(e, inner, name);
           }
           const Cell = c.rowHeader ? 'th' : 'td';
           return (
@@ -816,11 +1101,35 @@ export function Table<Row>({
     ];
     if (expandRow && isOpen) {
       out.push(
-        <tr key={`${key}:detail`} id={detailId} data-row={`${key}:detail`} data-detail className="mu-table-detail-row">
+        <tr key={`${key}:detail`} id={detailId} data-row={`${key}:detail`} data-entry={key} data-detail className="mu-table-detail-row">
           <DetailCell span={span}>{expandRow(r)}</DetailCell>
         </tr>,
       );
     }
+    return out;
+  };
+
+  /** A row in the columns' shapes: rows on their way. */
+  const skeleton = (key: React.Key, ref?: React.Ref<HTMLTableRowElement>, state = 'loading') => (
+    <tr key={key} ref={ref} data-state={state} aria-hidden>
+      {leadCells('body')}
+      {shown.map((c, ci) => <td key={c.key} data-leave={leave(c)} className={join(TD, ALIGN[align(c)])}><Shape kind={c.kind} primary={ci === primaryIndex} /></td>)}
+    </tr>
+  );
+  /** Stands for rows out of the window: as tall as they are. */
+  const spacer = (key: string, height: number, ref?: React.Ref<HTMLTableRowElement>) => (
+    <tr key={key} ref={ref} aria-hidden data-spacer=""><td colSpan={span} className="p-0" style={{ height }} /></tr>
+  );
+  /** The window's rows between spacers (and the row holding focus, where it is). */
+  const windowRows = () => {
+    const out: React.ReactNode[] = [];
+    let at = 0;
+    parts.forEach(([a, b], i) => {
+      out.push(spacer(`spacer:${i}`, offsets[a] - offsets[at], i === 0 ? topSpacer : undefined));
+      for (let j = a; j < b; j++) out.push(...rowsOf(flat[j]));
+      at = b;
+    });
+    out.push(spacer('spacer:end', offsets[n] - offsets[at]));
     return out;
   };
 
@@ -829,14 +1138,7 @@ export function Table<Row>({
     content = <tbody>{stateRow(<><SyncErrorIcon animate={false} className="size-table-glyph-size text-red" />{error.message}{error.onRetry && <Button size="compact" onClick={error.onRetry}>Try again</Button>}</>, 'error')}</tbody>;
   } else if (loading && rows.length === 0) {
     content = (
-      <tbody>
-        {Array.from({ length: loadingRows }, (_, i) => (
-          <tr key={i} data-state="loading" aria-hidden>
-            {leadCells('body')}
-            {shown.map((c, ci) => <td key={c.key} data-leave={leave(c)} className={join(TD, ALIGN[align(c)])}><Shape kind={c.kind} primary={ci === primaryIndex} /></td>)}
-          </tr>
-        ))}
-      </tbody>
+      <tbody>{Array.from({ length: loadingRows }, (_, i) => skeleton(i))}</tbody>
     );
   } else if (sorted.length === 0) {
     content = <tbody>{filter && filter.total > 0 ? stateRow(<>{emptyFiltered}{clear}</>, 'filtered') : stateRow(empty, 'empty')}</tbody>;
@@ -857,10 +1159,17 @@ export function Table<Row>({
             ))}
           </tr>
         )}
-        {open(g.name) && g.rows.flatMap(rowOfData)}
+        {open(g.name) && (windowed ? windowRows() : g.entries.flatMap(rowsOf))}
       </Body>
     ));
   }
+  const moreRows = moreShown && (
+    <tbody>
+      {more === 'failed'
+        ? stateRow(<><SyncErrorIcon animate={false} className="size-table-glyph-size text-red" />Couldn’t load more.<Button size="compact" onClick={() => setMore('idle')}>Try again</Button></>, 'more-failed')
+        : skeleton('more', moreRow, 'more')}
+    </tbody>
+  );
 
   const menu = columnsMenu && (
     <Menu align="end" heading="Columns" trigger={<IconButton variant="ghost" label="Columns" className={join(LIFT, 'ms-auto self-center')} icon={<EyeIcon />} />}>
@@ -880,8 +1189,8 @@ export function Table<Row>({
       style={maxHeight != null ? { maxHeight } : undefined}
       onScroll={(e) => e.currentTarget.toggleAttribute('data-scrolled-x', e.currentTarget.scrollLeft > 0)}
       onPointerLeave={() => setGuide(null)}
-      onFocus={(e) => setGuide(rowOf(e.target))}
-      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setGuide(null); }}
+      onFocus={(e) => { const k = rowOf(e.target); setGuide(k); if (windowed) setHeld(k); }}
+      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) { setGuide(null); setHeld(null); } }}
     >
       <ListGlide />
       {live && (
@@ -891,7 +1200,8 @@ export function Table<Row>({
           </Button>
         </div>
       )}
-      <table ref={table} className={TABLE} aria-busy={wait.busy || (loading && rows.length === 0) || undefined} data-density={density} onKeyDown={onKeyDown}>
+      <table ref={table} className={TABLE} aria-busy={wait.busy || (loading && rows.length === 0) || more === 'working' || undefined}
+        aria-rowcount={windowed ? (moreShown ? -1 : n + 1) : undefined} data-density={density} onKeyDown={onKeyDown}>
         <caption className={captionHidden && !filtered && !menu ? 'sr-only' : CAPTION}>
           <span className={CAPTION_ROW}>
             <span className={captionHidden ? 'sr-only' : 'type-title text-ink'}>{caption}</span>
@@ -904,7 +1214,7 @@ export function Table<Row>({
             {menu}
           </span>
         </caption>
-        <thead>
+        <thead ref={head}>
           <tr>
             {selectable || expandRow ? leadCells('head', {
               check: <Checkbox size="row" aria-label="Select all" checked={all} doing={some} disabled={rows.length === 0} onCheckedChange={(on) => setAll(!!on)} />,
@@ -943,6 +1253,7 @@ export function Table<Row>({
           </tr>
         </thead>
         {content}
+        {moreRows}
         {totals && sorted.length > 0 && !error && (
           <tfoot>
             <tr className="mu-table-total">
