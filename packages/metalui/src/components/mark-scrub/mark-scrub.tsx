@@ -415,7 +415,6 @@ export const MarkScrub = React.forwardRef<HTMLSpanElement, MarkScrubProps>(funct
       aria-valuetext={props['aria-valuetext'] ?? words}
       aria-valuemin={lo}
       aria-valuemax={hi}
-      aria-haspopup={onPick ? 'dialog' : undefined}
       aria-keyshortcuts={[onPick && 'Enter', reading.cycle && 'U', scale === 'enum' && 'Space'].filter(Boolean).join(' ') || undefined}
       data-scrubbing={scrubbing ? '' : undefined}
       // While an enum's neighbours peek, the chip steps aside for them.

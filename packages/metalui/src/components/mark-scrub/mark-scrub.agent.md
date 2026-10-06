@@ -54,7 +54,7 @@ Every change calls `onWordsChange(words, value)` (live while dragging); a key pr
 
 ## Picker
 
-The long jump (a Calendar for a day) is the host's, popover and all, so the cue never ships one. A held press or Enter calls `onPick({ anchor, value, words, choose })`; the cue carries `aria-haspopup="dialog"` while `onPick` is set. The host opens its own `Popover` at `anchor` (the words; `Popover.Content` takes an `anchor` for a popover with no Trigger) and returns focus there on close. `choose(value)` writes the value back as words through the scale (a day picked in a Calendar becomes "next Friday" when words can say it, else "Fri 16 Oct") and commits once; the host closes its popover. Esc leaves the words.
+The long jump (a Calendar for a day) is the host's, popover and all, so the cue never ships one. A held press or Enter calls `onPick({ anchor, value, words, choose })`, and `aria-keyshortcuts` names Enter while `onPick` is set (ARIA doesn't allow `aria-haspopup` on a spinbutton). The host opens its own `Popover` at `anchor` (the words; `Popover.Content` takes an `anchor` for a popover with no Trigger) and returns focus there on close. `choose(value)` writes the value back as words through the scale (a day picked in a Calendar becomes "next Friday" when words can say it, else "Fri 16 Oct") and commits once; the host closes its popover. Esc leaves the words.
 
 ```tsx
 const [pick, setPick] = React.useState<MarkScrubPick | null>(null);

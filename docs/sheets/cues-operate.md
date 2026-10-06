@@ -54,7 +54,7 @@ Not doing: **scroll to change a value.** The wheel over inline text belongs to t
 
 - **Enums: spinbutton or listbox?** A spinbutton over the states (name, the state as its value text, min and max). It gives readers what a listbox-like picker would with the same keys, matches SwiftUI's adjustable action, and keeps one control for every stepped kind.
 - **Tags and people: a new component.** `MarkPick` (a button and a combobox), not a `MarkScrub` scale: tags you've used and people have no order to step through.
-- **The picker is the host's, popover and all.** `MarkScrub` only asks (`onPick({ anchor, value, words, choose })` on a held press or Enter, `aria-haspopup` while set); the host opens its own `Popover` at `anchor`. A cue imports no popover, so a plain number stays one small module.
+- **The picker is the host's, popover and all.** `MarkScrub` only asks (`onPick({ anchor, value, words, choose })` on a held press or Enter, Enter named in `aria-keyshortcuts` while set; ARIA doesn't allow `aria-haspopup` on a spinbutton); the host opens its own `Popover` at `anchor`. A cue imports no popover, so a plain number stays one small module.
 
 - **A new component, not a prop on `Mark`?** A component. Mark is a Part with no job; an operable cue has one (change the text) and carries a role, focus and keys. `MarkScrub` composes `Mark` for its look, so the look stays one recipe.
 - **Base UI?** Base UI has no spinbutton: `NumberField.Input` is a textbox ("Number field"), and its `ScrubArea` locks the pointer and drives that textbox. In a sentence the editor owns typing, so the cue is a `span` with `role="spinbutton"` and its own small set of keys (APG spinbutton), which `NumberField` keeps for the well.

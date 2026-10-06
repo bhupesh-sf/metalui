@@ -66,8 +66,8 @@ for (const colorway of COLORWAYS) {
     await expect(day).toHaveAttribute('aria-valuetext', 'Sun 27 Sep');
 
     // A held press asks for the host's calendar, opened from the words; the chosen day comes back as words when words can say it.
-    await expect(day).toHaveAttribute('aria-haspopup', 'dialog');
-    await expect(demo.getByRole('spinbutton', { name: 'Status' })).not.toHaveAttribute('aria-haspopup');
+    await expect(day).toHaveAttribute('aria-keyshortcuts', /Enter/);
+    await expect(demo.getByRole('spinbutton', { name: 'Status' })).not.toHaveAttribute('aria-keyshortcuts', /Enter/);
     await drag(page, day, 0);
     const calendar = page.getByRole('dialog', { name: 'Choose day' });
     await expect(calendar).toBeVisible();
