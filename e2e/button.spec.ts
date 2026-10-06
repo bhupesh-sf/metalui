@@ -85,3 +85,30 @@ test('under reduced motion an action glyph stays still', async ({ page }) => {
   await page.waitForTimeout(200);
   await expect(share.locator('svg')).not.toHaveAttribute('data-playing', '');
 });
+
+// The wait lives in the key: held, busy and refusing presses; the glyph turns into the arc only after the
+// show delay, so a quick save never shows it; Reduce Motion breathes instead of turning.
+test('a waiting key holds, refuses a second press, and shows the arc only for a long wait', async ({ page }) => {
+  await open(page, '/components/button', 'bone');
+  const bench = page.getByTestId('button-wait');
+  const slow = bench.getByRole('button', { name: 'Slow save' });
+  const arc = (key: typeof slow) => key.locator('.mu-button-arc').evaluate((el) => parseFloat(getComputedStyle(el).opacity));
+  await slow.click();
+  const saving = bench.getByRole('button', { name: 'Saving…' });
+  await expect(saving).toHaveAttribute('aria-busy', 'true');
+  await expect(saving).toHaveAttribute('aria-disabled', 'true');
+  await expect(saving).toHaveAttribute('data-held', '');
+  expect(await arc(saving)).toBeLessThan(0.5);
+  await expect.poll(() => arc(saving)).toBe(1);
+  expect(await saving.locator('.mu-button-arc').evaluate((el) => el.getAnimations().length)).toBeGreaterThan(0);
+  await saving.click({ force: true });
+  await expect(bench.getByRole('button', { name: 'Saved' })).toBeVisible({ timeout: 4000 });
+  await expect(bench.getByRole('button', { name: 'Saved' })).not.toHaveAttribute('aria-busy', 'true');
+  await expect(bench.getByRole('button', { name: 'Slow save' })).toBeVisible({ timeout: 3000 });
+
+  // A quick save goes straight to Saved; the arc never comes up.
+  const quick = bench.getByRole('button', { name: 'Quick save' });
+  await quick.click();
+  await expect(bench.getByRole('button', { name: 'Saved' })).toBeVisible();
+  expect(await arc(bench.getByRole('button', { name: 'Saved' }))).toBeLessThan(0.1);
+});

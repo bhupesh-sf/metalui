@@ -19,6 +19,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 - The **icon** (`icon` prop) leads the label: 16 in the 32 cap, 6 before the label; 14 and 7 in the compact cap; 16 on a strip, 14 on graphite, 12 beside a link. The cap sizes it, so pass the glyph without a size.
 - The **label** is text: a verb, or a verb and its object.
 - **Compact** (`size="compact"`): 28 tall, 11 padding, 12 pt, a 14 glyph 7 before the label. A standard compact cap wears the button fill on `raise-sm`, ink2 until hover; a primary or destructive compact cap keeps its own fill (the composer's Send beside a compact Select). The canvas pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
+- **Waiting** (`state="waiting"`): the key stays down in its pressed look, refuses presses (`aria-disabled`, still focusable) and says `aria-busy`; after the spinner's 400 ms show delay its glyph cross-fades into a turning arc in the key's own ink (white on a primary key), so a quick action never shows it. Reduce Motion: the arc breathes. `state="done"` stays held while the host shows the result ("Saved", `check`); then `ready`. The label stays the host's, turned with `SwapText`: Save → Saving… → Saved.
 - The **press** moves the cap down 1px (50 ms, linear), and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
 
 ## Caps that set their own size
@@ -33,6 +34,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 |---|---|---|---|
 | `cap` | `cap:` | `standard`, `primary`, `destructive`, `link`, `graphite`, `strip`, `strip-danger` | `standard` |
 | `size` | `size:` | `default` (32), `compact` (28); ignored by the link, graphite and strip caps | `default` |
+| `state` | `.metalButtonState(_:)` | `ready`, `waiting` (held, refuses presses, busy; the glyph turns into the arc after 400 ms), `done` (held for the result). Pass `ready` between waits so a MorphIcon keeps morphing | – |
 | `icon` | `icon:` (a `MetalIconName`), or the `icon:` view builder | a glyph element, such as `<ShareIcon />` or `<MorphIcon name=… />`; leads the label, sized by the cap (16, compact 14, strip 16, graphite 14, link 12) | – |
 | `disabled` | `.disabled(_:)` | boolean | `false` |
 | `focusableWhenDisabled` | – | boolean | `false` |

@@ -31,10 +31,67 @@ public enum MetalButtonSize: Sendable {
     case compact
 }
 
+/// Where a button's action is: `waiting` holds the key down and refuses presses, and after the spinner's
+/// show delay its glyph turns into an arc in the key's ink; `done` stays held for the host's result.
+/// Set it with `.metalButtonState(_:)`.
+public enum MetalButtonState: Sendable { case ready, waiting, done }
+
+private struct MetalButtonStateKey: EnvironmentKey {
+    static let defaultValue = MetalButtonState.ready
+}
+
+extension EnvironmentValues {
+    var metalButtonState: MetalButtonState {
+        get { self[MetalButtonStateKey.self] }
+        set { self[MetalButtonStateKey.self] = newValue }
+    }
+}
+
+public extension View {
+    /// Holds a MetalButton while its action works (`.waiting`) or shows its result (`.done`).
+    func metalButtonState(_ state: MetalButtonState) -> some View { environment(\.metalButtonState, state) }
+}
+
+/// The glyph's slot while a button waits: the glyph gives way to a turning arc after the show delay.
+private struct MetalButtonWaitSlot<Glyph: View>: View {
+    let glyph: Glyph
+    let size: Double
+    @Environment(\.metalButtonState) private var state
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var showsArc = false
+    @State private var turning = false
+
+    var body: some View {
+        let spinner = MetalRecipes.spinner
+        ZStack {
+            glyph.opacity(showsArc ? .zero : .one)
+            Circle()
+                .trim(from: .zero, to: 0.68)
+                .stroke(style: StrokeStyle(lineWidth: size * 1.9 / 24, lineCap: .round))
+                .padding(size * 3.5 / 24)
+                .rotationEffect(.degrees(turning && !reduceMotion ? 360 : .zero))
+                .opacity(showsArc ? (reduceMotion && turning ? 0.45 : .one) : .zero)
+                .animation(showsArc ? (reduceMotion
+                    ? .easeInOut(duration: 1).repeatForever(autoreverses: true)
+                    : .linear(duration: spinner.durationSeconds("self.turn")).repeatForever(autoreverses: false)) : nil, value: turning)
+        }
+        .frame(width: size, height: size)
+        .animation(.easeOut(duration: spinner.durationSeconds("self.fade")), value: showsArc)
+        .task(id: state) {
+            guard state == .waiting else { showsArc = false; turning = false; return }
+            try? await Task.sleep(for: .seconds(spinner.durationSeconds("self.delay")))
+            guard !Task.isCancelled else { return }
+            showsArc = true
+            turning = true
+        }
+    }
+}
+
 private struct MetalButtonBody: View {
     let configuration: ButtonStyleConfiguration
     let cap: MetalButtonCap
     let size: MetalButtonSize
+    @Environment(\.metalButtonState) private var state
 
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.isFocused) private var isFocused
@@ -42,7 +99,8 @@ private struct MetalButtonBody: View {
     @State private var hovering = false
 
     var body: some View {
-        let isDown = isEnabled && configuration.isPressed
+        // Waiting or done, the key stays down at its travel in the pressed look.
+        let isDown = isEnabled && (configuration.isPressed || state != .ready)
         let shape = Capsule(style: .continuous)
         let recipe = MetalRecipes.button
         let compact = size == .compact
@@ -101,6 +159,7 @@ public struct MetalButton<Icon: View>: View {
     private let size: MetalButtonSize
     private let icon: Icon?
     private let action: () -> Void
+    @Environment(\.metalButtonState) private var state
 
     public init(_ title: String, cap: MetalButtonCap = .standard, size: MetalButtonSize = .default, action: @escaping () -> Void) where Icon == EmptyView {
         self.title = title
@@ -123,15 +182,17 @@ public struct MetalButton<Icon: View>: View {
         let compact = size == .compact
         let recipe = MetalRecipes.button
         let glyph = recipe.points(compact ? "compact.glyph" : "self.glyph")
-        Button(action: action) {
+        // A held key refuses presses but keeps its focus (aria-disabled, not disabled).
+        Button(action: { if state == .ready { action() } }) {
             HStack(spacing: recipe.points(compact ? "compact.gap" : "self.gap")) {
-                if let icon { icon.frame(width: glyph, height: glyph) }
+                if let icon { MetalButtonWaitSlot(glyph: icon, size: glyph) }
                 Text(title)
             }
         }
         .buttonStyle(MetalButtonStyle(cap: cap, size: size))
         .focusEffectDisabled()
         .accessibilityLabel(title)
+        .accessibilityValue(state == .waiting ? "In progress" : "")
     }
 }
 

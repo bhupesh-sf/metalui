@@ -58,7 +58,7 @@ export default function ButtonPage() {
           items={[
             { label: 'React', value: 'import { Button }', href: '#hero', mono: true },
             { label: 'Swift', value: 'MetalButton', href: '#platforms', mono: true },
-            { label: 'Props', value: '6', href: '#api' },
+            { label: 'Props', value: '7', href: '#api' },
             { label: 'States', value: '5', href: '#states' },
             { label: 'Tokens', value: '12', href: '#tokens' },
           ]}
@@ -71,6 +71,7 @@ export default function ButtonPage() {
           <Anatomy />
           <PressIsPhysics />
           <LabelTurns />
+          <WaitInTheKey />
           <ActionNamesItself />
           <OneSignalCap />
           <OneLine />
@@ -409,6 +410,47 @@ function LabelTurns() {
   );
 }
 
+/* ───────────────────────── the wait lives in the key ───────────────────────── */
+
+type SaveState = 'ready' | 'waiting' | 'done';
+
+/** A save that takes `ms`: held and busy while it works, then Saved with a check, then ready again. */
+function SaveKey({ label, ms }: { label: string; ms: number }) {
+  const [state, setState] = React.useState<SaveState>('ready');
+  const save = () => {
+    setState('waiting');
+    window.setTimeout(() => {
+      setState('done');
+      window.setTimeout(() => setState('ready'), 1400);
+    }, ms);
+  };
+  return (
+    <Button state={state} onClick={save} icon={<MorphIcon name={state === 'done' ? 'check' : 'document'} />}>
+      <SwapText value={state === 'waiting' ? 'Saving…' : state === 'done' ? 'Saved' : label} />
+    </Button>
+  );
+}
+
+function WaitInTheKey() {
+  const [slow, setSlow] = React.useState(false);
+  return (
+    <Beat
+      id="wait-in-the-key"
+      title="The wait lives in the key"
+      setup="While it works, the key stays down and refuses a second press. Only if the work outlasts a beat does its glyph turn into a small arc, in the key's own ink; a quick save shows nothing but Saved."
+      slow={slow}
+      bar={<SlowSwitch slow={slow} onChange={setSlow} />}
+      caption="Press both. The quick one (a quarter second) goes straight to Saved; the slow one (two and a half seconds) shows the arc after 400 ms."
+      cost="one prop, state: ready, waiting, done; the label stays yours, turned with SwapText."
+    >
+      <div className="flex flex-wrap items-center justify-center gap-24" data-testid="button-wait">
+        <SaveKey label="Quick save" ms={slow ? 1000 : 250} />
+        <SaveKey label="Slow save" ms={slow ? 10000 : 2500} />
+      </div>
+    </Beat>
+  );
+}
+
 /* ───────────────────────── 5 · an action names itself ───────────────────────── */
 
 function ActionNamesItself() {
@@ -623,6 +665,7 @@ function Api() {
         rows={[
           ['cap', "'standard' | 'primary' | 'destructive' | 'link' | 'graphite' | 'strip' | 'strip-danger'", "'standard'", 'At most one primary or destructive per group. link, graphite and strip caps set their own size.'],
           ['size', "'default' | 'compact'", "'default'", 'default is 32 tall; compact is 28 (the canvas pill; primary and destructive keep their cap).'],
+          ['state', "'ready' | 'waiting' | 'done'", '–', 'Where the action is. waiting: held down, refuses presses (aria-disabled), aria-busy, and after 400 ms the glyph turns into the arc; done: still held for your result. Pass ready between waits.'],
           ['icon', 'ReactNode', '–', 'The action’s glyph, before the label, sized by the cap (16, compact 14). A MorphIcon here morphs when the control changes meaning. Plain choices have none.'],
           ['disabled', 'boolean', 'false', 'Renders at 40% and skips icon motion. From Base UI.'],
           ['focusableWhenDisabled', 'boolean', 'false', 'Keeps a disabled button in the tab order. From Base UI.'],

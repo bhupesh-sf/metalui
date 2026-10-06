@@ -1452,7 +1452,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The press-in pill button: raised, ink2 until hover; pressed sinks 1 into a well. Compact is the canvas pill (28 tall, on the height ladder). (reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger, the object sheet primary and destructive caps)
+    /// The press-in pill button: raised, ink2 until hover; pressed sinks 1 into a well. Compact is the canvas pill (28 tall, on the height ladder). Waiting (state): the key is held down in its pressed look and refuses presses; after the spinner's show delay its glyph cross-fades into an arc in the key's own ink that turns like the spinner (Reduce Motion: it breathes), so a quick save shows nothing but the result. Done: still held, the host's glyph and words say so. (reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger, the object sheet primary and destructive caps)
     public static let button = MetalObjectRecipe(
         name: "button",
         layers: [

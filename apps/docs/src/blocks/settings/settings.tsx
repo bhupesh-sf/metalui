@@ -28,10 +28,11 @@ import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
  *             to the first field not accepted, and the status says why. Nothing is saved.
  *
  *   save      the Save key, or ⌘S / Ctrl+S anywhere in the block
- *      0 ms   the key goes down and stays down; its glyph morphs document → clock and the label
- *             turns to "Saving…" on the drum; Discard is held off
- *   ~700 ms   (the sample wait, or your onSave) the glyph morphs clock → check, "Saved"; the title
- *             says "Changes saved"
+ *      0 ms   the key goes down and stays down (Button state="waiting"); the label turns to
+ *             "Saving…" on the drum; Discard is held off
+ *    400 ms   still saving: the glyph cross-fades into the turning arc (a quick save never shows it)
+ *   ~700 ms   (the sample wait, or your onSave) state="done": the glyph comes back morphing
+ *             document → check, "Saved"; the title says "Changes saved"
  *   +900 ms   the bar sinks away on the release spring; focus, if it was in the bar, goes to the
  *             section's title
  *
@@ -478,12 +479,9 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
               <Button
                 cap="primary"
                 onClick={() => void save()}
-                aria-disabled={phase !== 'editing' || undefined}
-                aria-busy={busy || undefined}
-                data-held={phase !== 'editing' ? '' : undefined}
+                state={phase === 'saving' ? 'waiting' : phase === 'saved' ? 'done' : 'ready'}
                 aria-keyshortcuts="Meta+S Control+S"
-                className="data-held:translate-y-button-travel data-held:recipe-button-primary-pressed data-held:cursor-default"
-                icon={<MorphIcon name={saying.phase === 'saved' ? 'check' : saying.phase === 'saving' ? 'clock' : 'document'} />}
+                icon={<MorphIcon name={saying.phase === 'saved' ? 'check' : 'document'} />}
               >
                 <SwapText value={saying.phase === 'saved' ? 'Saved' : saying.phase === 'saving' ? 'Saving…' : 'Save'} />
               </Button>
