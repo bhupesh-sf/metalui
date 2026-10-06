@@ -257,6 +257,23 @@
       "agent": "https://metalui.dev/r/code-card.md"
     },
     {
+      "name": "collapsible",
+      "title": "Collapsible",
+      "status": "alpha",
+      "description": "Show and hide in place, on its own: a row with a summary and the set's chevron, a ghost key, or \"Show 3 more\" on the drum. The panel is uncovered from its top edge as it slides out on the settle spring while what follows travels in step; it slides back on release. Never animates height.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Collapsible",
+        "base": "@base-ui/react/collapsible"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCollapsible"
+      },
+      "registry": "https://metalui.dev/r/collapsible.json",
+      "agent": "https://metalui.dev/r/collapsible.md"
+    },
+    {
       "name": "combobox",
       "title": "Combobox",
       "status": "alpha",

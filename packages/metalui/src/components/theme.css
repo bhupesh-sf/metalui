@@ -471,6 +471,18 @@
   --spacing-accordion-chevron-size: var(--mu-r-accordion-chevron-size);
   --spacing-accordion-panel-pad-x: var(--mu-r-accordion-panel-pad-x);
   --spacing-accordion-panel-pad-bottom: var(--mu-r-accordion-panel-pad-bottom);
+  --spacing-collapsible-row-height: var(--mu-r-collapsible-row-height);
+  --spacing-collapsible-row-pad-x: var(--mu-r-collapsible-row-pad-x);
+  --spacing-collapsible-row-radius: var(--mu-r-collapsible-row-radius);
+  --radius-collapsible-row-radius: var(--mu-r-collapsible-row-radius);
+  --spacing-collapsible-row-gap: var(--mu-r-collapsible-row-gap);
+  --spacing-collapsible-chevron-size: var(--mu-r-collapsible-chevron-size);
+  --spacing-collapsible-more-height: var(--mu-r-collapsible-more-height);
+  --spacing-collapsible-more-pad-x: var(--mu-r-collapsible-more-pad-x);
+  --spacing-collapsible-more-radius: var(--mu-r-collapsible-more-radius);
+  --radius-collapsible-more-radius: var(--mu-r-collapsible-more-radius);
+  --spacing-collapsible-more-gap: var(--mu-r-collapsible-more-gap);
+  --spacing-collapsible-panel-bleed: var(--mu-r-collapsible-panel-bleed);
   --spacing-meter-height: var(--mu-r-meter-self-height);
   --spacing-meter-gap: var(--mu-r-meter-self-gap);
   --spacing-meter-radius: var(--mu-r-meter-self-radius);
@@ -1720,11 +1732,29 @@
 @utility accordion-panel {
   overflow: hidden; height: var(--accordion-panel-height); opacity: 1; transition: height calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-starting-style] { height: 0; opacity: 0; } &[data-ending-style] { height: 0; opacity: 0; transition: height calc(var(--mu-spring-release-d) * var(--mu-travel-settle)) var(--mu-spring-release), opacity var(--mu-spring-release-d) var(--mu-spring-release); }
 }
-@utility accordion-chevron {
-  transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-panel-open] > & { rotate: var(--mu-r-accordion-chevron-turn); }
-}
 @utility opacity-accordion-trigger-disabled {
   opacity: var(--mu-r-accordion-trigger-disabled);
+}
+@utility collapsible-hang {
+  margin-inline: calc(var(--mu-r-collapsible-row-pad-x) * -1); width: calc(100% + 2 * var(--mu-r-collapsible-row-pad-x));
+}
+@utility collapsible-more-hang {
+  margin-inline-start: calc(var(--mu-r-collapsible-more-pad-x) * -1);
+}
+@utility collapsible-chevron {
+  rotate: var(--mu-r-collapsible-chevron-closed); transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-panel-open] > & { rotate: 0deg; }
+}
+@utility collapsible-chevron-over {
+  rotate: 0deg; transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-panel-open] > & { rotate: var(--mu-r-collapsible-chevron-over); }
+}
+@utility collapsible-summary {
+  opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); [data-panel-open] > & { opacity: 0; }
+}
+@utility collapsible-panel {
+  animation: mu-collapsible-hold 1ms; &[data-open] { animation: mu-collapsible-in var(--mu-spring-settle-d) var(--mu-spring-settle) backwards; } &[data-ending-style] { animation: mu-collapsible-out var(--mu-spring-release-d) var(--mu-spring-release) forwards; }
+}
+@utility opacity-collapsible-row-disabled {
+  opacity: var(--mu-r-collapsible-row-disabled);
 }
 @utility meter-lamp {
   position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity var(--mu-r-meter-lamp-fade) ease-out; transition-delay: calc(var(--mu-meter-step, 0) * var(--mu-r-meter-lamp-stagger) * var(--mu-travel-part)); [data-lit] > & { opacity: 1; }
@@ -4284,6 +4314,24 @@
 }
 @utility animate-sf-fade {
   animation: mu-sf-fade var(--mu-spring-part-d) var(--mu-spring-part) both;
+}
+@keyframes mu-collapsible-in {
+  from { clip-path: inset(calc(var(--mu-r-collapsible-panel-bleed) * -1) calc(var(--mu-r-collapsible-panel-bleed) * -1) calc((100% + var(--mu-r-collapsible-panel-bleed)) * var(--mu-travel-settle) - var(--mu-r-collapsible-panel-bleed)) calc(var(--mu-r-collapsible-panel-bleed) * -1)); translate: 0 calc(var(--mu-motion-nest) * -1 * var(--mu-travel-settle)); opacity: 0; } to { clip-path: inset(calc(var(--mu-r-collapsible-panel-bleed) * -1)); translate: 0 0; opacity: 1; }
+}
+@utility animate-collapsible-in {
+  animation: mu-collapsible-in var(--mu-spring-settle-d) var(--mu-spring-settle) backwards;
+}
+@keyframes mu-collapsible-out {
+  from { clip-path: inset(calc(var(--mu-r-collapsible-panel-bleed) * -1)); translate: 0 0; opacity: 1; } to { clip-path: inset(calc(var(--mu-r-collapsible-panel-bleed) * -1) calc(var(--mu-r-collapsible-panel-bleed) * -1) calc((100% + var(--mu-r-collapsible-panel-bleed)) * var(--mu-travel-settle) - var(--mu-r-collapsible-panel-bleed)) calc(var(--mu-r-collapsible-panel-bleed) * -1)); translate: 0 calc(var(--mu-motion-nest) * -1 * var(--mu-travel-settle)); opacity: 0; }
+}
+@utility animate-collapsible-out {
+  animation: mu-collapsible-out var(--mu-spring-release-d) var(--mu-spring-release) forwards;
+}
+@keyframes mu-collapsible-hold {
+  to { opacity: 1; }
+}
+@utility animate-collapsible-hold {
+  animation: mu-collapsible-hold 1ms;
 }
 
 /* Lamp gestures (status.gestures): how an LED behaves over time. */

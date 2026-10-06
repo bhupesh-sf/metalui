@@ -1,0 +1,23 @@
+{
+  "name": "collapsible",
+  "title": "Collapsible",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["icon-button"],
+  "description": "Show and hide in place, on its own: a row with a summary and the set's chevron, a ghost key, or \"Show 3 more\" on the drum. The panel is uncovered from its top edge as it slides out on the settle spring while what follows travels in step; it slides back on release. Never animates height.",
+  "base": "@base-ui/react/collapsible",
+  "react": {
+    "export": "Collapsible",
+    "files": ["collapsible.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalCollapsible",
+    "file": "swift/Sources/MetalUI/Components/MetalCollapsible.swift"
+  },
+  "slots": {
+    "Collapsible": ["Root", "Trigger", "Key", "More", "Panel"]
+  },
+  "agent": "collapsible.agent.md",
+  "page": "/components/collapsible"
+}

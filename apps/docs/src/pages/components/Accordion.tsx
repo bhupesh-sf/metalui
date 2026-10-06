@@ -52,7 +52,7 @@ function OpeningTuner() {
     ...springVars('settle', d.grow as SpringName, d.slow),
     ...springVars('release', d.close as SpringName, d.slow),
     ...springVars('part', d.chevron as SpringName, d.slow),
-    '--mu-r-accordion-chevron-turn': `${d.turn}deg`,
+    '--mu-r-collapsible-chevron-closed': `${-d.turn}deg`,
   } as React.CSSProperties;
   return (
     <div data-testid="accordion-opening-tuner" className="w-full max-w-[440px]" style={vars}>
