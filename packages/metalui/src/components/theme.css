@@ -635,6 +635,17 @@
   --spacing-breadcrumbs-fold-pad: var(--mu-r-breadcrumbs-fold-pad);
   --spacing-breadcrumbs-fold-radius: var(--mu-r-breadcrumbs-fold-radius);
   --radius-breadcrumbs-fold-radius: var(--mu-r-breadcrumbs-fold-radius);
+  --spacing-scrollspy-entry-height: var(--mu-r-scrollspy-entry-height);
+  --spacing-scrollspy-entry-height-compact: var(--mu-r-scrollspy-entry-height-compact);
+  --spacing-scrollspy-entry-pad-x: var(--mu-r-scrollspy-entry-pad-x);
+  --spacing-scrollspy-entry-pad-y: var(--mu-r-scrollspy-entry-pad-y);
+  --spacing-scrollspy-entry-pad-y-compact: var(--mu-r-scrollspy-entry-pad-y-compact);
+  --spacing-scrollspy-entry-radius: var(--mu-r-scrollspy-entry-radius);
+  --radius-scrollspy-entry-radius: var(--mu-r-scrollspy-entry-radius);
+  --spacing-scrollspy-entry-gap: var(--mu-r-scrollspy-entry-gap);
+  --spacing-scrollspy-entry-indent: var(--mu-r-scrollspy-entry-indent);
+  --spacing-scrollspy-rail-inset: var(--mu-r-scrollspy-rail-inset);
+  --spacing-scrollspy-rail-inset-compact: var(--mu-r-scrollspy-rail-inset-compact);
   --spacing-pagination-page-min-width: var(--mu-r-pagination-page-min-width);
   --spacing-pagination-siblings: var(--mu-r-pagination-self-siblings);
   --spacing-pagination-arrow-size: var(--mu-r-pagination-arrow-size);
@@ -2257,6 +2268,9 @@
 }
 @utility breadcrumb-arrive {
   animation: mu-breadcrumb-arrive var(--mu-spring-settle-d) var(--mu-spring-settle) both;
+}
+@utility scrollspy-strip {
+  max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; &::-webkit-scrollbar { display: none; }
 }
 @utility navigation-menu-positioner {
   transition: top var(--mu-spring-settle-d) var(--mu-spring-settle), left var(--mu-spring-settle-d) var(--mu-spring-settle), right var(--mu-spring-settle-d) var(--mu-spring-settle), bottom var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-instant] { transition: none; } @media (prefers-reduced-motion: reduce) { transition: none; }

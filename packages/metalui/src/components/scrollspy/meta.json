@@ -1,0 +1,20 @@
+{
+  "name": "scrollspy",
+  "title": "Scrollspy",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["switcher"],
+  "description": "Marks the section being read in a table of contents, and jumps to a section when you pick its entry: a side rail whose one marker (the row's raised plate and green rail) glides entry to entry on the settle spring, or a strip on the switcher's track and thumb. Any scroller, an offset that clears a sticky header (the scroller's scroll-padding-top by default), smooth jumps that land focus too, and an opt-in URL hash that follows.",
+  "base": "nav > ol of links with aria-current=\"location\"; IntersectionObserver (Base UI has no scrollspy; not tabs: entries go to places in one document)",
+  "react": {
+    "export": "Scrollspy",
+    "files": ["scrollspy.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalScrollspy",
+    "file": "swift/Sources/MetalUI/Components/MetalScrollspy.swift"
+  },
+  "agent": "scrollspy.agent.md",
+  "page": "/components/scrollspy"
+}
