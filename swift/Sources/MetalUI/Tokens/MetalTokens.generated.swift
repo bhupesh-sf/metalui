@@ -1064,6 +1064,47 @@ public enum MetalRecipes {
         ]
     )
 
+    /// An instrument's graph of a person's numbers: line, area or grouped bars on a sunk plot well (the field well, plot.radius), read off a readout instead of a floating tooltip. Over the well, the readout: the point's category in the readout type (uppercase, ink2) and, per series, its key, its name (meta, ink2) and its value (readout type, ink, tabular), every figure turning on the drum. At rest it reads the latest point; it follows the pointer and the arrow keys. Inside the well: engraved hairlines at nice steps (Table's row rule) running the well's width, the zero line as the rule's groove; y figures in the readout type (ink3, tabular) end-aligned before the well, x labels under it in the same type, thinned so each has axis.x-min. Marks inset by plot.pad-*: a line is line.width in ink with round joins; an area adds a wash of the line's ink at area.opacity down to zero; bars stand on the zero line in ink2, bar.gap apart within a category, bar.inset of each slot left empty around the group, round only at the data end (bar.radius). Series are told apart by pattern, never by hue alone: lines solid, dashed (line.dash), dotted (line.dot), dash-dot (line.dashdot), and their markers circle, square, diamond, ring; bars solid, hatched (bar.hatch apart), outline (bar.stroke), dotted. One series may be the signal: the intent green (signal.color) instead of ink, its line line.signal-width; LED colours never paint a series. The point under the readout: for lines an engraved crosshair (cross.width, ink3 at cross.opacity) and a marker per series (marker.size, ringed in the surface by marker.ring); for bars the menu's row highlight as a plate behind the category's bars. Both glide between points on the settle spring (translate) and fade in only while the pointer or the focus is on the plot (the latest point keeps its markers at rest). A missing value breaks the line and leaves no bar; the readout says a dash. Loading: skeleton bars in the well after the skeleton's delay. Empty and failed: one sentence centred in the well over the zero line. Data arriving (after empty or loading) rises from the zero line once on the settle spring (scale and opacity); later changes swap in place. Reduce Motion: no rise, only the fade; the crosshair and markers jump. Focus: the plot is one tab stop with the focus ring. (the field well (recipe well, field); the rule recipe (the zero groove) and Table's row hairline; the readout type and the drum (motion/swap); the menu's row highlight (the bar plate); the sparkline's intent green for the signal series; Skeleton; the settle spring)
+    public static let chart = MetalObjectRecipe(
+        name: "chart",
+        layers: [
+
+        ],
+        props: [
+            "plot.height": .number(200.0),
+            "plot.radius": .number(12.0),
+            "plot.pad-x": .number(12.0),
+            "plot.pad-top": .number(14.0),
+            "plot.pad-bottom": .number(10.0),
+            "axis.y-gap": .number(8.0),
+            "axis.x-gap": .number(6.0),
+            "axis.x-min": .number(56.0),
+            "axis.x-height": .number(14.0),
+            "axis.y-ticks": .text("4"),
+            "head.gap": .number(10.0),
+            "head.item-gap": .number(16.0),
+            "head.key-gap": .number(6.0),
+            "head.swatch-width": .number(16.0),
+            "head.swatch-height": .number(10.0),
+            "line.width": .number(2.0),
+            "line.signal-width": .number(2.5),
+            "line.dash": .text("6 4"),
+            "line.dot": .text("0.1 4"),
+            "line.dashdot": .text("8 3 0.1 3"),
+            "area.opacity": .text("0.08"),
+            "bar.radius": .number(3.0),
+            "bar.gap": .number(2.0),
+            "bar.inset": .text("0.2"),
+            "bar.stroke": .number(1.5),
+            "bar.hatch": .number(4.0),
+            "marker.size": .number(8.0),
+            "marker.ring": .number(2.0),
+            "cross.width": .number(1.0),
+            "cross.opacity": .text("0.55"),
+            "signal.color": .perColorway(bone: "#2FB673", graphite: "#78D6A5"),
+        ]
+    )
+
     /// A level in a range (storage used, battery, signal), not a task: a row of LED segments like a level meter. A segment's colour comes from where it sits (green through the range, amber near the top, red at the end), the way a level meter is printed. When the value changes the level sweeps from its old edge to its new one, segment by segment (16 ms apart, each lamp fading in 90 ms): rising lights upward, falling darkens downward. Reduce Motion: every segment changes at once. The lamps are the LED part's looks. (the LED part (status recipe lamps); hardware level meters; Base UI Meter)
     public static let meter = MetalObjectRecipe(
         name: "meter",

@@ -552,6 +552,32 @@
   --spacing-timeline-event-text-gap: var(--mu-r-timeline-event-text-gap);
   --spacing-timeline-event-when-gap: var(--mu-r-timeline-event-when-gap);
   --spacing-timeline-now-pad: var(--mu-r-timeline-now-pad);
+  --spacing-chart-plot-height: var(--mu-r-chart-plot-height);
+  --spacing-chart-plot-radius: var(--mu-r-chart-plot-radius);
+  --radius-chart-plot-radius: var(--mu-r-chart-plot-radius);
+  --spacing-chart-plot-pad-x: var(--mu-r-chart-plot-pad-x);
+  --spacing-chart-plot-pad-top: var(--mu-r-chart-plot-pad-top);
+  --spacing-chart-plot-pad-bottom: var(--mu-r-chart-plot-pad-bottom);
+  --spacing-chart-axis-y-gap: var(--mu-r-chart-axis-y-gap);
+  --spacing-chart-axis-x-gap: var(--mu-r-chart-axis-x-gap);
+  --spacing-chart-axis-x-min: var(--mu-r-chart-axis-x-min);
+  --spacing-chart-axis-x-height: var(--mu-r-chart-axis-x-height);
+  --spacing-chart-head-gap: var(--mu-r-chart-head-gap);
+  --spacing-chart-head-item-gap: var(--mu-r-chart-head-item-gap);
+  --spacing-chart-head-key-gap: var(--mu-r-chart-head-key-gap);
+  --spacing-chart-head-swatch-width: var(--mu-r-chart-head-swatch-width);
+  --spacing-chart-head-swatch-height: var(--mu-r-chart-head-swatch-height);
+  --spacing-chart-line-width: var(--mu-r-chart-line-width);
+  --spacing-chart-line-signal-width: var(--mu-r-chart-line-signal-width);
+  --spacing-chart-bar-radius: var(--mu-r-chart-bar-radius);
+  --radius-chart-bar-radius: var(--mu-r-chart-bar-radius);
+  --spacing-chart-bar-gap: var(--mu-r-chart-bar-gap);
+  --spacing-chart-bar-stroke: var(--mu-r-chart-bar-stroke);
+  --spacing-chart-bar-hatch: var(--mu-r-chart-bar-hatch);
+  --spacing-chart-marker-size: var(--mu-r-chart-marker-size);
+  --spacing-chart-marker-ring: var(--mu-r-chart-marker-ring);
+  --spacing-chart-cross-width: var(--mu-r-chart-cross-width);
+  --color-chart-signal-color: var(--mu-r-chart-signal-color);
   --spacing-meter-height: var(--mu-r-meter-self-height);
   --spacing-meter-gap: var(--mu-r-meter-self-gap);
   --spacing-meter-radius: var(--mu-r-meter-self-radius);
@@ -2080,6 +2106,87 @@
 }
 @utility timeline-line {
   flex: 1; min-width: 0; height: var(--mu-r-rule-self-thickness); background: var(--mu-r-rule-self-background); box-shadow: var(--mu-r-rule-self-shadow);
+}
+@utility chart {
+  display: grid; gap: var(--mu-r-chart-head-gap); min-width: 0; --mu-chart-zero: 100%;
+}
+@utility chart-head {
+  display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--mu-r-chart-head-item-gap); row-gap: var(--mu-r-chart-head-key-gap); min-height: var(--mu-r-chart-head-swatch-width);
+}
+@utility chart-key {
+  display: inline-flex; align-items: center; gap: var(--mu-r-chart-head-key-gap); white-space: nowrap;
+}
+@utility chart-swatch {
+  flex: none; position: relative; display: inline-grid; place-items: center; width: var(--mu-r-chart-head-swatch-width); height: var(--mu-r-chart-head-swatch-height); & > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; } & > .mu-chart-dot { position: static; translate: none; } &[data-kind=bar] { width: var(--mu-r-chart-head-swatch-height); }
+}
+@utility chart-body {
+  display: grid; grid-template-columns: [y] max-content [plot] minmax(0, 1fr); grid-template-rows: [plot] var(--mu-chart-height, var(--mu-r-chart-plot-height)) [x] auto; column-gap: var(--mu-r-chart-axis-y-gap); row-gap: var(--mu-r-chart-axis-x-gap);
+}
+@utility chart-y {
+  grid-column: y; grid-row: plot; position: relative; margin-top: var(--mu-r-chart-plot-pad-top); margin-bottom: var(--mu-r-chart-plot-pad-bottom); & > span { position: absolute; right: 0; translate: 0 -50%; white-space: nowrap; } & > .mu-chart-ysize { position: static; display: block; visibility: hidden; height: 0; translate: none; }
+}
+@utility chart-plot {
+  grid-column: plot; grid-row: plot; position: relative; border-radius: var(--mu-r-chart-plot-radius); outline: none; touch-action: pan-y;
+}
+@utility chart-area {
+  position: absolute; inset: var(--mu-r-chart-plot-pad-top) var(--mu-r-chart-plot-pad-x) var(--mu-r-chart-plot-pad-bottom);
+}
+@utility chart-hair {
+  position: absolute; left: calc(var(--mu-r-chart-plot-pad-x) * -1); right: calc(var(--mu-r-chart-plot-pad-x) * -1); height: var(--mu-r-rule-self-thickness); translate: 0 -50%; box-shadow: inset 0 calc(var(--mu-r-rule-self-thickness) * -1) 0 var(--mu-rule); &[data-zero] { background: var(--mu-r-rule-self-background); box-shadow: 0 var(--mu-r-rule-self-thickness) 0 var(--mu-rule-lip); }
+}
+@utility chart-marks {
+  position: absolute; inset: 0; transform-origin: 50% var(--mu-chart-zero); &[data-arrive] { animation: mu-chart-in var(--mu-spring-settle-d) var(--mu-spring-settle) both; } & > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+}
+@utility chart-series {
+  color: var(--mu-ink); &[data-signal] { color: var(--mu-r-chart-signal-color); } [data-kind=bar] & { color: var(--mu-ink2); } [data-kind=bar] &[data-signal] { color: var(--mu-r-chart-signal-color); }
+}
+@utility chart-line {
+  fill: none; stroke: currentColor; stroke-width: var(--mu-r-chart-line-width); stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; [data-signal] & { stroke-width: var(--mu-r-chart-line-signal-width); } [data-pattern='1'] & { stroke-dasharray: var(--mu-r-chart-line-dash); } [data-pattern='2'] & { stroke-dasharray: var(--mu-r-chart-line-dot); } [data-pattern='3'] & { stroke-dasharray: var(--mu-r-chart-line-dashdot); }
+}
+@utility chart-wash {
+  fill: currentColor; stroke: none; opacity: var(--mu-r-chart-area-opacity);
+}
+@utility chart-bar {
+  position: absolute; border-radius: var(--mu-r-chart-bar-radius) var(--mu-r-chart-bar-radius) 0 0; background: currentColor; &[data-negative] { border-radius: 0 0 var(--mu-r-chart-bar-radius) var(--mu-r-chart-bar-radius); } [data-pattern='1'] & { background: repeating-linear-gradient(135deg, currentColor 0 calc(var(--mu-r-chart-bar-stroke) * 1), transparent 0 var(--mu-r-chart-bar-hatch)); box-shadow: inset 0 0 0 var(--mu-r-chart-bar-stroke) currentColor; } [data-pattern='2'] & { background: transparent; box-shadow: inset 0 0 0 var(--mu-r-chart-bar-stroke) currentColor; } [data-pattern='3'] & { background: radial-gradient(circle, currentColor calc(var(--mu-r-chart-bar-stroke) / 2 + 0.5px), transparent calc(var(--mu-r-chart-bar-stroke) / 2 + 1px)) center / var(--mu-r-chart-bar-hatch) var(--mu-r-chart-bar-hatch); box-shadow: inset 0 0 0 var(--mu-r-chart-bar-stroke) currentColor; }
+}
+@utility chart-cross {
+  position: absolute; inset: 0; pointer-events: none; translate: calc(var(--mu-chart-x, 0) * 100%) 0; opacity: 0; transition: translate var(--mu-spring-settle-d) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle); [data-active] > & { opacity: 1; } @media (prefers-reduced-motion: reduce) { & { transition-property: opacity; } } [data-mu-motion=reduce] & { transition-property: opacity; } & > .mu-chart-crossline { position: absolute; top: calc(var(--mu-r-chart-plot-pad-top) * -1); bottom: calc(var(--mu-r-chart-plot-pad-bottom) * -1); left: 0; width: var(--mu-r-chart-cross-width); translate: -50% 0; background: var(--mu-ink3); opacity: var(--mu-r-chart-cross-opacity); } & > .mu-chart-plate { position: absolute; top: calc(var(--mu-r-chart-plot-pad-top) * -0.5); bottom: 0; left: 0; width: calc(100% / var(--mu-chart-n, 1)); border-radius: var(--mu-r-chart-bar-radius); background: var(--mu-menu-row-hover); }
+}
+@utility chart-marker {
+  position: absolute; inset: 0; pointer-events: none; translate: calc(var(--mu-chart-x, 0) * 100%) calc(var(--mu-chart-y, 0) * 100%); transition: translate var(--mu-spring-settle-d) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-missing] { opacity: 0; } @media (prefers-reduced-motion: reduce) { & { transition-property: opacity; } } [data-mu-motion=reduce] & { transition-property: opacity; }
+}
+@utility chart-dot {
+  position: absolute; left: 0; top: 0; width: var(--mu-r-chart-marker-size); height: var(--mu-r-chart-marker-size); translate: -50% -50%; background: currentColor; border-radius: 50%; box-shadow: 0 0 0 var(--mu-r-chart-marker-ring) var(--mu-s-hi); &[data-shape=square] { border-radius: var(--mu-r-chart-marker-ring); } &[data-shape=diamond] { border-radius: var(--mu-r-chart-marker-ring); rotate: 45deg; scale: 0.85; } &[data-shape=ring] { background: var(--mu-s-hi); box-shadow: inset 0 0 0 var(--mu-r-chart-marker-ring) currentColor, 0 0 0 var(--mu-r-chart-marker-ring) var(--mu-s-hi); }
+}
+@utility chart-message {
+  position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: var(--mu-r-chart-head-key-gap); padding: var(--mu-r-chart-plot-pad-top) var(--mu-r-chart-plot-pad-x); text-align: center;
+}
+@utility chart-x {
+  grid-column: plot; grid-row: x; position: relative; margin-inline: var(--mu-r-chart-plot-pad-x); height: var(--mu-r-chart-axis-x-height); & > span { position: absolute; top: 0; translate: -50% 0; white-space: nowrap; }
+}
+@utility opacity-chart-axis-y-ticks {
+  opacity: var(--mu-r-chart-axis-y-ticks);
+}
+@utility stroke-width-chart-line-width {
+  stroke-width: var(--mu-r-chart-line-width);
+}
+@utility dash-chart-line-dash {
+  stroke-dasharray: var(--mu-r-chart-line-dash);
+}
+@utility opacity-chart-area-opacity {
+  opacity: var(--mu-r-chart-area-opacity);
+}
+@utility opacity-chart-bar-inset {
+  opacity: var(--mu-r-chart-bar-inset);
+}
+@utility stroke-width-chart-bar-stroke {
+  stroke-width: var(--mu-r-chart-bar-stroke);
+}
+@utility stroke-width-chart-cross-width {
+  stroke-width: var(--mu-r-chart-cross-width);
+}
+@utility opacity-chart-cross-opacity {
+  opacity: var(--mu-r-chart-cross-opacity);
 }
 @utility meter-lamp {
   position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity var(--mu-r-meter-lamp-fade) ease-out; transition-delay: calc(var(--mu-meter-step, 0) * var(--mu-r-meter-lamp-stagger) * var(--mu-travel-part)); [data-lit] > & { opacity: 1; }
@@ -4866,6 +4973,12 @@
 }
 @utility animate-stepper-in {
   animation: mu-stepper-in var(--mu-spring-settle-d) var(--mu-spring-settle) both;
+}
+@keyframes mu-chart-in {
+  from { opacity: 0; scale: 1 calc(1 - var(--mu-travel-settle)); } to { opacity: 1; scale: 1 1; }
+}
+@utility animate-chart-in {
+  animation: mu-chart-in var(--mu-spring-settle-d) var(--mu-spring-settle) both;
 }
 @keyframes mu-code-field-in {
   from { opacity: 0; scale: calc(1 - (1 - var(--mu-r-code-field-key-pop)) * var(--mu-travel-part)); }

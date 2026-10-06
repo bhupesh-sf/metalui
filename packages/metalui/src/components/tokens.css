@@ -1169,6 +1169,37 @@
   --mu-r-timeline-event-text-gap: 2px;
   --mu-r-timeline-event-when-gap: 6px;
   --mu-r-timeline-now-pad: 6px;
+  /* chart: the field well (recipe well, field); the rule recipe (the zero groove) and Table's row hairline; the readout type and the drum (motion/swap); the menu's row highlight (the bar plate); the sparkline's intent green for the signal series; Skeleton; the settle spring */
+  --mu-r-chart-plot-height: 200px;
+  --mu-r-chart-plot-radius: 12px;
+  --mu-r-chart-plot-pad-x: 12px;
+  --mu-r-chart-plot-pad-top: 14px;
+  --mu-r-chart-plot-pad-bottom: 10px;
+  --mu-r-chart-axis-y-gap: 8px;
+  --mu-r-chart-axis-x-gap: 6px;
+  --mu-r-chart-axis-x-min: 56px;
+  --mu-r-chart-axis-x-height: 14px;
+  --mu-r-chart-axis-y-ticks: 4;
+  --mu-r-chart-head-gap: 10px;
+  --mu-r-chart-head-item-gap: 16px;
+  --mu-r-chart-head-key-gap: 6px;
+  --mu-r-chart-head-swatch-width: 16px;
+  --mu-r-chart-head-swatch-height: 10px;
+  --mu-r-chart-line-width: 2px;
+  --mu-r-chart-line-signal-width: 2.5px;
+  --mu-r-chart-line-dash: 6 4;
+  --mu-r-chart-line-dot: 0.1 4;
+  --mu-r-chart-line-dashdot: 8 3 0.1 3;
+  --mu-r-chart-area-opacity: 0.08;
+  --mu-r-chart-bar-radius: 3px;
+  --mu-r-chart-bar-gap: 2px;
+  --mu-r-chart-bar-inset: 0.2;
+  --mu-r-chart-bar-stroke: 1.5px;
+  --mu-r-chart-bar-hatch: 4px;
+  --mu-r-chart-marker-size: 8px;
+  --mu-r-chart-marker-ring: 2px;
+  --mu-r-chart-cross-width: 1px;
+  --mu-r-chart-cross-opacity: 0.55;
   /* meter: the LED part (status recipe lamps); hardware level meters; Base UI Meter */
   --mu-r-meter-self-height: 10px;
   --mu-r-meter-self-gap: 2px;
@@ -2558,6 +2589,7 @@
     /* mu-recipe:checkbox:14 */ inset 0 0 0 1px rgba(40,38,32,.16),
     /* mu-recipe:checkbox:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
   --mu-r-tree-guide-lit: rgba(40,38,32,.26);
+  --mu-r-chart-signal-color: #2FB673;
   --mu-r-scroll-area-thumb-ink: rgba(27,27,29,.28);
   --mu-r-combobox-chip-background:
     /* mu-recipe:combobox:0 */ rgba(252,251,249,.7);
@@ -3169,6 +3201,7 @@
     /* mu-recipe:checkbox:16 */ inset 0 0 0 1px rgba(255,255,255,.18),
     /* mu-recipe:checkbox:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
   --mu-r-tree-guide-lit: rgba(255,255,255,.16);
+  --mu-r-chart-signal-color: #78D6A5;
   --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
   --mu-r-combobox-chip-background:
     /* mu-recipe:combobox:1 */ rgba(44,44,47,.7);
@@ -3781,6 +3814,7 @@
       inset 0 0 0 1px rgba(255,255,255,.18),
       inset 0 2px 4px -2px rgba(0,0,0,.4);
     --mu-r-tree-guide-lit: rgba(255,255,255,.16);
+    --mu-r-chart-signal-color: #78D6A5;
     --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
     --mu-r-combobox-chip-background:
       rgba(44,44,47,.7);

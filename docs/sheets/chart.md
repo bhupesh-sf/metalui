@@ -59,10 +59,10 @@ Not doing: a floating tooltip; an animated or looping chart (the draw-in plays o
 - **SwiftUI?** Swift Charts (`LineMark`, `AreaMark`, `BarMark`), dressed in the same recipe: the well, the hairlines, the patterns (dash, hatching via opacity, symbol shapes), the readout strip with `numericText`, and `chartXSelection` for the pointer.
 
 **Must**
-- [ ] React: `Chart` (`kind`, `categories`, `series`, `aria-label`, `format`, `zero`, `loading`, `empty`, `error`, `view`) with `ChartSeries` `{ id, label, values, signal }`.
-- [ ] Line, area, grouped bar; axes and hairlines; the readout with the crosshair and markers on pointer and keys; the summary and the table; loading, empty, missing, failed; responsive width; draw-in once.
-- [ ] SwiftUI `MetalChart` on Swift Charts with the same kinds, patterns, readout and states.
-- [ ] Recipe `chart`, agent guide, meta.json, the page with a usage trend, a category comparison and its DialKit panel, the e2e slice.
+- [x] React: `Chart` (`kind`, `categories`, `series`, `aria-label`, `format`, `zero`, `loading`, `empty`, `error`, `view`) with `ChartSeries` `{ id, label, values, signal }`.
+- [x] Line, area, grouped bar; axes and hairlines; the readout with the crosshair and markers on pointer and keys; the summary and the table; loading, empty, missing, failed; responsive width; draw-in once.
+- [x] SwiftUI `MetalChart` on Swift Charts with the same kinds, patterns, readout and states.
+- [x] Recipe `chart`, agent guide, meta.json, the page with a usage trend, a category comparison and its DialKit panel, the e2e slice.
 
 **Should**
 - [ ] Stacked bars and areas (a total and its parts).
@@ -72,3 +72,6 @@ Not doing: a floating tooltip; an animated or looping chart (the draw-in plays o
 - [ ] A legend that hides a series.
 - [ ] Zoom and brush.
 - [ ] Horizontal bars.
+
+
+- Done (2026-10-06): Must. 9.8 KB gzip for `Chart` alone (no charting dependency). The readout reads the latest point at rest and keeps its markers there; the crosshair and plate show only while pointing or focused. Draw-in plays on first show too (an arrival), never on later changes; under Reduce Motion it is the settle crossfade (opacity), no rise. Left: SwiftUI bars use tones of the ink instead of hatching (Swift Charts has no pattern fill) and thins x labels for a typical width, not its own; the Should and Later tiers.

@@ -257,6 +257,23 @@
       "agent": "https://metalui.dev/r/cascader.md"
     },
     {
+      "name": "chart",
+      "title": "Chart",
+      "status": "alpha",
+      "description": "An instrument's graph of a person's numbers: line, area or grouped bars on a sunk plot well with engraved hairlines and tabular axes, read off a readout over the plot (the values turning on the drum) that follows the pointer and the arrow keys, with a crosshair and markers or a plate at the point. Series differ by pattern and marker shape, one signal series in the intent green. Missing values break the line; loading shows skeleton bars, empty and failed say so in the well. Data rises from zero once when it arrives. A computed summary and the numbers as a table, shown with view=\"table\".",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Chart",
+        "base": "div role=group (aria-roledescription chart) over HTML and SVG marks; a table for the numbers"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalChart"
+      },
+      "registry": "https://metalui.dev/r/chart.json",
+      "agent": "https://metalui.dev/r/chart.md"
+    },
+    {
       "name": "checkbox",
       "title": "Checkbox",
       "status": "alpha",
