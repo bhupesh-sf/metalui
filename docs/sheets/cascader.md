@@ -36,18 +36,19 @@ It is composed. The well is the field's (`Field` sizes, rings and mini keys), th
 
 ## Must
 
-- [ ] `Cascader` with `items` (Tree's `{ id, label, icon?, children?, hasChildren?, disabled?, trail? }`), `value` / `defaultValue` / `onValueChange(id, path)`, `pick`, `loadChildren`, `size`, `placeholder`, `aria-label`, `invalid`, `disabled`, `limit`, `words`.
-- [ ] Columns, the trail's raised plates, the gliding highlight, the check, columns arriving from the right; Reduce Motion: they appear at once.
-- [ ] The path in the well, folded at the start when long; a clear key once there is a value.
-- [ ] Search across loaded levels with the path in a second line, matched letters, nothing matched.
-- [ ] The keys above with `aria-activedescendant`; each column a `listbox` named for its parent; a polite line says a column that opened ("Portugal, 5 items").
-- [ ] Lazy levels with the wait in the chevron's slot; a failed level's Try again column; Empty.
-- [ ] SwiftUI `MetalCascader` with the same items, columns, search, keys (macOS), loading and path.
+- [x] `Cascader` with `items` (Tree's `{ id, label, icon?, children?, hasChildren?, disabled?, trail? }`), `value` / `defaultValue` / `onValueChange(id, path)`, `pick`, `loadChildren`, `size`, `placeholder`, `aria-label`, `invalid`, `disabled`, `limit`, `words`.
+- [x] Columns, the trail's raised plates, the gliding highlight, the check, columns arriving from the right; Reduce Motion: they appear at once.
+- [x] The path in the well, folded at the start when long; a clear key once there is a value.
+- [x] Search across loaded levels with the path in a second line, matched letters, nothing matched.
+- [x] The keys above with `aria-activedescendant`; each column a `listbox` named for its parent; a polite line says a column that opened ("Portugal, 5 items").
+- [x] Lazy levels with the wait in the chevron's slot; a failed level's Try again column; Empty.
+- [x] SwiftUI `MetalCascader` with the same items, columns, search, keys (macOS), loading and path.
 
 ## Should
 
-- [ ] `layout="drill"` with Back.
-- [ ] `multiple` with cascading boxes, the covering set, chips, and `max`.
+- [x] `layout="drill"` with Back.
+- [x] `multiple` with cascading boxes, the covering set, chips, and `max`.
+- Done (2026-10-06): Must and Should, on Base UI Popover with the keys our own. Unticking inside a whole branch may split it past `max` (a removal is never refused). Left: Checkbox has no `mixed` prop (the dash passes Base UI's `indeterminate` through), the SwiftUI keys live on the popover's plate and are macOS only, no x-ray card.
 
 ## Later
 

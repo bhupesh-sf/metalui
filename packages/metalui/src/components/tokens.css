@@ -1200,6 +1200,11 @@
   --mu-r-combobox-button-min-width: 160px;
   --mu-r-combobox-button-max-width: 260px;
   --mu-r-combobox-button-plate: 260px;
+  /* cascader: the field well and mini keys (Field); the menu plate, rows and hairline (menuParts, ListGlide); Row's slots; the tree's disclosure (Tree.Disclosure) and the spinner's wait (useWait); the breadcrumbs' path and arrival; the combobox's matched letters, detail rows and chips; Checkbox at row size; Base UI Popover */
+  --mu-r-cascader-self-min-width: 220px;
+  --mu-r-cascader-self-max-rows: 8;
+  --mu-r-cascader-column-width: 200px;
+  --mu-r-cascader-path-gap: 4px;
   /* form-field: Base UI Field and Fieldset; the invalid foundation; the settle and release springs */
   --mu-r-form-field-self-gap: 6px;
   --mu-r-form-field-self-fieldset-gap: 16px;

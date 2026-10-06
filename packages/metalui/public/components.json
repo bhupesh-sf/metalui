@@ -223,6 +223,23 @@
       "agent": "https://metalui.dev/r/card.md"
     },
     {
+      "name": "cascader",
+      "title": "Cascader",
+      "status": "alpha",
+      "description": "A value chosen through nested levels (a category, a place, a folder): the field's well holding the chosen path, opening the menu's plate of Miller columns, one per level opened, with the trail through them raised and one gliding highlight. The search well at the top finds a name at any loaded depth and keeps the keys (→ in, ← back, ↩ chooses). Leaves only or any branch; levels that load in the chevron's slot, a failed one with Try again; one level at a time with Back for a narrow well; several values as a covering set with cascading checkboxes, chips and a max.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Cascader",
+        "base": "@base-ui/react/popover (the columns' keys are the cascader's own; Base UI has no cascader)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCascader"
+      },
+      "registry": "https://metalui.dev/r/cascader.json",
+      "agent": "https://metalui.dev/r/cascader.md"
+    },
+    {
       "name": "checkbox",
       "title": "Checkbox",
       "status": "alpha",

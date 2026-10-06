@@ -71,6 +71,7 @@ export { Collapsible, type CollapsibleRootProps, type CollapsibleTriggerProps, t
 export { Stepper, type StepperStep, type StepperOrientation, type StepperLayout, type StepperRootProps, type StepperListProps, type StepperPanelProps, type StepperBackProps, type StepperNextProps } from './components/stepper/stepper';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
 export { Combobox, type ComboboxProps, type ComboboxItem, type ComboboxGroup, type ComboboxAction } from './components/combobox/combobox';
+export { Cascader, type CascaderProps, type CascaderItem, type CascaderSize, type CascaderWords } from './components/cascader/cascader';
 export type { GlyphParts } from './icons/MorphIcon';
 export { Folder, type FolderProps, type FolderHue, type FolderPeek } from './components/folder/folder';
 export { LineHandles, type LineHandlesProps } from './components/line-handles/line-handles';

@@ -688,8 +688,8 @@ public struct MetalCombobox: View {
     }
 }
 
-/// Chips and the query, wrapping a line at a time.
-private struct MetalComboboxFlow: Layout {
+/// Chips and the query, wrapping a line at a time (the Cascader's chips use it too).
+struct MetalComboboxFlow: Layout {
     let spacing: Double
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {

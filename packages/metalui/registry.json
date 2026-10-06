@@ -456,6 +456,37 @@
       "docs": "Agent guide: https://metalui.dev/r/card.md. SwiftUI: MetalCard in the MetalUI Swift package."
     },
     {
+      "name": "cascader",
+      "type": "registry:ui",
+      "title": "Cascader",
+      "description": "A value chosen through nested levels (a category, a place, a folder): the field's well holding the chosen path, opening the menu's plate of Miller columns, one per level opened, with the trail through them raised and one gliding highlight. The search well at the top finds a name at any loaded depth and keeps the keys (→ in, ← back, ↩ chooses). Leaves only or any branch; levels that load in the chevron's slot, a failed one with Try again; one level at a time with Back for a narrow well; several values as a covering set with cascading checkboxes, chips and a max.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/checkbox.json",
+        "https://metalui.dev/r/chip.json",
+        "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/icon-morph.json",
+        "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/row.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tree.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/cascader/cascader.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/cascader/cascader.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/cascader.md. SwiftUI: MetalCascader in the MetalUI Swift package."
+    },
+    {
       "name": "checkbox",
       "type": "registry:ui",
       "title": "Checkbox",

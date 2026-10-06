@@ -49,6 +49,7 @@ export const routes: RouteObject[] = [
       { path: 'components/quick-edit', lazy: lazy(() => import('../pages/components/QuickEdit')) },
       { path: 'components/sortable', lazy: lazy(() => import('../pages/components/Sortable')) },
       { path: 'components/tree', lazy: lazy(() => import('../pages/components/Tree')) },
+      { path: 'components/cascader', lazy: lazy(() => import('../pages/components/Cascader')) },
       { path: 'components/popover', lazy: lazy(() => import('../pages/components/Popover')) },
       { path: 'components/alert-dialog', lazy: lazy(() => import('../pages/components/AlertDialog')) },
       { path: 'components/progress', lazy: lazy(() => import('../pages/components/Progress')) },
