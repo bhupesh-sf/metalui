@@ -73,7 +73,8 @@ test('track: dragging the bottom edge down deepens the groove on the specimen an
   await drag(page, card.getByRole('slider', { name: 'Depth' }), 0, 16, 0.15);
   expect(Number(await value(card, 'Depth').textContent())).toBeGreaterThan(start);
   expect(await style(benchGroove(xray), 'box-shadow')).not.toBe(bench);
-  expect(await computed(groove, 'box-shadow')).not.toBe(shadow);
+  // The groove's shadow rides a spring (box-shadow transition): read it as it settles, not on the release frame.
+  await expect.poll(() => computed(groove, 'box-shadow')).not.toBe(shadow);
 });
 
 test('move: the rims tune the spring the knob rides on the specimen and the bench; the knob still moves the value', async ({ page }) => {
