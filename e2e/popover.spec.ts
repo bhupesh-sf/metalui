@@ -83,3 +83,117 @@ test('Reduce Motion: a crossfade with no travel', async ({ page }) => {
   expect(first.translate).toMatch(/^(none|0px|0px 0px)$/);
   expect(first.scale).toMatch(/^(none|1)$/);
 });
+
+// The Rename: a Quick edit in the body (docs/BACKLOG.md "Popover: the Rename action").
+type Page = import('@playwright/test').Page;
+const plateOf = (page: Page) => page.getByRole('dialog', { name: 'Rename region' });
+const keyOf = (page: Page) => plateOf(page).locator('button[type=submit]');
+
+/** Commits by the form (as Enter does) and samples the key's glyph and drum on every frame. */
+async function commitAndWatch(page: Page, ms: number) {
+  return keyOf(page).evaluate(async (key, ms) => {
+    key.closest('form')!.requestSubmit();
+    const paths = new Set<string>();
+    let faces = 0;
+    const t0 = performance.now();
+    await new Promise<void>((done) => {
+      const frame = () => {
+        paths.add(key.querySelector('[data-glyph]')!.innerHTML);
+        faces = Math.max(faces, key.querySelectorAll('.mu-swap-layer').length);
+        if (performance.now() - t0 < ms) requestAnimationFrame(frame); else done();
+      };
+      requestAnimationFrame(frame);
+    });
+    return { paths: paths.size, faces, glyph: key.querySelector('[data-glyph]')!.getAttribute('data-glyph') };
+  }, ms);
+}
+
+for (const colorway of COLORWAYS) {
+  test(`Rename: selected on open, off until changed, Enter morphs pen to check and turns the drum, then Undo in ${colorway}`, async ({ page }) => {
+    await open(page, '/components/popover', colorway);
+    await trigger(page).click();
+    const field = plateOf(page).getByRole('textbox', { name: 'Region name' });
+    await expect(field).toBeFocused();
+    // The whole name is selected, so typing replaces it.
+    expect(await field.evaluate((el: HTMLInputElement) => [el.selectionStart, el.selectionEnd])).toEqual([0, 'Trip to Lisbon'.length]);
+    // The confirm leads with pen and is off while nothing changed; Enter does nothing.
+    await expect(keyOf(page)).toBeDisabled();
+    await expect(keyOf(page).locator('[data-glyph]')).toHaveAttribute('data-glyph', 'pen');
+    await expect(keyOf(page)).toHaveAccessibleName('Rename');
+    await page.keyboard.press('Enter');
+    await expect(plateOf(page)).toBeVisible();
+    await page.keyboard.type('Lisbon');
+    await expect(keyOf(page)).toBeEnabled();
+    await page.waitForTimeout(400);
+    await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`popover-rename-${colorway}`) });
+
+    // Enter: the glyph morphs (in-between frames) and the word turns on the drum (two faces at once).
+    const seen = await commitAndWatch(page, 500);
+    expect(seen.paths).toBeGreaterThan(3);
+    expect(seen.faces).toBeGreaterThan(1);
+    expect(seen.glyph).toBe('check');
+    await expect(keyOf(page)).toHaveAccessibleName('Renamed');
+    await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture(`popover-renamed-${colorway}`) });
+    // Then the plate closes after the hold, and the toast offers Undo.
+    await expect(plateOf(page)).toBeHidden();
+    await expect(page.getByText('Renamed to Lisbon')).toBeVisible();
+    await page.getByRole('button', { name: 'Undo' }).click();
+    await trigger(page).click();
+    await expect(plateOf(page).getByRole('textbox')).toHaveValue('Trip to Lisbon');
+  });
+}
+
+test('Rename: Escape cancels; empty and taken names are refused with the reason; ⌘Z undoes', async ({ page }) => {
+  await open(page, '/components/popover', 'bone');
+  await trigger(page).click();
+  const field = plateOf(page).getByRole('textbox');
+  await page.keyboard.type('Lisbon');
+  await page.keyboard.press('Escape');
+  await expect(plateOf(page)).toBeHidden();
+  await trigger(page).click();
+  await expect(field).toHaveValue('Trip to Lisbon');
+
+  // Empty: the key is off.
+  await page.keyboard.press('Backspace');
+  await expect(field).toHaveValue('');
+  await expect(keyOf(page)).toBeDisabled();
+
+  // Taken: the plate stays, the field is invalid and says why; fixing it clears the reason live.
+  await page.keyboard.type('Inbox');
+  await page.keyboard.press('Enter');
+  await expect(plateOf(page)).toBeVisible();
+  await expect(field).toHaveAttribute('aria-invalid', 'true');
+  await expect(plateOf(page).getByText('A region is already called Inbox.')).toBeVisible();
+  await page.waitForTimeout(500);
+  await page.locator('section', { hasText: 'Playground' }).first().screenshot({ path: capture('popover-rename-invalid') });
+  await page.keyboard.type(' zero');
+  await expect(field).not.toHaveAttribute('aria-invalid', 'true');
+  await expect(plateOf(page).getByText('A region is already called')).toBeHidden();
+
+  // Too long.
+  await field.fill('A region name that runs well past forty characters');
+  await page.keyboard.press('Enter');
+  await expect(plateOf(page).getByText('Keep it to 40 characters.')).toBeVisible();
+
+  // A good name lands; ⌘Z (focus back on the trigger, not in a field) undoes it.
+  await field.fill('Porto');
+  await page.keyboard.press('Enter');
+  await expect(plateOf(page)).toBeHidden();
+  await expect(page.getByText('Renamed to Porto')).toBeVisible();
+  await page.keyboard.press('ControlOrMeta+z');
+  await expect(page.getByText('Renamed to Porto')).toBeHidden();
+  await trigger(page).click();
+  await expect(field).toHaveValue('Trip to Lisbon');
+});
+
+test('Rename under Reduce Motion: the glyph and the word change in place', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '/components/popover', 'graphite');
+  await trigger(page).click();
+  await page.keyboard.type('Lisbon');
+  const seen = await commitAndWatch(page, 400);
+  expect(seen.paths).toBeLessThanOrEqual(2);
+  expect(seen.glyph).toBe('check');
+  await expect(keyOf(page)).toHaveAccessibleName('Renamed');
+  await expect(plateOf(page)).toBeHidden();
+});
