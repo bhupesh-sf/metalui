@@ -25,8 +25,13 @@ A question that must be answered before going on. React: `AlertDialog` from `@un
 | click outside | it stays | the plate shakes once on the refusal spring, one nest (6) aside |
 | Cancel or Esc | closes, nothing done | release spring |
 | confirm | runs, then closes | release spring |
+| confirm `hold`, pressed | the fill runs across the cap, the trash lid lifts with it | linear over the hold time (800 ms) |
+| confirm `hold`, let go early | nothing runs; "Hold to confirm" (`holdHint`) fades in under the actions, said once as a status | the fill drains on the release spring |
+| confirm `hold`, complete | the cap settles, the lid drops shut, it runs, then closes | object spring, then release |
 
-Reduce Motion: no shake; the rise is a crossfade.
+Reduce Motion: no shake; the rise is a crossfade; a hold's fill still runs, with no settle and no lid travel.
+
+Where the hold applies: only an act that can't be undone (deleting for good). A delete that goes to the past can be brought back, so its confirm stays a plain press (`hold` is off by default).
 
 ## API
 
@@ -36,6 +41,7 @@ Reduce Motion: no shake; the rise is a crossfade.
 | `AlertDialog.Popup`, `Title`, `Description`, `Actions` | `title:`, `message:` |
 | `AlertDialog.Cancel` (children: its label) | `cancel:` |
 | `AlertDialog.Confirm` `onClick`, `tone` (`destructive`, `primary`) | `confirm:`, `role: .destructive` |
+| `AlertDialog.Confirm` `hold`, `holdHint`, `icon` (a hold confirm leads with `TrashIcon`) | – (the system alert can't hold; use `MetalButton` `.metalHoldToConfirm` in your own sheet) |
 
 ## Keyboard and accessibility
 

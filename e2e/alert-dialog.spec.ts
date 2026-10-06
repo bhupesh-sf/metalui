@@ -8,7 +8,7 @@ for (const colorway of COLORWAYS) {
     await open(page, '/components/alert-dialog', colorway);
     const trigger = page.getByRole('button', { name: 'Delete 3 regions…' });
     await trigger.click();
-    const dialog = page.getByRole('alertdialog', { name: 'Delete 3 regions?' });
+    const dialog = page.getByRole('alertdialog', { name: 'Delete 3 regions for good?' });
     await expect(dialog).toBeVisible();
     await expect(dialog.getByRole('button', { name: 'Cancel' })).toBeFocused();
     await page.waitForTimeout(600);
@@ -22,17 +22,68 @@ for (const colorway of COLORWAYS) {
     await expect(dialog).toBeHidden();
     await expect(trigger).toBeFocused();
 
+    // Deleting for good is held: a click only shows the hint, once, under the actions.
     await trigger.click();
-    await dialog.getByRole('button', { name: 'Delete regions' }).click();
-    await expect(dialog).toBeHidden();
-    await expect(page.getByText('deleted · the regions are in the past')).toBeVisible();
+    const confirm = dialog.getByRole('button', { name: 'Delete regions' });
+    await expect(confirm).toHaveAccessibleDescription('Hold to delete');
+    await expect(confirm.locator('svg.mu-ic-trash')).toHaveCount(1);
+    await confirm.click();
+    await page.waitForTimeout(1000);
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator('.mu-alert-dialog-hint')).toBeVisible();
+    await expect(dialog.getByRole('status')).toHaveText('Hold to delete');
+
+    // Held to the end: the lid drops shut, the act runs, the dialog closes.
+    const box = (await confirm.boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await expect.poll(() => confirm.locator('[data-part="lid"]').evaluate((el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).b)).toBeLessThan(-0.05);
+    await page.screenshot({ path: capture(`alert-dialog-hold-${colorway}`) });
+    await expect(dialog).toBeHidden({ timeout: 3000 });
+    await page.mouse.up();
+    await expect(page.getByText('deleted for good · held to confirm')).toBeVisible();
+
+    // Asked again, the hint starts unsaid.
+    await trigger.click();
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator('.mu-alert-dialog-hint')).toHaveCount(0);
+    await page.keyboard.press('Escape');
   });
 }
+
+// A delete that goes to the past can be brought back: its confirm stays a plain press.
+test('an undoable delete confirms on a plain press', async ({ page }) => {
+  await open(page, '/components/alert-dialog', 'bone');
+  await page.getByRole('button', { name: 'Open, then click outside' }).click();
+  const dialog = page.getByRole('alertdialog', { name: 'Delete 3 regions?' });
+  await expect(dialog).toBeVisible();
+  const confirm = dialog.getByRole('button', { name: 'Delete regions' });
+  await expect(confirm).not.toHaveAttribute('data-hold', '');
+  await confirm.click();
+  await expect(dialog).toBeHidden();
+});
+
+test('Reduce Motion: holding Space confirms with the fill and no lid travel', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, '/components/alert-dialog', 'graphite');
+  await page.getByRole('button', { name: 'Delete 3 regions…' }).click();
+  const dialog = page.getByRole('alertdialog', { name: 'Delete 3 regions for good?' });
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press('Tab'); // Cancel → Delete regions
+  const confirm = dialog.getByRole('button', { name: 'Delete regions' });
+  await expect(confirm).toBeFocused();
+  await page.keyboard.down(' ');
+  await expect(confirm).toHaveAttribute('data-holding', '');
+  expect(await confirm.locator('svg').getAttribute('data-playing')).toBeNull();
+  await expect(dialog).toBeHidden({ timeout: 3000 });
+  await page.keyboard.up(' ');
+  await expect(page.getByText('deleted for good · held to confirm')).toBeVisible();
+});
 
 test('the refusal rings out against where the plate stands', async ({ page }) => {
   await open(page, '/components/alert-dialog', 'bone');
   await page.getByRole('button', { name: 'Delete 3 regions…' }).click();
-  const dialog = page.getByRole('alertdialog', { name: 'Delete 3 regions?' });
+  const dialog = page.getByRole('alertdialog', { name: 'Delete 3 regions for good?' });
   await expect(dialog).toBeVisible();
   await page.waitForTimeout(600);
   const xs = await dialog.evaluate(async (el) => {
@@ -55,7 +106,7 @@ test('Reduce Motion: a click outside does not shake', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await open(page, '/components/alert-dialog', 'graphite');
   await page.getByRole('button', { name: 'Delete 3 regions…' }).click();
-  const dialog = page.getByRole('alertdialog', { name: 'Delete 3 regions?' });
+  const dialog = page.getByRole('alertdialog', { name: 'Delete 3 regions for good?' });
   await expect(dialog).toBeVisible();
   const moved = await dialog.evaluate(async (el) => {
     document.querySelector('.mu-alert-dialog-scrim')!.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
