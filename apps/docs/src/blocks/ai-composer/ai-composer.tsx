@@ -375,6 +375,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
           <span aria-hidden className="type-meta text-ink3 @max-md:hidden">⇧↩ new line</span>
           <Button
             cap="primary"
+            size="compact"
             onClick={busy ? stop : send}
             disabled={!busy && empty}
             icon={<MorphIcon name={busy ? 'rectangle' : 'arrow'} />}

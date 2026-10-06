@@ -13,7 +13,7 @@ export type ButtonCap = 'standard' | 'primary' | 'destructive' | 'link' | 'graph
 
 export interface ButtonProps extends BaseButton.Props {
   cap?: ButtonCap;
-  /** default: 32 tall. compact: 26, 12 pt, raise-sm (the canvas pills: "seed a sample day", "lenses ⌘K"). The link, graphite and strip caps set their own size. */
+  /** default: 32 tall. compact: 28, 12 pt (the canvas pills: "seed a sample day", "lenses ⌘K"; a standard compact cap wears raise-sm and ink2, a primary or destructive one keeps its cap). The link, graphite and strip caps set their own size. */
   size?: 'default' | 'compact';
   /**
    * The action's glyph, placed before the label and sized by the cap (16 in a 32 cap or a strip, 14 in
@@ -41,14 +41,19 @@ const CAPS: Record<ButtonCap, string> = {
   strip: `gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-ink bg-transparent transition-button [&>svg]:size-button-strip-glyph hover:text-button-strip-ink-hover hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
   'strip-danger': `gap-button-gap h-button-strip-height px-button-strip-pad rounded-button-strip-radius type-button-strip text-button-strip-danger-ink bg-transparent transition-button [&>svg]:size-button-strip-glyph hover:recipe-button-strip-hover ${PRESS} not-data-disabled:active:recipe-button-strip-pressed focus-visible:outline-none focus-visible:recipe-button-strip-focus`,
 };
-const COMPACT = `gap-button-compact-gap h-button-compact-height px-button-compact-pad rounded-pill type-button-compact text-ink2 hover:text-ink recipe-button-compact transition-button-compact [&>svg]:size-button-compact-glyph ${PRESS} not-data-disabled:active:recipe-button-compact-pressed`;
+const COMPACT_SIZE = 'gap-button-compact-gap h-button-compact-height px-button-compact-pad rounded-pill type-button-compact [&>svg]:size-button-compact-glyph';
+const COMPACT: Partial<Record<ButtonCap, string>> = {
+  standard: `${COMPACT_SIZE} text-ink2 hover:text-ink recipe-button-compact transition-button-compact ${PRESS} not-data-disabled:active:recipe-button-compact-pressed`,
+  primary: `${COMPACT_SIZE} text-button-primary-ink recipe-button-primary transition-button ${PRESS} not-data-disabled:active:recipe-button-primary-pressed`,
+  destructive: `${COMPACT_SIZE} text-button-destructive-ink recipe-button-destructive transition-button ${PRESS} not-data-disabled:active:recipe-button-destructive-pressed`,
+};
 
 /** The cap's frame and regular size without its press, for keys that travel their own way (Toggle). */
 export const buttonParts = { FRAME, REGULAR } as const;
 
-/** The utilities for a cap and size: the caps that set their own size ignore `size`. */
+/** The utilities for a cap and size: the caps that set their own size (link, graphite, strip) ignore `size`. */
 export function buttonClasses(cap: ButtonCap = 'standard', size: 'default' | 'compact' = 'default') {
-  return `${FRAME} ${size === 'compact' && cap === 'standard' ? COMPACT : CAPS[cap]}`;
+  return `${FRAME} ${(size === 'compact' && COMPACT[cap]) || CAPS[cap]}`;
 }
 
 /**

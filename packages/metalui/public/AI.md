@@ -399,7 +399,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 - The **cap** is a 32px-tall pill: 15px horizontal padding, Geist 12.5 medium (the `ui` type role), tracking −0.005em.
 - The **icon** (`icon` prop) leads the label: 16 in the 32 cap, 6 before the label; 14 and 7 in the compact cap; 16 on a strip, 14 on graphite, 12 beside a link. The cap sizes it, so pass the glyph without a size.
 - The **label** is text: a verb, or a verb and its object.
-- **Compact** (`size="compact"`): 26 tall, 11 padding, 12 pt, a 14 glyph 7 before the label, the button fill on `raise-sm`, ink2 until hover. The canvas pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
+- **Compact** (`size="compact"`): 28 tall, 11 padding, 12 pt, a 14 glyph 7 before the label. A standard compact cap wears the button fill on `raise-sm`, ink2 until hover; a primary or destructive compact cap keeps its own fill (the composer's Send beside a compact Select). The canvas pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
 - The **press** moves the cap down 1px (50 ms, linear), and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
 
 ## Caps that set their own size
@@ -413,7 +413,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 | React prop | SwiftUI | Values | Default |
 |---|---|---|---|
 | `cap` | `cap:` | `standard`, `primary`, `destructive`, `link`, `graphite`, `strip`, `strip-danger` | `standard` |
-| `size` | `size:` | `default` (32), `compact` (26); ignored by the link, graphite and strip caps | `default` |
+| `size` | `size:` | `default` (32), `compact` (28); ignored by the link, graphite and strip caps | `default` |
 | `icon` | `icon:` (a `MetalIconName`), or the `icon:` view builder | a glyph element, such as `<ShareIcon />` or `<MorphIcon name=… />`; leads the label, sized by the cap (16, compact 14, strip 16, graphite 14, link 12) | – |
 | `disabled` | `.disabled(_:)` | boolean | `false` |
 | `focusableWhenDisabled` | – | boolean | `false` |

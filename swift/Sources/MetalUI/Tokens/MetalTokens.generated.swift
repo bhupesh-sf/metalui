@@ -1446,7 +1446,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The press-in pill button: raised, ink2 until hover; pressed sinks 1 into a well. Compact is the canvas pill (26 tall). (reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger, the object sheet primary and destructive caps)
+    /// The press-in pill button: raised, ink2 until hover; pressed sinks 1 into a well. Compact is the canvas pill (28 tall, on the height ladder). (reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger, the object sheet primary and destructive caps)
     public static let button = MetalObjectRecipe(
         name: "button",
         layers: [
@@ -1530,7 +1530,7 @@ public enum MetalRecipes {
             "self.focus-offset": .number(2.0),
             "self.disabled": .text("0.4"),
             "self.transition": .text("translate var(--mu-spring-release-d) var(--mu-spring-release), box-shadow var(--mu-r-button-self-fade), background var(--mu-r-button-self-fade), color var(--mu-r-button-self-fade)"),
-            "compact.height": .number(26.0),
+            "compact.height": .number(28.0),
             "compact.pad": .number(11.0),
             "compact.gap": .number(7.0),
             "compact.glyph": .number(14.0),

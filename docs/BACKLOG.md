@@ -314,7 +314,7 @@ Facts: browsers expose no trackpad haptics on a Mac, and iOS Safari has no vibra
 
 Building real screens shows what the components lack. Each was worked around inside the block; fix it in the library, then remove the workaround.
 
-- [ ] **Button**: `cap="primary"` ignores `size="compact"` (the AI composer's send key is 32 tall beside a 28 Select).
+- [x] **Button**: `cap="primary"` ignores `size="compact"` (the AI composer's send key is 32 tall beside a 28 Select). (Primary and destructive take the compact size and keep their cap, as SwiftUI already did.)
 - [x] **ScrollArea**: no way to reach the viewport or listen to scrolling (a `viewportRef` / `onScroll`); the AI composer finds `.mu-scroll-area-viewport` by class.
 - [ ] **Icons**: no `send`, `stop`, `attach`, `retry` glyphs (the composer uses arrow → rectangle, plus, redo); add them with the icons entry's D list.
 - [x] **Motion**: no exported helper for "is motion reduced here" that covers both the OS setting and the site's motion switch; blocks read `--mu-travel-settle === 0`. Export one (`useReducedMotion()` or `motionReduced(el)`).

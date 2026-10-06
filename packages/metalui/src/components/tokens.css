@@ -1354,7 +1354,7 @@
   --mu-r-button-self-focus-offset: 2px;
   --mu-r-button-self-disabled: 0.4;
   --mu-r-button-self-transition: translate var(--mu-spring-release-d) var(--mu-spring-release), box-shadow var(--mu-r-button-self-fade), background var(--mu-r-button-self-fade), color var(--mu-r-button-self-fade);
-  --mu-r-button-compact-height: 26px;
+  --mu-r-button-compact-height: 28px;
   --mu-r-button-compact-pad: 11px;
   --mu-r-button-compact-gap: 7px;
   --mu-r-button-compact-glyph: 14px;
