@@ -4797,6 +4797,85 @@ extension MetalIconAct {
             MetalIconActInk(d: "M20.2 2.9L20.2 4.5M19.4 3.7L21 3.7", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
             ]
         ),
+        .volumeLow: MetalIconAct(
+            duration: 0.505,
+            caption: "The speaker nudges and throws its one small wave out; it comes home.",
+            parts: [
+            MetalIconActPart(
+                name: "speaker", origin: CGPoint(x: 4.4, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.2772, x: -0.5, y: 0.0, r: 0.0, sx: 0.97, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.8812, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "near", origin: CGPoint(x: 13.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2772, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.396, x: 1.1, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M13 5.4L13 18.6L8.4 14.8L5.6 14.8C4.9373 14.8 4.4 14.2627 4.4 13.6L4.4 10.4C4.4 9.7373 4.9373 9.2 5.6 9.2L8.4 9.2Z", parts: [0], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
+            MetalIconActInk(d: "M14.61 9.71C15.3595 10.2338 15.8059 11.0906 15.8059 12.005C15.8059 12.9194 15.3595 13.7762 14.61 14.3", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            ]
+        ),
+        .volumeHigh: MetalIconAct(
+            duration: 0.933,
+            caption: "The speaker pumps and throws its two waves out; the far one lags and both come home.",
+            parts: [
+            MetalIconActPart(
+                name: "speaker", origin: CGPoint(x: 4.4, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1501, x: -0.8, y: 0.0, r: 0.0, sx: 0.95, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.477, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "near", origin: CGPoint(x: 13.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1501, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.2144, x: 0.8, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.5413, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "far", origin: CGPoint(x: 13.0, y: 12.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1501, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.2144, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.2358, x: 1.6, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6174, x: -0.1579, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M13 5.4L13 18.6L8.4 14.8L5.6 14.8C4.9373 14.8 4.4 14.2627 4.4 13.6L4.4 10.4C4.4 9.7373 4.9373 9.2 5.6 9.2L8.4 9.2Z", parts: [0], stroke: 1.0, fill: .duotone(0.14), opacity: 1.0),
+            MetalIconActInk(d: "M14.61 9.71C15.3595 10.2338 15.8059 11.0906 15.8059 12.005C15.8059 12.9194 15.3595 13.7762 14.61 14.3", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M16.21 7.41C17.7048 8.4582 18.5948 10.1693 18.5948 11.995C18.5948 13.8207 17.7048 15.5318 16.21 16.58", parts: [2], stroke: 1.0, fill: .none, opacity: 1.0),
+            ]
+        ),
         .folder: MetalIconAct(
             duration: 0.673,
             caption: "The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it.",

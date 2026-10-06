@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { DirectionProvider, Slider, Surface, type SliderOrientation, type SliderSize, type SliderTone } from '@unlocalhosted/metalui';
-import { SunIcon, ZoomInIcon, ZoomOutIcon } from '@unlocalhosted/metalui/icons';
+import { SunIcon, VolumeHighIcon, VolumeLowIcon, ZoomInIcon, ZoomOutIcon } from '@unlocalhosted/metalui/icons';
 import { SliderXray } from '../../ui/xray/SliderXray';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import type { SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
@@ -194,7 +194,7 @@ function States() {
     <Surface material="raise" radius="card" className={PLATE} style={plate(520)}>
       <div className={ROW}>
         <span className={NAME}>at the end</span>
-        <Slider aria-label="Volume, at the end" value={a} min={0} max={100} onValueChange={setA} showValue format={percent} />
+        <Slider aria-label="Volume, at the end" value={a} min={0} max={100} onValueChange={setA} startIcon={<VolumeLowIcon />} endIcon={<VolumeHighIcon />} showValue format={percent} />
       </div>
       <div className={ROW}>
         <span className={NAME}>disabled</span>

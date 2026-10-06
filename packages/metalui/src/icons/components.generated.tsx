@@ -149,6 +149,10 @@ export const CoinIcon = /* @__PURE__ */ glyphIcon(glyphs.coinGlyph, "CoinIcon");
 export const SunIcon = /* @__PURE__ */ glyphIcon(glyphs.sunGlyph, "SunIcon");
 /** Dark · Night. Hover: The crescent is tipped back and rocks home like a cradle; its star brightens and a second one twinkles out.. Press: plays the same act. */
 export const MoonIcon = /* @__PURE__ */ glyphIcon(glyphs.moonGlyph, "MoonIcon");
+/** Volume low · Quiet. Hover: The speaker nudges and throws its one small wave out; it comes home.. Press: plays the same act. */
+export const VolumeLowIcon = /* @__PURE__ */ glyphIcon(glyphs.volumeLowGlyph, "VolumeLowIcon");
+/** Volume high · Loud. Hover: The speaker pumps and throws its two waves out; the far one lags and both come home.. Press: plays the same act. */
+export const VolumeHighIcon = /* @__PURE__ */ glyphIcon(glyphs.volumeHighGlyph, "VolumeHighIcon");
 /** Folder. Hover: The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it.. Press: plays the same act. */
 export const FolderIcon = /* @__PURE__ */ glyphIcon(glyphs.folderGlyph, "FolderIcon");
 /** Folder open. Hover: A page is lifted out of the open folder, the front tipping further to let it out, and put back.. Press: plays the same act. */

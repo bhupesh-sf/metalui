@@ -1810,6 +1810,53 @@ export const moonGlyph = {
 } satisfies IconRecord;
 
 /* ─────────────────────────────────────────────────────────
+ * VOLUME LOW · QUIET · Tools · one act, 505ms
+ *
+ * Draw back → Nudge → Throw
+ *          The speaker nudges and throws its one small wave out; it comes home.
+ *  speaker    0 → 140 → 445 → 505ms
+ *  near       0 → 140 → 200 → 505ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const volumeLowGlyph = {
+  name: "volume-low",
+  label: "Volume low · Quiet",
+  category: "Tools",
+  hover: "The speaker nudges and throws its one small wave out; it comes home.",
+  press: "plays the same act",
+  pressMs: 505,
+  defs: "",
+  body: "<g data-part=\"speaker\"><path class=\"f\" style=\"--duo:.14\" d=\"M13 5.4v13.2l-4.6-3.8H5.6a1.2 1.2 0 0 1-1.2-1.2v-3.2a1.2 1.2 0 0 1 1.2-1.2h2.8Z\"/></g><g data-part=\"near\"><path d=\"M14.61 9.71a2.8 2.8 0 0 1 0 4.59\"/></g>",
+  sw16: 1.85,
+  motion: {"duration":505,"caption":"The speaker nudges and throws its one small wave out; it comes home.","stages":["Draw back","Nudge","Throw"],"tracks":[{"part":"speaker","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27723,"transform":"translate(-0.5px,0px) rotate(0deg) scale(0.97,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.88119,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"near","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.27723,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.39604,"transform":"translate(1.1px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+} satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
+ * VOLUME HIGH · LOUD · Tools · one act, 933ms
+ *
+ * Draw back → Pump → Throw
+ *          The speaker pumps and throws its two waves out; the far one lags and both come home.
+ *  speaker    0 → 140 → 445 → 933ms
+ *  near       0 → 140 → 200 → 505 → 933ms
+ *  far        0 → 140 → 200 → 220 → 576 → 933ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const volumeHighGlyph = {
+  name: "volume-high",
+  label: "Volume high · Loud",
+  category: "Tools",
+  hover: "The speaker pumps and throws its two waves out; the far one lags and both come home.",
+  press: "plays the same act",
+  pressMs: 933,
+  defs: "",
+  body: "<g data-part=\"speaker\"><path class=\"f\" style=\"--duo:.14\" d=\"M13 5.4v13.2l-4.6-3.8H5.6a1.2 1.2 0 0 1-1.2-1.2v-3.2a1.2 1.2 0 0 1 1.2-1.2h2.8Z\"/></g><g data-part=\"near\"><path d=\"M14.61 9.71a2.8 2.8 0 0 1 0 4.59\"/></g><g data-part=\"far\"><path d=\"M16.21 7.41a5.6 5.6 0 0 1 0 9.17\"/></g>",
+  sw16: 1.85,
+  motion: {"duration":933,"caption":"The speaker pumps and throws its two waves out; the far one lags and both come home.","stages":["Draw back","Pump","Throw"],"tracks":[{"part":"speaker","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.15005,"transform":"translate(-0.8px,0px) rotate(0deg) scale(0.95,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.47696,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"near","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.15005,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.21436,"transform":"translate(0.8px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.54126,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"far","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.15005,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.21436,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.2358,"transform":"translate(1.6px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.61736,"transform":"translate(-0.1579px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]}]},
+} satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
  * FOLDER · Tools · one act, 673ms
  *
  * Tip open → Drop → Settle

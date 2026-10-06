@@ -5421,7 +5421,7 @@ A value on a track. React: `Slider` from `@unlocalhosted/metalui`, on Base UI Sl
 - One travel: the groove is the full width; the knob's centre travels half a knob in from each end, so at the minimum and the maximum the knob sits flush inside the groove's rounded ends, never past them. The fill runs to the knob's centre, and marks and ticks sit on the same travel, so a tick, the fill's end and the knob line up at every value.
 - Marks: notches cut across the groove (2 wide, the groove's full height), for steps, detents or moments. Only where there is a step or an event: never loose decoration.
 - Ticks: a short line a gap under the groove and its label under that, in the meta type (11) at ink2, so labels read at 4.5:1 or better on the surface in both colorways. A host that engraves its own scale (the time scrubber) passes its own `Label` node, and in SwiftUI `tickStyle: .engraved`. With `ticks`, the slider reserves room for them below.
-- Glyphs (optional): `startIcon` and `endIcon` at ink2, 14 / 16 / 18, a gap from the groove. Each plays its act when the value arrives at its end. They are decorative; the knob carries the name and value.
+- Glyphs (optional): `startIcon` and `endIcon` at ink2, 14 / 16 / 18, a gap from the groove. Each plays its act when the value arrives at its end. For volume, `VolumeLowIcon` and `VolumeHighIcon` (`.volumeLow`, `.volumeHigh`); for brightness, `SunIcon` at the end. They are decorative; the knob carries the name and value.
 - Value (optional): `showValue` writes the value beside the groove in the figure type with `format`. It keeps the width of its widest value (every step when there are 24 or fewer, else the two ends), so the groove never moves as it changes; the digits turn on the drum.
 - Width: full width of its container by default; `width` sets it (a number is px, a string any CSS length). SwiftUI: frame it as any view; it fills the width it is given.
 - Put the slider on a plain surface (a panel, a card) or give it clear space: a busy or dotted backdrop never runs through its labels.
@@ -7316,7 +7316,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 76 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 78 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -7407,6 +7407,8 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `CoinIcon` | `coin` | Tools | The coin is flipped: tossed up, turned edge-on at the top, and it lands on its edge with a clink. | plays the same act |
 | `SunIcon` | `sun` | Tools | The disc gathers itself and swells back, flaring its rays out; they come home. | plays the same act |
 | `MoonIcon` | `moon` | Tools | The crescent is tipped back and rocks home like a cradle; its star brightens and a second one twinkles out. | plays the same act |
+| `VolumeLowIcon` | `volume-low` | Tools | The speaker nudges and throws its one small wave out; it comes home. | plays the same act |
+| `VolumeHighIcon` | `volume-high` | Tools | The speaker pumps and throws its two waves out; the far one lags and both come home. | plays the same act |
 | `FolderIcon` | `folder` | Tools | The front is tipped open about its hinge, a page showing inside, and drops shut; the back takes it. | plays the same act |
 | `FolderOpenIcon` | `folder-open` | Tools | A page is lifted out of the open folder, the front tipping further to let it out, and put back. | plays the same act |
 | `SidebarIcon` | `sidebar` | Actions | The rail's edge is slid shut over its rows and springs back open; the rows come back behind it. | plays the same act |
