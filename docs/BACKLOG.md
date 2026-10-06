@@ -495,21 +495,22 @@ Decide: name the frame `Card.Frame`, `CardTray` or `Frame`?
 
 Now: `Field` (Root, Icon, Input, Trail) in large / regular / compact and two tones; `FormField` (label, description, error) whose error row grows open; `Fieldset`, `Form`. No prefix or suffix, side-by-side labels, required marker or readback. SwiftUI has no `MetalField` (meta.json points at a missing file), and `MetalFormField` is a plain stack.
 
-- [ ] **SwiftUI first**: write `MetalField` (the well, the sizes, the caret) and a real `MetalFormField` (the error row's motion, `Fieldset`).
-- [ ] **Fixed parts of the value** (shadcn input group, Geist prefixes): `Field.Prefix` / `Field.Suffix` ("https://", ".com", "$"), engraved in ink3 inside the well, not selectable, not part of the value; pressing them puts the caret in the input.
+- [x] **SwiftUI first**: write `MetalField` (the well, the sizes, the caret) and a real `MetalFormField` (the error row's motion, `Fieldset`).
+- [x] **Fixed parts of the value** (shadcn input group, Geist prefixes): `Field.Prefix` / `Field.Suffix` ("https://", ".com", "$"), engraved in ink3 inside the well, not selectable, not part of the value; pressing them puts the caret in the input.
 - [ ] **Keys inside the field** (shadcn addons): `Trail` holds mini keys with a documented set: clear (`close`), copy (`copy` → `check`, a morph), show password (`eye` → `eye-off`, glyphs still to draw), and a working ring.
-- [ ] **A shortcut hint that knows** (Geist): a ⌘K keycap in the trail that turns on the drum to "Esc" while the field is active; Esc clears.
-- [ ] **Errors at the right moment** (Geist, Raycast, HIG): the default checks on blur and clears the error as you change the value; documented as the rule. A remote check that passed ("name available") shows `check` acting in the trail; ordinary valid fields show nothing.
-- [ ] **Labels beside the field** (shadcn orientation): `FormField` `orientation` vertical / horizontal, horizontal turning vertical when its block is narrow (the `@container/block` rule).
-- [ ] **Required or optional**: mark the minority: "Optional" in ink3 after the label when most are required, or a required dot when most are optional; never both.
-- [ ] **Changed** (*ours*): a small engraved mark before the label of a field changed since it was saved (and Number field's "off its default"), so you can review what you touched before saving; Settings uses it.
-- [ ] **Readback** (*ours*, after Things and synth value screens): `FormField.Readback`: a line under the field in the readout type, turning on the drum, saying what was understood ("Tue 8 Oct, 08:00", "= 96"); for dates in words, expressions and units.
-- [ ] **A counter** (shadcn addon counter): `Field` gets Textarea's counter (`maxLength`, `countFrom`), the same look.
-- [ ] **Sized to what goes in** (HIG): `chars` sets a field's width to an expected length (a postcode, a year), so the box says how much to type.
+- [x] **A shortcut hint that knows** (Geist): a ⌘K keycap in the trail that turns on the drum to "Esc" while the field is active; Esc clears.
+- [x] **Errors at the right moment** (Geist, Raycast, HIG): the default checks on blur and clears the error as you change the value; documented as the rule. A remote check that passed ("name available") shows `check` acting in the trail; ordinary valid fields show nothing.
+- [x] **Labels beside the field** (shadcn orientation): `FormField` `orientation` vertical / horizontal, horizontal turning vertical when its block is narrow (the `@container/block` rule).
+- [x] **Required or optional**: mark the minority: "Optional" in ink3 after the label when most are required, or a required dot when most are optional; never both.
+- [x] **Changed** (*ours*): a small engraved mark before the label of a field changed since it was saved (and Number field's "off its default"), so you can review what you touched before saving; Settings uses it.
+- [x] **Readback** (*ours*, after Things and synth value screens): `FormField.Readback`: a line under the field in the readout type, turning on the drum, saying what was understood ("Tue 8 Oct, 08:00", "= 96"); for dates in words, expressions and units.
+- [x] **A counter** (shadcn addon counter): `Field` gets Textarea's counter (`maxLength`, `countFrom`), the same look.
+- [x] **Sized to what goes in** (HIG): `chars` sets a field's width to an expected length (a postcode, a year), so the box says how much to type.
 
 Not doing: prefix and suffix printed outside the well (they break the column of wells in a form); a green LED on every valid field (noise; only a remote check earns a confirmation); addons above and below the input (Textarea's toolbar belongs to Textarea). One box per character (OTP) is its own component in section 2; take its keycap slots from there.
 
 Decide: is `chars` worth it, or is a width class enough?
+- Done (2026-10-06): `MetalField`, `MetalFieldset` and a real `MetalFormField`; `Field.Prefix`/`Suffix`, `Field.Key`/`Clear`/`Check`, `Field.Shortcut`; validate on blur; `orientation` (its own `@container/form-field`, stacking under 400); `FormField.Label mark`; `ChangedMark` and `FormField.Readback` exported for reuse; the counter and `chars` (kept: a class can't say "a postcode is 8"). Left: the copy and show-password keys (`Field.Key` with `MorphIcon`, now that the glyphs exist); Number field, Table and Settings adopt `ChangedMark`.
 
 ## Components other libraries ship that we don't
 
