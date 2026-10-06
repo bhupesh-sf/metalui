@@ -1918,6 +1918,20 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Table in grid mode: cells are targets, so a hairline parts each cell from the next (the rule, the same 1 as the rows' hairlines), head included. One cell holds focus: a ring active.width wide in the focus colour, inside the cell. A range of cells takes range.tint (the selected rows' green, a step stronger). Editing, the cell's editor (a compact Field, NumberField inspector or Select) stands in the cell, editor.inset from its sides. Saving, the cell's content dims to saving.dim (opacity, on the settle spring) until the save lands; a failed save puts the old value back, the cell shakes once (refusal) and a red ring the focus ring's width holds until it is edited again. Reorderable columns: Sortable's grip (the knurl) over each header's start padding, shown on hover and focus (opacity, settle; always on touch); the lifted header rises onto the raised surface's plate and shadow while the headers glide (the rows' motion). The body's cells follow at once. Reduce Motion: no shake; Sortable's own. (the table recipe (rows, rule, frost); the focus ring's colour; the table's select tint; Field, NumberField and Select (compact) as editors; Sortable's grip and the raised surface (recipe surface raise) for a lifted header; the refusal and settle springs)
+    public static let dataGrid = MetalObjectRecipe(
+        name: "data-grid",
+        layers: [
+
+        ],
+        props: [
+            "active.width": .number(2.0),
+            "range.tint": .perColorway(bone: "rgba(63,185,122,.12)", graphite: "rgba(63,185,122,.18)"),
+            "editor.inset": .number(4.0),
+            "saving.dim": .number(0.55),
+        ]
+    )
+
     /// Label and value pairs (a dl): a receipt, a details panel, a spec sheet. Engraved labels in a column that fits the longest, values in ui type in ink beside them, each pair parted by the rule's hairline; regular (pairs at least 32 tall) or compact (24). Values take the table's cell looks when the host passes a table cell. Narrower than 280 the label stands above its value. Nothing moves. (the label's engraving; the rule; the table's cell looks)
     public static let properties = MetalObjectRecipe(
         name: "properties",

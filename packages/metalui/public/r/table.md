@@ -15,6 +15,7 @@ Rows of a person's things, read across and compared down. React: `Table` (and `T
 ## Don't use it for
 
 - One thing's details (use `Properties`), layout (use a grid), or a handful of things (use cards).
+- Cells a person edits, walks with the arrows, or copies and pastes as ranges (a price list, a bulk edit): use `DataGrid`, which is this table in grid mode.
 
 ## Anatomy
 
@@ -112,7 +113,7 @@ Reduce Motion: rows jump to their places, land, open and leave at once; the arro
 | kind `check`, column `onCheckedChange` | `.check`, `MetalTableColumn(check:…, onChange:)` |
 | `live` | `live:` |
 | `expandRow` | `detail:` (returns `AnyView`) |
-| `columnsMenu`, `resizable`, `columnsState`, `defaultColumnsState`, `onColumnsChange` | `columnsState:` binding (`MetalTableColumnsState`), `columnsMenu:`, `resizable:` |
+| `columnsMenu`, `resizable`, `columnsState` (`hidden`, `widths`, `order`), `defaultColumnsState`, `onColumnsChange` | `columnsState:` binding (`MetalTableColumnsState`), `columnsMenu:`, `resizable:` |
 | `childRows`, `hasChildRows`, `loadChildRows`, `expandedRows`, `defaultExpandedRows`, `onExpandedRowsChange` | `children:`, `hasChildren:`, `loadChildren:` (async throws), `expandedRows:` binding |
 | `virtual` | lazy rows in a `maxHeight` table (always) |
 | `hasMore`, `loadMore` (a promise) | `hasMore:`, `loadMore:` (async throws) |
