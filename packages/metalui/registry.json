@@ -769,6 +769,27 @@
       "docs": "Agent guide: https://metalui.dev/r/command-palette.md. SwiftUI: MetalCommandPalette, MetalCommandPaletteItem in the MetalUI Swift package."
     },
     {
+      "name": "confirmation",
+      "type": "registry:ui",
+      "title": "Confirmation",
+      "description": "The agent asks before it acts: an urgent alert with the question, what will happen, and Deny then Allow (held to confirm when it can't be undone). Once answered it recedes to a quiet record of what was decided, kept in the thread.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/alert.json",
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/confirmation/confirmation.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/confirmation/confirmation.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/confirmation.md. SwiftUI: MetalConfirmation in the MetalUI Swift package."
+    },
+    {
       "name": "connector",
       "type": "registry:ui",
       "title": "Connector",
@@ -1749,6 +1770,29 @@
       "docs": "Agent guide: https://metalui.dev/r/rating.md. SwiftUI: MetalRating in the MetalUI Swift package."
     },
     {
+      "name": "reasoning",
+      "type": "registry:ui",
+      "title": "Reasoning",
+      "description": "The assistant's thinking inside its reply: open while it streams, the amber lamp breathing beside \"Thinking\"; folded when the answer starts, the words turning to \"Thought for 4 s\". Once the person presses it, it stays as they left it. Holds the thought, or the agent's steps as a Timeline.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/collapsible.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/reasoning/reasoning.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/reasoning/reasoning.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/reasoning.md. SwiftUI: MetalReasoning in the MetalUI Swift package."
+    },
+    {
       "name": "region",
       "type": "registry:ui",
       "title": "Region",
@@ -2489,6 +2533,31 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/toggle.md. SwiftUI: MetalToggle in the MetalUI Swift package."
+    },
+    {
+      "name": "tool-call",
+      "type": "registry:ui",
+      "title": "Tool call",
+      "description": "One thing an agent did, folded by default: the tool's name, a lamp and a word for queued, running, done or failed, a summary; open, its input as label and value pairs and its result in a sunk well, or the error, or the tool's own UI. Consecutive calls fold under one group row.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/collapsible.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/properties.json",
+        "https://metalui.dev/r/spinner.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/tool-call/tool-call.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/tool-call/tool-call.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/tool-call.md. SwiftUI: MetalToolCall in the MetalUI Swift package."
     },
     {
       "name": "tool-strip",

@@ -1,0 +1,20 @@
+{
+  "name": "confirmation",
+  "title": "Confirmation",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["alert", "button"],
+  "description": "The agent asks before it acts: an urgent alert with the question, what will happen, and Deny then Allow (held to confirm when it can't be undone). Once answered it recedes to a quiet record of what was decided, kept in the thread.",
+  "base": "none (an Alert: role alert while asking, status once decided)",
+  "react": {
+    "export": "Confirmation",
+    "files": ["confirmation.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalConfirmation",
+    "file": "swift/Sources/MetalUI/Components/MetalConfirmation.swift"
+  },
+  "agent": "confirmation.agent.md",
+  "page": "/components/confirmation"
+}

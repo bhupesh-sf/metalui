@@ -82,31 +82,11 @@ public struct MetalCollapsible<Content: View>: View {
     }
 
     private var row: some View {
-        let t = colorway.tokens
-        let shape = RoundedRectangle(cornerRadius: recipe.points("row.radius"), style: .continuous)
-        return Button { toggle($isOpen, reduceMotion: reduceMotion) } label: {
-            HStack(spacing: recipe.points("row.gap")) {
-                Text(title ?? "").font(.metal(MetalType.ui)).tracking(MetalType.ui.trackingPoints)
-                    .foregroundColor(t.ink.color).lineLimit(1)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                if let summary {
-                    Text(summary).font(.metal(MetalType.meta)).foregroundColor(t.ink3.color).lineLimit(1)
-                        .opacity(isOpen ? .zero : .one)
-                        .metalAnimation(.settle, value: isOpen)
-                }
-                MetalCollapsibleChevron(isOpen: isOpen, closed: recipe.degrees("chevron.closed"), open: .zero)
-            }
-            .padding(.horizontal, recipe.points("row.pad-x"))
-            .frame(height: recipe.points("row.height"))
-            .metalObjectRecipe(MetalRecipes.row, part: "panel", state: hovering && isEnabled ? "hover" : nil, in: shape)
-            .contentShape(shape)
+        MetalCollapsibleRow(isOpen: $isOpen, summary: summary) {
+            Text(title ?? "").font(.metal(MetalType.ui)).tracking(MetalType.ui.trackingPoints)
+                .foregroundColor(colorway.tokens.ink.color).lineLimit(1)
         }
-        .buttonStyle(.plain)
-        // The hover plate hangs past the column, so the title lines up with the content.
-        .padding(.horizontal, -recipe.points("row.pad-x"))
-        .onHover { hovering = $0 }
         .accessibilityLabel([title, isOpen ? nil : summary].compactMap { $0 }.joined(separator: ", "))
-        .accessibilityValue(isOpen ? "expanded" : "collapsed")
     }
 
     private func moreKey(_ more: MetalCollapsibleMore) -> some View {
@@ -159,6 +139,48 @@ public struct MetalCollapsibleKey: View {
     }
 
     @Environment(\.isEnabled) private var isEnabled
+}
+
+/// The row: a label of the host's (React's Trigger children), the summary while closed and the chevron; the
+/// hover plate hangs past the column. Reasoning and Tool call put their lamp and words in the label.
+struct MetalCollapsibleRow<Label: View>: View {
+    @Binding var isOpen: Bool
+    var summary: String? = nil
+    var onPress: (() -> Void)? = nil
+    @ViewBuilder let label: Label
+
+    @Environment(\.metalColorway) private var colorway
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var hovering = false
+
+    var body: some View {
+        let recipe = MetalRecipes.collapsible
+        let shape = RoundedRectangle(cornerRadius: recipe.points("row.radius"), style: .continuous)
+        Button {
+            onPress?()
+            toggle($isOpen, reduceMotion: reduceMotion)
+        } label: {
+            HStack(spacing: recipe.points("row.gap")) {
+                label.frame(maxWidth: .infinity, alignment: .leading)
+                if let summary {
+                    Text(summary).font(.metal(MetalType.meta)).foregroundColor(colorway.tokens.ink3.color).lineLimit(1)
+                        .opacity(isOpen ? .zero : .one)
+                        .metalAnimation(.settle, value: isOpen)
+                }
+                MetalCollapsibleChevron(isOpen: isOpen, closed: recipe.degrees("chevron.closed"), open: .zero)
+            }
+            .padding(.horizontal, recipe.points("row.pad-x"))
+            .frame(height: recipe.points("row.height"))
+            .metalObjectRecipe(MetalRecipes.row, part: "panel", state: hovering && isEnabled ? "hover" : nil, in: shape)
+            .contentShape(shape)
+        }
+        .buttonStyle(.plain)
+        // The hover plate hangs past the column, so the title lines up with the content.
+        .padding(.horizontal, -recipe.points("row.pad-x"))
+        .onHover { hovering = $0 }
+        .accessibilityValue(isOpen ? "expanded" : "collapsed")
+    }
 }
 
 /// What opens: uncovered from its top edge as it slides out on the settle spring; it slides back on

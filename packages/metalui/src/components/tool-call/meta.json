@@ -1,0 +1,23 @@
+{
+  "name": "tool-call",
+  "title": "Tool call",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["collapsible", "led", "properties", "spinner"],
+  "description": "One thing an agent did, folded by default: the tool's name, a lamp and a word for queued, running, done or failed, a summary; open, its input as label and value pairs and its result in a sunk well, or the error, or the tool's own UI. Consecutive calls fold under one group row.",
+  "base": "@base-ui/react/collapsible (through Collapsible)",
+  "react": {
+    "export": "ToolCall",
+    "files": ["tool-call.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalToolCall",
+    "file": "swift/Sources/MetalUI/Components/MetalToolCall.swift"
+  },
+  "slots": {
+    "ToolCall": ["Root", "Group"]
+  },
+  "agent": "tool-call.agent.md",
+  "page": "/components/tool-call"
+}

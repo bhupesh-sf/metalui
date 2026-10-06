@@ -1143,6 +1143,50 @@ public enum MetalRecipes {
         ]
     )
 
+    /// The assistant's thinking inside its reply (an Object: it stands for something the assistant produced, and stays). A collapsible row (the collapsible recipe's row) with the lamp and its words: while it streams the amber lamp breathes, the row says Thinking and the fold is open, the thought arriving in it; when the answer starts the fold shuts on the release spring and the words turn on the drum to Thought for 4 s beside the off lamp. Once the person presses the row it stays as they left it. The thought sits in body type, ink2, beside an engraved rule at the start, indented from it: the answer's margin, not the answer. Steps (a Timeline) can stand in its place. Reduce Motion: the fold crossfades; the lamp holds steady; the drum changes in place. (the collapsible (row, reveal, travel); the LED part and its gestures; SwapText (the drum); the rule; Timeline for steps)
+    public static let reasoning = MetalObjectRecipe(
+        name: "reasoning",
+        layers: [
+
+        ],
+        props: [
+            "row.gap": .number(8.0),
+            "panel.indent": .number(12.0),
+            "panel.pad-y": .number(6.0),
+        ]
+    )
+
+    /// One thing the agent did (an Object: it stands for the call, what it was given and what came back, and stays as the record). A collapsible row, folded by default: the lamp, the tool's name in code type, the state's word on the drum, a summary in ink3 that fades as it opens. Queued is the amber lamp and Queued; running the Spinner's ring after the show delay and Running, busy, said once when it ends; done the off lamp and how long it took; failed the red lamp, blinking twice when it fails on screen, and Failed. The panel holds Input (compact properties, objects as JSON) and Result (text in the field's sunk well in code type, scrolling past its height) or the error in the error ink; a tool with its own UI fills the panel instead. Consecutive calls fold under one group row (the host's lamp and words, "4 tools") beside an engraved rule, as the reasoning's thought. Reduce Motion: the fold crossfades; the lamp holds steady. (the collapsible (row, reveal, travel); the LED part; the spinner and the wait timing (useWait); the properties part (compact); the field well; SwapText; the rule)
+    public static let toolCall = MetalObjectRecipe(
+        name: "tool-call",
+        layers: [
+
+        ],
+        props: [
+            "row.gap": .number(8.0),
+            "panel.gap": .number(10.0),
+            "panel.pad-y": .number(6.0),
+            "section.gap": .number(4.0),
+            "result.pad-x": .number(10.0),
+            "result.pad-y": .number(8.0),
+            "result.max-height": .number(240.0),
+            "group.indent": .number(12.0),
+        ]
+    )
+
+    /// The agent asks before it acts (an Object: it stands for the request and, once answered, for what was decided). Asking, it is an urgent alert on its plate (the amber lamp steady, the warning glyph, read out at once): the question as its title, what will happen under it, and compact answers, Deny then Allow (primary). A destructive request makes Allow the destructive cap with the trash and the hold to confirm; let go early and the hint fades in under the answers. Answered, it recedes: the plate goes (the alert's quiet tone), the glyph turns to the note's, and the answers give way to the decision: a check or a cross with its word (Allowed, Denied) and the host's time, said politely. Reduce Motion: the alert's own (it fades). (the alert (kinds urgent and note, tones plate and quiet); the button (compact, primary, destructive, hold); the check and close glyphs)
+    public static let confirmation = MetalObjectRecipe(
+        name: "confirmation",
+        layers: [
+
+        ],
+        props: [
+            "hint.gap": .number(6.0),
+            "decision.gap": .number(6.0),
+            "decision.glyph": .number(14.0),
+        ]
+    )
+
     /// A level in a range (storage used, battery, signal), not a task: a row of LED segments like a level meter. A segment's colour comes from where it sits (green through the range, amber near the top, red at the end), the way a level meter is printed. When the value changes the level sweeps from its old edge to its new one, segment by segment (16 ms apart, each lamp fading in 90 ms): rising lights upward, falling darkens downward. Reduce Motion: every segment changes at once. The lamps are the LED part's looks. (the LED part (status recipe lamps); hardware level meters; Base UI Meter)
     public static let meter = MetalObjectRecipe(
         name: "meter",

@@ -444,6 +444,23 @@
       "agent": "https://metalui.dev/r/command-palette.md"
     },
     {
+      "name": "confirmation",
+      "title": "Confirmation",
+      "status": "alpha",
+      "description": "The agent asks before it acts: an urgent alert with the question, what will happen, and Deny then Allow (held to confirm when it can't be undone). Once answered it recedes to a quiet record of what was decided, kept in the thread.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Confirmation",
+        "base": "none (an Alert: role alert while asking, status once decided)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalConfirmation"
+      },
+      "registry": "https://metalui.dev/r/confirmation.json",
+      "agent": "https://metalui.dev/r/confirmation.md"
+    },
+    {
       "name": "connector",
       "title": "Connector",
       "status": "alpha",
@@ -1242,6 +1259,23 @@
       "agent": "https://metalui.dev/r/rating.md"
     },
     {
+      "name": "reasoning",
+      "title": "Reasoning",
+      "status": "alpha",
+      "description": "The assistant's thinking inside its reply: open while it streams, the amber lamp breathing beside \"Thinking\"; folded when the answer starts, the words turning to \"Thought for 4 s\". Once the person presses it, it stays as they left it. Holds the thought, or the agent's steps as a Timeline.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Reasoning",
+        "base": "@base-ui/react/collapsible (through Collapsible)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalReasoning"
+      },
+      "registry": "https://metalui.dev/r/reasoning.json",
+      "agent": "https://metalui.dev/r/reasoning.md"
+    },
+    {
       "name": "region",
       "title": "Region",
       "status": "alpha",
@@ -1835,6 +1869,23 @@
       },
       "registry": "https://metalui.dev/r/toggle.json",
       "agent": "https://metalui.dev/r/toggle.md"
+    },
+    {
+      "name": "tool-call",
+      "title": "Tool call",
+      "status": "alpha",
+      "description": "One thing an agent did, folded by default: the tool's name, a lamp and a word for queued, running, done or failed, a summary; open, its input as label and value pairs and its result in a sunk well, or the error, or the tool's own UI. Consecutive calls fold under one group row.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "ToolCall",
+        "base": "@base-ui/react/collapsible (through Collapsible)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalToolCall"
+      },
+      "registry": "https://metalui.dev/r/tool-call.json",
+      "agent": "https://metalui.dev/r/tool-call.md"
     },
     {
       "name": "tool-strip",
