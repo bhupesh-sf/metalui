@@ -94,10 +94,8 @@ export function Scrollspy({ items, root, offset, orientation = 'vertical', size 
   const change = React.useRef(onValueChange);
   change.current = onValueChange;
 
-  const release = React.useCallback(() => {
-    window.clearTimeout(holdTimer.current);
-    hold.current = null;
-  }, []);
+  // Lets go of a jump's hold and reads the page again (set by the reading effect).
+  const settle = React.useRef(() => { hold.current = null; });
 
   const jump = React.useCallback((id: string, instant = false) => {
     const el = document.getElementById(id);
@@ -110,13 +108,13 @@ export function Scrollspy({ items, root, offset, orientation = 'vertical', size 
     setCurrent(id);
     window.clearTimeout(holdTimer.current);
     // scrollend lets go; this catches a jump that doesn't scroll at all, or a browser without scrollend.
-    holdTimer.current = window.setTimeout(release, behavior === 'smooth' ? 1200 : 100);
+    holdTimer.current = window.setTimeout(() => settle.current(), behavior === 'smooth' ? 1200 : 100);
     (scroller ?? window).scrollTo({ top, behavior });
     // Keyboard and readers land too: focus the section without scrolling again.
     if (!el.hasAttribute('tabindex') && !el.matches('a[href], button, input, select, textarea, summary')) el.setAttribute('tabindex', '-1');
     el.focus({ preventScroll: true });
     return true;
-  }, [root, offset, release]);
+  }, [root, offset]);
 
   // Reading: an IntersectionObserver on a one-pixel line at the offset fires only when a section's
   // edge crosses it, which is the only time the current section can change.
@@ -148,8 +146,20 @@ export function Scrollspy({ items, root, offset, orientation = 'vertical', size 
       io = new IntersectionObserver(pick, { root: scroller, rootMargin: `${-line}px 0px ${-Math.max(0, height - line - 1)}px 0px` });
       sections.forEach((s) => io!.observe(s));
     };
-    // A jump that ends keeps its entry, even at the bottom where the last section would otherwise win.
-    const end = () => { if (hold.current) release(); else pick(); };
+    // A jump that ends keeps its entry while its section is still where the jump put it (at the line, or
+    // below it at the bottom, where the last section would otherwise win). Scrolled away since, it reads again.
+    const end = () => {
+      const held = hold.current ? document.getElementById(hold.current) : null;
+      window.clearTimeout(holdTimer.current);
+      hold.current = null;
+      if (held) {
+        const at = held.getBoundingClientRect().top - (scroller ? scroller.getBoundingClientRect().top : 0) - lineOf(scroller, offset);
+        const height = scroller ? scroller.clientHeight : window.innerHeight;
+        if (at >= -2 && at < height) return;
+      }
+      pick();
+    };
+    settle.current = end;
 
     observe();
     pick();
@@ -158,8 +168,8 @@ export function Scrollspy({ items, root, offset, orientation = 'vertical', size 
     ro.observe(scroller ?? document.documentElement);
     // ponytail: scrollend marks the bottom of the scroll; a browser without it lights the last entry only when its top reaches the line.
     target.addEventListener('scrollend', end);
-    return () => { io?.disconnect(); ro.disconnect(); target.removeEventListener('scrollend', end); };
-  }, [ids, root, offset, release]);
+    return () => { io?.disconnect(); ro.disconnect(); target.removeEventListener('scrollend', end); settle.current = () => { hold.current = null; }; };
+  }, [ids, root, offset]);
 
   // Arriving with a hash: land on its section once, without motion.
   const arrived = React.useRef(false);
