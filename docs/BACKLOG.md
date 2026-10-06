@@ -348,6 +348,119 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Container queries in blocks**: unnamed `@container` matches the nearest container; blocks should name theirs (`@container/block`). Write it into the block page guide. (Every block names its container; the rule is in `docs/DOCS_ARCHITECTURE.md`, block page.)
 - [x] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message. (A hairline fades in under the title while the thread runs under it, so the faded line reads as passing beneath.)
 
+## Variation sheets: existing components
+
+Bhupesh Gupta: "don't you think we should plan variations as per our aesthetic, what looks good for us … maybe both are needed"; "write the sheets for those components first … think new out of the box ideas also." (2026-10-06)
+
+How these were made: ReUI, shadcn, Base UI, React Aria, Apple's HIG, Figma, FabFilter, Raycast, Things and Geist were read for the **jobs** their variations do; each job was then given our form (materials, springs, the drum, LEDs, two colorways), marked as already covered, or dropped with the reason. Ideas of our own are marked *ours*. Review a sheet before its component is built; each `Decide` is a choice for the owner. Every item ships React, SwiftUI, the agent guide, the page and a test together, so a variation has to earn its place.
+
+LED meanings stay the library's: green live, amber waiting or urgent, red failed, blue a link's kind. No sheet invents new LED colours. Sizes use the field ladder's names: large 44, regular 32, compact 28.
+
+### Number field
+
+Now: one size (32); a well pill with − and + keycaps; the value turns on the drum; drag the label to scrub; a refusal shake past the limits; typing commits on blur. SwiftUI is a stock `Stepper` (whole numbers only).
+
+- [ ] **SwiftUI first**: `MetalNumberField` rebuilt to match (the well, keycaps, drum, `Double` values, `format`, scrub). No variation below ships on one platform.
+- [ ] **Sizes** (ReUI sm/lg): `size` large / regular / compact, the same heights and radii as `Field`, so a number sits level with the fields beside it.
+- [ ] **Fine and coarse steps, shown** (Base UI `smallStep`/`largeStep`, HIG Shift-click): Alt steps fine, Shift coarse; *ours*: while a modifier is held, the keycaps' legends turn on the drum to "×0.1" / "×10", so the step size is visible, not a hidden rule.
+- [ ] **Units printed, not typed** (React Aria `formatOptions`, Geist suffixes): `unit` ("px", "%", "°") engraved after the value inside the well in ink3; `format` for currency and locale. Typing "12px" or "50%" is understood.
+- [ ] **Soft limits while typing** (Base UI `allowOutOfRange`, React Aria "validate"): a typed value past a limit is kept and shows the invalid ring with the limit said under the field ("Up to 100"); the keys and the scrub still clamp with the refusal shake.
+- [ ] **Back to default** (FabFilter Cmd-click): double-click the label, or ⌘-click a key, turns the value back on the drum to `defaultValue`; *ours*: the field shows the shared `changed` mark (see Field) while it is off its default.
+- [ ] **Mixed** (Figma "Mixed"): `mixed` for a multi-selection with different values: "Mixed" in ink3 on the drum; a step applies to each item (the host's job, documented); typing sets them all.
+- [ ] **Inspector kind** (*ours*, after Figma's letter labels): `kind="inspector"` for tight panels: no keycaps; a one-letter or glyph label (W, H, X, °) engraved inside the well's start is the scrub handle, with the resize cursor; regular and compact only.
+- [ ] **Wheel, only when asked** (Base UI `allowWheelScrub`): opt-in, and only while focused, so scrolling a page never changes a value.
+- [ ] **Expressions with a readback** (Figma maths): typing `+10`, `*2` or `=8*12` shows the result under the field in the shared `Readback` line (see Field) before it commits on Enter or blur.
+- [ ] **Thumbwheel kind, prototype first** (*ours*): a detented wheel standing out of the well's edge, one detent per `step`, a heavier tick at each `largeStep` (part spring; a haptic on Swift where the hardware has one). For values you set by feel (zoom, brush size). Prototype on the page; ship only if it reads better than scrubbing.
+
+Not doing: ReUI's "custom button layouts" (one look: − value + or the inspector); Figma's four scrub speeds by cursor position (hidden; modifiers are shown instead); Shift for fine steps (audio gear) — it clashes with Base UI and the HIG, where Shift is coarse.
+
+Decide: is the thumbwheel worth a prototype now, or after the rest?
+
+### Combobox
+
+Now: `items: string[]`; regular and compact; the menu's frosted plate, one gliding highlight, a clear mark, "No matches". No groups, item details, multiple values, loading or failure. SwiftUI is a `TextField` with plain buttons.
+
+- [ ] **SwiftUI first**: `MetalCombobox` with the plate, the gliding highlight and the clear mark.
+- [ ] **Items with detail** (ReUI avatars, shadcn custom items): items as `{ value, label, description?, icon? }`, drawn as `Row`s (glyph or avatar, a second line in ink2), so similar items can be told apart.
+- [ ] **Groups** (Base UI, shadcn, React Aria sections): engraved group labels in the plate, staying at its top while their rows scroll; long lists virtualised (Base UI).
+- [ ] **Matches you can see** (*ours*): the typed letters in each row in full ink, the rest in ink2, so you see why a row matched.
+- [ ] **Three empties, told apart** (ReUI async, research): *loading*: the small ring in the trailing slot in place of the clear mark (the Spinner entry's "In a field"), the rows kept and dimmed; *failed*: a row with `sync-error`, "Couldn't load", and Try again; *nothing matched*: "No matches for 'lisb'" with the query in it.
+- [ ] **Several values** (Base UI and shadcn chips, HIG token fields): `multiple`: chosen values become `Chip`s in the well that land on the object spring; the query stays and the plate stays open after a pick; Backspace on an empty query selects the last chip and a second Backspace removes it; chips leave with the rows' motion (`useRowMotion`).
+- [ ] **Create what's missing** (Base UI creatable, React Aria custom value): `onCreate`: when nothing matches exactly, the last row is `plus` + "Create 'Lisbon'", set apart by a hairline, so it can't be mistaken for an existing item.
+- [ ] **Recent before typing** (Raycast `storeValue`, React Aria `menuTrigger="focus"`): `recent` items shown under an engraved "Recent" label on focus, before anything is typed.
+- [ ] **Commands at the end** (React Aria `onAction`): action rows ("Manage labels…") after the items, behind a hairline, each leading with its glyph.
+- [ ] **From a button** (shadcn popup from a button): `trigger="button"`: a key opens the plate and the search sits inside it; for pickers in toolbars and rows (the task inbox's Assign).
+- [ ] **The pick shows its kind** (*ours*): a chosen item with an `icon` shows it in the well's leading slot, morphing from the search glyph.
+
+Not doing: a drum or rolodex results list (curved neighbours are harder to scan in a long list, and the fixed highlight fights groups); recents as a strip of keycaps above the list (a second way to choose in one control); free values that aren't in the list (that's Autocomplete, a separate entry).
+
+Decide: `trigger="button"` here, or a separate picker component?
+
+### Table
+
+Now: columns with sort (the arrow turns, rows travel to their places), row selection with a green tint, a hovered row sinks, engraved labels and hairlines, an empty line; rows 40, head 32. SwiftUI is a stack of rows with dividers.
+
+- [ ] **SwiftUI first**: `MetalTable` with the header, sort and selection.
+- [ ] **Density** (ReUI dense, research): `density` regular 40 / compact 32; the page sets it with a `Switcher`, a setting you change once.
+- [ ] **A reading guide, not stripes** (HIG alternating rows "to track values across columns"; *ours*): one plate glides under the hovered or focused row on the settle spring (the menu's `ListGlide`), so your place across a wide row is held by one moving thing, with the keyboard too.
+- [ ] **Headers and the first column stay** (React Aria sticky headers, ReUI and Airtable pinning): the header is sticky in a scroll container; `pin: 'start'` columns sit on the raised plate, and a shadow shows at their edge only while content is under it (the composer's scrolled hairline, the same mechanism).
+- [ ] **Numbers line up** (shadcn currency cells, research): `numeric` columns: tabular figures, end-aligned, the unit in the header ("Size (MB)"), never in each cell.
+- [ ] **Totals** (ReUI footer rows): `footer`: a sunk readout row at the bottom, sticky; totals turn on the drum when rows change, so you see that a sum moved.
+- [ ] **Many rows at once** (shadcn selected count): selection shows a `ToolStrip` with the count (the strip's "Over a list"), the count turning on the drum; documented as a pattern, not a Table prop.
+- [ ] **Filtered is visible** (*ours*): when the host filters, the caption says "12 of 240" (drum) with a Clear key; a filtered table never looks complete.
+- [ ] **Loading and empty, told apart** (React Aria `renderEmptyState`): `loading`: `Skeleton` rows in the columns' widths; `empty` and `emptyFiltered` with their own words and actions.
+- [ ] **Open a row** (React Aria `onRowAction`, row links): `onRowAction` on Enter and click; the opened row takes `Row`'s `opened` rail.
+- [ ] **Columns you can size and hide** (ReUI, React Aria resizing, HIG): drag the hairline between two headers (it thickens to a grip on hover, part spring); `onColumnsChange` so the host keeps widths; hide and show from a column `Menu` with checkboxes. Reordering waits for Sortable.
+- [ ] **Small charts in cells** (*ours*): a documented `cell` recipe with `Sparkline` or `Meter`, sized to the row.
+- [ ] **Tree rows**: an expand chevron and engraved indent guides, after the Tree component, sharing its parts.
+- [ ] Later, as the data grid (decided before): arrow keys between cells, cell ranges with copy and paste, editing in place, virtualised rows.
+
+Not doing: striped rows (the reading guide does the job without noise on engraved surfaces); full cell borders (rows and alignment carry it; grid lines come with editing, where cells are targets); ReUI's "light, rounded rows" look (the hover plate is already rounded); a coloured sort LED per header (green and blue already mean other things; the arrow shows direction).
+
+Decide: is a third, roomier density needed (48, for touch on iOS)?
+
+### Card, and a frame of cards
+
+Now: the raised surface; `Card.Media`, `Title` (a link stretched over the card), `Description`, `Footer`; a linked card lifts one step on hover; selected has the green ring. No sizes, header action, status, waiting, or side-by-side media. SwiftUI is a plain rounded rectangle.
+
+- [ ] **SwiftUI first**: `MetalCard` on the raised recipe, with media, a link, the lift and selected.
+- [ ] **A corner action** (shadcn `CardAction`): `Card.Action`: a ghost icon key (`more`) level with the title's first line, above the stretched link.
+- [ ] **Size** (shadcn `size="sm"`, ReUI spacing): `size` regular (16) / compact (12).
+- [ ] **Media at the side** (research): `orientation="horizontal"`: square media at the start, for result lists.
+- [ ] **Status** (*ours*): `status` live / waiting / failed lights an LED in the card's top-right corner, with the word in its accessible name and tooltip, so a wall of cards can be scanned for trouble.
+- [ ] **Choice cards that latch** (shadcn choice cards; *ours*: the icon key's latch): a card as a radio or checkbox; the chosen one sinks and stays down with the 4 pt green LED, the same latch as `IconButton`'s tool.
+- [ ] **Waiting**: the Spinner entry's "On a large item" (the card's own shape waits), not a spinner in the middle.
+- [ ] **A frame of cards** (ReUI Frame), in our materials:
+  - *separated*: a sunk tray (well) that holds raised cards: peers to compare;
+  - *stacked*: one raised plate with engraved hairlines between its sections: parts of one whole (a settings page);
+  - *ghost*: the cards with no tray;
+  - `size` regular / compact, as the cards.
+- [ ] **An empty slot** (*ours*, from a rack): an empty place in the tray, sunk, with `plus` and a verb ("New canvas"); it shows where a new card will go.
+
+Not doing: screws, rack ears or other ornament (decoration with no job); a custom radius per frame (one look); a large spacing.
+
+Decide: name the frame `Card.Frame`, `CardTray` or `Frame`?
+
+### Field and FormField
+
+Now: `Field` (Root, Icon, Input, Trail) in large / regular / compact and two tones; `FormField` (label, description, error) whose error row grows open; `Fieldset`, `Form`. No prefix or suffix, side-by-side labels, required marker or readback. SwiftUI has no `MetalField` (meta.json points at a missing file), and `MetalFormField` is a plain stack.
+
+- [ ] **SwiftUI first**: write `MetalField` (the well, the sizes, the caret) and a real `MetalFormField` (the error row's motion, `Fieldset`).
+- [ ] **Fixed parts of the value** (shadcn input group, Geist prefixes): `Field.Prefix` / `Field.Suffix` ("https://", ".com", "$"), engraved in ink3 inside the well, not selectable, not part of the value; pressing them puts the caret in the input.
+- [ ] **Keys inside the field** (shadcn addons): `Trail` holds mini keys with a documented set: clear (`close`), copy (`copy` → `check`, a morph), show password (`eye` → `eye-off`, glyphs still to draw), and a working ring.
+- [ ] **A shortcut hint that knows** (Geist): a ⌘K keycap in the trail that turns on the drum to "Esc" while the field is active; Esc clears.
+- [ ] **Errors at the right moment** (Geist, Raycast, HIG): the default checks on blur and clears the error as you change the value; documented as the rule. A remote check that passed ("name available") shows `check` acting in the trail; ordinary valid fields show nothing.
+- [ ] **Labels beside the field** (shadcn orientation): `FormField` `orientation` vertical / horizontal, horizontal turning vertical when its block is narrow (the `@container/block` rule).
+- [ ] **Required or optional**: mark the minority: "Optional" in ink3 after the label when most are required, or a required dot when most are optional; never both.
+- [ ] **Changed** (*ours*): a small engraved mark before the label of a field changed since it was saved (and Number field's "off its default"), so you can review what you touched before saving; Settings uses it.
+- [ ] **Readback** (*ours*, after Things and synth value screens): `FormField.Readback`: a line under the field in the readout type, turning on the drum, saying what was understood ("Tue 8 Oct, 08:00", "= 96"); for dates in words, expressions and units.
+- [ ] **A counter** (shadcn addon counter): `Field` gets Textarea's counter (`maxLength`, `countFrom`), the same look.
+- [ ] **Sized to what goes in** (HIG): `chars` sets a field's width to an expected length (a postcode, a year), so the box says how much to type.
+
+Not doing: prefix and suffix printed outside the well (they break the column of wells in a form); a green LED on every valid field (noise; only a remote check earns a confirmation); addons above and below the input (Textarea's toolbar belongs to Textarea). One box per character (OTP) is its own component in section 2; take its keycap slots from there.
+
+Decide: is `chars` worth it, or is a width class enough?
+
 ## Components other libraries ship that we don't
 
 Bhupesh Gupta: "compare our design system with reui, what all components are there which are missing in ours", then the same against shadcn/ui. (2026-10-05)
@@ -398,17 +511,17 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 
 ### 3. Extend what exists rather than adding new components
 
-- [ ] **Table → data grid** (ReUI Data Grid, shadcn Data Table). `Table` has sort, row selection and an empty line today.
+- [ ] **Table → data grid** (ReUI Data Grid, shadcn Data Table). `Table` has sort, row selection and an empty line today. Planned in our terms in "Variation sheets: Table"; the list below is ReUI's, kept for reference.
   - Looks: cell borders, dense, light (rounded rows, no header fill), striped, auto column width.
   - Columns: resize, move, show/hide; pin rows to the top or bottom.
   - Rows: tree rows that expand; virtualised rows.
   - Spreadsheet editing: select cells, copy and paste, edit in place.
 - [ ] **Calendar and DatePicker → date selector** (beyond the Calendar entry above): period types (day, month, quarter, half year, year); operators (is, before, after, between); in a dialog as well as a popover, with Apply and Cancel; two months side by side; localised.
-- [ ] **Number field**: sizes sm, default, lg (ours has one size today).
+- [ ] **Number field**: sizes sm, default, lg (ours has one size today). See "Variation sheets: Number field".
 - [ ] **DropZone and Attachment → file upload layouts**: an avatar upload (one image with a preview); a compact row with thumbnails and a count; a gallery grid with a preview dialog; a table of files with round progress; image tiles with their own progress; drag to reorder (needs Sortable); retry on failure (ours has it).
-- [ ] **Card → frame**: panels separated, stacked or dense inside one frame, with header, title, description and footer; a ghost frame without the outer border; spacing sm, default, lg.
-- [ ] **Combobox**: groups, async search with a loading state, and a trigger button beside the clear mark (from ReUI's Autocomplete).
-- [ ] **Field → input group** (shadcn): text attached to the input (a `https://` prefix, a `.com` suffix) and buttons inside the field.
+- [ ] **Card → frame** (see "Variation sheets: Card"): panels separated, stacked or dense inside one frame, with header, title, description and footer; a ghost frame without the outer border; spacing sm, default, lg.
+- [ ] **Combobox**: groups, async search with a loading state, and a trigger button beside the clear mark (from ReUI's Autocomplete). See "Variation sheets: Combobox".
+- [ ] **Field → input group** (shadcn; see "Variation sheets: Field"): text attached to the input (a `https://` prefix, a `.com` suffix) and buttons inside the field.
 - [ ] **Collapsible** (shadcn): a standalone show/hide wrapper. `Accordion` and `SplitPane` collapse, but nothing does on its own.
 - [ ] **Icon tile**: probably `Glyph` in a `well`, as a documented recipe.
   - Looks: outline, elevated, soft, solid, framed; sizes xs to xl; square or round; tones and brand colours.
