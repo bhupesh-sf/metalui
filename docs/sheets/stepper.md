@@ -71,3 +71,5 @@ Not doing: tabs semantics and roving focus (see above); an LED per step (a lamp 
 - [ ] A skipped optional step.
 - [ ] `icon` per step.
 - [ ] A compact size.
+
+- Done (2026-10-06): Must and Should. The done look is the checkbox's on look (the library's "ticked"), not green: green stays the groove's fill, so the run of green reads as one bar and a check reads in both colorways. Left: SwiftUI has no Back / Continue slots (the host's `MetalButton`s on the binding; `check-slots` lists list, back and next as pending) and no narrow line; SwiftUI panels don't take focus.
