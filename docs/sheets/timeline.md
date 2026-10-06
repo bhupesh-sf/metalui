@@ -14,14 +14,14 @@ Read for jobs: ReUI Timeline, Mantine Timeline, Ant Design Timeline (pending, co
 
 **Place (docs/COMPOSITION.md): an Object.** It stands for something of the person's (an order's history, a pipeline run, a deploy log, a roadmap) and it stays (Object holds). You don't operate it to change something else (Component fails: nothing in it is pressed), it isn't drawn only while you act (Instrument fails), and you don't go into it (Place fails). Its sibling is `Table`, the other record you read down, which is an Object too.
 
-**Semantics.** An ordered list (`<ol>`, named by the host): the order means something. Each event is a list item whose state is said in words to assistive tech ("failed", "waiting", "running", "now", "planned"); the time is said exactly (the relative words are for the eye). No roles beyond the list: `feed` is for an endless scroll of articles you page through with keys, and a timeline is short and static between arrivals. Nothing is focusable unless the host puts a link in an event. New events arriving after the first render are said once, politely ("Shipped, now").
+**Semantics.** An ordered list (`<ol>`, named by the host): the order means something. Each event is a list item whose state is said in words to assistive tech ("failed", "waiting", "running", "now", "planned"); the time is said exactly (the relative words are for the eye). No roles beyond the list: `feed` is for an endless scroll of articles you page through with keys, and a timeline is short and static between arrivals. Nothing is focusable unless the host puts a link in an event. New events arriving after the first render are said once, politely ("Shipped, Live").
 
 **Jobs**
 
 | Job | Where | Our form | Tier |
 |---|---|---|---|
 | Read what happened, in order | every timeline | an ordered list of events: a node on an engraved rail (the rule's groove, as Tree's guides), then the title (ui type, ink) and an optional line (meta type, ink2) | Must |
-| See which event is now | an order out for delivery, the step a pipeline is on | `state="live"`: the node is the green lamp, and the visible word "Now" sits with the time. Colour never alone | Must |
+| See which event is now | an order out for delivery, the step a pipeline is on | `state="live"`: the node is the green lamp, and the visible word "Live" sits with the time (Table's status word; "Now" would say the now marker twice). Colour never alone | Must |
 | See what failed | a CI step, a failed deploy | `state="failed"`: the red lamp and the word "Failed". It blinks twice (the LED's failure gesture) when an event *turns* failed while you watch, never on load | Must |
 | See what waits on someone | an approval, a queued job, a parcel held at customs | `state="waiting"`: the amber lamp, steady, and the word "Waiting" | Must |
 | See what is running | a CI step, a deploy rolling out | `state="running"`: the node gives way to the Spinner's ring after the show delay (`useWait`: nothing for fast work, a minimum once shown, the tick when it ends), the word "Running" | Must |
@@ -55,24 +55,27 @@ Not doing: buttons for events (a record isn't operated; Stepper is the one you p
 - **Who places the now marker?** The component, from the states: between the last event that isn't `planned` and the first that is (in either order). A `now` index from the host could disagree with the states; one source per fact.
 - **Waiting or running?** Two states. `waiting` is held on someone or something else (amber, still); `running` is work in progress (the Spinner's ring on `useWait`). A queued CI job waits; a building one runs.
 - **Does a failed lamp blink on load?** No. The blink is news: only when an event turns failed while on screen. A page that opens on a failed build shows a steady red lamp and the word.
-- **Visible state words?** Yes for now, running, waiting and failed, beside the time in ink2; none for done and planned (the past is the default, and planned is said by the now marker and ink3). Colour never alone, and a reader of a long record shouldn't have to decode lamps.
+- **Visible state words?** Yes for live, running, waiting and failed, beside the time in ink2; none for done and planned (the past is the default, and planned is said by the now marker and ink3). Colour never alone, and a reader of a long record shouldn't have to decode lamps.
 - **Relative time and the clock.** Relative words count from `now` (default: the render). Nothing ticks at rest; a host that keeps a clock passes `now`. Exact time in the tooltip and to readers.
 - **Glyphs.** The host passes an element (performance rule 11: never a name, which ships the catalog). The glyph sits in the sunk well; the state's lamp moves to its corner.
 - **Reuse.** The rail is the rule's groove; the lamps are LEDs with their gestures; the glyph well is the switch's well; the ring is the Spinner on `useWait`; the arrival is `useRowMotion`; the exact time is the Tooltip. The `timeline` recipe holds only sizes and the rail's layout.
 
 **Must**
-- [ ] React: `Timeline` (`events`, `aria-label`, `format`, `now`, `timeSide`) with `TimelineEvent` `{ id, title, description, time, state, glyph }`.
-- [ ] States: done, live, running, waiting, failed, planned; the now marker; gestures only on change.
-- [ ] Arrival with `useRowMotion`; a polite status for events that arrive.
-- [ ] SwiftUI `MetalTimeline` with the same states, glyphs, now marker and both time sides.
-- [ ] Recipe `timeline`, agent guide, meta.json, the page with its DialKit panel, the e2e slice.
+- [x] React: `Timeline` (`events`, `aria-label`, `format`, `now`, `timeSide`) with `TimelineEvent` `{ id, title, description, time, state, glyph }`.
+- [x] States: done, live, running, waiting, failed, planned; the now marker; gestures only on change.
+- [x] Arrival with `useRowMotion`; a polite status for events that arrive.
+- [x] SwiftUI `MetalTimeline` with the same states, glyphs, now marker and both time sides.
+- [x] Recipe `timeline`, agent guide, meta.json, the page with its DialKit panel, the e2e slice.
 
 **Should**
-- [ ] `duration`.
-- [ ] Out of width: the time under the title.
+- [x] `duration`.
+- [x] Out of width: the time under the title.
 
 **Later**
 - [ ] Day groups.
 - [ ] A fold for earlier events.
 - [ ] Horizontal.
 - [ ] Compact size.
+
+
+- Done (2026-10-06): Must and Should. The live word is "Live" (Table's status word), not "Now": beside the now marker "Now" said it twice. Title and line share one cell set down to the node's centre, so a wrapped title never meets its line. Left: the relative and short-date words are copied from Table (one import ships one component; a shared format module when a third reader appears); SwiftUI arrival needs the host to insert inside withMetalAnimation(.object), and the narrow (time under title) layout is web only.

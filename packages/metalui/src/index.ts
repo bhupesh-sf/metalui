@@ -71,6 +71,7 @@ export { Accordion } from './components/accordion/accordion';
 export { CodeBlock, splitFences, splitHtmlLines, tintLine, escapeCode, type CodeBlockProps, type CodeLines, type CodeRange, type CodeDiagnostic, type CodeFencePart } from './components/code-block/code-block';
 export { Collapsible, type CollapsibleRootProps, type CollapsibleTriggerProps, type CollapsibleKeyProps, type CollapsibleMoreProps, type CollapsiblePanelProps } from './components/collapsible/collapsible';
 export { Stepper, type StepperStep, type StepperOrientation, type StepperLayout, type StepperRootProps, type StepperListProps, type StepperPanelProps, type StepperBackProps, type StepperNextProps } from './components/stepper/stepper';
+export { Timeline, type TimelineProps, type TimelineEvent, type TimelineState, type TimelineFormat } from './components/timeline/timeline';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
 export { Combobox, type ComboboxProps, type ComboboxItem, type ComboboxGroup, type ComboboxAction } from './components/combobox/combobox';
 export { Autocomplete, type AutocompleteProps, type AutocompleteItem, type AutocompleteGroup } from './components/autocomplete/autocomplete';

@@ -1042,6 +1042,28 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A record of what happened and what is planned, read top to bottom. Each event is a node on an engraved rail (the rule's groove, as Tree's guides), its title (ui type, ink) with an optional line under it (meta type, ink2), set down so the title's first line centres on the node, and on the title's line, end-aligned, the state's word, a duration and the time in tabular figures (meta type, ink2). The node is a lamp with the LED meanings: done is the off lamp (a dull lens), live the green lamp with the word Live, waiting the amber lamp with Waiting, failed the red lamp with Failed, planned the off lamp with its words in ink3; a running event's lamp gives way to the Spinner's ring after the show delay, with Running, and draws the tick when it ends. A lamp that turns live flickers once and one that turns failed blinks twice (the LED's gestures), never on load. With a host's glyph the node is the switch's sunk well, 24, with the glyph in ink2 and, for live, waiting and failed, the state's small lamp on its corner (the tool button's corner lamp); every node shares one column so the rail stays straight. The rail runs from under each node to the next, clear of each by the node's box. Where events turn from not planned to planned, the now marker: a short tick crosses the rail and the word NOW in the readout type runs into an engraved rule across the row. Times sit at the end of the title's line or (timeSide start) in a column before the rail, end-aligned; relative times show the exact time in a tooltip. Narrower than 360 (a container query) the time moves under the title. New events land one nest from above on the object spring while the rest glide on settle (the rows' motion). Reduce Motion: events appear in place; the lamps hold steady. (the rule recipe (the groove); the status recipe's LED and gestures; the switch's well; the icon button's corner lamp; the Spinner's ring and useWait; the rows' motion (motion/rows.ts); Table's relative time and its tooltip)
+    public static let timeline = MetalObjectRecipe(
+        name: "timeline",
+        layers: [
+
+        ],
+        props: [
+            "lamp.column": .number(12.0),
+            "lamp.box": .number(18.0),
+            "well.size": .number(24.0),
+            "well.box": .number(32.0),
+            "well.glyph": .number(14.0),
+            "well.lamp-inset": .number(0.0),
+            "event.gap": .number(12.0),
+            "event.pad": .number(16.0),
+            "event.line": .number(16.0),
+            "event.text-gap": .number(2.0),
+            "event.when-gap": .number(6.0),
+            "now.pad": .number(6.0),
+        ]
+    )
+
     /// A level in a range (storage used, battery, signal), not a task: a row of LED segments like a level meter. A segment's colour comes from where it sits (green through the range, amber near the top, red at the end), the way a level meter is printed. When the value changes the level sweeps from its old edge to its new one, segment by segment (16 ms apart, each lamp fading in 90 ms): rising lights upward, falling darkens downward. Reduce Motion: every segment changes at once. The lamps are the LED part's looks. (the LED part (status recipe lamps); hardware level meters; Base UI Meter)
     public static let meter = MetalObjectRecipe(
         name: "meter",

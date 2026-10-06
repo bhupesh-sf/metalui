@@ -1,0 +1,20 @@
+{
+  "name": "timeline",
+  "title": "Timeline",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["led", "spinner", "tooltip"],
+  "description": "A record of what happened and what is planned, read top to bottom: events on an engraved rail, each a lamp with the LED meanings (off for the past, green now, amber waiting, red failed) and its word, a running event's ring on the Spinner's clock, and a now marker where the past meets the plan. Times in tabular figures, relative with the exact time in a tooltip, at the end of the line or in a column before the rail; durations; the host's glyphs in sunk wells with the state's lamp on the corner. New events land from above and the rest glide.",
+  "base": "ol (an ordered record; not a feed: nothing to page through)",
+  "react": {
+    "export": "Timeline",
+    "files": ["timeline.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalTimeline",
+    "file": "swift/Sources/MetalUI/Components/MetalTimeline.swift"
+  },
+  "agent": "timeline.agent.md",
+  "page": "/components/timeline"
+}
