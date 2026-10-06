@@ -65,6 +65,39 @@ final class MetalTableCaptures: XCTestCase {
         }
     }
 
+    private struct Permission: Identifiable {
+        let id: String
+        let grants: [String: Bool?]
+    }
+
+    /// The Should kinds: grouped with totals, a permissions matrix, a pinned comparison.
+    func testTableShould() {
+        let totals: [MetalTableColumn<Invoice>] = [
+            MetalTableColumn("Customer") { .text($0.customer, detail: $0.id) },
+            MetalTableColumn("Owner", kind: .person) { .people([$0.owner]) },
+            MetalTableColumn("Amount", kind: .currency, format: .init(currency: "EUR"), total: .sum) { .number($0.amount) },
+        ]
+        let roles = ["Owner", "Admin", "Editor"]
+        let permissions = [
+            Permission(id: "Publish", grants: ["Owner": true, "Admin": true, "Editor": false]),
+            Permission(id: "Invite members", grants: ["Owner": true, "Admin": false, "Editor": nil]),
+        ]
+        let matrix: [MetalTableColumn<Permission>] = [MetalTableColumn("Permission", rowHeader: true) { .text($0.id) }]
+            + roles.map { role in MetalTableColumn(check: role, value: { $0.grants[role] ?? nil }, onChange: role == "Owner" ? nil : { _, _ in }) }
+        for colorway in MetalColorway.allCases {
+            let view = VStack(alignment: .leading, spacing: MetalSpace.s32) {
+                MetalTable(Self.invoices, columns: totals, caption: "Invoices by status", now: Self.now,
+                           groupBy: { Self.words[$0.status] ?? "" }, collapsed: ["Draft"])
+                MetalTable(permissions, columns: matrix, caption: "Roles and permissions")
+            }
+            .frame(width: 560)
+            .padding(32)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("table-should-\(colorway.rawValue)", view)
+        }
+    }
+
     func testProperties() {
         for colorway in MetalColorway.allCases {
             let i = Self.invoices[2]

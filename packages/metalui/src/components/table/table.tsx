@@ -11,13 +11,16 @@ import { Skeleton } from '../skeleton/skeleton';
 import { Tooltip } from '../tooltip/tooltip';
 import { IconButton } from '../icon-button/icon-button';
 import { Button } from '../button/button';
-import { Menu, MenuItem, ListGlide } from '../menu/menu';
+import { Menu, MenuItem, ListGlide, menuParts } from '../menu/menu';
+import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { Icon } from '../../icons/Icon';
 import { MorphIcon } from '../../icons/MorphIcon';
 import type { IconName } from '../../icons/catalog.generated';
 import { SwapText } from '../../motion/swap';
 import { useWait } from '../../motion/wait';
+import { useRowMotion, springOf } from '../../motion/rows';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
+import { motionReduced } from '../../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
  * TABLE, rows of a person's things, read across and compared down
@@ -45,11 +48,26 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  *   narrow    under 720 the priority 3 columns leave, under 560 the priority 2 ones; their values
  *             move to a second line under the primary cell
  *   sticky    the head stays on frost while the table scrolls (`maxHeight`, or the page)
- * Reduce Motion: rows jump to their places; the arrow and the guide change at once.
+ *   totals    a column's `total` fills a sunk readout row at the foot (sticky at the bottom); its
+ *             figures turn on the drum when the rows change
+ *   groups    `groupBy`: an engraved header row per group (its name, a count, subtotals) that stays
+ *             under the head while its rows scroll; its chevron turns a quarter on the part spring
+ *             and the rows below travel up into the gap (settle) or land when it opens (object)
+ *   pinned    `pin: 'start'`: the first column stays on an opaque plate while the rest scroll
+ *             sideways under it; its edge casts a shadow only while something is under it
+ *   matrix    `rowHeader` cells are `<th scope="row">`; `check` cells are row checkboxes
+ *   live      new rows land at the top (one nest above, object spring) and the rest travel down;
+ *             scrolled away from the top, they wait behind an "N new" key instead of pushing you
+ *   detail    `expandRow`: a chevron key opens a sunk panel under the row; it lands like a row and
+ *             the rows below travel down to make room
+ *   columns   `columnsMenu`: hide and show columns from a menu of checkboxes; `resizable`: drag the
+ *             hairline at a header's end (it thickens to a grip on the part spring), ← → step it,
+ *             a double-click or ↩ gives it back its own width; `onColumnsChange` keeps both
+ * Reduce Motion: rows jump to their places and land at once; the arrow, chevrons and guide change at once.
  * An object: it stands for a person's things.
  * ───────────────────────────────────────────────────────── */
 
-export type TableKind = 'text' | 'number' | 'currency' | 'percent' | 'delta' | 'date' | 'status' | 'person' | 'tags' | 'progress' | 'trend' | 'yes' | 'code' | 'actions';
+export type TableKind = 'text' | 'number' | 'currency' | 'percent' | 'delta' | 'date' | 'status' | 'person' | 'tags' | 'progress' | 'trend' | 'yes' | 'check' | 'code' | 'actions';
 export type TableDensity = 'roomy' | 'regular' | 'compact';
 export type TableStatus = Extract<LedKind, 'live' | 'waiting' | 'failed' | 'off'>;
 export type SortState = { key: string; direction: 'ascending' | 'descending' } | null;
@@ -108,6 +126,20 @@ export interface TableColumn<Row> extends TableCellFormat {
   primary?: boolean;
   /** actions: the row's actions, in the menu under `more`. */
   actions?: (row: Row) => TableAction[];
+  /** The figure in the totals row and each group's header: the sum or mean of the column's values, or your own. */
+  total?: 'sum' | 'mean' | ((rows: Row[]) => unknown);
+  /** The first column only: it stays at the start on its plate while the rest scroll sideways under it. */
+  pin?: 'start';
+  /** Its cells name their rows (`<th scope="row">`): the first column of a matrix. */
+  rowHeader?: boolean;
+  /** check: the cells are checkboxes (a permissions matrix); a null value is "—", not a box. */
+  onCheckedChange?: (row: Row, checked: boolean) => void;
+}
+
+/** What a person changed about the columns: the ones they hid and the widths they dragged. */
+export interface TableColumnsState {
+  hidden?: string[];
+  widths?: Record<string, number>;
 }
 
 export interface TableProps<Row> {
@@ -146,6 +178,24 @@ export interface TableProps<Row> {
   maxHeight?: number | string;
   /** Relative dates are counted from here (now). */
   now?: Date;
+  /** The totals row's label ("Total"); the row shows when a column has a `total`. */
+  footer?: React.ReactNode;
+  /** Groups the rows under header rows (in the order the groups first appear in `rows`). */
+  groupBy?: (row: Row) => string;
+  /** Groups that start closed. */
+  defaultCollapsed?: string[];
+  /** Rows keep arriving at the top: they land, or wait behind "N new" while you're scrolled away. */
+  live?: boolean;
+  /** A little more about a row, in a panel under it (a chevron key at the row's start opens it). */
+  expandRow?: (row: Row) => React.ReactNode;
+  /** A key beside the caption opens a menu of the columns to hide and show. */
+  columnsMenu?: boolean;
+  /** Drag the hairline at a header's end to size its column. */
+  resizable?: boolean;
+  columnsState?: TableColumnsState;
+  defaultColumnsState?: TableColumnsState;
+  /** Hidden columns and dragged widths, for the host to keep. */
+  onColumnsChange?: (state: TableColumnsState) => void;
   className?: string;
 }
 
@@ -166,13 +216,24 @@ const MORE = 'mu-table-more table-truncate type-meta text-ink2';
 const STATE = 'mu-table-state py-table-state-pad-y px-table-row-pad-x type-body text-ink2 text-center';
 const STATE_ROW = 'inline-flex flex-wrap items-center justify-center gap-table-state-gap';
 const CHECK = 'mu-table-check w-table-row-height px-table-row-pad-x';
+const LEAD = 'mu-table-lead w-table-row-height px-0 text-center';
+const FOOT = 'mu-table-foot align-middle h-table-row-height px-table-row-pad-x py-0 type-ui text-ink table-total';
+const GROUP = 'mu-table-group-cell align-middle px-table-row-pad-x py-0 type-ui text-ink2 table-group';
+const GROUP_TOGGLE = 'mu-table-group-toggle type-label engraved table-group-toggle';
+const CHEVRON = 'mu-table-chevron size-table-glyph-size table-chevron reduced-motion:transition-none';
+const PIN = 'table-pin';
+const RESIZE = 'mu-table-resize table-resize';
+const NEWS = 'mu-table-news table-news';
+const DETAIL_CELL = 'mu-table-detail-cell table-detail type-ui text-ink';
+const SIZED = 'block overflow-hidden';
+const NUMERIC = new Set<TableKind>(['number', 'currency', 'percent', 'delta']);
 const LIFT = 'relative z-1';
 const INLINE = 'inline-flex items-center gap-table-row-gap align-top';
 const EMPTY = <span className="mu-table-none text-ink3">—<span className="sr-only">none</span></span>;
 const DENSITY: Record<TableDensity, string> = { roomy: 'table-roomy', regular: '', compact: 'table-compact' };
 type Align = NonNullable<TableColumn<unknown>['align']>;
 const ALIGN: Record<Align, string> = { start: 'text-left', end: 'text-right', center: 'text-center' };
-const kindAlign: Partial<Record<TableKind, 'end' | 'center'>> = { number: 'end', currency: 'end', percent: 'end', delta: 'end', yes: 'center', actions: 'end' };
+const kindAlign: Partial<Record<TableKind, 'end' | 'center'>> = { number: 'end', currency: 'end', percent: 'end', delta: 'end', yes: 'center', check: 'center', actions: 'end' };
 const STATUS_WORDS: Record<TableStatus, string> = { live: 'Live', waiting: 'Waiting', failed: 'Failed', off: 'Off' };
 const STATUS_ORDER: Record<TableStatus, number> = { failed: 0, waiting: 1, live: 2, off: 3 };
 const TAGS_SHOWN = 2;
@@ -243,7 +304,8 @@ function sortValue(kind: TableKind, v: unknown): string | number {
     case 'person': return (Array.isArray(v) ? (v[0] as TablePerson)?.name : (v as TablePerson).name) ?? '';
     case 'tags': return (v as string[]).join(' ');
     case 'trend': { const a = v as number[]; return a[a.length - 1] ?? 0; }
-    case 'yes': return v ? 1 : 0;
+    case 'yes':
+    case 'check': return v ? 1 : 0;
     default: return typeof v === 'number' ? v : String(v);
   }
 }
@@ -304,13 +366,18 @@ export interface TableCellProps extends TableCellFormat {
   actions?: TableAction[];
   /** Plain words for a line of text (the narrow line under the primary cell): people by name, tags joined. */
   inline?: boolean;
+  /** check: the box changed (without it the box is read-only). `label` names it ("Publish, Editor"). */
+  onCheckedChange?: (checked: boolean) => void;
 }
 
 /** One value in the look of its kind: the table's cells, and values in Properties. */
-export function TableCell({ kind = 'text', value, label = '', now, actions, inline, ...f }: TableCellProps) {
+export function TableCell({ kind = 'text', value, label = '', now, actions, inline, onCheckedChange, ...f }: TableCellProps) {
   if (kind === 'actions') return actions?.length ? <Actions actions={actions} name={label} /> : null;
   if (isEmpty(value)) return EMPTY;
+  if (kind === 'check' && inline) kind = 'yes';
   switch (kind) {
+    case 'check':
+      return <Checkbox size="row" className={join(LIFT, 'align-middle')} aria-label={label} checked={!!value} disabled={!onCheckedChange} onCheckedChange={(on) => onCheckedChange?.(!!on)} />;
     case 'number':
     case 'currency':
     case 'percent':
@@ -393,69 +460,192 @@ export function TableCell({ kind = 'text', value, label = '', now, actions, inli
 
 /* ── the table ───────────────────────────────────────────── */
 
-function readMotion(el: Element) {
-  const s = getComputedStyle(el);
-  const ms = parseFloat(s.getPropertyValue('--mu-spring-settle-d')) * 1000 * (parseFloat(s.getPropertyValue('--mu-travel-settle')) || 0);
-  return { ms, easing: s.getPropertyValue('--mu-spring-settle').trim() || 'ease-out' };
-}
-
 const valueOf = <Row,>(c: TableColumn<Row>, r: Row) => (c.value ? c.value(r) : (r as Record<string, unknown>)[c.key]);
 /** A column's look settings, for its TableCell. */
 const formatOf = ({ unit, currency, digits, format, better, words, warn, danger }: TableCellFormat): TableCellFormat => ({ unit, currency, digits, format, better, words, warn, danger });
+/** A length token read off an element, in px. */
+const cssPx = (el: Element, name: string) => parseFloat(getComputedStyle(el).getPropertyValue(name)) || 0;
 
 /** A skeleton in a column's shape. */
 function Shape({ kind = 'text', primary }: { kind?: TableKind; primary: boolean }) {
-  if (kind === 'actions' || kind === 'yes') return null;
+  if (kind === 'actions' || kind === 'yes' || kind === 'check') return null;
   if (kind === 'person') return <span className={INLINE}><Skeleton.Circle size={24} /><Skeleton.Text lines={1} width={64} /></span>;
   const width = primary ? '60%' : kind === 'text' || kind === 'tags' || kind === 'trend' || kind === 'progress' ? 72 : kind === 'status' || kind === 'date' || kind === 'code' ? 56 : 44;
   return <Skeleton.Text lines={1} width={width} className={kindAlign[kind] === 'end' ? 'ml-auto' : undefined} />;
+}
+
+/** A column's total over some rows: the sum or mean of its values, or the host's own. */
+function totalOf<Row>(c: TableColumn<Row>, rows: Row[]): unknown {
+  if (typeof c.total === 'function') return c.total(rows);
+  const ns = rows.map((r) => valueOf(c, r)).filter((v) => !isEmpty(v)).map(Number).filter((n) => !Number.isNaN(n));
+  if (ns.length === 0) return null;
+  const sum = ns.reduce((a, b) => a + b, 0);
+  return c.total === 'mean' ? sum / ns.length : sum;
+}
+
+/** A total in its column's look; figures turn on the drum when they change. */
+function Total<Row>({ column, rows, now }: { column: TableColumn<Row>; rows: Row[]; now?: Date }) {
+  const kind = column.kind ?? 'text';
+  const value = totalOf(column, rows);
+  if (typeof value === 'number' && NUMERIC.has(kind)) return <span className="tabular-nums"><SwapText value={plainNumber(kind, value, column)} /></span>;
+  return <TableCell kind={kind} value={value} label={column.header} now={now} {...formatOf(column)} />;
+}
+
+/** One row of the column menu: the column's name and a checkbox drawn as the Checkbox part. */
+function ColumnItem({ checked, disabled, onCheckedChange, children }: { checked: boolean; disabled?: boolean; onCheckedChange: (on: boolean) => void; children: React.ReactNode }) {
+  return (
+    <BaseMenu.CheckboxItem className={menuParts.LIVE_ROW} checked={checked} disabled={disabled} closeOnClick={false} onCheckedChange={(on) => onCheckedChange(on)}>
+      <span aria-hidden inert className={join(menuParts.GLYPH, 'pointer-events-none')}><Checkbox size="row" checked={checked} disabled={disabled} tabIndex={-1} /></span>
+      <span className={menuParts.LABEL}>{children}</span>
+    </BaseMenu.CheckboxItem>
+  );
+}
+
+/** A row's detail panel: it opens from its top edge on the settle spring, in step with the rows below
+ * travelling down, so their edge and the panel's reveal move together and nothing overlaps. */
+function DetailCell({ span, children }: { span: number; children: React.ReactNode }) {
+  const ref = React.useRef<HTMLTableCellElement>(null);
+  useIsoLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const { ms, easing } = springOf(el, 'settle');
+    if (!ms) return;
+    const a = el.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: ms, easing });
+    return () => a.cancel();
+  }, []);
+  return <td ref={ref} colSpan={span} className={DETAIL_CELL}><div>{children}</div></td>;
+}
+
+/** A row group: its rows travel when they move and land when they arrive (the rows' motion). */
+function Body({ order, land, open = true, waiting, children }: { order: string; land: Set<string>; open?: boolean; waiting?: boolean; children: React.ReactNode }) {
+  const ref = React.useRef<HTMLTableSectionElement>(null);
+  const was = React.useRef(open);
+  useRowMotion(ref, order, land);
+  // A group opening reveals its rows from under its header, in step with the groups below travelling down.
+  useIsoLayoutEffect(() => {
+    const el = ref.current;
+    const opening = open && !was.current;
+    was.current = open;
+    const head = el?.rows[0];
+    if (!el || !head || !opening) return;
+    const { ms, easing } = springOf(el, 'settle');
+    if (ms) el.animate([{ clipPath: `inset(0 0 ${el.offsetHeight - head.offsetHeight}px 0)` }, { clipPath: 'inset(0 0 0 0)' }], { duration: ms, easing });
+  }, [open]);
+  return <tbody ref={ref} data-waiting={waiting ? '' : undefined} className="spinner-item">{children}</tbody>;
 }
 
 /** Rows of things: kinds of cells, sort, selection, open, actions, and every way of having none. */
 export function Table<Row>({
   columns, rows, rowKey, caption, captionHidden, density = 'regular', sort, defaultSort = null, onSortChange,
   selected, onSelectedChange, rowLabel, onRowAction, opened, filter, loading, loadingRows = 5, error, empty = 'Nothing here yet.',
-  emptyFiltered = 'Nothing matches.', maxHeight, now, className,
+  emptyFiltered = 'Nothing matches.', maxHeight, now, footer = 'Total', groupBy, defaultCollapsed, live, expandRow,
+  columnsMenu, resizable, columnsState, defaultColumnsState, onColumnsChange, className,
 }: TableProps<Row>) {
   const [ownSort, setOwnSort] = React.useState<SortState>(defaultSort);
   const current = sort !== undefined ? sort : ownSort;
   const frame = React.useRef<HTMLDivElement>(null);
-  const body = React.useRef<HTMLTableSectionElement>(null);
-  const tops = React.useRef(new Map<string, number>());
+  const table = React.useRef<HTMLTableElement>(null);
   const [guide, setGuide] = React.useState<string | null>(null);
   const wait = useWait(loading ? 'working' : 'idle', frame);
+  const [collapsed, setCollapsed] = React.useState(() => new Set(defaultCollapsed));
+  const [expanded, setExpanded] = React.useState(() => new Set<string>());
+  const [away, setAway] = React.useState(false);
+  const known = React.useRef<Set<string> | null>(null);
+  // Keys to land on their next arrival (live rows, an opened group's rows, a detail panel), taken out as they land.
+  const [landing] = React.useState(() => new Set<string>());
 
-  const primaryIndex = Math.max(0, columns.findIndex((c) => c.primary));
-  const primary = columns[primaryIndex];
+  // Columns the person hid or sized.
+  const [ownLayout, setOwnLayout] = React.useState<TableColumnsState>(defaultColumnsState ?? {});
+  const layout = columnsState ?? ownLayout;
+  const [dragged, setDragged] = React.useState<Record<string, number> | null>(null);
+  const widths = dragged ?? layout.widths ?? {};
+  const hidden = new Set(layout.hidden);
+  const setLayout = (next: TableColumnsState) => {
+    if (columnsState === undefined) setOwnLayout(next);
+    onColumnsChange?.(next);
+  };
+
+  const primaryAt = Math.max(0, columns.findIndex((c) => c.primary));
+  const primary = columns[primaryAt];
+  const shown = columns.filter((c) => c === primary || !hidden.has(c.key));
+  const primaryIndex = shown.indexOf(primary);
   const labelOf = (r: Row) => (rowLabel ? rowLabel(r) : String(valueOf(primary, r) ?? rowKey(r)));
-  const moved = columns.filter((c, i) => i !== primaryIndex && (c.priority ?? 1) > 1 && c.kind !== 'actions');
+  const moved = shown.filter((c, i) => i !== primaryIndex && (c.priority ?? 1) > 1 && c.kind !== 'actions');
+  const totals = shown.some((c) => c.total);
+  const pinned = shown[0]?.pin === 'start';
+
+  // Live: rows that arrive while you're scrolled away wait, unseen, until you come back or ask.
+  let present = rows;
+  if (live) {
+    if (!known.current) known.current = new Set(rows.map(rowKey));
+    else if (!away) {
+      for (const r of rows) {
+        const k = rowKey(r);
+        if (!known.current.has(k)) { known.current.add(k); landing.add(k); }
+      }
+    }
+    const seen = known.current;
+    present = rows.filter((r) => seen.has(rowKey(r)));
+  }
+  const waiting = rows.length - present.length;
+
+  React.useEffect(() => {
+    const el = frame.current;
+    if (!live || !el) return;
+    const check = () => {
+      const slop = cssPx(el, '--mu-r-table-live-slop');
+      setAway(el.scrollTop > slop || el.getBoundingClientRect().top < -slop);
+    };
+    el.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('scroll', check, { passive: true });
+    return () => { el.removeEventListener('scroll', check); window.removeEventListener('scroll', check); };
+  }, [live]);
+
+  const release = () => {
+    const el = frame.current;
+    setAway(false);
+    if (!el) return;
+    const behavior = motionReduced(el) ? 'auto' : 'smooth';
+    if (el.getBoundingClientRect().top < 0) el.scrollIntoView({ block: 'start', behavior });
+    el.scrollTo({ top: 0, behavior });
+  };
 
   const sorted = React.useMemo(() => {
     const col = current && columns.find((c) => c.key === current.key);
-    if (!col || !(col.sortBy || col.sortable)) return rows;
+    if (!col || !(col.sortBy || col.sortable)) return present;
     const by = col.sortBy ?? ((r: Row) => sortValue(col.kind ?? 'text', valueOf(col, r)));
     const dir = current!.direction === 'ascending' ? 1 : -1;
-    return [...rows].sort((a, b) => {
+    return [...present].sort((a, b) => {
       const x = by(a), y = by(b);
       return (typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y))) * dir;
     });
-  }, [rows, columns, current]);
+  }, [present, columns, current]);
 
-  // Each row travels from where it was to where it now is (FLIP), measured inside the table body.
-  useIsoLayoutEffect(() => {
-    const tb = body.current;
-    if (!tb) return;
-    const next = new Map<string, number>();
-    const { ms, easing } = readMotion(tb);
-    tb.querySelectorAll<HTMLTableRowElement>('tr[data-key]').forEach((tr) => {
-      const key = tr.dataset.key!;
-      const top = tr.offsetTop;
-      const was = tops.current.get(key);
-      next.set(key, top);
-      if (was != null && was !== top && ms > 0) tr.animate([{ transform: `translateY(${was - top}px)` }, { transform: 'none' }], { duration: ms, easing });
-    });
-    tops.current = next;
-  }, [sorted]);
+  // Groups in the order they first appear in the host's rows; each group's rows in the sorted order.
+  const groups: { name: string | null; rows: Row[] }[] = [];
+  if (groupBy) {
+    const at = new Map<string, Row[]>();
+    for (const r of present) { const g = groupBy(r); if (!at.has(g)) { at.set(g, []); groups.push({ name: g, rows: at.get(g)! }); } }
+    for (const r of sorted) at.get(groupBy(r))!.push(r);
+  } else groups.push({ name: null, rows: sorted });
+
+  const open = (g: string | null) => g == null || !collapsed.has(g);
+  const order = groups.map((g) => [g.name == null ? '' : `group:${g.name}`, ...(open(g.name) ? g.rows.flatMap((r) => {
+    const k = rowKey(r);
+    return expandRow && expanded.has(k) ? [k, `${k}:detail`] : [k];
+  }) : [])].join(' ')).join(' ');
+
+  const toggleGroup = (g: { name: string | null; rows: Row[] }) => {
+    if (g.name == null) return;
+    const next = new Set(collapsed);
+    if (!next.delete(g.name)) next.add(g.name);
+    setCollapsed(next);
+  };
+  const toggleRow = (key: string) => {
+    const next = new Set(expanded);
+    if (!next.delete(key)) next.add(key);
+    setExpanded(next);
+  };
 
   const toggleSort = (key: string) => {
     const next: SortState = current?.key === key ? { key, direction: current.direction === 'ascending' ? 'descending' : 'ascending' } : { key, direction: 'ascending' };
@@ -473,107 +663,231 @@ export function Table<Row>({
     onSelectedChange?.(next);
   };
 
+  // Sizing: a column's cells hold their content in a box of the dragged width (the table stays auto, so
+  // the primary column still takes what is left). Keys step it; ↩ or a double-click gives it back.
+  const setWidth = (key: string, width: number | null, final: boolean) => {
+    const next = { ...widths };
+    if (width == null) delete next[key]; else next[key] = width;
+    if (final) { setDragged(null); setLayout({ ...layout, widths: next }); } else setDragged(next);
+  };
+  const resizeStart = (key: string) => (e: React.PointerEvent<HTMLElement>) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    const handle = e.currentTarget;
+    const min = cssPx(handle, '--mu-r-table-resize-min');
+    const x0 = e.clientX, w0 = handle.parentElement!.getBoundingClientRect().width;
+    let w = w0;
+    handle.setPointerCapture(e.pointerId);
+    handle.dataset.dragging = '';
+    const move = (ev: PointerEvent) => { w = Math.max(min, Math.round(w0 + ev.clientX - x0)); setWidth(key, w, false); };
+    const up = () => {
+      handle.removeEventListener('pointermove', move);
+      handle.removeEventListener('pointerup', up);
+      handle.removeEventListener('pointercancel', up);
+      delete handle.dataset.dragging;
+      setWidth(key, w, true);
+    };
+    handle.addEventListener('pointermove', move);
+    handle.addEventListener('pointerup', up);
+    handle.addEventListener('pointercancel', up);
+  };
+  const resizeKey = (key: string) => (e: React.KeyboardEvent<HTMLElement>) => {
+    const handle = e.currentTarget;
+    if (e.key === 'Enter') { e.preventDefault(); setWidth(key, null, true); return; }
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault();
+    const step = cssPx(handle, '--mu-r-table-resize-step') * (e.key === 'ArrowLeft' ? -1 : 1);
+    const w = widths[key] ?? Math.round(handle.parentElement!.getBoundingClientRect().width);
+    setWidth(key, Math.max(cssPx(handle, '--mu-r-table-resize-min'), w + step), true);
+  };
+  /** A sized column's content, in a box as wide as the column less its padding. */
+  const sized = (c: TableColumn<Row>, node: React.ReactNode) => (widths[c.key] == null ? node : (
+    <span className={SIZED} style={{ width: `calc(${widths[c.key]}px - 2 * var(--mu-r-table-row-pad-x))` }}>{node}</span>
+  ));
+
   // The guide follows the pointer, and focus inside a row (keyboard included).
   const rowOf = (el: EventTarget | null) => (el instanceof Element ? el.closest<HTMLElement>('tr[data-key]')?.dataset.key ?? null : null);
   const onKeyDown = (e: React.KeyboardEvent) => {
     if ((e.key !== 'ArrowDown' && e.key !== 'ArrowUp') || !(e.target as Element).classList?.contains('mu-table-open')) return;
-    const opens = [...(body.current?.querySelectorAll<HTMLElement>('.mu-table-open') ?? [])];
+    const opens = [...(table.current?.querySelectorAll<HTMLElement>('tbody .mu-table-open') ?? [])];
     const at = opens.indexOf(e.target as HTMLElement);
     const to = opens[at + (e.key === 'ArrowDown' ? 1 : -1)];
     if (to) { e.preventDefault(); to.focus(); }
   };
 
-  const span = columns.length + (selectable ? 1 : 0);
+  const leads = (selectable ? 1 : 0) + (expandRow ? 1 : 0);
+  const span = shown.length + leads;
+  // Pinned: the lead cells and the first column stay at the start, each after the ones before it.
+  const pinAt = (i: number) => (pinned ? { left: `calc(var(--mu-r-table-row-height) * ${i})` } : undefined);
   const matched = filter?.matched ?? rows.length;
   const filtered = !!filter && matched < filter.total;
   const align = (c: TableColumn<Row>) => c.align ?? kindAlign[c.kind ?? 'text'] ?? 'start';
+  const leave = (c: TableColumn<Row>) => (c.priority && c.priority > 1 ? c.priority : undefined);
   const stateRow = (node: React.ReactNode, kind: string) => <tr data-state={kind}><td colSpan={span} className={STATE}><span className={STATE_ROW}>{node}</span></td></tr>;
   const clear = filter && <Button size="compact" className={LIFT} onClick={filter.onClear}>Clear</Button>;
+  const dim = loading && rows.length > 0 && wait.showing;
+
+  const leadCells = (part: 'head' | 'body' | 'foot', node: { check?: React.ReactNode; expand?: React.ReactNode; rail?: boolean } = {}) => {
+    const head = part === 'head';
+    const Cell = head ? 'th' : 'td';
+    const base = head ? TH : part === 'foot' ? FOOT : TD;
+    let i = 0;
+    return (
+      <>
+        {selectable && <Cell scope={head ? 'col' : undefined} className={join(base, CHECK, pinned && PIN)} style={pinAt(i++)}>{node.rail && RAIL}{node.check}</Cell>}
+        {expandRow && <Cell scope={head ? 'col' : undefined} className={join(base, LEAD, pinned && PIN)} style={pinAt(i++)}>{node.rail && !selectable && RAIL}{head ? <span className="sr-only">Details</span> : node.expand}</Cell>}
+      </>
+    );
+  };
+
+  const rowOfData = (r: Row) => {
+    const key = rowKey(r);
+    const on = selectable && selected!.has(key);
+    const name = labelOf(r);
+    const isOpen = expanded.has(key);
+    const detailId = `${key}-detail`;
+    const out = [
+      <tr
+        key={key}
+        data-key={key}
+        data-row={key}
+        data-selected={on ? '' : undefined}
+        data-open={opened === key ? '' : undefined}
+        data-highlighted={guide === key ? '' : undefined}
+        aria-selected={selectable ? on : undefined}
+        onPointerEnter={() => setGuide(key)}
+        className={TR}
+      >
+        {leadCells('body', {
+          rail: opened === key,
+          check: <Checkbox size="row" className={LIFT} aria-label={`Select ${name}`} checked={on} onCheckedChange={(v) => setOne(key, !!v)} />,
+          expand: <IconButton variant="ghost" className={join(LIFT, 'align-middle')} label={`Details for ${name}`} aria-expanded={isOpen} aria-controls={isOpen ? detailId : undefined} icon={<Icon name="chevron" animate={false} className={CHEVRON} />} onClick={() => toggleRow(key)} />,
+        })}
+        {shown.map((c, ci) => {
+          const isPrimary = ci === primaryIndex;
+          const value = valueOf(c, r);
+          let inner: React.ReactNode = c.cell ? c.cell(r) : (
+            <TableCell kind={c.kind} value={value} label={c.kind === 'actions' ? name : c.kind === 'check' ? `${name}, ${c.header}` : c.header} now={now}
+              actions={c.actions?.(r)} onCheckedChange={c.onCheckedChange && ((v) => c.onCheckedChange!(r, v))} {...formatOf(c)} />
+          );
+          if (isPrimary) {
+            const detail = c.detail?.(r);
+            if (onRowAction && !c.cell) {
+              inner = <Truncated render={<button type="button" className={OPEN} onClick={() => onRowAction(r)} />}>{isEmpty(value) ? key : String(value)}</Truncated>;
+            }
+            inner = (
+              <>
+                {inner}
+                {detail != null && <span className={DETAIL}>{detail}</span>}
+                {moved.length > 0 && (
+                  <span className={MORE}>
+                    {moved.map((m) => (
+                      <span key={m.key} data-more={m.priority} className="me-table-row-gap">
+                        <span className="text-ink3">{m.header} </span>
+                        {m.cell ? m.cell(r) : <TableCell kind={m.kind} value={valueOf(m, r)} label={m.header} now={now} inline {...formatOf(m)} />}
+                      </span>
+                    ))}
+                  </span>
+                )}
+              </>
+            );
+          }
+          const Cell = c.rowHeader ? 'th' : 'td';
+          return (
+            <Cell
+              key={c.key}
+              scope={c.rowHeader ? 'row' : undefined}
+              data-leave={leave(c)}
+              data-kind={c.kind ?? 'text'}
+              style={ci === 0 ? pinAt(leads) : undefined}
+              className={join(TD, ALIGN[align(c)], isPrimary && !pinned ? PRIMARY : 'whitespace-nowrap', (c.kind ?? 'text') === 'text' && !isPrimary && 'table-text', ci === 0 && pinned && PIN, c.rowHeader && 'normal-case')}
+            >
+              {ci === 0 && leads === 0 && opened === key && RAIL}
+              {sized(c, inner)}
+            </Cell>
+          );
+        })}
+      </tr>,
+    ];
+    if (expandRow && isOpen) {
+      out.push(
+        <tr key={`${key}:detail`} id={detailId} data-row={`${key}:detail`} data-detail className="mu-table-detail-row">
+          <DetailCell span={span}>{expandRow(r)}</DetailCell>
+        </tr>,
+      );
+    }
+    return out;
+  };
 
   let content: React.ReactNode;
   if (error) {
-    content = stateRow(<><Icon name="sync-error" animate={false} className="size-table-glyph-size text-red" />{error.message}{error.onRetry && <Button size="compact" onClick={error.onRetry}>Try again</Button>}</>, 'error');
+    content = <tbody>{stateRow(<><Icon name="sync-error" animate={false} className="size-table-glyph-size text-red" />{error.message}{error.onRetry && <Button size="compact" onClick={error.onRetry}>Try again</Button>}</>, 'error')}</tbody>;
   } else if (loading && rows.length === 0) {
-    content = Array.from({ length: loadingRows }, (_, i) => (
-      <tr key={i} data-state="loading" aria-hidden>
-        {selectable && <td className={join(TD, CHECK)} />}
-        {columns.map((c, ci) => <td key={c.key} data-leave={c.priority && c.priority > 1 ? c.priority : undefined} className={join(TD, ALIGN[align(c)])}><Shape kind={c.kind} primary={ci === primaryIndex} /></td>)}
-      </tr>
-    ));
+    content = (
+      <tbody>
+        {Array.from({ length: loadingRows }, (_, i) => (
+          <tr key={i} data-state="loading" aria-hidden>
+            {leadCells('body')}
+            {shown.map((c, ci) => <td key={c.key} data-leave={leave(c)} className={join(TD, ALIGN[align(c)])}><Shape kind={c.kind} primary={ci === primaryIndex} /></td>)}
+          </tr>
+        ))}
+      </tbody>
+    );
   } else if (sorted.length === 0) {
-    content = filter && filter.total > 0 ? stateRow(<>{emptyFiltered}{clear}</>, 'filtered') : stateRow(empty, 'empty');
+    content = <tbody>{filter && filter.total > 0 ? stateRow(<>{emptyFiltered}{clear}</>, 'filtered') : stateRow(empty, 'empty')}</tbody>;
   } else {
-    content = sorted.map((r) => {
-      const key = rowKey(r);
-      const on = selectable && selected!.has(key);
-      const name = labelOf(r);
-      return (
-        <tr
-          key={key}
-          data-key={key}
-          data-selected={on ? '' : undefined}
-          data-open={opened === key ? '' : undefined}
-          data-highlighted={guide === key ? '' : undefined}
-          aria-selected={selectable ? on : undefined}
-          onPointerEnter={() => setGuide(key)}
-          className={TR}
-        >
-          {selectable && (
-            <td className={join(TD, CHECK)}>
-              {opened === key && RAIL}
-              <Checkbox size="row" className={LIFT} aria-label={`Select ${name}`} checked={on} onCheckedChange={(v) => setOne(key, !!v)} />
-            </td>
-          )}
-          {columns.map((c, ci) => {
-            const isPrimary = ci === primaryIndex;
-            const value = valueOf(c, r);
-            let inner: React.ReactNode = c.cell ? c.cell(r) : <TableCell kind={c.kind} value={value} label={c.kind === 'actions' ? name : c.header} now={now} actions={c.actions?.(r)} {...formatOf(c)} />;
-            if (isPrimary) {
-              const detail = c.detail?.(r);
-              if (onRowAction && !c.cell) {
-                inner = <Truncated render={<button type="button" className={OPEN} onClick={() => onRowAction(r)} />}>{isEmpty(value) ? key : String(value)}</Truncated>;
-              }
-              inner = (
-                <>
-                  {inner}
-                  {detail != null && <span className={DETAIL}>{detail}</span>}
-                  {moved.length > 0 && (
-                    <span className={MORE}>
-                      {moved.map((m) => (
-                        <span key={m.key} data-more={m.priority} className="me-table-row-gap">
-                          <span className="text-ink3">{m.header} </span>
-                          {m.cell ? m.cell(r) : <TableCell kind={m.kind} value={valueOf(m, r)} label={m.header} now={now} inline {...formatOf(m)} />}
-                        </span>
-                      ))}
-                    </span>
-                  )}
-                </>
-              );
-            }
-            return (
-              <td key={c.key} data-leave={c.priority && c.priority > 1 ? c.priority : undefined} data-kind={c.kind ?? 'text'} className={join(TD, ALIGN[align(c)], isPrimary ? PRIMARY : 'whitespace-nowrap', (c.kind ?? 'text') === 'text' && !isPrimary && 'table-text')}>
-                {ci === 0 && !selectable && opened === key && RAIL}
-                {inner}
-              </td>
-            );
-          })}
-        </tr>
-      );
-    });
+    content = groups.map((g) => (
+      <Body key={g.name ?? ''} order={order} land={landing} open={open(g.name)} waiting={dim}>
+        {g.name != null && (
+          <tr data-row={`group:${g.name}`} data-group={g.name} className="mu-table-group">
+            <th scope="rowgroup" colSpan={leads + primaryIndex + 1} className={join(GROUP, pinned && PIN)} style={pinAt(0)}>
+              <button type="button" className={GROUP_TOGGLE} aria-expanded={open(g.name)} onClick={() => toggleGroup(g)}>
+                <Icon name="chevron" animate={false} className={CHEVRON} />
+                {g.name}
+                <span className="text-ink3 tabular-nums"><SwapText value={String(g.rows.length)} /></span>
+              </button>
+            </th>
+            {shown.slice(primaryIndex + 1).map((c) => (
+              <td key={c.key} data-leave={leave(c)} className={join(GROUP, ALIGN[align(c)], 'whitespace-nowrap')}>{c.total && sized(c, <Total column={c} rows={g.rows} now={now} />)}</td>
+            ))}
+          </tr>
+        )}
+        {open(g.name) && g.rows.flatMap(rowOfData)}
+      </Body>
+    ));
   }
+
+  const menu = columnsMenu && (
+    <Menu align="end" heading="Columns" trigger={<IconButton variant="ghost" label="Columns" className={join(LIFT, 'ms-auto self-center')} icon={<Icon name="eye" />} />}>
+      {columns.filter((c) => c.kind !== 'actions').map((c) => (
+        <ColumnItem key={c.key} checked={c === primary || !hidden.has(c.key)} disabled={c === primary}
+          onCheckedChange={(on) => setLayout({ ...layout, hidden: on ? [...hidden].filter((k) => k !== c.key) : [...hidden, c.key] })}>
+          {c.header}
+        </ColumnItem>
+      ))}
+    </Menu>
+  );
 
   return (
     <div
       ref={frame}
-      className={join(FRAME, DENSITY[density], maxHeight != null && 'overflow-y-auto', className)}
+      className={join(FRAME, DENSITY[density], maxHeight != null && 'overflow-y-auto', (pinned || resizable) && 'overflow-x-auto', className)}
       style={maxHeight != null ? { maxHeight } : undefined}
+      onScroll={(e) => e.currentTarget.toggleAttribute('data-scrolled-x', e.currentTarget.scrollLeft > 0)}
       onPointerLeave={() => setGuide(null)}
       onFocus={(e) => setGuide(rowOf(e.target))}
       onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setGuide(null); }}
     >
       <ListGlide />
-      <table className={TABLE} aria-busy={wait.busy || (loading && rows.length === 0) || undefined} data-density={density}>
-        <caption className={captionHidden && !filtered ? 'sr-only' : CAPTION}>
+      {live && (
+        <div className={NEWS}>
+          <Button size="compact" inert={!waiting} aria-hidden={!waiting} onClick={release} icon={<span className="inline-flex table-arrow"><Icon name="arrow" animate={false} className="size-table-glyph-size" /></span>}>
+            <SwapText value={`${waiting} new`} />
+          </Button>
+        </div>
+      )}
+      <table ref={table} className={TABLE} aria-busy={wait.busy || (loading && rows.length === 0) || undefined} data-density={density} onKeyDown={onKeyDown}>
+        <caption className={captionHidden && !filtered && !menu ? 'sr-only' : CAPTION}>
           <span className={CAPTION_ROW}>
             <span className={captionHidden ? 'sr-only' : 'type-title text-ink'}>{caption}</span>
             {filtered && (
@@ -582,36 +896,72 @@ export function Table<Row>({
                 {matched > 0 && clear}
               </>
             )}
+            {menu}
           </span>
         </caption>
         <thead>
           <tr>
-            {selectable && (
-              <th scope="col" className={join(TH, CHECK)}>
-                <Checkbox size="row" aria-label="Select all" checked={all} doing={some} disabled={rows.length === 0} onCheckedChange={(on) => setAll(!!on)} />
-              </th>
-            )}
-            {columns.map((c) => {
+            {selectable || expandRow ? leadCells('head', {
+              check: <Checkbox size="row" aria-label="Select all" checked={all} doing={some} disabled={rows.length === 0} onCheckedChange={(on) => setAll(!!on)} />,
+            }) : null}
+            {shown.map((c, ci) => {
               const dir = current?.key === c.key ? current.direction : undefined;
               const unit = tableUnit(c.kind, c);
               const label = <>{c.kind === 'actions' ? <span className="sr-only">{c.header}</span> : c.header}{unit && <span className="text-ink3"> ({unit})</span>}</>;
               const sortable = !!(c.sortBy || c.sortable);
+              const sizable = resizable && ci !== primaryIndex && c.kind !== 'actions';
               return (
-                <th key={c.key} scope="col" aria-sort={sortable ? dir ?? 'none' : undefined} data-leave={c.priority && c.priority > 1 ? c.priority : undefined} className={join(TH, ALIGN[align(c)])}>
-                  {sortable ? (
+                <th key={c.key} scope="col" data-col={c.key} aria-sort={sortable ? dir ?? 'none' : undefined} data-leave={leave(c)}
+                  style={ci === 0 ? pinAt(leads) : undefined} className={join(TH, ALIGN[align(c)], ci === 0 && pinned && PIN)}>
+                  {sized(c, sortable ? (
                     <button type="button" className={SORT} onClick={() => toggleSort(c.key)}>
                       {label}
                       <MorphIcon name="arrow" turn={dir === 'descending' ? 180 : 0} className={ARROW} />
                     </button>
-                  ) : label}
+                  ) : label)}
+                  {sizable && (
+                    <span
+                      role="separator"
+                      aria-orientation="vertical"
+                      aria-label={`Size ${c.header}`}
+                      aria-valuenow={widths[c.key]}
+                      tabIndex={0}
+                      className={RESIZE}
+                      onPointerDown={resizeStart(c.key)}
+                      onKeyDown={resizeKey(c.key)}
+                      onDoubleClick={() => setWidth(c.key, null, true)}
+                    />
+                  )}
                 </th>
               );
             })}
           </tr>
         </thead>
-        <tbody ref={body} onKeyDown={onKeyDown} data-waiting={loading && rows.length > 0 && wait.showing ? '' : undefined} className="spinner-item">
-          {content}
-        </tbody>
+        {content}
+        {totals && sorted.length > 0 && !error && (
+          <tfoot>
+            <tr className="mu-table-total">
+              {leadCells('foot')}
+              {shown.map((c, ci) => (
+                <td key={c.key} data-leave={leave(c)} style={ci === 0 ? pinAt(leads) : undefined}
+                  className={join(FOOT, ALIGN[align(c)], 'whitespace-nowrap', ci === 0 && pinned && PIN)}>
+                  {ci === primaryIndex ? (
+                    <>
+                      <span className="type-label engraved">{footer}</span>
+                      {moved.some((m) => m.total) && (
+                        <span className={MORE}>
+                          {moved.filter((m) => m.total).map((m) => (
+                            <span key={m.key} data-more={m.priority} className="me-table-row-gap"><span className="text-ink3">{m.header} </span><Total column={m} rows={sorted} now={now} /></span>
+                          ))}
+                        </span>
+                      )}
+                    </>
+                  ) : c.total && sized(c, <Total column={c} rows={sorted} now={now} />)}
+                </td>
+              ))}
+            </tr>
+          </tfoot>
+        )}
       </table>
     </div>
   );

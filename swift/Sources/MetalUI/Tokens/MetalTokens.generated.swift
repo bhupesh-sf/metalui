@@ -1313,7 +1313,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Rows of a person's things, read across and compared down: engraved column labels over rows parted by engraved hairlines. Three densities: roomy 48 (touch), regular 40, compact 32. A reading guide, not stripes: one plate (the menu's row highlight) glides under the hovered or focused row on the settle spring. Each column says its kind and the kind sets the cell's look: text (truncates, the whole in a tooltip, a second line in ink2), number, currency and percent (tabular, end-aligned, the unit in the header, a real minus), delta (the sign and an up or down arrow, green or red only on top of the sign), date (relative with the exact time in a tooltip), status (an LED and its word), person (avatar and name, or overlapping avatars), tags (two chips, then +N), progress (a slim meter, its share in words for assistive tech), trend (a mini sparkline), yes (a check, nothing for no), code (mono, a copy key on hover), actions (a more key on hover and focus, opening a menu); an empty value is a dash in ink3. Selected rows (the row checkbox, with a mixed select-all) carry a quiet green tint; the opened row takes the row's green rail. Sorting: the column's arrow morphs up or down, and each row travels from where it was on the settle spring. The head is sticky on frost in a scroll container. Narrow: the lowest-priority columns leave first and their values move to a second line under the primary cell. Loading shows skeleton rows in the columns' shapes; a refresh dims the rows after the show delay; empty, nothing-matches and failed each say so in one row. Reduce Motion: rows jump; the arrow and the guide move at once. (the label's engraving; the rule; the menu's row highlight (the guide); the row's rail; the checkbox (row size); LED, avatar, chip, meter, sparkline, skeleton; the frost; the settle and part springs)
+    /// Rows of a person's things, read across and compared down: engraved column labels over rows parted by engraved hairlines. Three densities: roomy 48 (touch), regular 40, compact 32. A reading guide, not stripes: one plate (the menu's row highlight) glides under the hovered or focused row on the settle spring. Each column says its kind and the kind sets the cell's look: text (truncates, the whole in a tooltip, a second line in ink2), number, currency and percent (tabular, end-aligned, the unit in the header, a real minus), delta (the sign and an up or down arrow, green or red only on top of the sign), date (relative with the exact time in a tooltip), status (an LED and its word), person (avatar and name, or overlapping avatars), tags (two chips, then +N), progress (a slim meter, its share in words for assistive tech), trend (a mini sparkline), yes (a check, nothing for no), code (mono, a copy key on hover), actions (a more key on hover and focus, opening a menu); an empty value is a dash in ink3. Selected rows (the row checkbox, with a mixed select-all) carry a quiet green tint; the opened row takes the row's green rail. Sorting: the column's arrow morphs up or down, and each row travels from where it was on the settle spring. The head is sticky on opaque frost in a scroll container. Narrow: the lowest-priority columns leave first and their values move to a second line under the primary cell. Loading shows skeleton rows in the columns' shapes; a refresh dims the rows after the show delay; empty, nothing-matches and failed each say so in one row. Totals: a sunk readout row at the foot (the well's fill, a shade along its top edge, rounded ends), sticky at the bottom; its figures turn on the drum when the rows change. Groups: an engraved header row per group (a chevron, the name, the count, subtotals in the totals columns) on opaque frost, sticky under the head; closing one turns the chevron a quarter back on the part spring and the groups below travel up on the settle spring; opening one reveals its rows from under its header while the groups below travel down, in step. Pinned: the first column stays at the start on opaque frost while the rest scroll sideways under it; a shade at its edge fades in on the settle spring only while something is under it. Matrix: row header cells; checkbox cells are the row checkbox. Live: new rows land at the top (one nest above, the object spring) and the rest travel down; scrolled away, they wait behind an 'N new' key that rises under the head (settle) and returns you to the top. Detail: a chevron key opens a sunk panel under its row, revealed from its top edge on the settle spring while the rows below travel down in step. Columns: a menu of checkboxes hides and shows columns; a header's end hairline thickens to a grip on the part spring under the pointer or focus and sizes its column by drag or arrow keys. Reduce Motion: rows jump, land and open at once; the arrow, the chevrons and the guide move at once. (the label's engraving; the rule; the menu's row highlight (the guide); the row's rail; the checkbox (row size); LED, avatar, chip, meter, sparkline, skeleton; the frost; the settle and part springs)
     public static let table = MetalObjectRecipe(
         name: "table",
         layers: [
@@ -1343,6 +1343,23 @@ public enum MetalRecipes {
             "state.gap": .number(8.0),
             "state.pad-y": .number(20.0),
             "copy.hold": .text("1400ms"),
+            "total.radius": .number(10.0),
+            "total.depth": .number(3.0),
+            "total.shade": .perColorway(bone: "rgba(60,55,40,.10)", graphite: "rgba(0,0,0,.45)"),
+            "group.height": .number(32.0),
+            "group.gap": .number(6.0),
+            "pin.shadow": .number(12.0),
+            "pin.shade": .perColorway(bone: "rgba(24,22,16,.08)", graphite: "rgba(0,0,0,.40)"),
+            "live.slop": .number(24.0),
+            "live.inset": .number(8.0),
+            "detail.inset": .number(8.0),
+            "detail.pad": .number(12.0),
+            "detail.radius": .number(12.0),
+            "resize.hit": .number(10.0),
+            "resize.line": .number(1.0),
+            "resize.grip": .number(3.0),
+            "resize.min": .number(64.0),
+            "resize.step": .number(8.0),
         ]
     )
 
