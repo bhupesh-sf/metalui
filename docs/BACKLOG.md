@@ -111,7 +111,7 @@ pagination, calendar (3), navigation-menu, accordion, attachment, combobox, sele
 - [x] `chevron` (one glyph; `turn` prop on Icon and MorphIcon), `minus` (done)
 - `save`, `download`, `upload`, `send` (done, with `stop`, `attach`, `retry`, `person`, `bell`, `palette`), `copy` (distinct from paste), `external` (the link's arrow) (done)
 - `settings`, `filter`, `sort`, `eye` / `eye-off` (a password field), `lock` (done, with `copy` and `external`; `copy` → `check` strains 2.38, so Copied turns its glyph by the drum, not a morph)
-- `info`, `warning` (toast and alert kinds), `sun` / `moon` (colorway), `sidebar` (the rail toggle)
+- `info`, `warning` (toast and alert kinds), `sun` / `moon` (colorway), `sidebar` (the rail toggle) (done 2026-10-06, with `coin` and `folder` / `folder-open`; Alert, the cue family and Tree's page use them. Left: the docs' theme switch and rail toggle don't use `sun`/`moon`/`sidebar` yet)
 
 Order of work: the rules and `Button`'s icon slot → D's `chevron` and `minus` → C (component by component) → B's morphs (copy first, it's everywhere) → A in the docs pages.
 
@@ -277,7 +277,7 @@ Direction:
 - [x] **Inferred vs confirmed**: inferred cues (the "FRI" chip at 0.82) read as a suggestion (dashed, ink2) until confirmed by a click or Tab; confirming stamps them solid with a small press.
 - [x] **Raw vs cued**: the toggle between raw text and cues keeps every chunk exactly in place (already a rule); add the glyphs fading, not jumping.
 - [x] Redo the page with a legend of kinds, a live typing demo that shows recognition, and the DialKit for the motion; Swift in step.
-- Done (2026-10-06): glyphs at full ink before their words, named in the family's chip; one grammar (time, money, body, colour, person, link) with a legend; luggage tags hashed to six hues; recognition plays once after the caret leaves; one act and a sparkle on confirm; raw vs cued keeps every word in place; SwiftUI in step. Left: draw `coin` and `moon` (stand-ins used); Chip's `tag` variant should take the luggage look; Swift captures don't render life glyphs.
+- Done (2026-10-06): glyphs at full ink before their words, named in the family's chip; one grammar (time, money, body, colour, person, link) with a legend; luggage tags hashed to six hues; recognition plays once after the caret leaves; one act and a sparkle on confirm; raw vs cued keeps every word in place; SwiftUI in step. Left: Chip's `tag` variant should take the luggage look; Swift captures don't render life glyphs.
 
 ## Lasso demo: buggy selection and an unreliable trigger
 
@@ -551,7 +551,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 
 ### 1. Small, used everywhere (in both libraries)
 
-- [x] **Alert**: an inline message in the page. (Built 2026-10-06; sheet in `docs/sheets/alert.md`. Left: draw `info` and `warning` — `note` and `bell` stand in; a SwiftUI capture on the page.) Today only `AlertDialog`, `Toast` and `StatusBadge` exist.
+- [x] **Alert**: an inline message in the page. (Built 2026-10-06; sheet in `docs/sheets/alert.md`. Left: a SwiftUI capture on the page.) Today only `AlertDialog`, `Toast` and `StatusBadge` exist.
   - Kinds: default, info, success, warning, destructive, invert.
   - Parts: icon, title, description, actions (`Alert.Title`, `Alert.Description`, `Alert.Action`); title only, description only, or all of them; a long message that wraps.
 - [x] **Badge**: a plain label or count. (Built 2026-10-06 as a Part; sheet in `docs/sheets/badge.md`: Badge describes, Chip is acted on, StatusBadge is the system speaking. `Badge.Anchor` puts a count on a control's corner.) `Chip` and `StatusBadge` are both specialised.
@@ -561,7 +561,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 
 ### 2. Common form and data controls
 
-- [x] **Tree**: nested rows that expand and collapse, with keyboard navigation (ARIA tree pattern). (Built 2026-10-06; sheet in `docs/sheets/tree.md`: flat rows with `aria-level`, selection never follows focus, loading in the chevron's slot, F2 renames with QuickEdit; `Tree.Guides` and `Tree.Disclosure` exported for Table and the Cascader. Left: drag to move (on Sortable), virtual rows, a `folder` glyph pair.)
+- [x] **Tree**: nested rows that expand and collapse, with keyboard navigation (ARIA tree pattern). (Built 2026-10-06; sheet in `docs/sheets/tree.md`: flat rows with `aria-level`, selection never follows focus, loading in the chevron's slot, F2 renames with QuickEdit; `Tree.Guides` and `Tree.Disclosure` exported for Table and the Cascader. Left: drag to move (on Sortable), virtual rows, .)
   - Guide lines per level; folder open, folder closed and file icons; chevron or plus/minus toggles; `indent` per level; drag to move with a drop line.
 - [x] **Sortable**: drag to reorder, with a keyboard path. Nothing in the library reorders today. (Built 2026-10-06 as an Instrument; sheet in `docs/sheets/sortable.md`: live reorder, `onValueCommit(next, previous)` rolls back a failed save; `useSortable` for Tree, Kanban, Table columns and uploads; `useRowMotion` now glides sideways too. Left: between lists (Kanban), into a level (Tree), several at once, right-to-left keys.)
   - Vertical list, horizontal, grid with mixed sizes, nested levels; a grip handle or the whole item; disabled items.
