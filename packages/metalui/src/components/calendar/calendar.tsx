@@ -4,6 +4,7 @@ import * as React from 'react';
 import { SwapText } from '../../motion/swap';
 import { buttonClasses } from '../button/button';
 import { ChevronIcon } from '../../icons/components.generated';
+import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
 /* ─────────────────────────────────────────────────────────
  * CALENDAR, a month to choose a day from (or a range, several days, a month, quarter, half, year)
@@ -28,7 +29,10 @@ import { ChevronIcon } from '../../icons/components.generated';
  *   periods   period="month" | "quarter" | "half" | "year": the same grid of larger units, chosen,
  *             ranged and marked the same way
  *   months    months={2}: pages side by side, the step keys on the outer ends; days of the next or
- *             last month are left out, so each day shows once
+ *             last month are left out, so each day shows once. In a container narrower than the
+ *             pages (the nearest @container: a panel, a block), one page shows with both steps
+ *   locale    names, titles and digits from Intl in `locale`; under dir="rtl" the weeks run right to
+ *             left, the chevrons point outward, ← is the next day and a later month comes from the left
  *   keys      arrows by unit and row, Page Up / Down by page (Shift: a year), Home / End to the row's
  *             ends, Enter or Space chooses; moving past the page turns it
  *   limits    units outside the page in ink3; out of range disabled at 40 %, and the steps stop
@@ -131,6 +135,7 @@ function isoWeek(d: Date) {
 /** Names and faces of units in a locale. */
 function words(locale?: string) {
   const f = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(locale, o);
+  const digits = new Intl.NumberFormat(locale, { useGrouping: false });
   const full = f({ weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const monthYear = f({ month: 'long', year: 'numeric' });
   const long = f({ month: 'long' });
@@ -149,12 +154,14 @@ function words(locale?: string) {
     },
     /** What the cell shows: the day's number, "Sep", "Q3" over "Jul – Sep", "2026". */
     face(d: Date, unit: CalendarPeriod): { main: string; sub?: string } {
-      if (unit === 'day') return { main: String(d.getDate()) };
+      if (unit === 'day') return { main: digits.format(d.getDate()) };
       if (unit === 'month') return { main: short.format(d) };
       if (unit === 'year') return { main: year.format(d) };
       const [a, b] = span(d, unit);
       return { main: tag(d, unit), sub: `${short.format(a)} – ${short.format(b)}` };
     },
+    /** A number in the locale's digits (١٢ in ar-EG): week numbers. */
+    digits: (n: number) => digits.format(n),
     title(page: Date, unit: CalendarPeriod) {
       if (unit === 'day') return monthYear.format(page);
       if (unit === 'year') return `${year.format(page)} – ${year.format(new Date(page.getFullYear() + 9, 0, 1))}`;
@@ -166,13 +173,15 @@ function words(locale?: string) {
 /* ── looks ─────────────────────────────────────────────── */
 
 const ROOT = 'mu-calendar inline-grid gap-calendar-head-gap p-calendar-pad select-none';
-const PAGES = 'mu-calendar-pages flex items-start gap-calendar-page-gap';
+const PAGES = 'mu-calendar-pages calendar-pages flex items-start gap-calendar-page-gap';
 const PAGE = 'mu-calendar-page grid gap-calendar-head-gap';
 const HEAD = 'mu-calendar-head flex items-center justify-between gap-calendar-head-gap h-calendar-head-height';
 const TITLE = 'mu-calendar-title type-title text-ink';
 const TITLE_KEY = 'mu-calendar-title-key inline-flex items-center gap-calendar-unit-sub-gap h-calendar-head-height px-calendar-head-gap rounded-pill border-0 bg-transparent type-title text-ink cursor-pointer outline-none transition-row hover:recipe-switcher focus-visible:focus-ring [&>svg]:size-calendar-step-glyph [&>svg]:text-ink3';
 const STEP = `${buttonClasses('standard', 'compact')} mu-calendar-step px-0! w-calendar-head-height flex-none justify-center`;
 const STEP_SPACER = 'w-calendar-head-height flex-none';
+// The next step on the first page, drawn only when a narrow container leaves one page of several.
+const STEP_NARROW = 'calendar-step-narrow';
 const TABLE = 'mu-calendar-grid calendar-grid';
 const SHEET = 'calendar-sheet';
 const WEEKDAY = 'mu-calendar-weekday size-calendar-day-size p-0 type-meta text-ink3 text-center';
@@ -271,6 +280,9 @@ export function Calendar(props: CalendarProps) {
   const titleId = React.useId();
   const quietId = React.useId();
   const markId = React.useId();
+  // The page's direction (dir="rtl" anywhere above): ← → and the arrivals turn with it.
+  const [rtl, setRtl] = React.useState(false);
+  useIsoLayoutEffect(() => { if (body.current) setRtl(getComputedStyle(body.current).direction === 'rtl'); }, []);
 
   const first = weekStartsOn ?? weekStartOf(locale);
   const w = React.useMemo(() => words(locale), [locale]);
@@ -290,13 +302,16 @@ export function Calendar(props: CalendarProps) {
     if (next.getTime() !== page.getTime()) onMonthChange?.(next);
   };
 
+  /** The pages drawn: fewer than `pages` when a narrow container hides the later ones. */
+  const drawn = () => (body.current ? Math.max(1, Array.from(body.current.children).filter((c) => c.getClientRects().length > 0).length) : pages);
   const go = (next: Date, byKey: boolean, unit = view) => {
     const d = clamp(next);
     moved.current = byKey;
     setFocused(d);
     const p = pageOf(d, unit);
+    const n = Math.min(pages, drawn());
     if (p < page) { setDir('earlier'); setPage(p); }
-    else if (p > last) { setDir('later'); setPage(addPage(p, unit, -(pages - 1))); }
+    else if (p > addPage(page, unit, n - 1)) { setDir('later'); setPage(addPage(p, unit, -(n - 1))); }
   };
   const turn = (n: number) => {
     setDir(n > 0 ? 'later' : 'earlier');
@@ -381,8 +396,8 @@ export function Calendar(props: CalendarProps) {
     const keep = (c: Date) => (view === 'day' ? c : addMonths(focused, unitsBetween(focused, c, 'month')));
     const pageStep = (n: number) => (view === 'day' ? addMonths(focused, n * (e.shiftKey ? 12 : 1)) : addMonths(focused, n * 12 * (view === 'year' ? 10 : 1)));
     const map: Record<string, () => Date> = {
-      ArrowLeft: () => shift(focused, view, -1),
-      ArrowRight: () => shift(focused, view, 1),
+      ArrowLeft: () => shift(focused, view, rtl ? 1 : -1),
+      ArrowRight: () => shift(focused, view, rtl ? -1 : 1),
       ArrowUp: () => shift(focused, view, -cols),
       ArrowDown: () => shift(focused, view, cols),
       PageUp: () => pageStep(-1),
@@ -419,20 +434,22 @@ export function Calendar(props: CalendarProps) {
         : null;
   const inBand = (d: Date) => !!band && startOf(d, view) >= band.from && startOf(d, view) <= band.to;
 
-  const arrive = dir === 'later' ? 'calendar-arrive-later' : dir === 'earlier' ? 'calendar-arrive-earlier' : dir === 'up' ? 'calendar-zoom-out' : dir === 'down' ? 'calendar-zoom-in' : '';
+  // A later page comes from the end the weeks run to: the right, or the left in rtl.
+  const arrive = dir === 'later' ? (rtl ? 'calendar-arrive-earlier' : 'calendar-arrive-later') : dir === 'earlier' ? (rtl ? 'calendar-arrive-later' : 'calendar-arrive-earlier') : dir === 'up' ? 'calendar-zoom-out' : dir === 'down' ? 'calendar-zoom-in' : '';
   const stepWord = view === 'day' ? 'month' : view === 'year' ? 'years' : 'year';
   const prevLabel = view === 'year' ? 'Earlier years' : `Previous ${stepWord}`;
   const nextLabel = view === 'year' ? 'Later years' : `Next ${stepWord}`;
   const look = view === 'day' ? DAY : UNIT;
   const upWord = levelUp[view] === 'month' ? 'a month' : 'a year';
+  // The chevrons point outward: back toward the start of the line, on toward its end.
   const prev = (
     <button type="button" className={STEP} aria-label={prevLabel} onClick={() => turn(-1)} disabled={lo != null && page <= pageOf(lo, view)}>
-      <ChevronIcon turn={90} />
+      <ChevronIcon turn={rtl ? 270 : 90} />
     </button>
   );
-  const next = (
-    <button type="button" className={STEP} aria-label={nextLabel} onClick={() => turn(1)} disabled={hi != null && last >= pageOf(hi, view)}>
-      <ChevronIcon turn={270} />
+  const nextKey = (until: Date) => (
+    <button type="button" className={STEP} aria-label={nextLabel} onClick={() => turn(1)} disabled={hi != null && until >= pageOf(hi, view)}>
+      <ChevronIcon turn={rtl ? 90 : 270} />
     </button>
   );
 
@@ -528,7 +545,7 @@ export function Calendar(props: CalendarProps) {
           ) : (
             <span id={id} aria-live="polite" className={dir === 'earlier' ? `${TITLE} swap-down` : TITLE}><SwapText value={title} /></span>
           )}
-          {p === pages - 1 ? next : <span className={STEP_SPACER} />}
+          {p === pages - 1 ? nextKey(last) : <span className={STEP_SPACER}>{p === 0 && <span className={STEP_NARROW}>{nextKey(page)}</span>}</span>}
         </div>
         <table
           key={`${view}-${pg.getTime()}`}
@@ -551,7 +568,7 @@ export function Calendar(props: CalendarProps) {
           <tbody>
             {Array.from({ length: rows }, (_, r) => (
               <tr key={r}>
-                {view === 'day' && weekNumbers && <th scope="row" className={WEEK} aria-label={`Week ${isoWeek(cells[r * 7 + 3])}`}>{isoWeek(cells[r * 7 + 3])}</th>}
+                {view === 'day' && weekNumbers && <th scope="row" className={WEEK} aria-label={`Week ${isoWeek(cells[r * 7 + 3])}`}>{w.digits(isoWeek(cells[r * 7 + 3]))}</th>}
                 {cells.slice(r * cols, r * cols + cols).map((d, k) => renderCell(d, pg, r * cols + k, cells))}
               </tr>
             ))}
@@ -563,7 +580,7 @@ export function Calendar(props: CalendarProps) {
 
   return (
     <div className={cx(ROOT, className)} aria-label={props['aria-label']} role="group">
-      <div ref={body} className={PAGES}>{shown.map(renderPage)}</div>
+      <div ref={body} className={PAGES} data-week-numbers={weekNumbers && period === 'day' ? '' : undefined}>{shown.map(renderPage)}</div>
       {isDateUnavailable && <span id={quietId} hidden>Unavailable</span>}
     </div>
   );

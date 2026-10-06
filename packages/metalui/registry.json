@@ -464,16 +464,18 @@
       "name": "calendar",
       "type": "registry:ui",
       "title": "Calendar",
-      "description": "A month to choose a day from, or a range, several days, a month, quarter, half year or year: chosen units land into the switcher's thumb look, a range stretches one thumb across each week, months turn on the drum and the title opens months and years. DatePicker is a field you type a date into (read back as understood) or open the calendar from, with presets and Today.",
+      "description": "A month to choose a day from, or a range, several days, a month, quarter, half year or year: chosen units land into the switcher's thumb look, a range stretches one thumb across each week, months turn on the drum and the title opens months and years. DatePicker is a field you type a date into (read back as understood) or open the calendar from, with presets and Today. DateSelector is a date condition (is, before, after, between) chosen over two months in a popover or dialog and applied.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/dialog.json",
         "https://metalui.dev/r/field.json",
         "https://metalui.dev/r/form-field.json",
         "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/switcher.json",
         "https://metalui.dev/r/time-picker.json",
         "https://metalui.dev/r/tokens.json"
       ],
@@ -487,9 +489,14 @@
           "path": "packages/metalui/src/components/calendar/date-picker.tsx",
           "type": "registry:ui",
           "target": "components/metalui/components/calendar/date-picker.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/calendar/date-selector.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/calendar/date-selector.tsx"
         }
       ],
-      "docs": "Agent guide: https://metalui.dev/r/calendar.md. SwiftUI: MetalCalendar, MetalDatePicker in the MetalUI Swift package."
+      "docs": "Agent guide: https://metalui.dev/r/calendar.md. SwiftUI: MetalCalendar, MetalDatePicker, MetalDateSelector in the MetalUI Swift package."
     },
     {
       "name": "card",

@@ -15,6 +15,9 @@ import SwiftUI
 //            goes back down (from 1 - `self.zoom`); Esc goes back where you were
 //   keys     arrows by unit and row, Page Up / Down by page, Home / End to the row's ends, Return or
 //            Space chooses
+//   months   pages side by side; where they don't fit, one (ViewThatFits), with both steps on it
+//   locale   names and digits from the environment's locale; right to left, the layout mirrors, the
+//            chevrons point outward and ← is the next day
 // Reduce Motion: the arrivals and the land resolve through MetalMotion (no travel, fades stay).
 
 /// The unit a calendar chooses.
@@ -154,9 +157,16 @@ struct MetalCalendarMath {
     func tag(_ d: Date, _ unit: MetalCalendarPeriod) -> String {
         "\(unit == .quarter ? "Q" : "H")\(ymd(d).m / Self.months(unit) + 1)"
     }
+    /// A number in the locale's digits (١٢ in Arabic).
+    func digits(_ n: Int) -> String {
+        let f = NumberFormatter()
+        f.locale = locale
+        f.usesGroupingSeparator = false
+        return f.string(from: NSNumber(value: n)) ?? "\(n)"
+    }
     func face(_ d: Date, _ unit: MetalCalendarPeriod) -> (main: String, sub: String?) {
         switch unit {
-        case .day: return ("\(ymd(d).d)", nil)
+        case .day: return (digits(ymd(d).d), nil)
         case .month: return (format(d, "MMM"), nil)
         case .year: return (format(d, "yyyy"), nil)
         case .quarter, .half:
@@ -198,7 +208,10 @@ public struct MetalCalendar: View {
 
     @Environment(\.metalColorway) private var colorway
     @Environment(\.locale) private var locale
+    @Environment(\.layoutDirection) private var direction
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// The pages that fit where the calendar is (ViewThatFits picks); nil until it has.
+    @State private var fitted: Int?
     @State private var ownPage: Date?
     @State private var view: MetalCalendarPeriod?
     @State private var focused: Date?
@@ -253,7 +266,7 @@ public struct MetalCalendar: View {
     private var math: MetalCalendarMath { MetalCalendarMath(locale: locale, weekStartsOn: weekStartsOn) }
     private var unit: MetalCalendarPeriod { view ?? period }
     private var nav: Bool { unit != period }
-    private var pages: Int { nav ? 1 : months }
+    private var pages: Int { nav ? 1 : min(months, fitted ?? months) }
     private var today: Date { math.day(Date()) }
     private var anchor: Date? {
         switch selection {
@@ -357,9 +370,10 @@ public struct MetalCalendar: View {
         let keep: (Date) -> Date = { c in unit == .day ? c : math.addMonths(focus, math.between(focus, c, .month)) }
         let pageStep = unit == .day ? 1 : 12 * (unit == .year ? 10 : 1)
         var next: Date?
+        let rtl = direction == .rightToLeft
         switch press.key {
-        case .leftArrow: next = math.shift(focus, unit, -1)
-        case .rightArrow: next = math.shift(focus, unit, 1)
+        case .leftArrow: next = math.shift(focus, unit, rtl ? 1 : -1)
+        case .rightArrow: next = math.shift(focus, unit, rtl ? -1 : 1)
         case .upArrow: next = math.shift(focus, unit, -cols)
         case .downArrow: next = math.shift(focus, unit, cols)
         case .pageUp: next = math.addMonths(focus, -pageStep)
@@ -383,8 +397,16 @@ public struct MetalCalendar: View {
     }
 
     public var body: some View {
-        HStack(alignment: .top, spacing: recipe.points("page.gap")) {
-            ForEach(Array(shown.enumerated()), id: \.offset) { i, pg in pageView(pg, index: i) }
+        Group {
+            if months > 1 && !nav {
+                // Months side by side where they fit; one, with both steps, where they don't.
+                ViewThatFits(in: .horizontal) {
+                    pagesView(months).onAppear { fitted = months }
+                    pagesView(1).onAppear { fitted = 1 }
+                }
+            } else {
+                pagesView(pages)
+            }
         }
         .padding(recipe.points("self.pad"))
         .focusable()
@@ -411,7 +433,13 @@ public struct MetalCalendar: View {
         return CGSize(width: width, height: 7 * cellSize + 6 * gap)
     }
 
-    private func pageView(_ pg: Date, index: Int) -> some View {
+    private func pagesView(_ count: Int) -> some View {
+        HStack(alignment: .top, spacing: recipe.points("page.gap")) {
+            ForEach(0..<count, id: \.self) { i in pageView(math.addPage(page, unit, i), index: i, count: count) }
+        }
+    }
+
+    private func pageView(_ pg: Date, index: Int, count: Int) -> some View {
         let title = math.title(pg, unit)
         return VStack(spacing: recipe.points("head.gap")) {
             HStack(spacing: recipe.points("head.gap")) {
@@ -419,7 +447,7 @@ public struct MetalCalendar: View {
                 Spacer(minLength: .zero)
                 titleView(title, pg)
                 Spacer(minLength: .zero)
-                if index == pages - 1 { step(1) } else { spacer }
+                if index == count - 1 { step(1) } else { spacer }
             }
             .frame(height: recipe.points("head.height"))
             grid(pg)
@@ -449,8 +477,10 @@ public struct MetalCalendar: View {
         let disabled = n < 0 ? bounds.map { page <= math.page($0.lowerBound, unit) } ?? false
             : bounds.map { (shown.last ?? page) >= math.page($0.upperBound, unit) } ?? false
         return Button { turn(n) } label: {
+            // Outward in either direction: back toward the line's start, on toward its end.
             MetalIcon(.chevron, size: recipe.points("step.glyph"))
                 .rotationEffect(.degrees(n < 0 ? 90 : 270))
+                .flipsForRightToLeftLayoutDirection(true)
         }
         .buttonStyle(StepStyle())
         .disabled(disabled)
@@ -502,7 +532,7 @@ public struct MetalCalendar: View {
             bands(cells, pg: pg, cell: cell)
             HStack(spacing: gap) {
                 if unit == .day && dayCols == 8 {
-                    Text("\(math.isoWeek(cells[3]))").font(.metal(MetalType.meta)).monospacedDigit()
+                    Text(math.digits(math.isoWeek(cells[3]))).font(.metal(MetalType.meta)).monospacedDigit()
                         .foregroundColor(colorway.tokens.ink3.color).frame(width: cellSize, height: cellSize)
                         .accessibilityLabel("Week \(math.isoWeek(cells[3]))")
                 }
@@ -868,6 +898,162 @@ public struct MetalDatePicker: View {
             .disabled(todayOut)
             .padding([.horizontal, .bottom], recipe.points("self.pad"))
         }
+        .padding(MetalRecipes.popover.points("self.pad"))
+    }
+}
+
+// MARK: - Date selector
+
+/// How a date relates to the chosen one: Filters' words.
+public enum MetalDateOperator: String, CaseIterable, Sendable {
+    case `is`, before, after, between
+    var title: String { rawValue.prefix(1).uppercased() + rawValue.dropFirst() }
+}
+
+/// A condition on a date: "before 6 Oct 2026". For `between`, `start` and `end` are both counted; for the others `end` is `start`.
+/// With a larger period, a date is its unit's first day and a range's end the last day of its last unit.
+public struct MetalDateCondition: Equatable, Sendable {
+    public var op: MetalDateOperator
+    public var start: Date
+    public var end: Date
+
+    public init(_ op: MetalDateOperator, _ date: Date) {
+        self.op = op
+        self.start = date
+        self.end = date
+    }
+    public init(between start: Date, and end: Date) {
+        self.op = .between
+        self.start = start
+        self.end = end
+    }
+
+    /// Does a date meet it? Whole days in `calendar`; before a unit is before its first day, after it after its last.
+    public func matches(_ date: Date, period: MetalCalendarPeriod = .day, calendar: Calendar = .current) -> Bool {
+        var math = MetalCalendarMath(locale: calendar.locale ?? .current, weekStartsOn: nil)
+        math.cal.timeZone = calendar.timeZone
+        let d = math.day(date)
+        switch op {
+        case .is: return d >= math.start(start, period) && d <= math.end(start, period)
+        case .before: return d < math.start(start, period)
+        case .after: return d > math.end(start, period)
+        case .between: return d >= math.day(start) && d <= math.day(end)
+        }
+    }
+}
+
+/// A date condition (is, before, after, between) chosen over two months and applied: a key that says it,
+/// opening the operator switcher, the calendar and Clear, Cancel and Apply in a popover or a sheet.
+public struct MetalDateSelector: View {
+    public enum Presentation: Sendable { case popover, sheet }
+
+    let label: String
+    @Binding var selection: MetalDateCondition?
+    let operators: [MetalDateOperator]
+    let period: MetalCalendarPeriod
+    let bounds: ClosedRange<Date>?
+    let months: Int
+    let presentation: Presentation
+    let size: MetalButtonSize
+
+    @Environment(\.locale) private var locale
+    @Environment(\.metalColorway) private var colorway
+    @State private var open = false
+    @State private var op: MetalDateOperator = .is
+    @State private var day: Date?
+    @State private var range: MetalDateRange?
+
+    public init(_ label: String, selection: Binding<MetalDateCondition?>, operators: [MetalDateOperator] = MetalDateOperator.allCases,
+                period: MetalCalendarPeriod = .day, in bounds: ClosedRange<Date>? = nil, months: Int = 2,
+                presentation: Presentation = .popover, size: MetalButtonSize = .default) {
+        self.label = label
+        self._selection = selection
+        self.operators = operators.isEmpty ? MetalDateOperator.allCases : operators
+        self.period = period
+        self.bounds = bounds
+        self.months = months
+        self.presentation = presentation
+        self.size = size
+    }
+
+    private var math: MetalCalendarMath { MetalCalendarMath(locale: locale, weekStartsOn: nil) }
+    private func words(_ d: Date) -> String {
+        switch period {
+        case .day: return math.format(d, "dMMMyyyy")
+        case .month: return math.format(d, "MMMyyyy")
+        case .quarter, .half: return "\(math.tag(d, period)) \(math.format(d, "yyyy"))"
+        case .year: return math.format(d, "yyyy")
+        }
+    }
+    private func say(_ c: MetalDateCondition) -> String {
+        let v = c.op == .between ? "\(words(c.start)) – \(words(math.start(c.end, period)))" : words(c.start)
+        return "\(label) \(c.op.rawValue) \(v)"
+    }
+    /// The draft as a condition, when it is whole.
+    private var draft: MetalDateCondition? {
+        if op == .between {
+            guard let r = range, let end = r.end else { return nil }
+            return MetalDateCondition(between: r.start, and: end)
+        }
+        return day.map { MetalDateCondition(op, $0) }
+    }
+
+    private func start() {
+        // Opening starts the draft from the value; closing any way but Apply throws it away.
+        op = selection?.op ?? operators[0]
+        day = selection?.start
+        range = selection.map { MetalDateRange(start: $0.start, end: $0.end) }
+        open = true
+    }
+    private func change(_ next: MetalDateOperator) {
+        // The day carries across: one day becomes a range of it; a range gives its start.
+        if next == .between, op != .between, let d = day { range = MetalDateRange(start: d, end: math.end(d, period)) }
+        if next != .between, op == .between, let r = range { day = r.start }
+        op = next
+    }
+    private func commit(_ c: MetalDateCondition?) {
+        selection = c
+        open = false
+    }
+
+    public var body: some View {
+        let key = MetalButton(selection.map(say) ?? "\(label): any date", icon: .calendar, size: size) { start() }
+        switch presentation {
+        case .popover: key.popover(isPresented: $open, arrowEdge: .bottom) { panel }
+        case .sheet: key.sheet(isPresented: $open) { panel }
+        }
+    }
+
+    private var panel: some View {
+        let recipe = MetalRecipes.calendar
+        let pending = op == .between ? (range != nil && range?.end == nil ? "Choose the last day" : "Choose the first day") : "Choose a day"
+        return VStack(spacing: recipe.points("selector.gap")) {
+            if presentation == .sheet {
+                Text(label).font(.metal(MetalType.title)).foregroundColor(colorway.tokens.ink.color)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityAddTraits(.isHeader)
+            }
+            if operators.count > 1 {
+                MetalSwitcher("Operator", selection: Binding(get: { op }, set: change), options: operators.map { ($0, $0.title) })
+            }
+            if op == .between {
+                MetalCalendar(label: "\(label) between", selection: .range($range, minDays: nil, maxDays: nil), bounds: bounds, period: period,
+                              months: months, weekStartsOn: nil, weekNumbers: false, month: nil, isUnavailable: nil, marks: nil, autoFocus: true)
+            } else {
+                MetalCalendar(label: "\(label) \(op.rawValue)", selection: .single($day), bounds: bounds, period: period,
+                              months: months, weekStartsOn: nil, weekNumbers: false, month: nil, isUnavailable: nil, marks: nil, autoFocus: true)
+            }
+            Text(draft.map(say) ?? pending).font(.metal(MetalType.meta)).foregroundColor(colorway.tokens.ink2.color)
+                .accessibilityAddTraits(.updatesFrequently)
+            HStack(spacing: MetalRecipes.dialog.points("actions.gap")) {
+                Spacer(minLength: .zero)
+                if selection != nil { MetalButton("Clear", size: .compact) { commit(nil) } }
+                MetalButton("Cancel", size: .compact) { open = false }
+                MetalButton("Apply", cap: .primary, size: .compact) { commit(draft) }
+                    .disabled(draft == nil || draft == selection)
+            }
+        }
+        .frame(maxWidth: recipe.points("selector.width"))
         .padding(MetalRecipes.popover.points("self.pad"))
     }
 }
