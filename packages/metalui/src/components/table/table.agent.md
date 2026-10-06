@@ -53,7 +53,7 @@ A column says its `kind`; the kind sets alignment, type and the empty look. `cel
 | `trend` | number[] | a mini sparkline 72 wide, named "from a to b" |
 | `yes` | boolean | `check` for yes; nothing for no (said to assistive tech) |
 | `check` | boolean (null: can't apply) | a row `Checkbox` named "<row>, <column>"; `onCheckedChange(row, checked)` on the column, read-only without it; null is "—" |
-| `code` | string | monospaced; a copy key on hover and focus that turns to `check` |
+| `code` | string | monospaced; a copy key on hover and focus that morphs to `check` (strain 1.96) |
 | `actions` | – (`actions(row)`) | a `more` key at the row's end, on hover and focus, opening a `Menu`; one `primary` action with an icon shows as its own key beside it. An action's `icon` is an element (`<SendIcon />`), so the table ships only the glyphs it is given |
 | empty | null, undefined, "" or [] | "—" in ink3 in every kind |
 

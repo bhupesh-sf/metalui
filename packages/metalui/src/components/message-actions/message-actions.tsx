@@ -1,10 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { CheckIcon, CopyIcon, PenIcon, RetryIcon, ThumbIcon } from '../../icons/components.generated';
+import { PenIcon, RetryIcon, ThumbIcon } from '../../icons/components.generated';
+import { MorphPair } from '../../icons/MorphIcon';
+import { checkMorph, copyMorph } from '../../icons/morph.generated';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 import { springOf } from '../../motion/rows';
-import { SwapIcon, SwapText } from '../../motion/swap';
+import { SwapText } from '../../motion/swap';
 import { Button } from '../button/button';
 import { IconButton } from '../icon-button/icon-button';
 import { Tooltip } from '../tooltip/tooltip';
@@ -14,7 +16,8 @@ import { Tooltip } from '../tooltip/tooltip';
  *
  *   keys      ghost icon keys 2 apart, each named and with a tooltip, each only when the host gives
  *             it: Copy, Retry, Edit (the pen), Good and Bad (the thumb, and the thumb turned over)
- *   copy      the copy glyph turns to the check on the drum and the name to "Copied" for copy.hold
+ *   copy      the copy glyph morphs to the check (strain 1.96) and the name turns to "Copied" for
+ *             copy.hold, then back
  *   thumbs    toggles: the chosen one is latched (pressed); pressing it again clears
  *   reasons   choosing Bad with `reasons` fades in a row of compact buttons under the keys (settle);
  *             one press sends the reason, the row says "Thanks" on the drum for thanks.hold, and goes
@@ -50,7 +53,8 @@ const ROOT = 'mu-message-actions grid justify-items-start gap-message-actions-re
 const KEYS = 'mu-message-actions-keys flex flex-wrap items-center gap-message-actions-gap';
 const REASONS = 'mu-message-actions-reasons flex flex-wrap items-center gap-message-actions-reasons-gap';
 const LATCH = 'data-pressed:recipe-icon-button-ghost-hover data-pressed:text-icon-button-ghost-ink-hover';
-const GLYPH = '[&_svg]:size-icon-button-ghost-glyph';
+// The glyphs Copy morphs between, and only those (MorphPair ships just their parts).
+const COPY = { copy: copyMorph, check: checkMorph };
 const THANKS = 'mu-message-actions-thanks type-meta text-ink2';
 
 /** True for the recipe's hold after each call, then false. */
@@ -104,7 +108,7 @@ export function MessageActions({ copy, onRetry, retryDisabled, onEdit, feedback:
     <div role="toolbar" aria-label="Message actions" className={className ? `${ROOT} ${className}` : ROOT}>
       <div className={KEYS}>
         {copy !== undefined && (
-          <Key label={copied ? 'Copied' : 'Copy'} icon={<SwapIcon className={GLYPH} swapKey={copied ? 'copied' : 'copy'}>{copied ? <CheckIcon /> : <CopyIcon />}</SwapIcon>} onClick={copyNow} />
+          <Key label={copied ? 'Copied' : 'Copy'} icon={<MorphPair glyphs={COPY} name={copied ? 'check' : 'copy'} />} onClick={copyNow} />
         )}
         {onRetry && <Key label="Retry" icon={<RetryIcon />} disabled={retryDisabled} onClick={onRetry} />}
         {onEdit && <Key label="Edit" icon={<PenIcon />} onClick={onEdit} />}

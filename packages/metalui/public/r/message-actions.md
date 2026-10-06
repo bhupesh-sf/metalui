@@ -1,6 +1,6 @@
 # Message actions
 
-The keys that act on a message, in `Message`'s footer. React: `MessageActions` from `@unlocalhosted/metalui`. SwiftUI: `MetalMessageActions`. A component: each key changes something else (the clipboard, the thread, the person's turn, the feedback the host keeps). Every look is borrowed: ghost `IconButton`s with `Tooltip`s, the copy, check, retry, pen and thumb glyphs (Bad is the thumb turned over), the drum (`SwapIcon`, `SwapText`), compact `Button`s for reasons. The `message-actions` recipe holds the gaps and the two holds.
+The keys that act on a message, in `Message`'s footer. React: `MessageActions` from `@unlocalhosted/metalui`. SwiftUI: `MetalMessageActions`. A component: each key changes something else (the clipboard, the thread, the person's turn, the feedback the host keeps). Every look is borrowed: ghost `IconButton`s with `Tooltip`s, the copy, check, retry, pen and thumb glyphs (Bad is the thumb turned over), the copy → check morph (`MorphPair`, strain 1.96), the drum (`SwapText`), compact `Button`s for reasons. The `message-actions` recipe holds the gaps and the two holds.
 
 ## Use it for
 
@@ -20,7 +20,7 @@ The keys that act on a message, in `Message`'s footer. React: `MessageActions` f
 
 | State | Look | Motion |
 |---|---|---|
-| copied | the check, named "Copied", for `copy.hold` (1.6 s); "Copied" said once | the glyph and the name turn on the drum |
+| copied | the check, named "Copied", for `copy.hold` (1.6 s); "Copied" said once | the glyph morphs copy → check and the name turns on the drum |
 | `retryDisabled` | Retry dimmed | – |
 | `feedback` up or down | that thumb latched (aria-pressed, the ghost's lit look) | – |
 | asking | after Bad with `reasons`: a row of compact buttons | fades in on the settle spring |

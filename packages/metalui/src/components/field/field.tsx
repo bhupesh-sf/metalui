@@ -5,7 +5,7 @@ import { Field as BaseField } from '@base-ui/react/field';
 import { Well } from '../well/well';
 import { Kbd } from '../kbd/kbd';
 import { buttonParts } from '../button/button';
-import { SwapIcon, SwapText } from '../../motion/swap';
+import { SwapText } from '../../motion/swap';
 import { refuse } from '../../motion/refuse';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
@@ -23,8 +23,8 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  *             from the top and bottom in every size; pressing one keeps the caret in the input
  *   clear     a key that shows while there is text: it pops in on the settle spring (from 60 %) and
  *             leaves on the release spring, keeping its place so the trail never shifts
- *   copy      shows while there is text; copies it, and its glyph turns on the drum to a check for the
- *             recipe's copy.hold (copy → check strains too far to morph); "Copied" is said once
+ *   copy      shows while there is text; copies it, and its glyph morphs copy → check for the recipe's
+ *             copy.hold (strain 1.96) and back; "Copied" is said once
  *   reveal    show password: the input is a password; pressing it shows the text (aria-pressed), and
  *             its glyph morphs eye ↔ eye-off
  *   shortcut  a keycap ("⌘K") that focuses the field, and turns on the drum to "Esc" while the field is
@@ -355,13 +355,13 @@ export interface FieldCopyProps extends Omit<FieldKeyProps, 'label' | 'icon' | '
   copiedLabel?: string;
   /** What to copy. Default the input's value. */
   value?: string;
-  /** The copy glyph: `<Icon name="copy" />`. */
+  /** The copy glyph: `<MorphIcon name="copy" />`. */
   icon: React.ReactNode;
-  /** The glyph while the copy holds: `<Icon name="check" />`. It turns on the drum (copy → check strains too far to morph). */
+  /** The glyph while the copy holds: `<MorphIcon name="check" />`. The same component as `icon`, so it morphs. */
   copiedIcon: React.ReactNode;
 }
 
-/** The copy key: shows while there is text; copies it, and its glyph turns on the drum to the check for the recipe's copy.hold. */
+/** The copy key: shows while there is text; copies it, and its glyph morphs to the check for the recipe's copy.hold. */
 const Copy = React.forwardRef<HTMLButtonElement, FieldCopyProps>(function FieldCopy({ label = 'Copy', copiedLabel = 'Copied', value, icon, copiedIcon, onClick, ...props }, ref) {
   const { input, filled } = React.useContext(FieldCtx);
   const [copied, setCopied] = React.useState(0);
@@ -377,7 +377,8 @@ const Copy = React.forwardRef<HTMLButtonElement, FieldCopyProps>(function FieldC
         ref={ref}
         label={label}
         shown={filled || value != null}
-        icon={<SwapIcon swapKey={copied ? 'copied' : 'copy'}>{copied ? copiedIcon : icon}</SwapIcon>}
+        // One slot for both glyphs: React keeps the element, so a MorphIcon morphs copy ↔ check.
+        icon={copied ? copiedIcon : icon}
         onClick={(e) => {
           onClick?.(e);
           if (e.defaultPrevented) return;

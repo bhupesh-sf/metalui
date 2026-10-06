@@ -803,7 +803,7 @@ MetalButton("Delete", icon: .trash, cap: .destructive) { remove() }
 - Pass the glyph as `icon`, not as a child, and don't give it a size: the cap sets it (16, compact 14, strip 16, graphite 14, link 12). Children still take a glyph for compatibility, but `icon` is the documented slot. The button is the icon's trigger: it plays its act when the button is hovered, focused from the keyboard or clicked, so don't wire up animation yourself.
 - Don't restyle the cap with custom backgrounds, borders, or shadows. Colorway comes from `data-mu-colorway` (`bone` | `graphite`) on any ancestor. When no ancestor sets it, `prefers-color-scheme` decides.
 - Don't signal success with the press motion. Show the real result: a toast, a state change, or an error.
-- **A state change of the same control morphs, never swaps** (Transitions T1–T3, `docs/MORPH.md`). When one control's meaning changes (Copy → Copied, Pin → Unpin, Collapse → Expand), its glyph morphs with `MorphIcon` (from `@unlocalhosted/metalui/icons`) on the settle spring, and its label turns on the drum with `SwapText` (from `@unlocalhosted/metalui`), together: `<Button icon={<MorphIcon name={copied ? 'check' : 'paste'} />}><SwapText value={copied ? 'Copied' : 'Copy'} /></Button>`. The width settles to the new label. Only a glyph outside the morph family (a solid character glyph) turns on the drum with `SwapIcon` instead.
+- **A state change of the same control morphs, never swaps** (Transitions T1–T3, `docs/MORPH.md`). When one control's meaning changes (Copy → Copied, Pin → Unpin, Collapse → Expand), its glyph morphs with `MorphIcon` (from `@unlocalhosted/metalui/icons`) on the settle spring, and its label turns on the drum with `SwapText` (from `@unlocalhosted/metalui`), together: `<Button icon={<MorphIcon name={copied ? 'check' : 'copy'} />}><SwapText value={copied ? 'Copied' : 'Copy'} /></Button>`. The width settles to the new label. Morph only a pair under 2 (`node scripts/morph-strain.mjs`; copy ↔ check is 1.96, paste ↔ check 2.3 is not a Copied glyph). Only a glyph outside the morph family (a solid character glyph) turns on the drum with `SwapIcon` instead.
 
 ## Accessibility
 
@@ -1523,7 +1523,7 @@ Code to read and copy in the flow: a docs page, a README, an AI reply. React: `C
 
 ## Behaviour
 
-- **Copy** (ghost key): copies the code, or the picked lines only ("Copy lines 4–7"). The copy glyph turns to the check on the drum for `copy.hold` (1400 ms), then back; "Copied" is said once in a status. While `streaming` the key is disabled and named "Still writing".
+- **Copy** (ghost key): copies the code, or the picked lines only ("Copy lines 4–7"). The copy glyph morphs to the check (`MorphPair`, copy ↔ check strains 1.96) for `copy.hold` (1400 ms), then back; "Copied" is said once in a status. While `streaming` the key is disabled and named "Still writing".
 - **Pick lines** (`selectable`, turns `numbers` on): the numbers are one roving tab stop. ↑ ↓ Home End move; Space or ↩ picks a line (again clears it); ⇧ with a move or a click extends from the first pick; Esc clears. Each number is a toggle (`aria-pressed`, "Line 4"). The head's label turns on the drum to `poster.ts · 4–7`. Controlled with `selection` / `onSelect`, or `defaultSelection`. A patch's two gutters are not selectable.
 - **Reference** (`onReference`): while lines are picked, an `attach` key beside copy: "Reference lines 4–7".
 - **Diagnostics' action**: a compact button; the host does the fix and drops the diagnostic.
@@ -2489,7 +2489,7 @@ React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Prefix`, `Field.Inp
 | shortcut | `<Field.Shortcut keys="⌘K" />` | a keycap that focuses the field from anywhere (⌘ also answers to Ctrl; `bind={false}` when the host binds it); it turns on the drum to "Esc" while the field is active; Esc clears the text, or leaves the field when it is empty. The input gets `aria-keyshortcuts` |
 | check | `<Field.Check shown={free} label="Name available"><Icon name="check" act /></Field.Check>` | a remote check that passed: the tick arrives acting, in the deep green, and is said once (`role="status"`). Ordinary valid fields show nothing |
 | any | `<Field.Key label="…" icon={…} onClick={…} />` | a mini key of your own; `shown` makes it come and go |
-| copy | `<Field.Copy icon={<Icon name="copy" />} copiedIcon={<Icon name="check" />} />` | shows while there is text (or always, with `value`); copies the value, and its glyph turns on the drum to the check for the recipe's `copy.hold` (1400 ms, Table's), then back. Not a morph: copy → check strains 2.38, past the family's limit. "Copied" is said once (`role="status"`, `copiedLabel`) |
+| copy | `<Field.Copy icon={<MorphIcon name="copy" />} copiedIcon={<MorphIcon name="check" />} />` | shows while there is text (or always, with `value`); copies the value, and its glyph morphs to the check for the recipe's `copy.hold` (1400 ms, Table's), then back (one slot, as Reveal: pass the same `MorphIcon` for both; copy ↔ check strains 1.96). "Copied" is said once (`role="status"`, `copiedLabel`) |
 | show password | `<Field.Reveal icon={<MorphIcon name="eye" />} hideIcon={<MorphIcon name="eye-off" />} />` | makes the input `type="password"`; pressing it shows the text (`type="text"`) and back. It is a toggle named "Show password" (`label`) with `aria-pressed`, so assistive tech says whether the text shows. Pass the same component for both glyphs: React keeps the element and `MorphIcon` morphs eye ↔ eye-off |
 
 - A key is a compact button cap, 20 round with a 12 glyph and a 24 hit area, as far from the well's edge as from its top and bottom in every size. Pressing one keeps focus in the input. Glyphs come from the host (`@unlocalhosted/metalui/icons`), so `Field` never ships the icon catalogue.
@@ -3933,7 +3933,7 @@ Reduce Motion: the footer appears at once; the lamp holds steady; the drum chang
 
 # Message actions
 
-The keys that act on a message, in `Message`'s footer. React: `MessageActions` from `@unlocalhosted/metalui`. SwiftUI: `MetalMessageActions`. A component: each key changes something else (the clipboard, the thread, the person's turn, the feedback the host keeps). Every look is borrowed: ghost `IconButton`s with `Tooltip`s, the copy, check, retry, pen and thumb glyphs (Bad is the thumb turned over), the drum (`SwapIcon`, `SwapText`), compact `Button`s for reasons. The `message-actions` recipe holds the gaps and the two holds.
+The keys that act on a message, in `Message`'s footer. React: `MessageActions` from `@unlocalhosted/metalui`. SwiftUI: `MetalMessageActions`. A component: each key changes something else (the clipboard, the thread, the person's turn, the feedback the host keeps). Every look is borrowed: ghost `IconButton`s with `Tooltip`s, the copy, check, retry, pen and thumb glyphs (Bad is the thumb turned over), the copy → check morph (`MorphPair`, strain 1.96), the drum (`SwapText`), compact `Button`s for reasons. The `message-actions` recipe holds the gaps and the two holds.
 
 ## Use it for
 
@@ -3953,7 +3953,7 @@ The keys that act on a message, in `Message`'s footer. React: `MessageActions` f
 
 | State | Look | Motion |
 |---|---|---|
-| copied | the check, named "Copied", for `copy.hold` (1.6 s); "Copied" said once | the glyph and the name turn on the drum |
+| copied | the check, named "Copied", for `copy.hold` (1.6 s); "Copied" said once | the glyph morphs copy → check and the name turns on the drum |
 | `retryDisabled` | Retry dimmed | – |
 | `feedback` up or down | that thumb latched (aria-pressed, the ghost's lit look) | – |
 | asking | after Bad with `reasons`: a row of compact buttons | fades in on the settle spring |
@@ -6623,7 +6623,7 @@ A column says its `kind`; the kind sets alignment, type and the empty look. `cel
 | `trend` | number[] | a mini sparkline 72 wide, named "from a to b" |
 | `yes` | boolean | `check` for yes; nothing for no (said to assistive tech) |
 | `check` | boolean (null: can't apply) | a row `Checkbox` named "<row>, <column>"; `onCheckedChange(row, checked)` on the column, read-only without it; null is "—" |
-| `code` | string | monospaced; a copy key on hover and focus that turns to `check` |
+| `code` | string | monospaced; a copy key on hover and focus that morphs to `check` (strain 1.96) |
 | `actions` | – (`actions(row)`) | a `more` key at the row's end, on hover and focus, opening a `Menu`; one `primary` action with an icon shows as its own key beside it. An action's `icon` is an element (`<SendIcon />`), so the table ships only the glyphs it is given |
 | empty | null, undefined, "" or [] | "—" in ink3 in every kind |
 

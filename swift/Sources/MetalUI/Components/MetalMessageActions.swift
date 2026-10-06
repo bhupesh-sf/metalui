@@ -7,7 +7,8 @@ import AppKit
 // (message-actions.agent.md) from the message-actions recipe:
 //   keys      ghost icon keys, each named with a tooltip, each only when given: Copy, Retry, Edit (the pen),
 //             Good and Bad (the thumb, and the thumb turned over)
-//   copy      the copy glyph turns to the check and the name to "Copied" for copy.hold
+//   copy      the copy glyph turns to the check (replaced on the settle spring) and the name to "Copied"
+//             for copy.hold
 //   thumbs    toggles, the chosen one latched; choosing it again clears
 //   reasons   after Bad, a row of compact buttons fades in (settle); one press sends the reason, the row
 //             says "Thanks" for thanks.hold, and goes
@@ -45,8 +46,13 @@ public struct MetalMessageActions: View {
         VStack(alignment: .leading, spacing: recipe.points("reasons.gap")) {
             HStack(spacing: recipe.points("self.gap")) {
                 if let copy {
-                    MetalIconButton(copied ? "Copied" : "Copy", icon: copied ? .check : .copy) { write(copy) }
-                        .metalTooltip(copied ? "Copied" : "Copy")
+                    // The glyph replaces copy → check on the settle spring, as CodeBlock's and Field's copy keys do.
+                    MetalIconButton(copied ? "Copied" : "Copy", action: { write(copy) }) {
+                        MetalIcon(copied ? .check : .copy, size: MetalRecipes.iconButton.points("ghost.glyph"))
+                            .contentTransition(.symbolEffect(.replace))
+                            .metalAnimation(.settle, value: copied)
+                    }
+                    .metalTooltip(copied ? "Copied" : "Copy")
                 }
                 if let onRetry {
                     MetalIconButton("Retry", icon: .retry, action: onRetry).disabled(retryDisabled).metalTooltip("Retry")

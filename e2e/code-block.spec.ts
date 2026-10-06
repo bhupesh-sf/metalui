@@ -22,9 +22,10 @@ for (const colorway of COLORWAYS) {
     await expect(label(b)).toHaveText('poster.ts · 4–7');
     await expect(b.locator('.mu-code-row[data-picked]')).toHaveCount(4);
 
-    // Copy takes only the picked lines; its glyph turns to the check, then back.
+    // Copy takes only the picked lines; its glyph morphs to the check, then back.
     await b.getByRole('button', { name: 'Copy lines 4–7' }).click();
     await expect(b.getByRole('button', { name: 'Copied' })).toBeVisible();
+    await expect(b.getByRole('button', { name: 'Copied' }).locator('svg')).toHaveAttribute('data-glyph', 'check');
     expect(await clip(page)).toBe(`  size: 'A2' | 'A3';\n  stock: "matte" | "gloss"; // not both\n  weight: number;\n}`);
     await expect(b.getByRole('button', { name: 'Copy lines 4–7' })).toBeVisible({ timeout: 4000 });
 

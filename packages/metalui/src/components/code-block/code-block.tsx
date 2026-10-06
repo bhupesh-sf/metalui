@@ -1,8 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { AttachIcon, CheckIcon, CopyIcon } from '../../icons/components.generated';
-import { SwapIcon, SwapText } from '../../motion/swap';
+import { AttachIcon } from '../../icons/components.generated';
+import { MorphPair } from '../../icons/MorphIcon';
+import { checkMorph, copyMorph } from '../../icons/morph.generated';
+import { SwapText } from '../../motion/swap';
 import { IconButton } from '../icon-button/icon-button';
 import { Button } from '../button/button';
 import { Led } from '../led/led';
@@ -27,7 +29,7 @@ import { Led } from '../led/led';
  *              note row under the line: the word, the message, an optional action
  *   streaming  rows are appended (memoised, never re-tinted), each fades up a nest on settle; a caret
  *              blinks after the last character; the body follows the end unless scrolled up; copy waits
- *   copy       the copy glyph turns to the check on the drum for copy.hold; "Copied" is said once
+ *   copy       the copy glyph morphs to the check for copy.hold (strain 1.96), then back; "Copied" is said once
  * Reduce Motion: rows land at once, the caret holds, the drum snaps.
  * Highlighting is the host's: pass `html` (Shiki, twinkleplop); the built-in tint covers the rest.
  * ───────────────────────────────────────────────────────── */
@@ -45,6 +47,8 @@ const TOKEN = new RegExp(
   ].join('|'),
   'g',
 );
+// The glyphs Copy morphs between, and only those (MorphPair ships just their parts).
+const COPY = { copy: copyMorph, check: checkMorph };
 const TINT = ['', 'mu-code-st', 'mu-code-cm', 'mu-code-kw', 'mu-code-ty', 'mu-code-nu'];
 
 /** Escapes text for HTML. */
@@ -430,7 +434,7 @@ export const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(functi
       {selection && onReference && (
         <IconButton className="animate-code-block-in reduced-motion:animate-none" label={`Reference lines ${rangeText(selection)}`} icon={<AttachIcon />} onClick={() => onReference(selection)} />
       )}
-      <IconButton label={copyName} disabled={streaming} icon={<SwapIcon swapKey={copied ? 'copied' : 'copy'}>{copied ? <CheckIcon /> : <CopyIcon />}</SwapIcon>} onClick={copy} />
+      <IconButton label={copyName} disabled={streaming} icon={<MorphPair glyphs={COPY} name={copied ? 'check' : 'copy'} />} onClick={copy} />
       <span role="status" className="sr-only">{copied ? 'Copied' : ''}</span>
     </>
   );

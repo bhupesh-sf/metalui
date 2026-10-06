@@ -32,7 +32,7 @@ import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
  *   permission  a person's own select; the status says what they can do now
  *
  *   link      the switch slides on the part spring; the line under it turns on the drum
- *   copy      Copy link writes the link to the clipboard: its glyph morphs paste → check and the
+ *   copy      Copy link writes the link to the clipboard: its glyph morphs copy → check and the
  *             label turns to "Copied" on the drum; after 1.6 s both turn back
  *
  *   close     the × in the header, or ⎋ anywhere in the panel
@@ -316,7 +316,7 @@ export function SharePanel({ folder = 'Lisbon trip', onClose, autoFocus, classNa
             <Field size="regular" className="min-w-[15rem] flex-1">
               <Field.Input ref={linkField} readOnly aria-label="Share link" value={LINK.replace('https://', '')} onFocus={(e) => e.currentTarget.select()} className="text-ink2" />
             </Field>
-            <Button onClick={copy} icon={<MorphIcon name={copied ? 'check' : 'paste'} />}>
+            <Button onClick={copy} icon={<MorphIcon name={copied ? 'check' : 'copy'} />}>
               <SwapText value={copied ? 'Copied' : 'Copy link'} />
             </Button>
           </div>

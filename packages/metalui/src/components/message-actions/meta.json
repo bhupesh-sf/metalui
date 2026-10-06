@@ -5,7 +5,7 @@
   "layer": "component",
   "kind": "composed",
   "uses": ["icon-button", "button", "tooltip"],
-  "description": "The keys that act on a message, in Message's footer: Copy (turning to Copied on the drum), Retry, Edit, and Good and Bad as latching thumbs, with an optional row of reasons after Bad that says Thanks and goes.",
+  "description": "The keys that act on a message, in Message's footer: Copy (its glyph morphing to the check, Copied), Retry, Edit, and Good and Bad as latching thumbs, with an optional row of reasons after Bad that says Thanks and goes.",
   "base": "a toolbar of buttons",
   "react": {
     "export": "MessageActions",
