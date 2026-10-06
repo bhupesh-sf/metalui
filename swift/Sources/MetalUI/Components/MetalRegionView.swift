@@ -99,7 +99,7 @@ public struct MetalRegionView<Rows: View>: View {
                     .fixedSize()
                     .onAppear { draft = name; nameFocused = true }
                     .onSubmit { onRename(draft.trimmingCharacters(in: .whitespaces)); renaming = false }
-                    .onExitCommand { renaming = false }
+                    .metalExitCommand { renaming = false }
             } else {
                 Text(name.isEmpty ? "name this region" : name)
                     .font(.metal(MetalType.title))

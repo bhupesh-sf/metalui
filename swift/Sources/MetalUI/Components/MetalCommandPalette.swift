@@ -141,14 +141,23 @@ public struct MetalCommandPalette: View {
         .onKeyPress(.escape) { onClose(); return .handled }
         // While the field types, ⎋ arrives as `cancelOperation:` from its field
         // editor, never as a key press.
-        .onExitCommand { onClose() }
+        .metalExitCommand { onClose() }
         // The field is the palette's default focus: when the host view takes the
         // keyboard, focus lands here, not on the first focusable view in the tree.
-        .focusScope(focusScope)
+        .metalFocusScope(focusScope)
         .defaultFocus($fieldFocused, true)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Lenses and actions")
         .accessibilityAddTraits(.isModal)
+    }
+
+    /// The screen's usable height, for the list's ceiling: the visible frame on macOS, the window scene's screen on iOS.
+    private static var screenHeight: CGFloat? {
+        #if os(macOS)
+        NSScreen.main?.visibleFrame.height
+        #else
+        (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.screen.bounds.height
+        #endif
     }
 
     private func move(_ by: Int, count: Int) {
@@ -224,7 +233,7 @@ public struct MetalCommandPalette: View {
         } else {
             ScrollViewReader { proxy in
                 ScrollView { rowsView(t) }
-                    .frame(maxHeight: (NSScreen.main?.visibleFrame.height ?? CGFloat(MetalPaletteMetrics.screenFallbackHeight)) * MetalPaletteMetrics.listMax)
+                    .frame(maxHeight: (Self.screenHeight ?? CGFloat(MetalPaletteMetrics.screenFallbackHeight)) * MetalPaletteMetrics.listMax)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, MetalPaletteMetrics.barLeft)
                     .onChange(of: selected) { _, now in
