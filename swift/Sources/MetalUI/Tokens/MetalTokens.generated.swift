@@ -1781,7 +1781,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The drag that reorders a list, a row or a grid (an instrument: it shows only while something is held). Lifted, the item rises off the table on the surface spring: it grows to lift.scale and its raised plate with the floating shadow fades in on a layer behind its content (only opacity animates), and it follows the hand from where it was grabbed. The slot it will land in is a sunk recess (the well's track) the item's size and radius, gliding on the settle spring as the others make room (they glide from where they were, FLIP, the rows' motion). Dropped, it travels from the hand into its slot and lands on the object spring with the small overshoot while the plate fades on release. Escape returns it home on the settle spring and the others glide back; a failed save glides everything back the same way. A disabled item is pinned: it can't be lifted and nothing takes its place; trying shakes it once (refusal). The grip is six engraved dimples (a knurl), ink3 with the colorway's lip, that darken on hover. Within self.edge of the scroller's edge a drag scrolls toward it, up to self.speed per frame. On touch a whole item lifts after a still press of self.hold; a grip lifts at once. Reduce Motion: no scale and no travel (the drop and the return are at once, the others jump); following the hand stays, and the plate still fades. (the raised surface (recipe surface raise) for the held plate; the well's track (recipe well track) for the recess; useRowMotion (Transitions T9, FLIP in 2D); the surface, settle, object, release and refusal springs; the haptic (alignment on lift, detent on drop))
+    /// The drag that reorders a list, a row or a grid (an instrument: it shows only while something is held). Lifted, the item rises off the table on the surface spring: it grows to lift.scale and its raised plate with the floating shadow fades in on a layer behind its content (only opacity animates), and it follows the hand from where it was grabbed. The slot it will land in is a sunk recess (the well's track) the item's size and radius, gliding on the settle spring as the others make room (they glide from where they were, FLIP, the rows' motion). Dropped, it travels from the hand into its slot and lands on the object spring with the small overshoot while the plate fades on release. Escape returns it home on the settle spring and the others glide back; a failed save glides everything back the same way. A disabled item is pinned: it can't be lifted and nothing takes its place; trying shakes it once (refusal). The grip is six engraved dimples (a knurl), ink3 with the colorway's lip, that darken on hover. Within self.edge of the scroller's edge a drag scrolls toward it, up to self.speed per frame. On touch a whole item lifts after a still press of self.hold; a grip lifts at once. Reduce Motion: no scale and no travel (the drop and the return are at once, the others jump); following the hand stays, and the plate still fades. Between lists (useSortableLists, Kanban's columns) what follows the hand is a copy on the overlay layer (sortable-overlay, above every list, so a list that scrolls can't clip it), with the same plate, scale and shadow; the item itself stays in its list as the recess (data-placeholder: its content hidden, the well's track on its own radius), and every item that moves glides from where it was on settle, across lists too. (the raised surface (recipe surface raise) for the held plate; the well's track (recipe well track) for the recess; useRowMotion (Transitions T9, FLIP in 2D); the surface, settle, object, release and refusal springs; the haptic (alignment on lift, detent on drop))
     public static let sortable = MetalObjectRecipe(
         name: "sortable",
         layers: [
@@ -1802,6 +1802,25 @@ public enum MetalRecipes {
             "grip.pitch": .number(5.0),
             "grip.rest": .text("0.7"),
             "grip.lip": .perColorway(bone: "rgba(255,255,255,.85)", graphite: "rgba(255,255,255,.06)"),
+        ]
+    )
+
+    /// A board: columns of the person's cards, moved between columns by hand or by keys. Each column is a sunk tray (the well's field, as Card.Frame's separated tray), its radius the card's plus column.pad so the cards sit concentric, column.width wide and self.gap apart, on a board that scrolls sideways inside self.pad. Its header, header.height tall, its name lined up with the cards' words (header.inset) when there is no grip: Sortable's grip when the columns reorder, the name (label type, ink2), the count in a compact Badge turning on the drum, the limit in words (meta type, ink3, 'max 3'), and over the limit a compact Badge with the amber LED and 'Over by 1' (never colour alone); at its end the Collapsible's key when the column folds. Its cards stack column.gap apart inside column.pad, in a list that scrolls on its own; an empty list keeps column.empty of height with a quiet line (meta type, ink3) in its middle. A card is the host's (a compact Card); held, it is Sortable's drag between lists: a copy rises on the overlay with the raised plate, and its slot is the well's track. Collapsed, a column is its header alone. The columns move by their grips on Sortable's lift. Reduce Motion: Sortable's and the Collapsible's. (the well's field (the tray, as Card.Frame separated); Sortable (useSortableLists for the cards, useSortable by handle for the columns; its grip, plate, recess and overlay); Badge (the count, the over-limit lamp); Collapsible (Key and Panel); the surface recipe's card radius)
+    public static let kanban = MetalObjectRecipe(
+        name: "kanban",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(12.0),
+            "self.pad": .number(8.0),
+            "column.width": .number(272.0),
+            "column.pad": .number(6.0),
+            "column.gap": .number(6.0),
+            "column.empty": .number(72.0),
+            "header.height": .number(36.0),
+            "header.gap": .number(6.0),
+            "header.inset": .number(24.0),
         ]
     )
 

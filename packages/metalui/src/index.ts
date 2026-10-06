@@ -142,4 +142,5 @@ export {
   type WeatherSceneOptions,
 } from './blocks/weather/weather';
 export { Day, DayTile, DAY_LINES, type DayLine, type DayProps, type DayRootProps, type DayPageProps, type DayLineProps, type DayTileProps } from './blocks/day/day';
-export { Sortable, useSortable, moveTo, type SortableProps, type SortableRootProps, type SortableItemProps, type SortableHandleProps, type SortableOrientation, type SortableWords, type UseSortableOptions } from './components/sortable/sortable';
+export { Sortable, useSortable, useSortableLists, moveTo, moveBetween, type SortableProps, type SortableRootProps, type SortableItemProps, type SortableHandleProps, type SortableOrientation, type SortableWords, type UseSortableOptions, type SortableLists, type SortableListsWords, type UseSortableListsOptions } from './components/sortable/sortable';
+export { Kanban, type KanbanProps, type KanbanRootProps, type KanbanColumnProps, type KanbanCardsProps, type KanbanCardProps, type KanbanValue, type KanbanWords } from './components/kanban/kanban';

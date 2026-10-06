@@ -10,7 +10,6 @@ The drag that puts things in order, hosted by any list. React: `Sortable` (and t
 ## Don't use it for
 
 - Moving a thing **into** another (a file into a folder, a row under a parent): that is a drop target with a drop line (Tree's, Later).
-- Moving between lists (Kanban columns): Later, with Kanban.
 - Sorting by a column (that's Table's sort), or objects on a canvas (they move freely with the selection frame).
 
 ## Anatomy
@@ -79,9 +78,18 @@ MetalSortable($tasks, onCommit: { next, previous in try await store.save(next) }
 The hook is the whole behaviour over any element whose direct children carry `itemProps(key, { label, disabled })` (they become `data-row` rows, so `useRowMotion` glides them). Spread `listProps` and `ref={listRef}` on the list; render `<div ref={slotRef} className="sortable-slot" />` inside it for the recess (skip it where a `div` can't go, like a `tbody`); render `<div ref={announcerRef} className="sr-only" aria-live="assertive" />` and `<span id={instructionsId} hidden>{instructions}</span>` anywhere. Give each item `sortable-item` (or your own lifted look keyed on `data-lifted`). A grip spreads `handleProps(label)` and needs `handle: true`. `moveTo(order, key, target, pinned)` is the same move, for hosts that move by other means.
 
 - **Tree**: siblings of one level are a `useSortable` list (keys and announcements come free); moving into another level is Tree's own drop line on top.
-- **Kanban**: each column's cards are a `useSortable` list and the columns are a horizontal `Sortable` by a handle; between columns is Later.
+- **Kanban**: the cards of every column are one `useSortableLists` (below); the columns are a horizontal `useSortable` by handle.
 - **Table columns**: the header row's cells as items, `orientation: 'horizontal'`, `handle: true` with a grip in each header, `onValueChange` writes `TableColumnsState`'s order; no recess (a `tr` holds only cells).
 - **Uploads**: a grid of attachment tiles, `orientation: 'grid'`; commit the order with the upload's own save.
+
+## Between lists: `useSortableLists`
+
+The same drag over several lists under one root (Kanban's columns, a sidebar's sections). The value is `Record<list, keys>`; `onValueChange(next)` live and `onValueCommit(next, previous)` with rollback, as above. Spread `rootProps` and `ref={rootRef}` on a positioned root, `listProps(id, { label, disabled })` on each positioned list (its items are its direct children, running top to bottom) and `itemProps(key, { label, disabled })` on each item; render `<div ref={overlayRef} className="sortable-overlay" />` inside the root, plus the announcer and the instructions.
+
+- **By hand** what follows the hand is a copy on the overlay layer (a list that scrolls can't clip it, and an item that changes list is a new node); the item itself stays as the recess (`data-placeholder`: content hidden, the well's track on its radius). The nearest list to the hand takes it: in its own list the item under the hand gives up its place; entering another, it goes before the item under the hand (upper half) or after it, and at the end below the last. Every item that moves glides from where it was, across lists too. Every scroller the hand is near the edge of scrolls, both ways. The copy lands in the recess on the object spring.
+- **By keys** the item itself rises; Up and Down move it, Left and Right to the next list that takes items (same place, or its end), Home and End; said with the list's name: "Riso zine, Proofing, position 2 of 3."
+- A list marked `disabled` takes nothing, and one that isn't rendered (folded) is passed over. Links inside an item still lift it; fields and buttons keep their presses.
+- `moveBetween(value, key, list, index?)` is the same move for a "Move to" menu.
 
 ## Keyboard and accessibility
 
