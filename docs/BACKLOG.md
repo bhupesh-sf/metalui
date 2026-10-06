@@ -365,6 +365,10 @@ Building real screens shows what the components lack. Each was worked around ins
 - Done (2026-10-06): one glyph ships one glyph (per-glyph records and morph parts; `MorphPair` takes only the parts it is given; `<Icon name>` still works for apps). Gzip KB, fresh build: Table 122 → 93, ToolStrip 95 → 71, Card 79 → 54, Link 67 → 43, DatePicker 89 → 65, AlertDialog 57 → 33, Fan 41 → 17, Calendar 37 → 13, `DownloadIcon` ~27 → 2.7; ceilings set. Breaking: Table's action `icon` is an element now. Left: Combobox (112) and QuickEdit still ship the catalog because their items take a glyph *name* that morphs into the well — decide an API that passes the glyph itself.
 - [x] Combobox and QuickEdit: take the glyph itself (record and morph parts) instead of a name, so they stop shipping the whole catalog. (Done 2026-10-06: `GlyphParts` = `{ glyph, morph }`; Combobox 112 → 81 KB gzip, QuickEdit 37 → 32, Tree 81 → 75; breaking, in the CHANGELOG.)
 
+## Docs console: "NaN is an invalid value for width"
+
+- [ ] Seen on several docs pages (Collapsible, Stepper) as of 2026-10-06; not from either component. Find the width written from an unmeasured element and guard it.
+
 ## Tests that fail only under a full parallel run
 
 - [ ] `xray-dialog-editing` "pulling the dialog up…" and `toast` (deck, undo) and `region`, `scroll-area`, `slider-states` focus ring, `spinner` (whole place, known or unknown), `toggle`, `tooltip`: each failed once in the 4-worker full run (2026-10-06) and passed alone. Also `drop-zone` (reduced motion), `memory-scrubber`, `progress` (Reduce Motion), `table` (sorts, graphite), in the 3-worker run that closed wave 2; all passed alone. Wave 3's run added `cue` (reduced motion tick), `fan` (graphite), `icon-turn`, `icons` (acts from keys), `scroll-area` (bar leaves), `table-should` captures: all passed alone. Find the race in each (AGENTS.md: sample with rAF, poll), don't retry.
@@ -562,7 +566,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 - [x] **Sortable**: drag to reorder, with a keyboard path. Nothing in the library reorders today. (Built 2026-10-06 as an Instrument; sheet in `docs/sheets/sortable.md`: live reorder, `onValueCommit(next, previous)` rolls back a failed save; `useSortable` for Tree, Kanban, Table columns and uploads; `useRowMotion` now glides sideways too. Left: between lists (Kanban), into a level (Tree), several at once, right-to-left keys.)
   - Vertical list, horizontal, grid with mixed sizes, nested levels; a grip handle or the whole item; disabled items.
   - `onValueCommit` with the previous order, so a failed save can roll back.
-- [ ] **Stepper** (ReUI) / **Questionnaire** (shadcn): the steps of a wizard.
+- [x] **Stepper** (ReUI) / **Questionnaire** (shadcn): the steps of a wizard. (Built 2026-10-06; sheet in `docs/sheets/stepper.md`: an ordered list with `aria-current="step"`, not tabs; linear by default; panels stay mounted; the groove fills by transform; "number only" and "progress across" are Progress `steps`. Left: SwiftUI Back/Continue slots and the narrow line; a skipped optional step, per-step icons, a compact size.)
   - Step states: inactive, active, completed, loading, disabled; custom indicators per state.
   - Layouts: number only, title, title and bar, title and status, title and description, title inline beside the indicator; horizontal and vertical.
   - Controlled or not; a progress bar across the steps; a panel per step.
