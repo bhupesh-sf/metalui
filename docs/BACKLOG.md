@@ -694,16 +694,20 @@ The block (`apps/docs/src/blocks/ai-composer`) already does these inside itself;
   Done (2026-10-06): `Plan` (a Progress head "3 of 5", steps in ToolCall's states, nested tasks); the queue is the steps in `queued`. Later: a plan revised while it runs, the person's queued messages.
 - [x] **Sources and inline citations** (V P X): numbered marks in the text that open the source in a preview card; a list of sources under the answer. Builds on the `ProvenanceTooltip` block.
   Done (2026-10-06): `Citation` (a numbered pill that opens a PreviewCard) and `Citation.Sources` (a folded list). 46.9 KB: PreviewCard and Link carry Base UI's floating code.
-- [ ] **Thinking indicator / shimmer** (V P S): shimmering placeholder text and a thinking bar. Do it inside "Spinner: rethink as waiting" rather than as its own thing.
+- [x] **Thinking indicator / shimmer** (V P S): shimmering placeholder text and a thinking bar. Do it inside "Spinner: rethink as waiting" rather than as its own thing.
+  Done (2026-10-06): `Spinner.Text`, a working line with a light passing across it (transform only; breathes under Reduce Motion). Sheet: `docs/sheets/conversation.md`.
 - [x] **Starter prompts and follow-ups** (V P A X): prompts on an empty thread and follow-ups after a reply. Different from `Chip variant="suggestion"`, which accepts or dismisses an AI suggestion.
   Done (2026-10-06) on existing parts: compact Buttons in EmptyState's action row, and a row under the reply (not Chips: those accept or dismiss a suggestion).
 - [x] **Welcome** (A X): the empty thread's greeting with starter prompts; check against `EmptyState` first.
   Done (2026-10-06): an `EmptyState` inside the `Thread` (EmptyState page, "Welcome a new chat").
-- [ ] **Conversation list** (A X): past chats in a sidebar, with rename, delete and a loading skeleton.
-- [ ] **Branch picker** (A): moves between alternate replies, "2 of 3".
+- [x] **Conversation list** (A X): past chats in a sidebar, with rename, delete and a loading skeleton.
+  Done (2026-10-06): `ConversationList` (a Place in a Sidebar): grouped by Pinned/Today/…, rename with QuickEdit, delete without a confirm (the host offers Undo), skeleton rows. Later: Archive, router links.
+- [x] **Branch picker** (A): moves between alternate replies, "2 of 3".
+  Done (2026-10-06): `BranchPicker` in Message's footer, "2 / 3" on the drum.
 - [x] **Context meter** (V): how full the model's context window is, likely a `Meter` use.
   Done (2026-10-06): a `Meter` with the tokens in words (Meter page, "A model's context window").
-- [ ] **Checkpoint** (V): a point in the thread to restore to.
+- [x] **Checkpoint** (V): a point in the thread to restore to.
+  Done (2026-10-06) on existing parts: a system `Message` with a Restore button (thread.agent.md).
 
 ### 3. Code and artifacts (only if MetalUI targets coding agents)
 
@@ -720,8 +724,10 @@ The block (`apps/docs/src/blocks/ai-composer`) already does these inside itself;
 ### 6. Generative UI and entry points
 
 - [ ] **Render from JSON** (K): ChatKit's widgets are ordinary parts (card, list, badge, button, date picker) that a model composes. We have nearly all of them; what's missing is a schema that lets a model render MetalUI components from JSON.
-- [ ] **Chat sidebar and popup** (C): the thread in a `Sidebar` or a floating panel.
-- [ ] **Ghost text in a textarea** (C): the AI's next words shown in grey, Tab to accept. Close to the cues and the suggestion chip.
+- [x] **Chat sidebar and popup** (C): the thread in a `Sidebar` or a floating panel.
+  Done (2026-10-06): the "Chat panel" block (docked column or a Popover from an Assistant key; not a Sheet, which would trap focus).
+- [x] **Ghost text in a textarea** (C): the AI's next words shown in grey, Tab to accept. Close to the cues and the suggestion chip.
+  Done (2026-10-06): `Textarea` `suggestion` (Tab accepts as typed, Esc dismisses), passed through by PromptInput. Later: a word at a time.
 
 ## SwiftUI on iOS
 
