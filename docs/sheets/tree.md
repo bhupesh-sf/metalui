@@ -38,18 +38,19 @@ Not doing: lines drawn to every child (the box-drawing elbow look; the guides al
 
 ## Must
 
-- [ ] `Tree` with `items` (`{ id, label, icon?, children?, hasChildren?, disabled?, trail? }`), `expanded` / `defaultExpanded` / `onExpandedChange`, `selected` / `defaultSelected` / `onSelectedChange`, `selectionMode`, `opened`, `onAction`, `loadChildren`, `size`, `label` (the tree's accessible name).
-- [ ] The WAI-ARIA tree pattern on flat rows: `role="tree"`, `treeitem` with `aria-level`, `aria-setsize`, `aria-posinset`, `aria-expanded` on branches, `aria-selected` when selection is on, roving tabindex, the keys above, type-ahead.
-- [ ] `Tree.Guides` and `Tree.Disclosure` exported for Table and the Cascader.
-- [ ] Motion: the chevron's quarter turn (part), children land (object) and leave (release), the rest glide (settle); Reduce Motion: all at once.
-- [ ] Lazy levels with the small-item wait; a failed load with Try again.
-- [ ] SwiftUI `MetalTree` with the same items, keys (macOS), selection, guides and motion.
+- [x] `Tree` with `items` (`{ id, label, icon?, children?, hasChildren?, disabled?, trail? }`), `expanded` / `defaultExpanded` / `onExpandedChange`, `selected` / `defaultSelected` / `onSelectedChange`, `selectionMode`, `opened`, `onAction`, `loadChildren`, `size`, `label` (the tree's accessible name).
+- [x] The WAI-ARIA tree pattern on flat rows: `role="tree"`, `treeitem` with `aria-level`, `aria-setsize`, `aria-posinset`, `aria-expanded` on branches, `aria-selected` when selection is on, roving tabindex, the keys above, type-ahead.
+- [x] `Tree.Guides` and `Tree.Disclosure` exported for Table and the Cascader.
+- [x] Motion: the chevron's quarter turn (part), children land (object) and leave (release), the rest glide (settle); Reduce Motion: all at once.
+- [x] Lazy levels with the small-item wait; a failed load with Try again.
+- [x] SwiftUI `MetalTree` with the same items, keys (macOS), selection, guides and motion.
 
 ## Should
 
-- [ ] Rename in place (F2): `onRename` and `validateName`, through `QuickEdit` in a `Popover`.
-- [ ] The empty branch row.
-- [ ] Type-ahead underline.
+- [x] Rename in place (F2): `onRename` and `validateName`, through `QuickEdit` in a `Popover`.
+- [x] The empty branch row.
+- [x] Type-ahead underline.
+- Done (2026-10-06): Must and Should. Selected rows next to each other join into one plate. The pieces live in `tree.tsx` (the recipe-parity check wants one file per recipe); split them out if Table's bundle needs it. Left (SwiftUI): rename is the row's context menu (no F2 key in SwiftUI), adjacent selected rows don't join, rows have no hover-only focus raise.
 
 ## Later
 
