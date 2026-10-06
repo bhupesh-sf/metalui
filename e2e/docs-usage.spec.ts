@@ -22,14 +22,10 @@ test('a component page shows install, import, props, and its own CSS', async ({ 
   await expect(source).not.toContainText('@utility switch-thumb-on');
 });
 
-// Known gaps, each to come out of this list when its page imports from the package in Usage: most have no Usage
-// section yet; Swatch's has no import line; Selection frame needs the docs' surface-field build.
+// Known gap: Selection frame's page renders only with the docs' surface-field build (its Object-aware field section);
+// its Usage is written, so it comes out of this list once that dependency builds here.
 // Until this test read the side nav (#side, an aside), `nav a` matched nothing and it checked no page at all.
-const NO_USAGE_YET = new Set([
-  'button', 'command-palette', 'menu', 'status', 'switcher', 'toolbar', 'tooltip', 'cue', 'hover-engraving',
-  'provenance-tooltip', 'selection-frame', 'size-readout', 'lens-bar', 'memory-scrubber', 'region', 'badge',
-  'dot-display', 'kbd', 'led', 'swatch',
-].map((n) => `/components/${n}`));
+const NO_USAGE_YET = new Set(['selection-frame'].map((n) => `/components/${n}`));
 
 test('every component page imports from the package, never from a file', async ({ page }) => {
   test.setTimeout(600_000);

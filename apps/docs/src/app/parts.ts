@@ -1,13 +1,13 @@
 /* Every part of the system with its layer (docs/COMPOSITION.md), read from each part's meta.json.
  * The nav and the layers page both read this, so neither files anything by hand. */
 
-export interface PartMeta { name: string; title?: string; nav?: string; layer: string; page?: string; swift?: { status?: string } }
+export interface PartMeta { name: string; title?: string; nav?: string; layer: string; page?: string; react?: { export?: string }; swift?: { status?: string } }
 
 const FROM_META = Object.values(import.meta.glob<PartMeta>('../../../../packages/metalui/src/*/*/meta.json', { eager: true, import: 'default' }));
 
 /** Doc pages whose part has no meta.json yet; they move into FROM_META when it lands. */
 const WITHOUT_META: PartMeta[] = [
-  { name: 'swatch', title: 'Swatch', layer: 'part', page: '/components/swatch' },
+  { name: 'swatch', title: 'Swatch', layer: 'part', page: '/components/swatch', react: { export: 'Swatch' } },
   { name: 'cue', title: 'Cue family', layer: 'instrument', page: '/components/cue' },
 ];
 

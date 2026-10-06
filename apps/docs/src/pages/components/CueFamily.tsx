@@ -9,6 +9,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/mark/mark
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalCue.swift?raw';
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
 import { SwiftCapture } from '../../ui/SwiftCapture';
+import { Usage } from '../../ui/Usage';
 import { springVars } from '../../ui/springTuning';
 
 const TABS = [
@@ -17,6 +18,9 @@ const TABS = [
   { id: 'swift', label: 'SwiftUI', code: swiftSource },
   { id: 'agent', label: 'Agent guide', code: agentGuide },
 ] as const;
+
+/* The family has no meta.json of its own: it ships as the mark component (r/mark.json), and Cue* are its names. */
+const USAGE_META = { name: 'mark', react: { export: 'Cue, CueInferred' } };
 
 /* The host passes the body's and money's glyphs: the set's coin and moon, the life set's steps. */
 const COIN = <CoinIcon size={14} />;
@@ -81,6 +85,18 @@ export default function CueFamilyPage() {
           head={['Cue', 'Kind', 'Glyph', 'Line', 'Chip']}
           mono={[4]}
           rows={LEGEND.map((k) => [<span key={k.kind} className="type-content text-ink" data-testid={`legend-${k.kind}`}>{k.specimen}</span>, k.kind, k.glyph, k.line, k.chip])}
+        />
+      </Section>
+
+      <Section id="usage" title="Usage" lede="Install it, import it, use it.">
+        <Usage
+          meta={USAGE_META}
+          agent={agentGuide}
+          example={`import { CoinIcon } from '@unlocalhosted/metalui/icons';
+
+Send <Cue kind="tag">#poster</Cue> <Cue kind="date" resolved="WED 30 SEP · 16:00">tomorrow 4pm</Cue>
+for <Cue kind="amount" resolved="$40.00" glyph={<CoinIcon size={14} />}>$40</Cue>,
+due <CueInferred resolved="FRI 2 OCT · RECOGNIZER 0.82" confirmed={ok} onConfirm={confirm}>fri</CueInferred>`}
         />
       </Section>
 
