@@ -35,6 +35,26 @@ function SweepTuner() {
   );
 }
 
+/* CONTEXT METER: how full a model's context window is. A Meter, not a component of its own: a level in a
+ * known range whose top end is the problem. The Context window panel sets what is used and the window. */
+const tokens = (n: number) => (n >= 1000 ? `${Math.round(n / 1000)}k` : String(n));
+
+function ContextMeter() {
+  const d = useDialKit('Context window', {
+    used: [60, 0, 200],
+    window: { type: 'select', options: ['128', '200', '1000'], default: '200' },
+  });
+  const max = Number(d.window) * 1000;
+  const used = Math.min(max, Math.round(d.used) * 1000);
+  const said = `${tokens(used)} of ${tokens(max)} tokens`;
+  return (
+    <div data-testid="context-meter" className="grid w-full max-w-[320px] gap-6 justify-self-center">
+      <Meter label="Context" value={used} max={max} showValue getAriaValueText={(pct) => `${pct}, ${said}`} />
+      <span className="type-meta tabular-nums text-ink3">{said}</span>
+    </div>
+  );
+}
+
 export default function MeterPage() {
   const [used, setUsed] = React.useState(42);
   return (
@@ -52,9 +72,11 @@ export default function MeterPage() {
           </div>
         </div>
       ) }}
-      more={[{ id: 'sweep', title: 'Tune the sweep', lede: 'The Meter sweep panel sets the time between segments, each lamp\'s fade and the segment count. Jump the level to see it sweep both ways.', node: <SweepTuner /> }]}
+      more={[{ id: 'context', title: 'A model\'s context window', lede: 'How full the conversation has made the model\'s window: a Meter whose top is the problem. Amber from 75 % says it will soon summarise or forget; red from 90 % says it must. The tokens go under it in words. The Context window panel sets what is used and the window\'s size.', node: <ContextMeter /> }, { id: 'sweep', title: 'Tune the sweep', lede: 'The Meter sweep panel sets the time between segments, each lamp\'s fade and the segment count. Jump the level to see it sweep both ways.', node: <SweepTuner /> }]}
       usage={`<Meter label="Storage" value={42} showValue />
-<Meter label="Battery" value={18} bad="low" showValue />`}
+<Meter label="Battery" value={18} bad="low" showValue />
+<Meter label="Context" value={used} max={window} showValue
+  getAriaValueText={(pct) => \`\${pct}, \${used} of \${window} tokens\`} />`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
         { id: 'css', label: 'CSS', code: cssSource },

@@ -5,6 +5,7 @@ A place with nothing in it yet. React: `EmptyState` from `@unlocalhosted/metalui
 ## Use it for
 
 - A list, board or panel with nothing in it: first use, a cleared filter, everything done.
+- The welcome of a new chat, in a `Thread`: the assistant's glyph or `Avatar` as `icon`, a greeting as `title` ("What are we making?"), what it can do as `description`, and starter prompts as `action`: two to four compact standard `Button`s, each the prompt's words, sending it when pressed. The action row wraps and centres; the welcome goes when the first message arrives.
 
 ## Don't use it for
 
@@ -40,4 +41,5 @@ Reduce Motion: it fades in without travel.
 ## Rules
 
 - Say what would be here and how to start, not only "Nothing here".
-- One action; the one that starts it.
+- One action; the one that starts it. A new chat is the exception: its starter prompts are several ways in, at most four, each a whole prompt in a few words ("Summarise this thread"), never a category.
+- Follow-ups after a reply are not an empty state: put the same compact `Button`s in a row under the assistant's `Message`, inside the `Thread`, and drop them when the person sends.

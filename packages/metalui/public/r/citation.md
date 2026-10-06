@@ -46,5 +46,5 @@ Reduce Motion: the card and the fold crossfade.
 
 ## Keyboard and accessibility
 
-- The mark is a link named "Source 1: Springs" (its number stays in its name); Tab reaches it and Enter follows it. The preview card is for the pointer: everything on it is in the link's name or a step away.
+- The mark is a link named "Source 1: Springs" (its number stays in its name); Tab reaches it and opens its preview card (as a steady hover does); Enter follows it.
 - The list's row is Collapsible's button (`aria-expanded`); the list is an ordered list named "Sources"; each title is an external `Link` that says it opens in a new tab.

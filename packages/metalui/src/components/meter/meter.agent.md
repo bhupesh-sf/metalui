@@ -5,6 +5,7 @@ A level in a range. React: `Meter` from `@unlocalhosted/metalui`, on Base UI Met
 ## Use it for
 
 - A measurement that sits in a known range: storage used, battery, signal, a quota.
+- How full a model's context window is (the "context meter"): `label="Context"`, `value` the tokens used, `max` the window, `showValue`, and the tokens in words both under it (meta type, ink3: "64k of 200k tokens") and in `getAriaValueText`. The default zones fit: amber from 75 % (it will soon summarise or drop the oldest turns), red from 90 %. In SwiftUI, `MetalMeter("Context", value: used, in: 0...window)`.
 
 ## Don't use it for
 
@@ -31,7 +32,7 @@ Reduce Motion: every segment changes at once.
 | React | SwiftUI |
 |---|---|
 | `value`, `min` (0), `max` (100) | `value:`, `in:` |
-| `label`, `showValue`, `format` | `label:` |
+| `label`, `showValue`, `format`, `getAriaValueText` | `label:` |
 | `segments` (16), `warn` (0.75), `danger` (0.9), `bad` (`high`, `low`) | `segments:` |
 
 ## Keyboard and accessibility

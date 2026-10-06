@@ -1411,7 +1411,7 @@ Reduce Motion: the card and the fold crossfade.
 
 ## Keyboard and accessibility
 
-- The mark is a link named "Source 1: Springs" (its number stays in its name); Tab reaches it and Enter follows it. The preview card is for the pointer: everything on it is in the link's name or a step away.
+- The mark is a link named "Source 1: Springs" (its number stays in its name); Tab reaches it and opens its preview card (as a steady hover does); Enter follows it.
 - The list's row is Collapsible's button (`aria-expanded`); the list is an ordered list named "Sources"; each title is an external `Link` that says it opens in a new tab.
 
 ---
@@ -2149,6 +2149,7 @@ A place with nothing in it yet. React: `EmptyState` from `@unlocalhosted/metalui
 ## Use it for
 
 - A list, board or panel with nothing in it: first use, a cleared filter, everything done.
+- The welcome of a new chat, in a `Thread`: the assistant's glyph or `Avatar` as `icon`, a greeting as `title` ("What are we making?"), what it can do as `description`, and starter prompts as `action`: two to four compact standard `Button`s, each the prompt's words, sending it when pressed. The action row wraps and centres; the welcome goes when the first message arrives.
 
 ## Don't use it for
 
@@ -2184,7 +2185,8 @@ Reduce Motion: it fades in without travel.
 ## Rules
 
 - Say what would be here and how to start, not only "Nothing here".
-- One action; the one that starts it.
+- One action; the one that starts it. A new chat is the exception: its starter prompts are several ways in, at most four, each a whole prompt in a few words ("Summarise this thread"), never a category.
+- Follow-ups after a reply are not an empty state: put the same compact `Button`s in a row under the assistant's `Message`, inside the `Thread`, and drop them when the person sends.
 
 ---
 
@@ -3540,6 +3542,7 @@ A level in a range. React: `Meter` from `@unlocalhosted/metalui`, on Base UI Met
 ## Use it for
 
 - A measurement that sits in a known range: storage used, battery, signal, a quota.
+- How full a model's context window is (the "context meter"): `label="Context"`, `value` the tokens used, `max` the window, `showValue`, and the tokens in words both under it (meta type, ink3: "64k of 200k tokens") and in `getAriaValueText`. The default zones fit: amber from 75 % (it will soon summarise or drop the oldest turns), red from 90 %. In SwiftUI, `MetalMeter("Context", value: used, in: 0...window)`.
 
 ## Don't use it for
 
@@ -3566,7 +3569,7 @@ Reduce Motion: every segment changes at once.
 | React | SwiftUI |
 |---|---|
 | `value`, `min` (0), `max` (100) | `value:`, `in:` |
-| `label`, `showValue`, `format` | `label:` |
+| `label`, `showValue`, `format`, `getAriaValueText` | `label:` |
 | `segments` (16), `warn` (0.75), `danger` (0.9), `bad` (`high`, `low`) | `segments:` |
 
 ## Keyboard and accessibility

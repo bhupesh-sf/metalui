@@ -11,7 +11,7 @@ import { PreviewCard } from '../preview-card/preview-card';
  *   mark      in the text, the source's number on the link cue's host pill (mark-url), meta type,
  *             tabular: a link to the source, named by its number and title (the provenance
  *             tooltip's idea: a cue says where it came from)
- *   preview   a steady hover opens the preview card on it: the title, a line, the host
+ *   preview   a steady hover or focus opens the preview card on it: the title, a line, the host
  *   sources   Citation.Sources, under the answer: one collapsible row ("4 sources"), folded by
  *             default; open, each source on a line with its number, its title as a quiet external
  *             Link and its host in ink3. The numbers are the marks' numbers
