@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Tree, TreeGuides, TreeDisclosure, ToastProvider, useToast, type TreeItem, type TreeSelectionMode, type TreeSize } from '@unlocalhosted/metalui';
-import { CalendarIcon, DocumentIcon, ImageIcon, PersonIcon, SettingsIcon } from '@unlocalhosted/metalui/icons';
+import { CalendarIcon, DocumentIcon, ImageIcon, MorphIcon, PersonIcon, SettingsIcon } from '@unlocalhosted/metalui/icons';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/tree/tree.tsx?raw';
@@ -24,23 +24,25 @@ const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 const doc = <DocumentIcon />;
 const img = <ImageIcon />;
+/** A folder's branch: its glyph morphs folder → folder-open as it opens. */
+const folder = (open: boolean) => <MorphIcon name={open ? 'folder-open' : 'folder'} />;
 
 const PROJECT: TreeItem[] = [
-  { id: 'brief', label: 'Brief', children: [
+  { id: 'brief', label: 'Brief', icon: folder, children: [
     { id: 'brief/goals', label: 'Goals.md', icon: doc },
     { id: 'brief/audience', label: 'Audience.md', icon: doc },
     { id: 'brief/budget', label: 'Budget.xlsx', icon: doc, disabled: true, trail: 'Locked' },
   ] },
-  { id: 'design', label: 'Design', children: [
-    { id: 'design/screens', label: 'Screens', children: [
+  { id: 'design', label: 'Design', icon: folder, children: [
+    { id: 'design/screens', label: 'Screens', icon: folder, children: [
       { id: 'design/screens/home', label: 'Home.fig', icon: img },
       { id: 'design/screens/search', label: 'Search.fig', icon: img },
       { id: 'design/screens/settings', label: 'Settings.fig', icon: img },
     ] },
     { id: 'design/tokens', label: 'Tokens.json', icon: doc },
-    { id: 'design/archive', label: 'Archive', children: [] },
+    { id: 'design/archive', label: 'Archive', icon: folder, children: [] },
   ] },
-  { id: 'photos', label: 'Photos', hasChildren: true, trail: '3' },
+  { id: 'photos', label: 'Photos', icon: folder, hasChildren: true, trail: '3' },
   { id: 'notes', label: 'Notes.md', icon: doc },
   { id: 'readme', label: 'Read me.md', icon: doc },
 ];
@@ -137,16 +139,16 @@ function Playground() {
 function Loading() {
   const tries = React.useRef(0);
   const [items, setItems] = React.useState<TreeItem[]>([
-    { id: 'shared', label: 'Shared with me', hasChildren: true },
-    { id: 'archive', label: 'Archive', hasChildren: true },
-    { id: 'new', label: 'New folder', hasChildren: true },
+    { id: 'shared', label: 'Shared with me', icon: folder, hasChildren: true },
+    { id: 'archive', label: 'Archive', icon: folder, hasChildren: true },
+    { id: 'new', label: 'New folder', icon: folder, hasChildren: true },
   ]);
   const loadChildren = React.useCallback(async (item: TreeItem) => {
     await wait(item.id === 'new' ? 150 : 1200);
     if (item.id === 'archive' && ++tries.current === 1) throw new Error('offline');
     const children: TreeItem[] = item.id === 'shared'
       ? [{ id: 'shared/plan', label: 'Launch plan.md', icon: doc }, { id: 'shared/people', label: 'People', icon: <PersonIcon />, children: [{ id: 'shared/people/ana', label: 'Ana Duarte', icon: <PersonIcon /> }] }]
-      : item.id === 'archive' ? [{ id: 'archive/2025', label: '2025', icon: <CalendarIcon />, hasChildren: true }] : [];
+      : item.id === 'archive' ? [{ id: 'archive/2025', label: '2025', icon: folder, hasChildren: true }] : [];
     setItems((was) => update(was, item.id, (it) => ({ ...it, children })));
   }, []);
   return (
