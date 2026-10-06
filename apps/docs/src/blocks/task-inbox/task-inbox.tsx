@@ -146,8 +146,6 @@ const MAIN = 'grid min-w-0 -mx-6 px-6 grid-cols-[minmax(0,1fr)_auto] items-cente
 // The gutter's box shows on hover, on focus, while anything is selected, and always on a touch screen.
 const GUTTER = `${CELL} opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 group-aria-selected/row:opacity-100 group-data-selecting/grid:opacity-100 pointer-coarse:opacity-100`;
 
-// The icon set has no person glyph yet: a head and shoulders, drawn to the set's 24 grid and stroke.
-const PERSON = <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round"><circle cx="12" cy="8.6" r="3.6" /><path d="M5.2 19.4c.9-3.3 3.6-5.2 6.8-5.2s5.9 1.9 6.8 5.2" /></svg>;
 
 /* ── The block ─────────────────────────────────────────────── */
 
@@ -578,7 +576,7 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
               wordClassName="sr-only @lg/block:not-sr-only"
               items={[
                 { label: 'Complete', icon: <Icon name="check" />, shortcut: 'E', onSelect: completeTargets },
-                { label: 'Assign', icon: PERSON, menu: { heading: 'Assign to', items: PEOPLE.map((p) => ({ label: p.id === ME ? `${p.name} (you)` : p.name, onSelect: () => assign(targets(), p.id) })) } },
+                { label: 'Assign', icon: <Icon name="person" />, menu: { heading: 'Assign to', items: PEOPLE.map((p) => ({ label: p.id === ME ? `${p.name} (you)` : p.name, onSelect: () => assign(targets(), p.id) })) } },
                 { label: 'Snooze', icon: <Icon name="clock" />, menu: { heading: 'Snooze until', items: [
                   { label: 'Tomorrow', onSelect: () => snooze(targets(), 1, 'tomorrow') },
                   { label: 'Next week', onSelect: () => snooze(targets(), NEXT_WEEK, `${weekday.format(dateOf(NEXT_WEEK))} ${monthDay.format(dateOf(NEXT_WEEK))}`) },

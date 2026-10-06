@@ -106,7 +106,7 @@ pagination, calendar (3), navigation-menu, accordion, attachment, combobox, sele
 ### D. Glyphs the set lacks (design each in `icons.mjs`, with its act and morph partners)
 
 - [x] `chevron` (one glyph; `turn` prop on Icon and MorphIcon), `minus` (done)
-- `save`, `download`, `upload`, `send`, `copy` (distinct from paste), `external` (the link's arrow)
+- `save`, `download`, `upload`, `send` (done, with `stop`, `attach`, `retry`, `person`, `bell`, `palette`), `copy` (distinct from paste), `external` (the link's arrow)
 - `settings`, `filter`, `sort`, `eye` / `eye-off` (a password field), `lock`
 - `info`, `warning` (toast and alert kinds), `sun` / `moon` (colorway), `sidebar` (the rail toggle)
 
@@ -316,7 +316,7 @@ Building real screens shows what the components lack. Each was worked around ins
 
 - [x] **Button**: `cap="primary"` ignores `size="compact"` (the AI composer's send key is 32 tall beside a 28 Select). (Primary and destructive take the compact size and keep their cap, as SwiftUI already did.)
 - [x] **ScrollArea**: no way to reach the viewport or listen to scrolling (a `viewportRef` / `onScroll`); the AI composer finds `.mu-scroll-area-viewport` by class.
-- [ ] **Icons**: no `send`, `stop`, `attach`, `retry` glyphs (the composer uses arrow → rectangle, plus, redo); add them with the icons entry's D list.
+- [x] **Icons**: no `send`, `stop`, `attach`, `retry` glyphs (the composer uses arrow → rectangle, plus, redo); add them with the icons entry's D list. (Drawn, each with its act; the composer uses them, and Send ↔ Stop morphs at strain .5.)
 - [x] **Motion**: no exported helper for "is motion reduced here" that covers both the OS setting and the site's motion switch; blocks read `--mu-travel-settle === 0`. Export one (`useReducedMotion()` or `motionReduced(el)`).
 - [x] **Tooltip swallows the first Escape** on a focused trigger (Base UI's trigger), so a panel around it never hears ⎋; the share panel listens in the capture phase. (Decided: correct. Base UI stops ⎋ only while the tooltip shows, which WCAG 1.4.13 asks for; documented in the tooltip guide with the capture-phase way out.)
 - [x] **DropZone compact** doesn't truncate its title: at narrow widths it runs into "or choose files". (Now the words clip to one line each; the description ends in an ellipsis.)
@@ -333,13 +333,13 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Toast's Undo shows ⌘Z but binds nothing**: the keycap promises a shortcut the toast doesn't handle; bind it (for the page's last undoable change) or let the host pass it. (⌘Z / Ctrl+Z runs the newest undoable toast's Undo, once; fields and a host that calls `preventDefault` keep theirs. Undo now also closes its toast, as SwiftUI's did.)
 - [x] **ToolStrip** items take no icons, no menu trigger and no leading count; the task inbox rebuilds the strip from Base UI Toolbar. Extend `ToolStrip` (with the Tool strip entry above). (Items take `icon`, `iconOnly` and a `menu`; the strip takes a `count` and a `wordClassName`. The inbox uses ToolStrip; the page shows it Over a list. SwiftUI's strip hasn't caught up: noted in the guide. The Tool strip entry's adaptive verbs are still open.)
 - [x] **Button strip / graphite / link caps don't size an `icon`** (noted with the icon slot); blocks pass `size-16`.
-- [ ] **Icons: no person / assign glyph** (the `me` glyph reads as a chart); add `person`.
+- [x] **Icons: no person / assign glyph** (the `me` glyph reads as a chart); add `person`. (`person`; the inbox's Assign and the settings Profile use it.)
 - [x] **Icon: no way to play a glyph's act on demand** (a celebration, a result): add `play()` via a ref or an `act` prop; the inbox dispatches a synthetic click. (`act`: plays whenever it turns to a new truthy value, `act` alone on arrival; StrictMode-safe. The inbox uses it; the Icons page shows it under On cue.)
 - [x] **AlertDialog.Popup** doesn't type Base UI's `finalFocus` (it passes it through); type it.
 - [x] **Avatar**: no accessible label separate from the name its initials come from. (`label`; `''` makes it decorative.)
 - [x] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes. (`selected` raises any variant, `opened` carries the rail; SwiftUI too. The inbox uses them.)
 - [x] **Task inbox polish**: while selecting, the selection box (14) and the completion box (16) sit side by side and look alike; make completion a distinct task dimple or a status glyph, or show selection only as the row's plate. (Selection is round, completion stays the task's square dimple, and the selected row takes Row's raised plate.)
-- [ ] **Icons blocks keep missing** (highest-value icon work; with the icons entry's D list): `person`, `bell`, `palette`, `save`, `send`, `stop`, `attach`, `retry`, `download`, `upload`. The settings block shows a chart glyph for Profile, a clock for Notifications and a document for Save because nothing better exists.
+- [x] **Icons blocks keep missing** (highest-value icon work; with the icons entry's D list): `person`, `bell`, `palette`, `save`, `send`, `stop`, `attach`, `retry`, `download`, `upload`. The settings block shows a chart glyph for Profile, a clock for Notifications and a document for Save because nothing better exists. (All ten drawn and in use: settings shows person, bell, palette and save.)
 - [x] **Sidebar item icons take their own Tab stop in Chrome** (also on /components/sidebar). Cause: an `Icon` outside any `.mu-icon-trigger` put its focus listener on the bare svg, which Chrome then makes focusable. Fixed in `Icon`; Sidebar items are icon triggers now.
 - [x] **Textarea**: its text is 15px (content type) beside Field's 12.5px, so a bio looks louder than name and email; add a `size` matching Field. Its counter only shows from 80 % with no per-instance option and reads the threshold from the document root. (`size` large/regular/compact; `countFrom`; the threshold reads from the textarea's own element; the counter is now linked by `aria-describedby`, as the guide already claimed.)
 - [x] **Portalled popups ignore a colorway set on a parent** (Select, Menu, Popover open in the page's colorway inside a graphite block); let them inherit (portal into the nearest colorway root, or copy `data-mu-colorway`).

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Attachment, Button, IconButton, Led, ScrollArea, Select, Skeleton, SwapText, Textarea, Tooltip, type LedKind, motionReduced } from '@unlocalhosted/metalui';
-import { MorphIcon, PlusIcon, RedoIcon } from '@unlocalhosted/metalui/icons';
+import { AttachIcon, MorphIcon, RetryIcon } from '@unlocalhosted/metalui/icons';
 
 /* ─────────────────────────────────────────────────────────
  * AI COMPOSER · a chat thread with a composer at its foot
@@ -18,7 +18,7 @@ import { MorphIcon, PlusIcon, RedoIcon } from '@unlocalhosted/metalui/icons';
  *   send
  *      0 ms   the message lands at the foot of the thread: from one nest below, on the object
  *             spring with its small overshoot; the well empties and shrinks; the files go with it
- *      0 ms   the send key's glyph morphs arrow → square and its label turns Send → Stop on the drum
+ *      0 ms   the send key's glyph morphs send → stop (one disc, the mark changes) and its label turns Send → Stop on the drum
  *      0 ms   the reply's header appears: its lamp breathes (waiting) and "Thinking" beside the
  *             model's name; one sunk skeleton line waits where the first words will stand
  *      think  (Fast 700 ms · Thorough 1200 ms) the skeleton gives way to words: they arrive at
@@ -182,7 +182,7 @@ function Reply({ message, last, busy, still, onRetry }: { message: Extract<Messa
             <SwapText value={copied ? 'Copied' : 'Copy'} />
           </Button>
           {last && (
-            <Button size="compact" onClick={onRetry} disabled={busy} icon={<RedoIcon />}>Retry</Button>
+            <Button size="compact" onClick={onRetry} disabled={busy} icon={<RetryIcon />}>Retry</Button>
           )}
         </div>
       )}
@@ -370,7 +370,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
         <div className="flex items-center gap-6">
           <input ref={picker} type="file" multiple hidden aria-hidden tabIndex={-1} data-attach-input onChange={(e) => attach(e.target.files)} />
           <Tooltip label="Attach files">
-            <IconButton label="Attach files" icon={<PlusIcon />} onClick={() => picker.current?.click()} />
+            <IconButton label="Attach files" icon={<AttachIcon />} onClick={() => picker.current?.click()} />
           </Tooltip>
           <Select size="compact" aria-label="Model" value={model} onValueChange={setModel} options={MODELS.map(({ value, label }) => ({ value, label }))} />
           <span className="flex-1" />
@@ -380,7 +380,7 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
             size="compact"
             onClick={busy ? stop : send}
             disabled={!busy && empty}
-            icon={<MorphIcon name={busy ? 'rectangle' : 'arrow'} />}
+            icon={<MorphIcon name={busy ? 'stop' : 'send'} />}
           >
             <SwapText value={busy ? 'Stop' : 'Send'} />
           </Button>

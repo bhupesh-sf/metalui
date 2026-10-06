@@ -32,7 +32,7 @@ import { Icon, MorphIcon } from '@unlocalhosted/metalui/icons';
  *             "Saving…" on the drum; Discard is held off
  *    400 ms   still saving: the glyph cross-fades into the turning arc (a quick save never shows it)
  *   ~700 ms   (the sample wait, or your onSave) state="done": the glyph comes back morphing
- *             document → check, "Saved"; the title says "Changes saved"
+ *             save → check, "Saved"; the title says "Changes saved"
  *   +900 ms   the bar sinks away on the release spring; focus, if it was in the bar, goes to the
  *             section's title
  *
@@ -65,7 +65,7 @@ type Section = 'profile' | 'notifications' | 'appearance';
  * A section's glyph, with a waiting lamp on its corner while the section holds unsaved edits.
  * Inert: in Chrome a Sidebar item's svg takes a Tab stop of its own.
  */
-function Glyph({ name, dirty }: { name: 'me' | 'clock' | 'layout'; dirty: boolean }) {
+function Glyph({ name, dirty }: { name: 'person' | 'bell' | 'palette'; dirty: boolean }) {
   return (
     <span inert className="relative inline-grid">
       <Icon name={name} size={16} />
@@ -91,10 +91,10 @@ export interface SettingsValues {
   reduceMotion: boolean;
 }
 
-const SECTIONS: { value: Section; label: string; about: string; glyph: 'me' | 'clock' | 'layout'; keys: (keyof SettingsValues)[] }[] = [
-  { value: 'profile', label: 'Profile', about: 'How people in Lisbon Studio see you.', glyph: 'me', keys: ['photo', 'name', 'email', 'bio'] },
-  { value: 'notifications', label: 'Notifications', about: 'What reaches your inbox, and how often.', glyph: 'clock', keys: ['digests', 'mentions', 'weekly', 'frequency'] },
-  { value: 'appearance', label: 'Appearance', about: 'How this workspace looks and moves for you.', glyph: 'layout', keys: ['colorway', 'density', 'reduceMotion'] },
+const SECTIONS: { value: Section; label: string; about: string; glyph: 'person' | 'bell' | 'palette'; keys: (keyof SettingsValues)[] }[] = [
+  { value: 'profile', label: 'Profile', about: 'How people in Lisbon Studio see you.', glyph: 'person', keys: ['photo', 'name', 'email', 'bio'] },
+  { value: 'notifications', label: 'Notifications', about: 'What reaches your inbox, and how often.', glyph: 'bell', keys: ['digests', 'mentions', 'weekly', 'frequency'] },
+  { value: 'appearance', label: 'Appearance', about: 'How this workspace looks and moves for you.', glyph: 'palette', keys: ['colorway', 'density', 'reduceMotion'] },
 ];
 
 const FREQUENCIES: { value: Frequency; label: string }[] = [
@@ -481,7 +481,7 @@ export function Settings({ initial, colorway = 'bone', onSave, className }: Sett
                 onClick={() => void save()}
                 state={phase === 'saving' ? 'waiting' : phase === 'saved' ? 'done' : 'ready'}
                 aria-keyshortcuts="Meta+S Control+S"
-                icon={<MorphIcon name={saying.phase === 'saved' ? 'check' : 'document'} />}
+                icon={<MorphIcon name={saying.phase === 'saved' ? 'check' : 'save'} />}
               >
                 <SwapText value={saying.phase === 'saved' ? 'Saved' : saying.phase === 'saving' ? 'Saving…' : 'Save'} />
               </Button>
