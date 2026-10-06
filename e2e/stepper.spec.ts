@@ -164,3 +164,11 @@ test('Reduce Motion: the thumb and the fill move at once, the panel only fades',
   expect(await panel.evaluate((p) => parseFloat(getComputedStyle(p).translate) || 0)).toBe(0);
   expect(await panel.evaluate((p) => getComputedStyle(p).animationName)).toBe('mu-stepper-in');
 });
+
+test('words in closed panels write no NaN width (the drum measures nothing it cannot see)', async ({ page }) => {
+  const bad: string[] = [];
+  page.on('console', (m) => { if (/NaN|Infinity/.test(m.text())) bad.push(m.text()); });
+  await open(page, '/components/stepper', 'bone');
+  await page.waitForTimeout(500);
+  expect(bad).toEqual([]);
+});
