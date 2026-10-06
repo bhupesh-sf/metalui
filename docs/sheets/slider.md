@@ -13,7 +13,7 @@ Read for jobs: ReUI Slider, shadcn Slider, Base UI Slider (ranges, orientation, 
 | Job | Where | Our form | Tier |
 |---|---|---|---|
 | Choose a span: a price band, a date window, a frequency band | filters, trimming a clip | `value={[lo, hi]}`: two knobs on one groove, the fill between them (Base UI range). The knobs never cross (`minStepsBetweenValues`, push); each knob is its own tab stop named "…, minimum" / "…, maximum"; the readout says "20–80" | Must |
-| A level in a tall, narrow place: a mixer channel, a side rail | audio, an inspector's edge | `orientation="vertical"`: the minimum at the bottom, ↑ increases; glyphs above and below, the value on top; ticks hang to the end side; `height` (the recipe's 160 by default) | Must |
+| A level in a tall, narrow place: a mixer channel, a side rail | audio, an inspector's edge | `orientation="vertical"`: the minimum at the bottom, ↑ increases; glyphs above and below, the value on top; ticks hang to its right, the bubble to its left; `height` (the recipe's 160 by default) | Must |
 | Choose one of a few stops by feel: quality, a zoom level, a grid size | export, view options | `detents`: a notch at every step, the knob clicks from stop to stop on the part spring even while dragged, and each stop plays `haptic('detent')` where there is one | Must |
 | An amount either side of zero: balance, pan, exposure, temperature offset | audio, image adjust | `origin={0}`: the fill grows from the origin's notch toward the knob, either way | Must |
 | A slider that isn't an amount you set: a position in time, a scrubber, a setting where green would claim "on" | media, settings next to switches | `tone="ink"`: the fill in ink, not green | Must |

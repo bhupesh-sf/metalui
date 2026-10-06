@@ -3950,7 +3950,7 @@
   left: calc(50% + var(--mu-slider-track) / 2 + var(--mu-r-slider-tick-gap));
 }
 @utility slider-v-ticks-room {
-  margin-inline-end: var(--mu-r-slider-vertical-label);
+  margin-right: var(--mu-r-slider-vertical-label);
 }
 @utility slider-v-travel {
   top: calc(var(--mu-slider-knob) / 2); bottom: calc(var(--mu-slider-knob) / 2);
@@ -3968,7 +3968,7 @@
   bottom: calc(100% + var(--mu-r-slider-bubble-gap)); left: 50%; translate: -50% 0;
 }
 @utility slider-v-bubble-place {
-  inset-inline-end: calc(100% + var(--mu-r-slider-bubble-gap)); top: 50%; translate: 0 -50%;
+  right: calc(100% + var(--mu-r-slider-bubble-gap)); top: 50%; translate: 0 -50%;
 }
 @utility slider-bubble-rest {
   opacity: 0; scale: var(--mu-r-slider-bubble-rest);

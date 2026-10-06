@@ -32,7 +32,7 @@ import { haptic } from '../../motion/haptic';
  * KINDS (props on one slider; the groove, travel and motion are shared)
  *   range     value=[lo, hi]: two knobs, the fill between them; the readout says "lo–hi"
  *   vertical  orientation="vertical": the minimum at the bottom, ↑ increases; glyphs above and
- *             below, the value on top, ticks to the end side; `height` (the recipe's length)
+ *             below, the value on top, ticks to the right; `height` (the recipe's length)
  *   detents   a notch at every step; the knob clicks stop to stop on the part spring even while
  *             dragged, and each stop plays the detent haptic
  *   centred   origin={0}: the fill grows from the origin's notch to the knob, either way
@@ -180,7 +180,7 @@ const KNOB_FOLLOW = 'group-data-dragging/slider:transition-none';
 const FACE = 'mu-slider-knob-face pointer-events-none absolute inset-0 rounded-round recipe-slider-knob transition-slider-knob group-hover/control:slider-knob-lift group-hover/control:recipe-slider-knob-hover group-active/control:slider-knob-press! group-active/control:recipe-slider-knob-press! group-data-dragging/slider:slider-knob-press! group-data-dragging/slider:recipe-slider-knob-press!';
 const FACE_H = 'slider-knob-origin';
 const FACE_V = 'slider-v-knob-origin';
-/* The bubble: the tooltip's chip over the knob (on the start side when vertical), only on the knob
+/* The bubble: the tooltip's chip over the knob (to its left when vertical), only on the knob
  * being dragged; it fades and grows in on the settle spring. */
 const BUBBLE = 'mu-slider-bubble pointer-events-none absolute z-10 whitespace-nowrap px-slider-bubble-pad-x py-slider-bubble-pad-y rounded-slider-bubble-radius recipe-tooltip text-tooltip-ink type-figure transition-slider-bubble slider-bubble-rest group-data-dragging/slider:group-data-active/knob:slider-bubble-shown';
 const BUBBLE_H = 'slider-bubble-place';

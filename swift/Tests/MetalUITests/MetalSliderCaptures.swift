@@ -18,6 +18,51 @@ final class MetalSliderCaptures: XCTestCase {
             .frame(width: 360, height: 48)
     }
 
+    /// The kinds beside the web's Kinds, Vertical and Right to left sections
+    /// (docs/captures/swift/slider-kinds-<colorway>.png): a range, detents, centred, ink, a vertical
+    /// fader with ticks, and the same slider right to left.
+    func testSliderKinds() throws {
+        let percent = { (v: Double) in "\(Int(v))%" }
+        for colorway in MetalColorway.allCases {
+            let view = HStack(alignment: .top, spacing: 36) {
+                VStack(spacing: 20) {
+                    MetalSlider(range: .constant(40...160), in: 0...200, step: 5, largeStep: 25,
+                                ticks: [0, 0.5, 1].map { MetalSliderTick(at: $0, label: "$\(Int($0 * 200))") },
+                                showsValue: true, label: "Price", valueText: { "$\(Int($0))" })
+                        .frame(width: 360, height: 48)
+                    MetalSlider(value: .constant(2), in: 0...5, step: 1, largeStep: 1, detents: true, showsValue: true,
+                                label: "Grid size", valueText: { "\([4, 8, 12, 16, 24, 32][Int($0)]) px" })
+                        .frame(width: 360, height: 32)
+                    MetalSlider(value: .constant(-20), in: -50...50, step: 1, largeStep: 10, origin: 0, showsValue: true,
+                                label: "Balance", valueText: { $0 == 0 ? "C" : $0 < 0 ? "L\(Int(-$0))" : "R\(Int($0))" })
+                        .frame(width: 360, height: 32)
+                    MetalSlider(value: .constant(84), in: 0...240, step: 1, largeStep: 15, tone: .ink, showsValue: true,
+                                label: "Position", valueText: { "\(Int($0) / 60):\(String(format: "%02d", Int($0) % 60))" })
+                        .frame(width: 360, height: 32)
+                    MetalSlider(value: .constant(100), in: 0...100, step: 1, largeStep: 10,
+                                ticks: [0, 0.5, 1].map { MetalSliderTick(at: $0, label: "\(Int($0 * 100))") },
+                                endIcon: .sun, showsValue: true, label: "Brightness", valueText: percent)
+                        .frame(width: 360, height: 48)
+                        .environment(\.layoutDirection, .rightToLeft)
+                }
+                MetalSlider(value: .constant(70), in: 0...100, step: 1, largeStep: 10,
+                            ticks: [0, 0.5, 1].map { MetalSliderTick(at: $0, label: "\(Int($0 * 100))") },
+                            orientation: .vertical, showsValue: true, label: "Voice", valueText: percent)
+                    .frame(height: 200)
+            }
+            .padding(28)
+            .background((colorway == .bone ? MetalShared.page : MetalShared.pageDark).color)
+            .metalColorway(colorway)
+            let renderer = ImageRenderer(content: view)
+            renderer.scale = 2
+            let image = try XCTUnwrap(renderer.cgImage)
+            guard let dir = ProcessInfo.processInfo.environment["METALUI_CAPTURES"] else { continue }
+            let url = URL(fileURLWithPath: dir).appendingPathComponent("slider-kinds-\(colorway.rawValue).png")
+            try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try XCTUnwrap(NSBitmapImageRep(cgImage: image).representation(using: .png, properties: [:])).write(to: url)
+        }
+    }
+
     func testSliderGeometry() throws {
         for colorway in MetalColorway.allCases {
             let view = VStack(spacing: 20) {

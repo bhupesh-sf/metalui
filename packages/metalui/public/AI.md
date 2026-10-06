@@ -5403,7 +5403,7 @@ A value on a track. React: `Slider` from `@unlocalhosted/metalui`, on Base UI Sl
 | Kind | How | What changes |
 |---|---|---|
 | range | `value={[lo, hi]}`, `onValueChange([lo, hi])` | two knobs, each its own tab stop ("…, minimum", "…, maximum"); the fill between them; they push, never cross; the readout says "lo–hi" |
-| vertical | `orientation="vertical"`, `height` (160) | the minimum at the bottom, ↑ increases; the end glyph on top, the value above it; ticks hang to the end side (the slider keeps `vertical.label` of room there); the bubble stands on the start side |
+| vertical | `orientation="vertical"`, `height` (160) | the minimum at the bottom, ↑ increases; the end glyph on top, the value above it; ticks hang to its right (the slider keeps `vertical.label` of room there); the bubble stands to its left |
 | detents | `detents` (with `step`) | a notch at every step inside the ends (up to 24); the knob clicks stop to stop on the part spring, even while dragged; each stop plays `haptic('detent')` where a device has one |
 | centred | `origin={0}` | a notch at the origin; the fill grows from it to the knob, either side |
 | ink | `tone="ink"` | the fill in ink (deep on bone, pale on graphite), for a slider that is not an amount someone set (a place in a song); green stays the default |
@@ -5474,7 +5474,7 @@ A value on a track. React: `Slider` from `@unlocalhosted/metalui`, on Base UI Sl
 - A jump springs, a drag does not (except with detents: the spring is the click).
 - Green is an amount someone set; use `tone="ink"` for anything else.
 - Detents are for a few stops you can feel (24 at most); with more, a plain slider.
-- Give a vertical slider with ticks room on its end side, and a bubbled vertical slider room on its start side.
+- Give a bubbled vertical slider room on its left (its ticks keep their own room on its right).
 - Marks and ticks mean something: a step, an event, a labelled value.
 - Keep labels plain and readable, on a plain surface.
 
