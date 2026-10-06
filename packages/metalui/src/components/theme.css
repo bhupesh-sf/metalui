@@ -387,6 +387,14 @@
   --spacing-textarea-line: var(--mu-r-textarea-self-line);
   --spacing-textarea-min-rows: var(--mu-r-textarea-self-min-rows);
   --spacing-textarea-max-rows: var(--mu-r-textarea-self-max-rows);
+  --spacing-textarea-regular-pad-x: var(--mu-r-textarea-regular-pad-x);
+  --spacing-textarea-regular-pad-y: var(--mu-r-textarea-regular-pad-y);
+  --spacing-textarea-regular-radius: var(--mu-r-textarea-regular-radius);
+  --radius-textarea-regular-radius: var(--mu-r-textarea-regular-radius);
+  --spacing-textarea-compact-pad-x: var(--mu-r-textarea-compact-pad-x);
+  --spacing-textarea-compact-pad-y: var(--mu-r-textarea-compact-pad-y);
+  --spacing-textarea-compact-radius: var(--mu-r-textarea-compact-radius);
+  --radius-textarea-compact-radius: var(--mu-r-textarea-compact-radius);
   --spacing-textarea-count-gap: var(--mu-r-textarea-count-gap);
   --spacing-popover-pad: var(--mu-r-popover-self-pad);
   --spacing-popover-radius: var(--mu-r-popover-self-radius);

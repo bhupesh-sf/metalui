@@ -36,6 +36,8 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 | React | SwiftUI |
 |---|---|
 | `value`, `defaultValue`, `onChange` | `text:` |
+| `size`: `large` (default, the content role), `regular`, `compact` (the ui role, Field's inset) | `size:` |
+| `countFrom`: the share of `maxLength` where the counter shows (0 always, default 0.8) | – |
 | `minRows`, `maxRows` | `minRows:`, `maxRows:` |
 | `maxLength` | `limit:` |
 | `invalid` | `invalid:` |
@@ -53,4 +55,5 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 
 - The well grows; the page never jumps. Growing is the settle spring, never a bounce.
 - A refusal is local: only the counter moves, and the text is never trimmed or changed.
-- Show the counter only when it helps (near the limit).
+- Show the counter only when it helps (near the limit), or from the start (`countFrom={0}`) when the form states its limit.
+- In a form of regular or compact Fields, give the textarea the same `size`.

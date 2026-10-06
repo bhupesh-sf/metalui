@@ -2514,7 +2514,7 @@ One choice from a short list. React: `RadioGroup` and `Radio` from `@unlocalhost
 | cancel (press, drag off) | back to rest | the well fades back; nothing latches |
 | focus | the green ring on the well | keyboard only |
 | invalid | a red hairline ring on unchosen wells | – |
-| disabled | 40 %, no hover, no press; a disabled group takes no Tab stop (screen readers still read it and its choice) | – |
+| disabled | 40 %, no hover, no press; a disabled group keeps one Tab stop (its choice, announced as dimmed) so a keyboard user can reach it and hear why: give it an `aria-describedby` that says what turns it on | – |
 
 Arrow keys choose without the press phase: the latch and release are the same. Reduce Motion: the pip is there or not at once; the well colour still fades.
 
@@ -3739,6 +3739,8 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 | React | SwiftUI |
 |---|---|
 | `value`, `defaultValue`, `onChange` | `text:` |
+| `size`: `large` (default, the content role), `regular`, `compact` (the ui role, Field's inset) | `size:` |
+| `countFrom`: the share of `maxLength` where the counter shows (0 always, default 0.8) | – |
 | `minRows`, `maxRows` | `minRows:`, `maxRows:` |
 | `maxLength` | `limit:` |
 | `invalid` | `invalid:` |
@@ -3756,7 +3758,8 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 
 - The well grows; the page never jumps. Growing is the settle spring, never a bounce.
 - A refusal is local: only the counter moves, and the text is never trimmed or changed.
-- Show the counter only when it helps (near the limit).
+- Show the counter only when it helps (near the limit), or from the start (`countFrom={0}`) when the form states its limit.
+- In a form of regular or compact Fields, give the textarea the same `size`.
 
 ---
 

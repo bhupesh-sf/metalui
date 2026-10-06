@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Textarea } from '@unlocalhosted/metalui';
+import { Field, Textarea } from '@unlocalhosted/metalui';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/textarea/textarea.tsx?raw';
@@ -16,6 +16,20 @@ import { ComponentPage } from '../../ui/ComponentPage';
  *   refuse    a write past the limit: only the counter shakes
  * Springs are the system's classes; slow stretches every duration.
  * ───────────────────────────────────────────────────────── */
+
+/** Regular and compact, each under a field of its size: the text and the inset line up. */
+function Sizes() {
+  return (
+    <div className="grid w-full max-w-[640px] grid-cols-2 gap-20 max-sm:grid-cols-1">
+      {(['regular', 'compact'] as const).map((size) => (
+        <div key={size} className="grid content-start gap-8">
+          <Field size={size}><Field.Input aria-label={`Name, ${size}`} defaultValue="Rui Almeida" /></Field>
+          <Textarea size={size} aria-label={`Bio, ${size}`} defaultValue="Prints, plans and the odd poster." minRows={2} maxLength={160} countFrom={0} />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 const LINES = ['Pick up the prints on Thursday.', 'Ask about the matte paper.', 'Two copies of the plan, one folded.', 'Bring the old negatives back.'];
 
@@ -68,7 +82,7 @@ export default function TextareaPage() {
           <Textarea aria-label="Disabled note" disabled defaultValue="Read only for now." minRows={2} />
         </div>
       ) }}
-      more={[{ id: 'growth', title: 'Tune the growth', lede: 'The Textarea growth panel swaps the grow and refusal springs, changes the rows and the limit, and stretches time. Add lines and watch the well settle; write past the limit and only the counter answers.', node: <GrowthTuner /> }]}
+      more={[{ id: 'sizes', title: 'Beside fields', lede: 'Field’s sizes: regular and compact write in the ui role at the field’s padding and radius, so a bio sits level with name and email. Here the counter shows from the start (countFrom 0).', node: <Sizes /> }, { id: 'growth', title: 'Tune the growth', lede: 'The Textarea growth panel swaps the grow and refusal springs, changes the rows and the limit, and stretches time. Add lines and watch the well settle; write past the limit and only the counter answers.', node: <GrowthTuner /> }]}
       usage={`<Textarea aria-label="Note" placeholder="Write a note…" maxLength={280} />`}
       sources={[
         { id: 'react', label: 'React', code: reactSource },
@@ -78,7 +92,8 @@ export default function TextareaPage() {
       rules={[
         { id: 'TA1', title: 'The well grows, the page does not jump', body: 'Height follows the text on the settle spring: growing to new content, with no overshoot.', origin: 'Ours' },
         { id: 'TA2', title: 'A refusal is local', body: 'Past the limit only the counter shakes; the text is never trimmed or changed.', origin: 'Ours' },
-        { id: 'TA3', title: 'Count only near the end', body: 'The counter appears at 80 % of the limit, where it starts to matter.', origin: 'Ours' },
+        { id: 'TA3', title: 'Count only near the end', body: 'The counter appears at 80 % of the limit, where it starts to matter. A form that states its limit up front shows it from the start (countFrom 0).', origin: 'Ours' },
+        { id: 'TA4', title: 'Same size as the fields beside it', body: 'In a form of regular or compact fields, the textarea takes that size: one type role and one inset down the column.', origin: 'Ours' },
       ]}
     />
   );

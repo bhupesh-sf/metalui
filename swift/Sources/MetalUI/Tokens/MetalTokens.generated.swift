@@ -726,7 +726,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Several lines of text in the field well that grows with what is written: each new line grows the well on the settle spring (a control growing to new content, no overshoot) until max rows, then it scrolls; deleting shrinks it the same way. Focus: the flush green ring. With a limit, a counter's row grows open below at 80 % (the form error's motion) and turns red at the limit; typing or pasting past it shakes only the counter on the refusal spring (a nest's reach) and leaves the text alone. Invalid: a red hairline ring. Disabled: 40 %. Reduce Motion: the height snaps and nothing shakes; the counter still turns red. (the field well (recipe well field); the settle and refusal springs; a native textarea)
+    /// Several lines of text in the field well that grows with what is written. Sizes follow Field: large is the content role (15/20) at 14 by 11 in a 14 radius; regular and compact are the ui role (12.5/16) at Field's padding and radius (12 by 8 in 11; 10 by 6 in 9), so a bio sits level with name and email. each new line grows the well on the settle spring (a control growing to new content, no overshoot) until max rows, then it scrolls; deleting shrinks it the same way. Focus: the flush green ring. With a limit, a counter's row grows open below at 80 % (the form error's motion) and turns red at the limit; typing or pasting past it shakes only the counter on the refusal spring (a nest's reach) and leaves the text alone. Invalid: a red hairline ring. Disabled: 40 %. Reduce Motion: the height snaps and nothing shakes; the counter still turns red. (the field well (recipe well field); the settle and refusal springs; a native textarea)
     public static let textarea = MetalObjectRecipe(
         name: "textarea",
         layers: [
@@ -740,6 +740,12 @@ public enum MetalRecipes {
             "self.min-rows": .number(3.0),
             "self.max-rows": .number(8.0),
             "self.disabled": .text("0.4"),
+            "regular.pad-x": .number(12.0),
+            "regular.pad-y": .number(8.0),
+            "regular.radius": .number(11.0),
+            "compact.pad-x": .number(10.0),
+            "compact.pad-y": .number(6.0),
+            "compact.radius": .number(9.0),
             "count.show": .text("0.8"),
             "count.gap": .number(6.0),
             "count.fade": .text("160ms"),

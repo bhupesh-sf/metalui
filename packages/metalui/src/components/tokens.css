@@ -963,6 +963,12 @@
   --mu-r-textarea-self-min-rows: 3px;
   --mu-r-textarea-self-max-rows: 8px;
   --mu-r-textarea-self-disabled: 0.4;
+  --mu-r-textarea-regular-pad-x: 12px;
+  --mu-r-textarea-regular-pad-y: 8px;
+  --mu-r-textarea-regular-radius: 11px;
+  --mu-r-textarea-compact-pad-x: 10px;
+  --mu-r-textarea-compact-pad-y: 6px;
+  --mu-r-textarea-compact-radius: 9px;
   --mu-r-textarea-count-show: 0.8;
   --mu-r-textarea-count-gap: 6px;
   --mu-r-textarea-count-fade: 160ms;

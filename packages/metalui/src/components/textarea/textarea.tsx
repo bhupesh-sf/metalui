@@ -7,7 +7,8 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
 /* ─────────────────────────────────────────────────────────
  * TEXTAREA, several lines of text in the field well that grows with what is written
  *
- *   rest      the field well, min rows tall (3), the content type role
+ *   rest      the field well, min rows tall (3); large is the content type role, regular and compact
+ *             the ui role at Field's padding and radius, so it sits level with the fields beside it
  *   focus     the flush green ring
  *   grow      a new line grows the well on the settle spring (no overshoot); deleting shrinks it
  *             the same way; at max rows (8) it stops and scrolls. The text stays pinned to the top.
@@ -22,6 +23,10 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  * ───────────────────────────────────────────────────────── */
 
 export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'rows'> {
+  /** Field's sizes: large (the default) writes in the content role; regular and compact in the ui role, beside Fields of that size. */
+  size?: 'large' | 'regular' | 'compact';
+  /** The share of `maxLength` at which the counter shows: 0 shows it always, 1 only at the limit. Default the recipe's (0.8). */
+  countFrom?: number;
   /** Rows before it starts to grow (3). */
   minRows?: number;
   /** Rows before it stops growing and scrolls (8). */
@@ -32,10 +37,16 @@ export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTex
   className?: string;
 }
 
-const WELL = 'mu-textarea group/ta relative block box-border rounded-textarea-radius recipe-well-field cursor-text focus-within:focus-ring-flush data-invalid:invalid-ring has-[textarea[data-invalid]]:invalid-ring has-[textarea[data-disabled]]:opacity-textarea-disabled data-disabled:opacity-textarea-disabled data-disabled:cursor-default';
-const TEXT = 'px-textarea-pad-x py-textarea-pad-y type-content whitespace-pre-wrap break-words';
-const INPUT = `mu-textarea-input block w-full box-border m-0 border-0 outline-none bg-transparent resize-none ${TEXT} text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint transition-textarea-grow reduced-motion:transition-none disabled:cursor-default`;
-const MIRROR = `mu-textarea-mirror invisible absolute inset-x-0 top-0 pointer-events-none ${TEXT}`;
+const WELL = 'mu-textarea group/ta relative block box-border recipe-well-field cursor-text focus-within:focus-ring-flush data-invalid:invalid-ring has-[textarea[data-invalid]]:invalid-ring has-[textarea[data-disabled]]:opacity-textarea-disabled data-disabled:opacity-textarea-disabled data-disabled:cursor-default';
+const RADIUS = { large: 'rounded-textarea-radius', regular: 'rounded-textarea-regular-radius', compact: 'rounded-textarea-compact-radius' };
+// The text's box, shared by the textarea and its mirror so they wrap alike.
+const TEXT = {
+  large: 'px-textarea-pad-x py-textarea-pad-y type-content whitespace-pre-wrap break-words',
+  regular: 'px-textarea-regular-pad-x py-textarea-regular-pad-y type-ui whitespace-pre-wrap break-words',
+  compact: 'px-textarea-compact-pad-x py-textarea-compact-pad-y type-ui whitespace-pre-wrap break-words',
+};
+const INPUT = 'mu-textarea-input block w-full box-border m-0 border-0 outline-none bg-transparent resize-none text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint transition-textarea-grow reduced-motion:transition-none disabled:cursor-default';
+const MIRROR = 'mu-textarea-mirror invisible absolute inset-x-0 top-0 pointer-events-none';
 const COUNT_ROW = 'mu-textarea-count-row textarea-count-row';
 const COUNT = 'mu-textarea-count pt-textarea-count-gap text-right type-meta tabular-nums text-ink3 data-at-limit:text-red data-refused:textarea-refused';
 
@@ -52,7 +63,7 @@ const readPx = (style: CSSStyleDeclaration, prop: string) => parseFloat(style.ge
 
 /** Several lines of text. It grows with what is written, between minRows and maxRows. */
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  { minRows, maxRows, invalid, maxLength, value, defaultValue, onChange, onKeyDown, onPaste, className, disabled, style, ...props },
+  { size = 'large', countFrom, minRows, maxRows, invalid, maxLength, value, defaultValue, onChange, onKeyDown, onPaste, className, disabled, style, ...props },
   forwardedRef,
 ) {
   const TextareaControl = control();
@@ -78,7 +89,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
     const natural = m.offsetHeight;
     setHeight(Math.min(hi, Math.max(lo, natural)));
     setScrolls(natural > hi);
-  }, [minRows, maxRows]);
+  }, [minRows, maxRows, size]);
 
   useIsoLayoutEffect(fit, [fit, current]);
   React.useEffect(() => {
@@ -90,12 +101,12 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
   }, [fit]);
 
   const room = maxLength != null ? maxLength - current.length : Infinity;
-  const showCount = maxLength != null && current.length >= maxLength * readShow();
+  const showCount = maxLength != null && current.length >= maxLength * (countFrom ?? readShow(inner.current));
   const atLimit = maxLength != null && room <= 0;
 
   return (
     <div className="mu-textarea-slot block">
-      <label className={className ? `${WELL} ${className}` : WELL} data-invalid={invalid ? '' : undefined} data-disabled={disabled ? '' : undefined}>
+      <label className={`${WELL} ${RADIUS[size]}${className ? ` ${className}` : ''}`} data-size={size} data-invalid={invalid ? '' : undefined} data-disabled={disabled ? '' : undefined}>
         <TextareaControl
           render={<textarea />}
           ref={inner}
@@ -104,8 +115,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
           maxLength={maxLength}
           disabled={disabled}
           aria-invalid={invalid || undefined}
+          aria-describedby={maxLength != null ? countId : undefined}
           rows={1}
-          className={INPUT}
+          className={`${INPUT} ${TEXT[size]}`}
           style={{ height, overflowY: scrolls ? 'auto' : 'hidden', ...style }}
           onChange={(e) => {
             if (value === undefined) setText(e.target.value);
@@ -127,7 +139,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
           }}
           {...props}
         />
-        <div ref={mirror} aria-hidden className={MIRROR}>{current + '​'}</div>
+        <div ref={mirror} aria-hidden className={`${MIRROR} ${TEXT[size]}`}>{current + '​'}</div>
       </label>
       {maxLength != null && (
         <div className={COUNT_ROW} data-shown={showCount ? '' : undefined}>
@@ -150,8 +162,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
   );
 });
 
-/** The share of the limit at which the counter shows (the recipe's count.show). */
-function readShow() {
+/** The share of the limit at which the counter shows (the recipe's count.show), as tuned where the textarea is. */
+function readShow(el: Element | null) {
   if (typeof document === 'undefined') return 0.8;
-  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mu-r-textarea-count-show')) || 0.8;
+  return parseFloat(getComputedStyle(el ?? document.documentElement).getPropertyValue('--mu-r-textarea-count-show')) || 0.8;
 }

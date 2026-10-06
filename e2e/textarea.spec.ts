@@ -85,3 +85,20 @@ test('Reduce Motion: the height snaps and the counter does not move', async ({ p
   await expect(counter).toHaveAttribute('data-at-limit', '');
   expect(await counter.evaluate((el) => getComputedStyle(el).translate)).toMatch(/^(none|0px)$/);
 });
+
+// Beside fields: regular and compact write in the field's type at its inset, and countFrom 0 shows the
+// counter from the first character, linked to the textarea for screen readers.
+test('a regular or compact textarea matches the field above it and can count from the start', async ({ page }) => {
+  await open(page, '/components/textarea', 'bone');
+  for (const size of ['regular', 'compact']) {
+    const field = page.getByRole('textbox', { name: `Name, ${size}` });
+    const bio = page.getByRole('textbox', { name: `Bio, ${size}` });
+    expect(await bio.evaluate((el) => getComputedStyle(el).font)).toBe(await field.evaluate((el) => getComputedStyle(el).font));
+    const inset = async (el: typeof bio) => (await el.boundingBox())!.x;
+    const text = await bio.evaluate((el) => el.getBoundingClientRect().x + parseFloat(getComputedStyle(el).paddingLeft));
+    expect(text).toBeCloseTo(await inset(field), 0);
+    const count = bio.locator('xpath=ancestor::div[contains(@class,"mu-textarea-slot")]').locator('.mu-textarea-count-row');
+    await expect(count).toHaveAttribute('data-shown', '');
+    await expect(bio).toHaveAccessibleDescription(/\/160/);
+  }
+});
