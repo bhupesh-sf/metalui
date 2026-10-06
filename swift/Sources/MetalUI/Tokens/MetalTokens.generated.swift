@@ -1001,17 +1001,31 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Type to find one of many: the form field (its regular or compact size, focus ring, invalid ring and disabled look) you type into, which opens the menu's frosted plate of rows (the menu recipe, with the gliding highlight). Typing filters the rows at once (rows never lag the fingers) while the plate's height settles to the new count on the settle spring, so it never snaps size. A clear mark fades in once a value is chosen, and takes it away. Choosing fills the field and the plate fades on release. Nothing found: one quiet row says so. Reduce Motion: the height snaps. (the field well (recipe well field); the menu plate and rows (menuParts, ListGlide); Base UI Combobox)
+    /// Type to find one of many: the form field (its regular or compact size, focus ring, invalid ring and disabled look), led by the search glyph, that opens the menu's frosted plate of rows (the menu recipe, with the gliding highlight). Typing filters the rows at once (rows never lag the fingers) while the plate's height settles to the new count on the settle spring, so it never snaps size; in each row the typed letters stand in ink and the rest in ink2, so you see why it matched. A row may lead with a glyph or an avatar and carry a second line in ink2 (detail rows are 6 taller at each edge, 1 between the lines). Groups are engraved labels that stay at the plate's top while their rows scroll; past the limit a quiet last line says how many more match. Before anything is typed, recent picks stand under an engraved Recent label. After the matches, behind a hairline: a plus row that creates what's missing, then command rows leading with their glyphs. The trail holds the field's mini keys: clear, once there is something to clear, and a chevron that opens the list and turns as one glyph. Three empties are told apart: loading (the spinner's ring takes the clear key's place; the rows stay, dimmed to the spinner's item look), failed (a sync-error row, Couldn't load, Try again) and nothing matched (one quiet line with the query in it). Several values: chosen values are chips in the well (frosted, a neutral hairline, a mini remove key; 4 apart, the query at least 64 wide) that land on the object spring and leave on the release spring; the well grows a line when they wrap; Backspace on an empty query takes the last chip, a second removes it. From a button: a raised cap (160 to 260 wide) shows the pick and a chevron, and opens the plate (at least 260) with the search well at its top. A pick with a glyph shows it in the well's leading slot, morphing from the search glyph. Choosing fills the field and the plate fades on release. Reduce Motion: the height snaps, chips arrive and leave at once, glyphs change in place; the fades stay. (the field well and mini keys (Field); the menu plate and rows (menuParts, ListGlide); Row's slots; Chip and IconButton mini; useRowMotion; useWait and Spinner; MorphIcon; Base UI Combobox)
     public static let combobox = MetalObjectRecipe(
         name: "combobox",
         layers: [
-
+            .init(part: "chip", state: nil, colorway: .bone, fill: .solid(.color(MetalRGBA(252.0, 251.0, 249.0, 0.7)))), // mu-recipe:combobox:0 rgba(252,251,249,.7)
+            .init(part: "chip", state: nil, colorway: .graphite, fill: .solid(.color(MetalRGBA(44.0, 44.0, 47.0, 0.7)))), // mu-recipe:combobox:1 rgba(44,44,47,.7)
+            .init(part: "chip", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.85)))), // mu-recipe:combobox:2 inset 0 0 4px 1px rgba(255,255,255,.85)
+            .init(part: "chip", state: nil, colorway: .bone, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 1.0)))), // mu-recipe:combobox:3 inset 1px 2px 2px -1px #FFFFFF
+            .init(part: "chip", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.1)))), // mu-recipe:combobox:4 0 0 0 .5px rgba(24,22,16,.1)
+            .init(part: "chip", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.07)))), // mu-recipe:combobox:5 0 1px 2px rgba(24,22,16,.07)
+            .init(part: "chip", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 4.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.06)))), // mu-recipe:combobox:6 inset 0 0 4px 1px rgba(255,255,255,.06)
+            .init(part: "chip", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 1.0, y: 2.0, blur: 2.0, spread: -1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:combobox:7 inset 1px 2px 2px -1px rgba(255,255,255,.12)
+            .init(part: "chip", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:combobox:8 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "chip", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:combobox:9 0 1px 2px rgba(0,0,0,.3)
         ],
         props: [
             "self.min-width": .number(220.0),
-            "self.max-rows": .number(7.0),
-            "clear.size": .number(24.0),
-            "clear.glyph": .number(10.0),
+            "self.max-rows": .text("7"),
+            "detail.pad-y": .number(6.0),
+            "detail.gap": .number(1.0),
+            "chips.gap": .number(4.0),
+            "chips.input-min": .number(64.0),
+            "button.min-width": .number(160.0),
+            "button.max-width": .number(260.0),
+            "button.plate": .number(260.0),
         ]
     )
 

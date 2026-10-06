@@ -481,14 +481,22 @@
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
-      "description": "Type to find one of many: a field well that opens the menu's frosted plate; rows filter at once while the plate's height settles to the new count, and the highlight glides row to row.",
+      "description": "Type to find one of many, or several: a field well (the field's search glyph and mini keys) that opens the menu's frosted plate; rows filter at once, the typed letters standing out, while the plate settles to the new count. Items with detail, sticky groups, recent picks, create and command rows, loading and failure told apart, chips for several values, and a button trigger for pickers.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/chip.json",
         "https://metalui.dev/r/colorway.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-morph.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/row.json",
+        "https://metalui.dev/r/spinner.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

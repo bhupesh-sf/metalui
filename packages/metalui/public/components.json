@@ -260,7 +260,7 @@
       "name": "combobox",
       "title": "Combobox",
       "status": "alpha",
-      "description": "Type to find one of many: a field well that opens the menu's frosted plate; rows filter at once while the plate's height settles to the new count, and the highlight glides row to row.",
+      "description": "Type to find one of many, or several: a field well (the field's search glyph and mini keys) that opens the menu's frosted plate; rows filter at once, the typed letters standing out, while the plate settles to the new count. Items with detail, sticky groups, recent picks, create and command rows, loading and failure told apart, chips for several values, and a button trigger for pickers.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Combobox",
