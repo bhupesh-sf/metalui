@@ -29,6 +29,7 @@ The deck: toasts stack in depth, newest in front. Each card behind is a step sma
 | close | the close key, or Esc on the focused toast: leaves on release; the next card comes forward |
 | repeat | the same title, detail and tone as the front card: no new card; it presses to .96 and springs back on the part spring, counts `×2`, and its timer starts over |
 | Undo pressed | the cap presses 1; the action is undone, the toast leaves |
+| ⌘Z (Ctrl+Z) | the newest undoable toast's Undo runs, once, and it leaves; not while typing in a field (its own undo wins), and not when the host's handler called `preventDefault` (an editor that owns ⌘Z) |
 | time out | undoable 5 s, plain 2.6 s, error never |
 | Reduce Motion | no travel or scale: cards cross-fade into place; the repeat shows only the count |
 

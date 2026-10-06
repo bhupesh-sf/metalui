@@ -31,6 +31,8 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  *           and springs back on the part spring, and counts (×2, ×3 …); its
  *           timer starts over
  * time out  undoable 5 s, plain 2.6 s, an error never
+ * undo      its Undo cap, or ⌘Z anywhere but a text field: the newest undoable result is undone once
+ *           and its card leaves on release
  * Only the front card is new, so only it is announced (the polite region).
  * Reduce Motion: no travel or scale; cards cross-fade into place (settle),
  * the press is only the count.
@@ -51,8 +53,8 @@ export interface ToastOptions {
   timeout?: number;
 }
 
-/** What a toast carries besides its words: how many times it has been said in a row. */
-interface ToastData { count: number }
+/** What a toast carries besides its words: how many times it has been said in a row, and its undo. */
+interface ToastData { count: number; undo?: () => void }
 
 const cssValue = (name: string) => (typeof window === 'undefined' ? '' : getComputedStyle(document.documentElement).getPropertyValue(name).trim());
 const ms = (name: string, fallback: number) => {
@@ -75,15 +77,19 @@ export function useToast() {
       const front = toasts.current.find((t) => t.transitionStatus !== 'ending');
       const repeat = front && front.title === title && (front.description ?? undefined) === sub && front.type === tone;
       const times = repeat ? ((front.data as ToastData | undefined)?.count ?? 1) + 1 : 1;
-      return manager.add<ToastData>({
+      // Undo runs once, from the cap or ⌘Z, and takes its toast with it.
+      let id = '';
+      const run = undo && (() => { manager.close(id); undo(); });
+      id = manager.add<ToastData>({
         id: repeat ? front.id : undefined,
         title,
         description: sub,
         type: tone,
         timeout: timeout ?? (tone === 'error' ? 0 : undo ? ms('--mu-toast-undo-ms', 5000) : ms('--mu-toast-plain-ms', 2600)),
-        actionProps: undo ? { onClick: undo } : undefined,
-        data: { count: times },
+        actionProps: run ? { onClick: run } : undefined,
+        data: { count: times, undo: run },
       });
+      return id;
     },
     dismiss: (id: string) => manager.close(id),
   }), [manager]);
@@ -126,6 +132,23 @@ function DeckViewport({ expanded, ...props }: React.ComponentPropsWithRef<'div'>
 function ToastList({ visible }: { visible: number }) {
   const { toasts } = Toast.useToastManager();
   const live = toasts.filter((t) => t.transitionStatus !== 'ending');
+  const newest = React.useRef(live);
+  newest.current = live;
+
+  // ⌘Z (Ctrl+Z) undoes the newest undoable result, as its cap does. A field keeps its own undo, and a host
+  // that owns ⌘Z (an editor's history) takes it first by calling preventDefault.
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.defaultPrevented || e.key.toLowerCase() !== 'z' || !(e.metaKey || e.ctrlKey) || e.shiftKey || e.altKey) return;
+      if (e.target instanceof Element && e.target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])')) return;
+      const undo = newest.current.map((t) => (t.data as ToastData | undefined)?.undo).find(Boolean);
+      if (!undo) return;
+      e.preventDefault();
+      undo();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
   const more = Math.max(0, live.length - visible);
   const back = more > 0 ? live[visible - 1]?.id : undefined;
   return (

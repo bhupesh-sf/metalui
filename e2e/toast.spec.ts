@@ -20,6 +20,7 @@ for (const colorway of COLORWAYS) {
     await page.getByRole('button', { name: 'Correct a cue' }).click();
     await live(page).filter({ hasText: 'Correction remembered' }).getByRole('button', { name: /Undo/ }).click();
     await expect(page.getByText('Correction forgotten')).toBeVisible();
+    await expect(live(page).filter({ hasText: 'Correction remembered' })).toHaveCount(0);
   });
 
   test(`results stack as a deck, three drawn, in ${colorway}`, async ({ page }) => {
@@ -141,4 +142,25 @@ test('the deck under Reduce Motion has no travel or scale', async ({ page }) => 
   // The deck keeps its depth at rest; only the motion goes.
   expect(folded.map((s) => s.split(' ')[1])).toEqual(['×1.00', '×0.95', '×0.90']);
   expect(seen.filter((s) => !folded.includes(s) && !fanned.includes(s))).toEqual([]);
+});
+
+// ⌘Z does what the Undo cap does: the newest undoable result, once; a text field keeps its own undo.
+test('⌘Z undoes the newest undoable result once, and leaves a field its own undo', async ({ page }) => {
+  await open(page, '/components/toast', 'bone');
+  await page.getByRole('button', { name: 'Move 3 blocks' }).click();
+  await page.getByRole('button', { name: 'Correct a cue' }).click();
+  await page.keyboard.press('ControlOrMeta+z');
+  await expect(page.getByText('Correction forgotten')).toBeVisible();
+  await expect(live(page).filter({ hasText: 'Correction remembered' })).toHaveCount(0);
+  await expect(live(page).filter({ hasText: 'Moved 3 blocks' })).toHaveCount(1);
+  await page.keyboard.press('ControlOrMeta+z');
+  await expect(page.getByText('Undone: moved 3 blocks back')).toBeVisible();
+  await expect(live(page)).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'Tick a box' }).click();
+  // A field on the page (the host's form): ⌘Z there is the field's.
+  await page.evaluate(() => { const field = document.createElement('input'); field.setAttribute('aria-label', 'Host field'); document.body.append(field); });
+  await page.getByRole('textbox', { name: 'Host field' }).focus();
+  await page.keyboard.press('ControlOrMeta+z');
+  await expect(live(page).filter({ hasText: 'Ticked' })).toHaveCount(1);
 });
