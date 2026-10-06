@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "properties",
+  "type": "registry:ui",
+  "title": "Properties",
+  "description": "Label and value pairs, a dl: engraved labels beside values parted by hairlines, regular or compact; values take the table's cell looks; the label stands above its value when narrow. A receipt, a details panel, a spec sheet.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/properties/properties.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/components/properties/properties.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\n\n/* ─────────────────────────────────────────────────────────\n * PROPERTIES, label and value pairs (a dl): a receipt, a details panel, a spec sheet\n *\n *   rest      engraved labels in a column as wide as the longest (up to 200), values beside them in\n *             ui type and ink; each pair parted by the rule's hairline, the last one open\n *   size      regular (pairs at least 32 tall) or compact (24)\n *   values    text, or any of the table's cell looks: pass a TableCell (status, person, code, money)\n *   narrow    under 280 wide the label stands above its value (its own container, @container/properties)\n * Nothing moves. Two columns and no header: not a table.\n * A part: a look with no job of its own. Slots: Properties.Root, Properties.Item.\n * ───────────────────────────────────────────────────────── */\n\nexport type PropertiesSize = 'regular' | 'compact';\n\nexport interface PropertiesRootProps extends React.HTMLAttributes<HTMLDListElement> {\n  /** regular (pairs at least 32 tall, the default) or compact (24). */\n  size?: PropertiesSize;\n}\n\nexport interface PropertiesItemProps extends React.HTMLAttributes<HTMLDivElement> {\n  /** What the value is: engraved. */\n  label: React.ReactNode;\n  /** The value: text, or a TableCell in its kind's look. */\n  children?: React.ReactNode;\n}\n\nconst FRAME = 'mu-properties-frame properties-frame min-w-0';\nconst LIST = 'mu-properties properties-grid properties-stack';\nconst LABEL = 'mu-properties-label type-label engraved';\nconst VALUE = 'mu-properties-value type-ui text-ink tabular-nums';\n\nfunction Root({ size = 'regular', className, ...props }: PropertiesRootProps) {\n  return (\n    <div className={size === 'compact' ? `${FRAME} properties-compact` : FRAME} data-size={size}>\n      <dl className={className ? `${LIST} ${className}` : LIST} {...props} />\n    </div>\n  );\n}\n\nfunction Item({ label, children, ...props }: PropertiesItemProps) {\n  return (\n    <div {...props}>\n      <dt className={LABEL}>{label}</dt>\n      <dd className={VALUE}>{children ?? <span className=\"text-ink3\">—<span className=\"sr-only\">none</span></span>}</dd>\n    </div>\n  );\n}\n\n/** Label and value pairs. */\nexport const Properties = Object.assign(Root, { Root, Item });\nexport type PropertiesProps = PropertiesRootProps;\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/properties.md. SwiftUI: MetalProperties in the MetalUI Swift package."
+}

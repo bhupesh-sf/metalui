@@ -4,17 +4,16 @@
   "status": "alpha",
   "layer": "object",
   "kind": "composed",
-  "uses": ["label", "rule", "checkbox"],
-  "description": "Rows of things, read across and compared down: engraved labels and hairlines; sorting turns the column's arrow and every row travels to its new place on the settle spring; rows select with the checkbox.",
-  "base": "table",
+  "uses": ["label", "rule", "row", "checkbox", "led", "avatar", "chip", "meter", "sparkline", "skeleton", "tooltip", "icon-button", "button", "menu"],
+  "description": "Rows of things, read across and compared down: a fixed vocabulary of cell kinds (text, numbers with the unit in the header, delta, date, status, person, tags, progress, trend, yes, code, actions); roomy, regular or compact; a reading guide that glides under the hovered or focused row; sort with a morphing arrow and rows that travel; selection, open with the row's rail, row actions in a menu; a visible filter count; skeleton rows, empty, nothing matches and failed; a sticky head; narrow widths move low-priority columns under the primary cell.",
+  "base": "table; @base-ui/react/menu (row actions); @base-ui/react/tooltip (whole text, exact times)",
   "react": {
     "export": "Table",
     "files": ["table.tsx"]
   },
   "swift": {
     "symbol": "MetalTable",
-    "file": "swift/Sources/MetalUI/Components/MetalTable.swift",
-    "status": "wip"
+    "file": "swift/Sources/MetalUI/Components/MetalTable.swift"
   },
   "agent": "table.agent.md",
   "page": "/components/table"

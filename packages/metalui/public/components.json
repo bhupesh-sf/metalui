@@ -902,6 +902,23 @@
       "agent": "https://metalui.dev/r/progress.md"
     },
     {
+      "name": "properties",
+      "title": "Properties",
+      "status": "alpha",
+      "description": "Label and value pairs, a dl: engraved labels beside values parted by hairlines, regular or compact; values take the table's cell looks; the label stands above its value when narrow. A receipt, a details panel, a spec sheet.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Properties",
+        "base": "dl"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalProperties"
+      },
+      "registry": "https://metalui.dev/r/properties.json",
+      "agent": "https://metalui.dev/r/properties.md"
+    },
+    {
       "name": "provenance-tooltip",
       "title": "Provenance tooltip",
       "status": "alpha",
@@ -1330,11 +1347,11 @@
       "name": "table",
       "title": "Table",
       "status": "alpha",
-      "description": "Rows of things, read across and compared down: engraved labels and hairlines; sorting turns the column's arrow and every row travels to its new place on the settle spring; rows select with the checkbox.",
+      "description": "Rows of things, read across and compared down: a fixed vocabulary of cell kinds (text, numbers with the unit in the header, delta, date, status, person, tags, progress, trend, yes, code, actions); roomy, regular or compact; a reading guide that glides under the hovered or focused row; sort with a morphing arrow and rows that travel; selection, open with the row's rail, row actions in a menu; a visible filter count; skeleton rows, empty, nothing matches and failed; a sticky head; narrow widths move low-priority columns under the primary cell.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Table",
-        "base": "table"
+        "base": "table; @base-ui/react/menu (row actions); @base-ui/react/tooltip (whole text, exact times)"
       },
       "swift": {
         "package": "MetalUI",

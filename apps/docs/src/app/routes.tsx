@@ -78,6 +78,7 @@ export const routes: RouteObject[] = [
       { path: 'blocks/task-inbox', lazy: lazy(() => import('../pages/blocks/TaskInbox')) },
       { path: 'blocks/settings', lazy: lazy(() => import('../pages/blocks/Settings')) },
       { path: 'components/table', lazy: lazy(() => import('../pages/components/Table')) },
+      { path: 'components/properties', lazy: lazy(() => import('../pages/components/Properties')) },
       { path: 'components/empty-state', lazy: lazy(() => import('../pages/components/EmptyState')) },
       { path: 'components/split-pane', lazy: lazy(() => import('../pages/components/SplitPane')) },
       { path: 'components/sidebar', lazy: lazy(() => import('../pages/components/Sidebar')) },

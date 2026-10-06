@@ -1,0 +1,23 @@
+{
+  "name": "properties",
+  "title": "Properties",
+  "status": "alpha",
+  "layer": "part",
+  "kind": "composed",
+  "uses": ["label", "rule"],
+  "description": "Label and value pairs, a dl: engraved labels beside values parted by hairlines, regular or compact; values take the table's cell looks; the label stands above its value when narrow. A receipt, a details panel, a spec sheet.",
+  "base": "dl",
+  "react": {
+    "export": "Properties",
+    "files": ["properties.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalProperties",
+    "file": "swift/Sources/MetalUI/Components/MetalProperties.swift"
+  },
+  "slots": {
+    "Properties": ["Root", "Item"]
+  },
+  "agent": "properties.agent.md",
+  "page": "/components/properties"
+}

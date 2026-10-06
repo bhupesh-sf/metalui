@@ -15,7 +15,8 @@ export { Calendar, DatePicker, type CalendarProps, type DatePickerProps } from '
 export { Avatar, AvatarGroup, initialsOf, type AvatarProps, type AvatarGroupProps, type AvatarSize } from './components/avatar/avatar';
 export { Card, type CardRootProps, type CardTitleProps, type CardActionProps, type CardFrameProps, type CardChoicesProps, type CardChoiceProps, type CardEmptySlotProps, type CardSize, type CardOrientation, type CardStatus, type CardFrameVariant } from './components/card/card';
 export { Attachment, formatBytes, type AttachmentProps } from './components/attachment/attachment';
-export { Table, type TableProps, type TableColumn, type SortState } from './components/table/table';
+export { Table, TableCell, tableUnit, type TableProps, type TableColumn, type TableCellProps, type TableCellFormat, type TableKind, type TableDensity, type TableStatus, type TablePerson, type TableAction, type SortState } from './components/table/table';
+export { Properties, type PropertiesProps, type PropertiesRootProps, type PropertiesItemProps, type PropertiesSize } from './components/properties/properties';
 export { EmptyState, type EmptyStateProps } from './components/empty-state/empty-state';
 export { SplitPane, type SplitPaneProps } from './components/split-pane/split-pane';
 export { Sidebar, type SidebarProps, type SidebarItemProps, type SidebarToggleProps } from './components/sidebar/sidebar';

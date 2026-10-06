@@ -1251,6 +1251,24 @@
       "docs": "Agent guide: https://metalui.dev/r/progress.md. SwiftUI: MetalProgress in the MetalUI Swift package."
     },
     {
+      "name": "properties",
+      "type": "registry:ui",
+      "title": "Properties",
+      "description": "Label and value pairs, a dl: engraved labels beside values parted by hairlines, regular or compact; values take the table's cell looks; the label stands above its value when narrow. A receipt, a details panel, a spec sheet.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/properties/properties.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/properties/properties.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/properties.md. SwiftUI: MetalProperties in the MetalUI Swift package."
+    },
+    {
       "name": "provenance-tooltip",
       "type": "registry:ui",
       "title": "Provenance tooltip",
@@ -1759,12 +1777,24 @@
       "name": "table",
       "type": "registry:ui",
       "title": "Table",
-      "description": "Rows of things, read across and compared down: engraved labels and hairlines; sorting turns the column's arrow and every row travels to its new place on the settle spring; rows select with the checkbox.",
+      "description": "Rows of things, read across and compared down: a fixed vocabulary of cell kinds (text, numbers with the unit in the header, delta, date, status, person, tags, progress, trend, yes, code, actions); roomy, regular or compact; a reading guide that glides under the hovered or focused row; sort with a morphing arrow and rows that travel; selection, open with the row's rail, row actions in a menu; a visible filter count; skeleton rows, empty, nothing matches and failed; a sticky head; narrow widths move low-priority columns under the primary cell.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/avatar.json",
+        "https://metalui.dev/r/button.json",
         "https://metalui.dev/r/checkbox.json",
+        "https://metalui.dev/r/chip.json",
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-morph.json",
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/meter.json",
         "https://metalui.dev/r/motion.json",
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/skeleton.json",
+        "https://metalui.dev/r/sparkline.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
       ],
       "files": [
         {

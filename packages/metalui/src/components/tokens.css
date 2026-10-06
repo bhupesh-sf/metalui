@@ -1253,13 +1253,39 @@
   --mu-r-attachment-type-radius: 10px;
   --mu-r-attachment-track-height: 3px;
   --mu-r-attachment-remove-glyph: 10px;
-  /* table: the label's engraving; the rule; the switcher track; the checkbox (row size); the settle and part springs */
+  /* table: the label's engraving; the rule; the menu's row highlight (the guide); the row's rail; the checkbox (row size); LED, avatar, chip, meter, sparkline, skeleton; the frost; the settle and part springs */
   --mu-r-table-row-height: 40px;
   --mu-r-table-row-pad-x: 12px;
+  --mu-r-table-row-pad-y: 4px;
+  --mu-r-table-row-gap: 8px;
+  --mu-r-table-row-detail-gap: 2px;
+  --mu-r-table-roomy-height: 48px;
+  --mu-r-table-compact-height: 32px;
   --mu-r-table-head-height: 32px;
   --mu-r-table-caption-gap: 12px;
-  --mu-r-table-sort-glyph: 10px;
-  --mu-r-table-sort-gap: 4px;
+  --mu-r-table-sort-glyph: 14px;
+  --mu-r-table-sort-gap: 2px;
+  --mu-r-table-text-max: 280px;
+  --mu-r-table-glyph-size: 14px;
+  --mu-r-table-meter-width: 72px;
+  --mu-r-table-meter-height: 6px;
+  --mu-r-table-trend-width: 72px;
+  --mu-r-table-narrow-low: 720px;
+  --mu-r-table-narrow-mid: 560px;
+  --mu-r-table-narrow-pad-x: 8px;
+  --mu-r-table-state-gap: 8px;
+  --mu-r-table-state-pad-y: 20px;
+  --mu-r-table-copy-hold: 1400ms;
+  /* properties: the label's engraving; the rule; the table's cell looks */
+  --mu-r-properties-self-min-height: 32px;
+  --mu-r-properties-self-pad-y: 6px;
+  --mu-r-properties-self-gap: 16px;
+  --mu-r-properties-self-label-max: 200px;
+  --mu-r-properties-compact-min-height: 24px;
+  --mu-r-properties-compact-pad-y: 3px;
+  --mu-r-properties-compact-gap: 12px;
+  --mu-r-properties-stack-gap: 2px;
+  --mu-r-properties-stack-below: 280px;
   /* empty-state: the well (recipe well field); the icon set; Transitions T9 */
   --mu-r-empty-state-self-gap: 8px;
   --mu-r-empty-state-self-action-gap: 16px;

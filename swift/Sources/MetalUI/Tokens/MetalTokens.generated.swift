@@ -1280,7 +1280,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Rows of a person's things, read across and compared down: engraved column labels over rows parted by engraved hairlines. Rows sink a touch on hover (the switcher's track look); selected rows (the row checkbox, with a mixed select-all) carry a quiet green tint. Sorting by a column: its arrow turns on the part spring, and each row travels from where it was to where it now belongs on the settle spring, so you can follow it. No rows: one quiet line says so. Reduce Motion: rows jump to their places; the arrow turns at once. (the label's engraving; the rule; the switcher track; the checkbox (row size); the settle and part springs)
+    /// Rows of a person's things, read across and compared down: engraved column labels over rows parted by engraved hairlines. Three densities: roomy 48 (touch), regular 40, compact 32. A reading guide, not stripes: one plate (the menu's row highlight) glides under the hovered or focused row on the settle spring. Each column says its kind and the kind sets the cell's look: text (truncates, the whole in a tooltip, a second line in ink2), number, currency and percent (tabular, end-aligned, the unit in the header, a real minus), delta (the sign and an up or down arrow, green or red only on top of the sign), date (relative with the exact time in a tooltip), status (an LED and its word), person (avatar and name, or overlapping avatars), tags (two chips, then +N), progress (a slim meter, its share in words for assistive tech), trend (a mini sparkline), yes (a check, nothing for no), code (mono, a copy key on hover), actions (a more key on hover and focus, opening a menu); an empty value is a dash in ink3. Selected rows (the row checkbox, with a mixed select-all) carry a quiet green tint; the opened row takes the row's green rail. Sorting: the column's arrow morphs up or down, and each row travels from where it was on the settle spring. The head is sticky on frost in a scroll container. Narrow: the lowest-priority columns leave first and their values move to a second line under the primary cell. Loading shows skeleton rows in the columns' shapes; a refresh dims the rows after the show delay; empty, nothing-matches and failed each say so in one row. Reduce Motion: rows jump; the arrow and the guide move at once. (the label's engraving; the rule; the menu's row highlight (the guide); the row's rail; the checkbox (row size); LED, avatar, chip, meter, sparkline, skeleton; the frost; the settle and part springs)
     public static let table = MetalObjectRecipe(
         name: "table",
         layers: [
@@ -1289,11 +1289,46 @@ public enum MetalRecipes {
         props: [
             "row.height": .number(40.0),
             "row.pad-x": .number(12.0),
+            "row.pad-y": .number(4.0),
+            "row.gap": .number(8.0),
+            "row.detail-gap": .number(2.0),
+            "roomy.height": .number(48.0),
+            "compact.height": .number(32.0),
             "head.height": .number(32.0),
             "caption.gap": .number(12.0),
-            "sort.glyph": .number(10.0),
-            "sort.gap": .number(4.0),
+            "sort.glyph": .number(14.0),
+            "sort.gap": .number(2.0),
             "select.tint": .perColorway(bone: "rgba(63,185,122,.08)", graphite: "rgba(63,185,122,.12)"),
+            "text.max": .number(280.0),
+            "glyph.size": .number(14.0),
+            "meter.width": .number(72.0),
+            "meter.height": .number(6.0),
+            "trend.width": .number(72.0),
+            "narrow.low": .number(720.0),
+            "narrow.mid": .number(560.0),
+            "narrow.pad-x": .number(8.0),
+            "state.gap": .number(8.0),
+            "state.pad-y": .number(20.0),
+            "copy.hold": .text("1400ms"),
+        ]
+    )
+
+    /// Label and value pairs (a dl): a receipt, a details panel, a spec sheet. Engraved labels in a column that fits the longest, values in ui type in ink beside them, each pair parted by the rule's hairline; regular (pairs at least 32 tall) or compact (24). Values take the table's cell looks when the host passes a table cell. Narrower than 280 the label stands above its value. Nothing moves. (the label's engraving; the rule; the table's cell looks)
+    public static let properties = MetalObjectRecipe(
+        name: "properties",
+        layers: [
+
+        ],
+        props: [
+            "self.min-height": .number(32.0),
+            "self.pad-y": .number(6.0),
+            "self.gap": .number(16.0),
+            "self.label-max": .number(200.0),
+            "compact.min-height": .number(24.0),
+            "compact.pad-y": .number(3.0),
+            "compact.gap": .number(12.0),
+            "stack.gap": .number(2.0),
+            "stack.below": .number(280.0),
         ]
     )
 
