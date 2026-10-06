@@ -3,7 +3,7 @@ import { COLORWAYS, capture, open } from './helpers';
 
 // AI composer block: Send waits for something to send, ↩ sends and ⇧↩ does not, the reply waits in its
 // own header and then streams in, Stop (or ⎋) ends it where it is, Copy says Copied, files come and go,
-// the thread follows unless you scrolled up, and Reduce Motion writes a phrase at a time without a caret.
+// the thread follows unless you scrolled up (a hairline under the title while it runs under), and Reduce Motion writes a phrase at a time without a caret.
 const block = (page: Page) => page.getByRole('region', { name: 'Assistant' }).first();
 const replies = (page: Page) => block(page).getByRole('log').getByRole('article', { name: /^Assistant/ });
 const words = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
@@ -162,6 +162,12 @@ test('the thread follows the words, unless you scrolled up', async ({ page }) =>
   await jump.click();
   await expect.poll(fromFoot).toBeLessThan(30);
   await expect(jump).toHaveCount(0);
+
+  // While words run under the title a hairline sits below it; at the top of the thread it goes.
+  const hairline = () => b.locator('header').first().evaluate((h) => getComputedStyle(h, '::after').opacity);
+  await expect.poll(hairline).toBe('1');
+  await viewport.evaluate((v) => { v.scrollTop = 0; });
+  await expect.poll(hairline).toBe('0');
 });
 
 test('Reduce Motion: nothing lands, and the reply comes a phrase at a time without a caret', async ({ page }) => {

@@ -346,7 +346,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Tabs has no vertical orientation** (settings sections use Sidebar items instead).
 - [ ] **RadioGroup disabled**: the checked radio stays in the Tab order; decide (reachable to explain, or skipped) and document.
 - [x] **Container queries in blocks**: unnamed `@container` matches the nearest container; blocks should name theirs (`@container/block`). Write it into the block page guide. (Every block names its container; the rule is in `docs/DOCS_ARCHITECTURE.md`, block page.)
-- [ ] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message.
+- [x] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message. (A hairline fades in under the title while the thread runs under it, so the faded line reads as passing beneath.)
 
 ## Components other libraries ship that we don't
 

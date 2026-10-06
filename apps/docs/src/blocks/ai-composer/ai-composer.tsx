@@ -30,6 +30,8 @@ import { MorphIcon, PlusIcon, RedoIcon } from '@unlocalhosted/metalui/icons';
  *   follow    while you are at the foot, the thread follows the words; scroll up and it stays put,
  *             and a "Jump to latest" key rises at its right edge from one nest below (settle), clear
  *             of the reply's own keys on the left; pressing it glides down and follows again
+ *   under     while words run under the title (the thread is scrolled), a hairline fades in below
+ *             the title (settle), so the faded top line reads as passing under it, not cut off
  *   copy      Copy writes the reply to the clipboard: paste → check morph, "Copied" on the drum;
  *             after 1.6 s both turn back
  *   retry     the last reply is written again, as a new take
@@ -315,8 +317,8 @@ export function AiComposer({ pace = 1, think = 1, className }: AiComposerProps) 
   };
 
   return (
-    <section ref={root} aria-label="Assistant" className={`@container/block flex w-full flex-col overflow-hidden rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`} style={{ height: THREAD.height }}>
-      <header className="flex items-baseline justify-between gap-12 px-20 pt-16 pb-8">
+    <section ref={root} aria-label="Assistant" className={`@container/block group/block flex w-full flex-col overflow-hidden rounded-surface-radius-hero recipe-surface-raise ${className ?? ''}`} style={{ height: THREAD.height }}>
+      <header className="relative flex items-baseline justify-between gap-12 px-20 pt-16 pb-8 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-rule after:opacity-0 after:transition-opacity after:duration-settle after:ease-settle group-has-[[data-overflow-y-start]]/block:after:opacity-100">
         <h2 className="m-0 type-title text-ink">Assistant</h2>
         <span className="type-meta text-ink3">Sample replies</span>
       </header>
