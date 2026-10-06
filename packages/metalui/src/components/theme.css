@@ -1528,9 +1528,6 @@
   background: var(--mu-r-progress-fill-failed-background);
   box-shadow: var(--mu-r-progress-fill-failed-shadow);
 }
-@utility transition-progress-fill {
-  transition: width calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
-}
 @utility progress-fill {
   position: absolute; inset: 0; border-radius: inherit; translate: calc((var(--mu-progress-value, 0) - 100) * 1%) 0; transition: translate calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) ease-out; &[data-draining] { transition: translate calc(var(--mu-spring-release-d) * var(--mu-travel-release)) var(--mu-spring-release), opacity var(--mu-spring-settle-d) ease-out; } &::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: var(--mu-r-progress-fill-failed-background); box-shadow: var(--mu-r-progress-fill-failed-shadow); opacity: 0; transition: opacity var(--mu-spring-settle-d) ease-out; } [data-progress=paused] & { opacity: var(--mu-r-progress-paused-dim); } [data-progress=failed] &::after { opacity: 1; }
 }

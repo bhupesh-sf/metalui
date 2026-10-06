@@ -18,6 +18,12 @@ for (const colorway of COLORWAYS) {
     const added = tray(page).getByRole('group').last();
     await expect(added.getByRole('progressbar')).toBeVisible();
     await expect(added).toHaveClass(/attachment-land/);
+    // Progress's fill: as wide as the track, slid in by transform; nothing transitions a width.
+    const fill = added.locator('.mu-attachment-fill:not([data-indeterminate])');
+    await expect(fill).toHaveCount(1);
+    const [fw, tw, transition] = await fill.evaluate((el) => [el.getBoundingClientRect().width, el.parentElement!.getBoundingClientRect().width, getComputedStyle(el).transitionProperty]);
+    expect(Math.abs(fw - tw)).toBeLessThan(0.5);
+    expect(transition).not.toContain('width');
     await expect(added.getByRole('progressbar')).toBeHidden({ timeout: 5000 });
     await page.waitForTimeout(300);
     await tray(page).screenshot({ path: capture(`attachment-${colorway}`) });
