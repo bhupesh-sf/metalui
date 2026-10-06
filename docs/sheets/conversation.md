@@ -18,7 +18,7 @@ Neighbours that must not be duplicated:
 - **Conversation list is a Place.** It has area (it scrolls), holds the person's conversations, and you go into one from it. Choosing a row changes the thread shown, but the list isn't a control with one job: it is where the past chats live, as `Sidebar` is where the app's places are. It sits in a `Sidebar`'s body.
 - **Branch picker is a Component.** Two keys and a count: you operate it to change something else (which reply the message shows). It sits in `Message`'s footer beside `MessageActions`.
 - **Checkpoint is not a new thing.** It is a `Message from="system"` holding the words and a compact Restore `Button`: a note in the thread with one action.
-- **Chat sidebar and popup are not new things.** They are a block (`Chat panel`): `Thread` and `PromptInput` in a docked column or in a `Popover` from a launcher key, with `ConversationList` in the docked one.
+- **Chat sidebar and popup are not new things.** They are a block (`Chat panel`): `Thread` and `PromptInput` in a docked column or in a `Popover` from an Assistant key at the corner. Past chats stay with `ConversationList` in a `Sidebar` (a chat app's page), not in this column: an assistant beside the work holds one conversation.
 - **Ghost text is not a new thing.** It is `Textarea`'s `suggestion`, passed through by `PromptInput`: the well already mirrors its text to measure its height, and the ghost is that mirror made visible.
 
 **Decide**
@@ -32,8 +32,8 @@ Neighbours that must not be duplicated:
 - **Where do Rename and Delete live?** In each row's More key (a `Menu`), visible on the current row and on hover or focus. Rename opens `QuickEdit` in a `Popover` anchored to the row (the rule for every rename); Delete lets the row leave (one nest down, release spring, the rows under it close up) and then calls `onDelete`; the host offers Undo in a toast. No confirmation dialog: deleting is undone, not asked.
 - **Loading.** `loading` shows skeleton rows where the conversations will be (`Skeleton.Swap`), so the first load never flashes.
 - **Branch picker: Pagination's track or its own?** Its own: Pagination is a landmark of numbered pages; a branch picker is two ghost keys and "2 / 3" in a footer, at the footer's size. The count turns on the drum. Hidden when there is one reply.
-- **Checkpoint: who restores?** The host: `onRestore` drops the turns after it. The note stays, so the thread reads as where it went back to; after restoring, its words say "Restored" and the key goes.
-- **Chat panel: Sheet or a docked column?** Docked: a chat beside the work must not cover the work or trap focus (Sheet is modal). The popup is a `Popover` from a launcher key at the corner: it closes on ⎋ and on a press outside, and keeps the conversation while closed.
+- **Checkpoint: who restores?** The host: Restore's press drops the turns after it. The note stays, so the thread reads as where it went back to; after restoring, its words say "Restored" and the key goes.
+- **Chat panel: Sheet or a docked column?** Docked: a chat beside the work must not cover the work or trap focus (Sheet is modal). The popup is a `Popover` from an Assistant key at the corner (words, not a glyph: the set has no glyph for an assistant): it opens at once when the column is floated, closes on ⎋ and on a press outside, and keeps the conversation while closed. SwiftUI has no block twin (as the AI composer): a checkpoint there is `MetalMessage(.system) { HStack { Text; MetalButton("Restore", icon: .undo, size: .compact) } }`.
 - **Ghost text: who decides what to suggest?** The host (`suggestion`, the words after the caret). The well shows them in ink3 after the text while the caret is at the end; Tab accepts (inserted as typed, so ⌘Z undoes it), ⎋ dismisses (`onSuggestionDismiss`), typing the suggestion's next letters eats them; anything else hides it. A screen reader hears "Suggestion: …, Tab to accept" once per suggestion.
 
 **Jobs: Thinking words**
@@ -86,8 +86,8 @@ Neighbours that must not be duplicated:
 
 | Job | Where | Our form | Tier |
 |---|---|---|---|
-| The chat beside the work | an app with an assistant | a docked column: `ConversationList` above, `Thread` and `PromptInput` below, a key to close it | Must |
-| The chat on demand | a site's help | a launcher `IconButton` at the corner opens a `Popover` holding `Thread` and `PromptInput`; ⎋ or a press outside closes it; the conversation is kept | Must |
+| The chat beside the work | an app with an assistant | a docked column: a header (Float, Close), `Thread` and `PromptInput`; under 34rem it takes the block's width | Must |
+| The chat on demand | a site's help | an Assistant `Button` at the corner opens a `Popover` holding `Thread` and `PromptInput` (Float opens it at once); ⎋ or a press outside closes it; the conversation is kept | Must |
 | Branches and checkpoints in use | | the replies keep their takes (`BranchPicker`); a checkpoint note restores | Should |
 
 **Jobs: Ghost text**
