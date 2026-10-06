@@ -470,7 +470,12 @@
   --spacing-link-underline-thickness: var(--mu-r-link-underline-thickness);
   --spacing-link-underline-offset: var(--mu-r-link-underline-offset);
   --color-link-underline-ink: var(--mu-r-link-underline-ink);
-  --spacing-link-out-nudge: var(--mu-r-link-out-nudge);
+  --spacing-link-hover-thickness: var(--mu-r-link-hover-thickness);
+  --spacing-link-hover-rise: var(--mu-r-link-hover-rise);
+  --spacing-link-hover-pad: var(--mu-r-link-hover-pad);
+  --spacing-link-hover-radius: var(--mu-r-link-hover-radius);
+  --radius-link-hover-radius: var(--mu-r-link-hover-radius);
+  --spacing-link-travel: var(--mu-r-link-self-travel);
   --spacing-button-group-tray-pad: var(--mu-r-button-group-tray-pad);
   --spacing-button-group-tray-gap: var(--mu-r-button-group-tray-gap);
   --spacing-button-group-key-radius: var(--mu-r-button-group-key-radius);
@@ -1568,19 +1573,16 @@
   transition-duration: var(--mu-r-skeleton-self-sweep);
 }
 @utility link-anchor {
-  color: inherit; text-decoration: none; transition: opacity var(--mu-r-link-underline-fade); &:active { opacity: var(--mu-r-link-self-pressed); transition-duration: 0s; }
+  color: inherit; text-decoration: none; transition: opacity var(--mu-r-link-underline-fade); &[data-kind=standalone] { display: block; width: fit-content; } &:is(:active, [data-pressed]):not([aria-disabled=true], [data-current]) { position: relative; top: var(--mu-r-link-self-travel); opacity: var(--mu-r-link-self-pressed); transition-duration: 0s; } &[data-visited]:visited { color: var(--mu-ink2); } &[data-current] { color: var(--mu-ink); cursor: default; } &[aria-disabled=true] { color: var(--mu-ink3); cursor: default; }
 }
 @utility link-line {
-  text-decoration-line: underline; text-decoration-thickness: var(--mu-r-link-underline-thickness); text-underline-offset: var(--mu-r-link-underline-offset); text-decoration-color: var(--mu-r-link-underline-ink); transition: text-decoration-color var(--mu-r-link-underline-fade); a:hover > & { text-decoration-color: currentColor; }
+  text-decoration-line: underline; text-decoration-thickness: var(--mu-r-link-underline-thickness); text-underline-position: under; text-underline-offset: var(--mu-r-link-underline-offset); text-decoration-color: var(--mu-r-link-underline-ink); border-radius: var(--mu-r-link-hover-radius); padding-inline: var(--mu-r-link-hover-pad); margin-inline: calc(var(--mu-r-link-hover-pad) * -1); -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: text-underline-offset calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), text-decoration-thickness calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), text-decoration-color var(--mu-r-link-underline-fade); a[data-kind=quiet] > & { text-decoration-color: transparent; } a[data-visited]:visited > & { text-decoration-color: var(--mu-ink3); } a:is(:hover, [data-hovered]):not([aria-disabled=true], [data-current], [data-loading]) > & { text-decoration-color: currentColor; text-decoration-thickness: var(--mu-r-link-hover-thickness); text-underline-offset: calc(var(--mu-r-link-underline-offset) - var(--mu-r-link-hover-rise)); background-color: color-mix(in srgb, currentColor var(--mu-r-link-hover-tint), transparent); } a:is([data-current], [aria-disabled=true]) > & { text-decoration-line: none; } a[data-loading] > & { padding-bottom: calc(var(--mu-r-link-underline-offset) + var(--mu-r-link-underline-thickness)); background-image: linear-gradient(90deg, transparent, currentColor 30% 70%, transparent); background-repeat: no-repeat; background-origin: content-box; background-clip: padding-box; background-size: var(--mu-r-link-loading-run) var(--mu-r-link-underline-thickness); background-position: -67% calc(100% + var(--mu-r-link-underline-offset) + var(--mu-r-link-underline-thickness)); animation: mu-link-run var(--mu-r-link-loading-sweep) linear infinite; } @media (prefers-reduced-motion: reduce) { a[data-loading] > & { background-image: none; animation: mu-link-breathe var(--mu-r-link-loading-breathe) ease-in-out infinite alternate; } } [data-mu-motion=reduce] a[data-loading] > & { background-image: none; animation: mu-link-breathe var(--mu-r-link-loading-breathe) ease-in-out infinite alternate; }
 }
-@utility link-out {
-  position: relative; left: 0; top: 0; margin-inline-start: var(--mu-r-link-out-gap); font-size: var(--mu-r-link-out-size); line-height: 1; transition: left var(--mu-spring-part-d) var(--mu-spring-part), top var(--mu-spring-part-d) var(--mu-spring-part); a:hover > & { left: var(--mu-r-link-out-nudge); top: calc(var(--mu-r-link-out-nudge) * -1); }
-}
-@utility link-file {
-  white-space: nowrap; margin-inline-start: var(--mu-r-link-file-gap); & > svg { display: inline; width: var(--mu-r-link-file-size); height: var(--mu-r-link-file-size); vertical-align: var(--mu-r-link-file-drop); }
+@utility link-glyph {
+  white-space: nowrap; margin-inline-start: var(--mu-r-link-glyph-gap); & > svg { display: inline; width: var(--mu-r-link-glyph-size); height: var(--mu-r-link-glyph-size); vertical-align: var(--mu-r-link-glyph-drop); }
 }
 @utility link-file-size {
-  margin-inline-start: var(--mu-r-link-file-gap); color: color-mix(in srgb, currentColor var(--mu-r-link-file-quiet), transparent); font-variant-numeric: tabular-nums;
+  margin-inline-start: var(--mu-r-link-glyph-gap); color: color-mix(in srgb, currentColor var(--mu-r-link-file-quiet), transparent); font-variant-numeric: tabular-nums;
 }
 @utility duration-link-underline-fade {
   --tw-duration: var(--mu-r-link-underline-fade);
@@ -1588,6 +1590,14 @@
 }
 @utility opacity-link-pressed {
   opacity: var(--mu-r-link-self-pressed);
+}
+@utility duration-link-loading-sweep {
+  --tw-duration: var(--mu-r-link-loading-sweep);
+  transition-duration: var(--mu-r-link-loading-sweep);
+}
+@utility duration-link-loading-breathe {
+  --tw-duration: var(--mu-r-link-loading-breathe);
+  transition-duration: var(--mu-r-link-loading-breathe);
 }
 @utility button-group-chevron {
   transition: rotate var(--mu-spring-part-d) var(--mu-spring-part); [data-popup-open] > & { rotate: 180deg; }
@@ -3122,6 +3132,12 @@
 }
 @keyframes mu-skeleton-sheen {
   to { translate: 100% 0; }
+}
+@keyframes mu-link-run {
+  to { background-position-x: 167%; }
+}
+@keyframes mu-link-breathe {
+  from { text-decoration-color: var(--mu-r-link-underline-ink); } to { text-decoration-color: currentColor; }
 }
 @keyframes mu-breadcrumb-arrive {
   from { opacity: 0; translate: calc(var(--mu-motion-step) * var(--mu-travel-settle)) 0; } to { opacity: 1; translate: 0 0; }

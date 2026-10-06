@@ -983,7 +983,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// An inline link in text: it takes the text's own type and ink, and is always underlined (colour alone never marks a link) with an engraved hairline 3 below the baseline. Hovered, the underline darkens to the text's ink (160 ms). An external link carries a small arrow that nudges one step up and out on the part spring when hovered, toward where it goes. A download link carries the download glyph (its act plays on hover) and, when given, the file's size in a quieter ink, both outside the underline. Pressed, it dims for the press. Focus: the green ring. (the rule's engraved hairline; the part spring; Base UI useRender (router links keep the look))
+    /// An inline link in text: it takes the text's own type and ink, and is always underlined (colour alone never marks a link) with an engraved hairline under the descenders. Hovered, the line rises toward the baseline and thickens on the settle spring as it darkens to the text's ink, and a faint tint of that ink lies behind the words. Pressed, the words sink one step (the press travel) and dim, the button's press language. Visited (opt-in, for documents): the words step to ink2 and the line to ink3. Current (aria-current): no line and full ink, so it reads as here. Disabled: ink3, no line, no pointer, and a tooltip says why when given. Loading: a run of the text's ink travels along the line like a progress line until the route arrives (Reduce Motion: the line breathes). External and download links carry their glyphs after the words, outside the line, and the glyph plays its act on hover; a download link adds its size in a quieter ink. Kinds: quiet (no line until hover, for lists that already say they are links) and standalone (on its own line, with a trailing chevron). Focus: the green ring. (the rule's engraved hairline; the settle spring; the button's press travel; the button's waiting breath; Base UI useRender (router links keep the look))
     public static let link = MetalObjectRecipe(
         name: "link",
         layers: [
@@ -991,16 +991,22 @@ public enum MetalRecipes {
         ],
         props: [
             "underline.thickness": .number(1.0),
-            "underline.offset": .number(3.0),
+            "underline.offset": .number(0.0),
             "underline.ink": .perColorway(bone: "rgba(27,27,29,.3)", graphite: "rgba(255,255,255,.3)"),
             "underline.fade": .text("160ms"),
-            "out.size": .text("0.72em"),
-            "out.gap": .text("0.18em"),
-            "out.nudge": .number(2.0),
+            "hover.thickness": .number(1.5),
+            "hover.rise": .number(1.5),
+            "hover.tint": .text("7%"),
+            "hover.pad": .number(2.0),
+            "hover.radius": .number(3.0),
             "self.pressed": .text("0.64"),
-            "file.size": .text("0.95em"),
-            "file.gap": .text("0.24em"),
-            "file.drop": .text("-0.14em"),
+            "self.travel": .number(1.0),
+            "loading.run": .text("40%"),
+            "loading.sweep": .text("1100ms"),
+            "loading.breathe": .text("1600ms"),
+            "glyph.size": .text("0.95em"),
+            "glyph.gap": .text("0.24em"),
+            "glyph.drop": .text("-0.14em"),
             "file.quiet": .text("62%"),
         ]
     )

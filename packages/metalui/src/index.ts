@@ -31,7 +31,7 @@ export { Slider, type SliderRootProps, type SliderSize } from './components/slid
 export { Progress, type ProgressProps } from './components/progress/progress';
 export { Spinner, type SpinnerProps } from './components/spinner/spinner';
 export { Skeleton, type SkeletonProps, type SkeletonSwapProps } from './components/skeleton/skeleton';
-export { Link, type LinkProps } from './components/link/link';
+export { Link, type LinkKind, type LinkProps } from './components/link/link';
 export { ButtonGroup, SplitButton, type ButtonGroupProps, type SplitButtonProps } from './components/button-group/button-group';
 export { Breadcrumbs, type BreadcrumbsProps, type Crumb } from './components/breadcrumbs/breadcrumbs';
 export { Pagination, pageWindow, type PaginationProps } from './components/pagination/pagination';
