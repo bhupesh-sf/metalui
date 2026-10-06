@@ -2072,6 +2072,40 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A place for the person's time: their events on a month or on days by hours. The head: the step keys (Calendar's), Today, the title (title type, ink) turning on the drum, and the view Switcher at its end, head.gap apart. Under it, a sunk tray (the well's field, self.radius) holds the view. Days by hours: a row of day heads (column.head tall: the weekday in meta ink3 and the date in ui ink; today's date with Calendar's green lamp before it), the all-day lane (lane.row per row, lane.gap apart, lane.pad around, 'All day' in the gutter), then the hours, hour.height each, in a grid that scrolls on its own: a gutter.width gutter of hour labels (meta, ink3, tabular), the rule's hairline every hour and a fainter one at the half, and a hairline between days. An off day lies under the well's track. An event is a small raised plate (the surface's raise-sm, chip.radius) inset chip.gap from its neighbours, its time in meta ink2 over its title in ui ink, chip.pad inside, the person's colour (data, never a state) as a chip.stripe wide stripe on its leading edge; events that overlap share their day side by side. A grip, grip.height tall along an event's lower edge, changes its end. Multi-day and all-day events are bars in the lane, nearly square (chip.open) where they run on past the view. The now line: today's column crossed by now.line in the green LED's colour (now.color) with a now.dot green lamp at its start (now is live). The month: weekday initials, then six weeks of days; each week's dates (month.number tall, a green lamp before today's, ink3 outside the month), then up to the host's maxEvents rows of bars and one-line chips (lane.row each), then '+N more' (meta, ink2; month.more tall). Held, an event takes Sortable's lift (lift.scale, the raised plate fading in on the surface spring) and steps by the snap, a detent each step; the others re-share their day and glide on settle; let go, the plate fades on release. A failed save glides every event back on settle. A disabled event shakes once (refusal). Reduce Motion: no scale, no glides; following the hand stays. (the well's field (the tray) and track (an off day); the surface's raise-sm (the event) and raise (held); Sortable's lift.scale; the rule's hairline; the green LED (today, the now line); Calendar's step keys and today lamp size; Switcher (the views); SwapText (the title); Popover (an event's details); useRowMotion (the glide); the haptic (detent per snap step); refuse)
+    public static let eventCalendar = MetalObjectRecipe(
+        name: "event-calendar",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(8.0),
+            "self.radius": .number(14.0),
+            "self.off": .text("0.5"),
+            "head.height": .number(32.0),
+            "head.gap": .number(8.0),
+            "column.head": .number(44.0),
+            "gutter.width": .number(52.0),
+            "gutter.pad": .number(6.0),
+            "hour.height": .number(48.0),
+            "lane.row": .number(22.0),
+            "lane.gap": .number(2.0),
+            "lane.pad": .number(4.0),
+            "chip.radius": .number(6.0),
+            "chip.pad": .number(4.0),
+            "chip.gap": .number(2.0),
+            "chip.stripe": .number(3.0),
+            "chip.open": .number(2.0),
+            "chip.min": .number(20.0),
+            "grip.height": .number(6.0),
+            "now.line": .number(2.0),
+            "now.dot": .number(8.0),
+            "now.color": .perColorway(bone: "#12B89A", graphite: "#12B89A"),
+            "month.number": .number(26.0),
+            "month.more": .number(20.0),
+        ]
+    )
+
     /// A place that receives files: a sunk tray with a glyph engraved in a small well, a line saying to drop files, a line naming what it takes, and 'or choose files'. The whole tray is the label of a real file input, so a click, Space or Enter opens the picker. While files are dragged anywhere in the window it is armed: its edge lights faintly green on the settle spring, so the eye finds it. With files over it, the edge lights fully, the tray sinks a touch and the glyph rises one step on the part spring, and the line turns to 'Let go to attach' on the drum. Over it with a file it will not take, the edge is the invalid ink and the line says so; dropping shakes it (refusal). Let go, and the tray comes back up on the object spring with its small overshoot; the files it took land below as attachments. Disabled, it dims and drags pass by. Compact, it is one row, for a composer. Reduce Motion: the edge and line change at once; nothing sinks, rises or shakes. (the well (recipe well field); the invalid ring (foundations); the drum (motion/swap); the refusal (motion/refuse); the part, settle and object springs)
     public static let dropZone = MetalObjectRecipe(
         name: "drop-zone",

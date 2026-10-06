@@ -1698,6 +1698,30 @@
   --mu-r-kanban-header-height: 36px;
   --mu-r-kanban-header-gap: 6px;
   --mu-r-kanban-header-inset: 24px;
+  /* event-calendar: the well's field (the tray) and track (an off day); the surface's raise-sm (the event) and raise (held); Sortable's lift.scale; the rule's hairline; the green LED (today, the now line); Calendar's step keys and today lamp size; Switcher (the views); SwapText (the title); Popover (an event's details); useRowMotion (the glide); the haptic (detent per snap step); refuse */
+  --mu-r-event-calendar-self-gap: 8px;
+  --mu-r-event-calendar-self-radius: 14px;
+  --mu-r-event-calendar-self-off: 0.5;
+  --mu-r-event-calendar-head-height: 32px;
+  --mu-r-event-calendar-head-gap: 8px;
+  --mu-r-event-calendar-column-head: 44px;
+  --mu-r-event-calendar-gutter-width: 52px;
+  --mu-r-event-calendar-gutter-pad: 6px;
+  --mu-r-event-calendar-hour-height: 48px;
+  --mu-r-event-calendar-lane-row: 22px;
+  --mu-r-event-calendar-lane-gap: 2px;
+  --mu-r-event-calendar-lane-pad: 4px;
+  --mu-r-event-calendar-chip-radius: 6px;
+  --mu-r-event-calendar-chip-pad: 4px;
+  --mu-r-event-calendar-chip-gap: 2px;
+  --mu-r-event-calendar-chip-stripe: 3px;
+  --mu-r-event-calendar-chip-open: 2px;
+  --mu-r-event-calendar-chip-min: 20px;
+  --mu-r-event-calendar-grip-height: 6px;
+  --mu-r-event-calendar-now-line: 2px;
+  --mu-r-event-calendar-now-dot: 8px;
+  --mu-r-event-calendar-month-number: 26px;
+  --mu-r-event-calendar-month-more: 20px;
   /* drop-zone: the well (recipe well field); the invalid ring (foundations); the drum (motion/swap); the refusal (motion/refuse); the part, settle and object springs */
   --mu-r-drop-zone-self-pad: 24px;
   --mu-r-drop-zone-self-gap: 8px;
@@ -2832,6 +2856,7 @@
   --mu-r-table-pin-shade: rgba(24,22,16,.08);
   --mu-r-data-grid-range-tint: rgba(63,185,122,.12);
   --mu-r-sortable-grip-lip: rgba(255,255,255,.85);
+  --mu-r-event-calendar-now-color: #12B89A;
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
   --mu-r-glass-face-self-shadow:
@@ -3447,6 +3472,7 @@
   --mu-r-table-pin-shade: rgba(0,0,0,.40);
   --mu-r-data-grid-range-tint: rgba(63,185,122,.18);
   --mu-r-sortable-grip-lip: rgba(255,255,255,.06);
+  --mu-r-event-calendar-now-color: #12B89A;
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
   --mu-r-glass-face-self-shadow:
@@ -4063,6 +4089,7 @@
     --mu-r-table-pin-shade: rgba(0,0,0,.40);
     --mu-r-data-grid-range-tint: rgba(63,185,122,.18);
     --mu-r-sortable-grip-lip: rgba(255,255,255,.06);
+    --mu-r-event-calendar-now-color: #12B89A;
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
     --mu-r-glass-face-self-shadow:

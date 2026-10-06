@@ -162,3 +162,4 @@ export {
 export { Day, DayTile, DAY_LINES, type DayLine, type DayProps, type DayRootProps, type DayPageProps, type DayLineProps, type DayTileProps } from './blocks/day/day';
 export { Sortable, useSortable, useSortableLists, moveTo, moveBetween, type SortableProps, type SortableRootProps, type SortableItemProps, type SortableHandleProps, type SortableOrientation, type SortableWords, type UseSortableOptions, type SortableLists, type SortableListsWords, type UseSortableListsOptions } from './components/sortable/sortable';
 export { Kanban, type KanbanProps, type KanbanRootProps, type KanbanColumnProps, type KanbanCardsProps, type KanbanCardProps, type KanbanValue, type KanbanWords } from './components/kanban/kanban';
+export { EventCalendar, type EventCalendarProps, type EventCalendarView, type EventCalendarWords, type EventRenderState, type CalendarEvent } from './components/event-calendar/event-calendar';
