@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DialRoot, useDialKitController } from 'dialkit';
+import { DialRoot, useDialKit, useDialKitController } from 'dialkit';
 import { Button, Kbd, Slider, SwapText, type ButtonCap } from '@unlocalhosted/metalui';
 import { DownloadIcon, DuplicateIcon, Icon, MorphIcon, PenIcon, PlusIcon, ShareIcon, TrashIcon, type IconName } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/components/button/button.tsx?raw';
@@ -23,6 +23,7 @@ import './button-workbench.css';
  *               2 anatomy                  the layers as an equation: fill + … = cap
  *               3 the press is physics     both curves drawn at rest; press to trace
  *               4 a changing label turns   width over time drawn at rest: a spring, a step
+ *               4b the wait lives in the key · hold to confirm (the hold time on its DialKit panel)
  *               5 an action names itself   glyph + verb on actions, words alone on choices
  *               6 one signal cap           three footers, count the dark caps
  *               7 one line, always         starts narrow: the wrapped one is already broken
@@ -58,9 +59,9 @@ export default function ButtonPage() {
           items={[
             { label: 'React', value: 'import { Button }', href: '#hero', mono: true },
             { label: 'Swift', value: 'MetalButton', href: '#platforms', mono: true },
-            { label: 'Props', value: '7', href: '#api' },
+            { label: 'Props', value: '10', href: '#api' },
             { label: 'States', value: '5', href: '#states' },
-            { label: 'Tokens', value: '12', href: '#tokens' },
+            { label: 'Tokens', value: '15', href: '#tokens' },
           ]}
         />
       </PageHeader>
@@ -72,6 +73,7 @@ export default function ButtonPage() {
           <PressIsPhysics />
           <LabelTurns />
           <WaitInTheKey />
+          <HoldToConfirm />
           <ActionNamesItself />
           <OneSignalCap />
           <OneLine />
@@ -100,6 +102,7 @@ export default function ButtonPage() {
             { id: 'B3', title: 'The press is feedback, not a result', body: 'Show the real outcome: a toast, a state change or an error. Never let the animation stand in for success.' },
             { id: 'B4', title: 'A state change morphs, never swaps', body: 'Copy → Copied, Pin → Unpin: the glyph morphs with MorphIcon and the label turns with SwapText, together. The width springs to the new label. Shown in “A changing label turns”.' },
             { id: 'B5', title: 'The label is a short verb', body: 'One line, always. If it does not fit, the label is too long; the button never wraps. Shown in “One line, always”.' },
+            { id: 'B6', title: 'Hold only what can’t be undone', body: 'hold is for an irreversible act on a destructive cap, inside a question that already asks. A delete that goes to the past can be brought back, so it stays a plain press. Shown in “Hold to confirm”.' },
           ]}
         />
       </Section>
@@ -451,6 +454,32 @@ function WaitInTheKey() {
   );
 }
 
+/* ───────────────────────── 4b · hold to confirm ───────────────────────── */
+
+function HoldToConfirm() {
+  const [hint, setHint] = React.useState(false);
+  const [deleted, setDeleted] = React.useState(0);
+  const d = useDialKit('Hold to confirm', { time: [800, 300, 2000] });
+  return (
+    <Beat
+      id="hold-to-confirm"
+      title="Hold to confirm"
+      setup="An act that can't be undone is held, not clicked. A darker fill runs across the cap for the hold time at an even pace, so it reads as time, and the trash lid lifts with it. Let go early and the fill drains back and nothing happens. At the end the cap settles once, the lid drops shut, and the act runs."
+      caption={deleted ? `Deleted ${deleted === 1 ? 'once' : `${deleted} times`}. A tap only shows the hint; Space or Enter held fills it the same way.` : 'Press and hold Delete forever. A tap only shows the hint. The Hold to confirm panel sets the hold time.'}
+      cost="one prop, hold, on a destructive cap; the hold time is a token (button.hold.time, 800 ms)."
+      code={{ label: 'app.tsx', lang: 'tsx', code: `<Button cap="destructive" hold icon={<TrashIcon />} onHoldHint={showHint} onClick={deleteForGood}>\n  Delete forever\n</Button>` }}
+    >
+      <div className="flex flex-col items-end gap-4" style={{ '--mu-r-button-hold-time': `${d.time}ms` } as React.CSSProperties} data-testid="button-hold">
+        <div className="flex gap-8">
+          <Button onClick={() => setHint(false)}>Cancel</Button>
+          <Button cap="destructive" hold icon={<TrashIcon />} onHoldHint={() => setHint(true)} onClick={() => setDeleted((n) => n + 1)}>Delete forever</Button>
+        </div>
+        <p className={`type-meta text-ink3 transition-opacity ease-surface duration-surface ${hint ? '' : 'opacity-0'}`} aria-hidden>Hold to confirm</p>
+      </div>
+    </Beat>
+  );
+}
+
 /* ───────────────────────── 5 · an action names itself ───────────────────────── */
 
 function ActionNamesItself() {
@@ -648,6 +677,7 @@ function Keyboard() {
           ['Tab', 'Moves focus to the button. The ring shows for keyboard focus only, 2 pt at a 2 pt offset.'],
           ['Enter', 'Activates on key down.'],
           ['Space', 'Activates on key up, like a native button.'],
+          ['Space or Enter held', 'On a hold button: fills it, and activates only when the fill reaches the end. A tap shows the hint.'],
           ['role', 'button. Its name is the label; an icon-only button needs aria-label.'],
           ['type="submit"', 'Submits its form.'],
         ]}
@@ -666,6 +696,9 @@ function Api() {
           ['cap', "'standard' | 'primary' | 'destructive' | 'link' | 'graphite' | 'strip' | 'strip-danger'", "'standard'", 'At most one primary or destructive per group. link, graphite and strip caps set their own size.'],
           ['size', "'default' | 'compact'", "'default'", 'default is 32 tall; compact is 28 (the canvas pill; primary and destructive keep their cap).'],
           ['state', "'ready' | 'waiting' | 'done'", '–', 'Where the action is. waiting: held down, refuses presses (aria-disabled), aria-busy, and after 400 ms the glyph turns into the arc; done: still held for your result. Pass ready between waits.'],
+          ['hold', 'boolean', 'false', 'Hold to confirm, on a destructive cap, for an act that can’t be undone: onClick runs only after the hold time (pointer, Space or Enter); letting go early drains the fill and calls onHoldHint. A click with no press before it (a screen reader’s activate) runs at once.'],
+          ['holdHint', 'string', "'Hold to confirm'", 'The button’s description (said after its name), and the hint you show.'],
+          ['onHoldHint', '() => void', '–', 'Let go before the hold completed: show holdHint under the actions.'],
           ['icon', 'ReactNode', '–', 'The action’s glyph, before the label, sized by the cap (16, compact 14). A MorphIcon here morphs when the control changes meaning. Plain choices have none.'],
           ['disabled', 'boolean', 'false', 'Renders at 40% and skips icon motion. From Base UI.'],
           ['focusableWhenDisabled', 'boolean', 'false', 'Keeps a disabled button in the tab order. From Base UI.'],
@@ -696,6 +729,9 @@ function Tokens() {
           ['--mu-r-button-self-disabled', `${p.disabled}`, 'disabled opacity'],
           ['--mu-btn-bg · --mu-btn-sh', 'recipe', 'the cap, per colorway'],
           ['--mu-spring-release', `k ${RELEASE.stiffness} · c ${RELEASE.damping}`, 'the way back up'],
+          ['--mu-r-button-hold-time', `${(RECIPE.props.hold as Record<string, string>).time}`, 'hold to confirm: the fill, linear'],
+          ['--mu-r-button-hold-settle', `${(RECIPE.props.hold as Record<string, string>).settle}`, 'the settle at the end, on the object spring'],
+          ['--mu-r-button-hold-background', 'recipe', 'the hold fill, darker than pressed'],
         ]}
       />
     </Section>

@@ -439,6 +439,11 @@
           "Settle"
         ]
       },
+      "hold": {
+        "caption": "Held: the lid lifts with the fill; at the end it drops shut, the bin gives and air puffs from the edge.",
+        "durationMs": 1013,
+        "scrubMs": 400
+      },
       "tuned16": false,
       "construction": "Portrait keyline bin, tapered 0.9u each side, lid hinged at the left end. Motion (study): the lid swings up 15.5° about its hinge, hangs, falls shut; the bin squashes .94 from its foot with the lid riding the rim, air puffs from the free edge, and the lid kicks 3.5° and settles."
     },

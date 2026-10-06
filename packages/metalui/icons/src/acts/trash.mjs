@@ -40,6 +40,37 @@ const bin = [
 const D = Math.max(lid[lid.length - 1].at, bin[bin.length - 1].at);
 const hold = (f) => (f[f.length - 1].at < D ? [...f, { at: D, transform: f[f.length - 1].transform }] : f);
 
+/* ── TRASH, held / the lid rides the hold, then drops shut ──
+ * Verb, object   hold to throw this away for good (a Button with `hold`). The lid is the gauge:
+ *                it lifts in step with the cap's fill, and when the hold completes it is let fall.
+ * Scrubbed       0…400ms is not played but followed: the host sets the time from the fill
+ *                (`scrub`), so letting go early lowers the lid with the fill on the release spring.
+ * Invariant      as the act: the bin stands, the lid turns about its hinge and opens only 11°
+ *                (a little, it is a gauge, not the act's swing).
+ *
+ *    0ms  rest
+ *  400ms  the lid lifted to −11°, linear with the fill (the end of the scrubbed span)
+ *  510ms  let go: falls, accelerating, onto the rim
+ *  550ms  both compress: bin .94 tall and 1.03 wide, the lid down .8 with the rim; puffs
+ *  640ms  the lid kicks up 3° off the rebounding rim and settles on its hinge spring
+ *  ~900ms exact rest
+ * ────────────────────────────────────────────────────────── */
+const SCRUB = 400;
+const holdLid = [
+  pose(0, T(), ease.linear),
+  pose(SCRUB, T({ r: -11 }), ease.accelerate),
+  pose(510, T(), ease.strike),
+  pose(550, T({ y: 0.8 }), ease.smooth),
+  ...spring(640, { r: -3 }, {}, 'hinge', { still: 0.4 }),
+];
+const holdBin = [
+  pose(0, T(), ease.linear),
+  pose(510, T(), ease.strike),
+  ...spring(550, { sx: 1.03, sy: 0.94 }, {}, 'part', { still: 0.2 }),
+];
+const HD = Math.max(holdLid[holdLid.length - 1].at, holdBin[holdBin.length - 1].at);
+const holdTo = (f) => (f[f.length - 1].at < HD ? [...f, { at: HD, transform: f[f.length - 1].transform }] : f);
+
 export const act = {
   body: `<g data-part="lid"><path d="M4.4 7h15.2"/><path d="M9.4 7V5.6a1.4 1.4 0 0 1 1.4-1.4h2.4a1.4 1.4 0 0 1 1.4 1.4V7"/></g><g data-part="bin"><path class="f" style="--duo:.12" d="M6.2 7h11.6l-.86 11.1a2.3 2.3 0 0 1-2.3 2.1H9.36a2.3 2.3 0 0 1-2.3-2.1Z"/><path d="M10.2 10.6v5.8M13.8 10.6v5.8"/></g><path class="ac" data-part="puff" opacity="0" d="M20.9 6.1l1-.6M20.9 7.9l1 .6" style="stroke-width:calc(var(--sw) * .7)"/>`,
   study: motion(D, 'The lid swings up on its hinge, hangs open, then falls shut; the bin gives under it and air puffs from the edge.', ['Lift', 'Slam', 'Settle'], [
@@ -50,5 +81,16 @@ export const act = {
       light(620, 1, 'scale(1)', ease.smooth), light(820, 0, 'scale(1.5)'), light(D, 0, 'scale(.6)'),
     ]),
   ]),
+  hold: {
+    ...motion(HD, 'Held: the lid lifts with the fill; at the end it drops shut, the bin gives and air puffs from the edge.', ['Lift with the hold', 'Drop', 'Settle'], [
+      actor('lid', '4.4px 7px', holdTo(holdLid)),
+      actor('bin', '12px 20.2px', holdTo(holdBin)),
+      actor('puff', '20.4px 7px', [
+        light(0, 0, 'scale(.6)'), light(520, 0, 'scale(.6)', ease.settle),
+        light(570, 1, 'scale(1)', ease.smooth), light(770, 0, 'scale(1.5)'), light(HD, 0, 'scale(.6)'),
+      ]),
+    ]),
+    scrub: SCRUB,
+  },
   shape: 'Portrait keyline bin, tapered 0.9u each side, lid hinged at the left end. Motion (study): the lid swings up 15.5° about its hinge, hangs, falls shut; the bin squashes .94 from its foot with the lid riding the rim, air puffs from the free edge, and the lid kicks 3.5° and settles.',
 };

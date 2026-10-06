@@ -2163,11 +2163,18 @@
   background: var(--mu-r-button-destructive-pressed-background);
   box-shadow: var(--mu-r-button-destructive-pressed-shadow);
 }
+@utility recipe-button-hold {
+  background: var(--mu-r-button-hold-background);
+  box-shadow: var(--mu-r-button-hold-shadow);
+}
 @utility recipe-button-strip-focus {
   box-shadow: var(--mu-r-button-strip-focus-shadow);
 }
 @utility button-wait {
   overflow: visible; & > svg { width: 100%; height: 100%; transition: opacity var(--mu-r-spinner-self-fade) ease-out; } & > .mu-button-arc { r: var(--mu-r-button-wait-radius); stroke-width: var(--mu-r-button-wait-stroke); stroke-dasharray: calc(var(--mu-r-button-wait-arc) * 100) 100; opacity: 0; transform-box: fill-box; transform-origin: center; transition: opacity var(--mu-r-spinner-self-fade) ease-out; } [data-busy] > & > svg { opacity: 0; transition-delay: var(--mu-r-spinner-self-delay); } [data-busy] > & > .mu-button-arc { opacity: 1; transition-delay: var(--mu-r-spinner-self-delay); animation: mu-spinner-turn var(--mu-r-spinner-self-turn) linear infinite; } @media (prefers-reduced-motion: reduce) { [data-busy] > & > .mu-button-arc { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } } [data-mu-motion=reduce] [data-busy] > & > .mu-button-arc { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+}
+@utility button-hold {
+  position: relative; isolation: isolate; -webkit-touch-callout: none; & > .mu-button-hold { position: absolute; inset: 0; z-index: -1; border-radius: inherit; overflow: hidden; pointer-events: none; } & > .mu-button-hold > span { position: absolute; inset: 0; border-radius: inherit; transform: translateX(-100%); transition: transform var(--mu-spring-release-d) var(--mu-spring-release); } &:dir(rtl) > .mu-button-hold > span { transform: translateX(100%); } &[data-holding] > .mu-button-hold > span { transform: none; transition: transform var(--mu-r-button-hold-time) linear; } &[data-hold-done] { animation: mu-button-hold-settle var(--mu-spring-object-d) var(--mu-spring-object); } @media (prefers-reduced-motion: reduce) { &[data-hold-done] { animation: none; } } [data-mu-motion=reduce] &[data-hold-done] { animation: none; }
 }
 @utility duration-button-press {
   --tw-duration: var(--mu-r-button-self-press);
@@ -2211,6 +2218,13 @@
 }
 @utility opacity-button-wait-arc {
   opacity: var(--mu-r-button-wait-arc);
+}
+@utility duration-button-hold-time {
+  --tw-duration: var(--mu-r-button-hold-time);
+  transition-duration: var(--mu-r-button-hold-time);
+}
+@utility opacity-button-hold-settle {
+  opacity: var(--mu-r-button-hold-settle);
 }
 @utility recipe-kbd {
   background: var(--mu-r-kbd-self-background);
@@ -3402,6 +3416,9 @@
 }
 @keyframes mu-toolbar-in {
   from { opacity: 0; transform: translateY(calc(var(--mu-motion-nest) * var(--mu-travel-surface))); }
+}
+@keyframes mu-button-hold-settle {
+  from { scale: var(--mu-r-button-hold-settle); } to { scale: 1; }
 }
 @keyframes mu-cue-chip {
   from { opacity: 0; transform: translate(-50%, calc(var(--mu-cue-chip-rise) * var(--mu-travel-part))); }

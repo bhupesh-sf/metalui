@@ -199,6 +199,7 @@
       ],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/surface.json",
         "https://metalui.dev/r/tokens.json"

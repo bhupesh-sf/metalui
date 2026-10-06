@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ICON_CATALOG, type IconName } from './catalog.generated';
+import { ICON_CATALOG, type IconMotion, type IconName } from './catalog.generated';
 import './icons.generated.css';
 import { motionReduced, onMotionChange } from '../motion/reduced';
 
@@ -64,6 +64,58 @@ const disabled = (trigger: Element) =>
 
 type Player = React.MutableRefObject<(() => void) | undefined>;
 
+/** What a holding control (Button `hold`, `[data-hold]`) tells its glyph, as a `mu-hold` event:
+ *  how full the hold is (0–1), each frame while it fills or drains, and `shut` when it completes. */
+export interface IconHoldDetail { progress: number; shut?: boolean }
+
+type HeldAct = IconMotion & { scrub: number };
+
+/* HELD ACT: the glyph follows the hold.
+ *   filling or draining   the act's time is set from the progress, over its first `scrub` ms
+ *   shut                  from `scrub` it plays to the end on its own clock (the lid drops shut)
+ *   drained to 0          released at rest
+ * Reduce Motion: nothing moves (no lid travel); the hold's fill carries the time. */
+function followHold(svg: SVGSVGElement, holder: Element, act: HeldAct) {
+  let running: Animation[] = [];
+  let shutting = false;
+  const stop = () => {
+    running.forEach((a) => a.cancel());
+    running = [];
+    shutting = false;
+    svg.removeAttribute('data-playing');
+  };
+  const parts = () => {
+    if (!running.length) {
+      svg.setAttribute('data-playing', '');
+      running = act.tracks.flatMap(({ part, keyframes }) =>
+        [...svg.querySelectorAll<SVGElement>(`[data-part="${part}"]`)].map((el) => {
+          const a = el.animate(keyframes as Keyframe[], { duration: act.duration, easing: 'linear', fill: 'both' });
+          a.pause();
+          return a;
+        }),
+      );
+    }
+    return running;
+  };
+  const onHold = (event: Event) => {
+    const { progress, shut } = (event as CustomEvent<IconHoldDetail>).detail;
+    if (motionReduced(svg)) return stop();
+    if (shutting) return;
+    if (shut) {
+      shutting = true;
+      const batch = parts();
+      batch.forEach((a) => { a.currentTime = act.scrub; a.play(); });
+      Promise.allSettled(batch.map((a) => a.finished)).then(() => { if (running === batch) stop(); });
+    } else if (progress <= 0) stop();
+    else parts().forEach((a) => { a.currentTime = Math.min(progress, 1) * act.scrub; });
+  };
+  holder.addEventListener('mu-hold', onHold);
+  return () => {
+    holder.removeEventListener('mu-hold', onHold);
+    stop();
+  };
+}
+
 function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconName, enabled: boolean, player: Player) {
   React.useEffect(() => {
     const svg = ref.current;
@@ -72,6 +124,16 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
     if (!svg || !enabled || !act) return;
     const trigger = svg.closest('.mu-icon-trigger') ?? svg;
     svg.setAttribute('data-motion-runtime', ''); // the CSS player steps aside
+    const held = 'hold' in icon ? icon.hold : undefined;
+    const holder = held && svg.closest('[data-hold]');
+    if (held && holder) {
+      // In a hold (Button `hold`) the glyph is the hold's gauge, not a hover act.
+      const unfollow = followHold(svg, holder, held);
+      return () => {
+        unfollow();
+        svg.removeAttribute('data-motion-runtime');
+      };
+    }
     let running: Animation[] = [];
     const stop = () => {
       running.forEach((a) => a.cancel());

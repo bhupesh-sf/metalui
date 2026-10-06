@@ -31,6 +31,18 @@ export interface ButtonProps extends BaseButton.Props {
    * nothing) between waits, so a MorphIcon keeps morphing.
    */
   state?: 'ready' | 'waiting' | 'done';
+  /**
+   * Hold to confirm, for an irreversible act on a destructive cap: `onClick` runs only after the key is
+   * held (pointer, Space or Enter) for the hold time, while a darker fill runs across it. Letting go early
+   * drains the fill and runs nothing; call that the hint's moment (`onHoldHint`). A click with no press
+   * before it (a screen reader's or switch's activate) confirms at once: those can't hold, and the
+   * question around the button still guards the act. Pass a `TrashIcon` as `icon`: its lid rides the fill.
+   */
+  hold?: boolean;
+  /** The button's description, said after its name ("Delete regions, button, Hold to confirm"), and the hint the host shows. */
+  holdHint?: string;
+  /** Let go before the hold completed (a tap, or too short): show `holdHint` where the actions are. */
+  onHoldHint?: () => void;
 }
 
 /* Styled with the theme's utilities: the button recipe's sizes, type and layered looks
@@ -60,6 +72,9 @@ const HELD: Record<ButtonCap, string> = {
   'strip-danger': 'data-held:translate-y-button-travel data-held:recipe-button-strip-pressed',
 };
 const COMPACT_HELD = 'data-held:translate-y-button-travel data-held:recipe-button-compact-pressed';
+// Holding (hold): down in the pressed look on the press time whatever holds it (Enter has no :active),
+// with the fill under the label (button-hold).
+const HOLDING = 'button-hold data-holding:translate-y-button-travel data-holding:recipe-button-destructive-pressed data-holding:duration-button-press data-holding:ease-linear';
 // The glyph's slot while a state is given: the glyph and the arc share it (an svg, so the cap sizes it).
 const WAIT = 'mu-button-wait button-wait';
 // The arc's radius, stroke and length are the recipe's (wait.*), set by button-wait.
@@ -80,39 +95,169 @@ export function buttonClasses(cap: ButtonCap = 'standard', size: 'default' | 'co
   return `${FRAME} ${(size === 'compact' && COMPACT[cap]) || CAPS[cap]}`;
 }
 
+/* ─────────────────────────────────────────────────────────
+ * HOLD TO CONFIRM (hold, destructive caps)
+ *
+ *    0ms  pointer down (primary), or Space / Enter down → data-holding: the key goes down in its
+ *         pressed look and the fill runs from the leading edge over the hold time, linear
+ *   each frame while it fills or drains: its progress goes to the glyph (`mu-hold`), so a trash lid
+ *         lifts in step
+ *   let go early (up, leave, cancel, blur): the fill drains on the release spring, nothing runs,
+ *         onHoldHint() — a tap is the same, so it only shows the hint
+ *   the hold time: data-hold-done → the cap settles once on the object spring, the glyph drops shut
+ *         (`shut`), and onClick runs (one click of our own; the release's click is swallowed)
+ * A click with no press before it (assistive tech's activate) runs onClick at once.
+ * Reduce Motion: the fill still runs (it is time); no settle, and the glyph stays still.
+ * ───────────────────────────────────────────────────────── */
+const HOLD_KEYS = ['Enter', ' '];
+const seconds = (v: string) => parseFloat(v) * (v.trim().endsWith('ms') ? 1 : 1000);
+
+interface HoldRun { armed: boolean; pressed: boolean }
+
+function useHold(el: React.RefObject<HTMLElement | null>, on: boolean, hint: React.RefObject<(() => void) | undefined>) {
+  const run = React.useRef<HoldRun>({ armed: false, pressed: false });
+  React.useEffect(() => {
+    const button = el.current;
+    if (!on || !button) return;
+    const r = run.current;
+    let phase: 'idle' | 'holding' | 'draining' | 'done' = 'idle';
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let frame = 0;
+    const tell = (detail: { progress: number; shut?: boolean }) => button.dispatchEvent(new CustomEvent('mu-hold', { detail }));
+    const follow = () => {
+      if (phase !== 'holding' && phase !== 'draining') return;
+      const fill = button.querySelector<HTMLElement>(':scope > .mu-button-hold > span');
+      const w = fill?.offsetWidth ?? 0;
+      const progress = fill && w ? 1 - Math.min(Math.abs(new DOMMatrixReadOnly(getComputedStyle(fill).transform).m41) / w, 1) : 0;
+      if (phase === 'draining' && progress < 0.002) {
+        phase = 'idle';
+        tell({ progress: 0 });
+        return;
+      }
+      tell({ progress });
+      frame = requestAnimationFrame(follow);
+    };
+    const complete = () => {
+      if (phase !== 'holding') return;
+      phase = 'done';
+      cancelAnimationFrame(frame);
+      tell({ progress: 1, shut: true });
+      button.setAttribute('data-hold-done', '');
+      r.armed = true;
+      button.click();
+      r.armed = false;
+    };
+    const start = () => {
+      if (phase === 'holding' || button.matches('[data-disabled], [data-held], :disabled')) return;
+      r.pressed = true;
+      phase = 'holding';
+      button.removeAttribute('data-hold-done');
+      button.setAttribute('data-holding', '');
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(follow);
+      clearTimeout(timer);
+      timer = setTimeout(complete, seconds(getComputedStyle(button).getPropertyValue('--mu-r-button-hold-time')));
+    };
+    const release = () => {
+      if (phase !== 'holding' && phase !== 'done') return;
+      clearTimeout(timer);
+      button.removeAttribute('data-holding');
+      if (phase === 'holding') {
+        phase = 'draining';
+        hint.current?.();
+      } else phase = 'idle';
+      setTimeout(() => { r.pressed = false; }); // after the click this release makes
+    };
+    const down = (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      // Touch captures implicitly; let it go so sliding off the key lets go of the hold.
+      if (button.hasPointerCapture(e.pointerId)) button.releasePointerCapture(e.pointerId);
+      start();
+    };
+    const keyDown = (e: KeyboardEvent) => {
+      if (!HOLD_KEYS.includes(e.key)) return;
+      e.preventDefault(); // Enter would click at once, and again on every repeat
+      if (!e.repeat) start();
+    };
+    const keyUp = (e: KeyboardEvent) => {
+      if (!HOLD_KEYS.includes(e.key)) return;
+      e.preventDefault();
+      release();
+    };
+    const menu = (e: Event) => { if (phase === 'holding') e.preventDefault(); }; // a long touch's menu
+    const settled = (e: AnimationEvent) => { if (e.target === button) button.removeAttribute('data-hold-done'); };
+    const ups: [string, EventListener][] = [['pointerup', release], ['pointerleave', release], ['pointercancel', release], ['blur', release]];
+    button.addEventListener('pointerdown', down);
+    button.addEventListener('keydown', keyDown);
+    button.addEventListener('keyup', keyUp);
+    button.addEventListener('contextmenu', menu);
+    button.addEventListener('animationend', settled);
+    for (const [type, fn] of ups) button.addEventListener(type, fn);
+    return () => {
+      clearTimeout(timer);
+      cancelAnimationFrame(frame);
+      button.removeEventListener('pointerdown', down);
+      button.removeEventListener('keydown', keyDown);
+      button.removeEventListener('keyup', keyUp);
+      button.removeEventListener('contextmenu', menu);
+      button.removeEventListener('animationend', settled);
+      for (const [type, fn] of ups) button.removeEventListener(type, fn);
+      button.removeAttribute('data-holding');
+      button.removeAttribute('data-hold-done');
+    };
+  }, [el, on, hint]);
+  return run;
+}
+
 /**
  * A press-in pill button. While held it sinks 1px and its shadow
  * collapses into a well; on release it springs back. Its `icon` leads the label, and
  * MetalUI icons inside it play their act from the whole button.
  */
 export const Button = React.forwardRef<HTMLElement, ButtonProps>(function Button(
-  { cap = 'standard', size = 'default', icon, state, className, children, onClick, ...props },
+  { cap = 'standard', size = 'default', icon, state, hold = false, holdHint = 'Hold to confirm', onHoldHint, 'aria-describedby': describedBy, className, children, onClick, ...props },
   ref,
 ) {
   const held = state === 'waiting' || state === 'done';
+  const holds = hold && cap === 'destructive';
   const heldLook = size === 'compact' && cap === 'standard' ? COMPACT_HELD : HELD[cap];
-  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)}${state ? ` ${heldLook} data-held:cursor-default` : ''}`;
+  const own = `mu-button mu-icon-trigger ${buttonClasses(cap, size)}${state ? ` ${heldLook} data-held:cursor-default` : ''}${holds ? ` ${HOLDING}` : ''}`;
+  const el = React.useRef<HTMLElement | null>(null);
+  const setRef = React.useCallback((node: HTMLElement | null) => {
+    el.current = node;
+    if (typeof ref === 'function') ref(node);
+    else if (ref) ref.current = node;
+  }, [ref]);
+  const hint = React.useRef(onHoldHint);
+  hint.current = onHoldHint;
+  const run = useHold(el, holds, hint);
+  const hintId = React.useId();
   return (
     <BaseButton
-      ref={ref}
+      ref={setRef}
       data-cap={cap}
       data-size={size}
       data-held={held ? '' : undefined}
       data-busy={state === 'waiting' ? '' : undefined}
+      data-hold={holds ? '' : undefined}
       aria-busy={state === 'waiting' || undefined}
       aria-disabled={held || undefined}
+      aria-describedby={holds ? [describedBy, hintId].filter(Boolean).join(' ') : describedBy}
       className={(s) => {
         const extra = typeof className === 'function' ? className(s) : className;
         return extra ? `${own} ${extra}` : own;
       }}
       onClick={(e) => {
-        if (held) e.preventDefault();
+        // Holding: only the hold's own click runs; the click a press makes on its release is its own.
+        if (held || (holds && !run.current.armed && run.current.pressed)) e.preventDefault();
         else onClick?.(e);
       }}
       {...props}
     >
+      {holds ? <span className="mu-button-hold" aria-hidden><span className="recipe-button-hold" /></span> : null}
       {state && icon ? <svg aria-hidden viewBox="0 0 24 24" className={WAIT}>{icon}{ARC}</svg> : icon}
       {children}
+      {holds ? <span id={hintId} hidden>{holdHint}</span> : null}
     </BaseButton>
   );
 });

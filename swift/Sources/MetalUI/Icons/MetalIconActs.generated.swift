@@ -4505,4 +4505,65 @@ extension MetalIconAct {
             ]
         ),
     ]
+
+    /// Held acts: the first `scrub` seconds follow a hold's progress; the rest plays when it completes.
+    static let held: [MetalIconName: MetalIconAct] = [
+        .trash: MetalIconAct(
+            duration: 1.013,
+            caption: "Held: the lid lifts with the fill; at the end it drops shut, the bin gives and air puffs from the edge.",
+            parts: [
+            MetalIconActPart(
+                name: "lid", origin: CGPoint(x: 4.4, y: 7.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.3949, x: 0.0, y: 0.0, r: -11.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.5035, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.5429, x: 0.0, y: 0.8, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.6318, x: 0.0, y: 0.0, r: -3.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "bin", origin: CGPoint(x: 12.0, y: 20.2),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(0.5035, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.5429, x: 0.0, y: 0.0, r: 0.0, sx: 1.03, sy: 0.94, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.844, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "puff", origin: CGPoint(x: 20.4, y: 7.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.6, sy: 0.6, ease: .linear),
+                    .init(0.5133, x: 0.0, y: 0.0, r: 0.0, sx: 0.6, sy: 0.6, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.5627, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.7601, x: 0.0, y: 0.0, r: 0.0, sx: 1.5, sy: 1.5, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.6, sy: 0.6, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.5133, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.5627, 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.7601, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M4.4 7L19.6 7", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M9.4 7L9.4 5.6C9.4 4.8268 10.0268 4.2 10.8 4.2L13.2 4.2C13.9732 4.2 14.6 4.8268 14.6 5.6L14.6 7", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M6.2 7L17.8 7L16.94 18.1C16.836 19.2916 15.8361 20.2045 14.64 20.2L9.36 20.2C8.1639 20.2045 7.164 19.2916 7.06 18.1Z", parts: [1], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
+            MetalIconActInk(d: "M10.2 10.6L10.2 16.4M13.8 10.6L13.8 16.4", parts: [1], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M20.9 6.1L21.9 5.5M20.9 7.9L21.9 8.5", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
+            ],
+            scrub: 0.4
+        ),
+    ]
 }

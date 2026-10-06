@@ -112,8 +112,13 @@ A question that must be answered before going on. React: `AlertDialog` from `@un
 | click outside | it stays | the plate shakes once on the refusal spring, one nest (6) aside |
 | Cancel or Esc | closes, nothing done | release spring |
 | confirm | runs, then closes | release spring |
+| confirm `hold`, pressed | the fill runs across the cap, the trash lid lifts with it | linear over the hold time (800 ms) |
+| confirm `hold`, let go early | nothing runs; "Hold to confirm" (`holdHint`) fades in under the actions, said once as a status | the fill drains on the release spring |
+| confirm `hold`, complete | the cap settles, the lid drops shut, it runs, then closes | object spring, then release |
 
-Reduce Motion: no shake; the rise is a crossfade.
+Reduce Motion: no shake; the rise is a crossfade; a hold's fill still runs, with no settle and no lid travel.
+
+Where the hold applies: only an act that can't be undone (deleting for good). A delete that goes to the past can be brought back, so its confirm stays a plain press (`hold` is off by default).
 
 ## API
 
@@ -123,6 +128,7 @@ Reduce Motion: no shake; the rise is a crossfade.
 | `AlertDialog.Popup`, `Title`, `Description`, `Actions` | `title:`, `message:` |
 | `AlertDialog.Cancel` (children: its label) | `cancel:` |
 | `AlertDialog.Confirm` `onClick`, `tone` (`destructive`, `primary`) | `confirm:`, `role: .destructive` |
+| `AlertDialog.Confirm` `hold`, `holdHint`, `icon` (a hold confirm leads with `TrashIcon`) | – (the system alert can't hold; use `MetalButton` `.metalHoldToConfirm` in your own sheet) |
 
 ## Keyboard and accessibility
 
@@ -409,6 +415,7 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 - The **label** is text: a verb, or a verb and its object.
 - **Compact** (`size="compact"`): 28 tall, 11 padding, 12 pt, a 14 glyph 7 before the label. A standard compact cap wears the button fill on `raise-sm`, ink2 until hover; a primary or destructive compact cap keeps its own fill (the composer's Send beside a compact Select). The canvas pills: "seed a sample day", "lenses ⌘K", a lens row's "Open".
 - **Waiting** (`state="waiting"`): the key stays down in its pressed look, refuses presses (`aria-disabled`, still focusable) and says `aria-busy`; after the spinner's 400 ms show delay its glyph cross-fades into a turning arc in the key's own ink (white on a primary key), so a quick action never shows it. Reduce Motion: the arc breathes. `state="done"` stays held while the host shows the result ("Saved", `check`); then `ready`. The label stays the host's, turned with `SwapText`: Save → Saving… → Saved.
+- **Hold to confirm** (`hold`, destructive caps only; for an act that can't be undone): pressing (pointer, or Space / Enter held) takes the key down and a darker red fill (`recipe-button-hold`) runs across it from the leading edge over `--mu-r-button-hold-time` (800 ms), linear, so it reads as time. Let go early: the fill drains on the release spring, nothing runs, and `onHoldHint` fires (a tap is the same: it only shows the hint, which the host places under the actions). At the end the cap settles once from `hold.settle` on the object spring, and `onClick` runs (the release's own click is swallowed). A `TrashIcon` as `icon` is the gauge: its held act (`acts/trash.mjs` `hold`) lifts the lid with the fill and drops it shut at the end. Reduce Motion: the fill still runs; no settle, no lid travel. A delete that goes to the past (undoable) stays a plain press.
 - The **press** moves the cap down 1px (50 ms, linear), and its shadow collapses into an inner well. The release rides the `release` spring (stiffness 500, damping 40; half 71ms, near-settled 178ms). Shadows and fills cross-fade over 180ms.
 
 ## Caps that set their own size
@@ -424,6 +431,9 @@ A press-in pill button. React: `Button` from `@unlocalhosted/metalui`, built on 
 | `cap` | `cap:` | `standard`, `primary`, `destructive`, `link`, `graphite`, `strip`, `strip-danger` | `standard` |
 | `size` | `size:` | `default` (32), `compact` (28); ignored by the link, graphite and strip caps | `default` |
 | `state` | `.metalButtonState(_:)` | `ready`, `waiting` (held, refuses presses, busy; the glyph turns into the arc after 400 ms), `done` (held for the result). Pass `ready` between waits so a MorphIcon keeps morphing | – |
+| `hold` | `.metalHoldToConfirm(hint:onHint:)` | boolean; destructive caps only. `onClick` runs only after the hold time | `false` |
+| `holdHint` | `hint:` | the button's description (said after its name) and the hint text | `'Hold to confirm'` |
+| `onHoldHint` | `onHint:` | called when a hold is let go early: show the hint under the actions | – |
 | `icon` | `icon:` (a `MetalIconName`), or the `icon:` view builder | a glyph element, such as `<ShareIcon />` or `<MorphIcon name=… />`; leads the label, sized by the cap (16, compact 14, strip 16, graphite 14, link 12) | – |
 | `disabled` | `.disabled(_:)` | boolean | `false` |
 | `focusableWhenDisabled` | – | boolean | `false` |
@@ -469,6 +479,7 @@ MetalButton("Delete", icon: .trash, cap: .destructive) { remove() }
 - The focus ring is a 2px `--mu-focus` outline at a 2px offset, shown only for keyboard focus (`:focus-visible`).
 - An icon-only Button needs `aria-label`. Icons inside labelled buttons are decorative (`aria-hidden`).
 - Disabled buttons render at 40% opacity and don't play their icon motion.
+- A `hold` button says the hold in its description (`aria-describedby`: "Hold to confirm"); the visible hint is announced once by its host (AlertDialog's status line), not on every frame. A click with no press before it (a screen reader's or switch's activate; SwiftUI: the accessibility action) confirms at once: those can't hold (WCAG 2.5.7's single-pointer path), and the question around the button still guards the act. `hold={false}` turns it off where pointers can't hold.
 - Under reduced motion, transitions are instant. The 1px press travel stays, because it is feedback, not decoration.
 
 ## Tokens
