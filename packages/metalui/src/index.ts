@@ -68,6 +68,7 @@ export { Accordion } from './components/accordion/accordion';
 export { Collapsible, type CollapsibleRootProps, type CollapsibleTriggerProps, type CollapsibleKeyProps, type CollapsibleMoreProps, type CollapsiblePanelProps } from './components/collapsible/collapsible';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
 export { Combobox, type ComboboxProps, type ComboboxItem, type ComboboxGroup, type ComboboxAction } from './components/combobox/combobox';
+export type { GlyphParts } from './icons/MorphIcon';
 export { Folder, type FolderProps, type FolderHue, type FolderPeek } from './components/folder/folder';
 export { LineHandles, type LineHandlesProps } from './components/line-handles/line-handles';
 export { PerfectPreview, type PerfectPreviewProps } from './components/perfect-preview/perfect-preview';

@@ -228,7 +228,7 @@ function useActCue(player: Player, act: IconProps['act']) {
 
 /** Draws one glyph's record. `<Icon name>` resolves the record from the catalog (every glyph);
  *  `<Name>Icon` passes its own (that glyph only), so a component that draws known glyphs ships just those. */
-const GlyphIcon = React.forwardRef<SVGSVGElement, IconProps & { glyph: IconRecord }>(function GlyphIcon(
+export const GlyphIcon = React.forwardRef<SVGSVGElement, IconProps & { glyph: IconRecord }>(function GlyphIcon(
   { glyph, size = 24, title, strokeWidth, animate = true, turn = 0, act, className, style, ...props },
   forwardedRef,
 ) {

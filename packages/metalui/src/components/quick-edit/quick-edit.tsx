@@ -5,8 +5,9 @@ import { Button } from '../button/button';
 import { Field } from '../field/field';
 import { FormField } from '../form-field/form-field';
 import { SwapText } from '../../motion/swap';
-import { MorphIcon } from '../../icons/MorphIcon';
-import type { MorphIconName } from '../../icons/morph.generated';
+import { MorphPair, type GlyphParts } from '../../icons/MorphIcon';
+import { penGlyph } from '../../icons/glyphs.generated';
+import { checkMorph, penMorph, syncErrorMorph, type MorphIconName } from '../../icons/morph.generated';
 
 /* ─────────────────────────────────────────────────────────
  * QUICK EDIT, one short value edited where it stands and committed with one key
@@ -40,6 +41,8 @@ export interface QuickEditWords {
   failed: string;
 }
 
+const pen: GlyphParts = { glyph: penGlyph, morph: penMorph };
+
 const renameWords: QuickEditWords = { verb: 'Rename', doing: 'Renaming…', done: 'Renamed', failed: "Couldn’t rename" };
 
 export interface QuickEditProps {
@@ -60,8 +63,8 @@ export interface QuickEditProps {
   extension?: boolean;
   /** The key's words. Default: Rename, Renaming…, Renamed. */
   words?: QuickEditWords;
-  /** The key's glyph (a morph-family icon), default `pen`. It morphs to check when done, to sync-error on failure. */
-  icon?: MorphIconName;
+  /** The key's glyph as its parts, `{ glyph: tagGlyph, morph: tagMorph }`; default pen. It morphs to check when done, to sync-error on failure. */
+  icon?: GlyphParts;
   className?: string;
 }
 
@@ -73,7 +76,7 @@ function holdMs(el: HTMLElement | null) {
 }
 
 /** One short value and the key that commits it, for a popover's body or a dialog. */
-export function QuickEdit({ value, label, onCommit, onClose, validate, extension, words = renameWords, icon = 'pen', className }: QuickEditProps) {
+export function QuickEdit({ value, label, onCommit, onClose, validate, extension, words = renameWords, icon = pen, className }: QuickEditProps) {
   const [draft, setDraft] = React.useState(value);
   const [phase, setPhase] = React.useState<Phase>('editing');
   const [checked, setChecked] = React.useState(false); // errors show once a commit was tried
@@ -105,7 +108,10 @@ export function QuickEdit({ value, label, onCommit, onClose, validate, extension
     try { await pending; setPhase('done'); } catch { setPhase('failed'); input.current?.focus(); }
   };
 
-  const glyph: MorphIconName = phase === 'done' ? 'check' : phase === 'failed' ? 'sync-error' : icon;
+  // The key's glyph and the two it becomes (MorphPair ships just their parts).
+  const own = icon.glyph.name as MorphIconName;
+  const glyphs = { check: checkMorph, 'sync-error': syncErrorMorph, [own]: icon.morph };
+  const glyph: MorphIconName = phase === 'done' ? 'check' : phase === 'failed' ? 'sync-error' : own;
   const word = phase === 'done' ? words.done : phase === 'saving' ? words.doing : phase === 'failed' ? 'Try again' : words.verb;
 
   return (
@@ -145,7 +151,7 @@ export function QuickEdit({ value, label, onCommit, onClose, validate, extension
           cap="primary"
           state={phase === 'saving' ? 'waiting' : phase === 'done' ? 'done' : 'ready'}
           disabled={!settled && !fresh}
-          icon={<MorphIcon name={glyph} />}
+          icon={<MorphPair glyphs={glyphs} name={glyph} />}
         >
           <SwapText value={word} />
         </Button>

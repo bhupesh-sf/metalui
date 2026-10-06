@@ -5,6 +5,7 @@ import { SPRINGS } from '../motion/springs.generated';
 import { motionReduced } from '../motion/reduced';
 import { morphAt, morphOutline, morphPath, planFrames, restParts, springAt, type MorphFrame, type MorphPart, type MorphTurn } from './morph';
 import { MORPH_PARTS, type MorphIconName, type MorphPartSource } from './morph.generated';
+import type { IconRecord } from './glyphs.generated';
 
 /* ─────────────────────────────────────────────────────────
  * GLYPH MORPH STORYBOARD (icon A → icon B, both from the set; docs/MORPH.md)
@@ -84,6 +85,13 @@ export function MorphGlyph({ frame }: { frame: MorphFrame }) {
 
 /** The glyphs a MorphPair may show, by name: their generated parts (`chevronMorph`, …). */
 export type MorphGlyphs = Partial<Record<MorphIconName, readonly MorphPartSource[]>>;
+
+/** One glyph handed to a component that draws it and morphs it: its record (`tagGlyph`, drawn with its act)
+ *  and its morph parts (`tagMorph`). Passing both ships that glyph alone, never the catalog. */
+export interface GlyphParts {
+  glyph: IconRecord;
+  morph: readonly MorphPartSource[];
+}
 
 /** An icon that becomes the next icon instead of being replaced by it. Any glyph of the family, so it ships every glyph's parts. */
 export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(function MorphIcon(props, ref) {

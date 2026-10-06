@@ -573,6 +573,7 @@
         "https://metalui.dev/r/colorway.json",
         "https://metalui.dev/r/field.json",
         "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
         "https://metalui.dev/r/icon-morph.json",
         "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/menu.json",
@@ -1396,6 +1397,7 @@
         "https://metalui.dev/r/field.json",
         "https://metalui.dev/r/form-field.json",
         "https://metalui.dev/r/icon-morph.json",
+        "https://metalui.dev/r/icons.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],

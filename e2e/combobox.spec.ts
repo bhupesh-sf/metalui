@@ -111,10 +111,14 @@ test('items with detail: a second line, and a pick\'s glyph in the well', async 
   const search = await lead.innerHTML();
   await kind.click();
   await kind.pressSequentially('task');
-  await page.keyboard.press('ArrowDown');
-  await page.keyboard.press('Enter');
+  // The row's glyph is the glyph itself (its record), so it plays its act when the row is hovered.
+  const row = options(page).first();
+  await row.hover();
+  await expect(row.locator('svg.mu-icon')).toHaveAttribute('data-playing', '');
+  await row.click();
   await expect(kind).toHaveValue('Task');
   await expect.poll(() => lead.innerHTML()).not.toBe(search);
+  await expect(lead).toHaveAttribute('data-glyph', 'task');
   // The morph comes to rest (sampled across frames) before the capture.
   await expect.poll(async () => { const a = await well(kind).innerHTML(); await page.waitForTimeout(120); return a === (await well(kind).innerHTML()); }).toBe(true);
   const box = (await well(kind).boundingBox())!;

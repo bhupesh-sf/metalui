@@ -42,7 +42,7 @@ Reduce Motion: the glyph and the word change in place; the hold stays (it is for
 | `validate(next)`: the reason it is not accepted, or nothing | `validate:` |
 | `extension`: a file name; its extension stays out of the selection | `keepsExtension:` |
 | `words` `{ verb, doing, done, failed }`, default Rename / Renaming… / Renamed / Couldn’t rename | `words:` (`.rename`) |
-| `icon` (a morph-family glyph), default `pen` | `icon:` (`.pen`) |
+| `icon`: the key's glyph as its parts, `{ glyph: tagGlyph, morph: tagMorph }` from `@unlocalhosted/metalui/icons`; default pen. It ships only that glyph, check and sync-error | `icon:` (`.pen`) |
 
 ```tsx
 const toast = useToast(); // under a ToastProvider

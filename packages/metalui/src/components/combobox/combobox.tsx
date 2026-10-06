@@ -10,9 +10,10 @@ import { Chip } from '../chip/chip';
 import { IconButton } from '../icon-button/icon-button';
 import { Spinner } from '../spinner/spinner';
 import { buttonClasses } from '../button/button';
-import { Icon } from '../../icons/Icon';
-import { MorphIcon } from '../../icons/MorphIcon';
-import type { MorphIconName } from '../../icons/morph.generated';
+import { GlyphIcon } from '../../icons/Icon';
+import { CheckIcon, CloseIcon, PlusIcon, SyncErrorIcon } from '../../icons/components.generated';
+import { MorphPair, type GlyphParts } from '../../icons/MorphIcon';
+import { chevronMorph, searchMorph, type MorphIconName } from '../../icons/morph.generated';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 import { leaveRows, useRowMotion } from '../../motion/rows';
 import { useWait } from '../../motion/wait';
@@ -113,8 +114,9 @@ export interface ComboboxItem<V extends string = string> {
   label: string;
   /** A second line in ink2, so similar items can be told apart ("Portugal", "maria@studio.pt"). */
   description?: string;
-  /** A glyph of the set (shown in the row, and in the well once picked, morphing from search), or an element such as an `Avatar`. */
-  icon?: MorphIconName | React.ReactElement;
+  /** A glyph of the set as its parts, `{ glyph: tagGlyph, morph: tagMorph }` (drawn in the row with its act on hover, and in
+   *  the well once picked, morphing from search), or an element such as an `Avatar` (shown as it is). */
+  icon?: GlyphParts | React.ReactElement;
   disabled?: boolean;
 }
 
@@ -128,7 +130,8 @@ export interface ComboboxGroup<V extends string = string> {
 export interface ComboboxAction {
   id: string;
   label: string;
-  icon: MorphIconName;
+  /** The row's glyph, as an element: `<SettingsIcon />`. */
+  icon: React.ReactElement;
   onAction: () => void;
 }
 
@@ -191,7 +194,7 @@ interface ViewRow {
   value: string;
   label: string;
   description?: string;
-  icon?: MorphIconName | React.ReactElement;
+  icon?: GlyphParts | React.ReactElement;
   disabled?: boolean;
   run?: () => void;
 }
@@ -217,12 +220,18 @@ function Matched({ label, query }: { label: string; query: string }) {
   );
 }
 
-function Glyph({ icon }: { icon: MorphIconName | React.ReactElement }) {
-  return typeof icon === 'string' ? <Icon name={icon} /> : icon;
+const isParts = (icon: GlyphParts | React.ReactElement | undefined): icon is GlyphParts => !!icon && 'glyph' in icon && 'morph' in icon;
+
+function Glyph({ icon }: { icon: GlyphParts | React.ReactElement }) {
+  return isParts(icon) ? <GlyphIcon glyph={icon.glyph} /> : icon;
 }
 
+// The glyphs the combobox morphs itself (MorphPair ships just their parts); a pick's glyph joins search in the well.
+const SEARCH = { search: searchMorph };
+const CHEVRON = { chevron: chevronMorph };
+
 function Option({ row, query }: { row: ViewRow; query: string }) {
-  const lead = row.kind === 'create' ? 'plus' : row.kind === 'retry' ? 'sync-error' : row.icon;
+  const lead = row.kind === 'create' ? <PlusIcon /> : row.kind === 'retry' ? <SyncErrorIcon /> : row.icon;
   return (
     <BaseCombobox.Item
       value={row.value}
@@ -238,7 +247,7 @@ function Option({ row, query }: { row: ViewRow; query: string }) {
         {row.description && <span className={DESC}>{row.description}</span>}
       </Row.Text>
       {row.kind === 'retry' && <Row.Trail className={TRY}>Try again</Row.Trail>}
-      {row.kind === 'item' && <BaseCombobox.ItemIndicator className={CHECK}><Icon name="check" /></BaseCombobox.ItemIndicator>}
+      {row.kind === 'item' && <BaseCombobox.ItemIndicator className={CHECK}><CheckIcon /></BaseCombobox.ItemIndicator>}
     </BaseCombobox.Item>
   );
 }
@@ -354,11 +363,14 @@ export function Combobox<V extends string = string>(props: ComboboxProps<V>) {
 
   // The pick's glyph stands in the well's leading slot, morphing from search.
   const pick = !multiple ? byValue.get(chosen[0] ?? '') : undefined;
-  const lead = pick?.icon && typeof pick.icon !== 'string' ? pick.icon : <MorphIcon name={typeof pick?.icon === 'string' ? pick.icon : 'search'} />;
+  const parts = isParts(pick?.icon) ? pick.icon : undefined;
+  const lead = pick?.icon && !isParts(pick.icon) ? pick.icon : (
+    <MorphPair glyphs={parts ? { ...SEARCH, [parts.glyph.name]: parts.morph } : SEARCH} name={parts ? (parts.glyph.name as MorphIconName) : 'search'} />
+  );
 
   const at = useColorwayAnchor();
   const setWell = React.useCallback((el: HTMLDivElement | null) => { at.ref(el); well.current = el; }, [at]);
-  const chevron = <MorphIcon name="chevron" turn={open ? 180 : 0} />;
+  const chevron = <MorphPair glyphs={CHEVRON} name="chevron" turn={open ? 180 : 0} />;
   const clearable = chosen.length > 0 || query.length > 0;
   const ring = wait.showing && <Spinner phase={wait.phase} label="Searching" />;
 
@@ -390,9 +402,9 @@ export function Combobox<V extends string = string>(props: ComboboxProps<V>) {
         <BaseCombobox.Popup className={cx(POP, button ? 'combobox-pop-button' : 'combobox-pop-width')} aria-busy={wait.busy || undefined}>
           {button && (
             <div className={cx(GROUP, SIZE.regular, 'mu-combobox-search mb-menu-pad')}>
-              <Field.Icon><MorphIcon name="search" /></Field.Icon>
+              <Field.Icon><MorphPair glyphs={SEARCH} name="search" /></Field.Icon>
               {input}
-              <Field.Trail>{ring || <Field.Key label="Clear" icon={<Icon name="close" />} shown={query.length > 0} onClick={() => setQuery('')} />}</Field.Trail>
+              <Field.Trail>{ring || <Field.Key label="Clear" icon={<CloseIcon />} shown={query.length > 0} onClick={() => setQuery('')} />}</Field.Trail>
             </div>
           )}
           <Fit>
@@ -472,7 +484,7 @@ export function Combobox<V extends string = string>(props: ComboboxProps<V>) {
               <BaseCombobox.Chip key={v} data-row={v} aria-label={labelOf(v)} render={<Chip as="div" variant="suggestion" className={CHIP} />}>
                 <Chip.Text>{labelOf(v)}</Chip.Text>
                 <Chip.Actions>
-                  <BaseCombobox.ChipRemove render={<IconButton variant="mini" label={`Remove ${labelOf(v)}`} icon={<Icon name="close" className={CHIP_GLYPH} />} />} />
+                  <BaseCombobox.ChipRemove render={<IconButton variant="mini" label={`Remove ${labelOf(v)}`} icon={<CloseIcon className={CHIP_GLYPH} />} />} />
                 </Chip.Actions>
               </BaseCombobox.Chip>
             ))}
@@ -480,7 +492,7 @@ export function Combobox<V extends string = string>(props: ComboboxProps<V>) {
           </BaseCombobox.Chips>
         ) : input}
         <Field.Trail className={multiple ? LINE : undefined}>
-          {ring || <BaseCombobox.Clear keepMounted render={<Field.Key label="Clear" icon={<Icon name="close" />} shown={clearable} disabled={disabled} />} />}
+          {ring || <BaseCombobox.Clear keepMounted render={<Field.Key label="Clear" icon={<CloseIcon />} shown={clearable} disabled={disabled} />} />}
           <BaseCombobox.Trigger render={<Field.Key label="Show all" icon={chevron} disabled={disabled} />} />
         </Field.Trail>
       </BaseCombobox.InputGroup>
