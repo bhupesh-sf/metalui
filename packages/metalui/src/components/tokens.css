@@ -1115,11 +1115,16 @@
   --mu-r-checkbox-group-self-indent: 22px;
   --mu-r-checkbox-group-self-cascade: 30ms;
   --mu-r-checkbox-group-self-disabled: 0.4;
-  /* combobox: the field well (recipe well field); the menu plate and rows (menuParts, ListGlide); Base UI Combobox */
+  /* combobox: the field well and mini keys (Field); the menu plate and rows (menuParts, ListGlide); Row's slots; Chip and IconButton mini; useRowMotion; useWait and Spinner; MorphIcon; Base UI Combobox */
   --mu-r-combobox-self-min-width: 220px;
-  --mu-r-combobox-self-max-rows: 7px;
-  --mu-r-combobox-clear-size: 24px;
-  --mu-r-combobox-clear-glyph: 10px;
+  --mu-r-combobox-self-max-rows: 7;
+  --mu-r-combobox-detail-pad-y: 6px;
+  --mu-r-combobox-detail-gap: 1px;
+  --mu-r-combobox-chips-gap: 4px;
+  --mu-r-combobox-chips-input-min: 64px;
+  --mu-r-combobox-button-min-width: 160px;
+  --mu-r-combobox-button-max-width: 260px;
+  --mu-r-combobox-button-plate: 260px;
   /* form-field: Base UI Field and Fieldset; the invalid foundation; the settle and release springs */
   --mu-r-form-field-self-gap: 6px;
   --mu-r-form-field-self-fieldset-gap: 16px;
@@ -2248,6 +2253,13 @@
     /* mu-recipe:checkbox:14 */ inset 0 0 0 1px rgba(40,38,32,.16),
     /* mu-recipe:checkbox:15 */ inset 0 2px 4px -2px rgba(60,55,40,.10);
   --mu-r-scroll-area-thumb-ink: rgba(27,27,29,.28);
+  --mu-r-combobox-chip-background:
+    /* mu-recipe:combobox:0 */ rgba(252,251,249,.7);
+  --mu-r-combobox-chip-shadow:
+    /* mu-recipe:combobox:2 */ inset 0 0 4px 1px rgba(255,255,255,.85),
+    /* mu-recipe:combobox:3 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:combobox:4 */ 0 0 0 .5px rgba(24,22,16,.1),
+    /* mu-recipe:combobox:5 */ 0 1px 2px rgba(24,22,16,.07);
   --mu-r-form-field-error-ink: #C23B30;
   --mu-r-skeleton-sheen-ink: rgba(255,255,255,.6);
   --mu-r-link-underline-ink: rgba(27,27,29,.3);
@@ -2814,6 +2826,13 @@
     /* mu-recipe:checkbox:16 */ inset 0 0 0 1px rgba(255,255,255,.18),
     /* mu-recipe:checkbox:17 */ inset 0 2px 4px -2px rgba(0,0,0,.4);
   --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
+  --mu-r-combobox-chip-background:
+    /* mu-recipe:combobox:1 */ rgba(44,44,47,.7);
+  --mu-r-combobox-chip-shadow:
+    /* mu-recipe:combobox:6 */ inset 0 0 4px 1px rgba(255,255,255,.06),
+    /* mu-recipe:combobox:7 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
+    /* mu-recipe:combobox:8 */ 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:combobox:9 */ 0 1px 2px rgba(0,0,0,.3);
   --mu-r-form-field-error-ink: #FF8A77;
   --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
   --mu-r-link-underline-ink: rgba(255,255,255,.3);
@@ -3381,6 +3400,13 @@
       inset 0 0 0 1px rgba(255,255,255,.18),
       inset 0 2px 4px -2px rgba(0,0,0,.4);
     --mu-r-scroll-area-thumb-ink: rgba(255,255,255,.28);
+    --mu-r-combobox-chip-background:
+      rgba(44,44,47,.7);
+    --mu-r-combobox-chip-shadow:
+      inset 0 0 4px 1px rgba(255,255,255,.06),
+      inset 1px 2px 2px -1px rgba(255,255,255,.12),
+      0 0 0 .5px rgba(0,0,0,.55),
+      0 1px 2px rgba(0,0,0,.3);
     --mu-r-form-field-error-ink: #FF8A77;
     --mu-r-skeleton-sheen-ink: rgba(255,255,255,.05);
     --mu-r-link-underline-ink: rgba(255,255,255,.3);
