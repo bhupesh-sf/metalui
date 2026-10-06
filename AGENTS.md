@@ -68,6 +68,7 @@ Rules that hold for every change. Facts about one component belong in its agent 
 - **LED colours have fixed meanings**: green live, amber waiting or urgent, red failed, blue a link's kind. Never invent another; never let colour carry a state alone (a word, a glyph or a gesture goes with it).
 - **Icons**: draw them in the act format (`icons/src/acts/<name>.mjs`, `docs/ICON-MOTION.md`, `docs/ICON-GRAMMAR.md`), then `node scripts/icon-lint.mjs --only <name>`, `node scripts/morph-strain.mjs --matrix` (at or under the family median), look at `node scripts/icon-film.mjs <name>` at 96, 24 and 16 px in both colorways, and `npm run symbols:check`.
 - **React traps**: the docs run in StrictMode, so effects run twice (cancel what you start in cleanup); spreading `tabIndex={undefined}` onto a Base UI composite part breaks its roving focus (spread it only when set).
+- **`bench:bundle:gate` reads the built package**: run `npm run build -w @unlocalhosted/metalui` first, or it measures an old `dist/`.
 - **Tests**: a slice that fails in a full parallel run but passes alone is a race in the test; fix the test (sample with rAF, poll), don't retry it. Set `METALUI_TEST_PORT` to run beside another server.
 - **`CLAUDE.md` is a symlink to this file**: edit `AGENTS.md`; writing to `CLAUDE.md` writes here.
 - **The backlog's "Owner:" is Vijay Singh**, the library's owner; other people's words are attributed by name.

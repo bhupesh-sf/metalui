@@ -359,6 +359,10 @@ Building real screens shows what the components lack. Each was worked around ins
 - [x] **Container queries in blocks**: unnamed `@container` matches the nearest container; blocks should name theirs (`@container/block`). Write it into the block page guide. (Every block names its container; the rule is in `docs/DOCS_ARCHITECTURE.md`, block page.)
 - [x] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message. (A hairline fades in under the title while the thread runs under it, so the faded line reads as passing beneath.)
 
+## Bundle weight: one glyph pulls the whole icon catalog
+
+- [ ] `Icon` imports the whole catalog, so any component with one glyph ships every glyph: Table 122 KB gzip, Combobox 111, ToolStrip 95, Card 79, Link 67 (2026-10-06, fresh build). Split the catalog per glyph (each `<Name>Icon` and `Icon name` resolving only what it draws), then put ceilings on these in `scripts/bench-bundle.mjs`. Button's ceiling went from 9 to 10 KB the same day for `state` and `hold`.
+
 ## Tests that fail only under a full parallel run
 
 - [ ] `xray-dialog-editing` "pulling the dialog up…" and `toast` (deck, undo) and `region`, `scroll-area`, `slider-states` focus ring, `spinner` (whole place, known or unknown), `toggle`, `tooltip`: each failed once in the 4-worker full run (2026-10-06) and passed alone. Also `drop-zone` (reduced motion), `memory-scrubber`, `progress` (Reduce Motion), `table` (sorts, graphite), in the 3-worker run that closed wave 2; all passed alone. Find the race in each (AGENTS.md: sample with rAF, poll), don't retry.
