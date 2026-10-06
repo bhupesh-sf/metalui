@@ -89,7 +89,8 @@ if (process.argv.includes('--gate')) {
   // NumberField 27.1, mostly Base UI's, shared with every select and number field in an app) and Sortable for the columns.
   // DateSelector 62.7 (Popover, Dialog and Switcher's Base UI parts, both presentations in one import; the calendar is 8.7);
   // matchesDate 1.3 (the calendar's date arithmetic only).
-  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 96, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20, Markdown: 17, PromptInput: 57, MessageActions: 44, MarkScrub: 9, MarkPick: 95, Plan: 11, Citation: 49, Slider: 19, BranchPicker: 39, ConversationList: 86, DataGrid: 137, DateSelector: 64, matchesDate: 2 };
+  // Gantt 5.3 (its own pointer drag, Calendar's date helpers; no Table, no Sortable).
+  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 96, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20, Markdown: 17, PromptInput: 57, MessageActions: 44, MarkScrub: 9, MarkPick: 95, Plan: 11, Citation: 49, Slider: 19, BranchPicker: 39, ConversationList: 86, DataGrid: 137, DateSelector: 64, matchesDate: 2, Gantt: 6 };
   const over = Object.entries(CEILING).filter(([n, kb]) => !perExport[n] || perExport[n].gzip / 1024 > kb);
   if (over.length) {
     console.error(`\nbench-bundle gate: ${over.map(([n, kb]) => `${n} ${perExport[n] ? (perExport[n].gzip / 1024).toFixed(1) : 'missing'} KB gzip > ${kb}`).join(', ')}`);

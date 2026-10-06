@@ -1698,6 +1698,22 @@
   --mu-r-kanban-header-height: 36px;
   --mu-r-kanban-header-gap: 6px;
   --mu-r-kanban-header-inset: 24px;
+  /* gantt: Table's head and row heights, row padding, row rule and the opaque frost (the side column and header); the surface recipe's raise-sm and raise (the bar and its lift); Sortable's lift.scale and threshold; the well's track (the recess); the switch's track and on-look with Progress's fill (progress); the rule ink; the refusal spring */
+  --mu-r-gantt-self-side: 200px;
+  --mu-r-gantt-self-commit: 700ms;
+  --mu-r-gantt-scale-day: 32px;
+  --mu-r-gantt-scale-week: 16px;
+  --mu-r-gantt-scale-month: 4px;
+  --mu-r-gantt-bar-height: 22px;
+  --mu-r-gantt-bar-edge: 8px;
+  --mu-r-gantt-bar-min: 22px;
+  --mu-r-gantt-bar-inset: 9px;
+  --mu-r-gantt-bar-track: 4px;
+  --mu-r-gantt-milestone-size: 18px;
+  --mu-r-gantt-milestone-corner: 3px;
+  --mu-r-gantt-unit-pad: 8px;
+  --mu-r-gantt-dates-gap: 8px;
+  --mu-r-gantt-now-pad: 6px;
   /* drop-zone: the well (recipe well field); the invalid ring (foundations); the drum (motion/swap); the refusal (motion/refuse); the part, settle and object springs */
   --mu-r-drop-zone-self-pad: 24px;
   --mu-r-drop-zone-self-gap: 8px;

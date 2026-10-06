@@ -50,6 +50,7 @@ export const routes: RouteObject[] = [
       { path: 'components/quick-edit', lazy: lazy(() => import('../pages/components/QuickEdit')) },
       { path: 'components/sortable', lazy: lazy(() => import('../pages/components/Sortable')) },
       { path: 'components/kanban', lazy: lazy(() => import('../pages/components/Kanban')) },
+      { path: 'components/gantt', lazy: lazy(() => import('../pages/components/Gantt')) },
       { path: 'components/tree', lazy: lazy(() => import('../pages/components/Tree')) },
       { path: 'components/cascader', lazy: lazy(() => import('../pages/components/Cascader')) },
       { path: 'components/thread', lazy: lazy(() => import('../pages/components/Thread')) },

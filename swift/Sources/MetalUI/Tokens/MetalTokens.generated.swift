@@ -2072,6 +2072,31 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A plan laid out against dates: tasks down, days across, one scroller so the header, names and bars never drift. The header is two tiers, each Table's head height on the opaque frost, sticky at the top: months over days (scale day), months over weeks (scale week) or years over months (scale month), labels in the readout type (ink2 above, ink3 below) that stay in view while their unit runs; a hairline in the rule ink starts each lower unit and runs down the chart. The name column, self.side wide, sticks on the start on the opaque frost, its rows Table's row height with Table's row rule, names in the ui type. A day is scale.day, scale.week or scale.month wide. A task is a bar on its row, bar.height tall and round (pill), on the small raised plate (raise-sm); with progress, Progress's well (the switch's track, bar.track tall, bar.inset in from each end) holds the on-look fill. A milestone is the same plate turned to a diamond in a box milestone.size square, centred on its day. Held, a bar rises to Sortable's lift.scale with the raised plate's floating shadow fading in (surface spring) and follows the hand by translate; its slot, snapped to whole days, is the well's track (the recess). Let go, it travels into the slot on the object spring. Its ends are grips bar.edge wide (the resize cursor); an end moves a day at a time. While held or focused by keys, its dates show after its end (meta type, ink2, tabular), dates.gap away. Today is a hairline in ink3 down the chart with NOW in the readout type on the opaque frost at its top (now.pad). A burst of keys commits after self.commit. A locked bar shakes once (refusal). Reduce Motion: no scale and no travel. (Table's head and row heights, row padding, row rule and the opaque frost (the side column and header); the surface recipe's raise-sm and raise (the bar and its lift); Sortable's lift.scale and threshold; the well's track (the recess); the switch's track and on-look with Progress's fill (progress); the rule ink; the refusal spring)
+    public static let gantt = MetalObjectRecipe(
+        name: "gantt",
+        layers: [
+
+        ],
+        props: [
+            "self.side": .number(200.0),
+            "self.commit": .text("700ms"),
+            "scale.day": .number(32.0),
+            "scale.week": .number(16.0),
+            "scale.month": .number(4.0),
+            "bar.height": .number(22.0),
+            "bar.edge": .number(8.0),
+            "bar.min": .number(22.0),
+            "bar.inset": .number(9.0),
+            "bar.track": .number(4.0),
+            "milestone.size": .number(18.0),
+            "milestone.corner": .number(3.0),
+            "unit.pad": .number(8.0),
+            "dates.gap": .number(8.0),
+            "now.pad": .number(6.0),
+        ]
+    )
+
     /// A place that receives files: a sunk tray with a glyph engraved in a small well, a line saying to drop files, a line naming what it takes, and 'or choose files'. The whole tray is the label of a real file input, so a click, Space or Enter opens the picker. While files are dragged anywhere in the window it is armed: its edge lights faintly green on the settle spring, so the eye finds it. With files over it, the edge lights fully, the tray sinks a touch and the glyph rises one step on the part spring, and the line turns to 'Let go to attach' on the drum. Over it with a file it will not take, the edge is the invalid ink and the line says so; dropping shakes it (refusal). Let go, and the tray comes back up on the object spring with its small overshoot; the files it took land below as attachments. Disabled, it dims and drags pass by. Compact, it is one row, for a composer. Reduce Motion: the edge and line change at once; nothing sinks, rises or shakes. (the well (recipe well field); the invalid ring (foundations); the drum (motion/swap); the refusal (motion/refuse); the part, settle and object springs)
     public static let dropZone = MetalObjectRecipe(
         name: "drop-zone",
