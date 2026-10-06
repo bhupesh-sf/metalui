@@ -1,10 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import {
-  AlertDialog, Avatar, Button, Checkbox, Chip, EmptyState, Field, IconButton, Kbd, Menu, MenuItem, Row, Rule, Surface,
-  SwapText, Switcher, useToast, leaveRows, springOf, useRowMotion,
+  AlertDialog, Avatar, Button, Checkbox, Chip, EmptyState, Field, IconButton, Kbd, Row, Surface,
+  SwapText, Switcher, ToolStrip, useToast, leaveRows, useRowMotion,
 } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
 
@@ -28,7 +27,7 @@ import { Icon } from '@unlocalhosted/metalui/icons';
  *             travel up to close the gap (settle spring). In Done, un-ticking settles it back out.
  *
  *   select    the gutter box, x, Space, ⌘-click or ⇧-click (a range): the row takes the lifted plate
- *      0 ms   the first one: the tool strip rises one nest over the footer on the object spring;
+ *      0 ms   the first one: the tool strip rises over the footer (ToolStrip's own arrival, part spring);
  *             its count turns on the drum as more are picked
  *   clear     ⎋ or the strip's ×: the strip sinks one nest and fades (release spring)
  *
@@ -130,14 +129,6 @@ const short = (s: string, n = 32) => (s.length > n ? `${s.slice(0, n - 1).trimEn
 /* ── Motion helpers ────────────────────────────────────────── */
 
 
-const nestOf = (el: Element) => parseFloat(getComputedStyle(el).getPropertyValue('--mu-motion-nest')) || 6;
-
-/** An element arrives from one nest below on the object spring (the tool strip over its footer). */
-function rise(el: HTMLElement | null) {
-  if (!el) return;
-  const { ms, easing } = springOf(el, 'object');
-  if (ms) el.animate([{ opacity: 0, transform: `translateY(${nestOf(el)}px)` }, { opacity: 1, transform: 'none' }], { duration: ms, easing });
-}
 
 /** Which inbox on the page made the last change: it alone answers a ⌘Z from the page. */
 const lastActor = { current: '' };
@@ -154,8 +145,6 @@ const MAIN = 'grid min-w-0 -mx-6 px-6 grid-cols-[minmax(0,1fr)_auto] items-cente
 // The gutter's box shows on hover, on focus, while anything is selected, and always on a touch screen.
 const GUTTER = `${CELL} opacity-0 transition-opacity group-hover/row:opacity-100 group-focus-within/row:opacity-100 group-aria-selected/row:opacity-100 group-data-selecting/grid:opacity-100 pointer-coarse:opacity-100`;
 
-// A key on the graphite strip: the strip cap's look; the verb hides under 32rem, the glyph stays.
-const Verb = ({ children }: { children: string }) => <span className="sr-only @lg/block:not-sr-only">{children}</span>;
 // The icon set has no person glyph yet: a head and shoulders, drawn to the set's 24 grid and stroke.
 const PERSON = <svg aria-hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round"><circle cx="12" cy="8.6" r="3.6" /><path d="M5.2 19.4c.9-3.3 3.6-5.2 6.8-5.2s5.9 1.9 6.8 5.2" /></svg>;
 
@@ -189,8 +178,6 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
   const [active, setActive] = React.useState<{ id: string | null; col: number }>({ id: null, col: 2 });
   const [opened, setOpened] = React.useState<string | null>(null);
   const [confirm, setConfirm] = React.useState<string[] | null>(null);
-  const [assignOpen, setAssignOpen] = React.useState(false);
-  const [snoozeOpen, setSnoozeOpen] = React.useState(false);
   const [status, setStatus] = React.useState('');
 
   // The latest state, for timers that fire after a beat.
@@ -233,7 +220,6 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
     if (any) { if (!stripUp) setStripUp(true); return; }
     if (stripUp) leaveRows([strip.current], () => setStripUp(false));
   }, [any]); // eslint-disable-line react-hooks/exhaustive-deps
-  React.useLayoutEffect(() => { if (stripUp && any) rise(strip.current); }, [stripUp]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── Focus ───────────────────────────────────────────────── */
 
@@ -583,42 +569,21 @@ export function TaskInbox({ tasks: initial = TASKS, className }: TaskInboxProps)
       <div className="sticky bottom-12 z-1 grid min-h-toolstrip-button-height place-items-center">
         {stripUp ? (
           <div ref={strip} className="col-start-1 row-start-1">
-            <BaseToolbar.Root
-              aria-label={`Tools for ${plural(stripCount, 'selected task', 'selected tasks')}`}
-              render={<Surface material="graphite-strip" radius="strip" className="mu-toolstrip inline-flex items-center gap-toolstrip-gap p-toolstrip-pad [&>.mu-rule]:h-toolstrip-sep-height" />}
-            >
-              <span className="px-8 type-ui whitespace-nowrap tabular-nums text-toolstrip-ink-hover"><SwapText value={`${stripCount} selected`} /></span>
-              <BaseToolbar.Separator render={<Rule tone="graphite" />} />
-              <BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="check" />} />} aria-label="Complete" aria-keyshortcuts="E" onClick={completeTargets}>
-                <Verb>Complete</Verb>
-              </BaseToolbar.Button>
-              <Menu
-                side="top"
-                heading="Assign to"
-                open={assignOpen}
-                onOpenChange={setAssignOpen}
-                trigger={<BaseToolbar.Button render={<Button cap="strip" icon={PERSON} />} aria-label="Assign"><Verb>Assign</Verb></BaseToolbar.Button>}
-              >
-                {PEOPLE.map((p) => (
-                  <MenuItem key={p.id} onSelect={() => assign(targets(), p.id)}>{p.id === ME ? `${p.name} (you)` : p.name}</MenuItem>
-                ))}
-              </Menu>
-              <Menu
-                side="top"
-                heading="Snooze until"
-                open={snoozeOpen}
-                onOpenChange={setSnoozeOpen}
-                trigger={<BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="clock" />} />} aria-label="Snooze"><Verb>Snooze</Verb></BaseToolbar.Button>}
-              >
-                <MenuItem onSelect={() => snooze(targets(), 1, 'tomorrow')}>Tomorrow</MenuItem>
-                <MenuItem onSelect={() => snooze(targets(), NEXT_WEEK, `${weekday.format(dateOf(NEXT_WEEK))} ${monthDay.format(dateOf(NEXT_WEEK))}`)}>Next week</MenuItem>
-              </Menu>
-              <BaseToolbar.Separator render={<Rule tone="graphite" />} />
-              <BaseToolbar.Button render={<Button cap="strip-danger" icon={<Icon name="trash" />} />} aria-label="Delete" aria-keyshortcuts="Delete" onClick={() => openConfirm()}>
-                <Verb>Delete</Verb>
-              </BaseToolbar.Button>
-              <BaseToolbar.Button render={<Button cap="strip" icon={<Icon name="close" />} />} aria-label="Clear selection" aria-keyshortcuts="Escape" onClick={() => { clearSelection(); focusCell(activeId); }} />
-            </BaseToolbar.Root>
+            <ToolStrip
+              label={plural(stripCount, 'selected task', 'selected tasks')}
+              count={<SwapText value={`${stripCount} selected`} />}
+              wordClassName="sr-only @lg/block:not-sr-only"
+              items={[
+                { label: 'Complete', icon: <Icon name="check" />, shortcut: 'E', onSelect: completeTargets },
+                { label: 'Assign', icon: PERSON, menu: { heading: 'Assign to', items: PEOPLE.map((p) => ({ label: p.id === ME ? `${p.name} (you)` : p.name, onSelect: () => assign(targets(), p.id) })) } },
+                { label: 'Snooze', icon: <Icon name="clock" />, menu: { heading: 'Snooze until', items: [
+                  { label: 'Tomorrow', onSelect: () => snooze(targets(), 1, 'tomorrow') },
+                  { label: 'Next week', onSelect: () => snooze(targets(), NEXT_WEEK, `${weekday.format(dateOf(NEXT_WEEK))} ${monthDay.format(dateOf(NEXT_WEEK))}`) },
+                ] } },
+                { label: 'Delete', icon: <Icon name="trash" />, destructive: true, shortcut: 'Delete', onSelect: () => openConfirm() },
+                { label: 'Clear selection', icon: <Icon name="close" />, iconOnly: true, shortcut: 'Escape', onSelect: () => { clearSelection(); focusCell(activeId); } },
+              ]}
+            />
           </div>
         ) : visible.length > 0 && (
           <p aria-hidden className="col-start-1 row-start-1 m-0 hidden flex-wrap items-center justify-center gap-x-12 gap-y-4 type-meta text-ink3 @md/block:flex pointer-coarse:hidden">

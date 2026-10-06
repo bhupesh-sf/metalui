@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { SelectionFrame, ToolStrip } from '@unlocalhosted/metalui';
+import { SelectionFrame, SwapText, ToolStrip } from '@unlocalhosted/metalui';
+import { Icon } from '@unlocalhosted/metalui/icons';
 import reactSource from '../../../../../packages/metalui/src/blocks/tool-strip/tool-strip.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import agentGuide from '../../../../../packages/metalui/src/blocks/tool-strip/tool-strip.agent.md?raw';
@@ -12,6 +13,7 @@ export default function ToolStripPage() {
   const ownCss = useOwnCss(cssSource);
   const [said, setSaid] = React.useState('Click a verb');
   const [shown, setShown] = React.useState(true);
+  const [listSaid, setListSaid] = React.useState('Pick a verb');
   const verbs = ['Tasks', 'Summarise', 'Gather', 'Region', 'Export'].map((l) => ({ label: l, onSelect: () => setSaid(l) }));
   return (
     <>
@@ -25,6 +27,23 @@ export default function ToolStripPage() {
           </button>
         </Bench>
         <SwiftCapture name="tool-strip" maxWidth={560} />
+      </Section>
+      <Section title="Over a list" lede="Over rows picked in a list, the strip leads with the count, its verbs carry glyphs, a verb with choices opens its menu above the strip, and a close key ends the selection. This is the task inbox's strip.">
+        <Bench caption={listSaid} className="min-h-[160px]">
+          <ToolStrip
+            label="3 selected tasks"
+            count={<SwapText value="3 selected" />}
+            items={[
+              { label: 'Complete', icon: <Icon name="check" />, shortcut: 'E', onSelect: () => setListSaid('Completed 3 tasks · Undo') },
+              { label: 'Snooze', icon: <Icon name="clock" />, menu: { heading: 'Snooze until', items: [
+                { label: 'Tomorrow', onSelect: () => setListSaid('Snoozed 3 tasks until tomorrow') },
+                { label: 'Next week', onSelect: () => setListSaid('Snoozed 3 tasks until next week') },
+              ] } },
+              { label: 'Delete', icon: <Icon name="trash" />, destructive: true, onSelect: () => setListSaid('Deleted 3 tasks · Undo') },
+              { label: 'Clear selection', icon: <Icon name="close" />, iconOnly: true, shortcut: 'Escape', onSelect: () => setListSaid('Selection cleared') },
+            ]}
+          />
+        </Bench>
       </Section>
       <UsageSection agent={agentGuide} />
       <Section title="Source">
