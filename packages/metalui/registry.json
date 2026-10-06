@@ -2211,6 +2211,28 @@
       "docs": "Agent guide: https://metalui.dev/r/time-scrubber.md. SwiftUI: MetalTimeScrubber in the MetalUI Swift package."
     },
     {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "A record of what happened and what is planned, read top to bottom: events on an engraved rail, each a lamp with the LED meanings (off for the past, green now, amber waiting, red failed) and its word, a running event's ring on the Spinner's clock, and a now marker where the past meets the plan. Times in tabular figures, relative with the exact time in a tooltip, at the end of the line or in a column before the rail; durations; the host's glyphs in sunk wells with the state's lamp on the corner. New events land from above and the rest glide.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/spinner.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/timeline/timeline.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/timeline/timeline.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/timeline.md. SwiftUI: MetalTimeline in the MetalUI Swift package."
+    },
+    {
       "name": "toast",
       "type": "registry:ui",
       "title": "Toast",
