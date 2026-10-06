@@ -398,26 +398,75 @@ Decide: `trigger="button"` here, or a separate picker component?
 
 ### Table
 
+Bhupesh Gupta: "table or data grid still needs proper variations, there are so many ways data is shown in tables … think practically what's important, leaving the noise and capturing the needed." (2026-10-06)
+
 Now: columns with sort (the arrow turns, rows travel to their places), row selection with a green tint, a hovered row sinks, engraved labels and hairlines, an empty line; rows 40, head 32. SwiftUI is a stack of rows with dividers.
 
-- [ ] **SwiftUI first**: `MetalTable` with the header, sort and selection.
-- [ ] **Density** (ReUI dense, research): `density` regular 40 / compact 32; the page sets it with a `Switcher`, a setting you change once.
-- [ ] **A reading guide, not stripes** (HIG alternating rows "to track values across columns"; *ours*): one plate glides under the hovered or focused row on the settle spring (the menu's `ListGlide`), so your place across a wide row is held by one moving thing, with the keyboard too.
-- [ ] **Headers and the first column stay** (React Aria sticky headers, ReUI and Airtable pinning): the header is sticky in a scroll container; `pin: 'start'` columns sit on the raised plate, and a shadow shows at their edge only while content is under it (the composer's scrolled hairline, the same mechanism).
-- [ ] **Numbers line up** (shadcn currency cells, research): `numeric` columns: tabular figures, end-aligned, the unit in the header ("Size (MB)"), never in each cell.
-- [ ] **Totals** (ReUI footer rows): `footer`: a sunk readout row at the bottom, sticky; totals turn on the drum when rows change, so you see that a sum moved.
-- [ ] **Many rows at once** (shadcn selected count): selection shows a `ToolStrip` with the count (the strip's "Over a list"), the count turning on the drum; documented as a pattern, not a Table prop.
-- [ ] **Filtered is visible** (*ours*): when the host filters, the caption says "12 of 240" (drum) with a Clear key; a filtered table never looks complete.
-- [ ] **Loading and empty, told apart** (React Aria `renderEmptyState`): `loading`: `Skeleton` rows in the columns' widths; `empty` and `emptyFiltered` with their own words and actions.
-- [ ] **Open a row** (React Aria `onRowAction`, row links): `onRowAction` on Enter and click; the opened row takes `Row`'s `opened` rail.
-- [ ] **Columns you can size and hide** (ReUI, React Aria resizing, HIG): drag the hairline between two headers (it thickens to a grip on hover, part spring); `onColumnsChange` so the host keeps widths; hide and show from a column `Menu` with checkboxes. Reordering waits for Sortable.
-- [ ] **Small charts in cells** (*ours*): a documented `cell` recipe with `Sparkline` or `Meter`, sized to the row.
-- [ ] **Tree rows**: an expand chevron and engraved indent guides, after the Tree component, sharing its parts.
-- [ ] Later, as the data grid (decided before): arrow keys between cells, cell ranges with copy and paste, editing in place, virtualised rows.
+Plan it by the **kind of data**, not by features: each kind below is a real situation with its own needs, and the features are what those kinds share. Tiers: **Must** (most products hit it), **Should** (common, after Must), **Later** (big, or rare).
 
-Not doing: striped rows (the reading guide does the job without noise on engraved surfaces); full cell borders (rows and alignment carry it; grid lines come with editing, where cells are targets); ReUI's "light, rounded rows" look (the hover plate is already rounded); a coloured sort LED per header (green and blue already mean other things; the arrow shows direction).
+**Kinds of table**
 
-Decide: is a third, roomier density needed (48, for touch on iOS)?
+| Kind | Real examples | What it needs | Tier |
+|---|---|---|---|
+| **Records**: one row per thing you can open | invoices, issues, users, files, deployments | a primary column (name and a second line), status, person, date; open a row; row actions; select and act on many; sort; a visible filter; pages; loading and empty | Must |
+| **Numbers to compare** | balances, usage, line items, analytics | numbers aligned, units in the header, deltas, a totals row | Must |
+| **Grouped** | issues by status, payments by day | group header rows with a count, collapsible, a subtotal per group, the group header staying while its rows scroll | Should |
+| **Comparison matrix**: both axes are headers | plans × features, roles × permissions | row headers, the first column and the header pinned, yes/no as glyphs; cells that are checkboxes for a permissions matrix | Should |
+| **Live log**: rows keep arriving | CI output, audit log, events | new rows arrive at the top without moving what you're reading ("4 new" to jump up), a level LED, time, monospaced ids, many rows | Should |
+| **Hierarchy** | folders, accounts, an org | expandable rows with indent guides | Later (after Tree) |
+| **Editable grid** | price lists, bulk edits | cell focus, editing in place, copy and paste ranges | Later (the data grid) |
+| **Properties**: label and value pairs | a receipt, a details panel, specs | two columns, no header | Not a table: a small `Properties` part (a `<dl>`) |
+
+**Cell kinds** — the most useful variation is a fixed vocabulary of cells, so every table in a product reads the same. A column says its `kind`; the kind sets alignment, type and the empty look.
+
+| Kind | Look |
+|---|---|
+| text | truncates with an ellipsis, the whole in a tooltip; an optional second line in ink2 |
+| number, currency, percent | tabular figures, end-aligned, the unit in the header ("Size (MB)"); a real minus sign, never red alone |
+| delta | the sign and an up or down glyph with the value; green or red ink only on top of the sign |
+| date, time | relative ("3 h ago") with the exact time in a tooltip, or a fixed short format; tabular |
+| status | an LED and its word (live, waiting, failed, off), the library's LED meanings |
+| person | avatar and name; several as overlapping avatars and "+2" |
+| tags | up to two `Chip`s, then "+3" |
+| progress | a slim `Meter` sized to the row |
+| trend | a `Sparkline` sized to the row |
+| yes / no | `check` for yes, nothing for no; never a red cross |
+| id, code | monospaced; a copy key on hover |
+| actions | a `more` key at the row's end, shown on hover and on keyboard focus |
+| empty | "—" in ink3 in every kind |
+
+**Must**
+- [ ] **SwiftUI first**: `MetalTable` with the header, sort, selection and the cell kinds.
+- [ ] **Cell kinds**: the vocabulary above as `kind` on a column, with `unit`; `cell` stays for anything else.
+- [ ] **Density**: `density` regular 40 / compact 32.
+- [ ] **A reading guide, not stripes**: one plate glides under the hovered or focused row on the settle spring (the menu's `ListGlide`), keyboard included.
+- [ ] **Sticky header** in a scroll container.
+- [ ] **Open a row**: `onRowAction` on Enter and click; the opened row takes `Row`'s `opened` rail.
+- [ ] **Row actions**: the `actions` cell opens a `Menu`; one primary action may show as a key on hover.
+- [ ] **Many rows at once**: selection shows a `ToolStrip` with the count on the drum (the strip's "Over a list"); a documented pattern.
+- [ ] **Filtered is visible**: the caption says "12 of 240" (drum) with a Clear key whenever the host filters.
+- [ ] **Pages**: `Pagination` under the table for records; "Load more" for feeds. Infinite scroll only with virtual rows (Later).
+- [ ] **Waiting and empty, told apart**: `loading` (`Skeleton` rows in the columns' widths), `empty` ("No invoices yet" and its action), `emptyFiltered` ("Nothing matches" and Clear), `error` (`sync-error`, Try again).
+- [ ] **Narrow widths**: each column has a `priority`; as the block narrows (`@container/block`), the lowest-priority columns leave first and their values move to a second line under the primary cell. No sideways scroll for records.
+
+**Should**
+- [ ] **Totals**: `footer`, a sunk readout row, sticky; totals turn on the drum when rows change.
+- [ ] **Grouped rows**: `groupBy` with engraved group headers (the name and a count), collapsing with a chevron on the part spring, subtotals, the header sticky under the table header.
+- [ ] **Pinned first column**: `pin: 'start'` on the raised plate; a shadow at its edge only while content is under it (the composer's scrolled hairline).
+- [ ] **Row headers and a matrix**: `rowHeader` column (`<th scope="row">`); yes/no cells; checkbox cells for a permissions matrix.
+- [ ] **Live rows**: new rows arrive with the rows' motion (`useRowMotion`); if you've scrolled down, they wait behind a "4 new" key at the top instead of pushing you.
+- [ ] **Row detail in place**: `expandRow` opens a panel under the row (the error row's grow, settle spring) for a little more without leaving the list.
+- [ ] **Columns to hide and size**: hide and show from a column `Menu` with checkboxes; drag the hairline between headers to resize (it thickens to a grip, part spring); `onColumnsChange` so the host keeps them.
+
+**Later**
+- [ ] Tree rows (after Tree, sharing its parts).
+- [ ] Virtual rows for very long lists, then infinite scroll.
+- [ ] The data grid: arrow keys between cells, editing in place, cell ranges with copy and paste, reordering columns (after Sortable).
+- [ ] `Properties` as its own small part, if the details panels need it first.
+
+Not doing: striped rows (the reading guide does it); full cell borders (they come with the editable grid, where cells are targets); ReUI's "light, rounded rows" look (the hover plate is already rounded); colour-only cells such as heatmap tints or red negatives (a sign or a glyph always carries it); a coloured sort LED per header (green and blue already mean other things); sideways scrolling as the answer to narrow screens.
+
+Decide: a roomier density (48) for touch on iOS? `Properties` now, or when a details panel needs it? Live rows in Should, or Later?
 
 ### Card, and a frame of cards
 
