@@ -1811,6 +1811,28 @@
       "docs": "Agent guide: https://metalui.dev/r/status.md. SwiftUI: MetalStatusBadge in the MetalUI Swift package."
     },
     {
+      "name": "stepper",
+      "type": "registry:ui",
+      "title": "Stepper",
+      "description": "The steps of a wizard: where you are (the switcher's thumb, gliding along the groove), what's done (the checkbox's on look; the groove fills green), what's left (sunk wells), a step with a problem (the invalid ring and its words), a step that waits (the Spinner's ring) and steps you can't reach yet. Panels stay mounted, so going back keeps what was typed; the new one drifts in from the way you went. Horizontal (stacked or inline) or vertical, with the panels in the list.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/spinner.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/stepper/stepper.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/stepper/stepper.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/stepper.md. SwiftUI: MetalStepper in the MetalUI Swift package."
+    },
+    {
       "name": "suggestion-chip",
       "type": "registry:ui",
       "title": "Suggestion chip",
