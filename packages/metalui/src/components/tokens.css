@@ -2071,12 +2071,30 @@
   --mu-r-mark-scrub-clock-step: 15;
   --mu-r-mark-scrub-clock-small: 5;
   --mu-r-mark-scrub-clock-large: 60;
+  --mu-r-mark-scrub-day-step: 1;
+  --mu-r-mark-scrub-day-small: 1;
+  --mu-r-mark-scrub-day-large: 7;
+  --mu-r-mark-scrub-day-pixels: 8px;
+  --mu-r-mark-scrub-enum-step: 1;
+  --mu-r-mark-scrub-enum-small: 1;
+  --mu-r-mark-scrub-enum-large: 1;
+  --mu-r-mark-scrub-enum-pixels: 16px;
+  --mu-r-mark-scrub-hue-step: 5;
+  --mu-r-mark-scrub-hue-small: 1;
+  --mu-r-mark-scrub-hue-large: 30;
+  --mu-r-mark-scrub-unit-pixels: 24px;
+  --mu-r-mark-scrub-press-hold: 500ms;
+  --mu-r-mark-scrub-hover-line: 2;
+  --mu-r-mark-scrub-peek-gap: 2px;
+  --mu-r-mark-scrub-peek-opacity: 0.4;
   --mu-r-mark-scrub-scale-gap: 4px;
   --mu-r-mark-scrub-scale-width: 6px;
   --mu-r-mark-scrub-scale-height: 24px;
   --mu-r-mark-scrub-scale-tick: 3px;
   --mu-r-mark-scrub-scale-minor: 55%;
   --mu-r-mark-scrub-scale-index: 1.5px;
+  /* mark-pick: the mark (its look), the popover (the plate), the combobox (the field and rows); Notion's mentions, Linear's inline pickers */
+  --mu-r-mark-pick-plate-width: 220px;
   /* icon-button: reference style.css .tb, .tb:active, .tb.on, .tb.on::after, .iconbtn, .sugg button */
   --mu-r-icon-button-tool-background:
     /* mu-recipe:icon-button:0 */ linear-gradient(#303033, #262628);

@@ -1331,14 +1331,38 @@
       "docs": "Agent guide: https://metalui.dev/r/mark.md. SwiftUI: MetalCueMark, MetalCueTag, MetalCueInferred, MetalCueURLPill, MetalCueUrgency, MetalCueLife, Text.metalCue(_:colorway:) in the MetalUI Swift package."
     },
     {
+      "name": "mark-pick",
+      "type": "registry:ui",
+      "title": "Mark pick",
+      "description": "A recognised tag or person you swap for another in place: a click, Enter or Space opens a small Combobox in a popover from the words, with every choice under it at once; the pick rewrites the words, one commit per pick. At rest it is the Mark exactly.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/combobox.json",
+        "https://metalui.dev/r/mark.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/mark-pick/mark-pick.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/mark-pick/mark-pick.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/mark-pick.md. SwiftUI: MetalMarkPick in the MetalUI Swift package."
+    },
+    {
       "name": "mark-scrub",
       "type": "registry:ui",
       "title": "Mark scrub",
-      "description": "A recognised number, duration or time of day you change in place: drag up or down on the words in detents (Shift large, Alt small), or focus it and press the arrows. The words are the value and are rewritten in place, one commit per gesture; the digits turn on the drum, the words hold their width while you drag, and an engraved scale stands beside them only while you drag. A spinbutton with a name; a push past a limit shakes the words.",
+      "description": "A recognised number, duration, time of day, day, state or colour you change in place: drag up or down on the words in detents (Shift large, Alt small), or focus it and press the arrows; a held press or Enter opens the host's picker (a Calendar for a day) in a popover, and a duration says itself in its other unit on U or a sideways drag. The words are the value and are rewritten in place, one commit per gesture; the digits turn on the drum, the words hold their width while you drag, and an engraved scale stands beside them only while you drag. A spinbutton with a name; a push past a limit shakes the words.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/mark.json",
         "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/popover.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

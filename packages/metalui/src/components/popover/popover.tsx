@@ -59,16 +59,21 @@ function Trigger({ children, ...props }: PopoverTriggerProps) {
 export interface PopoverContentProps extends Omit<BasePopover.Popup.Props, 'className'> {
   side?: 'bottom' | 'top' | 'left' | 'right';
   align?: 'start' | 'center' | 'end';
+  /** Where it opens from when there is no Trigger (a word in the text): an element, or a ref to one. */
+  anchor?: BasePopover.Positioner.Props['anchor'];
   className?: string;
 }
 
 /** The plate: portalled and placed beside its trigger. */
-const Content = React.forwardRef<HTMLDivElement, PopoverContentProps>(function PopoverContent({ side = 'bottom', align = 'center', className, ...props }, ref) {
+const Content = React.forwardRef<HTMLDivElement, PopoverContentProps>(function PopoverContent({ side = 'bottom', align = 'center', anchor, className, ...props }, ref) {
   const at = React.useContext(AtCtx);
+  // Without a Trigger the anchor is where the colorway comes from.
+  const el = typeof anchor === 'function' ? null : anchor && 'current' in anchor ? anchor.current : anchor;
+  if (at && el instanceof Element) at.current = el;
   return (
     <BasePopover.Portal>
       {at && <InheritColorway anchor={at} />}
-      <BasePopover.Positioner className={POSITIONER} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
+      <BasePopover.Positioner className={POSITIONER} anchor={anchor} side={side} align={align} sideOffset={offset()} collisionPadding={8}>
         <BasePopover.Popup ref={ref} className={className ? `${PLATE} ${className}` : PLATE} {...props} />
       </BasePopover.Positioner>
     </BasePopover.Portal>

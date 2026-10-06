@@ -33,7 +33,7 @@ Reduce Motion: a crossfade.
 |---|---|
 | `Popover.Root` `open`, `defaultOpen`, `onOpenChange`, `modal` | `isPresented:` |
 | `Popover.Trigger` (children: the control) | `trigger:` |
-| `Popover.Content` `side`, `align` | `arrowEdge:` |
+| `Popover.Content` `side`, `align`, `anchor` (open from an element with no Trigger, such as a word in the text: pass `finalFocus` too, so focus returns to it) | `arrowEdge:` |
 | `Popover.Title`, `Popover.Description`, `Popover.Body`, `Popover.Close` | slots |
 
 ## Keyboard and accessibility

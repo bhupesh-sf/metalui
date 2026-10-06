@@ -1,0 +1,19 @@
+{
+  "name": "mark-pick",
+  "title": "Mark pick",
+  "status": "alpha",
+  "layer": "component",
+  "uses": ["mark", "popover", "combobox"],
+  "description": "A recognised tag or person you swap for another in place: a click, Enter or Space opens a small Combobox in a popover from the words, with every choice under it at once; the pick rewrites the words, one commit per pick. At rest it is the Mark exactly.",
+  "base": "@base-ui/react/popover",
+  "react": {
+    "export": "MarkPick",
+    "files": ["mark-pick.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalMarkPick",
+    "file": "swift/Sources/MetalUI/Components/MetalMarkPick.swift"
+  },
+  "agent": "mark-pick.agent.md",
+  "page": "/components/cue#pick"
+}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Avatar, Cue, CueInferred, CueLife, CueUrgency, CueUrl, Dimple, Field, MarkScrub, markScrubRead, SlidingIndicator } from '@unlocalhosted/metalui';
+import { Avatar, Calendar, Cue, CueInferred, CueLife, CueUrgency, CueUrl, Dimple, Field, MarkPick, MarkScrub, markScrubRead, SlidingIndicator } from '@unlocalhosted/metalui';
 import { CoinIcon, LinkIcon, MoonIcon } from '@unlocalhosted/metalui/icons';
 import { LifeCalmIcon, LifeCoffeeIcon, LifeStepsIcon } from '@unlocalhosted/metalui/icons/life';
 import reactSource from '../../../../../packages/metalui/src/components/mark/mark.tsx?raw';
@@ -139,6 +139,14 @@ due <CueInferred resolved="FRI 2 OCT · RECOGNIZER 0.82" confirmed={ok} onConfir
         <ScrubDemo />
       </Section>
 
+      <Section id="rotate" title="Operable: days, states and colours" lede="The same gesture for words that aren't numbers. “tomorrow” steps a day per detent through yesterday, today, the weekdays and next week, then real dates, its resolved day riding along in the chip; hold the press (or press Enter) and a calendar opens from the words, and the day you choose comes back as words when words can say it. “#doing” turns through its states like a rotary switch, wrapping, its neighbours peeking above and below while you hold it, its colour following the state; Space steps it. A colour turns round the wheel, its saturation and lightness kept. Hover any of them: the line thickens, and the first time the chip says how.">
+        <RotateDemo />
+      </Section>
+
+      <Section id="pick" title="Operable: tags and people" lede="A tag or a person is swapped, not stepped. Click it (or focus it and press Enter): a small combobox rises from the words with every choice under it; type to narrow, pick one, and the words change in place, one undo step. Esc leaves them as they were.">
+        <PickDemo />
+      </Section>
+
       <Section title="The dimple" lede="A task's checkbox on Base UI Checkbox: rest, hover, checked (a pen draws the tick: the short leg, a beat at the corner, then the long leg on a spring), doing (announced as mixed), ghost, and disabled.">
         <Bench tone="page" caption="rest · checked · doing · ghost · disabled">
           <div className="flex items-center gap-40">
@@ -180,7 +188,8 @@ due <CueInferred resolved="FRI 2 OCT · RECOGNIZER 0.82" confirmed={ok} onConfir
             ['CueLife', 'children (a Life*Icon at 16), label?, fresh?', 'One per block, trailing: the kind of the whole line, named on hover.'],
             ['Dimple', 'checked, onCheckedChange, doing?, ghost?, disabled?', 'Base UI Checkbox. The host writes [x] into the text on tick.'],
             ['CueUrgency', '–', 'An open task due soon.'],
-            ['MarkScrub', 'children (the words), scale?, step?, smallStep?, largeStep?, min?, max?, onWordsChange?, onWordsCommit?, every Cue prop', 'number · duration · clock. A spinbutton in the text; the words are the value and are rewritten in place, one commit per gesture.'],
+            ['MarkScrub', 'children (the words), scale?, options?, today?, step?, smallStep?, largeStep?, min?, max?, picker?, hint?, onWordsChange?, onWordsCommit?, every Cue prop', 'number · duration · clock · day · enum · hue. A spinbutton in the text; the words are the value and are rewritten in place, one commit per gesture. U says a duration in its other unit; a held press or Enter opens the picker.'],
+            ['MarkPick', 'children (the words), options, onWordsChange?, onWordsCommit?, every Cue prop', 'A tag or a person you swap: a click, Enter or Space opens a small Combobox from the words; one commit per pick.'],
           ]}
         />
       </Section>
@@ -208,10 +217,11 @@ const sourceOf = (w: Words) => `Send #poster ${w.when}, ${w.dur} for ${w.amount}
 const at = (minutes: number) => `${pad(Math.floor(minutes / 60))}:${pad(minutes % 60)}`;
 const pad = (n: number) => String(n).padStart(2, '0');
 
-function ScrubDemo() {
-  const [words, setWords] = React.useState(START);
-  const [history, setHistory] = React.useState<Words[]>([]);
-  const committed = React.useRef(START);
+/** The host's text as named words: live changes, one undo step per commit, ⌘Z (or the panel's Undo) walks back. */
+function useWords<W extends Record<string, string>>(start: W) {
+  const [words, setWords] = React.useState(start);
+  const [history, setHistory] = React.useState<W[]>([]);
+  const committed = React.useRef(start);
   const undo = React.useRef(() => {});
   undo.current = () => {
     const prev = history.at(-1);
@@ -220,12 +230,7 @@ function ScrubDemo() {
     setWords(prev);
     committed.current = prev;
   };
-  const d = useDialKit(
-    'Scrub',
-    { pixels: [4, 2, 12], tick: [3, 2, 6], slow: [1, 1, 6], undo: { type: 'action', label: 'Undo' } },
-    { onAction: (a) => a === 'undo' && undo.current() },
-  );
-  const bind = (key: keyof Words) => ({
+  const bind = (key: keyof W) => ({
     children: words[key],
     onWordsChange: (w: string) => setWords((s) => ({ ...s, [key]: w })),
     onWordsCommit: (w: string) => {
@@ -234,17 +239,32 @@ function ScrubDemo() {
       committed.current = { ...committed.current, [key]: w };
     },
   });
+  const onKeyDown = (e: React.KeyboardEvent) => { if ((e.metaKey || e.ctrlKey) && e.key === 'z') { e.preventDefault(); undo.current(); } };
+  const caption = `${history.length} undo step${history.length === 1 ? '' : 's'}`;
+  return { words, bind, undo, onKeyDown, caption };
+}
+
+const forgetHint = () => { try { localStorage.removeItem('mu-cue-hint'); } catch { /* storage blocked */ } };
+
+function ScrubDemo() {
+  const { words, bind, undo, onKeyDown, caption } = useWords(START);
+  const d = useDialKit(
+    'Scrub',
+    { pixels: [4, 2, 12], tick: [3, 2, 6], unit: [24, 8, 64], line: [2, 1, 3], slow: [1, 1, 6], undo: { type: 'action', label: 'Undo' }, hint: { type: 'action', label: 'Show the hint again' } },
+    { onAction: (a) => (a === 'undo' ? undo.current() : a === 'hint' && forgetHint()) },
+  );
   const time = markScrubRead(words.when, 'clock');
-  const vars = { ...springVars('settle', 'settle', d.slow), '--mu-r-mark-scrub-scrub-pixels': `${d.pixels}px`, '--mu-r-mark-scrub-scale-tick': `${d.tick}px` } as React.CSSProperties;
+  const vars = {
+    ...springVars('settle', 'settle', d.slow),
+    '--mu-r-mark-scrub-scrub-pixels': `${d.pixels}px`,
+    '--mu-r-mark-scrub-scale-tick': `${d.tick}px`,
+    '--mu-r-mark-scrub-unit-pixels': `${d.unit}px`,
+    '--mu-r-mark-scrub-hover-line': d.line,
+  } as React.CSSProperties;
 
   return (
-    <Bench caption={`${history.length} undo step${history.length === 1 ? '' : 's'} · drag, or focus and press ↑ ↓ (⇧ ×10, ⌥ fine)`} className="min-h-[200px]">
-      <div
-        className="flex flex-col gap-16 pl-40"
-        style={vars}
-        data-testid="scrub-demo"
-        onKeyDown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'z') { e.preventDefault(); undo.current(); } }}
-      >
+    <Bench caption={`${caption} · drag, or focus and press ↑ ↓ (⇧ ×10, ⌥ fine) · drag sideways or press U on 1h30 for minutes`} className="min-h-[200px]">
+      <div className="flex flex-col gap-16 pl-40" style={vars} data-testid="scrub-demo" onKeyDown={onKeyDown}>
         <span className="type-content whitespace-nowrap text-ink" data-testid="scrub-line">
           Send <Cue kind="tag">#poster</Cue> <MarkScrub kind="date" scale="clock" label="Time" resolved={time ? `WED 30 SEP · ${at(time.value)}` : undefined} {...bind('when')} />,{' '}
           <MarkScrub kind="duration" scale="duration" label="Duration" {...bind('dur')} /> for{' '}
@@ -252,6 +272,75 @@ function ScrubDemo() {
           <MarkScrub kind="measurement" label="Sleep" glyph={MOON} step={0.5} smallStep={0.25} largeStep={2} min={0} max={24} {...bind('sleep')} />
         </span>
         <span className="type-readout text-ink2" data-testid="scrub-source">{sourceOf(words)}</span>
+      </div>
+    </Bench>
+  );
+}
+
+const STATES = ['todo', 'doing', 'done', 'dropped'] as const;
+const ROTATE_START = { state: '#doing', day: 'tomorrow', time: '4pm', hex: '#FF6B3D' };
+const rotateSource = (w: typeof ROTATE_START) => `Ship the poster ${w.state} ${w.day} ${w.time}, in ${w.hex}`;
+const offsetOf = (d: Date) => Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate())) / 864e5);
+const dateAt = (offset: number) => new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate() + offset);
+
+function RotateDemo() {
+  const { words, bind, undo, onKeyDown, caption } = useWords(ROTATE_START);
+  const d = useDialKit(
+    'Rotate',
+    { day: [8, 4, 24], state: [16, 6, 40], hold: [500, 250, 1200], peek: [0.4, 0, 1], slow: [1, 1, 6], undo: { type: 'action', label: 'Undo' } },
+    { onAction: (a) => a === 'undo' && undo.current() },
+  );
+  const day = markScrubRead(words.day, 'day', { today: TODAY });
+  const vars = {
+    ...springVars('settle', 'settle', d.slow),
+    '--mu-r-mark-scrub-day-pixels': `${d.day}px`,
+    '--mu-r-mark-scrub-enum-pixels': `${d.state}px`,
+    '--mu-r-mark-scrub-press-hold': `${d.hold}ms`,
+    '--mu-r-mark-scrub-peek-opacity': d.peek,
+  } as React.CSSProperties;
+
+  return (
+    <Bench caption={`${caption} · drag; hold “tomorrow” (or Enter) for a calendar; Space turns the state`} className="min-h-[200px]">
+      <div className="flex flex-col gap-16 pl-40" style={vars} data-testid="rotate-demo" onKeyDown={onKeyDown}>
+        <span className="type-content whitespace-nowrap text-ink">
+          Ship the poster <MarkScrub kind="tag" scale="enum" options={STATES} label="Status" {...bind('state')} />{' '}
+          <MarkScrub
+            kind="date"
+            scale="day"
+            today={TODAY}
+            label="Day"
+            glyph={false}
+            resolved={day ? dayOf(day.value) : undefined}
+            picker={({ value, choose }) => <Calendar value={dateAt(value)} onValueChange={(date) => choose(offsetOf(date))} autoFocus />}
+            {...bind('day')}
+          />{' '}
+          <MarkScrub kind="date" scale="clock" label="Time" {...bind('time')} />, in <MarkScrub kind="hex" scale="hue" label="Colour" {...bind('hex')} />
+        </span>
+        <span className="type-readout text-ink2" data-testid="rotate-source">{rotateSource(words)}</span>
+      </div>
+    </Bench>
+  );
+}
+
+const PICK_START = { tag: '#poster', who: 'Sam' };
+const PEOPLE_ITEMS = [
+  { value: 'Sam', label: 'Sam', description: 'Sam Ito', icon: person('Sam Ito') },
+  { value: 'Ana', label: 'Ana', description: 'Ana Reis', icon: person('Ana Reis') },
+  { value: 'Marta', label: 'Marta', description: 'Marta Silva', icon: person('Marta Silva') },
+];
+const FULL: Record<string, string> = { Sam: 'Sam Ito', Ana: 'Ana Reis', Marta: 'Marta Silva' };
+
+function PickDemo() {
+  const { words, bind, undo, onKeyDown, caption } = useWords(PICK_START);
+  const d = useDialKit('Pick', { slow: [1, 1, 6], undo: { type: 'action', label: 'Undo' } }, { onAction: (a) => a === 'undo' && undo.current() });
+  const vars = { ...springVars('surface', 'surface', d.slow), ...springVars('release', 'release', d.slow) } as React.CSSProperties;
+  return (
+    <Bench caption={`${caption} · click a tag or a person`} className="min-h-[160px]">
+      <div className="flex flex-col gap-16 pl-40" style={vars} data-testid="pick-demo" onKeyDown={onKeyDown}>
+        <span className="type-content whitespace-nowrap text-ink">
+          Send <MarkPick kind="tag" options={USED_TAGS} {...bind('tag')} /> to <MarkPick kind="person" glyph={person(FULL[words.who] ?? words.who)} options={PEOPLE_ITEMS} {...bind('who')} />
+        </span>
+        <span className="type-readout text-ink2" data-testid="pick-source">Send {words.tag} to {words.who}</span>
       </div>
     </Bench>
   );
