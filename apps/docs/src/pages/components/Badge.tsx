@@ -7,6 +7,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/components/badge/badge.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalBadge.swift?raw';
 import { CodeScreen, PageHeader, Rules, Section, SourceTabs, Stage, TokenTable } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { Beat, Compare, LayerTrail, SpecLine } from '../../ui/beat';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { tokens } from '../../lib/tokens';
@@ -147,6 +148,13 @@ export default function BadgePage() {
         </Stage>
         <CodeScreen tabs={USAGE} />
       </section>
+
+      <UsageSection
+        agent={agentGuide}
+        example={`<Badge>Beta</Badge>
+<Badge led="failed">Build failed</Badge>
+<Badge count={7} label="7 waiting" />`}
+      />
 
       <Section id="details" title="Details">
         <div className="flex flex-col gap-56">

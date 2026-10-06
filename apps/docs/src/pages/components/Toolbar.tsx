@@ -7,6 +7,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/components/toolbar/toolbar.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalToolbar.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { ToolbarXray } from '../../ui/xray/ToolbarXray';
 
@@ -50,6 +51,18 @@ export default function ToolbarPage() {
         </Bench>
         <SwiftCapture name="toolbar" maxWidth={620} />
       </Section>
+      <UsageSection
+        agent={agentGuide}
+        example={`import { SearchIcon, SelectIcon, TextIcon } from '@unlocalhosted/metalui/icons';
+
+<Toolbar aria-label="Tools" variant="graphite">
+  <ToolButton label="Select" shortcut="V" icon={<SelectIcon size={16} />} pressed={tool === 'select'} onPressedChange={() => setTool('select')} />
+  <ToolButton label="Write" shortcut="T" icon={<TextIcon size={16} />} pressed={tool === 'write'} onPressedChange={() => setTool('write')} />
+  <ToolbarSeparator />
+  <ToolbarSearch onOpen={openPalette} icon={<SearchIcon size={14} />} />
+</Toolbar>`}
+      />
+
       <Section id="x-ray" title="X-ray" lede="See how the toolbar is put together. Click an icon to learn about one part and change it.">
         <ToolbarXray />
       </Section>

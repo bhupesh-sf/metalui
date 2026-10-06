@@ -7,6 +7,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/components/status/status.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalStatus.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { StatusXray } from '../../ui/xray/StatusXray';
 
@@ -128,6 +129,13 @@ export default function StatusPage() {
         </Bench>
         <SwiftCapture name="status" maxWidth={720} />
       </Section>
+      <UsageSection
+        agent={agentGuide}
+        example={`<StatusBadge led="live">SYNC LIVE</StatusBadge>
+<StatusBadge led="waiting" tone="quiet">SYNCING</StatusBadge>
+<StatusBadge led="failed" hint="Add a key to Keychain">SYNC OFFLINE</StatusBadge>`}
+      />
+
       <Section title="Not colour alone" lede="Colour is the fastest cue and the least reliable one. Each state is also a gesture and always words, so it reads in greyscale, for colour-blind people and at a glance across the room.">
         <TokenTable
           head={['State', 'Lamp', 'Gesture', 'Words say']}

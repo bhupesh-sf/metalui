@@ -6,6 +6,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/components/switcher/switcher.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSwitcher.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { SwitcherXray } from '../../ui/xray/SwitcherXray';
 
@@ -33,6 +34,14 @@ export default function SwitcherPage() {
         </Bench>
         <SwiftCapture name="switcher" maxWidth={520} />
       </Section>
+      <UsageSection
+        agent={agentGuide}
+        example={`const [mode, setMode] = useState('place');
+
+<Switcher aria-label="View" size="compact" value={mode} onValueChange={setMode}
+  options={[{ value: 'place', label: 'place' }, { value: 'list', label: 'list' }, { value: 'table', label: 'table' }]} />`}
+      />
+
       <Section id="x-ray" title="X-ray" lede="See what the control is made of. Click an icon to learn about one part and change it.">
         <SwitcherXray />
       </Section>

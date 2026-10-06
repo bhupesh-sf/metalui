@@ -6,6 +6,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/components/selection-frame/selection-frame.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSelectionFrame.swift?raw';
 import { Bench, Code, PageHeader, Rules, Section, TokenTable } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { SurfaceFieldDemo } from '../../ui/SurfaceFieldDemo';
 
@@ -145,6 +146,14 @@ export default function SelectionFramePage() {
           <TextBlock radius={d.block.radius} handles={d.block.handles as 'text'} entrance={d.block.entrance} />
         </Bench>
       </Section>
+
+      <UsageSection
+        agent={agentGuide}
+        example={`<div style={{ position: 'relative', borderRadius: 18 }} aria-selected={selected}>
+  {text}
+  <SelectionFrame state={selected ? 'selected' : hovered ? 'hover' : 'rest'} radius={18} handles="text" />
+</div>`}
+      />
 
       <Section id="object-aware-field" title="Object-aware field" lede="Carry the note across the work surface. The field leaves its interior clear and answers its moving footprint, so the borderless objects stay distinct while you work. This is a docs trial of Surface Field by Angelo Libero, paired with MetalUI's Surface and Selection frame.">
         <Bench on="canvas" caption="Scene geometry drives the field · pointer and keyboard both move the note">

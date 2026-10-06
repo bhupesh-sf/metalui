@@ -6,6 +6,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/blocks/hover-engraving/hover-engraving.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalHoverEngraving.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 
 const LIST: { text: string; kind: string; details: string[]; tags?: string[]; status?: { led: EngravingStatus; text: string } }[] = [
@@ -46,6 +47,14 @@ export default function HoverEngravingPage() {
           </div>
         </Bench>
       </Section>
+
+      <UsageSection
+        agent={agentGuide}
+        example={`<div className="mu-icon-trigger block" aria-describedby="eng-1">
+  slept badly, up at 5
+  <HoverEngraving id="eng-1" kind="LOG" details={['07:40', 'SLEEP 6 H']} status={{ led: 'live', text: 'RECOGNIZER ✓' }} />
+</div>`}
+      />
 
       <Section title="SwiftUI" lede="MetalHoverEngraving from the same tokens; .metalHoverEngraving(_:) adds the dwell.">
         <SwiftCapture name="hover-engraving" maxWidth={620} />

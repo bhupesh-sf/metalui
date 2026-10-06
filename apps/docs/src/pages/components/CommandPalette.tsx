@@ -7,6 +7,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/components/command-palette/command-palette.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalCommandPalette.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { PaletteXray } from '../../ui/xray/PaletteXray';
 
@@ -79,6 +80,24 @@ export default function CommandPalettePage() {
         />
         <SwiftCapture name="command-palette" maxWidth={600} />
       </Section>
+      <UsageSection
+        agent={agentGuide}
+        example={`import { SearchIcon, TaskIcon, UndoIcon } from '@unlocalhosted/metalui/icons';
+
+const [open, setOpen] = useState(false);
+
+<CommandPalette
+  open={open}
+  onOpenChange={setOpen}
+  icon={<SearchIcon size={15} />}
+  items={[
+    { id: 'open-tasks', section: 'LENSES', label: 'open tasks', icon: <TaskIcon size={14} /> },
+    { id: 'undo', section: 'ACTIONS', label: 'Undo', icon: <UndoIcon size={14} />, hint: '⌘Z' },
+  ]}
+  onRun={(item, { pin }) => run(item.id, pin)}
+/>`}
+      />
+
       <Section id="x-ray" title="X-ray" lede="See how the palette is put together. Click an icon to learn about one part and change it.">
         <PaletteXray />
       </Section>

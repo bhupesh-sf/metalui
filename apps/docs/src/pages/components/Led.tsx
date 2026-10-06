@@ -6,6 +6,7 @@ import agentGuide from '../../../../../packages/metalui/src/components/led/led.a
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalStatus.swift?raw';
 import { tokens } from '../../lib/tokens';
 import { Bench, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 
 const KINDS: LedKind[] = ['live', 'waiting', 'failed', 'link', 'off'];
@@ -65,6 +66,13 @@ export default function LedPage() {
         </Bench>
         <SwiftCapture name="led-gestures" maxWidth={560} />
       </Section>
+
+      <UsageSection
+        agent={agentGuide}
+        example={`<Led kind="live" />
+<Led kind="waiting" gesture="breathe" />
+<Led kind="failed" size="small" gesture="blink2" />`}
+      />
 
       <Section title="In their places" lede="The same lamp on a status badge. The words say the state; the gesture says how it is going.">
         <Bench caption="badges with gestures">

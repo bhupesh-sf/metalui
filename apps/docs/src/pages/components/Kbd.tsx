@@ -4,6 +4,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/components/kbd/kbd.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalKbd.swift?raw';
 import { CodeScreen, PageHeader, Rules, Section, SourceTabs, Stage, TokenTable } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { Beat, Compare, LayerTrail, SpecLine } from '../../ui/beat';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { tokens } from '../../lib/tokens';
@@ -58,6 +59,13 @@ export default function KbdPage() {
         </Stage>
         <CodeScreen tabs={USAGE} />
       </section>
+
+      <UsageSection
+        agent={agentGuide}
+        example={`<Kbd>⌘</Kbd><Kbd>K</Kbd>
+<Kbd size="small">↩</Kbd>
+<Kbd surface="strip">⌘K</Kbd>`}
+      />
 
       <Section id="x-ray" title="X-ray" lede="See what the key is made of. Click an icon to learn about one part and change it.">
         <KbdXray />

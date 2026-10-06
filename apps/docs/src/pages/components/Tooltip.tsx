@@ -7,6 +7,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/components/tooltip/tooltip.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalTooltip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { TooltipXray } from '../../ui/xray/TooltipXray';
 
@@ -49,6 +50,17 @@ export default function TooltipPage() {
         </Bench>
         <SwiftCapture name="tooltip" maxWidth={300} />
       </Section>
+      <UsageSection
+        agent={agentGuide}
+        example={`import { UndoIcon } from '@unlocalhosted/metalui/icons';
+
+<TooltipProvider>
+  <Tooltip label="Undo" shortcut="⌘Z">
+    <button aria-label="Undo"><UndoIcon size={16} /></button>
+  </Tooltip>
+</TooltipProvider>`}
+      />
+
       <Section id="x-ray" title="X-ray" lede="See how the tooltip works. Click an icon to learn about one part and change it.">
         <TooltipXray />
       </Section>
