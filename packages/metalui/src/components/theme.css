@@ -404,6 +404,8 @@
   --spacing-popover-offset: var(--mu-r-popover-self-offset);
   --spacing-popover-gap: var(--mu-r-popover-self-gap);
   --spacing-popover-body-gap: var(--mu-r-popover-self-body-gap);
+  --spacing-quick-edit-gap: var(--mu-r-quick-edit-self-gap);
+  --spacing-quick-edit-actions-gap: var(--mu-r-quick-edit-actions-gap);
   --spacing-alert-dialog-text-gap: var(--mu-r-alert-dialog-self-text-gap);
   --spacing-progress-height: var(--mu-r-progress-self-height);
   --spacing-progress-gap: var(--mu-r-progress-self-gap);
@@ -1399,6 +1401,10 @@
 }
 @utility transition-popover {
   transition: var(--mu-r-popover-self-transition);
+}
+@utility duration-quick-edit-hold {
+  --tw-duration: var(--mu-r-quick-edit-self-hold);
+  transition-duration: var(--mu-r-quick-edit-self-hold);
 }
 @utility alert-dialog-description {
   margin: calc(var(--mu-r-alert-dialog-self-text-gap) - var(--mu-r-dialog-self-gap)) 0 0;

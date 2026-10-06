@@ -1,0 +1,21 @@
+{
+  "name": "quick-edit",
+  "title": "Quick edit",
+  "status": "alpha",
+  "layer": "component",
+  "uses": ["button", "field", "form-field"],
+  "description": "One short value edited where it stands and committed with one key (Rename, Tag): the value selected on open, Enter and Escape, the key off while empty or unchanged, the reason under the field when it is not accepted; committing, the key waits, then morphs to check and says Renamed on the drum before the plate closes, or to sync-error with Try again.",
+  "base": "form (Base UI Field, Button)",
+  "react": {
+    "export": "QuickEdit",
+    "files": [
+      "quick-edit.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalQuickEdit",
+    "file": "swift/Sources/MetalUI/Components/MetalQuickEdit.swift"
+  },
+  "agent": "quick-edit.agent.md",
+  "page": "/components/quick-edit"
+}

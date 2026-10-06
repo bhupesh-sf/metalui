@@ -35,6 +35,12 @@ const shared = {
     dependsOn: ['motion'],
     files: ['icons/Icon.tsx', 'icons/catalog.generated.ts', 'icons/icons.generated.css', 'icons/tick.generated.ts'],
   },
+  'icon-morph': {
+    title: 'MetalUI glyph morph',
+    description: 'MorphIcon: a glyph whose meaning changes morphs into the next one on the settle spring (Rename → Renamed: pen → check).',
+    dependsOn: ['motion'],
+    files: ['icons/MorphIcon.tsx', 'icons/morph.ts', 'icons/morph.generated.ts'],
+  },
   'icon-components': {
     title: 'MetalUI icon components',
     description: 'Every product icon as a named React component.',
