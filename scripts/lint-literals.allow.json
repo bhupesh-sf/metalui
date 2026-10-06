@@ -153,5 +153,10 @@
     "file": "swift/Sources/MetalUI/Components/MetalPerfectPreview.swift",
     "pattern": "^spacing: \\.frame\\(width: recipe\\.points\\(\"tune\\.centre\"\\) \\* 2 / zoom, height: recipe\\.points\\(\"tune\\.centre\"\\) \\* 2 / zoom\\)$",
     "reason": "Component-specific, zoom-scaled geometry or animation formula; retain until this component receives a dedicated recipe pass."
+  },
+  {
+    "file": "swift/Sources/MetalUI/Components/MetalStatus.swift",
+    "pattern": "^color: \\.colorMultiply\\(Color\\(white: Self\\.brightness\\(at: level\\)\\)\\)$",
+    "reason": "The lamp gestures' brightness() twin: a grey multiplier computed from status.gestures, not a palette colour."
   }
 ]

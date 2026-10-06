@@ -17,10 +17,12 @@ public enum MetalLEDKind: Sendable {
     }
 }
 
-/// A tiny lamp, lit from the top left. Decorative: pair it with words.
+/// A tiny lamp in a small sunk socket, lit from the top left. Decorative: pair it with words.
 ///
-/// `gesture` is how it behaves over time (steady, flicker, breathe, blink2, rise; tokens
-/// status.gestures). A new gesture plays from the start; Reduce Motion holds the lamp steady.
+/// The dark bezel and the light lip under it give the lamp its own ground on any surface; a lit lamp
+/// glows in its ink, an off lamp is a dull lens. `gesture` is how it behaves over time (steady,
+/// flicker, breathe, blink2, rise; tokens status.gestures). A new gesture plays from the start;
+/// Reduce Motion holds the lamp lit at its final level.
 public struct MetalLED: View {
     public enum Size: Sendable { case `default`, small }
     let kind: MetalLEDKind
@@ -50,27 +52,28 @@ public struct MetalLED: View {
         return l0 + (l1 - l0) * f
     }
 
-    /// A dimmed lamp's saturation, and the shade over it: the web's brightness() and saturate() at this level.
+    /// A dimmed lamp's saturation and brightness: the web's saturate() and brightness() at this level,
+    /// applied to the whole lamp (socket and halo too), as the web's filter is.
     static func saturation(at level: Double) -> Double { MetalLampDim.saturate + (1 - MetalLampDim.saturate) * level }
-    static func shade(at level: Double) -> Double { (1 - MetalLampDim.brightness) * (1 - level) }
+    static func brightness(at level: Double) -> Double { MetalLampDim.brightness + (1 - MetalLampDim.brightness) * level }
 
     public var body: some View {
         let recipe = MetalRecipes.status
         let d = diameter ?? recipe.points(size == .small ? "led.size-small" : "led.size")
         let still = gesture.duration == 0 || reduceMotion
         TimelineView(.animation(paused: still || phase != nil)) { context in
-            let progress: Double = {
-                if let phase { return phase }
+            // Reduce Motion (and steady) hold the final level, lit, as the web's animate-none does.
+            let level: Double = {
+                if let phase { return Self.level(gesture, at: phase) }
                 if still { return 1 }
                 let t = context.date.timeIntervalSince(start) / gesture.duration
-                return gesture.loops ? t.truncatingRemainder(dividingBy: 1) : min(1, t)
+                return Self.level(gesture, at: gesture.loops ? t.truncatingRemainder(dividingBy: 1) : min(1, t))
             }()
-            let level = Self.level(gesture, at: progress)
             Color.clear
                 .frame(width: d, height: d)
                 .metalObjectRecipe(recipe, part: "led", state: kind.recipeState, in: Circle())
                 .saturation(Self.saturation(at: level))
-                .overlay(Circle().fill(Color.black.opacity(Self.shade(at: level))))
+                .colorMultiply(Color(white: Self.brightness(at: level)))
         }
         .id("\(kind.recipeState)-\(gesture.rawValue)")
         .onChange(of: gesture) { start = Date() }
@@ -79,31 +82,69 @@ public struct MetalLED: View {
     }
 }
 
+/// How a status badge is drawn: a raised plate (default), the lamp and words alone (quiet, for dense
+/// places), or a plate tinted in the state's ink (strong, for one alert).
+public enum MetalStatusTone: Sendable { case plate, quiet, strong }
+
 /// A state the system is in, with its LED. Not a button; the hint is its help.
+///
+/// Never colour alone: each state also has its own gesture (live steady, waiting breathing, failed two
+/// blinks, off dark) and the words say it. `solid` is transparent mode (frost, glass, an image): the
+/// plate keeps a keyline and a quiet badge takes its plate back. Reduce Transparency turns it on.
 public struct MetalStatusBadge: View {
     let text: String
     let led: MetalLEDKind
     let hint: String?
+    let tone: MetalStatusTone
+    let solid: Bool
+    let gesture: MetalLampGesture?
+    let phase: Double?
     @Environment(\.metalColorway) private var colorway
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
-    public init(_ text: String, led: MetalLEDKind, hint: String? = nil) {
+    /// `gesture` nil plays the state's own; `phase` fixes the lamp at a point in it, for captures.
+    public init(_ text: String, led: MetalLEDKind, hint: String? = nil, tone: MetalStatusTone = .plate, solid: Bool = false, gesture: MetalLampGesture? = nil, phase: Double? = nil) {
         self.text = text
         self.led = led
         self.hint = hint
+        self.tone = tone
+        self.solid = solid
+        self.gesture = gesture
+        self.phase = phase
+    }
+
+    /// Each state's own gesture, so a state never rests on colour alone.
+    static func gesture(for kind: MetalLEDKind) -> MetalLampGesture {
+        switch kind {
+        case .waiting: return .breathe
+        case .failed: return .blink2
+        case .live, .link, .off: return .steady
+        }
     }
 
     public var body: some View {
         let recipe = MetalRecipes.status
+        let cw = MetalRecipeColorway(colorway)
+        let keyline = solid || reduceTransparency
+        let plated = tone != .quiet || keyline
+        let strong = tone == .strong && led != .off
+        let ink = strong ? recipe.color("strong.ink-\(led.recipeState)", colorway: cw) : nil
         HStack(spacing: recipe.points("badge.gap")) {
-            MetalLED(led)
+            MetalLED(led, gesture: gesture ?? Self.gesture(for: led), phase: phase)
             Text(text.uppercased())
                 .font(recipe.font("badge.font"))
                 .tracking(recipe.tracking("badge.tracking", size: recipe.fontSize("badge.font")))
-                .foregroundColor(colorway.tokens.ink2.color)
+                .foregroundColor(ink?.color ?? colorway.tokens.ink2.color)
         }
-        .padding(.horizontal, recipe.points("badge.pad"))
+        .padding(.horizontal, plated ? recipe.points("badge.pad") : .zero)
         .frame(height: recipe.points("badge.height"))
-        .metalObjectRecipe(recipe, part: "badge", in: Capsule(style: .continuous))
+        // a quiet badge paints no part: the recipe has no "none" layers
+        .metalObjectRecipe(recipe, part: plated ? "badge" : "none", state: strong ? "strong-\(led.recipeState)" : nil, in: Capsule(style: .continuous))
+        .overlay {
+            if keyline, let line = recipe.color("badge.keyline", colorway: cw) {
+                Capsule(style: .continuous).strokeBorder(line.color, lineWidth: 1)
+            }
+        }
         .fixedSize()
         .help(hint ?? "")
         .accessibilityElement(children: .combine)

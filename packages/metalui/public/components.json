@@ -633,7 +633,7 @@
       "name": "led",
       "title": "LED",
       "status": "alpha",
-      "description": "A 4–5 pt lamp lit from the top left that says one state by colour: green live, amber waiting, red failed, blue link, off. Five gestures say how it behaves over time: steady, flicker, breathe, blink2, rise. Never alone; it sits beside words.",
+      "description": "A 6 pt lamp (4 small) in a small sunk socket, lit from the top left, that says one state by colour and gesture: green live, amber waiting, red failed, blue link, off a dull lens. The socket is its own ground on any surface; a lit lamp glows in its ink. Five gestures say how it behaves over time: steady, flicker, breathe, blink2, rise. Never alone; it sits beside words.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Led",
@@ -1228,7 +1228,7 @@
       "name": "status",
       "title": "Status badge",
       "status": "alpha",
-      "description": "The 24 tall status badge: an LED part and the state in the label role, not pressable, with the fixing command as a tooltip.",
+      "description": "The 26 tall status badge: an LED part and the state in words, each state with its own gesture; plate, quiet or strong tone, and solid for transparent grounds (frost, glass, images). Not pressable; the fixing command is a tooltip.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "StatusBadge",

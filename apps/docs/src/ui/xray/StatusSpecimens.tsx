@@ -12,7 +12,7 @@ import './status-specimens.css';
  *   states   drag the badge sideways: it leans toward the next state, then snaps
  *   lamp     a sun on an arc above the lamp: around turns the bright spot, nearer
  *            pulls it toward the middle
- *   glow     a switch (only the green lamp has one)
+ *   glow     a switch (every lit lamp has one; off has none)
  *   type     drag the words: sideways for spacing, up or down for size
  *   shape    top edge for the height, right end for the space on the ends, the lamp's
  *            own ring for its size. The badge is always a pill: no corner handle.
@@ -49,7 +49,7 @@ const pulse = (el: Element | null | undefined, k = 1.5) => { if (el && !reduced(
  * bench draw the same values. Nothing on it animates: a tunable follows the finger exactly.
  */
 function Badge({ m, parts, words, children }: { m: Model; parts: Parts; words: Record<LedKind, string>; children?: React.ReactNode }) {
-  const lampShadow = m.kind === 'live' ? '--mu-r-status-led-live-shadow' : m.kind === 'off' ? '--mu-r-status-led-off-shadow' : '--mu-r-status-led-shadow';
+  const lampShadow = `--mu-r-status-led-${m.kind}-shadow`;
   const style = {
     '--mu-r-status-badge-height': `${m.h}px`,
     '--mu-r-status-badge-pad': `${m.pad}px`,
@@ -62,7 +62,7 @@ function Badge({ m, parts, words, children }: { m: Model; parts: Parts; words: R
     [lampShadow]: parts.lampSh,
     transition: 'none',
   } as React.CSSProperties;
-  return <StatusBadge led={m.kind} className="ed-status-badge" style={style}>{children ?? words[m.kind]}</StatusBadge>;
+  return <StatusBadge led={m.kind} gesture="steady" className="ed-status-badge" style={style}>{children ?? words[m.kind]}</StatusBadge>;
 }
 
 /* ───────────────────────── states ───────────────────────── */
@@ -181,11 +181,11 @@ function Lamp({ m, set, parts, words }: Props) {
 function Glow({ m, set, parts, words }: Props) {
   const [well, zoom] = useSpecimenZoom();
   const index = KINDS.indexOf(m.kind);
-  // only the green lamp has a glow in the recipe: on any other state the switch has nothing to turn on
-  const has = m.kind === 'live';
+  // every lit lamp has a halo in its ink; an off lamp has none, so the switch has nothing to turn on
+  const has = m.kind !== 'off';
   return (
     <>
-      <p>A lamp that is on gives off a little light, so the green lamp has a soft glow in its own colour. That is how you tell a lit lamp from a green dot. {has ? 'Turn the glow off to see the difference.' : 'Only the green lamp glows; step the state back to live to see it.'}</p>
+      <p>A lamp that is on gives off a little light, so every lit lamp has a soft halo in its own ink. That is how you tell a lit lamp from a coloured dot, and an off lamp (a dull lens, no halo) from a dark one. {has ? 'Turn the glow off to see the difference.' : 'An off lamp has no glow; step the state back to a lit one to see it.'}</p>
       <div ref={well} className="ed-specimen"><div style={{ zoom }}><Badge m={m} parts={parts} words={words} /></div></div>
       <div className="ed-readouts">
         <Readout label="State" value={SAY[m.kind]} unit="" snap={{ at: index, name: m.kind }} pick={() => set({ kind: KINDS[(index + 1) % KINDS.length] })} scrub={(d) => set({ kind: KINDS[clamp(index + d, 0, KINDS.length - 1)] })} />

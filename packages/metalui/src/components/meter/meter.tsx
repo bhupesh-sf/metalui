@@ -22,7 +22,7 @@ const LABEL = 'mu-meter-label type-ui text-ink';
 const VALUE = 'mu-meter-value type-meta tabular-nums text-ink2';
 const TRACK = 'mu-meter-track flex gap-meter-gap h-meter-height';
 const SEGMENT = 'mu-meter-segment relative flex-1 rounded-meter-radius recipe-status-led-off';
-const ZONE = { ok: 'recipe-status-led-live', warn: 'recipe-status-led recipe-status-led-waiting', danger: 'recipe-status-led recipe-status-led-failed' };
+const ZONE = { ok: 'recipe-status-led-live', warn: 'recipe-status-led-waiting', danger: 'recipe-status-led-failed' };
 
 export interface MeterProps extends Omit<BaseMeter.Root.Props, 'className' | 'children'> {
   /** What is measured: "Storage". Shown above, and names it. */
