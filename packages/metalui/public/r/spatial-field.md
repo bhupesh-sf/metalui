@@ -8,7 +8,7 @@ Create one `SpatialFieldController` per surface, render `SpatialFieldCanvas` ben
 
 ## SwiftUI
 
-Render one `MetalSpatialFieldView(scene:)` beneath a SwiftUI Place, or one `MetalSpatialFieldNSView` beneath an AppKit canvas. Pass `MetalSpatialFieldScene` with displayed Region frames, bounded stationary object frames, optional carried frame and target ID, all in local viewport points. The SwiftUI Canvas redraws only when the host changes its scene; the AppKit view redraws when `setScene` changes its geometry or colorway. Neither has an idle timer or hit target. The host may publish animated presentation frames, but the field must not own a second gesture loop.
+Render one `MetalSpatialFieldView(scene:)` beneath a SwiftUI Place, one `MetalSpatialFieldNSView` beneath an AppKit canvas, or its twin `MetalSpatialFieldUIView` beneath a UIKit canvas on iOS (same `setScene`, same draw). Pass `MetalSpatialFieldScene` with displayed Region frames, bounded stationary object frames, optional carried frame and target ID, all in local viewport points. The SwiftUI Canvas redraws only when the host changes its scene; the AppKit and UIKit views redraw when `setScene` changes its geometry or colorway. Neither has an idle timer or hit target. The host may publish animated presentation frames, but the field must not own a second gesture loop.
 
 ## Look and behavior
 

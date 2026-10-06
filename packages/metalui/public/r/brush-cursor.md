@@ -1,6 +1,6 @@
 # Brush cursor
 
-The pointer while drawing (P) or erasing (E) on the canvas. React: `BrushCursor` from `@unlocalhosted/metalui`. SwiftUI: `MetalBrushCursor` (on the Mac, an `NSCursor` image drawn from the same values). Its look is the `brush` recipe.
+The pointer while drawing (P) or erasing (E) on the canvas. React: `BrushCursor` from `@unlocalhosted/metalui`. SwiftUI: `MetalBrushCursor`, macOS only: an `NSCursor` image drawn from the same values. iOS has no pointer cursor to set, so the type does not exist there; an iOS host draws the brush ring in its own canvas from the same `brush` recipe. Its look is the `brush` recipe.
 
 ## Use it for
 
