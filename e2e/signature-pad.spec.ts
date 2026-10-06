@@ -92,10 +92,16 @@ test('type your name: the keyboard path, and each mode keeps its own', async ({ 
   const p = pad(section);
   await sign(page, paper(section));
   // Tab into the pad: Type instead is its first stop.
-  await section.getByRole('button', { name: 'Type instead' }).focus();
+  const modeKey = section.getByRole('button', { name: 'Type instead' });
+  await modeKey.evaluate((el) => { (el as HTMLElement).dataset.muMark = '1'; });
+  await modeKey.focus();
   await page.keyboard.press('Enter');
   const name = p.getByRole('textbox', { name: 'Signature, type your full name' });
   await expect(name).toBeFocused();
+  // The same key changed meaning: its words turned on the drum, never a new key.
+  const turned = p.locator('[data-mu-mark="1"]');
+  await expect(turned).toHaveAccessibleName('Draw instead');
+  await expect(turned.locator('.mu-swap-text')).toHaveCount(1);
   await page.keyboard.type('Ana Ribeiro');
   await expect(p.getByRole('button', { name: 'Undo' })).toHaveCount(0);
   await section.getByRole('button', { name: 'Confirm delivery' }).click();

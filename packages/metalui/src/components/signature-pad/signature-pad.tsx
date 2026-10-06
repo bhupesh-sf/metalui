@@ -7,6 +7,7 @@ import { Rule } from '../rule/rule';
 import { Button } from '../button/button';
 import { IconButton } from '../icon-button/icon-button';
 import { UndoIcon, RedoIcon, TextIcon, PenIcon, EraserIcon } from '../../icons/components.generated';
+import { SwapIcon, SwapText } from '../../motion/swap';
 
 /* ─────────────────────────────────────────────────────────
  * SIGNATURE PAD, a form field that captures a signature (the value posts on Base UI Field)
@@ -18,13 +19,15 @@ import { UndoIcon, RedoIcon, TextIcon, PenIcon, EraserIcon } from '../../icons/c
  *   settle    on lift the levelled stroke cross-fades in over the raw one on the settle spring
  *   inked     the hint fades; Clear and Undo wake
  *   typed     "Type instead": an input on the baseline in the typed font; the keyboard and screen-reader
- *             path. Each mode keeps its own content; the value is the mode that shows
+ *             path. Each mode keeps its own content; the value is the mode that shows. The key's words
+ *             turn on the drum (Type instead ↔ Draw instead); compact's glyph turns on it too (text ↔ pen
+ *             strains 2.00, past the morph's limit, docs/MORPH.md §5)
  *   history   Undo / Redo (keys, and ⌘Z / ⇧⌘Z, Ctrl+Z / Ctrl+Y in the pad); Clear is one step of it
  *   palm      once a pen has touched the pad, touches don't ink until it is cleared; one pointer at a time
  *   required  empty on submit: the field's error, and focus goes to "Type instead"
  *   read-only the mark on the paper, no keys, no hint (proof of delivery)
  *   disabled  40 %, no ink, keys off
- * Reduce Motion: the settle and the hint swap at once.
+ * Reduce Motion: the settle, the hint and the mode key's words and glyph change at once.
  * The form posts SVG markup (`name`); onValueChange gives the strokes or the typed name.
  * ───────────────────────────────────────────────────────── */
 
@@ -423,9 +426,9 @@ export function SignaturePad({
         <div className={KEYS}>
           {/* Compact (initials) is narrow: its keys are glyphs, and Redo is the keyboard's. */}
           {size === 'compact' ? (
-            <IconButton label={modeLabel} icon={mode === 'draw' ? <TextIcon /> : <PenIcon />} disabled={disabled} className={cx(MODE, 'mr-auto')} onClick={toggle} />
+            <IconButton label={modeLabel} icon={<SwapIcon swapKey={mode}>{mode === 'draw' ? <TextIcon /> : <PenIcon />}</SwapIcon>} disabled={disabled} className={cx(MODE, 'mr-auto')} onClick={toggle} />
           ) : (
-            <Button cap="link" disabled={disabled} className={cx(MODE, 'mr-auto')} onClick={toggle}>{modeLabel}</Button>
+            <Button cap="link" disabled={disabled} className={cx(MODE, 'mr-auto')} onClick={toggle}><SwapText value={modeLabel} /></Button>
           )}
           {mode === 'draw' && <IconButton label="Undo" icon={<UndoIcon />} disabled={disabled || !canUndo} onClick={undo} />}
           {mode === 'draw' && size === 'regular' && <IconButton label="Redo" icon={<RedoIcon />} disabled={disabled || !canRedo} onClick={redo} />}

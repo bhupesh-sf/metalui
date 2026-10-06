@@ -318,11 +318,15 @@ public struct MetalSignaturePad: View {
     private var keys: some View {
         HStack(spacing: recipe.points("keys.gap")) {
             // Compact (initials) is narrow: its keys are glyphs, and Redo is the keyboard's.
-            if size == .compact {
-                MetalIconButton(mode == .draw ? "Type instead" : "Draw instead", icon: mode == .draw ? .text : .pen, action: toggle)
-            } else {
-                MetalButton(mode == .draw ? "Type instead" : "Draw instead", size: .compact, action: toggle)
+            // The mode key changes meaning in place: its glyph replaces itself and its words turn, on settle.
+            Group {
+                if size == .compact {
+                    MetalIconButton(mode == .draw ? "Type instead" : "Draw instead", icon: mode == .draw ? .text : .pen, action: toggle)
+                } else {
+                    MetalButton(mode == .draw ? "Type instead" : "Draw instead", size: .compact, action: toggle)
+                }
             }
+            .metalAnimation(.settle, value: mode)
             Spacer(minLength: .zero)
             if mode == .draw {
                 MetalIconButton("Undo", icon: .undo) { go(at - 1) }
