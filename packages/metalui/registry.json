@@ -357,10 +357,14 @@
       "name": "calendar",
       "type": "registry:ui",
       "title": "Calendar",
-      "description": "A month to choose a day from: the chosen day lands into the switcher's thumb look on the part spring, months turn on the drum and slide in from the side you head to; DatePicker opens it from a form field.",
+      "description": "A month to choose a day from, or a range, several days, a month, quarter, half year or year: chosen units land into the switcher's thumb look, a range stretches one thumb across each week, months turn on the drum and the title opens months and years. DatePicker is a field you type a date into (read back as understood) or open the calendar from, with presets and Today.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/field.json",
+        "https://metalui.dev/r/form-field.json",
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/menu.json",
         "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/popover.json",
         "https://metalui.dev/r/tokens.json"
@@ -370,6 +374,11 @@
           "path": "packages/metalui/src/components/calendar/calendar.tsx",
           "type": "registry:ui",
           "target": "components/metalui/components/calendar/calendar.tsx"
+        },
+        {
+          "path": "packages/metalui/src/components/calendar/date-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/calendar/date-picker.tsx"
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/calendar.md. SwiftUI: MetalCalendar in the MetalUI Swift package."
