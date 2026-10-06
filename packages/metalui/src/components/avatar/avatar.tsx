@@ -14,13 +14,15 @@ import { Led, type LedKind } from '../led/led';
  *   group     discs overlap, each ringed in the ground; a +N disc counts the rest
  *   open      hovering the group spreads the discs one grid step apart on the object spring (a
  *             stack opening); letting go settles them back on the release spring
- * Reduce Motion: the photo appears at once; the stack does not spread.
+ *   waiting   a new photo on its way: after the show delay a short arc travels round the rim in ink2
+ *             (the spinner recipe's rim) and the disc dims; the photo fading in is the result
+ * Reduce Motion: the photo appears at once; the stack does not spread; the rim breathes in place.
  * An object: it stands for a person. It uses the raised surface and the LED part.
  * ───────────────────────────────────────────────────────── */
 
 export type AvatarSize = 'small' | 'regular' | 'large';
 
-const DISC = 'mu-avatar relative inline-grid flex-none place-items-center rounded-full recipe-surface-raise-sm select-none';
+const DISC = 'mu-avatar relative inline-grid flex-none place-items-center rounded-full recipe-surface-raise-sm select-none spinner-item';
 const SIZE: Record<AvatarSize, string> = {
   small: 'size-avatar-size-small type-meta',
   regular: 'size-avatar-size-regular type-ui',
@@ -28,6 +30,7 @@ const SIZE: Record<AvatarSize, string> = {
 };
 const INITIALS = 'mu-avatar-initials text-ink2 uppercase';
 const PHOTO = 'mu-avatar-photo absolute inset-0 size-full rounded-full object-cover avatar-photo';
+const RIM = 'mu-spinner mu-avatar-wait spinner-rim text-ink2';
 const PRESENCE = 'mu-avatar-presence absolute right-0 bottom-0 inline-grid place-items-center leading-none rounded-full avatar-ring';
 
 /** The first letters of the first and last words: "Ana Rocha" → "AR". */
@@ -47,19 +50,22 @@ export interface AvatarProps {
   /** Its accessible name when it should differ from `name` ("Assigned to Marta"). `''` when the name is already
    * written beside it: the avatar is then decorative and silent. */
   label?: string;
+  /** Their photo is on its way (useWait's `busy`): the rim waits and the disc dims. */
+  waiting?: boolean;
   className?: string;
 }
 
 /** A person as a small raised disc: a photo, or their initials. */
-export function Avatar({ name, src, size = 'regular', presence, label, className }: AvatarProps) {
+export function Avatar({ name, src, size = 'regular', presence, label, waiting, className }: AvatarProps) {
   const own = `${DISC} ${SIZE[size]}`;
   const said = `${label ?? name}${presence ? `, ${presence === 'live' ? 'here' : presence === 'waiting' ? 'away' : 'offline'}` : ''}`;
   const silent = label === '';
   return (
-    <BaseAvatar.Root role={silent ? undefined : 'img'} aria-label={silent ? undefined : said} aria-hidden={silent || undefined} className={className ? `${own} ${className}` : own}>
+    <BaseAvatar.Root role={silent ? undefined : 'img'} aria-label={silent ? undefined : said} aria-hidden={silent || undefined} aria-busy={waiting || undefined} data-waiting={waiting ? '' : undefined} className={className ? `${own} ${className}` : own}>
       <BaseAvatar.Fallback className={INITIALS}>{initialsOf(name)}</BaseAvatar.Fallback>
       {src && <BaseAvatar.Image src={src} alt="" className={PHOTO} />}
       {presence && <span className={PRESENCE}><Led kind={presence} size={size === 'large' ? 'default' : 'small'} /></span>}
+      {waiting && <svg aria-hidden viewBox="0 0 24 24" className={RIM}><circle cx={12} cy={12} pathLength={100} /></svg>}
     </BaseAvatar.Root>
   );
 }

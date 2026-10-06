@@ -12,3 +12,7 @@ A small pill. React: `Chip` with parts `Chip.Root`, `Chip.Lead`, `Chip.Text`, `C
 ## Behaviour
 
 - The chip itself is not a control; its actions are. A `glass-action` rendered `as="a"` is a link: give it `href`, `target="_blank"` and `rel="noopener noreferrer"`.
+
+## Waiting
+
+- `waiting` (useWait's `busy`): the chip is held and dims except the part holding a `Spinner`; put `<Spinner size="small" phase={wait.phase}>` around its glyph as a direct child (not inside `Chip.Lead`, which is hidden from assistive tech, so the ring's status is heard).

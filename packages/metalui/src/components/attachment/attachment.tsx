@@ -14,7 +14,8 @@ import { leaveRows } from '../../motion/rows';
  *   arrive    it lands (T5b): from one nest above onto the table on the object spring, with its
  *             small overshoot
  *   upload    a thin track under the name fills with the progress fill on the settle spring; the
- *             line says how far
+ *             line says how far. Before the amount is known (progress null) a lit segment sweeps the
+ *             same track and the line says only "Uploading"; the fill takes over once it is known
  *   failed    the line says so in red, with Try again
  *   remove    it leaves as rows do (T9): one nest down, fading, on the release spring, then goes
  * Reduce Motion: it appears and goes at once; the fill still moves.
@@ -27,7 +28,7 @@ const BODY = 'mu-attachment-body grid flex-1 min-w-0 gap-attachment-body-gap';
 const NAME = 'mu-attachment-name flex min-w-0 type-ui text-ink';
 const META = 'mu-attachment-meta truncate type-meta tabular-nums text-ink3 data-failed:text-form-field-error-ink';
 const TRACK = 'mu-attachment-track block h-attachment-track-height rounded-pill overflow-hidden recipe-switch';
-const FILL = 'block h-full rounded-pill recipe-switch-on transition-progress-fill';
+const FILL = 'block h-full rounded-pill recipe-switch-on transition-progress-fill data-indeterminate:progress-segment';
 
 /** "12.4 MB" from bytes. */
 export function formatBytes(bytes: number, locale?: string) {
@@ -41,8 +42,8 @@ export interface AttachmentProps {
   name: string;
   /** Size in bytes. */
   size?: number;
-  /** 0–100 while uploading; leave it out once done. */
-  progress?: number;
+  /** 0–100 while uploading; null while uploading before the amount is known; leave it out once done. */
+  progress?: number | null;
   /** The upload failed: say why in a few words ("Too large"). */
   error?: string;
   onRetry?: () => void;
@@ -60,8 +61,8 @@ export function Attachment({ name, size, progress, error, onRetry, onRemove, fil
   const base = dot > 0 ? name.slice(0, dot) : name;
   const ext = dot > 0 ? name.slice(dot) : '';
   const type = ext.slice(1, 5) || 'file';
-  const uploading = progress != null && !error;
-  const meta = error ? error : uploading ? `Uploading · ${Math.round(progress)} %` : size != null ? formatBytes(size) : '';
+  const uploading = progress !== undefined && !error;
+  const meta = error ? error : uploading ? (progress == null ? 'Uploading' : `Uploading · ${Math.round(progress)} %`) : size != null ? formatBytes(size) : '';
 
   // It leaves as rows do; a host list that moves its rows with useRowMotion closes up after it.
   const remove = () => leaveRows([plate.current], () => onRemove?.());

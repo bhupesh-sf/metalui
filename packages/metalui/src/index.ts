@@ -29,7 +29,7 @@ export { Glyph, type GlyphProps } from './components/glyph/glyph';
 export { Row, type RowProps, type RowRootProps } from './components/row/row';
 export { Slider, type SliderRootProps, type SliderSize } from './components/slider/slider';
 export { Progress, type ProgressProps } from './components/progress/progress';
-export { Spinner, type SpinnerProps } from './components/spinner/spinner';
+export { Spinner, type SpinnerProps, type SpinnerBarProps, type SpinnerStatusProps } from './components/spinner/spinner';
 export { Skeleton, type SkeletonProps, type SkeletonSwapProps } from './components/skeleton/skeleton';
 export { Link, type LinkProps } from './components/link/link';
 export { ButtonGroup, SplitButton, type ButtonGroupProps, type SplitButtonProps } from './components/button-group/button-group';
@@ -88,6 +88,7 @@ export { SwapText, SwapIcon, type SwapTextProps, type SwapIconProps } from './mo
 export { SlidingIndicator, type SlidingIndicatorProps } from './motion/indicator';
 export { hop, hopPoint, type HopPoint, type HopOptions } from './motion/hop';
 export { motionReduced, onMotionChange, useReducedMotion } from './motion/reduced';
+export { useWait, waitTiming, type Wait, type WaitWork, type WaitPhase } from './motion/wait';
 export { springOf, leaveRows, useRowMotion } from './motion/rows';
 export { haptic, setHapticBridge, type HapticKind, type HapticPath, type HapticBridge } from './motion/haptic';
 export { LinkCard, linkHueDegrees, type LinkCardProps, type LinkPreview } from './blocks/link-card/link-card';

@@ -7,6 +7,8 @@ import * as React from 'react';
  *   glass          a tag on a glass screen, in the colorway (an LED and a kind)
  *   glass-action   a light cap on glass (OPEN ↗), brighter on hover
  *   tag            an engraved tag in a hairline pill (a derived #tag)
+ * waiting        held (aria-busy, no pointer) and dimmed, except the slot holding a Spinner (put
+ *                <Spinner phase size="small"> in Chip.Lead): a tag being applied, a link being read
  * Slots: Chip.Root, Chip.Lead, Chip.Text, Chip.Actions. Styled with the theme's utilities (the chip recipe). */
 
 export interface ChipRootProps extends React.HTMLAttributes<HTMLElement> {
@@ -15,9 +17,11 @@ export interface ChipRootProps extends React.HTMLAttributes<HTMLElement> {
   href?: string;
   target?: string;
   rel?: string;
+  /** Its work is under way (useWait's `busy`): held and dimmed, except the slot holding a Spinner. */
+  waiting?: boolean;
 }
 
-const FRAME = 'group/chip box-border inline-flex items-center whitespace-nowrap no-underline';
+const FRAME = 'group/chip box-border inline-flex items-center whitespace-nowrap no-underline spinner-item';
 const GLASS = 'gap-chip-glass-gap h-chip-glass-height px-chip-glass-pad-x rounded-chip-glass-radius type-chip-glass';
 const VARIANTS = {
   suggestion: 'gap-chip-suggestion-gap h-chip-suggestion-height pl-chip-suggestion-pad-left pr-chip-suggestion-pad-right rounded-pill type-chip-suggestion text-chip-suggestion-ink recipe-chip-suggestion',
@@ -32,10 +36,10 @@ const LEDS = {
 };
 const ACTIONS = 'mu-chip-actions inline-flex items-center group-data-[variant=suggestion]/chip:gap-chip-suggestion-gap';
 
-const Root = React.forwardRef<HTMLElement, ChipRootProps>(function ChipRoot({ variant = 'suggestion', as = 'span', className, ...props }, ref) {
+const Root = React.forwardRef<HTMLElement, ChipRootProps>(function ChipRoot({ variant = 'suggestion', as = 'span', waiting, className, ...props }, ref) {
   const Tag = as as React.ElementType;
   const own = `mu-chip ${FRAME} ${VARIANTS[variant]}`;
-  return <Tag ref={ref} data-variant={variant} className={className ? `${own} ${className}` : own} {...props} />;
+  return <Tag ref={ref} data-variant={variant} data-waiting={waiting ? '' : undefined} aria-busy={waiting || undefined} className={className ? `${own} ${className}` : own} {...props} />;
 });
 
 /** The leading LED (`led="link" | "code"`) or a glyph (children). */

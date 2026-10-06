@@ -72,6 +72,11 @@
           "path": "packages/metalui/src/motion/swap.tsx",
           "type": "registry:ui",
           "target": "components/metalui/motion/swap.tsx"
+        },
+        {
+          "path": "packages/metalui/src/motion/wait.ts",
+          "type": "registry:ui",
+          "target": "components/metalui/motion/wait.ts"
         }
       ]
     },
@@ -1555,6 +1560,8 @@
       "description": "Steady work in a small space: a sunk round well with a lit green arc turning at a constant speed; it shows only after a beat so quick actions never flash it.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/motion.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

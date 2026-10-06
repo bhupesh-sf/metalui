@@ -46,3 +46,7 @@ Reduce Motion: the photo appears at once; the group does not spread.
 
 - Always give the name; the initials and the label come from it.
 - Colour never carries presence alone: the label says it too.
+
+## Waiting
+
+- `waiting` (useWait's `busy`): after the show delay a short arc travels round the rim in ink2 and the disc dims; the new photo fading in is the result. Mount `Spinner.Status` beside it to say the start and the end. Reduce Motion: the rim breathes.

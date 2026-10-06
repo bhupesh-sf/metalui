@@ -17,3 +17,7 @@ A row in a list. React: `Row` with parts `Row.Root`, `Row.Lead`, `Row.Text`, `Ro
 ## Keyboard and accessibility
 
 - The host gives the row its role (`listitem`, `option`, `row`) and makes it focusable when it acts; focus shows the same raise as hover.
+
+## Waiting
+
+- `waiting` (useWait's `busy`): the row is held (aria-busy, no pointer) and every part but the one holding a `Spinner` dims. Put `<Spinner phase={wait.phase}>` around the row's glyph so the ring stands in for it after the show delay and draws a tick when done (spinner.agent.md, "On a small item").

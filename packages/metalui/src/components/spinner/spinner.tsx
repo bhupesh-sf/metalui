@@ -1,33 +1,118 @@
 'use client';
 
 import * as React from 'react';
+import { TICK } from '../../icons/tick.generated';
+import type { WaitPhase } from '../../motion/wait';
 
 /* ─────────────────────────────────────────────────────────
- * SPINNER, something is working and will be done soon, in a small space
+ * SPINNER, waiting shown where the wait is (useWait is its clock)
  *
- *     0 ms   mounted, invisible: a quick action never flashes it
- *   400 ms   it fades in (160 ms): a sunk round well with a lit green arc and its tail
- *   always   the arc turns at a constant 900 ms a turn, linear: steady work has no spring
- *   gone     unmounted by the host when the work is done (no exit: the result is the news)
- * Reduce Motion: the arc stands still and breathes.
- * The well is the switch recipe's sunk track; the spinner recipe adds the arc and its motion.
+ * THE RING, in the item's glyph slot, sized by the slot and in the slot's ink
+ *   quiet     the item's own glyph (children) stays; the item is held, nothing shows yet
+ *   shown     the glyph fades out (160 ms) as an arc fades in and turns, 900 ms a turn, linear
+ *   known     value 0–100: the arc gives way to a faint track that fills from twelve o'clock on the
+ *             settle spring (the amount is known: it fills rather than spins)
+ *   done      the arc fades while a pen draws the check glyph's tick (280 ms); after the result time
+ *             the tick fades and the glyph comes back
+ *   bare      no phase: mount it while the work runs; it shows after the show delay (400 ms)
+ * THE BAR (Spinner.Bar), a thin lit bar across the top of a place, for a route change
+ *   shown     it creeps toward the end (9 s, easing out, never arriving)
+ *   done      it completes (260 ms) and fades
+ * Reduce Motion: nothing turns or creeps; the arc and the bar breathe in place; the tick is whole.
+ * Assistive tech: with a phase, a polite status says `label` when the sign shows and `result` when done.
  * ───────────────────────────────────────────────────────── */
 
-export interface SpinnerProps extends React.HTMLAttributes<HTMLSpanElement> {
-  /** regular (16) beside text; small (12) inside compact controls. */
+export interface SpinnerProps extends Omit<React.SVGProps<SVGSVGElement>, 'ref' | 'children'> {
+  /** regular (16) or small (12) where the host has no glyph size of its own; a host's glyph slot sizes it. */
   size?: 'regular' | 'small';
-  /** What is working, for assistive tech: "Saving". Defaults to "Loading". */
+  /** What is working, for assistive tech: "Uploading photo.jpg". Defaults to "Loading". */
   label?: string;
+  /** From useWait: where the wait is. Leave it out to show the ring after the show delay on mount. */
+  phase?: WaitPhase;
+  /** 0–100 once the amount is known: the ring fills instead of turning. */
+  value?: number | null;
+  /** Said when done: "Uploaded". Defaults to "Done". */
+  result?: string;
+  /** The item's own glyph, which the ring stands in for while it shows. */
+  children?: React.ReactNode;
 }
 
-const ROOT = 'mu-spinner relative inline-block flex-none rounded-full recipe-switch spinner-arrive';
+const RING = 'mu-spinner spinner-ring flex-none';
 const SIZE = { regular: 'size-spinner-size', small: 'size-spinner-small' };
+const SAID: Partial<Record<WaitPhase, true>> = { shown: true, done: true };
 
-/** A small sign of steady work. Mount it while the work runs; it shows only after a beat. */
-export const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(function Spinner({ size = 'regular', label = 'Loading', className, ...props }, ref) {
-  return (
-    <span ref={ref} role="status" aria-label={label} data-size={size} className={[ROOT, SIZE[size], className].filter(Boolean).join(' ')} {...props}>
-      <span aria-hidden className="mu-spinner-arc spinner-arc" />
-    </span>
+function Root({ size = 'regular', label = 'Loading', phase, value, result = 'Done', children, className, style, ...props }: SpinnerProps, ref: React.ForwardedRef<SVGSVGElement>) {
+  const known = value != null;
+  const drawn = phase == null || children != null || phase === 'shown' || phase === 'done';
+  const role = known ? { role: 'progressbar', 'aria-label': label, 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': Math.round(value) }
+    : phase == null ? { role: 'status', 'aria-label': label } : { 'aria-hidden': true };
+  const ring = drawn && (
+    <svg
+      ref={ref}
+      viewBox="0 0 24 24"
+      data-size={size}
+      data-phase={phase}
+      data-known={known ? '' : undefined}
+      className={[RING, SIZE[size], className].filter(Boolean).join(' ')}
+      style={known ? { ...style, '--mu-spinner-value': Math.max(0, Math.min(100, value)) } as React.CSSProperties : style}
+      {...role}
+      {...props}
+    >
+      {children}
+      <circle className="mu-spinner-arc" cx={12} cy={12} pathLength={100} />
+      <circle className="mu-spinner-track" cx={12} cy={12} />
+      <circle className="mu-spinner-fill" cx={12} cy={12} pathLength={100} />
+      <polyline className="mu-spinner-tick" points={[TICK.start, TICK.corner, TICK.tip].map((p) => `${p.x},${p.y}`).join(' ')} pathLength={1} />
+    </svg>
   );
-});
+  if (phase == null) return ring;
+  return <>{ring}<Status phase={phase} label={label} result={result} /></>;
+}
+
+export interface SpinnerStatusProps {
+  /** From useWait. */
+  phase: WaitPhase;
+  /** Said when the sign shows: "Lifting the subject". */
+  label: string;
+  /** Said when done: "Subject lifted". Defaults to "Done". */
+  result?: string;
+}
+
+/**
+ * The wait, said politely and only twice: when its sign shows, and when it is done. The ring carries one;
+ * a host whose sign is its own (a card's edge, an avatar's rim, a lamp, the bar) mounts one beside it,
+ * before the work starts, so both are heard. A failure is the host's to say, with its words and Try again.
+ */
+function Status({ phase, label, result = 'Done' }: SpinnerStatusProps) {
+  return <span role="status" className="sr-only">{SAID[phase] ? (phase === 'done' ? result : label) : ''}</span>;
+}
+
+export interface SpinnerBarProps {
+  /** From useWait. Leave it out to show the bar after the show delay on mount. */
+  phase?: WaitPhase;
+  /** 0–100 once the amount is known. */
+  value?: number | null;
+  /** What is loading, when the amount is known: "Loading Notes". */
+  label?: string;
+  className?: string;
+}
+
+/** A thin bar across the top of a place (its host is positioned): a route change, a view loading. */
+function Bar({ phase, value, label = 'Loading', className }: SpinnerBarProps) {
+  const known = value != null;
+  const own = 'mu-spinner-bar spinner-bar';
+  return (
+    <div
+      data-phase={phase}
+      data-known={known ? '' : undefined}
+      className={className ? `${own} ${className}` : own}
+      style={known ? { '--mu-spinner-value': Math.max(0, Math.min(100, value)) } as React.CSSProperties : undefined}
+      {...(known ? { role: 'progressbar', 'aria-label': label, 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': Math.round(value) } : { 'aria-hidden': true })}
+    >
+      <span className="recipe-switch-on" />
+    </div>
+  );
+}
+
+/** Waiting, shown where it happens: a ring in an item's glyph slot (Spinner.Bar for a place, Spinner.Status to say it). */
+export const Spinner = Object.assign(React.forwardRef(Root), { Bar, Status });

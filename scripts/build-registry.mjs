@@ -21,7 +21,7 @@ const shared = {
     title: 'MetalUI motion',
     description: 'Springs, swap, indicator, refuse, awake and haptic helpers that MetalUI components use.',
     dependsOn: [],
-    files: ['motion/awake.ts', 'motion/haptic.ts', 'motion/hop.ts', 'motion/indicator.tsx', 'motion/layout-effect.ts', 'motion/reduced.ts', 'motion/refuse.ts', 'motion/rows.ts', 'motion/springs.generated.ts', 'motion/swap.tsx'],
+    files: ['motion/awake.ts', 'motion/haptic.ts', 'motion/hop.ts', 'motion/indicator.tsx', 'motion/layout-effect.ts', 'motion/reduced.ts', 'motion/refuse.ts', 'motion/rows.ts', 'motion/springs.generated.ts', 'motion/swap.tsx', 'motion/wait.ts'],
   },
   colorway: {
     title: 'MetalUI inherited colorway',
