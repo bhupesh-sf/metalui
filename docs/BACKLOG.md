@@ -75,7 +75,9 @@ Audit (2026-09-30): the icon set has 47 product glyphs. Each plays its act when 
 Rules to adopt first (one layer, in the Button foundation and agent guides):
 
 - [x] **An action names itself with a glyph and a verb** (done: `Button` `icon` prop; link, graphite and strip caps still lack a glyph size token): a button that does something (save, share, export, delete, send, attach, copy, new) leads with its glyph. A plain choice (Cancel, Done, Close as a word) stays words only. `Button` gets a documented `icon` slot (leading, sized by the cap), not ad hoc children.
-- [ ] **A state change morphs, never swaps**: when the same control's meaning changes (copy → copied, pin → unpin, collapse → expand), its glyph morphs with `MorphIcon` on the settle spring, and its label turns on the drum (`SwapText`) together.
+- [x] **A state change morphs, never swaps**: when the same control's meaning changes (copy → copied, pin → unpin, collapse → expand), its glyph morphs with `MorphIcon` on the settle spring, and its label turns on the drum (`SwapText`) together.
+  Done (2026-10-06): Tree's chevron ↔ sync-error morphs; Signature pad's mode key and Sidebar's Collapse/Expand turn on the drum; SwiftUI Button, PromptInput, QuickEdit, CodeBlock and DropZone animate their changes. Pairs that strain 2 or more go to the drum (MORPH.md §5). Follow-up below.
+- [ ] **Copy → copied morphs**: copy ↔ check strains 2.38, so Code block, Field and MessageActions turn on the drum while Table's copy key morphs, and Button's guide shows paste → check (2.3). Redraw copy/check (MORPH.md fallback rung 1) until the pair is under 2, then make every copy key morph; until then, move Table's and Button's guide to the drum. Swift `MetalMessageActions` swaps with no transition.
 - [x] **No hand-drawn glyphs in components**: chevrons, arrows, ticks, plus and minus come from the set (one source).
   Done (2026-10-06) except Select's up-down chevron (the set has no up-down glyph yet; draw it in the act format first).
 
@@ -513,7 +515,8 @@ Plan it by the **kind of data**, not by features: each kind below is a real situ
   Done (2026-10-06): `childRows`/`loadChildRows`/`expandedRows` on Tree's guides and disclosure (React and SwiftUI); a plain table, not a treegrid. Left: the focused branch's groove.
 - [x] Virtual rows for very long lists, then infinite scroll.
   Done (2026-10-06): `virtual` (in-house window, 320px overscan, `aria-rowcount`/`aria-rowindex`; not with `groupBy`), `hasMore`/`loadMore` with a skeleton row and Try again. Table's ceiling 92 → 96. Left: Home/End in virtual mode.
-- [ ] The data grid: arrow keys between cells, editing in place, cell ranges with copy and paste, reordering columns (after Sortable).
+- [x] The data grid: arrow keys between cells, editing in place, cell ranges with copy and paste, reordering columns (after Sortable).
+  Done (2026-10-06): `DataGrid`, a separate export (a Place) rendering Table in grid mode: one tab stop, arrows walk cells, Enter edits (Field, NumberField, date input, Select), ranges with TSV copy/paste, `reorderable` columns, `onCellCommit` rolls back on reject. Sheet: `docs/sheets/data-grid.md`. Later: virtual rows and treegrid in the grid, undo, fill handle, PageUp/Down; Swift has no ranges.
 
 Not doing: striped rows (the reading guide does it); full cell borders (they come with the editable grid, where cells are targets); ReUI's "light, rounded rows" look (the hover plate is already rounded); colour-only cells such as heatmap tints or red negatives (a sign or a glyph always carries it); a coloured sort LED per header (green and blue already mean other things); sideways scrolling as the answer to narrow screens.
 
@@ -613,7 +616,8 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 
 ### 3. Extend what exists rather than adding new components
 
-- [ ] **Table → data grid** (ReUI Data Grid, shadcn Data Table). `Table` has sort, row selection and an empty line today. Planned in our terms in "Variation sheets: Table"; the list below is ReUI's, kept for reference.
+- [x] **Table → data grid** (ReUI Data Grid, shadcn Data Table). `Table` has sort, row selection and an empty line today. Planned in our terms in "Variation sheets: Table"; the list below is ReUI's, kept for reference.
+  Done (2026-10-06): every checklist item is done, covered or dropped with its reason in `docs/sheets/data-grid.md` (striped and light dropped: the reading guide and rounded plate do those jobs; pinned rows dropped).
   - Looks: cell borders, dense, light (rounded rows, no header fill), striped, auto column width.
   - Columns: resize, move, show/hide; pin rows to the top or bottom.
   - Rows: tree rows that expand; virtualised rows.
