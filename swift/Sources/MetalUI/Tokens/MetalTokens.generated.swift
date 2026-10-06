@@ -1113,6 +1113,34 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A form field that captures a signature. The paper is the field's well, as wide as its container (regular 160 tall for a signature, compact 88 for initials), with an engraved baseline (the rule's groove) across its lower part and "Sign here" engraved under its left end; the hint fades once there is ink. Ink is the text's ink: a filled outline whose width follows the pen (pressure from a stylus, speed from a mouse or finger, between ink.min and ink.max; ink.velocity is the speed in px per ms at which it reaches ink.min), tapered at both ends. While the pen is down the line is raw and exactly under it; on lift the levelled stroke cross-fades in over the raw one on the settle spring. Typed, the name sits on the baseline in the typed font. Under the well: Type instead (a link cap), Undo and Redo (ghost glyph keys) and Clear (a compact cap), keys.gap apart. Disabled: 40 %. Reduce Motion: the settle and the hint swap at once. (the well (field), the rule (an engraved groove), the engraved label; the settle spring; the ink-assist lab's outline (pressure-sized, tapered, midpoint curves))
+    public static let signaturePad = MetalObjectRecipe(
+        name: "signature-pad",
+        layers: [
+
+        ],
+        props: [
+            "regular.height": .number(160.0),
+            "regular.baseline": .number(46.0),
+            "regular.pad": .number(22.0),
+            "compact.height": .number(88.0),
+            "compact.baseline": .number(26.0),
+            "compact.pad": .number(14.0),
+            "self.radius": .number(17.0),
+            "self.gap": .number(8.0),
+            "self.disabled": .text("0.4"),
+            "hint.gap": .number(6.0),
+            "keys.gap": .number(4.0),
+            "ink.min": .number(1.2),
+            "ink.max": .number(3.6),
+            "ink.velocity": .number(2.4),
+            "typed.font": .text("500 26px/1 sans"),
+            "typed.tracking": .text("-0.01em"),
+            "export.ink": .text("#1d1d1f"),
+            "export.paper": .text("#ffffff"),
+        ]
+    )
+
     /// A panel that slides in from an edge of the window (right for an inspector, bottom for a phone sheet) over the dialog's scrim: the plate surface, rounded only on its inner edge, with a grip on a bottom sheet. Opening, it slides its whole size in on the surface spring (no stop, no overshoot). Dragged, it follows the finger one to one; let go past the threshold it leaves on the release spring (a harder flick leaves faster), short of it it settles home on the settle spring. Closing, it leaves on the release spring. Reduce Motion: it fades, with no slide. (the dialog scrim and plate surface; the surface, settle and release springs; Base UI Drawer)
     public static let sheet = MetalObjectRecipe(
         name: "sheet",

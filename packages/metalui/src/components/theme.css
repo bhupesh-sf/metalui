@@ -575,6 +575,23 @@
   --spacing-rating-large-row: var(--mu-r-rating-large-row);
   --spacing-rating-large-gap: var(--mu-r-rating-large-gap);
   --spacing-rating-count-gap: var(--mu-r-rating-count-gap);
+  --spacing-signature-pad-regular-height: var(--mu-r-signature-pad-regular-height);
+  --spacing-signature-pad-regular-baseline: var(--mu-r-signature-pad-regular-baseline);
+  --spacing-signature-pad-regular-pad: var(--mu-r-signature-pad-regular-pad);
+  --spacing-signature-pad-compact-height: var(--mu-r-signature-pad-compact-height);
+  --spacing-signature-pad-compact-baseline: var(--mu-r-signature-pad-compact-baseline);
+  --spacing-signature-pad-compact-pad: var(--mu-r-signature-pad-compact-pad);
+  --spacing-signature-pad-radius: var(--mu-r-signature-pad-self-radius);
+  --radius-signature-pad-radius: var(--mu-r-signature-pad-self-radius);
+  --spacing-signature-pad-gap: var(--mu-r-signature-pad-self-gap);
+  --spacing-signature-pad-hint-gap: var(--mu-r-signature-pad-hint-gap);
+  --spacing-signature-pad-keys-gap: var(--mu-r-signature-pad-keys-gap);
+  --spacing-signature-pad-ink-min: var(--mu-r-signature-pad-ink-min);
+  --spacing-signature-pad-ink-max: var(--mu-r-signature-pad-ink-max);
+  --spacing-signature-pad-ink-velocity: var(--mu-r-signature-pad-ink-velocity);
+  --tracking-signature-pad-typed-tracking: var(--mu-r-signature-pad-typed-tracking);
+  --color-signature-pad-export-ink: var(--mu-r-signature-pad-export-ink);
+  --color-signature-pad-export-paper: var(--mu-r-signature-pad-export-paper);
   --spacing-sheet-width: var(--mu-r-sheet-self-width);
   --spacing-sheet-pad: var(--mu-r-sheet-self-pad);
   --spacing-sheet-gap: var(--mu-r-sheet-self-gap);
@@ -2155,6 +2172,34 @@
 }
 @utility opacity-rating-disabled {
   opacity: var(--mu-r-rating-self-disabled);
+}
+@utility signature-hint-regular {
+  top: calc(100% - var(--mu-r-signature-pad-regular-baseline));
+}
+@utility signature-hint-compact {
+  top: calc(100% - var(--mu-r-signature-pad-compact-baseline));
+}
+@utility signature-typed-regular {
+  height: 1em; bottom: calc(var(--mu-r-signature-pad-regular-baseline) - 0.2em);
+}
+@utility signature-typed-compact {
+  height: 1em; bottom: calc(var(--mu-r-signature-pad-compact-baseline) - 0.2em);
+}
+@utility signature-hint {
+  transition: opacity calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) ease-out; [data-inked] > & { opacity: 0; }
+}
+@utility signature-settle-in {
+  animation: mu-signature-settle-in calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle) both;
+}
+@utility signature-settle-out {
+  animation: mu-signature-settle-out calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) ease-out both;
+}
+@utility opacity-signature-pad-disabled {
+  opacity: var(--mu-r-signature-pad-self-disabled);
+}
+@utility type-signature-pad-typed {
+  font: var(--mu-r-signature-pad-typed-font);
+  letter-spacing: var(--mu-r-signature-pad-typed-tracking);
 }
 @utility sheet-width {
   width: min(var(--mu-r-sheet-self-width), 100vw);
@@ -4254,6 +4299,12 @@
 }
 @keyframes mu-spinner-creep {
   from { scale: 0 1; } to { scale: var(--mu-r-spinner-bar-reach) 1; }
+}
+@keyframes mu-signature-settle-in {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes mu-signature-settle-out {
+  from { opacity: 1; } to { opacity: 0; }
 }
 @keyframes mu-cascader-in {
   from { opacity: 0; translate: calc(var(--mu-motion-step) * var(--mu-travel-settle)) 0; } to { opacity: 1; translate: 0 0; }

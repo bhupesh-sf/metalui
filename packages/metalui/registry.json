@@ -1840,6 +1840,31 @@
       "docs": "Agent guide: https://metalui.dev/r/sidebar.md. SwiftUI: MetalSidebar in the MetalUI Swift package."
     },
     {
+      "name": "signature-pad",
+      "type": "registry:ui",
+      "title": "Signature pad",
+      "description": "A form field that captures a signature: the field's well as the paper, an engraved baseline with \"Sign here\", ink in the text's ink whose width follows the pen (pressure or speed) and that settles smooth on lift. Type instead is the keyboard and screen-reader path: the name typed on the baseline. Undo, Redo and Clear share one history; the form posts SVG and onValueChange gives the strokes as JSON or the typed name; signatureToSvg and signatureToImage export it.",
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/rule.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/well.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/signature-pad/signature-pad.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/signature-pad/signature-pad.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/signature-pad.md. SwiftUI: MetalSignaturePad, MetalSignature in the MetalUI Swift package."
+    },
+    {
       "name": "size-readout",
       "type": "registry:ui",
       "title": "Size readout",
