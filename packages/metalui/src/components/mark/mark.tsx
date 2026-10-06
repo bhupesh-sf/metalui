@@ -1,62 +1,158 @@
 'use client';
 
 import * as React from 'react';
+import { Icon } from '../../icons/Icon';
+import { motionReduced } from '../../motion/reduced';
 
 /* ─────────────────────────────────────────────────────────
- * CUE FAMILY (the reference design)
+ * CUE FAMILY: one grammar of kinds
  *
- *   match     the words a search matched in a result: heavier, a green underline (not metric-neutral;
- *             only in result rows, never in writing)
+ *   time      date, duration   an engraved groove under the words, the clock glyph before them
+ *   money     amount           a quiet hairline, tabular figures, the coin glyph (the host's: the set has
+ *                              no coin yet; LifeSpent stands in)
+ *   body      measurement      a soft green line, the body's glyph (the host's: moon, steps)
+ *   colour    hex              a 3 pt line in the colour, the live swatch as its glyph
+ *   tag       tag              a luggage tag: a raised paper tab in the tag's own hue (a stable hash of
+ *                              its name to the palette), its point and punched hole on the left, the
+ *                              hash a quiet mark. One look everywhere; a derived tag is an inferred tag.
+ *   person    person           the person's avatar (the host's) before their name, no line
+ *   link      MarkUrl          the host pill
+ *   match     match            a search's matched words (result rows only)
  *
- * A cue is a rendering attribute on the text, never a change to it.
- *   in-flow   date · duration · amount · measurement · tag · derived tag · hex
- *             metric-neutral: width delta 0.00 pt, so a cue appearing mid-word never moves a letter
- *   hover     the resolved value rises 3 over the cue on the part spring (data-chip)
- *   at rest   a URL becomes a host pill; a value the recognizer read that is not in the text is an inferred pill
- *   margin    the dimple (a task's checkbox), the ghost dimple (an inferred task), the urgency LED
- *   trailing  the life glyph after a middle dot, ink3 → ink2 with its host
- *   tick      a pen draws the check glyph's tick (the checkbox's storyboard: a 40 ms beat, the short leg,
- *             a dwell at the corner, the long leg on the part spring); whole at once under Reduce Motion
+ * The words never move: the line and the tag's paper are drawn behind them (::before), the words
+ * keep their advance (width delta 0.00 pt). The glyph is the one thing with an advance, at full ink
+ * before the words; raw keeps its slot, so toggling raw ↔ cued fades the glyph and moves nothing.
+ *
+ * Recognition (fresh: the host sets it once the caret has left the words; never while inside them)
+ *     0ms   the line draws in from the left (settle spring); a tag's paper rises (object spring)
+ *    83ms   the glyph pops in beside the words with a small overshoot (object spring); a swatch blooms
+ *     0ms   money: the figures turn one step on the drum (the drum's spring and step)
+ *     0ms   date: the resolved day rises as the chip, holds, and goes (chip-hold)
+ *   +1 rAF  the glyph's own act, once: the clock passes an hour, a life glyph plays its hover once
+ * Inferred: the line dashes and the words step to ink2. Confirmed (inferred → false): a small press
+ *   (stamp) and one sparkle. Nothing loops; Reduce Motion: everything is there at once, no act.
  * ───────────────────────────────────────────────────────── */
 
-export type MarkKind = 'date' | 'duration' | 'amount' | 'measurement' | 'tag' | 'derived-tag' | 'hex' | 'match';
+export type MarkKind = 'date' | 'duration' | 'amount' | 'measurement' | 'tag' | 'derived-tag' | 'hex' | 'person' | 'match';
 
-export interface MarkProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface MarkProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'> {
   kind: MarkKind;
-  /** The resolved value, shown on hover as a graphite chip: "TUE 30 SEP · 16:00", "1 H 30 · 90 MIN". */
+  /** The resolved value, shown on hover in the chip: "TUE 30 SEP · 16:00", "1 H 30 · 90 MIN". */
   resolved?: string;
-  /** For hex: the colour the text names. The underline and swatch take it. */
+  /** For hex: the colour the text names. The line and the swatch take it. */
   color?: string;
-  /** For hex: show the 11 pt swatch before the text (display only, never while writing). */
+  /** The glyph before the words, at full ink. Default: the kind's own (time: the clock; hex: the swatch).
+   *  Pass a Life*Icon or an Avatar for money, body and person; `false` for none. */
+  glyph?: React.ReactNode;
+  /** What the glyph stands for, first in the chip: "Sleep", "A meal · breakfast?". Default: the kind's name. */
+  label?: string;
+  /** Just recognised: plays the moment of recognition once. Set it when the caret has left the words. */
+  fresh?: boolean;
+  /** Read by the model, not confirmed: a dashed line (a dashed tag), ink2. Turning it false stamps it. */
+  inferred?: boolean;
+  /** Raw text: the drawing and the glyph fade out; every word and the glyph's slot stay where they are. */
+  raw?: boolean;
+  /** @deprecated The swatch is the hex glyph now; `swatch={false}` is `glyph={false}`. */
   swatch?: boolean;
 }
 
-/* Styled with the theme's utilities: each cue is the mark recipe's own drawing (mark-<kind>), written
- * against the cue tokens, with the resolved value's chip on hover (mark-chip). */
-const KINDS: Record<MarkKind, string> = {
-  date: 'mark-date',
-  duration: 'mark-quiet',
-  amount: 'mark-quiet',
-  measurement: 'mark-measure',
-  tag: 'mark-tag',
-  'derived-tag': 'mark-derived-tag',
-  hex: 'mark-hex',
-  match: 'mark-match',
-};
+const LABELS: Partial<Record<MarkKind, string>> = { date: 'Date', duration: 'Duration', amount: 'Amount', measurement: 'Measure', hex: 'Colour', person: 'Person' };
 
-/** An in-flow cue on recognised text. Metric-neutral: the words keep their exact advance. */
-export const Mark = React.forwardRef<HTMLSpanElement, MarkProps>(function Mark({ kind, resolved, color, swatch, className, style, children, ...props }, ref) {
+/** The tag palette's size (recipe mark: tag.hue-0 … tag.hue-5). */
+const TAG_HUES = 6;
+
+/** A tag's place in the palette, stable for its name (case and hash ignored): the same tag is the same colour everywhere. */
+export function markTagHue(tag: string) {
+  let h = 0;
+  for (const c of tag.replace(/^#/, '').toLowerCase()) h = (h * 31 + c.charCodeAt(0)) % 9973;
+  return h % TAG_HUES;
+}
+
+const textOf = (node: React.ReactNode): string => (typeof node === 'string' || typeof node === 'number' ? String(node) : Array.isArray(node) ? node.map(textOf).join('') : '');
+
+function readMs(el: Element, name: string) {
+  const raw = getComputedStyle(el).getPropertyValue(name).trim();
+  const n = parseFloat(raw);
+  return raw.endsWith('ms') ? n : n * 1000;
+}
+
+/** Plays a life glyph's own hover once in `slot` when `fresh` turns on (the cup steams once, the moon tilts). */
+function useLifeAct(slot: React.RefObject<HTMLElement | null>, fresh: boolean | undefined) {
+  React.useEffect(() => {
+    const el = slot.current;
+    const svg = el?.querySelector('.mu-life');
+    if (!fresh || !el || !svg || motionReduced(el)) return;
+    el.setAttribute('data-acting', '');
+    svg.setAttribute('data-hover', '');
+    const done = () => { el.removeAttribute('data-acting'); svg.removeAttribute('data-hover'); };
+    const timer = window.setTimeout(done, readMs(el, '--mu-r-mark-motion-act'));
+    return () => { clearTimeout(timer); done(); };
+  }, [slot, fresh]);
+}
+
+/** True from the moment `inferred` turns false (a confirmation), for the stamp and the sparkle. */
+function useStamp(inferred: boolean | undefined) {
+  const was = React.useRef(inferred);
+  const [stamped, setStamped] = React.useState(false);
+  React.useEffect(() => {
+    if (was.current && !inferred) setStamped(true);
+    if (inferred) setStamped(false);
+    was.current = inferred;
+  }, [inferred]);
+  return stamped;
+}
+
+// Whole class lists, so the theme's scanner sees every utility name.
+const CUE = 'mu-cue mark-cue mark-chip';
+const LIFE = 'mu-cue-life mark-life';
+const INFERRED = 'mu-cue mu-cue-inferred mark-inferred mark-chip';
+
+function Sparkle() {
+  return <i aria-hidden className="mu-cue-sparkle mark-sparkle" />;
+}
+
+/** An in-flow cue on recognised text. The words keep their exact advance; the glyph sits before them. */
+export const Mark = React.forwardRef<HTMLSpanElement, MarkProps>(function Mark(
+  { kind, resolved, color, glyph, label, fresh, inferred, raw, swatch, className, style, children, ...props },
+  ref,
+) {
+  const slot = React.useRef<HTMLSpanElement>(null);
+  const tag = kind === 'tag' || kind === 'derived-tag';
+  const unconfirmed = inferred ?? kind === 'derived-tag';
+  const stamped = useStamp(unconfirmed);
+  useLifeAct(slot, fresh);
+
+  const own =
+    glyph !== undefined ? glyph
+    : kind === 'date' || kind === 'duration' ? <Icon name="clock" size={14} act={fresh || undefined} />
+    : kind === 'hex' && swatch !== false ? <i className="mu-cue-swatch mark-swatch" />
+    : null;
+  const named = own ? label ?? LABELS[kind] : label;
+  const text = textOf(children);
+  const words = tag && typeof children === 'string' && children.startsWith('#') ? <><span className="mu-cue-hash">#</span>{children.slice(1)}</> : children;
+  const vars = {
+    ...(color ? { '--mu-cue-hex': color } : {}),
+    ...(tag ? { '--mu-cue-tag-h': `var(--mu-r-mark-tag-hue-${markTagHue(text)})` } : {}),
+    ...style,
+  } as React.CSSProperties;
+
   return (
     <span
       ref={ref}
       data-kind={kind}
       data-chip={resolved}
-      className={`mu-cue relative mark-chip ${KINDS[kind]}${className ? ` ${className}` : ''}`}
-      style={color ? ({ '--mu-cue-hex': color, ...style } as React.CSSProperties) : style}
+      data-label={named || undefined}
+      data-fresh={fresh ? '' : undefined}
+      data-inferred={unconfirmed ? '' : undefined}
+      data-stamped={stamped ? '' : undefined}
+      data-raw={raw ? '' : undefined}
+      className={[CUE, kind === 'match' && 'mark-match', className].filter(Boolean).join(' ')}
+      style={vars}
       {...props}
     >
-      {kind === 'hex' && swatch && <i aria-hidden className="mu-cue-swatch mark-swatch" />}
-      {children}
+      {own && <span ref={slot} aria-hidden className="mu-cue-glyph mu-icon-trigger">{own}</span>}
+      <span className="mu-cue-words">{words}</span>
+      {stamped && !raw && <Sparkle />}
     </span>
   );
 });
@@ -78,16 +174,32 @@ export const MarkUrl = React.forwardRef<HTMLAnchorElement, MarkUrlProps>(functio
   );
 });
 
-export interface MarkInferredProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface MarkInferredProps extends React.HTMLAttributes<HTMLElement> {
   /** The value and where it came from, on hover: "TUE 30 SEP · 0.82". */
   resolved?: string;
+  /** Confirmed by the person: solid. Turning true stamps it with a small press and one sparkle. */
+  confirmed?: boolean;
+  /** Makes the pill a button that confirms it (the host also confirms on Tab). */
+  onConfirm?: () => void;
 }
 
-/** A value the recognizer read that is not in the text (a date, a measurement): a hollow pill after the words. */
-export const MarkInferred = React.forwardRef<HTMLSpanElement, MarkInferredProps>(function MarkInferred({ resolved, className, ...props }, ref) {
-  return <span ref={ref} data-chip={resolved} className={className ? `mu-cue mu-cue-inferred mark-inferred mark-chip ${className}` : 'mu-cue mu-cue-inferred mark-inferred mark-chip'} {...props} />;
+/** A value the recognizer read that is not in the text (a date, a measurement): a dashed pill after the
+ *  words, a suggestion until the person confirms it. */
+export const MarkInferred = React.forwardRef<HTMLElement, MarkInferredProps>(function MarkInferred({ resolved, confirmed, onConfirm, className, children, ...props }, ref) {
+  const stamped = useStamp(!confirmed);
+  const own = className ? `${INFERRED} ${className}` : INFERRED;
+  const shared = { 'data-chip': resolved, 'data-confirmed': confirmed ? '' : undefined, 'data-stamped': stamped ? '' : undefined, className: own };
+  const body = <>{children}{stamped && <Sparkle />}</>;
+  return onConfirm && !confirmed ? (
+    <button ref={ref as React.Ref<HTMLButtonElement>} type="button" onClick={onConfirm} aria-label={`Confirm ${textOf(children)}${resolved ? `, ${resolved}` : ''}`} {...shared} {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
+      {body}
+    </button>
+  ) : (
+    <span ref={ref as React.Ref<HTMLSpanElement>} {...shared} {...props}>
+      {body}
+    </span>
+  );
 });
-
 
 /** Urgency: a 5 pt amber LED in the margin of an open task that is due soon. */
 export function MarkUrgency({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
@@ -97,14 +209,23 @@ export function MarkUrgency({ className, ...props }: React.HTMLAttributes<HTMLSp
 export interface MarkLifeProps extends React.HTMLAttributes<HTMLSpanElement> {
   /** The glyph at 16, e.g. <LifeCoffeeIcon size={16} /> from @unlocalhosted/metalui/icons/life. */
   children: React.ReactNode;
+  /** What the glyph says about the whole line, in the chip on hover: "A meal · breakfast?". */
+  label?: string;
+  /** Just recognised: the glyph plays its own act once (the cup steams once). */
+  fresh?: boolean;
+  /** Raw text: the dot and the glyph fade out where they are. */
+  raw?: boolean;
 }
 
-/** The life glyph trailing a block: a middle dot, then the glyph. Display only: never while writing. */
-export function MarkLife({ children, className, ...props }: MarkLifeProps) {
+/** The life glyph trailing a block: the kind of the whole line. A middle dot, then the glyph; its label on
+ *  hover. Display only: never while writing. */
+export function MarkLife({ children, label, fresh, raw, className, ...props }: MarkLifeProps) {
+  const slot = React.useRef<HTMLSpanElement>(null);
+  useLifeAct(slot, fresh);
   return (
-    <span className={className ? `mu-cue-life mark-life ${className}` : 'mu-cue-life mark-life'} {...props}>
+    <span className={[LIFE, label && 'relative mark-chip', className].filter(Boolean).join(' ')} data-label={raw ? undefined : label} data-raw={raw ? '' : undefined} {...props}>
       <span aria-hidden className="mu-cue-md">·</span>
-      <span className="mu-cue-lg">{children}</span>
+      <span ref={slot} className="mu-cue-lg" role={label ? 'img' : undefined} aria-label={label}>{children}</span>
     </span>
   );
 }
