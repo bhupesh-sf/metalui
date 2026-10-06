@@ -694,6 +694,11 @@
   --spacing-time-picker-pad: var(--mu-r-time-picker-self-pad);
   --spacing-time-picker-slots-gap: var(--mu-r-time-picker-slots-gap);
   --spacing-time-picker-slots-height: var(--mu-r-time-picker-slots-height);
+  --spacing-phone-input-min-width: var(--mu-r-phone-input-self-min-width);
+  --spacing-phone-input-key-pad: var(--mu-r-phone-input-key-pad);
+  --spacing-phone-input-key-gap: var(--mu-r-phone-input-key-gap);
+  --spacing-phone-input-flag-size: var(--mu-r-phone-input-flag-size);
+  --spacing-phone-input-flag-row: var(--mu-r-phone-input-flag-row);
   --spacing-avatar-size-small: var(--mu-r-avatar-size-small);
   --spacing-avatar-size-regular: var(--mu-r-avatar-size-regular);
   --spacing-avatar-size-large: var(--mu-r-avatar-size-large);
@@ -2346,6 +2351,12 @@
 }
 @utility opacity-time-picker-slots-length-columns {
   opacity: var(--mu-r-time-picker-slots-length-columns);
+}
+@utility phone-input-flag {
+  font-size: var(--mu-r-phone-input-flag-size); line-height: 1; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+}
+@utility phone-input-row-flag {
+  font-size: var(--mu-r-phone-input-flag-row); line-height: 1; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
 }
 @utility avatar-photo {
   opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-starting-style] { opacity: 0; } @media (prefers-reduced-motion: reduce) { transition: none; }

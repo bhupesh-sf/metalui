@@ -1435,6 +1435,21 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A phone number the way you'd say it, with its country. One field well (the field's sizes, focus ring, invalid ring and disabled look): the country key leads, the field's mini key widened to hold the country's flag (the emoji drawn from its ISO code, at the flag size) and the chevron, which turns while the plate is open; the dial code is engraved after it as the field's prefix; then the number, grouped as you type in the country's way, the caret kept by digits. The key opens Combobox's plate from a button, anchored to the whole well and at least the combobox's button plate wide: the search well at its top, Recent, then every country under its flag (the row flag size) with its dial code in the trail in ink3. Under the field the form field's readback says the country, and mobile, once the number is complete. Reduce Motion: the field's, the plate's and the keys' own. (the field (well, sizes, prefix, mini keys, clear) and the form field (readback, error); Combobox's exported parts (the plate from a button, rows, Recent, the fitting height); the button's compact cap for the key; Base UI Combobox)
+    public static let phoneInput = MetalObjectRecipe(
+        name: "phone-input",
+        layers: [
+
+        ],
+        props: [
+            "self.min-width": .number(248.0),
+            "key.pad": .number(5.0),
+            "key.gap": .number(2.0),
+            "flag.size": .number(13.0),
+            "flag.row": .number(15.0),
+        ]
+    )
+
     /// A person, as a small raised disc: their initials engraved in ink2 on the raised surface, or their photo. The initials are there first; the photo fades in over them on the settle spring once it has loaded (a broken photo never shows). Presence is the LED part at the lower right, on a ring of the page's own ground. A group overlaps the discs, each ringed in the ground, with a +N disc for the rest; hovering the group spreads them one grid step apart on the object spring (a stack opening), and letting go settles them back on the release spring. Reduce Motion: the photo appears at once and the stack does not spread. (the raised surface (recipe surface raise-sm); the LED part; the settle, object and release springs; Base UI Avatar)
     public static let avatar = MetalObjectRecipe(
         name: "avatar",

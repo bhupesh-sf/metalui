@@ -1349,6 +1349,12 @@
   --mu-r-time-picker-slots-length-columns: 2;
   --mu-r-time-picker-slots-gap: 4px;
   --mu-r-time-picker-slots-height: 236px;
+  /* phone-input: the field (well, sizes, prefix, mini keys, clear) and the form field (readback, error); Combobox's exported parts (the plate from a button, rows, Recent, the fitting height); the button's compact cap for the key; Base UI Combobox */
+  --mu-r-phone-input-self-min-width: 248px;
+  --mu-r-phone-input-key-pad: 5px;
+  --mu-r-phone-input-key-gap: 2px;
+  --mu-r-phone-input-flag-size: 13px;
+  --mu-r-phone-input-flag-row: 15px;
   /* avatar: the raised surface (recipe surface raise-sm); the LED part; the settle, object and release springs; Base UI Avatar */
   --mu-r-avatar-size-small: 24px;
   --mu-r-avatar-size-regular: 32px;
