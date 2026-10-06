@@ -49,7 +49,7 @@ One rule decides what is in it: a component that exists on main, that a model ca
 - [x] **Safe by construction**: only nodes and props in the spec reach a component; strings are text (React escapes them, nothing is HTML); URLs pass only as http, https or mailto; no prop is a function; `type` is looked up as an own key (`__proto__` and `constructor` are unknown nodes); depth 8 and 200 nodes at most.
 - [x] **Never throws**: an unknown node, a node missing a required prop, or a component that throws while rendering shows a quiet fallback in its place ("Can't show this part"); a bad prop is dropped and the rest renders; JSON that doesn't parse shows the fallback alone.
 - [x] **Actions**: `{ type: "action", name, payload? }`; the key hands it to `onAction` with the named values. Nothing else runs.
-- [x] **On demand**: each component's module loads when a node first needs it (dynamic imports; the bench gate measures the whole set, the worst case).
+- [x] **On demand**: each component's module loads when a node first needs it (dynamic imports), from its own entry, `@unlocalhosted/metalui/widget`. The bench gate holds three numbers: all-in (every component it can name, 136 KB gzip), eager (what the first render waits for, 4.8) and `parseWidget` (3.0).
 - [x] Schema published at `metalui.dev/widgets.schema.json` and in the package (`@unlocalhosted/metalui/widgets.schema.json`); AI.md and llms.txt describe it.
 - [x] SwiftUI: `MetalWidget` decodes the same JSON for the Must vocabulary, with the same limits and fallback, and `onAction`.
 - [x] Docs page: an editable JSON sample, the samples picked from a DialKit panel, the actions it sends; e2e slices including a hostile sample.
@@ -74,4 +74,6 @@ One rule decides what is in it: a component that exists on main, that a model ca
 - **Where do field values go?** **Beside the action**, `onAction(action, { values })`, never merged into the model's `payload`: the host can tell what the model said from what the person typed.
 - **A Button with a URL?** **No.** A key hands an action back; a link lives in a Card's title or in Markdown, where it reads as a link. A host that wants to open a page does it on the action.
 - **Relative links in Markdown?** **Turned into their words.** A relative URL is the host's own origin; the model doesn't get to choose a page of it.
+- **In the main entry or its own?** **Its own**, `@unlocalhosted/metalui/widget`. esbuild keeps an `import()` target even when the code that calls it is shaken out, so in `index.js` every other import grew by the widget's components (Card 49.7 → 54.5 KB). The schema ships as `@unlocalhosted/metalui/widgets.schema.json`.
+- **Swift: generated or hand-written spec?** **Generated**: `MetalWidgetSpec.generated.swift` comes from `spec.ts` with the schema, so the limits, kinds, enums and the URL rule can't drift; only the mapping from a node to its view is written by hand on each platform.
 - **Fallback words?** "Can't show this part": quiet (ink3, meta type), in place, so the rest of the widget still reads.

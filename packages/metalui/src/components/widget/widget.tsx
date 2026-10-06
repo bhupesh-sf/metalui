@@ -321,7 +321,9 @@ function Nodes({ nodes }: { nodes: unknown }) {
 
 /** Renders widget JSON a model sent with MetalUI's components; keys hand their actions to `onAction`. */
 export function Widget({ widget, onAction, className, ...props }: WidgetProps) {
-  const parsed = React.useMemo(() => parseWidget(widget), [widget]);
+  // Parsed by content, not identity: a host that passes a fresh object each render keeps the fields' values.
+  const source = React.useMemo(() => { try { return typeof widget === 'string' ? widget : JSON.stringify(widget) ?? ''; } catch { return ''; } }, [widget]);
+  const parsed = React.useMemo(() => parseWidget(source), [source]);
   React.useMemo(() => preload(parsed.nodes), [parsed]);
   const values = React.useMemo(() => { const v: Record<string, string> = {}; seed(parsed.nodes, v); return v; }, [parsed]);
   const context = React.useMemo<WidgetContext>(() => ({ values, act: (action) => { if (action) onAction?.(action, { values: { ...values } }); } }), [values, onAction]);
