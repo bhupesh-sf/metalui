@@ -175,11 +175,11 @@
       "name": "card",
       "title": "Card",
       "status": "alpha",
-      "description": "A person's thing on a raised plate: media, title, a line, actions. A card with a link lifts one grid step on the settle spring as its shadow grows; a card that goes nowhere is still.",
+      "description": "A person's thing on a raised plate: media (on top, or square at the start), title, a corner action, a line, actions; regular or compact; a status LED; waiting on its own edge. A card with a link lifts one grid step on the settle spring as its shadow grows; a card that goes nowhere is still. A choice card latches down with the icon key's green LED. The frame holds cards: a sunk tray of peers, one plate of sections, or no tray, with an empty slot where a new card will go.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Card",
-        "base": "article; useRender"
+        "base": "article; useRender; @base-ui/react/radio-group and checkbox-group (choice cards); @base-ui/react/tooltip (the status word)"
       },
       "swift": {
         "package": "MetalUI",

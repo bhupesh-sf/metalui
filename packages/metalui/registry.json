@@ -348,10 +348,14 @@
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
-      "description": "A person's thing on a raised plate: media, title, a line, actions. A card with a link lifts one grid step on the settle spring as its shadow grows; a card that goes nowhere is still.",
+      "description": "A person's thing on a raised plate: media (on top, or square at the start), title, a corner action, a line, actions; regular or compact; a status LED; waiting on its own edge. A card with a link lifts one grid step on the settle spring as its shadow grows; a card that goes nowhere is still. A choice card latches down with the icon key's green LED. The frame holds cards: a sunk tray of peers, one plate of sections, or no tray, with an empty slot where a new card will go.",
       "dependencies": [],
       "registryDependencies": [
-        "https://metalui.dev/r/tokens.json"
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icons.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
       ],
       "files": [
         {
