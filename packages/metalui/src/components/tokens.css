@@ -2270,21 +2270,24 @@
   --mu-r-slider-fill-shadow:
     /* mu-recipe:slider:2 */ inset 0 1px 2px rgba(0,70,35,.3),
     /* mu-recipe:slider:3 */ inset 0 0 0 .5px rgba(0,70,35,.25);
+  --mu-r-slider-fill-ink-shadow:
+    /* mu-recipe:slider:6 */ inset 0 1px 2px rgba(0,0,0,.3),
+    /* mu-recipe:slider:7 */ inset 0 0 0 .5px rgba(0,0,0,.25);
   --mu-r-slider-knob-background:
-    /* mu-recipe:slider:4 */ conic-gradient(from 200deg, #FAFAF8, #C9C9C5, #F2F2EF, #B8B8B4, #FAFAF8);
+    /* mu-recipe:slider:8 */ conic-gradient(from 200deg, #FAFAF8, #C9C9C5, #F2F2EF, #B8B8B4, #FAFAF8);
   --mu-r-slider-knob-shadow:
-    /* mu-recipe:slider:5 */ inset 0 0 0 2px rgba(255,255,255,.35),
-    /* mu-recipe:slider:6 */ 0 0 0 .5px rgba(0,0,0,.12),
-    /* mu-recipe:slider:7 */ 0 2px 4px rgba(0,0,0,.18);
+    /* mu-recipe:slider:9 */ inset 0 0 0 2px rgba(255,255,255,.35),
+    /* mu-recipe:slider:10 */ 0 0 0 .5px rgba(0,0,0,.12),
+    /* mu-recipe:slider:11 */ 0 2px 4px rgba(0,0,0,.18);
   --mu-r-slider-knob-hover-shadow:
-    /* mu-recipe:slider:8 */ inset 0 0 0 2px rgba(255,255,255,.35),
-    /* mu-recipe:slider:9 */ 0 0 0 .5px rgba(0,0,0,.12),
-    /* mu-recipe:slider:10 */ 0 4px 9px rgba(0,0,0,.2);
+    /* mu-recipe:slider:12 */ inset 0 0 0 2px rgba(255,255,255,.35),
+    /* mu-recipe:slider:13 */ 0 0 0 .5px rgba(0,0,0,.12),
+    /* mu-recipe:slider:14 */ 0 4px 9px rgba(0,0,0,.2);
   --mu-r-slider-knob-press-shadow:
-    /* mu-recipe:slider:11 */ inset 0 0 0 2px rgba(255,255,255,.35),
-    /* mu-recipe:slider:12 */ 0 0 0 .5px rgba(0,0,0,.12),
-    /* mu-recipe:slider:13 */ 0 1px 2px rgba(0,0,0,.22);
-  --mu-r-slider-self-transition: --mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part);
+    /* mu-recipe:slider:15 */ inset 0 0 0 2px rgba(255,255,255,.35),
+    /* mu-recipe:slider:16 */ 0 0 0 .5px rgba(0,0,0,.12),
+    /* mu-recipe:slider:17 */ 0 1px 2px rgba(0,0,0,.22);
+  --mu-r-slider-self-transition: --mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part), --mu-slider-lo var(--mu-spring-part-d) var(--mu-spring-part), --mu-slider-hi var(--mu-spring-part-d) var(--mu-spring-part);
   --mu-r-slider-self-disabled: 0.4;
   --mu-r-slider-compact-track: 6px;
   --mu-r-slider-compact-knob: 16px;
@@ -2307,6 +2310,14 @@
   --mu-r-slider-knob-lift: 1.08;
   --mu-r-slider-knob-press: 0.94;
   --mu-r-slider-knob-transition: scale var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle);
+  --mu-r-slider-vertical-length: 160px;
+  --mu-r-slider-vertical-label: 32px;
+  --mu-r-slider-bubble-gap: 6px;
+  --mu-r-slider-bubble-pad-x: 8px;
+  --mu-r-slider-bubble-pad-y: 3px;
+  --mu-r-slider-bubble-radius: 8px;
+  --mu-r-slider-bubble-rest: 0.9;
+  --mu-r-slider-bubble-transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle), scale var(--mu-spring-settle-d) var(--mu-spring-settle);
   /* switcher: reference style.css .seg, .seg button, .seg button.on */
   --mu-r-switcher-self-pad: 3px;
   --mu-r-switcher-self-gap: 6px;
@@ -3160,6 +3171,8 @@
   --mu-r-dialog-scrim-opaque: rgba(236,235,231,.9);
   --mu-r-slider-fill-background:
     /* mu-recipe:slider:0 */ linear-gradient(#38B070, #2FA064);
+  --mu-r-slider-fill-ink-background:
+    /* mu-recipe:slider:4 */ linear-gradient(#45454A, #232326);
   --mu-r-slider-mark-color: rgba(40,38,32,.22);
   --mu-r-slider-tick-color: rgba(40,38,32,.3);
   --mu-r-switcher-self-background:
@@ -3772,6 +3785,8 @@
   --mu-r-dialog-scrim-opaque: rgba(10,10,11,.9);
   --mu-r-slider-fill-background:
     /* mu-recipe:slider:1 */ linear-gradient(#45BD7F, #339F68);
+  --mu-r-slider-fill-ink-background:
+    /* mu-recipe:slider:5 */ linear-gradient(#F2F2F0, #C9C9C6);
   --mu-r-slider-mark-color: rgba(255,255,255,.14);
   --mu-r-slider-tick-color: rgba(255,255,255,.26);
   --mu-r-switcher-self-background:
@@ -4385,6 +4400,8 @@
     --mu-r-dialog-scrim-opaque: rgba(10,10,11,.9);
     --mu-r-slider-fill-background:
       linear-gradient(#45BD7F, #339F68);
+    --mu-r-slider-fill-ink-background:
+      linear-gradient(#F2F2F0, #C9C9C6);
     --mu-r-slider-mark-color: rgba(255,255,255,.14);
     --mu-r-slider-tick-color: rgba(255,255,255,.26);
     --mu-r-switcher-self-background:

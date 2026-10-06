@@ -76,6 +76,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case coin = "coin"
     case sun = "sun"
     case moon = "moon"
+    case volumeLow = "volume-low"
+    case volumeHigh = "volume-high"
     case folder = "folder"
     case folderOpen = "folder-open"
     case sidebar = "sidebar"
@@ -157,6 +159,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .coin: return "Money · Coin"
         case .sun: return "Light · Day"
         case .moon: return "Dark · Night"
+        case .volumeLow: return "Volume low · Quiet"
+        case .volumeHigh: return "Volume high · Loud"
         case .folder: return "Folder"
         case .folderOpen: return "Folder open"
         case .sidebar: return "Sidebar"
@@ -238,6 +242,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .coin: return .tools
         case .sun: return .tools
         case .moon: return .tools
+        case .volumeLow: return .tools
+        case .volumeHigh: return .tools
         case .folder: return .tools
         case .folderOpen: return .tools
         case .sidebar: return .actions
@@ -320,6 +326,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .coin: return 0.14
         case .sun: return 0.2
         case .moon: return 0.14
+        case .volumeLow: return 0.14
+        case .volumeHigh: return 0.14
         case .folder: return 0.12
         case .folderOpen: return 0.12
         case .sidebar: return 0.08
@@ -402,6 +410,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .coin: return nil
         case .sun: return nil
         case .moon: return nil
+        case .volumeLow: return nil
+        case .volumeHigh: return nil
         case .folder: return nil
         case .folderOpen: return nil
         case .sidebar: return nil
@@ -484,6 +494,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .coin: return false
         case .sun: return false
         case .moon: return false
+        case .volumeLow: return false
+        case .volumeHigh: return false
         case .folder: return false
         case .folderOpen: return false
         case .sidebar: return false
@@ -566,6 +578,8 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .coin: return 1.85
         case .sun: return 1.85
         case .moon: return 1.85
+        case .volumeLow: return 1.85
+        case .volumeHigh: return 1.85
         case .folder: return 1.85
         case .folderOpen: return 1.85
         case .sidebar: return 1.85

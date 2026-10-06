@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 76,
+  "count": 78,
   "icons": [
     {
       "name": "select",
@@ -1466,6 +1466,46 @@
       },
       "tuned16": false,
       "construction": "A crescent opening to the upper right: a disc r8.2 about the centre less a disc r6.8 about 16.6/8, two arcs meeting in sharp horns at 11.2/3.8 and 20/13.9, tinted .14; a star bead r1.15 in its hollow at 16.9/7.4. Sun is a disc with rays on the same centre. Motion (study): the crescent is tipped back 14° about its middle and rocks home on the hinge spring; the star brightens to 1.35 on the part spring as it swings under it; a second star twinkles out above."
+    },
+    {
+      "name": "volume-low",
+      "component": "VolumeLowIcon",
+      "label": "Volume low · Quiet",
+      "category": "Tools",
+      "hover": "The speaker nudges and throws its one small wave out; it comes home.",
+      "press": "plays the same act",
+      "pressMs": 505,
+      "motion": {
+        "caption": "The speaker nudges and throws its one small wave out; it comes home.",
+        "durationMs": 505,
+        "stages": [
+          "Draw back",
+          "Nudge",
+          "Throw"
+        ]
+      },
+      "tuned16": false,
+      "construction": "The Volume high speaker (a 4 × 5.6 box with corners 1.2 and a cone 13.2 tall at x 13, tinted .14) with its near arc only: r2.8 over ±55° on the mouth's centre (13, 12). Motion (study): the speaker draws back .5 and nudges forward on the part spring; the arc is thrown 1.1 out and comes home."
+    },
+    {
+      "name": "volume-high",
+      "component": "VolumeHighIcon",
+      "label": "Volume high · Loud",
+      "category": "Tools",
+      "hover": "The speaker pumps and throws its two waves out; the far one lags and both come home.",
+      "press": "plays the same act",
+      "pressMs": 933,
+      "motion": {
+        "caption": "The speaker pumps and throws its two waves out; the far one lags and both come home.",
+        "durationMs": 933,
+        "stages": [
+          "Draw back",
+          "Pump",
+          "Throw"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A speaker facing right: a 4 × 5.6 box (corners 1.2) from x 4.4 and a cone opening to 13.2 tall at x 13, one tinted (.14) ring started at the cone's top; two arcs on the mouth's centre (13, 12), r2.8 and r5.6, each over ±55°. Volume low is the same speaker with the near arc only, so the pair morphs by one mark. Motion (study): the speaker draws back .8 and pumps forward on the part spring; the near arc is thrown .8 out, the far arc 1.6 a beat later on the object spring; all come home."
     },
     {
       "name": "folder",

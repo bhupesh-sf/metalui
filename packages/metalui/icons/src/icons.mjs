@@ -79,6 +79,8 @@ export const ICONS = [
   { name: 'coin', cat: 'Tools', label: 'Money · Coin' },
   { name: 'sun', cat: 'Tools', label: 'Light · Day' },
   { name: 'moon', cat: 'Tools', label: 'Dark · Night' },
+  { name: 'volume-low', cat: 'Tools', label: 'Volume low · Quiet' },
+  { name: 'volume-high', cat: 'Tools', label: 'Volume high · Loud' },
   { name: 'folder', cat: 'Tools', label: 'Folder' },
   { name: 'folder-open', cat: 'Tools', label: 'Folder open' },
   { name: 'sidebar', cat: 'Actions', label: 'Sidebar' },
