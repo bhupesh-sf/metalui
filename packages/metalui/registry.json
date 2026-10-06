@@ -517,6 +517,29 @@
       "docs": "Agent guide: https://metalui.dev/r/chip.md. SwiftUI: MetalChip in the MetalUI Swift package."
     },
     {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "Code block",
+      "description": "Code to read and copy in the flow: framed (a plate with a head) or ghost; numbers from any start line, wrap, a max height with its own scroll, the copy glyph turning to the check on the drum. Highlighted and focused lines, lines picked by their numbers to reference in a chat, diff and unified patch (two gutters), diagnostics with an action, streaming from an AI reply with splitFences for Markdown. Highlighting is the host's (pass html); a light tint is built in.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/code-block/code-block.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/code-block/code-block.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/code-block.md. SwiftUI: MetalCodeBlock in the MetalUI Swift package."
+    },
+    {
       "name": "code-card",
       "type": "registry:ui",
       "title": "Code card",
@@ -524,6 +547,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/chip.json",
+        "https://metalui.dev/r/code-block.json",
         "https://metalui.dev/r/glass-face.json",
         "https://metalui.dev/r/tokens.json"
       ],

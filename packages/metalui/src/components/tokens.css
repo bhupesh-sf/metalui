@@ -2106,6 +2106,26 @@
   --mu-r-code-card-diff-add-ink: #9FE3BF;
   --mu-r-code-card-diff-remove-bg: rgba(255,122,102,.12);
   --mu-r-code-card-diff-remove-ink: #E8A89E;
+  /* code-block: the docs Code object (stage plate, head, copy), the code card (tint, diff), the table (select tint, copy hold), the status LEDs; Shiki and Expressive Code for the jobs */
+  --mu-r-code-block-head-height: 40px;
+  --mu-r-code-block-head-pad-left: 14px;
+  --mu-r-code-block-head-pad-right: 6px;
+  --mu-r-code-block-head-gap: 12px;
+  --mu-r-code-block-body-pad-y: 14px;
+  --mu-r-code-block-body-pad-x: 16px;
+  --mu-r-code-block-code-font: 400 12px/19px var(--mu-mono);
+  --mu-r-code-block-gutter-gap: 16px;
+  --mu-r-code-block-gutter-lamp: 12px;
+  --mu-r-code-block-sign-width: 14px;
+  --mu-r-code-block-ghost-radius: 12px;
+  --mu-r-code-block-ghost-key-inset: 6px;
+  --mu-r-code-block-mark-rail: 2px;
+  --mu-r-code-block-focus-dim: 0.42;
+  --mu-r-code-block-note-gap: 8px;
+  --mu-r-code-block-note-pad-y: 4px;
+  --mu-r-code-block-copy-hold: 1400ms;
+  --mu-r-code-block-caret-width: 7px;
+  --mu-r-code-block-caret-blink: 1060ms;
   /* silhouette: the native reference layer-only LOD (CanvasScene lodColor), re-authored per block kind */
   --mu-r-silhouette-code-background:
     /* mu-recipe:silhouette:0 */ linear-gradient(#232326, #1A1A1C);
@@ -2900,6 +2920,13 @@
   --mu-r-link-card-path-ink: rgba(27,27,29,.55);
   --mu-r-link-card-title-ink: #1B1B1D;
   --mu-r-link-card-meta-ink: rgba(27,27,29,.6);
+  --mu-r-code-block-ghost-tint: rgba(60,55,40,.045);
+  --mu-r-code-block-mark-tint: rgba(60,55,40,.06);
+  --mu-r-code-block-pick-tint: rgba(63,185,122,.09);
+  --mu-r-code-block-diff-add-bg: rgba(63,185,122,.12);
+  --mu-r-code-block-diff-add-ink: #2B7A52;
+  --mu-r-code-block-diff-remove-bg: rgba(214,84,64,.10);
+  --mu-r-code-block-diff-remove-ink: #B0432F;
   --mu-r-silhouette-file-background:
     /* mu-recipe:silhouette:9 */ linear-gradient(#FCFBF9, #F0EFEB);
   --mu-r-silhouette-file-shadow:
@@ -3504,6 +3531,13 @@
   --mu-r-link-card-path-ink: rgba(255,255,255,.5);
   --mu-r-link-card-title-ink: #EDEDEF;
   --mu-r-link-card-meta-ink: rgba(255,255,255,.6);
+  --mu-r-code-block-ghost-tint: rgba(0,0,0,.20);
+  --mu-r-code-block-mark-tint: rgba(255,255,255,.05);
+  --mu-r-code-block-pick-tint: rgba(63,185,122,.10);
+  --mu-r-code-block-diff-add-bg: rgba(63,185,122,.14);
+  --mu-r-code-block-diff-add-ink: #9FE3BF;
+  --mu-r-code-block-diff-remove-bg: rgba(255,122,102,.12);
+  --mu-r-code-block-diff-remove-ink: #E8A89E;
   --mu-r-silhouette-file-background:
     /* mu-recipe:silhouette:10 */ linear-gradient(#2C2C2F, #202022);
   --mu-r-silhouette-file-shadow:
@@ -4109,6 +4143,13 @@
     --mu-r-link-card-path-ink: rgba(255,255,255,.5);
     --mu-r-link-card-title-ink: #EDEDEF;
     --mu-r-link-card-meta-ink: rgba(255,255,255,.6);
+    --mu-r-code-block-ghost-tint: rgba(0,0,0,.20);
+    --mu-r-code-block-mark-tint: rgba(255,255,255,.05);
+    --mu-r-code-block-pick-tint: rgba(63,185,122,.10);
+    --mu-r-code-block-diff-add-bg: rgba(63,185,122,.14);
+    --mu-r-code-block-diff-add-ink: #9FE3BF;
+    --mu-r-code-block-diff-remove-bg: rgba(255,122,102,.12);
+    --mu-r-code-block-diff-remove-ink: #E8A89E;
     --mu-r-silhouette-file-background:
       linear-gradient(#2C2C2F, #202022);
     --mu-r-silhouette-file-shadow:

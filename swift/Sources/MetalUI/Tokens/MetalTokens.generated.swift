@@ -3027,6 +3027,42 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Code to read and copy in the flow: docs, a README, an AI reply. Framed: a stage plate at the plate radius with a 40 head (the label in readout ink3, or a host node such as tabs) over a hairline, the copy key at its end; ghost: no plate and no head, the lines on a faint sunk tint at the ghost radius with the copy key pinned in the top corner over the scroll. Lines in the code role on the colorway syntax inks; a gutter of numbers in syn-line from any start line; wrap (rows continue under the line start) or a sideways scroll; maxLines stops the body and scrolls it inside itself. Highlighted lines take a quiet band with a 2 rail in ink3; focused lines leave the rest at the dim opacity until the pointer or focus enters the block (settle spring). Selectable: the gutter numbers are one roving key (arrows, Space, Shift extends, Esc clears); picked lines take the table select tint, the head label turns on the drum to name them and copy copies only them. Diff: added a faint green band with its sign in green, removed a faint red band with its sign in red; a unified patch with hunks shows two gutters and engraves the hunk header. Diagnostics: a lamp in the gutter (red error, amber steady warning, none for a note) and a note row under the line with the word, the message in ink2 and a compact action. Streaming: new rows fade up a nest on the settle spring, a caret blinks after the last character only while streaming, the body follows the end, copy waits. The copy glyph turns to the check on the drum for copy.hold. Reduce Motion: rows land at once and the caret holds steady. (the docs Code object (stage plate, head, copy), the code card (tint, diff), the table (select tint, copy hold), the status LEDs; Shiki and Expressive Code for the jobs)
+    public static let codeBlock = MetalObjectRecipe(
+        name: "code-block",
+        layers: [
+
+        ],
+        props: [
+            "head.height": .number(40.0),
+            "head.pad-left": .number(14.0),
+            "head.pad-right": .number(6.0),
+            "head.gap": .number(12.0),
+            "body.pad-y": .number(14.0),
+            "body.pad-x": .number(16.0),
+            "code.font": .text("400 12px/19px mono"),
+            "gutter.gap": .number(16.0),
+            "gutter.lamp": .number(12.0),
+            "sign.width": .number(14.0),
+            "ghost.radius": .number(12.0),
+            "ghost.key-inset": .number(6.0),
+            "ghost.tint": .perColorway(bone: "rgba(60,55,40,.045)", graphite: "rgba(0,0,0,.20)"),
+            "mark.rail": .number(2.0),
+            "mark.tint": .perColorway(bone: "rgba(60,55,40,.06)", graphite: "rgba(255,255,255,.05)"),
+            "pick.tint": .perColorway(bone: "rgba(63,185,122,.09)", graphite: "rgba(63,185,122,.10)"),
+            "focus.dim": .text("0.42"),
+            "diff.add-bg": .perColorway(bone: "rgba(63,185,122,.12)", graphite: "rgba(63,185,122,.14)"),
+            "diff.add-ink": .perColorway(bone: "#2B7A52", graphite: "#9FE3BF"),
+            "diff.remove-bg": .perColorway(bone: "rgba(214,84,64,.10)", graphite: "rgba(255,122,102,.12)"),
+            "diff.remove-ink": .perColorway(bone: "#B0432F", graphite: "#E8A89E"),
+            "note.gap": .number(8.0),
+            "note.pad-y": .number(4.0),
+            "copy.hold": .text("1400ms"),
+            "caret.width": .number(7.0),
+            "caret.blink": .text("1060ms"),
+        ]
+    )
+
     /// A block seen from far away (below the far-zoom threshold, the core lod_policy, 0.35): one flat shape per kind with no text and no shadows beyond a hairline, cheap enough for thousands. Text is bars where its lines are (words only at rest, so no plate); code is its dark card with light bars; a link is its glass with the site tint; a swatch and an image are their colour; a file is a light plate; a region is its tray with its name, set large enough to read at that zoom. It fades in on settle when the zoom crosses the threshold. (the native reference layer-only LOD (CanvasScene lodColor), re-authored per block kind)
     public static let silhouette = MetalObjectRecipe(
         name: "silhouette",

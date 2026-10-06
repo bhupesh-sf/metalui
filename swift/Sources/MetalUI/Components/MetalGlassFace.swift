@@ -369,20 +369,25 @@ public struct MetalCodeFace: View {
     static func highlighted(_ line: String) -> Text {
         let r = MetalRecipes.codeCard
         func ink(_ key: String) -> Color { (r.color(key) ?? MetalRGBA(0, 0, 0, 0)).color }
+        return tinted(line, text: ink("code.ink"), inks: ["tint.string", "tint.comment", "tint.keyword", "tint.type", "tint.number"].map(ink))
+    }
+
+    /// One line tinted in one pass (the code card's and the code block's). `inks` are the string,
+    /// comment, keyword, type and number inks, in that order.
+    static func tinted(_ line: String, text: Color, inks: [Color]) -> Text {
         let source = line as NSString
         var out = Text("")
         var cursor = 0
-        let keys = ["tint.string", "tint.comment", "tint.keyword", "tint.type", "tint.number"]
         for match in tokenPattern.matches(in: line, range: NSRange(location: 0, length: source.length)) {
             if match.range.location > cursor {
-                out = out + Text(source.substring(with: NSRange(location: cursor, length: match.range.location - cursor))).foregroundColor(ink("code.ink"))
+                out = out + Text(source.substring(with: NSRange(location: cursor, length: match.range.location - cursor))).foregroundColor(text)
             }
-            let group = (1...keys.count).first { match.range(at: $0).location != NSNotFound }
-            out = out + Text(source.substring(with: match.range)).foregroundColor(ink(group.map { keys[$0 - 1] } ?? "code.ink"))
+            let group = (1...inks.count).first { match.range(at: $0).location != NSNotFound }
+            out = out + Text(source.substring(with: match.range)).foregroundColor(group.map { inks[$0 - 1] } ?? text)
             cursor = NSMaxRange(match.range)
         }
         if cursor < source.length {
-            out = out + Text(source.substring(from: cursor)).foregroundColor(ink("code.ink"))
+            out = out + Text(source.substring(from: cursor)).foregroundColor(text)
         }
         return out
     }

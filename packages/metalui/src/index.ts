@@ -65,6 +65,7 @@ export { InkPicks, WidthPicks, InkStroke, INKS, INK_WIDTHS, inkColor, type Ink, 
 export { Connector, type ConnectorProps, type ConnectorEnd, type ConnectorLook, type ConnectorFlow } from './components/connector/connector';
 export { Tabs, TabList, TabPanel, type TabsProps, type TabListProps, type TabPanelProps, type TabItem } from './components/tabs/tabs';
 export { Accordion } from './components/accordion/accordion';
+export { CodeBlock, splitFences, splitHtmlLines, tintLine, escapeCode, type CodeBlockProps, type CodeLines, type CodeRange, type CodeDiagnostic, type CodeFencePart } from './components/code-block/code-block';
 export { Collapsible, type CollapsibleRootProps, type CollapsibleTriggerProps, type CollapsibleKeyProps, type CollapsibleMoreProps, type CollapsiblePanelProps } from './components/collapsible/collapsible';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
 export { Combobox, type ComboboxProps, type ComboboxItem, type ComboboxGroup, type ComboboxAction } from './components/combobox/combobox';
