@@ -876,6 +876,15 @@
   --spacing-sortable-grip-dot: var(--mu-r-sortable-grip-dot);
   --spacing-sortable-grip-pitch: var(--mu-r-sortable-grip-pitch);
   --color-sortable-grip-lip: var(--mu-r-sortable-grip-lip);
+  --spacing-kanban-gap: var(--mu-r-kanban-self-gap);
+  --spacing-kanban-pad: var(--mu-r-kanban-self-pad);
+  --spacing-kanban-column-width: var(--mu-r-kanban-column-width);
+  --spacing-kanban-column-pad: var(--mu-r-kanban-column-pad);
+  --spacing-kanban-column-gap: var(--mu-r-kanban-column-gap);
+  --spacing-kanban-column-empty: var(--mu-r-kanban-column-empty);
+  --spacing-kanban-header-height: var(--mu-r-kanban-header-height);
+  --spacing-kanban-header-gap: var(--mu-r-kanban-header-gap);
+  --spacing-kanban-header-inset: var(--mu-r-kanban-header-inset);
   --spacing-drop-zone-pad: var(--mu-r-drop-zone-self-pad);
   --spacing-drop-zone-gap: var(--mu-r-drop-zone-self-gap);
   --spacing-drop-zone-radius: var(--mu-r-drop-zone-self-radius);
@@ -2619,7 +2628,10 @@
   position: relative; display: grid; gap: var(--mu-r-sortable-self-gap); &[data-orientation=horizontal] { display: flex; flex-wrap: wrap; align-items: flex-start; } &[data-orientation=grid] { grid-template-columns: repeat(auto-fill, minmax(min(var(--mu-r-sortable-self-column), 100%), 1fr)); } &[data-dragging] { user-select: none; -webkit-user-select: none; cursor: grabbing; } &[aria-busy=true] [data-grab] { cursor: progress; }
 }
 @utility sortable-item {
-  position: relative; isolation: isolate; scale: 1; transition: scale calc(var(--mu-spring-object-d) * var(--mu-travel-object)) var(--mu-spring-object); &::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; background: var(--mu-r-surface-self-raise-background); box-shadow: var(--mu-r-surface-self-raise-shadow); opacity: 0; transition: opacity var(--mu-spring-release-d) var(--mu-spring-release); } &[data-grab] { cursor: grab; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; } &[data-lifted] { z-index: 2; scale: calc(1 + (var(--mu-r-sortable-lift-scale) - 1) * var(--mu-travel-surface)); transition: scale calc(var(--mu-spring-surface-d) * var(--mu-travel-surface)) var(--mu-spring-surface); } &[data-lifted]::before { opacity: 1; transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface); } &[data-landing] { z-index: 1; } &[data-lifted], &[data-landing] { will-change: translate, scale; } [data-dragging] &[data-lifted] { cursor: grabbing; } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
+  position: relative; isolation: isolate; scale: 1; transition: scale calc(var(--mu-spring-object-d) * var(--mu-travel-object)) var(--mu-spring-object); &::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; background: var(--mu-r-surface-self-raise-background); box-shadow: var(--mu-r-surface-self-raise-shadow); opacity: 0; transition: opacity var(--mu-spring-release-d) var(--mu-spring-release); } &[data-grab] { cursor: grab; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; } &[data-lifted] { z-index: 2; scale: calc(1 + (var(--mu-r-sortable-lift-scale) - 1) * var(--mu-travel-surface)); transition: scale calc(var(--mu-spring-surface-d) * var(--mu-travel-surface)) var(--mu-spring-surface); } &[data-lifted]::before { opacity: 1; transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface); } &[data-landing] { z-index: 1; } &[data-lifted], &[data-landing] { will-change: translate, scale; } [data-dragging] &[data-lifted] { cursor: grabbing; } &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); } &[data-placeholder] { scale: 1; transition: none; } &[data-placeholder] > * { opacity: 0; } &[data-placeholder]::before { background: var(--mu-r-well-self-track-background); box-shadow: var(--mu-r-well-self-track-shadow); opacity: 1; transition: none; }
+}
+@utility sortable-overlay {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none; & > [data-overlay] { position: absolute; top: 0; left: 0; margin: 0; will-change: translate, scale; }
 }
 @utility sortable-slot {
   position: absolute; top: 0; left: 0; pointer-events: none; background: var(--mu-r-well-self-track-background); box-shadow: var(--mu-r-well-self-track-shadow); opacity: 0; transition: opacity var(--mu-spring-release-d) var(--mu-spring-release); &[data-shown] { opacity: 1; transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), translate calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle); }
@@ -2639,6 +2651,33 @@
 }
 @utility opacity-sortable-grip-rest {
   opacity: var(--mu-r-sortable-grip-rest);
+}
+@utility kanban {
+  position: relative; display: grid; min-height: 0; min-width: 0; &[data-dragging] { cursor: grabbing; user-select: none; -webkit-user-select: none; } &[aria-busy=true] [data-grab] { cursor: progress; }
+}
+@utility kanban-board {
+  position: relative; display: flex; align-items: stretch; gap: var(--mu-r-kanban-self-gap); min-height: 0; padding: var(--mu-r-kanban-self-pad); overflow-x: auto; overscroll-behavior-x: contain; scroll-padding-inline: var(--mu-r-kanban-self-pad);
+}
+@utility kanban-column {
+  display: flex; flex: none; flex-direction: column; width: var(--mu-r-kanban-column-width); max-width: 100%; min-height: 0; border-radius: calc(var(--mu-r-surface-radius-card) + var(--mu-r-kanban-column-pad)); &[data-collapsed] { align-self: flex-start; }
+}
+@utility kanban-header {
+  display: flex; flex: none; align-items: center; gap: var(--mu-r-kanban-header-gap); min-height: var(--mu-r-kanban-header-height); padding: var(--mu-r-kanban-column-pad) var(--mu-r-kanban-column-pad) 0; &:not(:has(> .mu-sortable-grip)) { padding-inline-start: var(--mu-r-kanban-header-inset); }
+}
+@utility kanban-body {
+  display: flex; flex: 1; flex-direction: column; min-height: 0; padding-bottom: var(--mu-r-kanban-column-pad); & > :not([data-sortable-list]) { margin-inline: var(--mu-r-kanban-column-pad); }
+}
+@utility kanban-cards {
+  position: relative; display: grid; flex: 1; align-content: start; gap: var(--mu-r-kanban-column-gap); min-height: var(--mu-r-kanban-column-empty); padding: var(--mu-r-kanban-column-pad); overflow-y: auto; overscroll-behavior-y: contain; scroll-padding-block: var(--mu-r-kanban-column-pad);
+}
+@utility kanban-empty {
+  position: absolute; inset: var(--mu-r-kanban-column-pad); display: grid; place-items: center; margin: 0; pointer-events: none; [data-sortable-list]:has(> [data-sortable-item]) > & { display: none; }
+}
+@utility kanban-card {
+  border-radius: var(--mu-r-surface-radius-card);
+}
+@utility stroke-width-kanban-column-width {
+  stroke-width: var(--mu-r-kanban-column-width);
 }
 @utility drop-zone-edge {
   &::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 var(--mu-r-drop-zone-self-edge) transparent; transition: box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle); } &[data-armed]::before { box-shadow: inset 0 0 0 var(--mu-r-drop-zone-self-edge) color-mix(in oklab, var(--mu-green) calc(var(--mu-r-drop-zone-self-armed) * 100%), transparent); } &[data-over]::before { box-shadow: inset 0 0 0 var(--mu-r-drop-zone-self-edge) var(--mu-green); transition-duration: var(--mu-spring-part-d); } &[data-refused]::before { box-shadow: inset 0 0 0 var(--mu-r-drop-zone-self-edge) var(--mu-invalid); } @media (prefers-reduced-motion: reduce) { &::before { transition: none; } }

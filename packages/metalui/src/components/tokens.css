@@ -1529,6 +1529,16 @@
   --mu-r-sortable-grip-dot: 2.5px;
   --mu-r-sortable-grip-pitch: 5px;
   --mu-r-sortable-grip-rest: 0.7;
+  /* kanban: the well's field (the tray, as Card.Frame separated); Sortable (useSortableLists for the cards, useSortable by handle for the columns; its grip, plate, recess and overlay); Badge (the count, the over-limit lamp); Collapsible (Key and Panel); the surface recipe's card radius */
+  --mu-r-kanban-self-gap: 12px;
+  --mu-r-kanban-self-pad: 8px;
+  --mu-r-kanban-column-width: 272px;
+  --mu-r-kanban-column-pad: 6px;
+  --mu-r-kanban-column-gap: 6px;
+  --mu-r-kanban-column-empty: 72px;
+  --mu-r-kanban-header-height: 36px;
+  --mu-r-kanban-header-gap: 6px;
+  --mu-r-kanban-header-inset: 24px;
   /* drop-zone: the well (recipe well field); the invalid ring (foundations); the drum (motion/swap); the refusal (motion/refuse); the part, settle and object springs */
   --mu-r-drop-zone-self-pad: 24px;
   --mu-r-drop-zone-self-gap: 8px;

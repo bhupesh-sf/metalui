@@ -48,6 +48,7 @@ export const routes: RouteObject[] = [
       { path: 'components/textarea', lazy: lazy(() => import('../pages/components/Textarea')) },
       { path: 'components/quick-edit', lazy: lazy(() => import('../pages/components/QuickEdit')) },
       { path: 'components/sortable', lazy: lazy(() => import('../pages/components/Sortable')) },
+      { path: 'components/kanban', lazy: lazy(() => import('../pages/components/Kanban')) },
       { path: 'components/tree', lazy: lazy(() => import('../pages/components/Tree')) },
       { path: 'components/cascader', lazy: lazy(() => import('../pages/components/Cascader')) },
       { path: 'components/timeline', lazy: lazy(() => import('../pages/components/Timeline')) },

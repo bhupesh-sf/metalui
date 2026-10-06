@@ -32,7 +32,7 @@ How this was made: ReUI's Kanban (columns and items with handles, the drag overl
 | **Phones and tablets** (dnd-kit sensors, HIG) | Touch: a still press lifts (Sortable's hold), so a swipe still scrolls the board; the grip lifts a column at once. The alignment haptic on lift, the detent on drop. | Must |
 | **Reduce Motion** | Following the hand stays (direct manipulation). No scale, no travel: the drop, the return and the others are at once; the plate still fades so you see what is held. | Must |
 | **Add a card** (Trello's "Add a card") | Covered: the host puts `Card.EmptySlot` ("New order") after `Kanban.Cards` in the column; Kanban stays out of what a new card is. | Covered |
-| **Move without dragging, by pointer** (Trello's "Move", GitHub's "Move to"; WCAG 2.5.7) | `moveCard(value, key, column, index?)` is exported; the host puts "Move to …" in the card's menu. The docs board shows it. | Should |
+| **Move without dragging, by pointer** (Trello's "Move", GitHub's "Move to"; WCAG 2.5.7) | `moveBetween(value, key, column, index?)` is exported (Sortable's); the host puts "Move to …" in the card's menu. The docs board shows it. | Should |
 | **The held card's own look** (dnd-kit `DragOverlay`, Trello's tilt) | Covered by the overlay: Sortable's lift (raised plate, floating shadow, one hair larger). No tilt: our objects don't wobble. | Covered |
 | **Open a collapsed column by hovering** (HIG spring-loading) | *Ours*, from Finder: hold a card over a collapsed column and it opens after the spring-load delay. | Later |
 | **Swimlanes** (Jira rows by person or epic) | A board per lane, or a lanes axis. Real, but a second axis doubles the keyboard model. | Later |
@@ -72,6 +72,6 @@ How this was made: ReUI's Kanban (columns and items with handles, the drag overl
 
 **Must**: cards between columns with the overlay and a live recess; order inside a column; columns by a grip; disabled cards; `onValueChange`, `onValueCommit(next, previous)` with rollback; Escape; the keyboard path across columns, announced; counts; WIP limits (amber LED + words); empty columns; collapsing a column; auto-scroll both ways; touch; Reduce Motion; `useSortableLists`; SwiftUI `MetalKanban`.
 
-**Should**: disabled columns; `moveCard` and a "Move to" menu on the docs board; haptics on touch.
+**Should**: disabled columns; `moveBetween` and a "Move to" menu on the docs board; haptics on touch.
 
 **Later**: spring-loading a collapsed column; swimlanes; several at once; virtual rows; lists that run sideways in `useSortableLists`; SwiftUI column drag on iOS (macOS only builds today).

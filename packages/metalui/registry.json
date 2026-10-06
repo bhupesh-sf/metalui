@@ -1067,6 +1067,27 @@
       "docs": "Agent guide: https://metalui.dev/r/icon-button.md. SwiftUI: MetalIconButton in the MetalUI Swift package."
     },
     {
+      "name": "kanban",
+      "type": "registry:ui",
+      "title": "Kanban",
+      "description": "A board of the person's cards in columns. A card dragged by hand rises as a copy on a layer above the board and follows it; its slot is a recess, live in whichever column the hand is over, and the others glide across columns to make room; it lands on the object spring. Keys move it up and down, and left and right between columns, out loud. Columns reorder by Sortable's grip, count their cards on the drum, say when they are over their limit with the amber LED and words, stay a target when empty and fold to their header. A failed save glides every card back.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/badge.json",
+        "https://metalui.dev/r/collapsible.json",
+        "https://metalui.dev/r/sortable.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/kanban/kanban.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/kanban/kanban.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/kanban.md. SwiftUI: MetalKanban in the MetalUI Swift package."
+    },
+    {
       "name": "kbd",
       "type": "registry:ui",
       "title": "Keycap",

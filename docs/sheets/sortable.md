@@ -30,7 +30,7 @@ How this was made: ReUI's Sortable page, dnd-kit's sortable preset and its acces
 | **Nested levels, each reordering on its own** (ReUI nested) | A `Sortable` inside an item: each one only lifts its own children, so groups reorder and items reorder inside a group. | Should |
 | **A different look for the held item** (dnd-kit `DragOverlay`, Trello's tilt) | Covered by the lift: the held item rises off the table on the surface spring onto a raised plate (the surface recipe's raise), scaled one hair, with the deeper floating shadow faded in on a layer (only opacity animates). No tilt: our objects don't wobble. | Covered |
 | **Where it will land** (React Aria drop indicator) | *Ours*: the slot it left is a sunk recess (the well's track) the size of the item, gliding on the settle spring to wherever the item will land. A drop line is for moving *into* a level (Tree), not for reordering. | Must |
-| **Between lists** (Kanban, ReUI multiple containers) | The hook's state is per list; moving to another list needs a shared drag. | Later (with Kanban) |
+| **Between lists** (Kanban, ReUI multiple containers) | `useSortableLists`: one drag over several lists under a root, a copy on an overlay layer, the recess live in the nearest list, FLIP across lists (built with Kanban, `docs/sheets/kanban.md`). | Must (done) |
 | **Into a level** (Tree "drag to move with a drop line") | A drop line and "into" targets are Tree's; Tree uses `useSortable` for siblings and adds its own line. | Later (with Tree) |
 | **Several at once** (Finder, React Aria) | Lifting a selection as a stack. Rare in lists; real on a canvas, where the selection frame already moves things. | Later |
 | **Constrained axis, modifiers, collision strategies** (dnd-kit) | Not a person's job; the orientation sets the axis for keys and the pointer moves freely (a held thing follows the hand). | Dropped |
@@ -63,4 +63,4 @@ How this was made: ReUI's Sortable page, dnd-kit's sortable preset and its acces
 
 **Should**: nested levels (independent); haptics on touch.
 
-**Later**: between lists (Kanban); into a level with a drop line (Tree); several at once; a `grip` glyph in the set; SwiftUI grid keyboard moves by nearest neighbour (Swift moves by index today).
+**Later**: into a level with a drop line (Tree); several at once; a `grip` glyph in the set; SwiftUI grid keyboard moves by nearest neighbour (Swift moves by index today).

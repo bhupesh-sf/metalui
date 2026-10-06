@@ -1,0 +1,23 @@
+{
+  "name": "kanban",
+  "title": "Kanban",
+  "status": "alpha",
+  "layer": "place",
+  "kind": "composed",
+  "uses": ["sortable", "badge", "collapsible", "well", "surface"],
+  "description": "A board of the person's cards in columns. A card dragged by hand rises as a copy on a layer above the board and follows it; its slot is a recess, live in whichever column the hand is over, and the others glide across columns to make room; it lands on the object spring. Keys move it up and down, and left and right between columns, out loud. Columns reorder by Sortable's grip, count their cards on the drum, say when they are over their limit with the amber LED and words, stay a target when empty and fold to their header. A failed save glides every card back.",
+  "base": "div role=list of columns (useSortable, horizontal, by handle); each column a Collapsible with a list of cards (useSortableLists: pointer events, an overlay copy, a live region)",
+  "react": {
+    "export": "Kanban",
+    "files": ["kanban.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalKanban",
+    "file": "swift/Sources/MetalUI/Components/MetalKanban.swift"
+  },
+  "slots": {
+    "Kanban": ["Root", "Column", "Cards", "Card"]
+  },
+  "agent": "kanban.agent.md",
+  "page": "/components/kanban"
+}

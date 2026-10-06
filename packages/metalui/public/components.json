@@ -698,6 +698,23 @@
       "agent": "https://metalui.dev/r/icon-button.md"
     },
     {
+      "name": "kanban",
+      "title": "Kanban",
+      "status": "alpha",
+      "description": "A board of the person's cards in columns. A card dragged by hand rises as a copy on a layer above the board and follows it; its slot is a recess, live in whichever column the hand is over, and the others glide across columns to make room; it lands on the object spring. Keys move it up and down, and left and right between columns, out loud. Columns reorder by Sortable's grip, count their cards on the drum, say when they are over their limit with the amber LED and words, stay a target when empty and fold to their header. A failed save glides every card back.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Kanban",
+        "base": "div role=list of columns (useSortable, horizontal, by handle); each column a Collapsible with a list of cards (useSortableLists: pointer events, an overlay copy, a live region)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalKanban"
+      },
+      "registry": "https://metalui.dev/r/kanban.json",
+      "agent": "https://metalui.dev/r/kanban.md"
+    },
+    {
       "name": "kbd",
       "title": "Keycap",
       "status": "alpha",
