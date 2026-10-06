@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useRender } from '@base-ui/react/use-render';
 import { SlidingIndicator } from '../../motion/indicator';
 import { Tooltip } from '../tooltip/tooltip';
+import { SwapText } from '../../motion/swap';
 
 /* ─────────────────────────────────────────────────────────
  * SIDEBAR, an app's side place for moving between places
@@ -14,6 +15,7 @@ import { Tooltip } from '../tooltip/tooltip';
  *   collapse  to a rail: the words fade out on the release spring first, then the width settles to
  *             the rail; expanding, the width grows first and the words fade back in
  *   rail      each item keeps its name for assistive tech and shows it in a tooltip
+ *   toggle    its word turns on the drum (Collapse ↔ Expand) as the words fade; the glyph is the host's
  * Reduce Motion: width and words change at once; the highlight moves at once.
  * A place: it holds the ways to other places. It uses the row's lift, the label and the tooltip.
  * Slots: Sidebar.Root, Sidebar.Header, Sidebar.Section, Sidebar.Item, Sidebar.Footer, Sidebar.Toggle.
@@ -120,7 +122,7 @@ function Toggle({ collapsed, onCollapsedChange, icon }: SidebarToggleProps) {
   const button = (
     <button type="button" aria-label={label} aria-expanded={!collapsed} className={`${ITEM} border-0 bg-transparent cursor-pointer`} onClick={() => onCollapsedChange(!collapsed)}>
       <span aria-hidden className="inline-grid flex-none">{icon}</span>
-      <span className={WORDS}>{collapsed ? 'Expand' : 'Collapse'}</span>
+      <span className={WORDS}><SwapText value={collapsed ? 'Expand' : 'Collapse'} /></span>
     </button>
   );
   return <Tooltip label={label} side="right" disabled={!collapsed}>{button}</Tooltip>;

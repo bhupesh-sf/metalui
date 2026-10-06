@@ -20,8 +20,14 @@ for (const colorway of COLORWAYS) {
     await expect(nav(page).getByRole('group', { name: 'Kept' })).toBeVisible();
 
     const wide = (await nav(page).boundingBox())!.width;
-    await nav(page).getByRole('button', { name: 'Collapse to a rail' }).click();
+    const toggle = nav(page).getByRole('button', { name: 'Collapse to a rail' });
+    await toggle.evaluate((el) => { (el as HTMLElement).dataset.muMark = '1'; });
+    await toggle.click();
     await expect.poll(async () => (await nav(page).boundingBox())!.width).toBeLessThan(wide - 100);
+    // The same key changed meaning: its word turned on the drum to Expand.
+    const turned = nav(page).locator('[data-mu-mark="1"]');
+    await expect(turned).toHaveAccessibleName('Expand the sidebar');
+    await expect(turned.locator('.mu-swap-text .mu-swap-layer:not([data-state="out"])')).toHaveText('Expand');
     await expect(nav(page).getByRole('link', { name: 'Regions' })).toBeVisible();
     await nav(page).getByRole('link', { name: 'Regions' }).hover();
     await expect(page.locator('.mu-tooltip')).toContainText('Regions');
