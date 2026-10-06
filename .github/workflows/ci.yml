@@ -74,3 +74,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: swift build
+
+  # The same package for the iOS Simulator: AppKit has to stay behind its compile conditions.
+  swift-ios:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: xcodebuild -scheme MetalUI -destination 'generic/platform=iOS Simulator' build

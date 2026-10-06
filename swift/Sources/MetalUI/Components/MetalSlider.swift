@@ -1,4 +1,8 @@
+#if canImport(AppKit)
 import AppKit
+#else
+import UIKit
+#endif
 import SwiftUI
 
 public struct MetalSliderTick: Identifiable, Sendable {
@@ -299,16 +303,16 @@ public struct MetalSlider: View {
                 case let .active(point):
                     hovering = true
                     let overKnob = abs(point.x - x) <= knob / 2 && abs(point.y - centre) <= knob / 2
-                    (overKnob ? NSCursor.openHand : NSCursor.pointingHand).set()
+                    (overKnob ? MetalCursor.openHand : .pointingHand).set()
                 case .ended:
                     hovering = false
-                    NSCursor.arrow.set()
+                    MetalCursor.arrow.set()
                 }
             }
             .gesture(DragGesture(minimumDistance: .zero)
                 .onChanged { gesture in
                     if !dragging {
-                        NSCursor.closedHand.set()
+                        MetalCursor.closedHand.set()
                         onDragChange?(true)
                     }
                     dragging = true
@@ -320,7 +324,7 @@ public struct MetalSlider: View {
                 .onEnded { _ in
                     dragging = false
                     onDragChange?(false)
-                    NSCursor.openHand.set()
+                    MetalCursor.openHand.set()
                 })
             .animation(dragging || isExternallyDragging ? nil : MetalMotion.resolve(.part, reduceMotion: reduceMotion).animation,
                        value: value)

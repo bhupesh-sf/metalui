@@ -1,6 +1,8 @@
 import SwiftUI
 #if canImport(AppKit)
 import AppKit
+#elseif canImport(UIKit)
+import UIKit
 #endif
 
 /// Geometry already presented by the containing Place, in the field's local points.
@@ -118,6 +120,26 @@ public struct MetalSpatialFieldView: View {
     }
 }
 
+extension MetalSpatialFieldSamples {
+    /// The platform views' draw: the Canvas's marks into a Core Graphics context (y-down).
+    static func draw(scene: MetalSpatialFieldScene, colorway: MetalColorway, in context: CGContext, bounds: CGRect) {
+        context.clear(bounds)
+        let radius = MetalSpatialField.markRadius
+        let mark = color(colorway.tokens.spatialFieldMark)
+        let target = color(colorway.tokens.spatialFieldTarget)
+        visit(scene: scene, size: bounds.size) { point, opacity, isTarget in
+            context.setFillColor(isTarget ? target : mark)
+            context.setAlpha(opacity)
+            context.fillEllipse(in: CGRect(x: point.x - radius, y: point.y - radius, width: radius * 2, height: radius * 2))
+        }
+        context.setAlpha(1)
+    }
+
+    private static func color(_ token: MetalRGBA) -> CGColor {
+        CGColor(srgbRed: token.red / 255, green: token.green / 255, blue: token.blue / 255, alpha: token.alpha)
+    }
+}
+
 #if canImport(AppKit)
 /// AppKit canvas adapter for already projected viewport geometry without rebuilding SwiftUI.
 @MainActor
@@ -152,20 +174,36 @@ public final class MetalSpatialFieldNSView: NSView {
 
     public override func draw(_ dirtyRect: NSRect) {
         guard let context = NSGraphicsContext.current?.cgContext else { return }
-        context.clear(bounds)
-        let radius = MetalSpatialField.markRadius
-        let mark = Self.color(colorway.tokens.spatialFieldMark)
-        let target = Self.color(colorway.tokens.spatialFieldTarget)
-        MetalSpatialFieldSamples.visit(scene: scene, size: bounds.size) { point, opacity, isTarget in
-            context.setFillColor(isTarget ? target : mark)
-            context.setAlpha(opacity)
-            context.fillEllipse(in: CGRect(x: point.x - radius, y: point.y - radius, width: radius * 2, height: radius * 2))
-        }
-        context.setAlpha(1)
+        MetalSpatialFieldSamples.draw(scene: scene, colorway: colorway, in: context, bounds: bounds)
+    }
+}
+#elseif canImport(UIKit)
+/// UIKit canvas adapter: the AppKit view's twin, for a UIKit canvas.
+@MainActor
+public final class MetalSpatialFieldUIView: UIView {
+    private var scene = MetalSpatialFieldScene(regions: [])
+    private var colorway: MetalColorway = .bone
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        isOpaque = false
+        backgroundColor = .clear
+        contentMode = .redraw
+        isUserInteractionEnabled = false
     }
 
-    private static func color(_ token: MetalRGBA) -> CGColor {
-        NSColor(srgbRed: token.red / 255, green: token.green / 255, blue: token.blue / 255, alpha: token.alpha).cgColor
+    @available(*, unavailable)
+    required init?(coder: NSCoder) { fatalError() }
+
+    public func setScene(_ scene: MetalSpatialFieldScene, colorway: MetalColorway) {
+        self.scene = scene
+        self.colorway = colorway
+        setNeedsDisplay()
+    }
+
+    public override func draw(_ rect: CGRect) {
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        MetalSpatialFieldSamples.draw(scene: scene, colorway: colorway, in: context, bounds: bounds)
     }
 }
 #endif

@@ -1,3 +1,5 @@
+// macOS only: a pointer cursor, and iOS has no pointer cursor to set. On iOS the host draws the brush ring in its canvas.
+#if os(macOS)
 import AppKit
 import SwiftUI
 
@@ -141,3 +143,4 @@ public struct MetalBrushCursor {
         NSColor(srgbRed: rgba.red / 255, green: rgba.green / 255, blue: rgba.blue / 255, alpha: rgba.alpha)
     }
 }
+#endif

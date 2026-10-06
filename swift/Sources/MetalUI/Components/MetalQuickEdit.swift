@@ -120,7 +120,7 @@ public struct MetalQuickEdit: View {
                 .disabled(!settled && !fresh)
             }
         }
-        .onExitCommand { if phase != .saving { onClose() } }
+        .metalExitCommand { if phase != .saving { onClose() } }
         .onAppear { focused = true; select() }
         .task(id: phase == .done) {
             guard phase == .done else { return }

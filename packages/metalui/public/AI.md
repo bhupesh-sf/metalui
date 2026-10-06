@@ -19,7 +19,7 @@ The package is ESM only: use `import`, not `require()`. In a Tailwind v3 app imp
 
 Or copy the source into your project with the shadcn CLI (Tailwind v4): `npx shadcn@latest add https://metalui.dev/r/<name>.json`. The first install also adds `@unlocalhosted/metalui` and imports its `tokens.css` and `theme.css` into your global CSS, which is what styles the copied component; files land under `components/metalui/` in the same layout as the package, so imports between components resolve. Whole screens (blocks) install the same way as `https://metalui.dev/r/block-<name>.json` into `components/metalui/screens/<name>/`. Both routes work in Vite and Next.js (`app/` and `src/app/`). Release notes: https://metalui.dev/changelog.
 
-SwiftUI: add the package `https://github.com/vijayksingh/metalui` and `import MetalUI`. It needs macOS 14; iOS is not supported yet.
+SwiftUI: add the package `https://github.com/vijayksingh/metalui` and `import MetalUI`. It needs macOS 14 or iOS 17.
 
 ## Global rules
 
@@ -631,7 +631,7 @@ Reduce Motion: the new crumb fades in without travel.
 
 # Brush cursor
 
-The pointer while drawing (P) or erasing (E) on the canvas. React: `BrushCursor` from `@unlocalhosted/metalui`. SwiftUI: `MetalBrushCursor` (on the Mac, an `NSCursor` image drawn from the same values). Its look is the `brush` recipe.
+The pointer while drawing (P) or erasing (E) on the canvas. React: `BrushCursor` from `@unlocalhosted/metalui`. SwiftUI: `MetalBrushCursor`, macOS only: an `NSCursor` image drawn from the same values. iOS has no pointer cursor to set, so the type does not exist there; an iOS host draws the brush ring in its own canvas from the same `brush` recipe. Its look is the `brush` recipe.
 
 ## Use it for
 
@@ -5159,7 +5159,7 @@ Create one `SpatialFieldController` per surface, render `SpatialFieldCanvas` ben
 
 ## SwiftUI
 
-Render one `MetalSpatialFieldView(scene:)` beneath a SwiftUI Place, or one `MetalSpatialFieldNSView` beneath an AppKit canvas. Pass `MetalSpatialFieldScene` with displayed Region frames, bounded stationary object frames, optional carried frame and target ID, all in local viewport points. The SwiftUI Canvas redraws only when the host changes its scene; the AppKit view redraws when `setScene` changes its geometry or colorway. Neither has an idle timer or hit target. The host may publish animated presentation frames, but the field must not own a second gesture loop.
+Render one `MetalSpatialFieldView(scene:)` beneath a SwiftUI Place, one `MetalSpatialFieldNSView` beneath an AppKit canvas, or its twin `MetalSpatialFieldUIView` beneath a UIKit canvas on iOS (same `setScene`, same draw). Pass `MetalSpatialFieldScene` with displayed Region frames, bounded stationary object frames, optional carried frame and target ID, all in local viewport points. The SwiftUI Canvas redraws only when the host changes its scene; the AppKit and UIKit views redraw when `setScene` changes its geometry or colorway. Neither has an idle timer or hit target. The host may publish animated presentation frames, but the field must not own a second gesture loop.
 
 ## Look and behavior
 
@@ -6512,7 +6512,7 @@ Reduce Motion: rows jump, land and leave at once; the chevron and the lit groove
 | letters | type-ahead: within 500 ms they build a word; the next row starting with it takes focus. One letter repeated cycles |
 | F2 | with `onRename`: QuickEdit on a plate under the row; Enter commits, Esc cancels, focus comes back to the row |
 
-Pointer: a click focuses and selects (⌘-click toggles, ⇧-click takes a range); with `selectionMode="none"` a click acts. A double-click acts. A click on the chevron opens or closes without selecting. Selection never follows focus.
+Pointer: a click focuses and selects (⌘-click toggles, ⇧-click takes a range); with `selectionMode="none"` a click acts. A double-click acts. A click on the chevron opens or closes without selecting. Selection never follows focus. SwiftUI on iOS has no modifier clicks: ⌘-click and ⇧-click are macOS only, and a hardware keyboard takes the keyboard paths.
 
 ## API
 

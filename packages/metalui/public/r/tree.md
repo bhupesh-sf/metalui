@@ -54,7 +54,7 @@ Reduce Motion: rows jump, land and leave at once; the chevron and the lit groove
 | letters | type-ahead: within 500 ms they build a word; the next row starting with it takes focus. One letter repeated cycles |
 | F2 | with `onRename`: QuickEdit on a plate under the row; Enter commits, Esc cancels, focus comes back to the row |
 
-Pointer: a click focuses and selects (⌘-click toggles, ⇧-click takes a range); with `selectionMode="none"` a click acts. A double-click acts. A click on the chevron opens or closes without selecting. Selection never follows focus.
+Pointer: a click focuses and selects (⌘-click toggles, ⇧-click takes a range); with `selectionMode="none"` a click acts. A double-click acts. A click on the chevron opens or closes without selecting. Selection never follows focus. SwiftUI on iOS has no modifier clicks: ⌘-click and ⇧-click are macOS only, and a hardware keyboard takes the keyboard paths.
 
 ## API
 

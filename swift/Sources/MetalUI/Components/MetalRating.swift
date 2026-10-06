@@ -1,4 +1,3 @@
-import AppKit
 import SwiftUI
 
 // Rating: how good something is, on a short scale. Mirrors components/rating (rating.agent.md) from the
@@ -248,7 +247,9 @@ private struct MetalRatingKeys: ViewModifier {
                 .focusEffectDisabled()
                 .focused($focused)
                 .onChange(of: focused) { _, isFocused in
+                    #if os(macOS)
                     keyboardFocus = isFocused && NSApp.currentEvent?.type == .keyDown
+                    #endif
                 }
                 .onKeyPress(.leftArrow) { keyboardFocus = true; set(Swift.max(1, (current ?? 1) - 1)); return .handled }
                 .onKeyPress(.rightArrow) { keyboardFocus = true; set(min(max, (current ?? .zero) + 1)); return .handled }

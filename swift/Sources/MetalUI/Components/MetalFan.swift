@@ -32,6 +32,8 @@ public struct MetalFan<Content: View>: View {
     @StateObject private var state: MetalFanState
     #if os(macOS)
     @State private var eventMonitor: Any?
+    #else
+    @State private var outsideTap: MetalFanOutsideTap?
     #endif
 
     /// `open`: the host's view of which cell is open, so it can fold the Fan from its own key
@@ -53,7 +55,7 @@ public struct MetalFan<Content: View>: View {
             .environment(\.metalFanReduceMotionOverride, reduceMotionOverride)
             .accessibilityElement(children: .contain)
             .accessibilityLabel(label)
-            .onExitCommand { state.open = nil }
+            .metalExitCommand { state.open = nil }
             .onChange(of: state.open) { _, now in
                 if let openBinding, openBinding.wrappedValue != now { openBinding.wrappedValue = now }
             }
@@ -94,6 +96,33 @@ public struct MetalFan<Content: View>: View {
             .onDisappear {
                 if let eventMonitor { NSEvent.removeMonitor(eventMonitor); self.eventMonitor = nil }
             }
+            #else
+            .background {
+                if ProcessInfo.processInfo.environment["METALUI_CAPTURES"] == nil {
+                    MetalFanWindowProbe { view in
+                        guard outsideTap == nil, let window = view.window else { return }
+                        // A tap anywhere in the window outside the Fan folds it; the tap still reaches what it hit.
+                        let tap = MetalFanOutsideTap { recognizer in
+                            guard state.open != nil else { return }
+                            var bounds = view.convert(view.bounds, to: nil)
+                            if state.open == .picker {
+                                // UIKit's window space runs down: the grid above the cap is -y.
+                                let step = MetalRecipes.iconButton.points("tool.size") + MetalRecipes.toolbar.points("self.gap")
+                                let r = state.pickerReach
+                                bounds = CGRect(x: bounds.minX - Double(r.left) * step, y: bounds.minY - Double(r.up) * step,
+                                                width: bounds.width + Double(r.left + r.right) * step,
+                                                height: bounds.height + Double(r.up + r.down) * step)
+                            }
+                            if !bounds.contains(recognizer.location(in: nil)) { state.open = nil }
+                        }
+                        window.addGestureRecognizer(tap.recognizer)
+                        outsideTap = tap
+                    }
+                }
+            }
+            .onDisappear {
+                if let outsideTap { outsideTap.recognizer.view?.removeGestureRecognizer(outsideTap.recognizer); self.outsideTap = nil }
+            }
             #endif
     }
 }
@@ -103,6 +132,37 @@ private struct MetalFanWindowProbe: NSViewRepresentable {
     let ready: (NSView) -> Void
     func makeNSView(context: Context) -> NSView { NSView() }
     func updateNSView(_ view: NSView, context: Context) { DispatchQueue.main.async { ready(view) } }
+}
+#else
+private struct MetalFanWindowProbe: UIViewRepresentable {
+    let ready: (UIView) -> Void
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        view.isUserInteractionEnabled = false
+        return view
+    }
+    func updateUIView(_ view: UIView, context: Context) { DispatchQueue.main.async { ready(view) } }
+}
+
+/// A window-wide tap that never claims the touch, so the control under it still gets it.
+@MainActor
+private final class MetalFanOutsideTap: NSObject, UIGestureRecognizerDelegate {
+    let recognizer = UITapGestureRecognizer()
+    private let tapped: (UITapGestureRecognizer) -> Void
+
+    init(_ tapped: @escaping (UITapGestureRecognizer) -> Void) {
+        self.tapped = tapped
+        super.init()
+        recognizer.addTarget(self, action: #selector(fire))
+        recognizer.cancelsTouchesInView = false
+        recognizer.delaysTouchesEnded = false
+        recognizer.delegate = self
+    }
+
+    @objc private func fire() { tapped(recognizer) }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                           shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool { true }
 }
 #endif
 
@@ -237,7 +297,7 @@ public struct MetalFanPicker<Value: Hashable>: View {
                     capFocused = true
                 }
                 .focused($focusedOption, equals: index)
-                .onMoveCommand { move in moveFocus(from: cell, move, grid: grid) }
+                .metalMoveCommand { move in moveFocus(from: cell, move, grid: grid) }
                 // Before the offset: the reported frame moves with the drawn option.
                 .metalHitRegion(open)
                 // Each key grows out of the cap and travels to its cell on SwiftUI's own snappy
@@ -275,14 +335,13 @@ public struct MetalFanPicker<Value: Hashable>: View {
     }
 
     /// Arrows move in two dimensions, as the grid is drawn; down past the row nearest the cap returns to it.
-    private func moveFocus(from cell: MetalFanGridCell, _ move: MoveCommandDirection, grid: MetalFanGrid) {
+    private func moveFocus(from cell: MetalFanGridCell, _ move: MetalMoveDirection, grid: MetalFanGrid) {
         var r = cell.row, c = cell.column
         switch move {
         case .left: c -= 1
         case .right: c += 1
         case .up: r -= 1
         case .down: r += 1
-        @unknown default: return
         }
         if move == .down, r == grid.above, direction == .up { capFocused = true; return }
         let row = grid.rows[min(max(r, 0), grid.rows.count - 1)]

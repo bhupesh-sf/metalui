@@ -192,8 +192,11 @@ public struct MetalTree: View {
                              onDisclosure: { active = item.id; toggle(row) })
                     .contentShape(Rectangle())
                     .onTapGesture(count: 2) { if selectionMode != .none { act(row) } }
+                    // ⌘-click and ⇧-click: a pointer with modifier keys, macOS only (iOS picks with the keyboard paths).
+                    #if os(macOS)
                     .simultaneousGesture(TapGesture().modifiers(.command).onEnded { active = item.id; choose(row, toggle: true, range: false) })
                     .simultaneousGesture(TapGesture().modifiers(.shift).onEnded { active = item.id; choose(row, toggle: false, range: true) })
+                    #endif
                     .onTapGesture { click(row) }
                     .contextMenu {
                         if onRename != nil && !item.disabled { Button(words.rename) { renaming = item.id } }
