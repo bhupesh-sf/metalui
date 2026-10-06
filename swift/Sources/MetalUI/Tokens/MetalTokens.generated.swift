@@ -727,7 +727,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Several lines of text in the field well that grows with what is written. Sizes follow Field: large is the content role (15/20) at 14 by 11 in a 14 radius; regular and compact are the ui role (12.5/16) at Field's padding and radius (12 by 8 in 11; 10 by 6 in 9), so a bio sits level with name and email. each new line grows the well on the settle spring (a control growing to new content, no overshoot) until max rows, then it scrolls; deleting shrinks it the same way. Focus: the flush green ring. With a limit, a counter's row grows open below at 80 % (the form error's motion) and turns red at the limit; typing or pasting past it shakes only the counter on the refusal spring (a nest's reach) and leaves the text alone. Invalid: a red hairline ring. Disabled: 40 %. Reduce Motion: the height snaps and nothing shakes; the counter still turns red. (the field well (recipe well field); the settle and refusal springs; a native textarea)
+    /// Several lines of text in the field well that grows with what is written. Sizes follow Field: large is the content role (15/20) at 14 by 11 in a 14 radius; regular and compact are the ui role (12.5/16) at Field's padding and radius (12 by 8 in 11; 10 by 6 in 9), so a bio sits level with name and email. each new line grows the well on the settle spring (a control growing to new content, no overshoot) until max rows, then it scrolls; deleting shrinks it the same way. Focus: the flush green ring. With a limit, a counter's row grows open below at 80 % (the form error's motion) and turns red at the limit; typing or pasting past it shakes only the counter on the refusal spring (a nest's reach) and leaves the text alone. Invalid: a red hairline ring. Disabled: 40 %. Ghost (a suggestion): while focused with the caret at the end, the words that would come next sit after the text in the field's hint ink, wrapping as the text will, and the well grows to hold them; Tab takes them, Escape lets them go. Reduce Motion: the height snaps and nothing shakes; the counter still turns red. (the field well (recipe well field); the settle and refusal springs; a native textarea)
     public static let textarea = MetalObjectRecipe(
         name: "textarea",
         layers: [
@@ -824,7 +824,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// One waiting language, placed where the wait is. The ring: an arc in the host's own ink (the button's wait arc, wait.*) turning at a constant speed in the host's glyph slot, sized by the host; it stands in for the item's glyph after the show delay, fills instead of turning once the amount is known, and draws the check glyph's tick when the work is done. The item: dims its other parts and refuses actions while it waits. The rim: a short arc travelling round an avatar. The edge: a lit edge travelling round a large item's own border (a card), not a spinner in its middle. The bar: a thin bar across the top of a place for a route change, creeping toward the end and completing when the page arrives. Timing (self.delay, minimum, result, still): nothing for fast work, at least `minimum` on screen once shown, then the result, and more words after `still`; useWait reads them. Reduce Motion: nothing turns or travels; the arc, rim, edge and bar breathe in place. (the button's wait arc (recipe button, wait.*); the check glyph's tick (icons/src/acts/check.mjs); the progress breathe; the switch's lit fill for the bar)
+    /// One waiting language, placed where the wait is. The ring: an arc in the host's own ink (the button's wait arc, wait.*) turning at a constant speed in the host's glyph slot, sized by the host; it stands in for the item's glyph after the show delay, fills instead of turning once the amount is known, and draws the check glyph's tick when the work is done. The item: dims its other parts and refuses actions while it waits. The rim: a short arc travelling round an avatar. The edge: a lit edge travelling round a large item's own border (a card), not a spinner in its middle. The bar: a thin bar across the top of a place for a route change, creeping toward the end and completing when the page arrives. The words (text.*): a working line said in words ("Searching the web"), in the host's type and ink2, with the skeleton's light passing across them after the show delay: a window of the words in full ink slides across (translate) while its copy slides back so it stays put, the window's soft edges a band `text.band` of its width, one pass every `text.sweep`. Timing (self.delay, minimum, result, still): nothing for fast work, at least `minimum` on screen once shown, then the result, and more words after `still`; useWait reads them. Reduce Motion: nothing turns or travels; the arc, rim, edge, bar and words breathe in place. (the button's wait arc (recipe button, wait.*); the check glyph's tick (icons/src/acts/check.mjs); the progress breathe; the switch's lit fill for the bar)
     public static let spinner = MetalObjectRecipe(
         name: "spinner",
         layers: [
@@ -854,6 +854,8 @@ public enum MetalRecipes {
             "bar.creep": .text("9000ms"),
             "bar.reach": .text("0.86"),
             "bar.finish": .text("260ms"),
+            "text.sweep": .text("1800ms"),
+            "text.band": .text("0.4"),
         ]
     )
 
@@ -1265,6 +1267,29 @@ public enum MetalRecipes {
             "reasons.gap": .number(6.0),
             "copy.hold": .text("1600ms"),
             "thanks.hold": .text("1600ms"),
+        ]
+    )
+
+    /// Which of a message's replies is showing, and the way to the others (a Component), in Message's footer before the actions: a ghost key with the chevron turned back, the count "2 / 3" in meta type and tabular figures, ink2, then the chevron turned forward; 2 apart, the count `count.pad` each side. Moving turns the number on the drum. At an end that key is disabled and hands focus to the other. A single reply draws nothing. Reduce Motion: the number crossfades in place. (IconButton (ghost) and Tooltip; the chevron glyph turned; SwapText (the drum); assistant-ui BranchPicker)
+    public static let branchPicker = MetalObjectRecipe(
+        name: "branch-picker",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(2.0),
+            "count.pad": .number(4.0),
+        ]
+    )
+
+    /// The person's past conversations (a Place), in a Sidebar's body: grouped by the day they last spoke under the sidebar's engraved section titles (Pinned, Today, Yesterday, Previous 7 days, Previous 30 days, then by month), the sidebar's gaps between groups and rows. Each conversation is a list row (the row recipe) with its title on one line; the open one says aria-current=page, so the Sidebar's lifted highlight sits under it and glides to the next one chosen. A More key at the row's end shows on hover, on focus, while its menu is open and on the open row (opacity on the settle spring; always on touch), opening Rename and Delete and the host's actions. Rename is QuickEdit in a popover anchored to the row. Delete: the row leaves one nest down on the release spring and the rows under it close up on the settle spring; a new row lands on the object spring. Loading: `loading.rows` skeleton lines in the rows' places. Reduce Motion: rows appear, leave and close up at once. (Sidebar (section titles and gaps); Row (list, opened); IconButton (ghost) and Menu; QuickEdit in a Popover; Skeleton; useRowMotion and leaveRows; assistant-ui ThreadList, Ant Design X Conversations)
+    public static let conversationList = MetalObjectRecipe(
+        name: "conversation-list",
+        layers: [
+
+        ],
+        props: [
+            "loading.rows": .number(6.0),
         ]
     )
 

@@ -35,7 +35,7 @@ export { Row, type RowProps, type RowRootProps } from './components/row/row';
 export { Slider, type SliderRootProps, type SliderSize, type SliderOrientation, type SliderTone, type SliderValue } from './components/slider/slider';
 export { DirectionProvider, type TextDirection } from '@base-ui/react/direction-provider';
 export { Progress, type ProgressProps, type ProgressState, type ProgressShape, type ProgressSize } from './components/progress/progress';
-export { Spinner, type SpinnerProps, type SpinnerBarProps, type SpinnerStatusProps } from './components/spinner/spinner';
+export { Spinner, type SpinnerProps, type SpinnerBarProps, type SpinnerStatusProps, type SpinnerTextProps } from './components/spinner/spinner';
 export { Skeleton, type SkeletonProps, type SkeletonSwapProps } from './components/skeleton/skeleton';
 export { Link, type LinkKind, type LinkProps } from './components/link/link';
 export { ButtonGroup, ButtonGroupReadout, SplitButton, type ButtonGroupProps, type ButtonGroupReadoutProps, type SplitButtonProps } from './components/button-group/button-group';
@@ -89,6 +89,8 @@ export { PromptInput, type PromptInputProps } from './components/prompt-input/pr
 export { MessageActions, type MessageActionsProps, type MessageFeedback } from './components/message-actions/message-actions';
 export { Plan, type PlanProps, type PlanTask, type PlanTaskState } from './components/plan/plan';
 export { Citation, type CitationProps, type CitationRootProps, type CitationSourcesProps, type CitationSource } from './components/citation/citation';
+export { BranchPicker, type BranchPickerProps } from './components/branch-picker/branch-picker';
+export { ConversationList, type ConversationListProps, type Conversation, type ConversationAction } from './components/conversation-list/conversation-list';
 export { Timeline, type TimelineProps, type TimelineEvent, type TimelineState, type TimelineFormat } from './components/timeline/timeline';
 export { Select, type SelectProps, type SelectOption, type SelectGroup } from './components/select/select';
 export { Combobox, type ComboboxProps, type ComboboxItem, type ComboboxGroup, type ComboboxAction } from './components/combobox/combobox';

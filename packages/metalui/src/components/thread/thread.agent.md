@@ -40,6 +40,7 @@ Reduce Motion: messages appear in place; Jump to latest jumps and only fades.
 - Give the thread a height (or `min-h-0 flex-1` in a column). It doesn't size itself to its content.
 - The host draws a hairline under its own title from the scroll area's `data-overflow-y-start` (the AI composer block does).
 - Set `grouped` on a `Message` that follows one from the same speaker; the thread closes the gap.
+- A checkpoint (a point to go back to) is a `Message from="system"` holding its words and a compact Restore `Button` with the undo glyph; restoring drops the turns after it and the note then says "Restored to this checkpoint" without the key (the Chat panel block). In a sidebar or a popup, the thread sits in the host's column or `Popover` with `PromptInput` under it (the same block).
 
 ## API
 

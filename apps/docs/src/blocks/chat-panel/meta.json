@@ -1,0 +1,14 @@
+{
+  "name": "block-chat-panel",
+  "title": "Chat panel",
+  "status": "alpha",
+  "description": "An assistant beside the work: the conversation docked as a column or floating in a popover from a corner key, with takes to move between, a checkpoint to restore and the composer's ghost text.",
+  "since": "0.3.0",
+  "react": {
+    "export": "ChatPanel",
+    "files": [
+      "chat-panel.tsx"
+    ]
+  },
+  "page": "/blocks/chat-panel"
+}

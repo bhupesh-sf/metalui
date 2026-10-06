@@ -138,6 +138,23 @@
       "agent": "https://metalui.dev/r/block-silhouette.md"
     },
     {
+      "name": "branch-picker",
+      "title": "Branch picker",
+      "status": "alpha",
+      "description": "Moves between the replies to one question, in Message's footer: previous and next ghost keys and \"2 / 3\" between them, the number turning on the drum; nothing for a single reply.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "BranchPicker",
+        "base": "a group of buttons"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalBranchPicker"
+      },
+      "registry": "https://metalui.dev/r/branch-picker.json",
+      "agent": "https://metalui.dev/r/branch-picker.md"
+    },
+    {
       "name": "breadcrumbs",
       "title": "Breadcrumbs",
       "status": "alpha",
@@ -493,6 +510,23 @@
       },
       "registry": "https://metalui.dev/r/connector.json",
       "agent": "https://metalui.dev/r/connector.md"
+    },
+    {
+      "name": "conversation-list",
+      "title": "Conversation list",
+      "status": "alpha",
+      "description": "The person's past conversations in a Sidebar's body: grouped by day under engraved titles, the open one under the sidebar's gliding highlight, a More key with Rename (QuickEdit in a popover) and Delete (the row leaves and the list closes up), skeleton rows while loading.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "ConversationList",
+        "base": "a group of lists of buttons"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalConversationList"
+      },
+      "registry": "https://metalui.dev/r/conversation-list.json",
+      "agent": "https://metalui.dev/r/conversation-list.md"
     },
     {
       "name": "day",
@@ -1686,7 +1720,7 @@
       "name": "spinner",
       "title": "Spinner",
       "status": "alpha",
-      "description": "Steady work in a small space: a sunk round well with a lit green arc turning at a constant speed; it shows only after a beat so quick actions never flash it.",
+      "description": "Waiting, shown where it happens on one clock (useWait): a ring in an item's glyph slot, a bar across a place, a light passing across working words (Spinner.Text); nothing shows for fast work.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Spinner",

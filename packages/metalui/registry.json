@@ -358,6 +358,28 @@
       "docs": "Agent guide: https://metalui.dev/r/block-silhouette.md. SwiftUI: MetalBlockSilhouette in the MetalUI Swift package."
     },
     {
+      "name": "branch-picker",
+      "type": "registry:ui",
+      "title": "Branch picker",
+      "description": "Moves between the replies to one question, in Message's footer: previous and next ghost keys and \"2 / 3\" between them, the number turning on the drum; nothing for a single reply.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/branch-picker/branch-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/branch-picker/branch-picker.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/branch-picker.md. SwiftUI: MetalBranchPicker in the MetalUI Swift package."
+    },
+    {
       "name": "breadcrumbs",
       "type": "registry:ui",
       "title": "Breadcrumbs",
@@ -830,6 +852,32 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/connector.md. SwiftUI: MetalConnector in the MetalUI Swift package."
+    },
+    {
+      "name": "conversation-list",
+      "type": "registry:ui",
+      "title": "Conversation list",
+      "description": "The person's past conversations in a Sidebar's body: grouped by day under engraved titles, the open one under the sidebar's gliding highlight, a More key with Rename (QuickEdit in a popover) and Delete (the row leaves and the list closes up), skeleton rows while loading.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/quick-edit.json",
+        "https://metalui.dev/r/row.json",
+        "https://metalui.dev/r/skeleton.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/conversation-list/conversation-list.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/conversation-list/conversation-list.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/conversation-list.md. SwiftUI: MetalConversationList in the MetalUI Swift package."
     },
     {
       "name": "day",
@@ -2300,7 +2348,7 @@
       "name": "spinner",
       "type": "registry:ui",
       "title": "Spinner",
-      "description": "Steady work in a small space: a sunk round well with a lit green arc turning at a constant speed; it shows only after a beat so quick actions never flash it.",
+      "description": "Waiting, shown where it happens on one clock (useWait): a ring in an item's glyph slot, a bar across a place, a light passing across working words (Spinner.Text); nothing shows for fast work.",
       "dependencies": [],
       "registryDependencies": [
         "https://metalui.dev/r/icons.json",
@@ -2873,6 +2921,26 @@
         }
       ],
       "docs": "Docs: https://metalui.dev/blocks/availability-picker. Import it from components/metalui/screens/availability-picker/availability-picker. Needs @unlocalhosted/metalui@^0.3.0."
+    },
+    {
+      "name": "block-chat-panel",
+      "type": "registry:block",
+      "title": "Chat panel",
+      "description": "An assistant beside the work: the conversation docked as a column or floating in a popover from a corner key, with takes to move between, a checkpoint to restore and the composer's ghost text.",
+      "dependencies": [
+        "@unlocalhosted/metalui@^0.3.0"
+      ],
+      "registryDependencies": [
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "apps/docs/src/blocks/chat-panel/chat-panel.tsx",
+          "type": "registry:block",
+          "target": "components/metalui/screens/chat-panel/chat-panel.tsx"
+        }
+      ],
+      "docs": "Docs: https://metalui.dev/blocks/chat-panel. Import it from components/metalui/screens/chat-panel/chat-panel. Needs @unlocalhosted/metalui@^0.3.0."
     },
     {
       "name": "block-settings",

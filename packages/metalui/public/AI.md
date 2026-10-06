@@ -578,6 +578,63 @@ No text other than a region's name, no shadows beyond a hairline: it must stay c
 
 ---
 
+# Branch picker
+
+Which of a message's replies is showing, and the way to the others. React: `BranchPicker` from `@unlocalhosted/metalui`. SwiftUI: `MetalBranchPicker`. A component: you operate it to change something else (the reply the message shows). Every look is borrowed: ghost `IconButton`s with `Tooltip`s, the chevron turned back and forward, the drum (`SwapText`) for the count. The `branch-picker` recipe holds the gap and the count's padding.
+
+## Use it for
+
+- A reply written more than once (Retry keeps the earlier takes): "2 / 3" in the reply's footer, before `MessageActions`.
+- The person's turn edited and sent again: the same picker under their turn.
+
+## Don't use it for
+
+- Pages of results (use `Pagination`), steps of a task (use `Stepper`), slides (use `Carousel`).
+
+## Anatomy
+
+- Previous key, the count, Next key, 2 apart. The count is "2 / 3" in meta type, tabular figures, ink2, 4 each side.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| between | both keys on | – |
+| first / last | Previous / Next disabled; focus moves to the other key if it was on the one turning off | – |
+| moved | the new count | the number turns on the drum |
+| one reply (`count` under 2) | nothing drawn | – |
+
+Reduce Motion: the number crossfades in place.
+
+## Rules
+
+- The host keeps the takes and `index`; Retry adds a take and moves to it (`index = count`).
+- Show it only once the reply has settled, in the same footer as the actions, so it fades in with them.
+- While a take is writing, keep the picker out (the footer is the host's while it writes).
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `index` (from 1), `count`, `onIndexChange(index)` | `MetalBranchPicker(index: $index, count:)` |
+| `label` ("Reply") | `label:` |
+
+```tsx
+<Message from="assistant" status="done" footer={<>
+  <BranchPicker index={take + 1} count={takes.length} onIndexChange={(i) => setTake(i - 1)} />
+  <MessageActions copy={takes[take]} onRetry={retry} />
+</>}>
+  <Markdown>{takes[take]}</Markdown>
+</Message>
+```
+
+## Keyboard and accessibility
+
+- A `group` named "Reply 2 of 3"; the keys are buttons named "Previous reply" and "Next reply" (with tooltips).
+- After a move, a polite status says "Reply 3 of 3".
+
+---
+
 # Breadcrumbs
 
 Where you are, as a path you can climb. React: `Breadcrumbs` from `@unlocalhosted/metalui`. SwiftUI: `MetalBreadcrumbs` (work in progress). The `breadcrumbs` recipe sets the gaps, the chevrons, the fold key and the arrival; the fold opens the `menu`.
@@ -1920,6 +1977,83 @@ The line is world ink (scales with zoom); halo, dots, handles, hit band (18) and
 ## API
 
 `Connector from={x,y,attached} to={…} look flow ink width state label scale onHoverChange onPress onEndPointerDown`
+
+---
+
+# Conversation list
+
+The person's past conversations, in a `Sidebar`'s body. React: `ConversationList` from `@unlocalhosted/metalui`. SwiftUI: `MetalConversationList`. A place: it has area, holds the person's conversations, and you go into one from it. Every look is borrowed: the sidebar's engraved section titles and gaps, `Row` (`list`), the sidebar's lifted highlight for the open one, a ghost `IconButton` with a `Menu`, `QuickEdit` in a `Popover` for Rename, `Skeleton` while loading, `useRowMotion` and `leaveRows` for rows that arrive and leave. The `conversation-list` recipe holds the More key's reveal and the skeleton row count.
+
+## Use it for
+
+- A chat app's past conversations beside the thread: in `Sidebar` under its header's New chat key.
+
+## Don't use it for
+
+- An app's places (use `Sidebar.Item`), a list of files or people (use `Row`s in a list), search results (use `Table` or `Combobox`).
+
+## Anatomy
+
+- Groups by the day a conversation was last spoken in: Pinned, Today, Yesterday, Previous 7 days, Previous 30 days, then by month ("September 2026"). Each group: the sidebar's engraved title (label type, 10 in) and its rows 2 apart; groups 16 apart.
+- Row: the `list` row (5 / 8, radius 12, 13 pt); the title on one line with an ellipsis (the whole title in the native tooltip); at its end a ghost More key (28, pulled into the row's padding).
+- Loading: six skeleton lines in the rows' places.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| rest | titles in ink | – |
+| hover, focus | the row's lift; the More key shows | the key fades in on the settle spring |
+| current | the sidebar's lifted highlight under the whole row; its More key always shows | the highlight glides to a newly chosen row on the settle spring |
+| menu open | the key stays shown | the menu's own |
+| renaming | `QuickEdit` in a popover beside the row; the key holds while `onRename`'s promise is out, then Renamed | QuickEdit's own |
+| deleted | the row leaves one nest down, fading | release spring; the rows and groups under it close up on the settle spring; then `onDelete` |
+| new row | – | lands one nest from above on the object spring |
+| loading | skeleton lines | the skeleton's beat and sheen |
+| empty | the host's `empty` node | – |
+
+Reduce Motion: rows appear, leave and close up at once; the key appears at once.
+
+## Rules
+
+- Keep the order and the times in the host; the list sorts (pinned first, newest first) and groups from `time`.
+- Delete without asking, and offer Undo in a toast ("Deleted “Tide tables” · Undo"); put the conversation back with its old `time` and it lands where it was.
+- Rename goes through `QuickEdit` (the rule for every rename): return a promise from `onRename` when the save is remote.
+- Pin, Archive, Share are the host's `actions` (rows between Rename and Delete). Pinned conversations come first under Pinned.
+- New chat is the host's key in `Sidebar.Header`; a conversation added to the array lands at the top of Today.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `conversations` `{ id, title, time, pinned? }[]` | `conversations: [MetalConversation]` |
+| `current`, `onSelect(id)` | `current: Binding<String?>` |
+| `onRename(id, title)` (a promise holds the key) | `onRename: (String, String) async throws -> Void` |
+| `onDelete(id)` | `onDelete:` |
+| `actions` `{ label, icon?, onSelect(id) }[]` | `actions: [MetalConversationAction]` |
+| `loading`, `empty` | `loading:`, `empty:` view builder |
+| `now`, `aria-label` ("Conversations") | `now:`, `label:` |
+
+```tsx
+<Sidebar aria-label="Chats">
+  <Sidebar.Header><Button icon={<PlusIcon />} onClick={newChat}>New chat</Button></Sidebar.Header>
+  <ConversationList
+    aria-label="Chats"
+    conversations={chats}
+    current={open}
+    onSelect={setOpen}
+    onRename={(id, title) => save(id, { title })}
+    onDelete={(id) => { const was = chats; setChats(chats.filter((c) => c.id !== id)); toast.show({ title: 'Deleted', undo: () => setChats(was) }); }}
+    loading={!chats}
+  />
+</Sidebar>
+```
+
+## Keyboard and accessibility
+
+- A `group` named by `aria-label`; each day a `group` named by its title holding a list. Tab reaches each title (a button; the open one `aria-current="page"`) and its More key ("More for Tide tables").
+- The More key opens a `Menu` (↑ ↓, ↩, ⎋). Rename moves focus into the popover's field; closing it returns focus to the row. After a delete, focus moves to the next row (or the one before).
+- Loading is a busy `status` named "Loading conversations".
 
 ---
 
@@ -4441,11 +4575,12 @@ Reduce Motion: the well snaps to its height; the glyph and the word change in pl
 
 | React | SwiftUI |
 |---|---|
-| `PromptInput` `value`, `defaultValue`, `onValueChange`, `onSend(text)`, `busy`, `onStop`, `onAttach(files)`, `accept`, `attachments`, `tools`, `canSend`, `disabled`, `disabledReason`, `placeholder`, `label`, `hint`, `maxRows`, `maxLength`; ref: the textarea | `MetalPromptInput(_ label:, text:, busy:, canSend:, disabledReason:, hint:, maxRows:, onSend:, onStop:, onAttach:) { files } tools: { … }`; disable with `.disabled(_:)` |
+| `PromptInput` `value`, `defaultValue`, `onValueChange`, `onSend(text)`, `busy`, `onStop`, `onAttach(files)`, `accept`, `attachments`, `tools`, `canSend`, `disabled`, `disabledReason`, `placeholder`, `label`, `hint`, `maxRows`, `maxLength`, `suggestion`, `onSuggestionDismiss`; ref: the textarea | `MetalPromptInput(_ label:, text:, busy:, canSend:, disabledReason:, hint:, maxRows:, onSend:, onStop:, onAttach:, suggestion:, onSuggestionDismiss:) { files } tools: { … }`; disable with `.disabled(_:)` |
 
 ## Keyboard and accessibility
 
 - A `group` named by `label` ("Message"); the well is the textbox of that name.
+- With `suggestion`, the AI's next words show in grey after the text (Textarea's ghost): Tab takes them, ⎋ lets them go (`onSuggestionDismiss`) before it would stop a reply.
 - ↩ sends, ⇧↩ breaks the line, ↩ while an IME composes is the IME's; ⎋ stops a reply.
 - Send's name is "Send" or "Stop"; it is disabled (not hidden) while there is nothing to send.
 - Pasting files into the well attaches them when `onAttach` is set; text pastes as text.
@@ -5833,7 +5968,7 @@ The field keeps a quiet visible grid at rest. Marks clear Region paper and objec
 
 # Spinner
 
-Waiting, shown where it happens, with one clock. React: `Spinner`, `Spinner.Bar`, `Spinner.Status` and the `useWait` hook from `@unlocalhosted/metalui`. SwiftUI: `MetalSpinner`, `MetalSpinnerBar` and `.metalWait(_:into:)`. The `spinner` recipe holds the timing and every look; the ring reuses the button's wait arc (`button` recipe, `wait.*`) and draws the check glyph's tick.
+Waiting, shown where it happens, with one clock. React: `Spinner`, `Spinner.Bar`, `Spinner.Text`, `Spinner.Status` and the `useWait` hook from `@unlocalhosted/metalui`. SwiftUI: `MetalSpinner`, `MetalSpinnerBar`, `MetalSpinnerText` and `.metalWait(_:into:)`. The `spinner` recipe holds the timing and every look; the ring reuses the button's wait arc (`button` recipe, `wait.*`) and draws the check glyph's tick.
 
 ## Where the wait is (pick the placement, not a widget)
 
@@ -5845,6 +5980,7 @@ Waiting, shown where it happens, with one clock. React: `Spinner`, `Spinner.Bar`
 | In a field (search, combobox, validation) | a ring in the trailing slot, in place of the clear key | `{wait.showing ? <Spinner phase={wait.phase} /> : clearKey}` in `Field.Trail` |
 | For the whole place (a page, a view) | first load: skeletons of what will arrive; a route change: a thin bar across the top, the old view kept and dimmed | `Skeleton.Swap loading={wait.busy}`; `<Spinner.Bar phase={wait.phase} />` in a positioned host |
 | Background work (sync, upload) | the status lamp breathes; nothing is held | `<Led kind="waiting" gesture="breathe" />` while `wait.phase === 'shown'`, `live` + `flicker` when done, `failed` + `blink2` on failure, with words |
+| In words (a working line with no lamp of its own: under a reply, a tool's progress) | the words: a light passes across them after the show delay | `<Spinner.Text>Searching the web</Spinner.Text>` while it works, `active={false}` (or the result) after |
 | Known amount | it fills instead of turning | `value` (0–100) on the ring or the bar; a card hands over to `Progress`; an `Attachment` takes `progress={null}` until the amount is known |
 
 Never a spinner floating in the middle of a card or in a corner of the page.
@@ -5876,6 +6012,7 @@ The button: `state={wait.busy ? 'waiting' : wait.phase === 'done' ? 'done' : 're
 - Item: every direct part except the one holding the ring dims to 50 %; pointer events off.
 - Rim (avatar): a 26 % arc on the avatar's ring, ink2, 1.6 s a turn.
 - Edge (card): a 1.5 lit edge in the card's ink at 75 %, a 42 % comet tail, 2.8 s a lap; the card's border, not a box over it.
+- Words: the host's type in ink2; a window of the words in full ink slides across (translate) while its copy slides back so it stays put; the window's soft edges are a band 40 % of its width; one pass every 1.8 s (`text.sweep`), after the show delay. Only the light moves.
 - Bar: 2 tall, the switch's lit fill, creeping to 86 % over 9 s (easing out, never arriving), completing in 260 ms and fading.
 
 ## States and motion
@@ -5891,7 +6028,7 @@ The button: `state={wait.busy ? 'waiting' : wait.phase === 'done' ? 'done' : 're
 
 A bare `<Spinner />` (no `phase`) shows itself after the show delay on mount: for code that can't use the hook.
 
-Reduce Motion: nothing turns, creeps or travels; the arc, rim, edge and bar breathe in place (the progress breathe); the tick is whole at once.
+Reduce Motion: nothing turns, creeps or travels; the arc, rim, edge, bar and words breathe in place (the progress breathe); the tick is whole at once.
 
 ## API
 
@@ -5903,6 +6040,7 @@ Reduce Motion: nothing turns, creeps or travels; the arc, rim, edge and bar brea
 | `size` (`regular` 16, `small` 12) | `size:` |
 | children: the glyph it stands in for | `glyph:` view builder |
 | `Spinner.Bar` `phase`, `value`, `label` | `MetalSpinnerBar(phase:value:)` |
+| `Spinner.Text` children (the words), `active` (true) | `MetalSpinnerText(_:active:)` |
 | `Spinner.Status` `phase`, `label`, `result` | (the ring says it; `.accessibilityValue` on hosts) |
 | `useWait(work, ref?)` | `.metalWait(work, into: $wait)` |
 | `Row` / `Chip` / `Avatar` / `Card` `waiting` | `waiting:` on `MetalRow`, `MetalChip`, `MetalAvatar`, `MetalCard` |
@@ -5932,6 +6070,7 @@ const wait = useWait(work);
 - Measure when you can: switch to filling as soon as the amount is known.
 - Say what is working ("Lifting the subject…"), and more after a long wait ("Still lifting…").
 - Don't restyle the ring's colour: it is the slot's ink.
+- A sheen means waiting: don't put `Spinner.Text` on words that aren't working, and not beside a lamp that already says it (Message's header word stays plain).
 
 ---
 
@@ -6567,6 +6706,8 @@ Several lines of text. React: `Textarea` from `@unlocalhosted/metalui` (a native
 | refused | typing or pasting past the limit leaves the text alone | only the counter shakes on the refusal spring (reach: one nest, 6) |
 | invalid | a red hairline ring | – |
 | disabled | 40 % | – |
+| ghost (`suggestion`) | while focused with the caret at the end, the words that would come next after the text in the placeholder's ink, wrapping as the text will; the well grows to hold them | – (they are there or not; nothing slides) |
+| ghost taken (Tab) | the words become text | the well keeps its height |
 
 Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 
@@ -6580,13 +6721,15 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 | `minRows`, `maxRows` | `minRows:`, `maxRows:` |
 | `maxLength` | `limit:` |
 | `invalid` | `invalid:` |
+| `suggestion`, `onSuggestionDismiss` | `suggestion:`, `onSuggestionDismiss:` |
 | `disabled`, `readOnly`, `placeholder`, and every textarea attribute | `.disabled()` |
 
 `className` goes on the well; `style` and the rest go on the textarea.
 
 ## Keyboard and accessibility
 
-- A native textarea: every editing key works as the platform expects. Tab leaves it.
+- A native textarea: every editing key works as the platform expects. Tab leaves it, except while a suggestion shows: then Tab takes it (inserted as typed, so ⌘Z takes it back) and Escape lets it go (`onSuggestionDismiss`). Typing the suggestion's next letters eats them; typing anything else hides it.
+- A suggestion is said once through a polite status: "Suggestion: … Tab to accept."
 - Give it a label: a visible `<label htmlFor>` or `aria-label`. The counter is linked by `aria-describedby`; reaching the limit is announced once ("Limit reached, N characters"), not on every keystroke.
 - `invalid` sets `aria-invalid`; say what is wrong in text near it.
 
@@ -6596,6 +6739,7 @@ Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
 - A refusal is local: only the counter moves, and the text is never trimmed or changed.
 - Show the counter only when it helps (near the limit), or from the start (`countFrom={0}`) when the form states its limit.
 - In a form of regular or compact Fields, give the textarea the same `size`.
+- A suggestion is the host's: fetch it after a pause in typing, pass the words that would follow the text (not the whole text), and clear it when the text moves on. Only suggest at the end of the text.
 
 ---
 
@@ -6641,6 +6785,7 @@ Reduce Motion: messages appear in place; Jump to latest jumps and only fades.
 - Give the thread a height (or `min-h-0 flex-1` in a column). It doesn't size itself to its content.
 - The host draws a hairline under its own title from the scroll area's `data-overflow-y-start` (the AI composer block does).
 - Set `grouped` on a `Message` that follows one from the same speaker; the thread closes the gap.
+- A checkpoint (a point to go back to) is a `Message from="system"` holding its words and a compact Restore `Button` with the undo glyph; restoring drops the turns after it and the note then says "Restored to this checkpoint" without the key (the Chat panel block). In a sidebar or a popup, the thread sits in the host's column or `Popover` with `PromptInput` under it (the same block).
 
 ## API
 

@@ -1,0 +1,20 @@
+{
+  "name": "branch-picker",
+  "title": "Branch picker",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["icon-button", "tooltip"],
+  "description": "Moves between the replies to one question, in Message's footer: previous and next ghost keys and \"2 / 3\" between them, the number turning on the drum; nothing for a single reply.",
+  "base": "a group of buttons",
+  "react": {
+    "export": "BranchPicker",
+    "files": ["branch-picker.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalBranchPicker",
+    "file": "swift/Sources/MetalUI/Components/MetalBranchPicker.swift"
+  },
+  "agent": "branch-picker.agent.md",
+  "page": "/components/branch-picker"
+}

@@ -18,6 +18,11 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  *             (a nest's reach); the text is left alone and a screen reader hears it once
  *   invalid   a red hairline ring
  *   disabled  40 %
+ *   ghost     with `suggestion`, while focused and the caret is at the end, the words that would come
+ *             next sit after the text in the placeholder's ink, wrapping as the text will (the mirror,
+ *             made visible); the well grows to hold them. Tab takes them (inserted as typed, so undo
+ *             takes them back); Escape lets them go (onSuggestionDismiss); typing their next letters
+ *             eats them; typing anything else hides them
  * Reduce Motion: the height snaps and nothing shakes; the counter still turns red.
  * The height is measured from a hidden mirror of the text, so it can spring between real numbers.
  * ───────────────────────────────────────────────────────── */
@@ -33,6 +38,10 @@ export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTex
   maxRows?: number;
   /** Shows the red ring; also sets aria-invalid. */
   invalid?: boolean;
+  /** The words that would come next (an assistant's completion), shown after the text in grey; Tab takes them. */
+  suggestion?: string;
+  /** Escape let the suggestion go. */
+  onSuggestionDismiss?: () => void;
   /** Where the well goes: `className` sits on the well, `style` on the textarea. */
   className?: string;
 }
@@ -47,6 +56,8 @@ const TEXT = {
 };
 const INPUT = 'mu-textarea-input block w-full box-border m-0 border-0 outline-none bg-transparent resize-none text-field-field-ink caret-field-field-caret placeholder:text-field-field-hint transition-textarea-grow reduced-motion:transition-none disabled:cursor-default';
 const MIRROR = 'mu-textarea-mirror invisible absolute inset-x-0 top-0 pointer-events-none';
+const GHOST = 'mu-textarea-ghost absolute inset-x-0 top-0 pointer-events-none';
+const GHOST_WORDS = 'mu-textarea-ghost-words text-field-field-hint';
 const COUNT_ROW = 'mu-textarea-count-row textarea-count-row';
 const COUNT = 'mu-textarea-count pt-textarea-count-gap text-right type-meta tabular-nums text-ink3 data-at-limit:text-red data-refused:textarea-refused';
 
@@ -63,7 +74,7 @@ const readPx = (style: CSSStyleDeclaration, prop: string) => parseFloat(style.ge
 
 /** Several lines of text. It grows with what is written, between minRows and maxRows. */
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  { size = 'large', countFrom, minRows, maxRows, invalid, maxLength, value, defaultValue, onChange, onKeyDown, onPaste, className, disabled, style, ...props },
+  { size = 'large', countFrom, minRows, maxRows, invalid, suggestion, onSuggestionDismiss, maxLength, value, defaultValue, onChange, onKeyDown, onPaste, onSelect, onKeyUp, onMouseUp, onFocus, onBlur, onScroll, className, disabled, style, ...props },
   forwardedRef,
 ) {
   const TextareaControl = control();
@@ -76,6 +87,17 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
   const [refusals, setRefusals] = React.useState(0);
   const countId = React.useId();
   const current = value !== undefined ? String(value) : text;
+
+  // The ghost: what is left of the suggestion after what was typed since it came.
+  const ghost = React.useRef<HTMLDivElement>(null);
+  const [anchor, setAnchor] = React.useState({ for: suggestion, base: current });
+  if (anchor.for !== suggestion) setAnchor({ for: suggestion, base: current });
+  const [dismissed, setDismissed] = React.useState<string | undefined>();
+  const [atEnd, setAtEnd] = React.useState(false);
+  const typed = current.startsWith(anchor.base) ? current.slice(anchor.base.length) : null;
+  const rest = suggestion && typed !== null && suggestion.startsWith(typed) && dismissed !== suggestion ? suggestion.slice(typed.length) : '';
+  const showing = rest !== '' && atEnd && !disabled;
+  const caret = (ta: HTMLTextAreaElement) => setAtEnd(document.activeElement === ta && ta.selectionStart === ta.value.length && ta.selectionEnd === ta.value.length);
 
   // Fit the well to the mirror, clamped to the rows; the settle spring carries the change.
   const fit = React.useCallback(() => {
@@ -91,7 +113,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
     setScrolls(natural > hi);
   }, [minRows, maxRows, size]);
 
-  useIsoLayoutEffect(fit, [fit, current]);
+  useIsoLayoutEffect(fit, [fit, current, showing]);
   React.useEffect(() => {
     const m = mirror.current;
     if (!m || typeof ResizeObserver === 'undefined') return;
@@ -124,11 +146,35 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
             onChange?.(e);
           }}
           onKeyDown={(e) => {
+            if (showing && !e.metaKey && !e.ctrlKey && !e.altKey && !e.nativeEvent.isComposing) {
+              if (e.key === 'Tab' && !e.shiftKey) {
+                e.preventDefault();
+                take(e.currentTarget, rest);
+                return;
+              }
+              if (e.key === 'Escape') {
+                e.preventDefault();
+                setDismissed(suggestion);
+                onSuggestionDismiss?.();
+                return;
+              }
+            }
             onKeyDown?.(e);
             if (maxLength == null || e.metaKey || e.ctrlKey || e.altKey) return;
             const printable = e.key.length === 1 || e.key === 'Enter';
             const ta = e.currentTarget;
             if (printable && room + (ta.selectionEnd - ta.selectionStart) <= 0) setRefusals((n) => n + 1);
+          }}
+          // Where the caret is decides whether the ghost shows: check whenever it may have moved.
+          onSelect={(e) => { caret(e.currentTarget); onSelect?.(e); }}
+          onKeyUp={(e) => { caret(e.currentTarget); onKeyUp?.(e); }}
+          onMouseUp={(e) => { caret(e.currentTarget); onMouseUp?.(e); }}
+          onFocus={(e) => { caret(e.currentTarget); onFocus?.(e); }}
+          onBlur={(e) => { setAtEnd(false); onBlur?.(e); }}
+          onScroll={(e) => {
+            // The ghost rides the text when the well scrolls.
+            if (ghost.current) ghost.current.style.transform = `translateY(${-e.currentTarget.scrollTop}px)`;
+            onScroll?.(e);
           }}
           onPaste={(e) => {
             onPaste?.(e);
@@ -139,7 +185,13 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
           }}
           {...props}
         />
-        <div ref={mirror} aria-hidden className={`${MIRROR} ${TEXT[size]}`}>{current + '​'}</div>
+        <div ref={mirror} aria-hidden className={`${MIRROR} ${TEXT[size]}`}>{current + (showing ? rest : '') + '​'}</div>
+        {showing && (
+          <div ref={ghost} aria-hidden className={`${GHOST} ${TEXT[size]}`}>
+            <span className="invisible">{current}</span><span className={GHOST_WORDS}>{rest}</span>
+          </div>
+        )}
+        {suggestion && <span role="status" className="sr-only">{showing ? `Suggestion: ${suggestion}. Tab to accept.` : ''}</span>}
       </label>
       {maxLength != null && (
         <div className={COUNT_ROW} data-shown={showCount ? '' : undefined}>
@@ -161,6 +213,17 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
     </div>
   );
 });
+
+/** Puts the ghost's words in as if typed: one undo step, and the host's onChange hears it. */
+function take(ta: HTMLTextAreaElement, words: string) {
+  ta.focus();
+  if (document.execCommand?.('insertText', false, words)) return;
+  // Without execCommand: set the value through the native setter so React sees the input.
+  const set = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')?.set;
+  set?.call(ta, ta.value + words);
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+  ta.dispatchEvent(new Event('input', { bubbles: true }));
+}
 
 /** The share of the limit at which the counter shows (the recipe's count.show), as tuned where the textarea is. */
 function readShow(el: Element | null) {

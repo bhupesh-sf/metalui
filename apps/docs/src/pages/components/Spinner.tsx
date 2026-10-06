@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import {
-  Attachment, Avatar, Button, Card, Chip, Field, IconButton, Led, Row, Skeleton, Spinner, Surface, SwapText, Switcher, Progress, useWait,
+  Attachment, Avatar, Button, Card, Chip, Field, IconButton, Led, Message, Row, Skeleton, Spinner, Surface, SwapText, Switcher, Progress, useWait,
   type LedGesture, type LedKind, type Wait, type WaitWork,
 } from '@unlocalhosted/metalui';
 import { DocumentIcon, MorphIcon, SearchIcon, type MorphIconName } from '@unlocalhosted/metalui/icons';
@@ -23,6 +23,7 @@ import { Stage } from '../../ui/doc';
  *   place      a view: skeletons on first load, a thin top bar on a route change
  *   background a sync lamp breathes while you keep working
  *   known      the ring fills, the attachment's track fills, as soon as the amount is known
+ *   words      a reply's working line: the words with a light passing across them, then the answer
  * The Waiting timing panel (DialKit) sets the timing tokens for the whole page, and how long the
  * pretend work takes and how it ends.
  * ───────────────────────────────────────────────────────── */
@@ -349,6 +350,26 @@ function UploadAttachment() {
   );
 }
 
+/* ───────────────────────── in words ───────────────────────── */
+
+function SearchingReply() {
+  const [work, start] = useWork();
+  const busy = work === 'working';
+  const asked = work !== 'idle';
+  return (
+    <div className="grid w-full gap-16" style={plate(480)} data-testid="spinner-words">
+      <Message from="assistant" status={busy ? 'waiting' : asked ? 'done' : undefined}>
+        {busy
+          ? <Spinner.Text>Searching the tide tables</Spinner.Text>
+          : asked
+            ? (work === 'failed' ? 'Couldn’t reach the tide tables.' : 'High water at Belém is 14:02 today, 3.4 m.')
+            : 'Ask when the tide is high.'}
+      </Message>
+      <Button size="compact" className="justify-self-start" onClick={start} disabled={busy}>{asked ? 'Ask again' : 'Ask'}</Button>
+    </div>
+  );
+}
+
 /* ───────────────────────── timing ───────────────────────── */
 
 function TimingKeys() {
@@ -370,6 +391,7 @@ function useTimingPanel() {
     result: [1400, 0, 4000],
     still: [8000, 1000, 15000],
     turn: [900, 400, 2400],
+    sweep: [1800, 600, 4000],
     work: [2400, 100, 12000],
     outcome: { type: 'select', options: ['done', 'failed'], default: 'done' },
   });
@@ -378,8 +400,12 @@ function useTimingPanel() {
     const root = document.documentElement.style;
     const vars = { delay: d.delay, minimum: d.minimum, result: d.result, still: d.still, turn: d.turn };
     for (const [k, v] of Object.entries(vars)) root.setProperty(`--mu-r-spinner-self-${k}`, `${v}ms`);
-    return () => { for (const k of Object.keys(vars)) root.removeProperty(`--mu-r-spinner-self-${k}`); };
-  }, [d.delay, d.minimum, d.result, d.still, d.turn]);
+    root.setProperty('--mu-r-spinner-text-sweep', `${d.sweep}ms`);
+    return () => {
+      for (const k of Object.keys(vars)) root.removeProperty(`--mu-r-spinner-self-${k}`);
+      root.removeProperty('--mu-r-spinner-text-sweep');
+    };
+  }, [d.delay, d.minimum, d.result, d.still, d.turn, d.sweep]);
   return { work: d.work, outcome: d.outcome === 'failed' ? 'failed' as const : 'done' as const };
 }
 
@@ -405,6 +431,7 @@ export default function SpinnerPage() {
     beat('place', 'For the whole place', 'A view loading for the first time shows skeletons of what will arrive. Moving between views keeps the old one, dimmed, while a thin bar creeps across the top, then completes as the new one lands.', 'Open the place, then switch between Notes and Photos.', <PlaceView />, 'Skeleton.Swap for a first load, Spinner.Bar for a route change.'),
     beat('background', 'Background work', 'Work that doesn’t need you (syncing, uploading) blocks nothing: the status lamp breathes and its words say what it is doing. Keep typing.', 'Sync now, and keep writing in the field.', <SyncStatus />, 'the LED part’s breathe gesture; nothing is held.'),
     beat('known', 'Known or unknown', 'As soon as the amount is known, the ring stops turning and fills, and an attachment’s sweeping segment becomes its fill: a wait you can measure is shown as progress.', 'Upload, and watch the turning hand over to filling.', <div className="grid w-full justify-items-center gap-24"><UploadRing /><div style={plate(360)}><UploadAttachment /></div></div>, 'value on the ring; progress null, then a number, on an attachment.'),
+    beat('words', 'In words', 'A working line with no lamp of its own, under a reply or a tool: the words say what is happening, and after the show delay a light passes across them, the skeleton’s sheen on words. The reply’s header already says Thinking; the line says what it is thinking about.', 'Ask. “Searching the tide tables” lights, then the answer takes its place.', <SearchingReply />, 'Spinner.Text; a polite status says the words once.'),
     beat('timing', 'Timing', 'Nothing shows for fast work. Once a sign shows, it stays long enough to read, then gives way to the result; a long wait says more. The Waiting timing panel sets every number on this page.', 'Press all three: the quick one goes straight to Saved; the brief one holds its arc for the minimum instead of flashing it.', <TimingKeys />, 'one clock, useWait; the same tokens in CSS, React and SwiftUI.'),
   ];
   return (

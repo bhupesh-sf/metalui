@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "branch-picker",
+  "type": "registry:ui",
+  "title": "Branch picker",
+  "description": "Moves between the replies to one question, in Message's footer: previous and next ghost keys and \"2 / 3\" between them, the number turning on the drum; nothing for a single reply.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://metalui.dev/r/icon-button.json",
+    "https://metalui.dev/r/icon-components.json",
+    "https://metalui.dev/r/motion.json",
+    "https://metalui.dev/r/tokens.json",
+    "https://metalui.dev/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "packages/metalui/src/components/branch-picker/branch-picker.tsx",
+      "type": "registry:ui",
+      "target": "components/metalui/components/branch-picker/branch-picker.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { ChevronIcon } from '../../icons/components.generated';\nimport { useIsoLayoutEffect } from '../../motion/layout-effect';\nimport { SwapText } from '../../motion/swap';\nimport { IconButton } from '../icon-button/icon-button';\nimport { Tooltip } from '../tooltip/tooltip';\n\n/* ─────────────────────────────────────────────────────────\n * BRANCH PICKER, which of a message's replies is showing (\"2 / 3\"), in Message's footer\n *\n *   keys      ghost icon keys, the chevron turned back and forward, each with a tooltip\n *   count     \"2 / 3\" in meta type, tabular figures, ink2; the number turns on the drum as you move\n *   ends      at the first reply Previous is disabled, at the last Next; a key that turns off under\n *             the person's focus hands focus to the other key\n *   one       a single reply: nothing is drawn\n * Reduce Motion: the number crossfades in place.\n * Semantics: a group named \"Reply 2 of 3\"; a polite status says it again when it changes.\n * ───────────────────────────────────────────────────────── */\n\nexport interface BranchPickerProps {\n  /** Which reply shows, from 1. */\n  index: number;\n  /** How many replies there are; under 2 nothing is drawn. */\n  count: number;\n  /** Move to another reply (from 1). */\n  onIndexChange: (index: number) => void;\n  /** What a branch is called: \"Reply\" (the default), \"Version\". */\n  label?: string;\n  className?: string;\n}\n\nconst ROOT = 'mu-branch-picker inline-flex items-center gap-branch-picker-gap';\nconst COUNT = 'mu-branch-picker-count px-branch-picker-count-pad type-meta tabular-nums text-ink2';\n\n/** Moves between the replies to one question: previous, \"2 / 3\", next. */\nexport function BranchPicker({ index, count, onIndexChange, label = 'Reply', className }: BranchPickerProps) {\n  const moved = React.useRef(false);\n  const prev = React.useRef<HTMLButtonElement>(null);\n  const next = React.useRef<HTMLButtonElement>(null);\n  const handoff = React.useRef<React.RefObject<HTMLButtonElement | null> | null>(null);\n  const at = Math.min(count, Math.max(1, index));\n  // A key that turned off under focus would drop it to the page: the other key (now on) takes it.\n  useIsoLayoutEffect(() => {\n    handoff.current?.current?.focus();\n    handoff.current = null;\n  }, [at]);\n  if (count < 2) return null;\n  const go = (to: number) => {\n    moved.current = true;\n    if (to <= 1 && document.activeElement === prev.current) handoff.current = next;\n    if (to >= count && document.activeElement === next.current) handoff.current = prev;\n    onIndexChange(to);\n  };\n  const name = `${label} ${at} of ${count}`;\n  return (\n    <div role=\"group\" aria-label={name} className={className ? `${ROOT} ${className}` : ROOT}>\n      <Tooltip label={`Previous ${label.toLowerCase()}`}>\n        <IconButton ref={prev} label={`Previous ${label.toLowerCase()}`} icon={<ChevronIcon turn={90} />} disabled={at <= 1} onClick={() => go(at - 1)} />\n      </Tooltip>\n      <span aria-hidden className={COUNT}><SwapText value={`${at} / ${count}`} /></span>\n      <Tooltip label={`Next ${label.toLowerCase()}`}>\n        <IconButton ref={next} label={`Next ${label.toLowerCase()}`} icon={<ChevronIcon turn={270} />} disabled={at >= count} onClick={() => go(at + 1)} />\n      </Tooltip>\n      <span role=\"status\" className=\"sr-only\">{moved.current ? name : ''}</span>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "docs": "Agent guide: https://metalui.dev/r/branch-picker.md. SwiftUI: MetalBranchPicker in the MetalUI Swift package."
+}

@@ -1,0 +1,20 @@
+{
+  "name": "conversation-list",
+  "title": "Conversation list",
+  "status": "alpha",
+  "layer": "place",
+  "kind": "composed",
+  "uses": ["icon-button", "menu", "popover", "quick-edit", "row", "skeleton"],
+  "description": "The person's past conversations in a Sidebar's body: grouped by day under engraved titles, the open one under the sidebar's gliding highlight, a More key with Rename (QuickEdit in a popover) and Delete (the row leaves and the list closes up), skeleton rows while loading.",
+  "base": "a group of lists of buttons",
+  "react": {
+    "export": "ConversationList",
+    "files": ["conversation-list.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalConversationList",
+    "file": "swift/Sources/MetalUI/Components/MetalConversationList.swift"
+  },
+  "agent": "conversation-list.agent.md",
+  "page": "/components/conversation-list"
+}

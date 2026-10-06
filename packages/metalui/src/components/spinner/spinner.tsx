@@ -18,7 +18,12 @@ import type { WaitPhase } from '../../motion/wait';
  * THE BAR (Spinner.Bar), a thin lit bar across the top of a place, for a route change
  *   shown     it creeps toward the end (9 s, easing out, never arriving)
  *   done      it completes (260 ms) and fades
- * Reduce Motion: nothing turns or creeps; the arc and the bar breathe in place; the tick is whole.
+ * THE WORDS (Spinner.Text), a working line said in words: "Searching the web"
+ *   active    the words in ink2; after the show delay a light passes across them (1.8 s, linear):
+ *             a window of the words in full ink slides over while its copy slides back, so only the
+ *             light moves (translate only)
+ *   still     active false: the words alone, nothing running
+ * Reduce Motion: nothing turns or creeps; the arc, the bar and the words breathe in place; the tick is whole.
  * Assistive tech: with a phase, a polite status says `label` when the sign shows and `result` when done.
  * ───────────────────────────────────────────────────────── */
 
@@ -114,5 +119,25 @@ function Bar({ phase, value, label = 'Loading', className }: SpinnerBarProps) {
   );
 }
 
-/** Waiting, shown where it happens: a ring in an item's glyph slot (Spinner.Bar for a place, Spinner.Status to say it). */
-export const Spinner = Object.assign(React.forwardRef(Root), { Bar, Status });
+export interface SpinnerTextProps {
+  /** What is working, in words: "Searching the web". */
+  children: string;
+  /** False when the work is over: the words stay, the light stops. Default true. */
+  active?: boolean;
+  className?: string;
+}
+
+const WORDS = 'mu-spinner-text spinner-text';
+
+/** A wait said in words, with a light passing across them: a working line under a reply, a tool's progress. */
+function Text({ children, active = true, className }: SpinnerTextProps) {
+  return (
+    <span role="status" data-active={active ? '' : undefined} className={className ? `${WORDS} ${className}` : WORDS}>
+      <span className="mu-spinner-text-words text-ink2">{children}</span>
+      {active && <span aria-hidden className="mu-spinner-text-sheen text-ink"><span>{children}</span></span>}
+    </span>
+  );
+}
+
+/** Waiting, shown where it happens: a ring in an item's glyph slot (Spinner.Bar for a place, Spinner.Text in words, Spinner.Status to say it). */
+export const Spinner = Object.assign(React.forwardRef(Root), { Bar, Status, Text });

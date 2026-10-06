@@ -638,6 +638,9 @@
   --spacing-prompt-input-strip-gap: var(--mu-r-prompt-input-strip-gap);
   --spacing-message-actions-gap: var(--mu-r-message-actions-self-gap);
   --spacing-message-actions-reasons-gap: var(--mu-r-message-actions-reasons-gap);
+  --spacing-branch-picker-gap: var(--mu-r-branch-picker-self-gap);
+  --spacing-branch-picker-count-pad: var(--mu-r-branch-picker-count-pad);
+  --spacing-conversation-list-loading-rows: var(--mu-r-conversation-list-loading-rows);
   --spacing-meter-height: var(--mu-r-meter-self-height);
   --spacing-meter-gap: var(--mu-r-meter-self-gap);
   --spacing-meter-radius: var(--mu-r-meter-self-radius);
@@ -2005,6 +2008,9 @@
 @utility spinner-edge {
   position: absolute; inset: 0; z-index: 1; border-radius: inherit; padding: var(--mu-r-spinner-edge-width); pointer-events: none; container-type: size; overflow: hidden; --mu-spinner-edge-ink: color-mix(in srgb, currentColor calc(var(--mu-r-spinner-edge-opacity) * 100%), transparent); mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude; animation: mu-spinner-arrive var(--mu-r-spinner-self-fade) var(--mu-r-spinner-self-delay) ease-out both; & > span { position: absolute; left: 50%; top: 50%; width: calc(100cqw + 100cqh); aspect-ratio: 1; translate: -50% -50%; background: conic-gradient(from 0deg, rgba(0,0,0,0) calc((1 - var(--mu-r-spinner-edge-tail)) * 360deg), var(--mu-spinner-edge-ink)); animation: mu-spinner-turn var(--mu-r-spinner-edge-turn) linear infinite; } @media (prefers-reduced-motion: reduce) { & > span { background: var(--mu-spinner-edge-ink); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } } [data-mu-motion=reduce] & > span { background: var(--mu-spinner-edge-ink); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
 }
+@utility spinner-text {
+  position: relative; display: inline-grid; max-width: 100%; & > * { grid-area: 1 / 1; min-width: 0; } & > .mu-spinner-text-sheen { display: block; pointer-events: none; mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0, #000 calc(var(--mu-r-spinner-text-band) * 50%), rgba(0,0,0,0) calc(var(--mu-r-spinner-text-band) * 100%)); animation: mu-spinner-sheen var(--mu-r-spinner-text-sweep) linear var(--mu-r-spinner-self-delay) infinite backwards; } & > .mu-spinner-text-sheen > span { display: block; animation: mu-spinner-sheen-hold var(--mu-r-spinner-text-sweep) linear var(--mu-r-spinner-self-delay) infinite backwards; } @media (prefers-reduced-motion: reduce) { & > .mu-spinner-text-sheen { display: none; } & > .mu-spinner-text-words { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } } [data-mu-motion=reduce] & > .mu-spinner-text-sheen { display: none; } [data-mu-motion=reduce] & > .mu-spinner-text-words { animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+}
 @utility spinner-bar {
   position: absolute; inset-inline: 0; top: 0; height: var(--mu-r-spinner-bar-height); overflow: hidden; pointer-events: none; opacity: 0; transition: opacity var(--mu-r-spinner-self-fade) ease-out var(--mu-r-spinner-bar-finish); & > span { position: absolute; inset: 0; transform-origin: left center; scale: 0 1; } &:not([data-phase]) { animation: mu-spinner-arrive var(--mu-r-spinner-self-fade) var(--mu-r-spinner-self-delay) ease-out both; } &[data-phase=shown] { opacity: 1; transition-delay: 0s; } &:not([data-phase]):not([data-known]) > span { animation: mu-spinner-creep var(--mu-r-spinner-bar-creep) var(--mu-ease-slide) var(--mu-r-spinner-self-delay) both; } &[data-phase=shown]:not([data-known]) > span { animation: mu-spinner-creep var(--mu-r-spinner-bar-creep) var(--mu-ease-slide) both; } &[data-known] > span { scale: calc(var(--mu-spinner-value, 0) / 100) 1; transition: scale calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle); } &[data-phase=done] > span { scale: 1 1; transition: scale var(--mu-r-spinner-bar-finish) ease-out; } @media (prefers-reduced-motion: reduce) { &:not([data-known]):is(:not([data-phase]), [data-phase=shown]) > span { scale: 1 1; animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } } [data-mu-motion=reduce] &:not([data-known]):is(:not([data-phase]), [data-phase=shown]) > span { scale: 1 1; animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
 }
@@ -2075,6 +2081,13 @@
 @utility duration-spinner-bar-finish {
   --tw-duration: var(--mu-r-spinner-bar-finish);
   transition-duration: var(--mu-r-spinner-bar-finish);
+}
+@utility duration-spinner-text-sweep {
+  --tw-duration: var(--mu-r-spinner-text-sweep);
+  transition-duration: var(--mu-r-spinner-text-sweep);
+}
+@utility opacity-spinner-text-band {
+  opacity: var(--mu-r-spinner-text-band);
 }
 @utility code-field-cap {
   &[data-fresh] { animation: mu-code-field-in var(--mu-spring-part-d) var(--mu-spring-part) backwards; animation-delay: calc(var(--mu-code-field-step, 0) * var(--mu-r-code-field-key-ripple) * var(--mu-travel-part)); }
@@ -2363,6 +2376,9 @@
 @utility duration-message-actions-thanks-hold {
   --tw-duration: var(--mu-r-message-actions-thanks-hold);
   transition-duration: var(--mu-r-message-actions-thanks-hold);
+}
+@utility conversation-list-reveal {
+  opacity: 0; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); [data-row]:hover &, [data-row]:focus-within &, [data-current] &, &:has([data-popup-open]), &[data-popup-open] { opacity: 1; } @media (hover: none) { opacity: 1; }
 }
 @utility meter-lamp {
   position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity var(--mu-r-meter-lamp-fade) ease-out; transition-delay: calc(var(--mu-meter-step, 0) * var(--mu-r-meter-lamp-stagger) * var(--mu-travel-part)); [data-lit] > & { opacity: 1; }
@@ -4707,6 +4723,12 @@
 }
 @keyframes mu-spinner-creep {
   from { scale: 0 1; } to { scale: var(--mu-r-spinner-bar-reach) 1; }
+}
+@keyframes mu-spinner-sheen {
+  from { translate: calc(var(--mu-r-spinner-text-band) * -100%) 0; } to { translate: 100% 0; }
+}
+@keyframes mu-spinner-sheen-hold {
+  from { translate: calc(var(--mu-r-spinner-text-band) * 100%) 0; } to { translate: -100% 0; }
 }
 @keyframes mu-signature-settle-in {
   from { opacity: 0; } to { opacity: 1; }

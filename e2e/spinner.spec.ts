@@ -219,3 +219,34 @@ test('at rest nothing waits and nothing loops', async ({ page }) => {
   expect(running).toBe(0);
   await expect(page.locator('main [aria-busy="true"]')).toHaveCount(0);
 });
+
+test.describe('in words', () => {
+  for (const colorway of COLORWAYS) {
+    test(`a working line lights after the show delay and gives way to the answer, in ${colorway}`, async ({ page }) => {
+      await open(page, '/components/spinner', colorway);
+      const words = section(page, 'words');
+      await words.getByRole('button', { name: 'Ask' }).click();
+      const line = words.getByRole('status').filter({ hasText: 'Searching the tide tables' });
+      await expect(line).toBeVisible();
+      const sheen = line.locator('.mu-spinner-text-sheen');
+      // Only the light moves: the window and its copy slide (translate), nothing else animates.
+      expect(await animation(sheen)).toBe('mu-spinner-sheen');
+      expect(await animation(sheen.locator('span'))).toBe('mu-spinner-sheen-hold');
+      await page.waitForTimeout(900);
+      await words.screenshot({ path: capture(`spinner-words-${colorway}`) });
+      await expect(words.getByRole('article')).toContainText('High water at Belém', { timeout: 6000 });
+      await expect(words.locator('.mu-spinner-text')).toHaveCount(0);
+    });
+  }
+
+  test('Reduce Motion: no light; the words breathe', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await open(page, '/components/spinner', 'bone');
+    const words = section(page, 'words');
+    await words.getByRole('button', { name: 'Ask' }).click();
+    const line = words.locator('.mu-spinner-text');
+    await expect(line).toBeVisible();
+    expect(await line.locator('.mu-spinner-text-sheen').evaluate((n) => getComputedStyle(n).display)).toBe('none');
+    expect(await animation(line.locator('.mu-spinner-text-words'))).toBe('mu-progress-breathe');
+  });
+});

@@ -41,11 +41,12 @@ Reduce Motion: the well snaps to its height; the glyph and the word change in pl
 
 | React | SwiftUI |
 |---|---|
-| `PromptInput` `value`, `defaultValue`, `onValueChange`, `onSend(text)`, `busy`, `onStop`, `onAttach(files)`, `accept`, `attachments`, `tools`, `canSend`, `disabled`, `disabledReason`, `placeholder`, `label`, `hint`, `maxRows`, `maxLength`; ref: the textarea | `MetalPromptInput(_ label:, text:, busy:, canSend:, disabledReason:, hint:, maxRows:, onSend:, onStop:, onAttach:) { files } tools: { … }`; disable with `.disabled(_:)` |
+| `PromptInput` `value`, `defaultValue`, `onValueChange`, `onSend(text)`, `busy`, `onStop`, `onAttach(files)`, `accept`, `attachments`, `tools`, `canSend`, `disabled`, `disabledReason`, `placeholder`, `label`, `hint`, `maxRows`, `maxLength`, `suggestion`, `onSuggestionDismiss`; ref: the textarea | `MetalPromptInput(_ label:, text:, busy:, canSend:, disabledReason:, hint:, maxRows:, onSend:, onStop:, onAttach:, suggestion:, onSuggestionDismiss:) { files } tools: { … }`; disable with `.disabled(_:)` |
 
 ## Keyboard and accessibility
 
 - A `group` named by `label` ("Message"); the well is the textbox of that name.
+- With `suggestion`, the AI's next words show in grey after the text (Textarea's ghost): Tab takes them, ⎋ lets them go (`onSuggestionDismiss`) before it would stop a reply.
 - ↩ sends, ⇧↩ breaks the line, ↩ while an IME composes is the IME's; ⎋ stops a reply.
 - Send's name is "Send" or "Stop"; it is disabled (not hidden) while there is nothing to send.
 - Pasting files into the well attaches them when `onAttach` is set; text pastes as text.
