@@ -2896,7 +2896,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// The drawing group's ink and width picks, beside the drawing tools in the toolbar. An ink is a small glossy bead in its colour; a width is a dot of that size in the current ink. The chosen one sits in a sunk well, like a latched tool. Hover lifts the bead a little on the part spring; press squeezes it. A fixed set of five inks and three widths, never a free colour picker. (DRAWING.md DR-06 (five inks from the signal colours, three widths); the toolbar's latched well)
+    /// The drawing group's ink and width picks, beside the drawing tools in the toolbar. An ink is a small glossy bead in its colour; a width is a short slanted stroke of that weight in the current ink, as the pen will draw it. The chosen one sits in a sunk well, like a latched tool (the graphite strip's own well on a graphite strip). Hover lifts the bead a little on the part spring; press squeezes it. A fixed set of five inks and three widths, never a free colour picker. (DRAWING.md DR-06 (five inks from the signal colours, three widths); the toolbar's latched well)
     public static let draw = MetalObjectRecipe(
         name: "draw",
         layers: [
@@ -2906,6 +2906,8 @@ public enum MetalRecipes {
             "self.size": .number(28.0),
             "self.bead": .number(14.0),
             "self.gap": .number(2.0),
+            "self.stroke": .number(20.0),
+            "self.slant": .text("-40"),
             "ink.ink": .perColorway(bone: "#1B1B1D", graphite: "#F2F2F0"),
             "ink.red": .text("#D8453B"),
             "ink.blue": .text("#2457F2"),

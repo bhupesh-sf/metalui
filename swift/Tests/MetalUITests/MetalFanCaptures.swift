@@ -6,18 +6,19 @@ import XCTest
 @MainActor
 final class MetalFanCaptures: XCTestCase {
     private enum Tool: Hashable { case select, write, region, pen, pencil, marker, line, arrow, rectangle, ellipse, eraser }
+    // A row per kind: place; freehand (and the eraser that undoes it); shapes.
     private let tools: [MetalFanOption<Tool>] = [
-        .init(.select, "Select", icon: .select, shortcut: "V"),
-        .init(.write, "Write", icon: .text, shortcut: "T"),
-        .init(.region, "Region", icon: .region),
-        .init(.pen, "Pen", icon: .pen, shortcut: "P"),
-        .init(.pencil, "Pencil", icon: .draw, shortcut: "N"),
-        .init(.marker, "Marker", icon: .marker, shortcut: "M"),
-        .init(.line, "Line", icon: .line, shortcut: "L"),
-        .init(.arrow, "Arrow", icon: .arrow, shortcut: "A"),
-        .init(.rectangle, "Rectangle", icon: .rectangle, shortcut: "R"),
-        .init(.ellipse, "Ellipse", icon: .ellipse, shortcut: "O"),
-        .init(.eraser, "Eraser", icon: .eraser, shortcut: "E"),
+        .init(.select, "Select", icon: .select, shortcut: "V", group: "place"),
+        .init(.write, "Write", icon: .text, shortcut: "T", group: "place"),
+        .init(.region, "Region", icon: .region, group: "place"),
+        .init(.pen, "Pen", icon: .pen, shortcut: "P", group: "freehand"),
+        .init(.pencil, "Pencil", icon: .draw, shortcut: "N", group: "freehand"),
+        .init(.marker, "Marker", icon: .marker, shortcut: "M", group: "freehand"),
+        .init(.eraser, "Eraser", icon: .eraser, shortcut: "E", group: "freehand"),
+        .init(.line, "Line", icon: .line, shortcut: "L", group: "shapes"),
+        .init(.arrow, "Arrow", icon: .arrow, shortcut: "A", group: "shapes"),
+        .init(.rectangle, "Rectangle", icon: .rectangle, shortcut: "R", group: "shapes"),
+        .init(.ellipse, "Ellipse", icon: .ellipse, shortcut: "O", group: "shapes"),
     ]
 
     func testCanvasFanSpecimens() throws {
@@ -31,12 +32,13 @@ final class MetalFanCaptures: XCTestCase {
                     Spacer(minLength: 0)
                     MetalFan("Canvas tools", initialOpen: scene.hasPrefix("picker") ? .picker : scene == "rest" ? nil : .tray,
                              reduceMotion: reduced) {
-                        MetalFanLabel(drawing ? "Ink" : text ? "Text" : "Canvas")
+                        if drawing { MetalFanLabel("Ink", icon: .palette) } else { MetalFanLabel(text ? "Text" : "Canvas") }
                         MetalFanPicker("Tool", value: .constant(drawing ? .pen : .select), options: tools)
                         if drawing {
-                            MetalFanTray("Ink", icon: { MetalIcon(.draw, size: MetalRecipes.iconButton.points("tool.glyph")) }) {
-                                MetalInkPicks(value: .constant(.ink))
-                                MetalWidthPicks(value: .constant(.regular))
+                            MetalFanTray("Ink and width", icon: { MetalInkStroke(ink: .red, width: .regular) }) {
+                                MetalInkPicks(value: .constant(.red))
+                                MetalToolbarSeparator()
+                                MetalWidthPicks(value: .constant(.regular), ink: .red)
                             }
                         } else {
                             MetalFanTray(text ? "Text actions" : "Canvas options", icon: { MetalIcon(.more, size: MetalRecipes.iconButton.points("tool.glyph")) }) {
