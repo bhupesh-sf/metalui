@@ -4,6 +4,11 @@ All notable changes to `@unlocalhosted/metalui`. The format follows [Keep a Chan
 
 ## Unreleased
 
+### Changed
+
+- **One glyph ships one glyph.** Each `<Name>Icon` carries only its own glyph, and the library's components draw their glyphs through them, so a component no longer ships the whole icon catalog: Table 122 → 93 KB gzip, ToolStrip 95 → 71, Card 79 → 54, Link 67 → 43, Fan 41 → 17, and every import that never drew a glyph (Calendar, Weather, Connector, …) is about 25 KB lighter. `DownloadIcon` alone is 2.7 KB (was 27). `<Icon name>` and `createIcon` still work and still ship the catalog; prefer `<Name>Icon` for a known glyph.
+- **Table: an action's `icon` is an element** (`icon: <SendIcon />`), like Button's and MenuItem's, not a glyph name (`icon: 'send'`). A name pulled every glyph into any app that used Table.
+
 ## 0.3.3 - 2026-10-01
 
 ### Added

@@ -5,7 +5,11 @@ import { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';
 import { Menu } from '../menu/menu';
 import { Button, type ButtonProps } from '../button/button';
 import { Well } from '../well/well';
-import { MorphIcon } from '../../icons/MorphIcon';
+import { MorphPair } from '../../icons/MorphIcon';
+import { chevronMorph } from '../../icons/morph.generated';
+
+// The split's chevron turns over by a morph of its own parts only (MorphPair ships just these).
+const CHEVRON_GLYPH = { chevron: chevronMorph };
 import { SwapText } from '../../motion/swap';
 
 /* ─────────────────────────────────────────────────────────
@@ -122,7 +126,7 @@ export function SplitButton({ children, menu, menuLabel, heading, disabled }: Sp
         heading={heading}
         align="end"
         onOpenChange={setOpen}
-        trigger={<Button cap={cap} size={size} aria-label={menuLabel} className={CHEVRON} icon={<MorphIcon name="chevron" turn={open ? 180 : 0} />} />}
+        trigger={<Button cap={cap} size={size} aria-label={menuLabel} className={CHEVRON} icon={<MorphPair glyphs={CHEVRON_GLYPH} name="chevron" turn={open ? 180 : 0} />} />}
       >
         {menu}
       </Menu>

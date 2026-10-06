@@ -127,10 +127,15 @@ function turnPart(p: MorphPart, turn: MorphTurn): MorphPart {
  * points it another way (a chevron down, left, up or right is one glyph turned).
  */
 export function morphParts(name: MorphIconName, weight = 1.7, turn: MorphTurn = 0): MorphFrame {
+  return restParts(name, MORPH_PARTS[name], weight, turn);
+}
+
+/** morphParts from the glyph's own rows, so a caller that knows its glyphs need not ship the family's. */
+export function restParts(name: string, rows: readonly MorphPartSource[], weight = 1.7, turn: MorphTurn = 0): MorphFrame {
   const key = `${name}@${weight}@${turn}`;
   let parts = cache.get(key);
   if (!parts) {
-    const upright = partsFrom(MORPH_PARTS[name], weight);
+    const upright = partsFrom(rows, weight);
     cache.set(key, (parts = turn ? upright.map((p) => turnPart(p, turn)) : upright));
   }
   return parts;

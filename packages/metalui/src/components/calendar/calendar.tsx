@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { SwapText } from '../../motion/swap';
 import { buttonClasses } from '../button/button';
-import { Icon } from '../../icons/Icon';
+import { ChevronIcon } from '../../icons/components.generated';
 
 /* ─────────────────────────────────────────────────────────
  * CALENDAR, a month to choose a day from (or a range, several days, a month, quarter, half, year)
@@ -427,12 +427,12 @@ export function Calendar(props: CalendarProps) {
   const upWord = levelUp[view] === 'month' ? 'a month' : 'a year';
   const prev = (
     <button type="button" className={STEP} aria-label={prevLabel} onClick={() => turn(-1)} disabled={lo != null && page <= pageOf(lo, view)}>
-      <Icon name="chevron" turn={90} />
+      <ChevronIcon turn={90} />
     </button>
   );
   const next = (
     <button type="button" className={STEP} aria-label={nextLabel} onClick={() => turn(1)} disabled={hi != null && last >= pageOf(hi, view)}>
-      <Icon name="chevron" turn={270} />
+      <ChevronIcon turn={270} />
     </button>
   );
 
@@ -523,7 +523,7 @@ export function Calendar(props: CalendarProps) {
           {up ? (
             <button type="button" className={TITLE_KEY} aria-label={`${title}, choose ${upWord}`} onClick={() => ascend(pg)}>
               <span id={id} aria-live="polite" className={dir === 'earlier' ? 'swap-down' : undefined}><SwapText value={title} /></span>
-              <Icon name="chevron" />
+              <ChevronIcon />
             </button>
           ) : (
             <span id={id} aria-live="polite" className={dir === 'earlier' ? `${TITLE} swap-down` : TITLE}><SwapText value={title} /></span>

@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { SPRINGS } from '../motion/springs.generated';
 import { motionReduced } from '../motion/reduced';
-import { morphAt, morphOutline, morphParts, morphPath, planMorph, springAt, type MorphFrame, type MorphPart, type MorphTurn } from './morph';
-import type { MorphIconName } from './morph.generated';
+import { morphAt, morphOutline, morphPath, planFrames, restParts, springAt, type MorphFrame, type MorphPart, type MorphTurn } from './morph';
+import { MORPH_PARTS, type MorphIconName, type MorphPartSource } from './morph.generated';
 
 /* ─────────────────────────────────────────────────────────
  * GLYPH MORPH STORYBOARD (icon A → icon B, both from the set; docs/MORPH.md)
@@ -82,11 +82,24 @@ export function MorphGlyph({ frame }: { frame: MorphFrame }) {
   );
 }
 
-/** An icon that becomes the next icon instead of being replaced by it. */
-export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(function MorphIcon(
-  { name, size = 24, strokeWidth = 1.7, title, turn = 0, className, ...props },
+/** The glyphs a MorphPair may show, by name: their generated parts (`chevronMorph`, …). */
+export type MorphGlyphs = Partial<Record<MorphIconName, readonly MorphPartSource[]>>;
+
+/** An icon that becomes the next icon instead of being replaced by it. Any glyph of the family, so it ships every glyph's parts. */
+export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(function MorphIcon(props, ref) {
+  return <MorphPair ref={ref} glyphs={MORPH_PARTS} {...props} />;
+});
+
+/** MorphIcon between known glyphs: ships only the parts in `glyphs`, for a component that morphs among a few. */
+export const MorphPair = React.forwardRef<SVGSVGElement, MorphIconProps & { glyphs: MorphGlyphs }>(function MorphPair(
+  { glyphs, name, size = 24, strokeWidth = 1.7, title, turn = 0, className, ...props },
   ref,
 ) {
+  const morphParts = (n: MorphIconName, w: number, t: MorphTurn) => {
+    const rows = glyphs[n];
+    if (!rows) throw new Error(`MorphPair: no parts for "${n}" in glyphs`);
+    return restParts(n, rows, w, t);
+  };
   const [frame, setFrame] = React.useState<MorphFrame>(() => morphParts(name, strokeWidth, turn));
   const shown = React.useRef({ frame, name, turn });
   const raf = React.useRef(0);
@@ -108,7 +121,7 @@ export const MorphIcon = React.forwardRef<SVGSVGElement, MorphIconProps>(functio
       setFrame(rest);
       return;
     }
-    const plan = planMorph(shown.current.frame, name, strokeWidth, turn);
+    const plan = planFrames(shown.current.frame, rest);
     const { stiffness, damping, duration } = SPRINGS.settle;
     const start = performance.now();
     const tick = (now: number) => {

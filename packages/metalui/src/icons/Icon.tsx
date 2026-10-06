@@ -1,7 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { ICON_CATALOG, type IconMotion, type IconName } from './catalog.generated';
+import { ICON_CATALOG, type IconName } from './catalog.generated';
+import type { IconMotion, IconRecord } from './glyphs.generated';
 import './icons.generated.css';
 import { motionReduced, onMotionChange } from '../motion/reduced';
 
@@ -49,9 +50,8 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, 'children
   act?: React.Key | boolean;
 }
 
-function markup(name: IconName, uid: string, small: boolean) {
-  const icon = ICON_CATALOG[name];
-  const body16 = 'body16' in icon ? icon.body16 : undefined;
+function markup(icon: IconRecord, uid: string, small: boolean) {
+  const body16 = icon.body16;
   const body = small && body16 ? body16 : icon.body;
   const defs = small && body16?.includes('<defs>') ? '' : icon.defs;
   return ((defs ? `<defs>${defs}</defs>` : '') + body).replace(/&-/g, `${uid}-`);
@@ -116,15 +116,14 @@ function followHold(svg: SVGSVGElement, holder: Element, act: HeldAct) {
   };
 }
 
-function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconName, enabled: boolean, player: Player) {
+function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, icon: IconRecord, enabled: boolean, player: Player) {
   React.useEffect(() => {
     const svg = ref.current;
-    const icon = ICON_CATALOG[name];
-    const act = 'motion' in icon ? icon.motion : undefined;
+    const act = icon.motion;
     if (!svg || !enabled || !act) return;
     const trigger = svg.closest('.mu-icon-trigger') ?? svg;
     svg.setAttribute('data-motion-runtime', ''); // the CSS player steps aside
-    const held = 'hold' in icon ? icon.hold : undefined;
+    const held = icon.hold;
     const holder = held && svg.closest('[data-hold]');
     if (held && holder) {
       // In a hold (Button `hold`) the glyph is the hold's gauge, not a hover act.
@@ -179,13 +178,13 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
       trigger.removeEventListener('click', play);
       unwatch();
     };
-  }, [ref, name, enabled, player]);
+  }, [ref, icon, enabled, player]);
 }
 
-function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconName, enabled: boolean, player: Player) {
+function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, icon: IconRecord, enabled: boolean, player: Player) {
   React.useEffect(() => {
     const svg = ref.current;
-    if (!svg || !enabled || 'motion' in ICON_CATALOG[name]) return;
+    if (!svg || !enabled || icon.motion) return;
     const trigger = (svg.closest('.mu-icon-trigger') as HTMLElement | null) ?? svg;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const play = () => {
@@ -194,7 +193,7 @@ function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, name: Icon
       void svg.getBoundingClientRect(); // restart the keyframes
       svg.setAttribute('data-press', '');
       clearTimeout(timer);
-      timer = setTimeout(() => svg.removeAttribute('data-press'), ICON_CATALOG[name].pressMs);
+      timer = setTimeout(() => svg.removeAttribute('data-press'), icon.pressMs);
     };
     const onKey = (event: Event) => {
       const { key, repeat } = event as KeyboardEvent;
@@ -210,7 +209,7 @@ function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, name: Icon
       trigger.removeEventListener('keydown', onKey);
       svg.removeAttribute('data-press');
     };
-  }, [ref, name, enabled, player]);
+  }, [ref, icon, enabled, player]);
 }
 
 /** Plays the act when `act` turns to a new truthy value. A frame later, and cancelled on cleanup, so the
@@ -227,21 +226,24 @@ function useActCue(player: Player, act: IconProps['act']) {
   }, [player, act]);
 }
 
-export const Icon = React.forwardRef<SVGSVGElement, IconProps & { name: IconName }>(function Icon(
-  { name, size = 24, title, strokeWidth, animate = true, turn = 0, act, className, style, ...props },
+/** Draws one glyph's record. `<Icon name>` resolves the record from the catalog (every glyph);
+ *  `<Name>Icon` passes its own (that glyph only), so a component that draws known glyphs ships just those. */
+const GlyphIcon = React.forwardRef<SVGSVGElement, IconProps & { glyph: IconRecord }>(function GlyphIcon(
+  { glyph, size = 24, title, strokeWidth, animate = true, turn = 0, act, className, style, ...props },
   forwardedRef,
 ) {
+  const name = glyph.name;
   const ref = React.useRef<SVGSVGElement>(null);
   React.useImperativeHandle(forwardedRef, () => ref.current as SVGSVGElement);
   const uid = `mu${React.useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const small = !animate && size <= SMALL;
-  const sw = strokeWidth ?? (small ? ICON_CATALOG[name].sw16 : undefined);
+  const sw = strokeWidth ?? (small ? glyph.sw16 : undefined);
   const player: Player = React.useRef(undefined);
-  useActPlayback(ref, name, animate, player);
-  usePressPlayback(ref, name, animate, player);
+  useActPlayback(ref, glyph, animate, player);
+  usePressPlayback(ref, glyph, animate, player);
   useActCue(player, act);
 
-  const html = markup(name, uid, small) + (title ? `<title>${title.replace(/[<&]/g, '')}</title>` : '');
+  const html = markup(glyph, uid, small) + (title ? `<title>${title.replace(/[<&]/g, '')}</title>` : '');
   return (
     <svg
       ref={ref}
@@ -261,9 +263,20 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps & { name: IconName
   );
 });
 
+/** Any glyph of the set by name. Ships the whole catalog; prefer `<Name>Icon` when the glyph is known. */
+export const Icon = React.forwardRef<SVGSVGElement, IconProps & { name: IconName }>(function Icon({ name, ...props }, ref) {
+  return <GlyphIcon ref={ref} glyph={ICON_CATALOG[name]} {...props} />;
+});
+
+/** A named component for a glyph of the set (by name, so it ships the catalog; the generated `<Name>Icon` do not). */
 export function createIcon(name: IconName, displayName: string) {
+  return glyphIcon(ICON_CATALOG[name], displayName);
+}
+
+/** A named component that draws one glyph record and nothing else (the generated `<Name>Icon`). */
+export function glyphIcon(glyph: IconRecord, displayName: string) {
   const Named = React.forwardRef<SVGSVGElement, IconProps>(function NamedIcon(props, ref) {
-    return <Icon ref={ref} name={name} {...props} />;
+    return <GlyphIcon ref={ref} glyph={glyph} {...props} />;
   });
   Named.displayName = displayName;
   return Named;

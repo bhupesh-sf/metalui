@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Toast } from '@base-ui/react/toast';
-import { Icon } from '../../icons/Icon';
+import { CloseIcon } from '../../icons/components.generated';
 import { Kbd } from '../kbd/kbd';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
 
@@ -171,7 +171,7 @@ function ToastList({ visible }: { visible: number }) {
                   </Toast.Action>
                 )}
                 <Toast.Close className={CLOSE} aria-label="Dismiss">
-                  <Icon name="close" size={14} animate={false} />
+                  <CloseIcon size={14} animate={false} />
                 </Toast.Close>
               </Toast.Content>
               {t.id === back && <span aria-hidden className={MORE}>+{more}</span>}

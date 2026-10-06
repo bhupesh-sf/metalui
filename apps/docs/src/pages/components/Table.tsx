@@ -4,7 +4,7 @@ import {
   Button, Field, Pagination, Properties, Segmented, SwapText, Table, TableCell, ToolStrip,
   type SortState, type TableCellFormat, type TableColumn, type TableColumnsState, type TableDensity, type TableKind, type TablePerson, type TableStatus,
 } from '@unlocalhosted/metalui';
-import { Icon } from '@unlocalhosted/metalui/icons';
+import { DownloadIcon, DuplicateIcon, Icon, SendIcon, TextIcon, TrashIcon } from '@unlocalhosted/metalui/icons';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
 import reactSource from '../../../../../packages/metalui/src/components/table/table.tsx?raw';
@@ -66,10 +66,10 @@ function invoiceColumns(actions?: (i: Invoice) => void): TableColumn<Invoice>[] 
     { key: 'amount', header: 'Amount', kind: 'currency', currency: 'EUR', sortable: true },
     {
       key: 'actions', header: 'Actions', kind: 'actions', actions: (i) => [
-        { label: 'Send reminder', icon: 'send', primary: true, onSelect: () => actions?.(i) },
-        { label: 'Download PDF', icon: 'download', onSelect: () => actions?.(i) },
-        { label: 'Duplicate', icon: 'duplicate', onSelect: () => actions?.(i) },
-        { label: 'Delete', icon: 'trash', danger: true, onSelect: () => actions?.(i) },
+        { label: 'Send reminder', icon: <SendIcon />, primary: true, onSelect: () => actions?.(i) },
+        { label: 'Download PDF', icon: <DownloadIcon />, onSelect: () => actions?.(i) },
+        { label: 'Duplicate', icon: <DuplicateIcon />, onSelect: () => actions?.(i) },
+        { label: 'Delete', icon: <TrashIcon />, danger: true, onSelect: () => actions?.(i) },
       ],
     },
   ];
@@ -206,7 +206,7 @@ const KIND_COLUMNS: TableColumn<Kind>[] = [
   {
     key: 'value', header: 'Looks like', cell: (k) => (
       <span className="inline-block max-w-[220px] align-middle">
-        <TableCell kind={k.kind} value={k.value} label="Sample" now={NOW} {...k.extra} actions={k.kind === 'actions' ? [{ label: 'Rename', icon: 'text', onSelect: () => {} }, { label: 'Delete', icon: 'trash', danger: true, onSelect: () => {} }] : undefined} />
+        <TableCell kind={k.kind} value={k.value} label="Sample" now={NOW} {...k.extra} actions={k.kind === 'actions' ? [{ label: 'Rename', icon: <TextIcon />, onSelect: () => {} }, { label: 'Delete', icon: <TrashIcon />, danger: true, onSelect: () => {} }] : undefined} />
       </span>
     ),
   },
@@ -559,7 +559,7 @@ export default function TablePage() {
     { key: 'status', header: 'Status', kind: 'status', words: { live: 'Paid', waiting: 'Due', failed: 'Overdue' } },
     { key: 'due', header: 'Due', kind: 'date', sortable: true, priority: 2 },
     { key: 'amount', header: 'Amount', kind: 'currency', currency: 'EUR', sortable: true },
-    { key: 'actions', header: 'Actions', kind: 'actions', actions: (i) => [{ label: 'Delete', icon: 'trash', danger: true, onSelect: () => remove(i) }] },
+    { key: 'actions', header: 'Actions', kind: 'actions', actions: (i) => [{ label: 'Delete', icon: <TrashIcon />, danger: true, onSelect: () => remove(i) }] },
   ]}
   rows={invoices}
   rowKey={(i) => i.id}

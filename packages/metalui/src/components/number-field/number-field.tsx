@@ -5,7 +5,7 @@ import { flushSync } from 'react-dom';
 import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
 import { buttonClasses } from '../button/button';
 import { ChangedMark, FormField } from '../form-field/form-field';
-import { Icon } from '../../icons/Icon';
+import { MinusIcon, PlusIcon } from '../../icons/components.generated';
 import { SwapIcon, SwapText } from '../../motion/swap';
 import { refuse } from '../../motion/refuse';
 import { useIsoLayoutEffect } from '../../motion/layout-effect';
@@ -340,7 +340,7 @@ function Root({
 
   const keyLegend = (sign: '−' | '+', glyph: 'minus' | 'plus') => (
     <SwapIcon swapKey={legend ?? glyph}>
-      {legend ? <span className={sized.legend}>{sign}{legend}</span> : <Icon name={glyph} size={12} />}
+      {legend ? <span className={sized.legend}>{sign}{legend}</span> : glyph === 'plus' ? <PlusIcon size={12} /> : <MinusIcon size={12} />}
     </SwapIcon>
   );
 
