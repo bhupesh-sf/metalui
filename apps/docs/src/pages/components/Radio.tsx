@@ -57,7 +57,7 @@ export default function RadioPage() {
     <ComponentPage
       title="Radio group"
       lede="One choice from a short list. Press an option and its well goes dark at once; let go and a pip latches in on a spring while the old choice's pip drops out, like the interlocked preset buttons on an old radio."
-      play={{ lede: 'Press and hold one, then let go. Or Tab in and use the arrow keys.', caption: 'vertical · horizontal · disabled option', node: (
+      play={{ lede: 'Press and hold one, then let go. Or Tab in and use the arrow keys.', caption: 'vertical · horizontal · disabled option · disabled group', node: (
         <div className="flex flex-wrap items-start gap-40" style={{ zoom: 1.4 }}>
           <RadioGroup aria-label="Export format" value={format} onValueChange={(v) => setFormat(v as string)}>
             <Radio value="png">PNG</Radio>
@@ -68,6 +68,10 @@ export default function RadioPage() {
             <Radio value="dots">Dots</Radio>
             <Radio value="lines">Lines</Radio>
             <Radio value="none" disabled>None</Radio>
+          </RadioGroup>
+          <RadioGroup aria-label="Units, set by your workspace" defaultValue="metric" disabled>
+            <Radio value="metric">Metric</Radio>
+            <Radio value="imperial">Imperial</Radio>
           </RadioGroup>
         </div>
       ) }}

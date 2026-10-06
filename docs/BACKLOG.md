@@ -344,7 +344,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **Textarea**: its text is 15px (content type) beside Field's 12.5px, so a bio looks louder than name and email; add a `size` matching Field. Its counter only shows from 80 % with no per-instance option and reads the threshold from the document root.
 - [x] **Portalled popups ignore a colorway set on a parent** (Select, Menu, Popover open in the page's colorway inside a graphite block); let them inherit (portal into the nearest colorway root, or copy `data-mu-colorway`).
 - [ ] **Tabs has no vertical orientation** (settings sections use Sidebar items instead).
-- [ ] **RadioGroup disabled**: the checked radio stays in the Tab order; decide (reachable to explain, or skipped) and document.
+- [x] **RadioGroup disabled**: the checked radio stays in the Tab order; decide (reachable to explain, or skipped) and document. (Skipped, like a native disabled radio; still read by screen readers. Shown on the Radio page and tested.)
 - [x] **Container queries in blocks**: unnamed `@container` matches the nearest container; blocks should name theirs (`@container/block`). Write it into the block page guide. (Every block names its container; the rule is in `docs/DOCS_ARCHITECTURE.md`, block page.)
 - [x] **AI composer polish**: the thread's top edge fade leaves a half-cut message header just under the "Assistant" title; start the fade below the title or pad the first message. (A hairline fades in under the title while the thread runs under it, so the faded line reads as passing beneath.)
 
