@@ -7,7 +7,8 @@ import { motionReduced } from './reduced';
 /* ─────────────────────────────────────────────────────────
  * ROWS IN A LIST (Transitions T9): people, files, tasks
  *
- *   land    a new row comes from one nest above on the object spring, fading in
+ *   land    a new row comes from one nest above on the object spring, fading in (from below in a list
+ *           that grows down, a conversation: `from = 'below'`)
  *   leave   a row goes one nest down, fading, on the release spring; then the host removes it
  *   close   the rows after it travel up into the gap on the settle spring (FLIP), and rows that
  *           moved for any reason travel from where they were, across as well as down (a row of
@@ -42,16 +43,17 @@ export function leaveRows(rows: (HTMLElement | null)[], done: () => void) {
 /**
  * Moves the rows of a list when `order` (their keys, joined) changes: rows that moved travel from where
  * they were, so the list closes up after a leave; new rows land when `land` says so (true for every new
- * row, or a set of keys, taken out as they land). The first render only records.
+ * row, or a set of keys, taken out as they land), from one nest above or (`from = 'below'`) below. The first
+ * render only records.
  */
-export function useRowMotion(list: React.RefObject<HTMLElement | null>, order: string, land: boolean | Set<string> = false) {
+export function useRowMotion(list: React.RefObject<HTMLElement | null>, order: string, land: boolean | Set<string> = false, from: 'above' | 'below' = 'above') {
   const tops = React.useRef<Map<string, readonly [number, number]> | null>(null);
   useIsoLayoutEffect(() => {
     const el = list.current;
     if (!el) return;
     const glide = springOf(el, 'settle');
     const drop = springOf(el, 'object');
-    const nest = nestOf(el);
+    const nest = nestOf(el) * (from === 'below' ? 1 : -1);
     const next = new Map<string, readonly [number, number]>();
     el.querySelectorAll<HTMLElement>(':scope > [data-row]').forEach((row) => {
       const key = row.dataset.row!;
@@ -62,13 +64,13 @@ export function useRowMotion(list: React.RefObject<HTMLElement | null>, order: s
       const was = tops.current.get(key);
       if (was == null) {
         const lands = land === true || (land instanceof Set && land.delete(key));
-        if (lands && drop.ms) row.animate([{ opacity: 0, transform: `translateY(${-nest}px)` }, { opacity: 1, transform: 'none' }], { duration: drop.ms, easing: drop.easing });
+        if (lands && drop.ms) row.animate([{ opacity: 0, transform: `translateY(${nest}px)` }, { opacity: 1, transform: 'none' }], { duration: drop.ms, easing: drop.easing });
       } else if ((was[0] !== x || was[1] !== y) && glide.ms && row.dataset.rowHeld == null) {
         row.animate([{ transform: `translate(${was[0] - x}px, ${was[1] - y}px)` }, { transform: 'none' }], { duration: glide.ms, easing: glide.easing, composite: 'add' });
       }
     });
     tops.current = next;
-  }, [list, order, land]);
+  }, [list, order, land, from]);
 }
 
 /* ─────────────────────────────────────────────────────────
