@@ -277,7 +277,7 @@ export function Markdown({ children, streaming = false, pace, className, ...prop
     return all;
   }, [shown, streaming]);
   const tail = blocks[blocks.length - 1];
-  const caret = streaming && tail?.kind !== 'code' && !(tail?.kind === 'rule') ? <span aria-hidden data-caret className={CARET} /> : null;
+  const caret = streaming && !reduced && tail?.kind !== 'code' && !(tail?.kind === 'rule') ? <span aria-hidden data-caret className={CARET} /> : null;
   return (
     <div ref={root} className={className ? `${ROOT} ${className}` : ROOT} aria-busy={streaming || undefined} data-streaming={streaming ? '' : undefined} {...props}>
       {render(blocks, caret, streaming)}
