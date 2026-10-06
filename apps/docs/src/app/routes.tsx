@@ -57,6 +57,7 @@ export const routes: RouteObject[] = [
       { path: 'components/reasoning', lazy: lazy(() => import('../pages/components/Reasoning')) },
       { path: 'components/tool-call', lazy: lazy(() => import('../pages/components/ToolCall')) },
       { path: 'components/confirmation', lazy: lazy(() => import('../pages/components/Confirmation')) },
+      { path: 'components/widget', lazy: lazy(() => import('../pages/components/Widget')) },
       { path: 'components/plan', lazy: lazy(() => import('../pages/components/Plan')) },
       { path: 'components/citation', lazy: lazy(() => import('../pages/components/Citation')) },
       { path: 'components/timeline', lazy: lazy(() => import('../pages/components/Timeline')) },
