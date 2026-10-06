@@ -1,0 +1,19 @@
+{
+  "name": "signature-pad",
+  "title": "Signature pad",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A form field that captures a signature: the field's well as the paper, an engraved baseline with \"Sign here\", ink in the text's ink whose width follows the pen (pressure or speed) and that settles smooth on lift. Type instead is the keyboard and screen-reader path: the name typed on the baseline. Undo, Redo and Clear share one history; the form posts SVG and onValueChange gives the strokes as JSON or the typed name; signatureToSvg and signatureToImage export it.",
+  "base": "@base-ui/react/field (the value's control); SVG and pointer events",
+  "uses": ["well", "rule", "button", "icon-button"],
+  "react": {
+    "export": "SignaturePad, signatureToSvg, signatureToImage, strokeOutline",
+    "files": ["signature-pad.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalSignaturePad, MetalSignature",
+    "file": "swift/Sources/MetalUI/Components/MetalSignaturePad.swift"
+  },
+  "agent": "signature-pad.agent.md",
+  "page": "/components/signature-pad"
+}

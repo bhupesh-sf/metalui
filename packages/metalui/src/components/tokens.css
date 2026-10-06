@@ -1200,6 +1200,25 @@
   --mu-r-rating-press-scale: 0.86;
   --mu-r-rating-count-gap: 4px;
   --mu-r-rating-self-disabled: 0.4;
+  /* signature-pad: the well (field), the rule (an engraved groove), the engraved label; the settle spring; the ink-assist lab's outline (pressure-sized, tapered, midpoint curves) */
+  --mu-r-signature-pad-regular-height: 160px;
+  --mu-r-signature-pad-regular-baseline: 46px;
+  --mu-r-signature-pad-regular-pad: 22px;
+  --mu-r-signature-pad-compact-height: 88px;
+  --mu-r-signature-pad-compact-baseline: 26px;
+  --mu-r-signature-pad-compact-pad: 14px;
+  --mu-r-signature-pad-self-radius: 17px;
+  --mu-r-signature-pad-self-gap: 8px;
+  --mu-r-signature-pad-self-disabled: 0.4;
+  --mu-r-signature-pad-hint-gap: 6px;
+  --mu-r-signature-pad-keys-gap: 4px;
+  --mu-r-signature-pad-ink-min: 1.2px;
+  --mu-r-signature-pad-ink-max: 3.6px;
+  --mu-r-signature-pad-ink-velocity: 2.4px;
+  --mu-r-signature-pad-typed-font: 500 26px/1 var(--mu-sans);
+  --mu-r-signature-pad-typed-tracking: -0.01em;
+  --mu-r-signature-pad-export-ink: #1d1d1f;
+  --mu-r-signature-pad-export-paper: #ffffff;
   /* sheet: the dialog scrim and plate surface; the surface, settle and release springs; Base UI Drawer */
   --mu-r-sheet-self-width: 380px;
   --mu-r-sheet-self-max-height: 85vh;

@@ -63,6 +63,7 @@ export { Mark, MarkUrl, MarkInferred, MarkUrgency, MarkLife, markTagHue, Cue, Cu
 export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './components/checkbox/checkbox';
 export { RadioGroup, Radio, type RadioGroupProps, type RadioProps } from './components/radio/radio';
 export { Rating, type RatingProps, type RatingSize } from './components/rating/rating';
+export { SignaturePad, signatureToSvg, signatureToImage, strokeOutline, type SignaturePadProps, type Signature, type SignaturePoint, type SignatureMode, type SignatureSizing, type SignaturePadSize, type SignatureExportOptions, type SignatureImageOptions } from './components/signature-pad/signature-pad';
 export { CheckboxGroup, type CheckboxGroupProps, type CheckboxGroupItemProps } from './components/checkbox-group/checkbox-group';
 export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch';
 export { InkPicks, WidthPicks, InkStroke, INKS, INK_WIDTHS, inkColor, type Ink, type InkWidth, type InkPicksProps, type WidthPicksProps } from './components/draw-picks/draw-picks';
