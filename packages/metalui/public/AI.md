@@ -1775,6 +1775,59 @@ Rows of one section must be adjacent. The palette filters by every query word ag
 
 ---
 
+# Confirmation
+
+The agent asks before it acts ("Delete 3 files?"), with Deny and Allow; once answered, what was decided stays in the thread. React: `Confirmation` from `@unlocalhosted/metalui`. SwiftUI: `MetalConfirmation`. An object: it stands for the request and then for its answer. Every look is borrowed: it is an `Alert` (urgent while asking, a quiet note once decided) and its answers are `Button`s (a destructive one held to confirm). The `confirmation` recipe holds the hint's and the decision's gaps.
+
+## Use it for
+
+- A tool call or an act the agent needs a yes for, in a `Message` body; keep the call `queued` until it is answered.
+
+## Don't use it for
+
+- A question that must block everything else: use `AlertDialog`.
+- A notice with nothing to answer: use `Alert`.
+
+## Anatomy
+
+- Asking: an urgent `Alert` on its plate (the warning glyph in its window, the amber lamp steady), the `title` (the question) in title type, `children` (what will happen) in body type, ink2, and the answers: Deny (standard) then Allow (primary), both compact.
+- `destructive`: Allow is the destructive cap with the trash, `hold`; let go early and the hint (`holdHint`) fades in under the answers, 6 below, meta type, ink3.
+- Decided: a quiet `Alert` (no plate) with the note's glyph; the question and detail stay; the answers give way to a 14 check (allowed) or cross (denied), 6, the word ("Allowed", "Denied") and the `time`, in meta type, ink2.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| asking | urgent, on its plate, the answers | arrives as an Alert (rising one nest, settle) |
+| holding Allow (destructive) | the fill runs across the cap | Button's hold; the trash lid rides it |
+| let go early | the hint under the answers | fades in |
+| `decision` allowed / denied | quiet, the note's glyph, the check or cross and the word | the glyph morphs; the plate goes |
+
+Reduce Motion: the Alert's own; the hold's fill still runs (it is time).
+
+## Rules
+
+- The host keeps the answer: `onDecide` tells it, `decision` shows it. Reloaded history passes `decision` and the record shows at once.
+- Ask with a question that names the act and its object ("Delete 3 files?"); say what will happen in the children.
+- Use `destructive` only for an act that can't be undone; the hold is the guard.
+- Name the answers with verbs when they say more than Allow and Deny (`allowLabel="Delete"`, `denyLabel="Keep"`); the record still reads "Allowed" or "Denied" unless `allowedLabel` and `deniedLabel` say otherwise.
+- Never deny on a timer: nothing runs at rest.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `Confirmation` `title`, `decision`, `onDecide`, `destructive`, `allowLabel`, `denyLabel`, `allowedLabel`, `deniedLabel`, `holdHint`, `time`, `children` | `MetalConfirmation(_ title:, detail:, decision:, destructive:, allowLabel:, denyLabel:, time:, onDecide:)` |
+| `ConfirmationDecision` `allowed`, `denied` | `MetalConfirmationDecision` `.allowed`, `.denied` |
+
+## Keyboard and accessibility
+
+- Asking, it is `role="alert"`: the question is read at once. Tab reaches Deny, then Allow.
+- A held Allow says "Hold to confirm" after its name; a screen reader's activate confirms at once (Button's single-pointer path). The hint is said once, politely.
+- Decided, it is `role="status"`; the word says the answer (the glyph is decorative).
+
+---
+
 # Connector
 
 A line between two blocks, and everything around it. React: `Connector` from `@unlocalhosted/metalui`. SwiftUI: `MetalConnector` (not yet).
@@ -4336,6 +4389,60 @@ Reduce Motion: detents change at once and don't dip; the drum crossfades.
 
 ---
 
+# Reasoning
+
+The assistant's thinking inside its reply: open while it streams, folded to "Thought for 4 s" when the answer starts. React: `Reasoning` from `@unlocalhosted/metalui`. SwiftUI: `MetalReasoning`. An object: it stands for something the assistant produced and stays in the turn. Every look is borrowed: the fold is `Collapsible` (its row, reveal and travel), the lamp is the LED with its meanings, the words turn on the drum (`SwapText`), the margin is the engraved rule. The `reasoning` recipe holds the row's gap and the thought's indent.
+
+## Use it for
+
+- A reasoning model's thinking, in a `Message` body above the answer.
+- An agent's steps (chain of thought): a `Timeline` as the children, with `label` for the row ("Worked for 12 s · 4 steps").
+
+## Don't use it for
+
+- The answer itself: that is the message body.
+- One tool the agent ran: use `ToolCall`.
+- A section the person opens in a form or a panel: use `Collapsible`.
+
+## Anatomy
+
+- The row (Collapsible's 32 row, its hover hung past the column): the lamp (small), 8, the words in ui type, ink2; the chevron at the end.
+- The panel: an engraved rule at the start, 12, the thought in body type, ink2, wrapping (pre-wrap), 6 above and below.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| `streaming` | the amber lamp, "Thinking", open | the lamp breathes; the thought arrives in the open fold |
+| streaming turns off | the off lamp, "Thought for 4 s" ("Thought for a moment" under a second, "Thought for 1:12" past a minute) | the fold shuts on the release spring; the words turn on the drum |
+| the person presses the row | open or shut as they chose | Collapsible's reveal; `streaming` no longer opens or shuts it |
+| `duration` given | its seconds, not the measured ones | – |
+| `label` given | its words once done | – |
+
+Reduce Motion: the fold crossfades; the lamp holds steady; the drum changes in place.
+
+## Rules
+
+- Pass `streaming` while the model thinks and turn it off when the answer's first words arrive; the seconds are measured between the two (nothing ticks while it thinks).
+- Restored history passes `duration` (ms): there was no streaming to measure.
+- Put consecutive reasoning parts in one `Reasoning`: one fold per reply.
+- Steps go in as a `Timeline` with `state` planned, running, done or failed and a `description` for detail; the timeline keeps its own lamps and words.
+- Don't control `open` to follow streaming: it already does, and gives way to the person.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `Reasoning` `streaming`, `duration` (ms), `label`, `open`, `defaultOpen`, `onOpenChange`, `children` | `MetalReasoning(streaming:, duration: (s), label:) { thought }` |
+
+## Keyboard and accessibility
+
+- The row is Collapsible's button: Enter or Space opens and shuts it; `aria-expanded`; named by its words ("Thinking", "Thought for 4 s").
+- `aria-busy` on the root while it streams, so the thought is read once it settles.
+- The lamp and the rule are decorative; the words say the state.
+
+---
+
 # Region
 
 A drawn rectangle with a name that carries a rule. A composition block. React: `Region` (with parts `Region.Root`, `Region.Header`, `Region.Name`, `Region.Rule`, `Region.Count`, `Region.Body`, `Region.Row`) and `RegionRow` from `@unlocalhosted/metalui`. SwiftUI: `MetalRegion { header: … rows: … }` and `MetalRegionRow`.
@@ -6454,6 +6561,66 @@ Reduce Motion: the latch snaps to its depth; the lamp still lights.
 
 - The label names the mode, not the action: "Grid", not "Show grid".
 - The lamp is the promise that it latches; keep it unless the icon itself shows the state.
+
+---
+
+# Tool call
+
+One thing an agent did: the tool, what it was given and what came back, folded by default. React: `ToolCall` (and `ToolCall.Group`) from `@unlocalhosted/metalui`. SwiftUI: `MetalToolCall`, `MetalToolCallGroup`. An object: it stands for the call and stays as its record. Every look is borrowed: the fold is `Collapsible`, the lamp is the LED with its meanings, the running ring is the `Spinner` on the wait timing (`useWait`), the input is compact `Properties`, the result sits in the field's sunk well, the words turn on the drum (`SwapText`). The `tool-call` recipe holds only sizes.
+
+## Use it for
+
+- Each tool call in an assistant's `Message`, between its words.
+- Several calls in a row: wrap them in `ToolCall.Group`.
+
+## Don't use it for
+
+- A step of the agent's story with nothing inside to inspect: use a `Timeline` event (in `Reasoning`).
+- Asking the person before a call runs: put a `Confirmation` beside it and keep the call `queued`.
+
+## Anatomy
+
+- The row (Collapsible's 32 row): a 16 slot with the small lamp (or the small ring), 8, the tool's `name` in code type, ink, then the state's word in meta type, ink3; the `summary` in ink3 and the chevron at the end.
+- The panel, 6 above and below, sections 10 apart, each an engraved caption 4 over its content:
+  - Input: `input`'s pairs as compact `Properties` (objects as one line of JSON in code type).
+  - Result: `result` as text in the field well (10 × 8, the well's field radius), code type, pre-wrap, scrolling past 240 and focusable to scroll; objects pretty-printed; an element as it is.
+  - Error: `error` in the error ink, in place of the result.
+  - `children`, when given, replace all three: the tool's own UI.
+- `ToolCall.Group`: the same row with the words ("4 tools", counted, or `label`) in ui type; the panel holds the calls beside an engraved rule, 12 in.
+
+## States and motion
+
+| `status` | Look | Motion |
+|---|---|---|
+| queued | the amber lamp, "Queued" | – |
+| running | after the show delay the small ring, "Running"; busy | the ring turns; its tick when it ends; said twice |
+| done (default) | the off lamp; "1.2 s" when `duration` is given | the word turns on the drum |
+| failed | the red lamp, "Failed" | blinks twice when it turns failed on screen, never on load |
+| open | the panel | Collapsible's reveal (settle) and close (release) |
+
+Reduce Motion: the fold crossfades; the lamp holds steady; the drum changes in place.
+
+## Rules
+
+- Folded by default: the row says what ran and how it went; open is for inspecting.
+- A summary is the call's main input in a few words ("‘springs’"), never the result.
+- Give `duration` (ms) once done when you know it; a failed call gives `error` in words a person reads.
+- A group's `status` is the host's: running while any call runs, failed when any failed, else done.
+- Status colour never stands alone: the word goes with the lamp.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `ToolCall` `name`, `status`, `summary`, `input`, `result`, `error`, `duration` (ms), `open`, `defaultOpen`, `onOpenChange`, `children` | `MetalToolCall(_ name:, status:, summary:, input: [(String, String)], result:, error:, duration: (s)) { own UI }` |
+| `ToolCall.Group` `label`, `status`, `open`, `defaultOpen`, `onOpenChange`, `children` | `MetalToolCallGroup(label:, count:, status:) { calls }` |
+| `ToolCallStatus` `queued`, `running`, `done`, `failed` | `MetalToolCallStatus` the same cases |
+
+## Keyboard and accessibility
+
+- The row is Collapsible's button: Enter or Space opens it; `aria-expanded`; named by the tool, its word and its summary.
+- `aria-busy` while running; "search_docs, running" is said when the ring shows and "search_docs, done" when it ends (a polite status outside the button).
+- The result's well is focusable when it scrolls, named "Result".
 
 ---
 

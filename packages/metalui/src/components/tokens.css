@@ -1219,6 +1219,23 @@
   --mu-r-message-plate-pad-y: 10px;
   --mu-r-message-footer-gap: 6px;
   --mu-r-message-system-gap: 12px;
+  /* reasoning: the collapsible (row, reveal, travel); the LED part and its gestures; SwapText (the drum); the rule; Timeline for steps */
+  --mu-r-reasoning-row-gap: 8px;
+  --mu-r-reasoning-panel-indent: 12px;
+  --mu-r-reasoning-panel-pad-y: 6px;
+  /* tool-call: the collapsible (row, reveal, travel); the LED part; the spinner and the wait timing (useWait); the properties part (compact); the field well; SwapText; the rule */
+  --mu-r-tool-call-row-gap: 8px;
+  --mu-r-tool-call-panel-gap: 10px;
+  --mu-r-tool-call-panel-pad-y: 6px;
+  --mu-r-tool-call-section-gap: 4px;
+  --mu-r-tool-call-result-pad-x: 10px;
+  --mu-r-tool-call-result-pad-y: 8px;
+  --mu-r-tool-call-result-max-height: 240px;
+  --mu-r-tool-call-group-indent: 12px;
+  /* confirmation: the alert (kinds urgent and note, tones plate and quiet); the button (compact, primary, destructive, hold); the check and close glyphs */
+  --mu-r-confirmation-hint-gap: 6px;
+  --mu-r-confirmation-decision-gap: 6px;
+  --mu-r-confirmation-decision-glyph: 14px;
   /* meter: the LED part (status recipe lamps); hardware level meters; Base UI Meter */
   --mu-r-meter-self-height: 10px;
   --mu-r-meter-self-gap: 2px;

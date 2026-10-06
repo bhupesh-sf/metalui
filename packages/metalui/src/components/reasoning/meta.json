@@ -1,0 +1,20 @@
+{
+  "name": "reasoning",
+  "title": "Reasoning",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["collapsible", "led"],
+  "description": "The assistant's thinking inside its reply: open while it streams, the amber lamp breathing beside \"Thinking\"; folded when the answer starts, the words turning to \"Thought for 4 s\". Once the person presses it, it stays as they left it. Holds the thought, or the agent's steps as a Timeline.",
+  "base": "@base-ui/react/collapsible (through Collapsible)",
+  "react": {
+    "export": "Reasoning",
+    "files": ["reasoning.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalReasoning",
+    "file": "swift/Sources/MetalUI/Components/MetalReasoning.swift"
+  },
+  "agent": "reasoning.agent.md",
+  "page": "/components/reasoning"
+}
