@@ -8,7 +8,8 @@ import { popoverParts } from '../popover/popover';
 import { InheritColorway, type ColorwayAnchor } from '../../theme/colorway';
 import { useRowMotion, leaveRows } from '../../motion/rows';
 import { Spinner } from '../spinner/spinner';
-import { ChevronIcon, SyncErrorIcon } from '../../icons/components.generated';
+import { MorphPair } from '../../icons/MorphIcon';
+import { chevronMorph, syncErrorMorph } from '../../icons/morph.generated';
 import { useWait, type WaitWork, type WaitPhase } from '../../motion/wait';
 
 /* ─────────────────────────────────────────────────────────
@@ -26,7 +27,7 @@ import { useWait, type WaitWork, type WaitPhase } from '../../motion/wait';
  *   load      a branch with `hasChildren` and no `children` calls loadChildren on opening:
  *             quiet for 400 ms (a fast load shows nothing), then the ring in the chevron's slot and
  *             the rest of the row dimmed (useWait); the children land when the host passes them
- *   failed    the branch closes, sync-error in the slot, "Couldn’t load · Try again" in the trail;
+ *   failed    the branch closes, the chevron morphs to sync-error (settle), "Couldn’t load · Try again" in the trail;
  *             opening it again retries
  *   select    none / single / multiple: the raised plate (Row selected), never following focus
  *   opened    the row whose content is showing: the green rail (Row opened)
@@ -94,10 +95,12 @@ export interface TreeDisclosureProps extends React.HTMLAttributes<HTMLSpanElemen
 }
 
 const DISCLOSURE = 'mu-tree-disclosure tree-disclosure';
+const DISCLOSURE_GLYPHS = { chevron: chevronMorph, 'sync-error': syncErrorMorph };
 
 /** The chevron that opens a branch, in the indent's column; the wait and a failed load show in its place. */
 export function TreeDisclosure({ branch = true, open, phase, failed, label, className, ...props }: TreeDisclosureProps) {
   const showing = phase === 'shown' || phase === 'done';
+  const broken = failed && !showing;
   return (
     <span
       data-open={open ? '' : undefined}
@@ -105,9 +108,9 @@ export function TreeDisclosure({ branch = true, open, phase, failed, label, clas
       className={className ? `${DISCLOSURE} ${className}` : DISCLOSURE}
       {...props}
     >
-      {branch && (failed && !showing
-        ? <SyncErrorIcon animate={false} className="mu-tree-failed" />
-        : <ChevronIcon animate={false} className="mu-tree-chevron" />)}
+      {/* One glyph that morphs chevron ↔ sync-error (strain 1.48). The column's quarter turn stays CSS (part spring);
+          sync-error is planned a quarter turn back so it stands upright inside that turn. */}
+      {branch && <MorphPair glyphs={DISCLOSURE_GLYPHS} name={broken ? 'sync-error' : 'chevron'} turn={broken && !open ? 90 : 0} className={broken ? 'mu-tree-chevron mu-tree-failed' : 'mu-tree-chevron'} />}
       {branch && phase && phase !== 'idle' && phase !== 'failed' && <Spinner size="small" phase={phase} label={label} />}
     </span>
   );

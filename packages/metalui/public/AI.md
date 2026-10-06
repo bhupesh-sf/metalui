@@ -5426,7 +5426,7 @@ An app's side place for moving between places. React: `Sidebar` from `@unlocalho
 - Width 232 (a rail 56), padding 8; header and footer stay while the sections scroll.
 - Section: an engraved title and its items, 2 apart; sections 16 apart.
 - Item: a 16 glyph and a word, 32 tall, radius 10, ink2 (ink when current or hovered).
-- Toggle: collapses to the rail and back.
+- Toggle: collapses to the rail and back. Its word turns on the drum (Collapse ↔ Expand, `SwapText`); a glyph that should change with it is the host's, as one `MorphIcon` whose `name` or `turn` changes (never two glyphs swapped).
 
 ## States and motion
 
@@ -5493,12 +5493,12 @@ A form field that captures a signature. React: `SignaturePad` from `@unlocalhost
 | drawing | the raw line under the pen, width from pressure (a pen) or speed | none: the ink is exactly under the pen |
 | lift | the levelled stroke replaces the raw one | cross-fade on the settle spring |
 | inked | the hint gone; Clear and Undo on | hint fades on the settle spring |
-| typed | the name on the baseline | – |
+| typed | the name on the baseline; the mode key says Draw instead (compact: the pen glyph) | the key's words turn on the drum (`SwapText`); compact's glyph turns on the drum (`SwapIcon`): text ↔ pen strains 2.00, past the morph's limit (`docs/MORPH.md` §5), so it is the recorded drum exception |
 | invalid | the form field's error under the pad | the error's own row |
 | read-only | the mark; no hint, no keys | – |
 | disabled | 40 %, no ink, keys off | – |
 
-Reduce Motion: the settle and the hint swap at once.
+Reduce Motion: the settle, the hint and the mode key's words and glyph change at once.
 
 ## API
 
@@ -7439,7 +7439,7 @@ Nested rows that open and close in place, walked with the keyboard: files in a p
 | opening | children land from one nest above, fading in; rows below glide down | object; settle |
 | closing | children leave one nest down, fading; then the rows below glide up into the gap | release; settle |
 | loading a level | quiet for the show delay (400 ms), then the ring in the chevron's place and the rest of the row dimmed (`Row` `waiting`) | the spinner's clock (`useWait`) |
-| load failed | the branch closes; `sync-error` in the chevron's place; the trail says "Couldn’t load · Try again" (it describes the row); opening it again retries | – |
+| load failed | the branch closes; the chevron morphs into `sync-error` in its place (`MorphPair`, strain 1.48) and back when it loads; the trail says "Couldn’t load · Try again" (it describes the row); opening it again retries | settle; Reduce Motion: the glyph changes in place |
 | empty branch | opened with `children: []`: one row "Empty" in ink3 at the children's level (hidden from assistive tech) | lands like a child |
 | selected | the raised plate (`Row` `selected`), held through hover | the row's fade |
 | opened | the green rail (`Row` `opened`): the row whose content is showing | – |

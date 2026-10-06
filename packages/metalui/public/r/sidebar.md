@@ -15,7 +15,7 @@ An app's side place for moving between places. React: `Sidebar` from `@unlocalho
 - Width 232 (a rail 56), padding 8; header and footer stay while the sections scroll.
 - Section: an engraved title and its items, 2 apart; sections 16 apart.
 - Item: a 16 glyph and a word, 32 tall, radius 10, ink2 (ink when current or hovered).
-- Toggle: collapses to the rail and back.
+- Toggle: collapses to the rail and back. Its word turns on the drum (Collapse ↔ Expand, `SwapText`); a glyph that should change with it is the host's, as one `MorphIcon` whose `name` or `turn` changes (never two glyphs swapped).
 
 ## States and motion
 

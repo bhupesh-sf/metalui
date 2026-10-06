@@ -30,12 +30,12 @@ A form field that captures a signature. React: `SignaturePad` from `@unlocalhost
 | drawing | the raw line under the pen, width from pressure (a pen) or speed | none: the ink is exactly under the pen |
 | lift | the levelled stroke replaces the raw one | cross-fade on the settle spring |
 | inked | the hint gone; Clear and Undo on | hint fades on the settle spring |
-| typed | the name on the baseline | – |
+| typed | the name on the baseline; the mode key says Draw instead (compact: the pen glyph) | the key's words turn on the drum (`SwapText`); compact's glyph turns on the drum (`SwapIcon`): text ↔ pen strains 2.00, past the morph's limit (`docs/MORPH.md` §5), so it is the recorded drum exception |
 | invalid | the form field's error under the pad | the error's own row |
 | read-only | the mark; no hint, no keys | – |
 | disabled | 40 %, no ink, keys off | – |
 
-Reduce Motion: the settle and the hint swap at once.
+Reduce Motion: the settle, the hint and the mode key's words and glyph change at once.
 
 ## API
 

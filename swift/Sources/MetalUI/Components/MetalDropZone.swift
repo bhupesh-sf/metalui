@@ -14,6 +14,7 @@ public struct MetalDropZone: View {
     private let onFiles: ([URL]) -> Void
     @State private var over = false
     @State private var picking = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     public init(_ title: String = "Drop files here", description: String? = nil, systemImage: String = "tray.and.arrow.down", accept: [UTType] = [.item], onFiles: @escaping ([URL]) -> Void) {
         self.title = title
@@ -28,6 +29,8 @@ public struct MetalDropZone: View {
             VStack(spacing: MetalRecipes.dropZone.points("self.gap")) {
                 Image(systemName: systemImage).font(.title2)
                 Text(over ? "Let go to attach" : title)
+                    .contentTransition(reduceMotion ? .opacity : .numericText())
+                    .metalAnimation(.settle, value: over)
                 if let description { Text(description).font(.caption).foregroundStyle(.secondary) }
             }
             .frame(maxWidth: .infinity, minHeight: MetalRecipes.dropZone.points("self.min-height"))

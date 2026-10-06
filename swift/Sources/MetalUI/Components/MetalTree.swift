@@ -9,7 +9,7 @@ import SwiftUI
 //            the rows below glide down (settle)
 //   close    the children leave one nest down (release); the rows below close the gap (settle)
 //   load     a branch with `hasChildren` and no `children` calls loadChildren: quiet, then the ring in the
-//            chevron's slot (the spinner's clock); a failure closes it, shows sync-error and Try again
+//            chevron's slot (the spinner's clock); a failure closes it, the chevron becomes sync-error in place, Try again
 //   select   none / single / multiple (⌘-click toggles, ⇧-click takes a range), never following focus
 //   rename   the row's context menu: MetalQuickEdit in a popover under the row
 // Reduce Motion: rows and the chevron change at once (MetalMotion resolves every class).
@@ -446,14 +446,13 @@ struct MetalTreeDisclosure: View {
         let chevron = MetalRecipes.tree.points("chevron.size")
         ZStack {
             if branch {
-                if failed && !wait.showing {
-                    MetalIcon(.syncError, size: chevron)
-                } else {
-                    MetalIcon(.chevron, size: chevron)
-                        .rotationEffect(.degrees(open ? .zero : -90))
-                        .metalAnimation(.part, value: open)
-                        .opacity(wait.showing ? .zero : .one)
-                }
+                // One glyph: chevron and sync-error replace each other in place (the symbol's replace on settle).
+                let broken = failed && !wait.showing
+                MetalIcon(broken ? .syncError : .chevron, size: chevron)
+                    .metalAnimation(.settle, value: broken)
+                    .rotationEffect(.degrees(open || broken ? .zero : -90))
+                    .metalAnimation(.part, value: open)
+                    .opacity(wait.showing ? .zero : .one)
                 if wait.phase != .idle && wait.phase != .failed {
                     MetalSpinner(size: .small, label: label, phase: wait.phase) { EmptyView() }
                 }

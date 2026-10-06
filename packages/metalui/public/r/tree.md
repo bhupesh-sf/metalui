@@ -28,7 +28,7 @@ Nested rows that open and close in place, walked with the keyboard: files in a p
 | opening | children land from one nest above, fading in; rows below glide down | object; settle |
 | closing | children leave one nest down, fading; then the rows below glide up into the gap | release; settle |
 | loading a level | quiet for the show delay (400 ms), then the ring in the chevron's place and the rest of the row dimmed (`Row` `waiting`) | the spinner's clock (`useWait`) |
-| load failed | the branch closes; `sync-error` in the chevron's place; the trail says "Couldn’t load · Try again" (it describes the row); opening it again retries | – |
+| load failed | the branch closes; the chevron morphs into `sync-error` in its place (`MorphPair`, strain 1.48) and back when it loads; the trail says "Couldn’t load · Try again" (it describes the row); opening it again retries | settle; Reduce Motion: the glyph changes in place |
 | empty branch | opened with `children: []`: one row "Empty" in ink3 at the children's level (hidden from assistive tech) | lands like a child |
 | selected | the raised plate (`Row` `selected`), held through hover | the row's fade |
 | opened | the green rail (`Row` `opened`): the row whose content is showing | – |

@@ -98,7 +98,7 @@ public struct MetalPromptInput<Files: View, Tools: View>: View {
                     Text(hint).font(.metal(MetalType.meta)).foregroundColor(colorway.tokens.ink3.color).accessibilityHidden(true)
                 }
                 MetalButton(busy ? "Stop" : "Send", cap: .primary, size: .compact, action: busy ? { onStop?() } : send) {
-                    MetalIcon(busy ? .stop : .send).contentTransition(.opacity)
+                    MetalIcon(busy ? .stop : .send)
                 }
                 .disabled(!busy && !ready)
                 .metalAnimation(.settle, value: busy)
