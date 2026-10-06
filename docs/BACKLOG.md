@@ -450,20 +450,21 @@ Plan it by the **kind of data**, not by features: each kind below is a real situ
 | empty | "—" in ink3 in every kind |
 
 **Must**
-- [ ] **SwiftUI first**: `MetalTable` with the header, sort, selection and the cell kinds.
-- [ ] **Properties**: a small part for label and value pairs (a `<dl>`): engraved labels, values in the cell kinds' looks, regular and compact; SwiftUI in step.
-- [ ] **Cell kinds**: the vocabulary above as `kind` on a column, with `unit`; `cell` stays for anything else.
-- [ ] **Density**: `density` roomy 48 (touch, iOS) / regular 40 / compact 32.
-- [ ] **A reading guide, not stripes**: one plate glides under the hovered or focused row on the settle spring (the menu's `ListGlide`), keyboard included.
-- [ ] **Sticky header** in a scroll container.
-- [ ] **Open a row**: `onRowAction` on Enter and click; the opened row takes `Row`'s `opened` rail.
-- [ ] **Row actions**: the `actions` cell opens a `Menu`; one primary action may show as a key on hover.
-- [ ] **Many rows at once**: selection shows a `ToolStrip` with the count on the drum (the strip's "Over a list"); a documented pattern.
-- [ ] **Filtered is visible**: the caption says "12 of 240" (drum) with a Clear key whenever the host filters.
-- [ ] **Pages**: `Pagination` under the table for records; "Load more" for feeds. Infinite scroll only with virtual rows (Later).
-- [ ] **Waiting and empty, told apart**: `loading` (`Skeleton` rows in the columns' widths), `empty` ("No invoices yet" and its action), `emptyFiltered` ("Nothing matches" and Clear), `error` (`sync-error`, Try again).
-- [ ] **Narrow widths**: each column has a `priority`; as the block narrows (`@container/block`), the lowest-priority columns leave first and their values move to a second line under the primary cell. No sideways scroll for records.
+- [x] **SwiftUI first**: `MetalTable` with the header, sort, selection and the cell kinds.
+- [x] **Properties**: a small part for label and value pairs (a `<dl>`): engraved labels, values in the cell kinds' looks, regular and compact; SwiftUI in step.
+- [x] **Cell kinds**: the vocabulary above as `kind` on a column, with `unit`; `cell` stays for anything else.
+- [x] **Density**: `density` roomy 48 (touch, iOS) / regular 40 / compact 32.
+- [x] **A reading guide, not stripes**: one plate glides under the hovered or focused row on the settle spring (the menu's `ListGlide`), keyboard included.
+- [x] **Sticky header** in a scroll container.
+- [x] **Open a row**: `onRowAction` on Enter and click; the opened row takes `Row`'s `opened` rail.
+- [x] **Row actions**: the `actions` cell opens a `Menu`; one primary action may show as a key on hover.
+- [x] **Many rows at once**: selection shows a `ToolStrip` with the count on the drum (the strip's "Over a list"); a documented pattern.
+- [x] **Filtered is visible**: the caption says "12 of 240" (drum) with a Clear key whenever the host filters.
+- [x] **Pages**: `Pagination` under the table for records; "Load more" for feeds. Infinite scroll only with virtual rows (Later).
+- [x] **Waiting and empty, told apart**: `loading` (`Skeleton` rows in the columns' widths), `empty` ("No invoices yet" and its action), `emptyFiltered` ("Nothing matches" and Clear), `error` (`sync-error`, Try again).
+- [x] **Narrow widths**: each column has a `priority`; as the block narrows (`@container/block`), the lowest-priority columns leave first and their values move to a second line under the primary cell. No sideways scroll for records.
 
+- Must done (2026-10-06): every cell kind (`kind`, `unit`, `TableCell` exported), densities 48/40/32, the gliding guide, the sort arrow morphs, sticky head, `onRowAction` with the rail, row actions, "12 of 240", loading/empty/filtered/error, `priority` for narrow widths (`@container/table`, 720 and 560), `Properties` (a Part; the host passes a `TableCell` as its value), a real `MetalTable` and `MetalProperties`. Left (SwiftUI): the guide follows hover only; the sort arrow rotates; avatars scale until `MetalAvatar` has sizes.
 **Should**
 - [ ] **Totals**: `footer`, a sunk readout row, sticky; totals turn on the drum when rows change.
 - [ ] **Grouped rows**: `groupBy` with engraved group headers (the name and a count), collapsing with a chevron on the part spring, subtotals, the header sticky under the table header.
