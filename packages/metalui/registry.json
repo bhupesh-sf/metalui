@@ -486,6 +486,27 @@
       "docs": "Agent guide: https://metalui.dev/r/card.md. SwiftUI: MetalCard in the MetalUI Swift package."
     },
     {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "Carousel",
+      "description": "A few peers looked at one or a few at a time in a box narrower than all of them: a gallery of pictures, onboarding cards, a shelf of cards on a narrow screen. Slides scroll natively with scroll snap (touch, trackpad, wheel) and the next one peeks at the edge; Previous and Next are the graphite tool keys with the chevron, off at the ends; the readout says where you are (\"3 / 8\", or the range in view) on the drum, and a polite status says it once the scroll settles. Never rotates on its own.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/carousel/carousel.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/carousel/carousel.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/carousel.md. SwiftUI: MetalCarousel in the MetalUI Swift package."
+    },
+    {
       "name": "cascader",
       "type": "registry:ui",
       "title": "Cascader",

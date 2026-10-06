@@ -658,6 +658,10 @@
   --spacing-scrollspy-entry-indent: var(--mu-r-scrollspy-entry-indent);
   --spacing-scrollspy-rail-inset: var(--mu-r-scrollspy-rail-inset);
   --spacing-scrollspy-rail-inset-compact: var(--mu-r-scrollspy-rail-inset-compact);
+  --spacing-carousel-slide-peek: var(--mu-r-carousel-slide-peek);
+  --spacing-carousel-slide-gap: var(--mu-r-carousel-slide-gap);
+  --spacing-carousel-box-bleed: var(--mu-r-carousel-box-bleed);
+  --spacing-carousel-controls-gap: var(--mu-r-carousel-controls-gap);
   --spacing-pagination-page-min-width: var(--mu-r-pagination-page-min-width);
   --spacing-pagination-siblings: var(--mu-r-pagination-self-siblings);
   --spacing-pagination-arrow-size: var(--mu-r-pagination-arrow-size);
@@ -2336,6 +2340,12 @@
 }
 @utility scrollspy-strip {
   max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; &::-webkit-scrollbar { display: none; }
+}
+@utility carousel-viewport {
+  display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; &::-webkit-scrollbar { display: none; }
+}
+@utility carousel-slide {
+  flex: 0 0 var(--carousel-slide-width, calc(100% - var(--mu-r-carousel-slide-peek))); min-width: 0; scroll-snap-align: start;
 }
 @utility navigation-menu-positioner {
   transition: top var(--mu-spring-settle-d) var(--mu-spring-settle), left var(--mu-spring-settle-d) var(--mu-spring-settle), right var(--mu-spring-settle-d) var(--mu-spring-settle), bottom var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-instant] { transition: none; } @media (prefers-reduced-motion: reduce) { transition: none; }

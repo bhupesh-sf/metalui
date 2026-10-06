@@ -240,6 +240,23 @@
       "agent": "https://metalui.dev/r/card.md"
     },
     {
+      "name": "carousel",
+      "title": "Carousel",
+      "status": "alpha",
+      "description": "A few peers looked at one or a few at a time in a box narrower than all of them: a gallery of pictures, onboarding cards, a shelf of cards on a narrow screen. Slides scroll natively with scroll snap (touch, trackpad, wheel) and the next one peeks at the edge; Previous and Next are the graphite tool keys with the chevron, off at the ends; the readout says where you are (\"3 / 8\", or the range in view) on the drum, and a polite status says it once the scroll settles. Never rotates on its own.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Carousel",
+        "base": "section, aria-roledescription=\"carousel\"; slides are groups, roledescription \"slide\" (WAI-ARIA APG carousel, basic); CSS Scroll Snap and IntersectionObserver (Base UI has no carousel)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCarousel"
+      },
+      "registry": "https://metalui.dev/r/carousel.json",
+      "agent": "https://metalui.dev/r/carousel.md"
+    },
+    {
       "name": "cascader",
       "title": "Cascader",
       "status": "alpha",

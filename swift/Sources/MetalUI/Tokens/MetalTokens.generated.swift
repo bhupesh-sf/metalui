@@ -1348,6 +1348,20 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A few peers looked at one or a few at a time in a box narrower than all of them: a gallery of pictures, onboarding cards, a shelf of cards on a narrow screen. The slides scroll natively with mandatory scroll snap (touch, trackpad and wheel for free), each snapping its start edge; by default a slide is the box minus the peek, so the next one shows at the edge. The scroll box bleeds above and below and pads each side, so raised slides keep their shadows and focus rings. Under the slides, one row: the readout at the start (the position, '3 / 8', or the range in view, '3–5 / 8', its number turning on the drum) and Previous and Next together at the end, the graphite tool keys carrying the set's chevron; at an end the key is off (40 %), never removed. Nothing rotates on its own. Reduce Motion: a step jumps instead of gliding and the drum crossfades. (the icon button (tool), the chevron glyph, the drum (SwapText); CSS Scroll Snap; WAI-ARIA APG carousel (basic))
+    public static let carousel = MetalObjectRecipe(
+        name: "carousel",
+        layers: [
+
+        ],
+        props: [
+            "slide.peek": .number(40.0),
+            "slide.gap": .number(12.0),
+            "box.bleed": .number(10.0),
+            "controls.gap": .number(8.0),
+        ]
+    )
+
     /// Moving through pages of results: the switcher's sunk track holding the page numbers, with a key for the previous and next page at the ends. The current page is the switcher's raised thumb; choosing another page glides the thumb there on the part spring (a track with ends). Around a long run it shows the first and last pages, the current one and its neighbours, and a quiet ellipsis for the gaps. Ends: the previous or next key is disabled. Reduce Motion: the thumb moves at once. (the switcher (track, thumb, options) and its sliding thumb; the WAI pagination landmark)
     public static let pagination = MetalObjectRecipe(
         name: "pagination",
