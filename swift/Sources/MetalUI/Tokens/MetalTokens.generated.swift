@@ -1292,6 +1292,26 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Marks the section being read in a table of contents. A side rail is a column of links in ui type and ink2 (ink on hover and when current); the current entry sits on one marker, the row's raised option plate with its green rail (Row selected, the Sidebar's "you are here"), which glides from entry to entry on the settle spring (free travel, like a list's one highlight). A strip of tabs is the switcher's sunk track with its raised thumb on the part spring (the Tabs look); a strip wider than its box scrolls, and keeps the current entry in view. A nested entry (level 2) is indented one step. Picking an entry scrolls the page smoothly to its section, landing below the offset (the scroller's scroll-padding-top unless set), and the marker goes straight there and waits. Reduce Motion: the marker moves at once and the jump is instant. (the row (option on plate and rail), the switcher (track, thumb, options), SlidingIndicator; WAI-ARIA aria-current="location"; IntersectionObserver)
+    public static let scrollspy = MetalObjectRecipe(
+        name: "scrollspy",
+        layers: [
+
+        ],
+        props: [
+            "entry.height": .number(32.0),
+            "entry.height-compact": .number(28.0),
+            "entry.pad-x": .number(10.0),
+            "entry.pad-y": .number(8.0),
+            "entry.pad-y-compact": .number(6.0),
+            "entry.radius": .number(10.0),
+            "entry.gap": .number(2.0),
+            "entry.indent": .number(12.0),
+            "rail.inset": .number(8.0),
+            "rail.inset-compact": .number(7.0),
+        ]
+    )
+
     /// Moving through pages of results: the switcher's sunk track holding the page numbers, with a key for the previous and next page at the ends. The current page is the switcher's raised thumb; choosing another page glides the thumb there on the part spring (a track with ends). Around a long run it shows the first and last pages, the current one and its neighbours, and a quiet ellipsis for the gaps. Ends: the previous or next key is disabled. Reduce Motion: the thumb moves at once. (the switcher (track, thumb, options) and its sliding thumb; the WAI pagination landmark)
     public static let pagination = MetalObjectRecipe(
         name: "pagination",

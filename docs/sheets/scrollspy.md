@@ -51,15 +51,17 @@ Not doing: a dot or a lamp per entry (an LED here would say "live" for every row
 - **SwiftUI.** `MetalScrollspy` owns the `ScrollView` and its sections (`scrollPosition(id:)` on macOS 14 / iOS 17, the modern `ScrollViewReader`) beside a rail or strip; `MetalScrollspyRail` is the list alone for a host's own scroll view. No hash: there is no URL.
 
 **Must**
-- [ ] React: `Scrollspy` (`items` with `id`, `label`, `level`; `root`, `offset`, `orientation`, `size`, `hash`, `onValueChange`, `aria-label`).
-- [ ] Current entry from an IntersectionObserver line, the bottom rule, the jump hold; smooth jump with focus to the section; Reduce Motion instant.
-- [ ] The rail (Row's selected plate and green rail gliding on settle) and the strip (switcher thumb on part; the strip keeps the current entry in view).
-- [ ] SwiftUI `MetalScrollspy` and `MetalScrollspyRail`, both orientations.
-- [ ] Recipe `scrollspy`, agent guide, meta.json, the page with its DialKit panel, the e2e slice; the docs' "On this page" moved onto it.
+- [x] React: `Scrollspy` (`items` with `id`, `label`, `level`; `root`, `offset`, `orientation`, `size`, `hash`, `onValueChange`, `aria-label`).
+- [x] Current entry from an IntersectionObserver line, the bottom rule, the jump hold; smooth jump with focus to the section; Reduce Motion instant.
+- [x] The rail (Row's selected plate and green rail gliding on settle) and the strip (switcher thumb on part; the strip keeps the current entry in view).
+- [x] SwiftUI `MetalScrollspy` and `MetalScrollspyRail`, both orientations.
+- [x] Recipe `scrollspy`, agent guide, meta.json, the page with its DialKit panel, the e2e slice; the docs' "On this page" moved onto it.
 
 **Should**
-- [ ] `level` for nested headings.
-- [ ] `onValueChange`.
+- [x] `level` for nested headings.
+- [x] `onValueChange`.
 
 **Later**
 - [ ] A continuous reading bar (scroll-driven animation).
+
+- Done (2026-10-06): Must and Should. The docs' "On this page" is the component now (compact rail, the window, html's `scroll-padding-top`, `hash`); its scroll listener is gone. Left: SwiftUI's strip scrolls when it doesn't fit but doesn't yet centre its current entry; SwiftUI's `offset` is a content margin, so the line sits at the margin, not under an overlaid header; Safari without `scrollend` lights the last entry only when its top reaches the line.

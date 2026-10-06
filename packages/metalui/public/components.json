@@ -1157,6 +1157,23 @@
       "agent": "https://metalui.dev/r/scroll-area.md"
     },
     {
+      "name": "scrollspy",
+      "title": "Scrollspy",
+      "status": "alpha",
+      "description": "Marks the section being read in a table of contents, and jumps to a section when you pick its entry: a side rail whose one marker (the row's raised plate and green rail) glides entry to entry on the settle spring, or a strip on the switcher's track and thumb. Any scroller, an offset that clears a sticky header (the scroller's scroll-padding-top by default), smooth jumps that land focus too, and an opt-in URL hash that follows.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Scrollspy",
+        "base": "nav > ol of links with aria-current=\"location\"; IntersectionObserver (Base UI has no scrollspy; not tabs: entries go to places in one document)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalScrollspy"
+      },
+      "registry": "https://metalui.dev/r/scrollspy.json",
+      "agent": "https://metalui.dev/r/scrollspy.md"
+    },
+    {
       "name": "select",
       "title": "Select",
       "status": "alpha",

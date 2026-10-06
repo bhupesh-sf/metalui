@@ -1606,6 +1606,26 @@
       "docs": "Agent guide: https://metalui.dev/r/scroll-area.md. SwiftUI: MetalScrollArea in the MetalUI Swift package."
     },
     {
+      "name": "scrollspy",
+      "type": "registry:ui",
+      "title": "Scrollspy",
+      "description": "Marks the section being read in a table of contents, and jumps to a section when you pick its entry: a side rail whose one marker (the row's raised plate and green rail) glides entry to entry on the settle spring, or a strip on the switcher's track and thumb. Any scroller, an offset that clears a sticky header (the scroller's scroll-padding-top by default), smooth jumps that land focus too, and an opt-in URL hash that follows.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/switcher.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/scrollspy/scrollspy.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/scrollspy/scrollspy.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/scrollspy.md. SwiftUI: MetalScrollspy in the MetalUI Swift package."
+    },
+    {
       "name": "select",
       "type": "registry:ui",
       "title": "Select",

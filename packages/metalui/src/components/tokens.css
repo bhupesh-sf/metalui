@@ -1278,6 +1278,17 @@
   --mu-r-breadcrumbs-fold-height: 22px;
   --mu-r-breadcrumbs-fold-pad: 6px;
   --mu-r-breadcrumbs-fold-radius: 6px;
+  /* scrollspy: the row (option on plate and rail), the switcher (track, thumb, options), SlidingIndicator; WAI-ARIA aria-current="location"; IntersectionObserver */
+  --mu-r-scrollspy-entry-height: 32px;
+  --mu-r-scrollspy-entry-height-compact: 28px;
+  --mu-r-scrollspy-entry-pad-x: 10px;
+  --mu-r-scrollspy-entry-pad-y: 8px;
+  --mu-r-scrollspy-entry-pad-y-compact: 6px;
+  --mu-r-scrollspy-entry-radius: 10px;
+  --mu-r-scrollspy-entry-gap: 2px;
+  --mu-r-scrollspy-entry-indent: 12px;
+  --mu-r-scrollspy-rail-inset: 8px;
+  --mu-r-scrollspy-rail-inset-compact: 7px;
   /* pagination: the switcher (track, thumb, options) and its sliding thumb; the WAI pagination landmark */
   --mu-r-pagination-page-min-width: 28px;
   --mu-r-pagination-self-siblings: 1px;
