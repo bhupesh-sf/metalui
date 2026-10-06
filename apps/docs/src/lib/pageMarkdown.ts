@@ -73,7 +73,10 @@ function walk(el: Element, out: string[]) {
     case 'P': out.push(inner(el)); return;
     case 'PRE': {
       const label = node.dataset.label;
-      out.push((label ? `**${label}**\n\n` : '') + '```\n' + (el.textContent ?? '').trimEnd() + '\n```');
+      // A code block's gutter (numbers, lamps), its keys and its notes aren't the code.
+      const code = el.cloneNode(true) as Element;
+      code.querySelectorAll('[aria-hidden="true"], button, [role="note"]').forEach((n) => n.remove());
+      out.push((label ? `**${label}**\n\n` : '') + '```\n' + (code.textContent ?? '').trimEnd() + '\n```');
       return;
     }
     case 'TABLE': out.push(table(el as HTMLTableElement)); return;
