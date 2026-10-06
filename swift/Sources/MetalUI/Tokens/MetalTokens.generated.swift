@@ -1480,6 +1480,30 @@ public enum MetalRecipes {
         ]
     )
 
+    /// The drag that reorders a list, a row or a grid (an instrument: it shows only while something is held). Lifted, the item rises off the table on the surface spring: it grows to lift.scale and its raised plate with the floating shadow fades in on a layer behind its content (only opacity animates), and it follows the hand from where it was grabbed. The slot it will land in is a sunk recess (the well's track) the item's size and radius, gliding on the settle spring as the others make room (they glide from where they were, FLIP, the rows' motion). Dropped, it travels from the hand into its slot and lands on the object spring with the small overshoot while the plate fades on release. Escape returns it home on the settle spring and the others glide back; a failed save glides everything back the same way. A disabled item is pinned: it can't be lifted and nothing takes its place; trying shakes it once (refusal). The grip is six engraved dimples (a knurl), ink3 with the colorway's lip, that darken on hover. Within self.edge of the scroller's edge a drag scrolls toward it, up to self.speed per frame. On touch a whole item lifts after a still press of self.hold; a grip lifts at once. Reduce Motion: no scale and no travel (the drop and the return are at once, the others jump); following the hand stays, and the plate still fades. (the raised surface (recipe surface raise) for the held plate; the well's track (recipe well track) for the recess; useRowMotion (Transitions T9, FLIP in 2D); the surface, settle, object, release and refusal springs; the haptic (alignment on lift, detent on drop))
+    public static let sortable = MetalObjectRecipe(
+        name: "sortable",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(6.0),
+            "self.column": .number(132.0),
+            "self.threshold": .number(4.0),
+            "self.hold": .text("250ms"),
+            "self.edge": .number(48.0),
+            "self.speed": .number(18.0),
+            "lift.scale": .text("1.025"),
+            "grip.width": .number(20.0),
+            "grip.height": .number(28.0),
+            "grip.radius": .number(6.0),
+            "grip.dot": .number(2.5),
+            "grip.pitch": .number(5.0),
+            "grip.rest": .text("0.7"),
+            "grip.lip": .perColorway(bone: "rgba(255,255,255,.85)", graphite: "rgba(255,255,255,.06)"),
+        ]
+    )
+
     /// A place that receives files: a sunk tray with a glyph engraved in a small well, a line saying to drop files, a line naming what it takes, and 'or choose files'. The whole tray is the label of a real file input, so a click, Space or Enter opens the picker. While files are dragged anywhere in the window it is armed: its edge lights faintly green on the settle spring, so the eye finds it. With files over it, the edge lights fully, the tray sinks a touch and the glyph rises one step on the part spring, and the line turns to 'Let go to attach' on the drum. Over it with a file it will not take, the edge is the invalid ink and the line says so; dropping shakes it (refusal). Let go, and the tray comes back up on the object spring with its small overshoot; the files it took land below as attachments. Disabled, it dims and drags pass by. Compact, it is one row, for a composer. Reduce Motion: the edge and line change at once; nothing sinks, rises or shakes. (the well (recipe well field); the invalid ring (foundations); the drum (motion/swap); the refusal (motion/refuse); the part, settle and object springs)
     public static let dropZone = MetalObjectRecipe(
         name: "drop-zone",

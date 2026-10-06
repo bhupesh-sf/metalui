@@ -1371,6 +1371,20 @@
   --mu-r-sidebar-item-glyph: 16px;
   --mu-r-sidebar-section-gap: 2px;
   --mu-r-sidebar-section-title-pad: 10px;
+  /* sortable: the raised surface (recipe surface raise) for the held plate; the well's track (recipe well track) for the recess; useRowMotion (Transitions T9, FLIP in 2D); the surface, settle, object, release and refusal springs; the haptic (alignment on lift, detent on drop) */
+  --mu-r-sortable-self-gap: 6px;
+  --mu-r-sortable-self-column: 132px;
+  --mu-r-sortable-self-threshold: 4px;
+  --mu-r-sortable-self-hold: 250ms;
+  --mu-r-sortable-self-edge: 48px;
+  --mu-r-sortable-self-speed: 18px;
+  --mu-r-sortable-lift-scale: 1.025;
+  --mu-r-sortable-grip-width: 20px;
+  --mu-r-sortable-grip-height: 28px;
+  --mu-r-sortable-grip-radius: 6px;
+  --mu-r-sortable-grip-dot: 2.5px;
+  --mu-r-sortable-grip-pitch: 5px;
+  --mu-r-sortable-grip-rest: 0.7;
   /* drop-zone: the well (recipe well field); the invalid ring (foundations); the drum (motion/swap); the refusal (motion/refuse); the part, settle and object springs */
   --mu-r-drop-zone-self-pad: 24px;
   --mu-r-drop-zone-self-gap: 8px;
@@ -2412,6 +2426,7 @@
   --mu-r-table-select-tint: rgba(63,185,122,.08);
   --mu-r-table-total-shade: rgba(60,55,40,.10);
   --mu-r-table-pin-shade: rgba(24,22,16,.08);
+  --mu-r-sortable-grip-lip: rgba(255,255,255,.85);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:0 */ linear-gradient(#FFFFFF, #F5F4F0 40%, #ECEBE6);
   --mu-r-glass-face-self-shadow:
@@ -3014,6 +3029,7 @@
   --mu-r-table-select-tint: rgba(63,185,122,.12);
   --mu-r-table-total-shade: rgba(0,0,0,.45);
   --mu-r-table-pin-shade: rgba(0,0,0,.40);
+  --mu-r-sortable-grip-lip: rgba(255,255,255,.06);
   --mu-r-glass-face-self-background:
     /* mu-recipe:glass-face:1 */ linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
   --mu-r-glass-face-self-shadow:
@@ -3617,6 +3633,7 @@
     --mu-r-table-select-tint: rgba(63,185,122,.12);
     --mu-r-table-total-shade: rgba(0,0,0,.45);
     --mu-r-table-pin-shade: rgba(0,0,0,.40);
+    --mu-r-sortable-grip-lip: rgba(255,255,255,.06);
     --mu-r-glass-face-self-background:
       linear-gradient(#2A2A2D, #1D1D1F 40%, #161618);
     --mu-r-glass-face-self-shadow:
