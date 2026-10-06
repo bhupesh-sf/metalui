@@ -73,7 +73,8 @@ if (process.argv.includes('--gate')) {
   // 2026-10-06: every component is its own module in dist (tsup.config.ts), so an import no longer carries the
   // module-level work of every other component (was Button 10.0, Led 6.0, Switch 11.9, Well 5.8, Surface 5.7,
   // Table 93.5, Combobox 81.9, QuickEdit 32.0, ToolStrip 71.3, Card 55.0, Link 43.7). Each ceiling sits just above its cost.
-  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 92, Combobox: 80, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102 };
+  // Combobox 80 → 81: its chosen row draws the Checkbox's tick with the shared pen (icons/pen.tsx) instead of the check glyph.
+  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 92, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102 };
   const over = Object.entries(CEILING).filter(([n, kb]) => !perExport[n] || perExport[n].gzip / 1024 > kb);
   if (over.length) {
     console.error(`\nbench-bundle gate: ${over.map(([n, kb]) => `${n} ${perExport[n] ? (perExport[n].gzip / 1024).toFixed(1) : 'missing'} KB gzip > ${kb}`).join(', ')}`);

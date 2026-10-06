@@ -1204,6 +1204,8 @@ Interrupted (ticked again mid-withdraw, say), the pen starts from the length on 
 
 The tick is the icon set's `check` tick (`icons/src/acts/check.mjs`, read into `icons/tick.generated.ts` and `MetalTickRoute`), drawn on the 24 grid across the whole well, so it is the same mark as the `check` icon at 16 or 14. Its pen is `tick.pen` (2.4 grid units: 1.6 pt at 16). `tick.rotate` turns it about its corner (0 by default). Durations and curves are tokens: `tick.delay`, `tick.down`, `tick.pace`, `tick.withdraw`, `--mu-ease-press` and the part and settle springs; in a group, the pen also waits for its key's cascade delay.
 
+One tick, one pen: everything else that ticks draws this tick with the same pen (`icons/pen.tsx`: `Ink` for the key, `Tick` bare in the row's ink at `tick.bare-pen`, 1.85, the check glyph's small cut). The menu's `MenuCheckboxItem`, the select's, combobox's and cascader's chosen row and the filter menu's chosen operator use `Tick`; SwiftUI uses `MetalTick(isOn:size:)` on `MetalTickShape`. Never draw a tick with the `check` icon or by hand.
+
 ## Keyboard and accessibility
 
 - Space toggles; the focus ring is the 2 pt green ring at offset 2.
@@ -2974,7 +2976,7 @@ The mark recipe's props: `glyph.*`, `groove.*` (per colorway), `line.*`, `tag.*`
 
 # Menu and correction popover
 
-A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparator` from `@unlocalhosted/metalui` (Base UI Menu and Context Menu). SwiftUI: `MetalMenuPanel`, `MetalMenuItem`, `.metalMenu(isPresented:at:heading:items:)`. 
+A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuCheckboxItem`, `MenuSeparator` from `@unlocalhosted/metalui` (Base UI Menu and Context Menu). SwiftUI: `MetalMenuPanel`, `MetalMenuItem`, `.metalMenu(isPresented:at:heading:items:)`. 
 
 ## Use it for
 
@@ -2993,6 +2995,7 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
 - **Heading** (optional): the label role, engraved: what the menu acts on.
 - **Row**: 30 tall at the row radius (12, the plate nests 6), the ui role, a 14 glyph in ink2, the key on a small cap at the right. Destructive: red.
 - **Separator**: an engraved 1 rule, inset 5 × 8.
+- **Checkbox row** (`MenuCheckboxItem`; SwiftUI `MetalMenuItem(_:checked:action:)`): a setting on or off. The Checkbox's pen draws the tick in the glyph slot (ink2) when it turns on and withdraws it when it turns off; choosing it keeps the menu open.
 
 ## States and motion
 
@@ -4245,7 +4248,7 @@ One value from a list of named options. React: `Select` from `@unlocalhosted/met
 
 ## Anatomy
 
-A trigger that is a raised cap (the button cap, it is clicked): the value (with its lead, if any) and an up-down chevron. The list is the menu's frosted plate: rows 30 tall, an LED slot (14), an optional lead, the label; groups get an engraved heading and a separator.
+A trigger that is a raised cap (the button cap, it is clicked): the value (with its lead, if any) and an up-down chevron. The list is the menu's frosted plate: rows 30 tall, a tick slot (14), an optional lead, the label; groups get an engraved heading and a separator.
 
 ## States and motion
 
@@ -4261,7 +4264,7 @@ A trigger that is a raised cap (the button cap, it is clicked): the value (with 
 | list opens | the chosen row over the trigger when there is room, else below | scale .97 → 1 and fade, surface spring |
 | list closes | – | fade .12 s |
 | highlight | one soft highlight shared by pointer and keys | glides row to row, settle spring, no bounce |
-| chosen row | green LED before the label | – |
+| chosen row | the tick before the label, in ink2 (the Checkbox's pen; not an LED: green means live) | at rest when the list opens |
 
 Keys: ↵, Space or ↓ opens; ↑ ↓, Home, End, type-ahead move; ↵ chooses; ⎋ closes. Reduce Motion: fade only.
 

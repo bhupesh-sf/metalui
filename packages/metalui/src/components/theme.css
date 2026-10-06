@@ -1604,8 +1604,7 @@
   --spacing-select-chevron-size: var(--mu-r-select-chevron-size);
   --color-select-chevron-ink: var(--mu-r-select-chevron-ink);
   --color-select-veil-hover: var(--mu-r-select-veil-hover);
-  --spacing-select-led-size: var(--mu-r-select-led-size);
-  --spacing-select-led-slot: var(--mu-r-select-led-slot);
+  --spacing-select-tick-slot: var(--mu-r-select-tick-slot);
   --spacing-select-pop-offset: var(--mu-r-select-pop-offset);
   --spacing-tabs-panel-drift: var(--mu-r-tabs-panel-drift);
   --spacing-tabs-vertical-radius: var(--mu-r-tabs-vertical-radius);
@@ -1734,6 +1733,9 @@
 @utility checkbox-tick {
   position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; fill: none; stroke: var(--mu-r-checkbox-tick-color); stroke-width: var(--mu-r-checkbox-tick-pen); stroke-linecap: round; stroke-linejoin: round; transform: rotate(var(--mu-r-checkbox-tick-rotate));
 }
+@utility checkbox-tick-bare {
+  display: block; overflow: visible; pointer-events: none; fill: none; stroke: currentColor; stroke-width: var(--mu-r-checkbox-tick-bare-pen); stroke-linecap: round; stroke-linejoin: round;
+}
 @utility checkbox-doing {
   &::before { content: ''; position: absolute; inset: var(--mu-r-checkbox-doing-inset); border-radius: var(--mu-r-checkbox-doing-radius); background: var(--mu-r-checkbox-doing-background); opacity: var(--mu-r-checkbox-doing-opacity); }
 }
@@ -1769,6 +1771,9 @@
 @utility duration-checkbox-tick-withdraw {
   --tw-duration: var(--mu-r-checkbox-tick-withdraw);
   transition-duration: var(--mu-r-checkbox-tick-withdraw);
+}
+@utility opacity-checkbox-tick-bare-pen {
+  opacity: var(--mu-r-checkbox-tick-bare-pen);
 }
 @utility opacity-checkbox-doing-opacity {
   opacity: var(--mu-r-checkbox-doing-opacity);
@@ -4223,11 +4228,8 @@
 @utility select-pop {
   min-width: var(--anchor-width); max-height: var(--available-height); overflow-y: auto; transform-origin: var(--transform-origin); transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), transform var(--mu-spring-surface-d) var(--mu-spring-surface); &[data-starting-style] { opacity: 0; transform: scale(var(--mu-r-select-pop-scale)); } &[data-ending-style] { opacity: 0; transition: opacity .12s ease; } @media (prefers-reduced-motion: reduce) { transition: opacity .12s ease; &[data-starting-style] { transform: none; } }
 }
-@utility select-led-slot {
-  flex: none; display: inline-grid; place-items: center; width: var(--mu-r-select-led-slot);
-}
-@utility select-led {
-  display: block; width: var(--mu-r-select-led-size); height: var(--mu-r-select-led-size); border-radius: 50%; background: var(--mu-led-green); box-shadow: var(--mu-led-ring), var(--mu-status-bloom);
+@utility select-tick-slot {
+  flex: none; display: inline-grid; place-items: center; width: var(--mu-r-select-tick-slot); color: var(--mu-ink2); & > svg { width: var(--mu-r-select-tick-slot); height: var(--mu-r-select-tick-slot); }
 }
 @utility type-select-regular {
   font: var(--mu-r-select-regular-font);

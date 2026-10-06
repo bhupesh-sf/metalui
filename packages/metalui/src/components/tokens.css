@@ -934,6 +934,7 @@
   --mu-r-checkbox-tick-down: 90ms;
   --mu-r-checkbox-tick-pace: 30ms;
   --mu-r-checkbox-tick-withdraw: 140ms;
+  --mu-r-checkbox-tick-bare-pen: 1.85;
   --mu-r-checkbox-ghost-x: -27px;
   --mu-r-checkbox-ghost-y: 3.5px;
   --mu-r-checkbox-ghost-size: 14px;
@@ -2497,8 +2498,7 @@
   --mu-r-select-compact-font: 500 12.5px/1.3 var(--mu-sans);
   --mu-r-select-compact-min-width: 112px;
   --mu-r-select-chevron-size: 12px;
-  --mu-r-select-led-size: 6px;
-  --mu-r-select-led-slot: 14px;
+  --mu-r-select-tick-slot: 14px;
   --mu-r-select-pop-scale: 0.97;
   --mu-r-select-pop-offset: 6px;
   /* tabs: Soft Hardware switcher track; Base UI Tabs (data-activation-direction); WAI-ARIA tabs pattern */

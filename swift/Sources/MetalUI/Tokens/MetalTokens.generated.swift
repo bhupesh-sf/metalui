@@ -693,6 +693,7 @@ public enum MetalRecipes {
             "tick.down": .text("90ms"),
             "tick.pace": .text("30ms"),
             "tick.withdraw": .text("140ms"),
+            "tick.bare-pen": .text("1.85"),
             "ghost.x": .number(-27.0),
             "ghost.y": .number(3.5),
             "ghost.size": .number(14.0),
@@ -3697,8 +3698,7 @@ public enum MetalRecipes {
             "chevron.size": .number(12.0),
             "chevron.ink": .perColorway(bone: "#8E8E93", graphite: "#8E8E93"),
             "veil.hover": .perColorway(bone: "rgba(255,255,255,.4)", graphite: "rgba(255,255,255,.035)"),
-            "led.size": .number(6.0),
-            "led.slot": .number(14.0),
+            "tick.slot": .number(14.0),
             "pop.scale": .text("0.97"),
             "pop.offset": .number(6.0),
         ]

@@ -1,6 +1,6 @@
 # Menu and correction popover
 
-A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparator` from `@unlocalhosted/metalui` (Base UI Menu and Context Menu). SwiftUI: `MetalMenuPanel`, `MetalMenuItem`, `.metalMenu(isPresented:at:heading:items:)`. 
+A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuCheckboxItem`, `MenuSeparator` from `@unlocalhosted/metalui` (Base UI Menu and Context Menu). SwiftUI: `MetalMenuPanel`, `MetalMenuItem`, `.metalMenu(isPresented:at:heading:items:)`. 
 
 ## Use it for
 
@@ -19,6 +19,7 @@ A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuSeparato
 - **Heading** (optional): the label role, engraved: what the menu acts on.
 - **Row**: 30 tall at the row radius (12, the plate nests 6), the ui role, a 14 glyph in ink2, the key on a small cap at the right. Destructive: red.
 - **Separator**: an engraved 1 rule, inset 5 × 8.
+- **Checkbox row** (`MenuCheckboxItem`; SwiftUI `MetalMenuItem(_:checked:action:)`): a setting on or off. The Checkbox's pen draws the tick in the glyph slot (ink2) when it turns on and withdraws it when it turns off; choosing it keeps the menu open.
 
 ## States and motion
 

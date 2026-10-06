@@ -30,6 +30,8 @@ Interrupted (ticked again mid-withdraw, say), the pen starts from the length on 
 
 The tick is the icon set's `check` tick (`icons/src/acts/check.mjs`, read into `icons/tick.generated.ts` and `MetalTickRoute`), drawn on the 24 grid across the whole well, so it is the same mark as the `check` icon at 16 or 14. Its pen is `tick.pen` (2.4 grid units: 1.6 pt at 16). `tick.rotate` turns it about its corner (0 by default). Durations and curves are tokens: `tick.delay`, `tick.down`, `tick.pace`, `tick.withdraw`, `--mu-ease-press` and the part and settle springs; in a group, the pen also waits for its key's cascade delay.
 
+One tick, one pen: everything else that ticks draws this tick with the same pen (`icons/pen.tsx`: `Ink` for the key, `Tick` bare in the row's ink at `tick.bare-pen`, 1.85, the check glyph's small cut). The menu's `MenuCheckboxItem`, the select's, combobox's and cascader's chosen row and the filter menu's chosen operator use `Tick`; SwiftUI uses `MetalTick(isOn:size:)` on `MetalTickShape`. Never draw a tick with the `check` icon or by hand.
+
 ## Keyboard and accessibility
 
 - Space toggles; the focus ring is the 2 pt green ring at offset 2.

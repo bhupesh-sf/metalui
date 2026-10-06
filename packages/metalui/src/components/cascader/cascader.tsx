@@ -10,7 +10,8 @@ import { Chip } from '../chip/chip';
 import { IconButton } from '../icon-button/icon-button';
 import { Checkbox } from '../checkbox/checkbox';
 import { TreeDisclosure, type TreeItem } from '../tree/tree';
-import { CheckIcon, ChevronIcon, CloseIcon, SearchIcon, SyncErrorIcon } from '../../icons/components.generated';
+import { ChevronIcon, CloseIcon, SearchIcon, SyncErrorIcon } from '../../icons/components.generated';
+import { Tick } from '../../icons/pen';
 import { MorphPair } from '../../icons/MorphIcon';
 import { chevronMorph } from '../../icons/morph.generated';
 import { leaveRows, useRowMotion } from '../../motion/rows';
@@ -748,7 +749,7 @@ function CascaderRow({ id, item, words, work, highlighted, on, chosen, box, wher
         {where ? <span className={DESC}>{where}</span> : null}
       </Row.Text>
       {item.trail != null && <Row.Trail className={ROW_TRAIL}>{item.trail}</Row.Trail>}
-      {chosen && <span aria-hidden className={CHECK}><CheckIcon /></span>}
+      {chosen && <span aria-hidden className={CHECK}><Tick on /></span>}
       {branch && where == null && <TreeDisclosure aria-hidden phase={wait.phase} failed={work === 'failed'} label={words.loading(item)} />}
     </div>
   );

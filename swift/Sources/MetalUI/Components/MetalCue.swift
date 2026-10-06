@@ -595,6 +595,58 @@ struct MetalTickShape: Shape {
     }
 }
 
+/// The dimple's tick alone, in the ink around it (a menu's checkbox row, a select's chosen row): the same
+/// pen, drawn when `isOn` turns true and withdrawn when it turns false; at rest when it appears.
+public struct MetalTick: View {
+    let isOn: Bool
+    let size: CGFloat
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var drawn: CGFloat
+    @State private var stroke = 0
+
+    public init(isOn: Bool, size: CGFloat) {
+        self.isOn = isOn
+        self.size = size
+        _drawn = State(initialValue: isOn ? MetalTickShape.rest : 0)
+    }
+
+    public var body: some View {
+        let recipe = MetalRecipes.checkbox
+        MetalTickShape(bend: 1)
+            .trim(from: 0, to: drawn)
+            .stroke(style: StrokeStyle(lineWidth: recipe.scalar("tick.bare-pen") * size / MetalTickShape.grid, lineCap: .round, lineJoin: .round))
+            .frame(width: size, height: size)
+            .opacity(drawn > .zero ? .one : .zero)
+            .onChange(of: isOn) { _, on in pen(on) }
+            .accessibilityHidden(true)
+    }
+
+    private func pen(_ on: Bool) {
+        stroke += 1
+        let this = stroke
+        let recipe = MetalRecipes.checkbox
+        let part = MetalMotion.resolve(.part, reduceMotion: reduceMotion)
+        guard part.allowsTravel else {
+            var still = Transaction(animation: nil)
+            still.disablesAnimations = true
+            withTransaction(still) { drawn = on ? MetalTickShape.rest : 0 }
+            return
+        }
+        let press = MetalShared.easePress
+        let later = { (seconds: Double, step: @escaping () -> Void) in
+            DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { if stroke == this { step() } }
+        }
+        if on {
+            let beat = recipe.durationSeconds("tick.delay"), down = recipe.durationSeconds("tick.down")
+            later(beat) { withAnimation(press.animation(duration: down)) { drawn = MetalTickShape.short } }
+            later(beat + down + recipe.durationSeconds("tick.pace")) { withAnimation(part.animation) { drawn = MetalTickShape.rest } }
+        } else {
+            withAnimation(press.animation(duration: recipe.durationSeconds("tick.withdraw"))) { drawn = 0 }
+        }
+    }
+}
+
 /// Urgency: a 5 pt amber LED in the margin of an open task that is due soon.
 public struct MetalCueUrgency: View {
     public init() {}
