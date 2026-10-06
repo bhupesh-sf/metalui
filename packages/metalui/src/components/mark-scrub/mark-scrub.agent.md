@@ -5,7 +5,7 @@ A recognised number, duration, time of day, day, state or colour that the person
 ## Use it for
 
 - An amount, a measurement, a duration or a time a recognizer found in a person's writing: "$40", "slept 6h", "1h30", "tomorrow 4pm". The person drags it up or down, or focuses it and presses the arrows.
-- A relative day ("tomorrow", "Friday", "Fri 16 Oct"): `scale="day"`, with a Calendar as its `picker` for the long jump.
+- A relative day ("tomorrow", "Friday", "Fri 16 Oct"): `scale="day"`, with the host's Calendar for the long jump (`onPick`).
 - A status tag ("#doing") that moves through a fixed list: `scale="enum"` with `options`.
 - A colour ("#FF6B3D") to turn round the wheel: `scale="hue"`.
 
@@ -48,19 +48,29 @@ A duration has a second unit: U, or a sideways drag of `unit.pixels` (24), says 
 | Space | an enum's next state, wrapping |
 | U | a duration in its other unit |
 | drag sideways | a duration in its other unit, per `unit.pixels` |
-| hold (`press.hold`, 500 ms) with no detent, or Enter | opens `picker` in a popover anchored to the words; the drag ends there |
+| hold (`press.hold`, 500 ms) with no detent, or Enter | calls `onPick` (the host opens its popover at the words); the drag ends there |
 
 Every change calls `onWordsChange(words, value)` (live while dragging); a key press or a pick also commits at once.
 
 ## Picker
 
-`picker({ value, words, choose })` is the long jump: its content opens in a `Popover` anchored to the words (no trigger: the popover's `anchor`), focus goes into it and comes back to the words on close. `choose(value)` writes the value back as words through the scale (a day picked in a Calendar becomes "next Friday" when words can say it, else "Fri 16 Oct"), commits once and closes. Esc leaves the words. The picker is the host's so a cue that never opens one doesn't ship a calendar:
+The long jump (a Calendar for a day) is the host's, popover and all, so the cue never ships one. A held press or Enter calls `onPick({ anchor, value, words, choose })`; the cue carries `aria-haspopup="dialog"` while `onPick` is set. The host opens its own `Popover` at `anchor` (the words; `Popover.Content` takes an `anchor` for a popover with no Trigger) and returns focus there on close. `choose(value)` writes the value back as words through the scale (a day picked in a Calendar becomes "next Friday" when words can say it, else "Fri 16 Oct") and commits once; the host closes its popover. Esc leaves the words.
 
 ```tsx
-<MarkScrub kind="date" scale="day" label="Day" picker={({ value, choose }) => (
-  <Calendar value={addDays(today, value)} onValueChange={(d) => choose(daysBetween(today, d))} autoFocus />
-)} {...bind('day')} />
-``` The wheel is left to the page: inline text never eats the scroll. No pointer lock: the cursor stays where the eye is reading.
+const [pick, setPick] = React.useState<MarkScrubPick | null>(null);
+const back = React.useRef<HTMLElement | null>(null); // focus returns here, kept past the close
+if (pick) back.current = pick.anchor;
+
+<MarkScrub kind="date" scale="day" label="Day" onPick={setPick} {...bind('day')} />
+<Popover open={!!pick} onOpenChange={(open) => { if (!open) setPick(null); }}>
+  <Popover.Content anchor={pick?.anchor} finalFocus={back} side="bottom" align="start" aria-label="Choose day">
+    {pick && <Calendar value={addDays(today, pick.value)} autoFocus
+      onValueChange={(d) => { pick.choose(daysBetween(today, d)); setPick(null); }} />}
+  </Popover.Content>
+</Popover>
+```
+
+The wheel is left to the page: inline text never eats the scroll. No pointer lock: the cursor stays where the eye is reading.
 
 ## Motion
 
@@ -86,7 +96,7 @@ slept <MarkScrub kind="measurement" label="Sleep" glyph={<MoonIcon size={14} />}
 | `scale` | `number` · `duration` · `clock` · `day` · `enum` · `hue` |
 | `options` | an enum's states, in order |
 | `today` | a day's today (default now) |
-| `picker({ value, words, choose })` | the long jump, in a popover from the words |
+| `onPick({ anchor, value, words, choose })` | the long jump: the host opens its own popover at `anchor` |
 | `hint` | the first-hover chip, default "Drag to change"; `false` for none |
 | `step`, `smallStep`, `largeStep` | override the recipe's steps |
 | `min`, `max` | limits (number, duration) |
@@ -96,7 +106,7 @@ slept <MarkScrub kind="measurement" label="Sleep" glyph={<MoonIcon size={14} />}
 
 ## Accessibility
 
-- `role="spinbutton"`, one Tab stop, for every scale: an enum is a spinbutton over its states (name, the state as value text, min and max), which gives readers what a listbox-like picker would with the same keys, and matches SwiftUI's adjustable action. Its name is `aria-label`, else `label` ("Sleep"), else the scale's ("Number", "Duration", "Time", "Day", "State", "Colour"). `aria-keyshortcuts` lists the extra keys (Enter with a picker, U on a duration, Space on an enum). `aria-valuetext` is the words; `aria-valuenow`, `aria-valuemin` and `aria-valuemax` the value and limits. Pass `aria-valuetext` for a fuller reading ("6 hours").
+- `role="spinbutton"`, one Tab stop, for every scale: an enum is a spinbutton over its states (name, the state as value text, min and max), which gives readers what a listbox-like picker would with the same keys, and matches SwiftUI's adjustable action. Its name is `aria-label`, else `label` ("Sleep"), else the scale's ("Number", "Duration", "Time", "Day", "State", "Colour"). `aria-keyshortcuts` lists the extra keys (Enter with `onPick`, U on a duration, Space on an enum). `aria-valuetext` is the words; `aria-valuenow`, `aria-valuemin` and `aria-valuemax` the value and limits. Pass `aria-valuetext` for a fuller reading ("6 hours").
 - Keyboard does all the pointer does. The focus ring shows on keyboard focus; the chip (the Mark's) shows on focus too.
 - The glyph and the scale are hidden from readers.
 

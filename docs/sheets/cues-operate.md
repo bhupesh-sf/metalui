@@ -54,7 +54,7 @@ Not doing: **scroll to change a value.** The wheel over inline text belongs to t
 
 - **Enums: spinbutton or listbox?** A spinbutton over the states (name, the state as its value text, min and max). It gives readers what a listbox-like picker would with the same keys, matches SwiftUI's adjustable action, and keeps one control for every stepped kind.
 - **Tags and people: a new component.** `MarkPick` (a button and a combobox), not a `MarkScrub` scale: tags you've used and people have no order to step through.
-- **The picker is the host's.** `MarkScrub` owns the popover (anchored to the words, focus in and back) but not its content, so a cue that never opens a calendar doesn't ship one.
+- **The picker is the host's, popover and all.** `MarkScrub` only asks (`onPick({ anchor, value, words, choose })` on a held press or Enter, `aria-haspopup` while set); the host opens its own `Popover` at `anchor`. A cue imports no popover, so a plain number stays one small module.
 
 - **A new component, not a prop on `Mark`?** A component. Mark is a Part with no job; an operable cue has one (change the text) and carries a role, focus and keys. `MarkScrub` composes `Mark` for its look, so the look stays one recipe.
 - **Base UI?** Base UI has no spinbutton: `NumberField.Input` is a textbox ("Number field"), and its `ScrubArea` locks the pointer and drives that textbox. In a sentence the editor owns typing, so the cue is a `span` with `role="spinbutton"` and its own small set of keys (APG spinbutton), which `NumberField` keeps for the well.
@@ -73,10 +73,10 @@ Not doing: **scroll to change a value.** The wheel over inline text belongs to t
 - [x] Recipe props (`mark-scrub`), the agent guide, a section on the Cue family page with its DialKit panel, a Playwright slice.
 
 **Should**
-- [x] Relative dates slide, with the Calendar popover on a long press. (`MarkScrub` `scale="day"`: yesterday … tomorrow, the weekdays, "next Friday", then "Fri 16 Oct"; a held press (`press.hold`) or Enter opens the host's `picker` in a `Popover` anchored to the words; `choose` writes the day back as words when words can say it.)
+- [x] Relative dates slide, with the Calendar popover on a long press. (`MarkScrub` `scale="day"`: yesterday … tomorrow, the weekdays, "next Friday", then "Fri 16 Oct"; a held press (`press.hold`) or Enter calls `onPick` and the host opens its Calendar in a `Popover` anchored to the words; `choose` writes the day back as words when words can say it.)
 - [x] Enums rotate (status tags), with the peeking states. (`scale="enum"` with `options`, wrapping; Space or a drag of `enum.pixels`; the neighbours peek above and below while held and the chip steps aside; the tag's hue follows the state's name.)
 - [x] Unit cycling for durations (h ↔ min). (U or a sideways drag of `unit.pixels`; the value and limits don't change. Durations only: a measurement's unit is the host's.)
-- [x] Colour: a hue drag. (`scale="hue"`: the hex turns round the wheel, saturation and lightness kept, the swatch glyph following. The swatch well in a popover is dropped for now: `Swatch` is a display chip with no picking; when a colour picker exists it goes in `picker`.)
+- [x] Colour: a hue drag. (`scale="hue"`: the hex turns round the wheel, saturation and lightness kept, the swatch glyph following. The swatch well in a popover is dropped for now: `Swatch` is a display chip with no picking; when a colour picker exists the host opens it from `onPick`.)
 - [x] Tags and people: a combobox from the cue. (`MarkPick`: a click, Enter or Space opens a small `Combobox` in a popover, every option under "Recent" at once; one commit per pick.)
 - [x] The hover line and the first-time hint. (The line thickens by `hover.line` as a scale, so nothing reflows; the first hover on a host says "Drag to change" in the chip, once, remembered in `localStorage`.)
 

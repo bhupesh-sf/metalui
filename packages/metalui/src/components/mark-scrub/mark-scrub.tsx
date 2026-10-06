@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Mark, markTagHue, type MarkProps } from '../mark/mark';
-import { Popover } from '../popover/popover';
 import { SwapText } from '../../motion/swap';
 import { haptic } from '../../motion/haptic';
 import { refuse } from '../../motion/refuse';
@@ -21,14 +20,14 @@ import { useIsoLayoutEffect } from '../../motion/layout-effect';
  *     0ms       the words are rewritten (onWordsChange); the face turns on the drum, up or down
  *     0ms       the scale beside the words moves one tick with the hand; the detent haptic plays
  *   sideways  a duration says its amount the other way ("90 min" ↔ "1h30") per unit.pixels of travel
- *   hold      a press held for press.hold with no detent opens the host's picker (a Calendar for a
- *             day) in a popover anchored to the words; the drag ends there
+ *   hold      a press held for press.hold with no detent asks the host for its picker (onPick: a
+ *             Calendar for a day, in the host's Popover anchored to the words); the drag ends there
  *   width     while dragging the words keep the widest width of the gesture; the hold drops on release
  *   scale     an engraved ruler (the groove's ink and lip), only while dragging; an enum shows its
  *             neighbouring states instead, peeking above and below the words
  *   release   one commit (onWordsCommit) when the words changed: the host's one undo step
  *   keys      ↑ ↓ step (Shift large, Alt small), Page Up / Down large, Home / End to the limits,
- *             Space the next state (enum), U the other unit (duration), Enter the picker;
+ *             Space the next state (enum), U the other unit (duration), Enter asks for the picker;
  *             each press is one change and one commit
  *   limit     a push past min or max shakes only the words, once per push (refusal)
  * The words are the value: the scale reads it from them and rewrites only the part that carries it
@@ -185,8 +184,10 @@ export function markScrubRead(words: string, scale: MarkScrubScale = 'number', o
 const NAMES: Record<MarkScrubScale, string> = { number: 'Number', duration: 'Duration', clock: 'Time', day: 'Day', enum: 'State', hue: 'Colour' };
 const HINT_SEEN = 'mu-cue-hint';
 
-/** What a picker gets: the value now, its words, and a way to choose another (written as words, one commit). */
+/** A request for the long jump: where to anchor the host's popover, the value now, its words, and a way to
+ *  choose another (written back as words, one commit). */
 export interface MarkScrubPick {
+  anchor: HTMLSpanElement;
   value: number;
   words: string;
   choose: (value: number) => void;
@@ -208,8 +209,9 @@ export interface MarkScrubProps extends Omit<MarkProps, 'children'> {
   /** Limits (number, duration, day; a duration never goes below 0; a clock, an enum and a hue wrap). */
   min?: number;
   max?: number;
-  /** The long jump: opened by a held press or Enter, in a popover anchored to the words. A day passes a Calendar. */
-  picker?: (pick: MarkScrubPick) => React.ReactNode;
+  /** The long jump, asked for by a held press or Enter: the host opens its own Popover at `anchor` (a Calendar
+   *  for a day) and calls `choose`. The cue ships no popover. */
+  onPick?: (pick: MarkScrubPick) => void;
   /** The first hover on a host says this in the chip, once ("Drag to change"); false for never. */
   hint?: string | false;
   /** Every change, live while dragging: the new words and their value. */
@@ -243,7 +245,7 @@ function seeHint() {
 /** A recognised value you drag or step in place. Composes Mark; the words stay the source. */
 export const MarkScrub = React.forwardRef<HTMLSpanElement, MarkScrubProps>(function MarkScrub(
   {
-    children: words, scale = 'number', options, today, step, smallStep, largeStep, min, max, picker, hint = 'Drag to change',
+    children: words, scale = 'number', options, today, step, smallStep, largeStep, min, max, onPick, hint = 'Drag to change',
     onWordsChange, onWordsCommit, kind, label, resolved, color, className, style, onPointerDown, onKeyDown, onPointerEnter, onPointerLeave, ...props
   },
   ref,
@@ -257,7 +259,6 @@ export const MarkScrub = React.forwardRef<HTMLSpanElement, MarkScrubProps>(funct
   const [hold, setHold] = React.useState<number>();
   const [moved, setMoved] = React.useState(0);
   const [hinting, setHinting] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
   const reading = markScrubRead(words, scale, { options, today });
   const wrap = reading?.wrap;
   const lo = scale === 'enum' ? 0 : wrap ? undefined : scale === 'duration' ? (min ?? 0) : min;
@@ -296,9 +297,9 @@ export const MarkScrub = React.forwardRef<HTMLSpanElement, MarkScrubProps>(funct
 
   const choose = (value: number) => {
     const next = reading.write(value);
-    setOpen(false);
     if (next !== words) commit(next, value);
   };
+  const pick = () => onPick?.({ anchor: root.current as HTMLSpanElement, value: reading.value, words, choose });
 
   const unhint = () => {
     if (!hinting) return;
@@ -309,7 +310,7 @@ export const MarkScrub = React.forwardRef<HTMLSpanElement, MarkScrubProps>(funct
   const keys = (e: React.KeyboardEvent<HTMLSpanElement>) => {
     onKeyDown?.(e);
     if (e.defaultPrevented || e.metaKey || e.ctrlKey) return;
-    if (e.key === 'Enter' && picker) { e.preventDefault(); setOpen(true); return; }
+    if (e.key === 'Enter' && onPick) { e.preventDefault(); pick(); return; }
     if ((e.key === 'u' || e.key === 'U') && reading.cycle) { e.preventDefault(); commit(reading.cycle(), reading.value); return; }
     const at = reading.value;
     let target: number | undefined;
@@ -344,12 +345,12 @@ export const MarkScrub = React.forwardRef<HTMLSpanElement, MarkScrubProps>(funct
     const px = cssNumber(`${scale}-pixels`) || cssNumber('scrub-pixels') || 4;
     const d: Drag = { id: e.pointerId, x: e.clientX, y: e.clientY, acc: 0, across: 0, px, moved: 0, cycled: false, reading, value: reading.value, from: words, words, pinned: false };
     // A press held with no detent is the long jump: the picker, anchored to the words.
-    if (picker) {
+    if (onPick) {
       d.timer = window.setTimeout(() => {
         if (drag.current !== d || d.moved || d.cycled) return;
         end(d);
         haptic('detent');
-        setOpen(true);
+        pick();
       }, readMs(el, '--mu-r-mark-scrub-press-hold', 500));
     }
     drag.current = d;
@@ -405,48 +406,40 @@ export const MarkScrub = React.forwardRef<HTMLSpanElement, MarkScrubProps>(funct
   const peek = scale === 'enum';
 
   return (
-    <>
-      <Mark
-        ref={root}
-        role="spinbutton"
-        tabIndex={0}
-        aria-label={name}
-        aria-valuenow={parseFloat(reading.value.toFixed(2))}
-        aria-valuetext={props['aria-valuetext'] ?? words}
-        aria-valuemin={lo}
-        aria-valuemax={hi}
-        aria-keyshortcuts={[picker && 'Enter', reading.cycle && 'U', scale === 'enum' && 'Space'].filter(Boolean).join(' ') || undefined}
-        data-scrubbing={scrubbing ? '' : undefined}
-        // While an enum's neighbours peek, the chip steps aside for them.
-        data-peeking={peek && scrubbing ? '' : undefined}
-        // The first hover on a host: the chip says how to change it, once.
-        label={hinting ? (hint as string) : label}
-        resolved={hinting ? undefined : resolved}
-        {...own}
-        className={['mark-scrub', down && 'swap-down', className].filter(Boolean).join(' ')}
-        onPointerDown={press}
-        onPointerMove={pull}
-        onPointerUp={release}
-        onPointerCancel={release}
-        onPointerEnter={(e) => { onPointerEnter?.(e); if (hint && !hintSeen()) setHinting(true); }}
-        onPointerLeave={(e) => { onPointerLeave?.(e); unhint(); }}
-        onKeyDown={keys}
-        {...props}
-      >
-        <span ref={face} className={FACE} style={{ minWidth: hold }}>
-          {hash ? <span className="inline-flex"><span className="mu-cue-hash">#</span><SwapText value={words.slice(1)} /></span> : <SwapText value={words} />}
-          {peek && <span aria-hidden data-side="up" className={PEEK}>{reading.write(move(reading.value, 1))}</span>}
-          {peek && <span aria-hidden data-side="down" className={PEEK}>{reading.write(move(reading.value, -1))}</span>}
-        </span>
-        {scale !== 'enum' && <span aria-hidden className={SCALE} style={{ '--mu-scrub-offset': `calc(${-(moved % 5)} * var(--mu-r-mark-scrub-scale-tick))` } as React.CSSProperties} />}
-      </Mark>
-      {picker && (
-        <Popover open={open} onOpenChange={setOpen}>
-          <Popover.Content anchor={root} finalFocus={root} side="bottom" align="start" aria-label={`Choose ${name.toLowerCase()}`}>
-            {open && picker({ value: reading.value, words, choose })}
-          </Popover.Content>
-        </Popover>
-      )}
-    </>
+    <Mark
+      ref={root}
+      role="spinbutton"
+      tabIndex={0}
+      aria-label={name}
+      aria-valuenow={parseFloat(reading.value.toFixed(2))}
+      aria-valuetext={props['aria-valuetext'] ?? words}
+      aria-valuemin={lo}
+      aria-valuemax={hi}
+      aria-haspopup={onPick ? 'dialog' : undefined}
+      aria-keyshortcuts={[onPick && 'Enter', reading.cycle && 'U', scale === 'enum' && 'Space'].filter(Boolean).join(' ') || undefined}
+      data-scrubbing={scrubbing ? '' : undefined}
+      // While an enum's neighbours peek, the chip steps aside for them.
+      data-peeking={peek && scrubbing ? '' : undefined}
+      // The first hover on a host: the chip says how to change it, once.
+      label={hinting ? (hint as string) : label}
+      resolved={hinting ? undefined : resolved}
+      {...own}
+      className={['mark-scrub', down && 'swap-down', className].filter(Boolean).join(' ')}
+      onPointerDown={press}
+      onPointerMove={pull}
+      onPointerUp={release}
+      onPointerCancel={release}
+      onPointerEnter={(e) => { onPointerEnter?.(e); if (hint && !hintSeen()) setHinting(true); }}
+      onPointerLeave={(e) => { onPointerLeave?.(e); unhint(); }}
+      onKeyDown={keys}
+      {...props}
+    >
+      <span ref={face} className={FACE} style={{ minWidth: hold }}>
+        {hash ? <span className="inline-flex"><span className="mu-cue-hash">#</span><SwapText value={words.slice(1)} /></span> : <SwapText value={words} />}
+        {peek && <span aria-hidden data-side="up" className={PEEK}>{reading.write(move(reading.value, 1))}</span>}
+        {peek && <span aria-hidden data-side="down" className={PEEK}>{reading.write(move(reading.value, -1))}</span>}
+      </span>
+      {scale !== 'enum' && <span aria-hidden className={SCALE} style={{ '--mu-scrub-offset': `calc(${-(moved % 5)} * var(--mu-r-mark-scrub-scale-tick))` } as React.CSSProperties} />}
+    </Mark>
   );
 });

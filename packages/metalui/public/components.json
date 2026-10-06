@@ -939,7 +939,7 @@
       "name": "mark-scrub",
       "title": "Mark scrub",
       "status": "alpha",
-      "description": "A recognised number, duration, time of day, day, state or colour you change in place: drag up or down on the words in detents (Shift large, Alt small), or focus it and press the arrows; a held press or Enter opens the host's picker (a Calendar for a day) in a popover, and a duration says itself in its other unit on U or a sideways drag. The words are the value and are rewritten in place, one commit per gesture; the digits turn on the drum, the words hold their width while you drag, and an engraved scale stands beside them only while you drag. A spinbutton with a name; a push past a limit shakes the words.",
+      "description": "A recognised number, duration, time of day, day, state or colour you change in place: drag up or down on the words in detents (Shift large, Alt small), or focus it and press the arrows; a held press or Enter asks the host for its picker (onPick: the host opens its Calendar in a Popover anchored to the words), and a duration says itself in its other unit on U or a sideways drag. The words are the value and are rewritten in place, one commit per gesture; the digits turn on the drum, the words hold their width while you drag, and an engraved scale stands beside them only while you drag. A spinbutton with a name; a push past a limit shakes the words.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "MarkScrub, markScrubRead",

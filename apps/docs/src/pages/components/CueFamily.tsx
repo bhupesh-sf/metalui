@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Avatar, Calendar, Cue, CueInferred, CueLife, CueUrgency, CueUrl, Dimple, Field, MarkPick, MarkScrub, markScrubRead, SlidingIndicator } from '@unlocalhosted/metalui';
+import { Avatar, Calendar, Cue, CueInferred, CueLife, CueUrgency, CueUrl, Dimple, Field, MarkPick, MarkScrub, markScrubRead, Popover, SlidingIndicator, type MarkScrubPick } from '@unlocalhosted/metalui';
 import { CoinIcon, LinkIcon, MoonIcon } from '@unlocalhosted/metalui/icons';
 import { LifeCalmIcon, LifeCoffeeIcon, LifeStepsIcon } from '@unlocalhosted/metalui/icons/life';
 import reactSource from '../../../../../packages/metalui/src/components/mark/mark.tsx?raw';
@@ -188,7 +188,7 @@ due <CueInferred resolved="FRI 2 OCT · RECOGNIZER 0.82" confirmed={ok} onConfir
             ['CueLife', 'children (a Life*Icon at 16), label?, fresh?', 'One per block, trailing: the kind of the whole line, named on hover.'],
             ['Dimple', 'checked, onCheckedChange, doing?, ghost?, disabled?', 'Base UI Checkbox. The host writes [x] into the text on tick.'],
             ['CueUrgency', '–', 'An open task due soon.'],
-            ['MarkScrub', 'children (the words), scale?, options?, today?, step?, smallStep?, largeStep?, min?, max?, picker?, hint?, onWordsChange?, onWordsCommit?, every Cue prop', 'number · duration · clock · day · enum · hue. A spinbutton in the text; the words are the value and are rewritten in place, one commit per gesture. U says a duration in its other unit; a held press or Enter opens the picker.'],
+            ['MarkScrub', 'children (the words), scale?, options?, today?, step?, smallStep?, largeStep?, min?, max?, onPick?, hint?, onWordsChange?, onWordsCommit?, every Cue prop', 'number · duration · clock · day · enum · hue. A spinbutton in the text; the words are the value and are rewritten in place, one commit per gesture. U says a duration in its other unit; a held press or Enter calls onPick, and the host opens its own Popover at the anchor.'],
             ['MarkPick', 'children (the words), options, onWordsChange?, onWordsCommit?, every Cue prop', 'A tag or a person you swap: a click, Enter or Space opens a small Combobox from the words; one commit per pick.'],
           ]}
         />
@@ -291,6 +291,10 @@ function RotateDemo() {
     { onAction: (a) => a === 'undo' && undo.current() },
   );
   const day = markScrubRead(words.day, 'day', { today: TODAY });
+  // The cue asks for the long jump; the page owns the popover and its calendar, anchored to the words.
+  const [pick, setPick] = React.useState<MarkScrubPick | null>(null);
+  const back = React.useRef<HTMLElement | null>(null); // where focus goes back, kept past the close
+  if (pick) back.current = pick.anchor;
   const vars = {
     ...springVars('settle', 'settle', d.slow),
     '--mu-r-mark-scrub-day-pixels': `${d.day}px`,
@@ -311,12 +315,17 @@ function RotateDemo() {
             label="Day"
             glyph={false}
             resolved={day ? dayOf(day.value) : undefined}
-            picker={({ value, choose }) => <Calendar value={dateAt(value)} onValueChange={(date) => choose(offsetOf(date))} autoFocus />}
+            onPick={setPick}
             {...bind('day')}
           />{' '}
           <MarkScrub kind="date" scale="clock" label="Time" {...bind('time')} />, in <MarkScrub kind="hex" scale="hue" label="Colour" {...bind('hex')} />
         </span>
         <span className="type-readout text-ink2" data-testid="rotate-source">{rotateSource(words)}</span>
+        <Popover open={!!pick} onOpenChange={(open) => { if (!open) setPick(null); }}>
+          <Popover.Content anchor={pick?.anchor} finalFocus={back} side="bottom" align="start" aria-label="Choose day">
+            {pick && <Calendar value={dateAt(pick.value)} onValueChange={(date) => { pick.choose(offsetOf(date)); setPick(null); }} autoFocus />}
+          </Popover.Content>
+        </Popover>
       </div>
     </Bench>
   );
