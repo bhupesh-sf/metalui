@@ -18,6 +18,7 @@ export default function SwatchPage() {
             <span className="flex gap-10">{['#FF6B3D', '#FFD84D', '#35C77A', '#3D7BFF', '#1B1B1D', '#F2F1EE'].map((h) => <Swatch key={h} hex={h} style={{ zoom: 0.55 }} onClick={() => setHex(h)} aria-label={`Use ${h}`} />)}</span>
           </div>
         ) }}
+      usage={`<Swatch hex={colour} onClick={openPicker} aria-label="Change colour" />`}
       xray={<SwatchXray />}
       capture="swatch"
       sources={[

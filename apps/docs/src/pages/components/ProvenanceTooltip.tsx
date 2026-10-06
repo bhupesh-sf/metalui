@@ -5,6 +5,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/blocks/provenance-tooltip/provenance-tooltip.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalProvenanceTooltip.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 
 export default function ProvenanceTooltipPage() {
@@ -51,6 +52,17 @@ export default function ProvenanceTooltipPage() {
           </div>
         </Bench>
       </Section>
+
+      <UsageSection
+        agent={agentGuide}
+        example={`import { Mark } from '@unlocalhosted/metalui';
+
+<ProvenanceProvider>
+  <ProvenanceTooltip source="Recognizer" detail={['0.82']} clearsChip>
+    <Mark kind="date" resolved="TUE 30 SEP" tabIndex={0}>tomorrow</Mark>
+  </ProvenanceTooltip>
+</ProvenanceProvider>`}
+      />
 
       <Section title="SwiftUI" lede="MetalProvenanceTooltip on the graphite frost; .metalProvenance(_:detail:) adds the 380 ms hover.">
         <SwiftCapture name="provenance-tooltip" maxWidth={560} />

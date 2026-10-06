@@ -6,6 +6,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/blocks/time-scrubber/time-scrubber.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Blocks/MetalTimeScrubber.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 
 const DAY = 86400000;
@@ -30,6 +31,16 @@ export default function MemoryScrubberPage() {
         </Bench>
         <SwiftCapture name="memory-scrubber" maxWidth={620} />
       </Section>
+      <UsageSection
+        agent={agentGuide}
+        example={`import { ClockIcon } from '@unlocalhosted/metalui/icons';
+
+const [moment, setMoment] = useState<number | null>(null); // null is now
+
+<TimeScrubber start={dayStart} end={Date.now()} value={moment} onValueChange={setMoment}
+  marks={editTimes} glyph={<ClockIcon size={10} />} />`}
+      />
+
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },

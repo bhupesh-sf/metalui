@@ -5,6 +5,7 @@ import source from '../../../../../packages/metalui/src/components/dot-display/d
 import agentGuide from '../../../../../packages/metalui/src/components/dot-display/dot-display.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalDotDisplay.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 
 const COLOURS: DotColour[] = ['hz', 'hill', 'sun', 'moon', 'star', 'cloud', 'cloud-dark', 'rain', 'snow'];
@@ -71,6 +72,12 @@ export default function DotDisplayPage() {
         </Bench>
         <SwiftCapture name="dot-display" maxWidth={720} />
       </Section>
+      <UsageSection
+        agent={agentGuide}
+        example={`// a 3 × 3 sun, row by row; ink 0 is unlit. Put it in a Well.
+<DotDisplay cols={3} rows={3} dots={[0, 1, 0, 1, 1, 1, 0, 1, 0]} inks={['off', 'sun']} />`}
+      />
+
       <Section title="On the clock" lede="The picture is drawn again from a frame number that steps every 167 ms. It holds still with reduced motion, in a hidden tab and off screen.">
         <Bench caption="21 × 13 · step 167 ms">
           <Scene running={d.running} />

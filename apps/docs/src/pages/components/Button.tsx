@@ -6,6 +6,7 @@ import reactSource from '../../../../../packages/metalui/src/components/button/b
 import agentGuide from '../../../../../packages/metalui/src/components/button/button.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalButton.swift?raw';
 import { C, CodeScreen, PageHeader, Rules, Section, SourceTabs, Stage, Tag, TokenTable } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { Beat, Compare, LayerTrail, SlowSwitch, SpecLine } from '../../ui/beat';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { ButtonXray, BUTTON_XRAY_INITIAL, type ButtonXrayModel } from '../../ui/xray/ButtonXray';
@@ -66,6 +67,15 @@ export default function ButtonPage() {
         />
       </PageHeader>
       <Hero />
+      <UsageSection
+        agent={agentGuide}
+        example={`import { ShareIcon } from '@unlocalhosted/metalui/icons';
+
+<Button cap="primary" onClick={create}>New Canvas</Button>
+<Button onClick={close}>Cancel</Button>
+<Button icon={<ShareIcon />} onClick={share}>Share</Button>`}
+      />
+
       <Section id="details" title="Details">
         <div className="flex flex-col gap-56">
           <CapIsAnObject />

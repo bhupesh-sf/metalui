@@ -6,6 +6,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/components/size-readout/size-readout.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalSizeReadout.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 
 export default function SizeReadoutPage() {
@@ -24,6 +25,13 @@ export default function SizeReadoutPage() {
         </Bench>
         <SwiftCapture name="size-readout" maxWidth={560} />
       </Section>
+      <UsageSection
+        agent={agentGuide}
+        example={`<SizeReadout width={320} height={180} />
+<SizeReadout width={320} height={180} count={3} />
+<SizeReadout value="125 %" aria-label="Zoom 125 percent" />`}
+      />
+
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },

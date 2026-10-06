@@ -7,6 +7,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/blocks/region/region.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalRegionView.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { SpatialFieldFoundation, type SpatialFoundationState } from '../../ui/SpatialFieldFoundation';
 
@@ -200,6 +201,14 @@ export default function RegionPage() {
           <Board dim={d.dim} past={d.past} />
         </Bench>
       </Section>
+
+      <UsageSection
+        agent={agentGuide}
+        example={`<Region name="Done" rule="marks tasks done" dropRule="drop to mark tasks done" count={3} width={320} height={260} />
+<Region name="open tasks" rule="lens · live" lens width={300} height={220}>
+  <RegionRow meta="FRI">Send the poster</RegionRow>
+</Region>`}
+      />
 
       <Section id="spatial-response" title="Spatial response foundation" lede="The moving board above is the live specimen. This fixed comparison shows the shared React and Swift appearance: a quiet grid at rest, space cleared around Region paper and the block, and marks that move around the carried footprint and tint near the chosen target. Dial: rest, carry, target.">
         <Bench on="canvas" caption={`${d.spatial.state}: response marks · Region paper remains local`} className="wide min-h-[280px] items-start justify-start">

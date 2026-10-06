@@ -7,6 +7,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/components/menu/menu.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalMenu.swift?raw';
 import { Bench, Host, PageHeader, Rules, Section, SourceTabs, TokenTable } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 import { MenuXray } from '../../ui/xray/MenuXray';
 
@@ -68,6 +69,21 @@ export default function MenuPage() {
         </Bench>
         <SwiftCapture name="menu" maxWidth={500} />
       </Section>
+      <UsageSection
+        agent={agentGuide}
+        example={`import { MoreIcon } from '@unlocalhosted/metalui/icons';
+
+<Menu trigger={<button aria-label="More"><MoreIcon size={16} /></button>}>
+  <MenuItem onSelect={duplicate} shortcut="⌘D">Duplicate</MenuItem>
+  <MenuSeparator />
+  <MenuItem onSelect={remove} danger shortcut="⌫">Delete</MenuItem>
+</Menu>
+
+<ContextMenu heading="NOTE · TASK BY SYNC 0.82" menu={<MenuItem onSelect={notATask}>Not a Task</MenuItem>}>
+  <span tabIndex={0}>call Sam</span>
+</ContextMenu>`}
+      />
+
       <Section id="x-ray" title="X-ray" lede="See what the menu is made of. Click an icon to learn about one part and change it.">
         <MenuXray />
       </Section>

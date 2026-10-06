@@ -7,6 +7,7 @@ import cssSource from '../../../../../packages/metalui/src/components/theme.css?
 import agentGuide from '../../../../../packages/metalui/src/blocks/filter-bar/filter-bar.agent.md?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalLensBar.swift?raw';
 import { Bench, PageHeader, Rules, Section, SourceTabs } from '../../ui/doc';
+import { UsageSection } from '../../ui/Usage';
 import { SwiftCapture } from '../../ui/SwiftCapture';
 
 const GLYPHS = { lens: <SearchIcon size={14} />, pin: <PinIcon size={14} />, close: <CloseIcon size={14} /> };
@@ -43,6 +44,14 @@ export default function LensBarPage() {
         </Bench>
         <SwiftCapture name="lens-bar" />
       </Section>
+      <UsageSection
+        agent={agentGuide}
+        example={`import { CloseIcon, PinIcon, SearchIcon } from '@unlocalhosted/metalui/icons';
+
+<FilterBar query="open tasks" count={12} view={view} onViewChange={setView} onPin={pin} onClose={close}
+  glyphs={{ filter: <SearchIcon size={14} />, pin: <PinIcon size={14} />, close: <CloseIcon size={14} /> }} />`}
+      />
+
       <Section title="Source">
         <SourceTabs tabs={[
           { id: 'react', label: 'React', code: reactSource },
