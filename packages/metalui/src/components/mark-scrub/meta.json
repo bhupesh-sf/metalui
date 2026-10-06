@@ -1,0 +1,19 @@
+{
+  "name": "mark-scrub",
+  "title": "Mark scrub",
+  "status": "alpha",
+  "layer": "component",
+  "uses": ["mark"],
+  "description": "A recognised number, duration or time of day you change in place: drag up or down on the words in detents (Shift large, Alt small), or focus it and press the arrows. The words are the value and are rewritten in place, one commit per gesture; the digits turn on the drum, the words hold their width while you drag, and an engraved scale stands beside them only while you drag. A spinbutton with a name; a push past a limit shakes the words.",
+  "base": "none",
+  "react": {
+    "export": "MarkScrub, markScrubRead",
+    "files": ["mark-scrub.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalCueScrub",
+    "file": "swift/Sources/MetalUI/Components/MetalCueScrub.swift"
+  },
+  "agent": "mark-scrub.agent.md",
+  "page": "/components/cue#scrub"
+}

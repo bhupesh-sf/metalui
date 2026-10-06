@@ -885,6 +885,23 @@
       "agent": "https://metalui.dev/r/mark.md"
     },
     {
+      "name": "mark-scrub",
+      "title": "Mark scrub",
+      "status": "alpha",
+      "description": "A recognised number, duration or time of day you change in place: drag up or down on the words in detents (Shift large, Alt small), or focus it and press the arrows. The words are the value and are rewritten in place, one commit per gesture; the digits turn on the drum, the words hold their width while you drag, and an engraved scale stands beside them only while you drag. A spinbutton with a name; a push past a limit shakes the words.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "MarkScrub, markScrubRead",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCueScrub"
+      },
+      "registry": "https://metalui.dev/r/mark-scrub.json",
+      "agent": "https://metalui.dev/r/mark-scrub.md"
+    },
+    {
       "name": "menu",
       "title": "Menu and correction popover",
       "status": "alpha",

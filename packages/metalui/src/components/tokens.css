@@ -2000,6 +2000,23 @@
   --mu-r-mark-motion-sparkle-ms: 520ms;
   --mu-r-mark-motion-stamp: 0.94;
   --mu-r-mark-motion-pop: 0.35;
+  /* mark-scrub: the mark (its look; the groove for the scale), the number field (detents, Alt and Shift, refusal), the drum (SwapText), the haptic (detent); the WAI-ARIA APG spinbutton; Tangle’s scrubbable numbers */
+  --mu-r-mark-scrub-scrub-pixels: 4px;
+  --mu-r-mark-scrub-number-step: 1;
+  --mu-r-mark-scrub-number-small: 0.1;
+  --mu-r-mark-scrub-number-large: 10;
+  --mu-r-mark-scrub-duration-step: 5;
+  --mu-r-mark-scrub-duration-small: 1;
+  --mu-r-mark-scrub-duration-large: 30;
+  --mu-r-mark-scrub-clock-step: 15;
+  --mu-r-mark-scrub-clock-small: 5;
+  --mu-r-mark-scrub-clock-large: 60;
+  --mu-r-mark-scrub-scale-gap: 4px;
+  --mu-r-mark-scrub-scale-width: 6px;
+  --mu-r-mark-scrub-scale-height: 24px;
+  --mu-r-mark-scrub-scale-tick: 3px;
+  --mu-r-mark-scrub-scale-minor: 55%;
+  --mu-r-mark-scrub-scale-index: 1.5px;
   /* icon-button: reference style.css .tb, .tb:active, .tb.on, .tb.on::after, .iconbtn, .sugg button */
   --mu-r-icon-button-tool-background:
     /* mu-recipe:icon-button:0 */ linear-gradient(#303033, #262628);

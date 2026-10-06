@@ -1165,6 +1165,12 @@
   --spacing-mark-tag-radius: var(--mu-r-mark-tag-radius);
   --radius-mark-tag-radius: var(--mu-r-mark-tag-radius);
   --spacing-mark-motion-sparkle: var(--mu-r-mark-motion-sparkle);
+  --spacing-mark-scrub-scrub-pixels: var(--mu-r-mark-scrub-scrub-pixels);
+  --spacing-mark-scrub-scale-gap: var(--mu-r-mark-scrub-scale-gap);
+  --spacing-mark-scrub-scale-width: var(--mu-r-mark-scrub-scale-width);
+  --spacing-mark-scrub-scale-height: var(--mu-r-mark-scrub-scale-height);
+  --spacing-mark-scrub-scale-tick: var(--mu-r-mark-scrub-scale-tick);
+  --spacing-mark-scrub-scale-index: var(--mu-r-mark-scrub-scale-index);
   --spacing-icon-button-tool-size: var(--mu-r-icon-button-tool-size);
   --spacing-icon-button-tool-radius: var(--mu-r-icon-button-tool-radius);
   --radius-icon-button-tool-radius: var(--mu-r-icon-button-tool-radius);
@@ -3383,6 +3389,42 @@
 }
 @utility opacity-mark-motion-pop {
   opacity: var(--mu-r-mark-motion-pop);
+}
+@utility mark-scrub {
+  display: inline-block; border-radius: var(--mu-radius-key); cursor: ns-resize; touch-action: none; user-select: none; -webkit-user-select: none; outline: none; &:focus-visible { outline: var(--mu-focus-width) solid var(--mu-focus); outline-offset: var(--mu-focus-offset); }
+}
+@utility mark-scrub-scale {
+  position: absolute; top: 50%; left: calc(100% + var(--mu-r-mark-scrub-scale-gap)); width: var(--mu-r-mark-scrub-scale-width); height: var(--mu-r-mark-scrub-scale-height); translate: 0 -50%; overflow: hidden; pointer-events: none; opacity: 0; transition: opacity calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle); -webkit-mask: linear-gradient(transparent, #000 25%, #000 75%, transparent); mask: linear-gradient(transparent, #000 25%, #000 75%, transparent); [data-scrubbing] & { opacity: 1; } &::before { content: ""; position: absolute; left: 0; right: 0; top: calc(var(--mu-r-mark-scrub-scale-tick) * -5); bottom: calc(var(--mu-r-mark-scrub-scale-tick) * -5); background: repeating-linear-gradient(to bottom, var(--mu-r-mark-groove-ink) 0 1px, var(--mu-r-mark-groove-lip) 1px 2px, transparent 2px var(--mu-r-mark-scrub-scale-tick)) right / var(--mu-r-mark-scrub-scale-minor) 100% no-repeat, repeating-linear-gradient(to bottom, var(--mu-r-mark-groove-ink) 0 1px, var(--mu-r-mark-groove-lip) 1px 2px, transparent 2px calc(var(--mu-r-mark-scrub-scale-tick) * 5)); transform: translateY(var(--mu-scrub-offset, 0px)); } &::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: var(--mu-r-mark-scrub-scale-index); translate: 0 -50%; background: var(--mu-ink); }
+}
+@utility opacity-mark-scrub-number-step {
+  opacity: var(--mu-r-mark-scrub-number-step);
+}
+@utility opacity-mark-scrub-number-small {
+  opacity: var(--mu-r-mark-scrub-number-small);
+}
+@utility opacity-mark-scrub-number-large {
+  opacity: var(--mu-r-mark-scrub-number-large);
+}
+@utility opacity-mark-scrub-duration-step {
+  opacity: var(--mu-r-mark-scrub-duration-step);
+}
+@utility opacity-mark-scrub-duration-small {
+  opacity: var(--mu-r-mark-scrub-duration-small);
+}
+@utility opacity-mark-scrub-duration-large {
+  opacity: var(--mu-r-mark-scrub-duration-large);
+}
+@utility opacity-mark-scrub-clock-step {
+  opacity: var(--mu-r-mark-scrub-clock-step);
+}
+@utility opacity-mark-scrub-clock-small {
+  opacity: var(--mu-r-mark-scrub-clock-small);
+}
+@utility opacity-mark-scrub-clock-large {
+  opacity: var(--mu-r-mark-scrub-clock-large);
+}
+@utility stroke-width-mark-scrub-scale-width {
+  stroke-width: var(--mu-r-mark-scrub-scale-width);
 }
 @utility recipe-icon-button-tool {
   background: var(--mu-r-icon-button-tool-background);
