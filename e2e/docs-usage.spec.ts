@@ -40,7 +40,7 @@ test('every component page imports from the package, never from a file', async (
     const usage = page.getByTestId('usage');
     if (!(await usage.count())) { bad.push(`${path}: no usage`); continue; }
     const text = await usage.innerText();
-    if (!/import \{ \w+(, \w+)* \} from '@unlocalhosted\/metalui';/.test(text)) bad.push(`${path}: ${text.split('\n').find((l) => l.startsWith('import {')) ?? 'no import line'}`);
+    if (!/import \{ \w+(, \w+)* \} from '@unlocalhosted\/metalui(\/[\w-]+)?';/.test(text)) bad.push(`${path}: ${text.split('\n').find((l) => l.startsWith('import {')) ?? 'no import line'}`);
   }
   expect(bad).toEqual([]);
 });
