@@ -3,7 +3,8 @@
   "title": "Progress",
   "status": "alpha",
   "layer": "component",
-  "description": "How far a task has come: the switch's sunk track and green fill; the fill follows the value on the settle spring, and an unknown amount is a lit segment sweeping across.",
+  "uses": ["spinner"],
+  "description": "How far a task has come: the switch's sunk track and green fill with a head (glyph, label, value on the drum). The fill rises on the settle spring and drains on the release spring; it holds and dims when paused, takes the failed ink when it fails, and turns the head to its result when complete. Shapes: bar, slim, ring, steps, buffered; regular and compact.",
   "base": "@base-ui/react/progress",
   "react": {
     "export": "Progress",

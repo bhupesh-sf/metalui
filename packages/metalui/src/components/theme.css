@@ -408,6 +408,13 @@
   --spacing-progress-height: var(--mu-r-progress-self-height);
   --spacing-progress-gap: var(--mu-r-progress-self-gap);
   --spacing-progress-min-width: var(--mu-r-progress-self-min-width);
+  --spacing-progress-glyph: var(--mu-r-progress-self-glyph);
+  --spacing-progress-glyph-gap: var(--mu-r-progress-self-glyph-gap);
+  --spacing-progress-compact-height: var(--mu-r-progress-compact-height);
+  --spacing-progress-compact-gap: var(--mu-r-progress-compact-gap);
+  --spacing-progress-compact-glyph: var(--mu-r-progress-compact-glyph);
+  --spacing-progress-slim-height: var(--mu-r-progress-slim-height);
+  --spacing-progress-steps-gap: var(--mu-r-progress-steps-gap);
   --spacing-spinner-size: var(--mu-r-spinner-self-size);
   --spacing-spinner-small: var(--mu-r-spinner-self-small);
   --spacing-spinner-rim-radius: var(--mu-r-spinner-rim-radius);
@@ -1426,11 +1433,27 @@
 @utility alert-dialog-description {
   margin: calc(var(--mu-r-alert-dialog-self-text-gap) - var(--mu-r-dialog-self-gap)) 0 0;
 }
+@utility recipe-progress-fill-failed {
+  background: var(--mu-r-progress-fill-failed-background);
+  box-shadow: var(--mu-r-progress-fill-failed-shadow);
+}
 @utility transition-progress-fill {
   transition: width calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
 }
+@utility progress-fill {
+  position: absolute; inset: 0; border-radius: inherit; translate: calc((var(--mu-progress-value, 0) - 100) * 1%) 0; transition: translate calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle), opacity var(--mu-spring-settle-d) ease-out; &[data-draining] { transition: translate calc(var(--mu-spring-release-d) * var(--mu-travel-release)) var(--mu-spring-release), opacity var(--mu-spring-settle-d) ease-out; } &::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: var(--mu-r-progress-fill-failed-background); box-shadow: var(--mu-r-progress-fill-failed-shadow); opacity: 0; transition: opacity var(--mu-spring-settle-d) ease-out; } [data-progress=paused] & { opacity: var(--mu-r-progress-paused-dim); } [data-progress=failed] &::after { opacity: 1; }
+}
+@utility progress-buffer {
+  position: absolute; inset: 0; border-radius: inherit; opacity: var(--mu-r-progress-buffer-opacity); translate: calc((var(--mu-progress-buffer, 0) - 100) * 1%) 0; transition: translate calc(var(--mu-spring-settle-d) * var(--mu-travel-settle)) var(--mu-spring-settle);
+}
 @utility progress-segment {
-  position: absolute; inset-block: 0; left: 0; width: calc(var(--mu-r-progress-segment-ratio) * 100%); animation: mu-progress-sweep var(--mu-r-progress-segment-sweep) ease-in-out infinite; @media (prefers-reduced-motion: reduce) { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] & { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+  position: absolute; inset-block: 0; left: 0; width: calc(var(--mu-r-progress-segment-ratio) * 100%); translate: none; animation: mu-progress-sweep var(--mu-r-progress-segment-sweep) ease-in-out infinite; @media (prefers-reduced-motion: reduce) { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; } [data-mu-motion=reduce] & { left: calc((1 - var(--mu-r-progress-segment-ratio)) * 50%); animation: mu-progress-breathe var(--mu-r-progress-segment-breathe) ease-in-out infinite alternate; }
+}
+@utility opacity-progress-buffer-opacity {
+  opacity: var(--mu-r-progress-buffer-opacity);
+}
+@utility opacity-progress-paused-dim {
+  opacity: var(--mu-r-progress-paused-dim);
 }
 @utility opacity-progress-segment-ratio {
   opacity: var(--mu-r-progress-segment-ratio);

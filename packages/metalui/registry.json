@@ -1198,11 +1198,13 @@
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress",
-      "description": "How far a task has come: the switch's sunk track and green fill; the fill follows the value on the settle spring, and an unknown amount is a lit segment sweeping across.",
+      "description": "How far a task has come: the switch's sunk track and green fill with a head (glyph, label, value on the drum). The fill rises on the settle spring and drains on the release spring; it holds and dims when paused, takes the failed ink when it fails, and turns the head to its result when complete. Shapes: bar, slim, ring, steps, buffered; regular and compact.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
       "registryDependencies": [
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/spinner.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [

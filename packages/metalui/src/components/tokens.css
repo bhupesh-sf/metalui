@@ -984,10 +984,24 @@
   --mu-r-popover-self-transition: opacity var(--mu-spring-surface-d) var(--mu-spring-surface), translate var(--mu-spring-surface-d) var(--mu-spring-surface), scale var(--mu-spring-surface-d) var(--mu-spring-surface);
   /* alert-dialog: the dialog recipe; the refusal spring; Base UI AlertDialog */
   --mu-r-alert-dialog-self-text-gap: 4px;
-  /* progress: the switch track and on fill (recipe switch); the settle spring; Base UI Progress */
+  /* progress: the switch track and on fill (recipe switch); the failed lamp's red (status recipe); the settle and release springs; the drum (motion/swap); the spinner's ring; Base UI Progress */
+  --mu-r-progress-fill-failed-background:
+    /* mu-recipe:progress:0 */ linear-gradient(#D6483E, #E66A5F);
+  --mu-r-progress-fill-failed-shadow:
+    /* mu-recipe:progress:1 */ inset 0 2px 5px -1px rgba(110,10,5,.3),
+    /* mu-recipe:progress:2 */ inset 0 0 6px 1px rgba(255,255,255,.2);
   --mu-r-progress-self-height: 8px;
   --mu-r-progress-self-gap: 6px;
   --mu-r-progress-self-min-width: 160px;
+  --mu-r-progress-self-glyph: 16px;
+  --mu-r-progress-self-glyph-gap: 6px;
+  --mu-r-progress-compact-height: 6px;
+  --mu-r-progress-compact-gap: 4px;
+  --mu-r-progress-compact-glyph: 14px;
+  --mu-r-progress-slim-height: 3px;
+  --mu-r-progress-steps-gap: 3px;
+  --mu-r-progress-buffer-opacity: 0.4;
+  --mu-r-progress-paused-dim: 0.45;
   --mu-r-progress-segment-ratio: 0.32;
   --mu-r-progress-segment-sweep: 1400ms;
   --mu-r-progress-segment-breathe: 1600ms;
