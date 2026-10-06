@@ -62,6 +62,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case person = "person"
     case bell = "bell"
     case palette = "palette"
+    case copy = "copy"
+    case external = "external"
+    case settings = "settings"
+    case filter = "filter"
+    case sort = "sort"
+    case eye = "eye"
+    case eyeOff = "eye-off"
+    case lock = "lock"
 
     public enum Category: String, Sendable { case tools = "Tools", actions = "Actions", status = "Status" }
 
@@ -126,6 +134,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return "Person · Assign"
         case .bell: return "Notifications"
         case .palette: return "Appearance"
+        case .copy: return "Copy"
+        case .external: return "Open elsewhere · External"
+        case .settings: return "Settings"
+        case .filter: return "Filter"
+        case .sort: return "Sort"
+        case .eye: return "Show"
+        case .eyeOff: return "Hide"
+        case .lock: return "Lock · Locked"
         }
     }
 
@@ -190,6 +206,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return .tools
         case .bell: return .status
         case .palette: return .tools
+        case .copy: return .actions
+        case .external: return .actions
+        case .settings: return .tools
+        case .filter: return .tools
+        case .sort: return .tools
+        case .eye: return .actions
+        case .eyeOff: return .actions
+        case .lock: return .status
         }
     }
 
@@ -255,6 +279,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return 0.1
         case .bell: return 0.12
         case .palette: return 0.12
+        case .copy: return 0.12
+        case .external: return 0.1
+        case .settings: return 0.12
+        case .filter: return 0.12
+        case .sort: return 0.1
+        case .eye: return 0.133
+        case .eyeOff: return 0.1
+        case .lock: return 0.12
         }
     }
 
@@ -320,6 +352,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return nil
         case .bell: return nil
         case .palette: return nil
+        case .copy: return nil
+        case .external: return nil
+        case .settings: return nil
+        case .filter: return nil
+        case .sort: return nil
+        case .eye: return nil
+        case .eyeOff: return nil
+        case .lock: return nil
         }
     }
 
@@ -385,6 +425,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return false
         case .bell: return false
         case .palette: return false
+        case .copy: return false
+        case .external: return false
+        case .settings: return false
+        case .filter: return false
+        case .sort: return false
+        case .eye: return false
+        case .eyeOff: return false
+        case .lock: return false
         }
     }
 
@@ -450,6 +498,14 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .person: return 1.85
         case .bell: return 1.85
         case .palette: return 1.85
+        case .copy: return 1.85
+        case .external: return 1.85
+        case .settings: return 1.85
+        case .filter: return 1.85
+        case .sort: return 1.85
+        case .eye: return 1.85
+        case .eyeOff: return 1.85
+        case .lock: return 1.85
         }
     }
 }

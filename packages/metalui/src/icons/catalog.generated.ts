@@ -1352,6 +1352,181 @@ export const ICON_CATALOG = {
     sw16: 1.85,
     motion: {"duration":950,"caption":"The palette is lifted on its thumb and each paint is dabbed in turn.","stages":["Lift","Dab","Settle"],"tracks":[{"part":"board","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16842,"transform":"translate(0px,-0.6px) rotate(-5deg) scale(1,1)","easing":"linear"},{"offset":0.21053,"transform":"translate(0px,-0.6px) rotate(-5deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.58526,"transform":"translate(0px,0.0592px) rotate(0.4934deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.96105,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"p1","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.12632,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.18947,"transform":"translate(0px,0px) rotate(0deg) scale(1.12,0.78)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.51053,"transform":"translate(0px,0px) rotate(0deg) scale(0.9896,1.0192)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.83158,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"p2","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.21053,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.27368,"transform":"translate(0px,0px) rotate(0deg) scale(1.12,0.78)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.59474,"transform":"translate(0px,0px) rotate(0deg) scale(0.9896,1.0192)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.91579,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"p3","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.29474,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.35789,"transform":"translate(0px,0px) rotate(0deg) scale(1.12,0.78)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.67895,"transform":"translate(0px,0px) rotate(0deg) scale(0.9896,1.0192)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"glint","keyframes":[{"offset":0,"transform":"scale(.9)","opacity":0},{"offset":0.34737,"transform":"scale(.9)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.38947,"transform":"scale(1)","opacity":0.6,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61053,"transform":"scale(1.35)","opacity":0},{"offset":1,"transform":"scale(.9)","opacity":0}]}]},
   },
+  /* ─────────────────────────────────────────────────────────
+   * COPY · Actions · one act, 796ms
+   *
+   * Lay on → Take → Pull off
+   *          The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.
+   *  sheet      0 → 160 → 360 → 440 → 796ms
+   *  light      0 → 170 → 210 → 350 → 400 → 796ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "copy": {
+    label: "Copy",
+    category: "Actions",
+    hover: "The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.",
+    press: "plays the same act",
+    pressMs: 796,
+    defs: "",
+    body: "<path d=\"M5 9.6V18a2.4 2.4 0 0 0 2.4 2.4h7.4\"/><g data-part=\"sheet\"><path class=\"f\" style=\"--duo:.12\" d=\"M10.8 4.4H16a2.4 2.4 0 0 1 2.4 2.4v8A2.4 2.4 0 0 1 16 17.2h-5.2a2.4 2.4 0 0 1-2.4-2.4v-8a2.4 2.4 0 0 1 2.4-2.4Z\"/></g><path class=\"ac\" data-part=\"light\" opacity=\"0\" d=\"M10.6 7.4h5.6\" style=\"stroke-width:calc(var(--sw) * .6)\"/>",
+    sw16: 1.85,
+    motion: {"duration":796,"caption":"The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.","stages":["Lay on","Take","Pull off"],"tracks":[{"part":"sheet","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.20101,"transform":"translate(-1.2px,1.2px) rotate(0deg) scale(0.96,0.96)","easing":"linear"},{"offset":0.45226,"transform":"translate(-1.2px,1.2px) rotate(0deg) scale(0.96,0.96)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.55276,"transform":"translate(0.5px,-0.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"light","keyframes":[{"offset":0,"transform":"translate(-1.2px,1.2px)","opacity":0},{"offset":0.21357,"transform":"translate(-1.2px,1.2px)","opacity":0,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.26382,"transform":"translate(-1.2px,2px)","opacity":0.7,"easing":"linear"},{"offset":0.4397,"transform":"translate(-1.2px,6.8px)","opacity":0.5,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.50251,"transform":"translate(-1.2px,7.4px)","opacity":0},{"offset":1,"transform":"translate(-1.2px,1.2px)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * OPEN ELSEWHERE · EXTERNAL · Actions · one act, 596ms
+   *
+   * Draw back → Leave → Settle
+   *          The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.
+   *  arrow      0 → 150 → 230 → 535 → 596ms
+   *  frame      0 → 225 → 240 → 596ms
+   *  streak     0 → 210 → 250 → 450 → 596ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "external": {
+    label: "Open elsewhere · External",
+    category: "Actions",
+    hover: "The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.",
+    press: "plays the same act",
+    pressMs: 596,
+    defs: "<mask id=\"&-m\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"24\" height=\"24\"><rect width=\"24\" height=\"24\" fill=\"#fff\" stroke=\"none\"/><g data-part=\"arrow\"><path d=\"M11.4 12.6 19.4 4.6\" fill=\"none\" stroke=\"#000\" stroke-width=\"3.7\"/></g></mask>",
+    body: "<g data-part=\"frame\"><path class=\"f\" style=\"--duo:.1\" mask=\"url(#&-m)\" d=\"M6.9 7.5h7.2a2.4 2.4 0 0 1 2.4 2.4v7.2a2.4 2.4 0 0 1-2.4 2.4H6.9a2.4 2.4 0 0 1-2.4-2.4V9.9a2.4 2.4 0 0 1 2.4-2.4Z\"/></g><g data-part=\"arrow\"><path d=\"M11.4 12.6 19.4 4.6\"/><path d=\"M14.2 4.6h5.2v5.2\"/></g><path class=\"ac\" data-part=\"streak\" opacity=\"0\" d=\"M9.6 14.4 8.4 15.6\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":596,"caption":"The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.","stages":["Draw back","Leave","Settle"],"tracks":[{"part":"arrow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.25168,"transform":"translate(-0.7071px,0.7071px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.38591,"transform":"translate(1.1314px,-1.1314px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.89765,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"frame","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.37752,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.40268,"transform":"translate(-0.2121px,0.2121px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"streak","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.35235,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.41946,"transform":"scale(1)","opacity":0.8,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75503,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * SETTINGS · Tools · one act, 1026ms
+   *
+   * Wind back → Turn → Return
+   *          The gear is wound back and turned forward a notch against a detent, clicks, and springs back home.
+   *  gear       0 → 140 → 280 → 653 → 1026ms
+   *  hub        0 → 270 → 290 → 595 → 900 → 1026ms
+   *  click      0 → 260 → 300 → 500 → 1026ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "settings": {
+    label: "Settings",
+    category: "Tools",
+    hover: "The gear is wound back and turned forward a notch against a detent, clicks, and springs back home.",
+    press: "plays the same act",
+    pressMs: 1026,
+    defs: "",
+    body: "<g data-part=\"gear\"><path class=\"f\" style=\"--duo:.12\" d=\"M12 4C12.37 4 12.82 3.72 13.11 4.08C13.41 4.44 13.28 5.59 13.78 6.17C14.29 6.74 15.41 7.39 16.16 7.54C16.91 7.69 17.84 7 18.3 7.07C18.77 7.15 18.74 7.68 18.93 8C19.11 8.32 19.58 8.57 19.42 9C19.25 9.44 18.19 9.9 17.94 10.63C17.7 11.36 17.7 12.64 17.94 13.37C18.19 14.1 19.25 14.56 19.42 15C19.58 15.43 19.11 15.68 18.93 16C18.74 16.32 18.77 16.85 18.3 16.93C17.84 17 16.91 16.31 16.16 16.46C15.41 16.61 14.29 17.26 13.78 17.83C13.28 18.41 13.41 19.56 13.11 19.92C12.82 20.28 12.37 20 12 20C11.63 20 11.18 20.28 10.89 19.92C10.59 19.56 10.72 18.41 10.22 17.83C9.71 17.26 8.59 16.61 7.84 16.46C7.09 16.31 6.16 17 5.7 16.93C5.23 16.85 5.26 16.32 5.07 16C4.89 15.68 4.42 15.43 4.58 15C4.75 14.56 5.81 14.1 6.06 13.37C6.3 12.64 6.3 11.36 6.06 10.63C5.81 9.9 4.75 9.44 4.58 9C4.42 8.57 4.89 8.32 5.07 8C5.26 7.68 5.23 7.15 5.7 7.07C6.16 7 7.09 7.69 7.84 7.54C8.59 7.39 9.71 6.74 10.22 6.17C10.72 5.59 10.59 4.44 10.89 4.08C11.18 3.72 11.63 4 12 4Z\"/></g><g data-part=\"hub\"><path d=\"M12 9.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 1 1 0-5Z\"/></g><path class=\"ac\" data-part=\"click\" opacity=\"0\" d=\"M15.95 3.14l.32-.73M17.7 4.15l.47-.64\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":1026,"caption":"The gear is wound back and turned forward a notch against a detent, clicks, and springs back home.","stages":["Wind back","Turn","Return"],"tracks":[{"part":"gear","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13645,"transform":"translate(0px,0px) rotate(-8deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.2729,"transform":"translate(0px,0px) rotate(30deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63645,"transform":"translate(0px,0px) rotate(-2.2063deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"hub","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.26316,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.28265,"transform":"translate(0px,0px) rotate(0deg) scale(0.9,0.9)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.57992,"transform":"translate(0px,0px) rotate(0deg) scale(1.0087,1.0087)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.87719,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"click","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.25341,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.2924,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.48733,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * FILTER · Tools · one act, 1030ms
+   *
+   * Shake → Toss → Land
+   *          The funnel is shaken down once; the drop in its bowl is tossed up and falls back in.
+   *  funnel     0 → 140 → 220 → 576 → 1030ms
+   *  drop       0 → 140 → 300 → 420 → 725 → 1030ms
+   *  splash     0 → 410 → 450 → 650 → 1030ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "filter": {
+    label: "Filter",
+    category: "Tools",
+    hover: "The funnel is shaken down once; the drop in its bowl is tossed up and falls back in.",
+    press: "plays the same act",
+    pressMs: 1030,
+    defs: "",
+    body: "<g data-part=\"funnel\"><path class=\"f\" style=\"--duo:.12\" d=\"M5.6 4.6h12.8a1.2 1.2 0 0 1 .9 2l-4.9 5.5v4.6l-4.8 0v-4.6L4.7 6.6a1.2 1.2 0 0 1 .9-2Z\"/></g><g data-part=\"drop\"><circle class=\"s\" cx=\"12\" cy=\"8.4\" r=\"1.3\"/></g><path class=\"ac\" data-part=\"splash\" opacity=\"0\" d=\"M9.8 9.5h-.6M14.2 9.5h.6\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":1030,"caption":"The funnel is shaken down once; the drop in its bowl is tossed up and falls back in.","stages":["Shake","Toss","Land"],"tracks":[{"part":"funnel","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.13592,"transform":"translate(0px,0.8px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.21359,"transform":"translate(0px,-0.3px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.55922,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"drop","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13592,"transform":"translate(0px,0.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.29126,"transform":"translate(0px,-1.1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.40777,"transform":"translate(0px,0.3px) rotate(0deg) scale(1.12,0.86)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.70388,"transform":"translate(0px,-0.0261px) rotate(0deg) scale(0.9896,1.0122)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"splash","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.39806,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.43689,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.63107,"transform":"scale(1.4)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * SORT · Tools · one act, 585ms
+   *
+   * Crouch → Pass → Settle
+   *          The up arrow is pushed up and the down arrow answers, pushed down: they pass like rows changing places.
+   *  up         0 → 140 → 220 → 525 → 585ms
+   *  down       0 → 60 → 200 → 280 → 585ms
+   *  puff       0 → 200 → 250 → 450 → 585ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "sort": {
+    label: "Sort",
+    category: "Tools",
+    hover: "The up arrow is pushed up and the down arrow answers, pushed down: they pass like rows changing places.",
+    press: "plays the same act",
+    pressMs: 585,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><g data-part=\"up\"><path d=\"M7.2 10 9.4 7.8l2.2 2.2M9.4 7.8v8.6\"/></g><g data-part=\"down\"><path d=\"M14.6 7.6v8.6M12.4 14l2.2 2.2 2.2-2.2\"/></g><path class=\"ac\" data-part=\"puff\" opacity=\"0\" d=\"M8.5 17.6l-.4.4M10.3 17.6l.4.4\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":585,"caption":"The up arrow is pushed up and the down arrow answers, pushed down: they pass like rows changing places.","stages":["Crouch","Pass","Settle"],"tracks":[{"part":"up","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.23932,"transform":"translate(0px,0.8px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.37607,"transform":"translate(0px,-1.1px) rotate(0deg) scale(1,1.04)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.89744,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"down","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.10256,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.34188,"transform":"translate(0px,-0.8px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.47863,"transform":"translate(0px,1.1px) rotate(0deg) scale(1,1.04)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"puff","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.34188,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.42735,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.76923,"transform":"scale(1.4)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * SHOW · Actions · one act, 900ms
+   *
+   * Look → Look back → Blink
+   *          The eye looks one way, then the other, and blinks; it opens wide and rays open over it.
+   *  lids       0 → 170 → 400 → 560 → 700 → 800 → 900ms
+   *  iris       0 → 170 → 280 → 400 → 560 → 700 → 800 → 900ms
+   *  rays       0 → 640 → 690 → 860 → 900ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "eye": {
+    label: "Show",
+    category: "Actions",
+    hover: "The eye looks one way, then the other, and blinks; it opens wide and rays open over it.",
+    press: "plays the same act",
+    pressMs: 900,
+    defs: "",
+    body: "<g data-part=\"lids\"><path class=\"f\" style=\"--duo:.1\" d=\"M12 6.8a9.55 9.55 0 0 1 8.5 5.2 9.55 9.55 0 0 1-17 0A9.55 9.55 0 0 1 12 6.8Z\"/></g><g data-part=\"iris\"><path class=\"f\" style=\"--duo:.3\" d=\"M12 9.2a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 1 1 0-5.6Z\"/></g><path class=\"ac\" data-part=\"rays\" opacity=\"0\" d=\"M12 4.7V3.5M8.2 5.5l-.6-.9M15.8 5.5l.6-.9\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":900,"caption":"The eye looks one way, then the other, and blinks; it opens wide and rays open over it.","stages":["Look","Look back","Blink"],"tracks":[{"part":"lids","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.18889,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44444,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.62222,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.3)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.77778,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.03)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.88889,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"iris","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.18889,"transform":"translate(-1.6px,0px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.31111,"transform":"translate(-1.6px,0px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44444,"transform":"translate(1.6px,0px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.62222,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.3)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.77778,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.03)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.88889,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"rays","keyframes":[{"offset":0,"transform":"scale(.7)","opacity":0},{"offset":0.71111,"transform":"scale(.7)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.76667,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.95556,"transform":"scale(1.1)","opacity":0},{"offset":1,"transform":"scale(.7)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * HIDE · Actions · one act, 996ms
+   *
+   * Draw back → Slide home → Reopen
+   *          The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again.
+   *  bar        0 → 160 → 240 → 545 → 996ms
+   *  lids       0 → 160 → 250 → 623 → 996ms
+   *  stop       0 → 230 → 270 → 470 → 996ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "eye-off": {
+    label: "Hide",
+    category: "Actions",
+    hover: "The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again.",
+    press: "plays the same act",
+    pressMs: 996,
+    defs: "<mask id=\"&-m\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"24\" height=\"24\"><rect width=\"24\" height=\"24\" fill=\"#fff\" stroke=\"none\"/><g data-part=\"bar\"><path d=\"M4.6 4.6 19.4 19.4\" fill=\"none\" stroke=\"#000\" stroke-width=\"3.7\"/></g></mask>",
+    body: "<g mask=\"url(#&-m)\"><g data-part=\"lids\"><path class=\"f\" style=\"--duo:.1\" d=\"M12 6.8a9.55 9.55 0 0 1 8.5 5.2 9.55 9.55 0 0 1-17 0A9.55 9.55 0 0 1 12 6.8Z\"/></g></g><g data-part=\"bar\"><path d=\"M4.6 4.6 19.4 19.4\"/></g><path class=\"ac\" data-part=\"stop\" opacity=\"0\" d=\"M20.7 18.3l.7-.3M18.3 20.7l-.3.7\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":996,"caption":"The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again.","stages":["Draw back","Slide home","Reopen"],"tracks":[{"part":"bar","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16064,"transform":"translate(-0.9899px,-0.9899px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.24096,"transform":"translate(0.3536px,0.3536px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.54719,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"lids","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16064,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.06)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.251,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.5)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6255,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.0368)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"stop","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.23092,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.27108,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.47189,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * LOCK · LOCKED · Status · one act, 840ms
+   *
+   * Lift → Push home → Catch
+   *          The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.
+   *  shackle    0 → 150 → 230 → 535 → 840ms
+   *  case       0 → 235 → 245 → 601 → 840ms
+   *  click      0 → 220 → 260 → 460 → 840ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "lock": {
+    label: "Lock · Locked",
+    category: "Status",
+    hover: "The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.",
+    press: "plays the same act",
+    pressMs: 840,
+    defs: "",
+    body: "<g data-part=\"shackle\"><path d=\"M8.2 10.6V7.6a3.8 3.8 0 0 1 7.6 0v3\"/></g><g data-part=\"case\"><path class=\"f\" style=\"--duo:.12\" d=\"M7.4 10.6h9.2a2.4 2.4 0 0 1 2.4 2.4v4.6a2.4 2.4 0 0 1-2.4 2.4H7.4A2.4 2.4 0 0 1 5 17.6V13a2.4 2.4 0 0 1 2.4-2.4Z\"/><circle class=\"s\" cx=\"12\" cy=\"15.3\" r=\"1.3\"/></g><path class=\"ac\" data-part=\"click\" opacity=\"0\" d=\"M6.4 7.4l-.9-.5M17.6 7.4l.9-.5\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":840,"caption":"The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.","stages":["Lift","Push home","Catch"],"tracks":[{"part":"shackle","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.17857,"transform":"translate(0px,-1.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27381,"transform":"translate(0px,0.4px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6369,"transform":"translate(0px,-0.0348px) rotate(0deg) scale(1,1.007)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"case","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.27976,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.29167,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.96)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.71548,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"click","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.2619,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.30952,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.54762,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;

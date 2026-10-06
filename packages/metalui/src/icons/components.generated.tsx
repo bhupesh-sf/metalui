@@ -119,3 +119,19 @@ export const PersonIcon = createIcon("person", "PersonIcon");
 export const BellIcon = createIcon("bell", "BellIcon");
 /** Appearance. Hover: The palette is lifted on its thumb and each paint is dabbed in turn.. Press: plays the same act. */
 export const PaletteIcon = createIcon("palette", "PaletteIcon");
+/** Copy. Hover: The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.. Press: plays the same act. */
+export const CopyIcon = createIcon("copy", "CopyIcon");
+/** Open elsewhere · External. Hover: The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.. Press: plays the same act. */
+export const ExternalIcon = createIcon("external", "ExternalIcon");
+/** Settings. Hover: The gear is wound back and turned forward a notch against a detent, clicks, and springs back home.. Press: plays the same act. */
+export const SettingsIcon = createIcon("settings", "SettingsIcon");
+/** Filter. Hover: The funnel is shaken down once; the drop in its bowl is tossed up and falls back in.. Press: plays the same act. */
+export const FilterIcon = createIcon("filter", "FilterIcon");
+/** Sort. Hover: The up arrow is pushed up and the down arrow answers, pushed down: they pass like rows changing places.. Press: plays the same act. */
+export const SortIcon = createIcon("sort", "SortIcon");
+/** Show. Hover: The eye looks one way, then the other, and blinks; it opens wide and rays open over it.. Press: plays the same act. */
+export const EyeIcon = createIcon("eye", "EyeIcon");
+/** Hide. Hover: The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again.. Press: plays the same act. */
+export const EyeOffIcon = createIcon("eye-off", "EyeOffIcon");
+/** Lock · Locked. Hover: The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.. Press: plays the same act. */
+export const LockIcon = createIcon("lock", "LockIcon");
