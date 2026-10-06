@@ -470,20 +470,84 @@ final class MetalCaptures: XCTestCase {
         }
     }
 
+    /// Status › LEDs and badges: the web bench's lamps, captions and badges, word for word; each lamp
+    /// held lit, as the web's capture is under Reduce Motion.
     func testStatus() {
+        let lamps: [(MetalLEDKind, String)] = [(.live, "live · ok"), (.waiting, "waiting · urgent"), (.failed, "failed"), (.link, "link kind"), (.off, "off")]
         for colorway in MetalColorway.allCases {
-            let view = VStack(spacing: 20) {
-                HStack(spacing: 24) { MetalLED(.live); MetalLED(.waiting); MetalLED(.failed); MetalLED(.link); MetalLED(.off) }
+            let view = VStack(spacing: 28) {
+                HStack(alignment: .bottom, spacing: 32) {
+                    ForEach(lamps, id: \.1) { kind, words in
+                        VStack(spacing: 8) {
+                            MetalLED(kind)
+                            Text(words).metalType(MetalType.label).foregroundStyle(colorway.tokens.ink2.color)
+                        }
+                    }
+                }
                 HStack(spacing: 12) {
-                MetalStatusBadge("Recognizer live", led: .live)
-                MetalStatusBadge("Recognizer offline", led: .waiting)
-                MetalStatusBadge("Recognizer · no connection", led: .failed)
+                    MetalStatusBadge("Sync live", led: .live)
+                    MetalStatusBadge("Syncing", led: .waiting, phase: 0.5)
+                    MetalStatusBadge("Sync offline · add key to keychain", led: .failed, hint: "security add-generic-password -s example-service -a default -w", phase: 1)
+                    MetalStatusBadge("Sync paused", led: .off)
                 }
             }
             .padding(28)
             .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
             .metalColorway(colorway)
             capture("status-\(colorway.rawValue)", view)
+        }
+    }
+
+    /// Status › Transparent mode: solid badges (plate, quiet, strong) and the five lamps over frost,
+    /// over a picture and over graphite, as the web bench draws them.
+    func testStatusGrounds() {
+        let picture = LinearGradient(stops: [
+            .init(color: Color(red: 0.17, green: 0.3, blue: 0.49), location: 0), .init(color: Color(red: 0.48, green: 0.3, blue: 0.56), location: 0.3),
+            .init(color: Color(red: 0.85, green: 0.34, blue: 0.48), location: 0.5), .init(color: Color(red: 0.95, green: 0.55, blue: 0.22), location: 0.62),
+            .init(color: Color(red: 0.18, green: 0.49, blue: 0.42), location: 0.63), .init(color: Color(red: 0.05, green: 0.16, blue: 0.13), location: 1),
+        ], startPoint: .top, endPoint: .bottom)
+        let sun = RadialGradient(colors: [Color(red: 1, green: 0.95, blue: 0.76), Color(red: 1, green: 0.7, blue: 0.28), .clear], center: UnitPoint(x: 0.8, y: 0.34), startRadius: 0, endRadius: 90)
+        func parts() -> some View {
+            VStack(spacing: 14) {
+                HStack(spacing: 14) { MetalLED(.live); MetalLED(.waiting); MetalLED(.failed); MetalLED(.link); MetalLED(.off) }
+                MetalStatusBadge("Sync live", led: .live, solid: true)
+                MetalStatusBadge("Syncing", led: .waiting, tone: .quiet, solid: true, phase: 0.5)
+                MetalStatusBadge("Sync failed", led: .failed, tone: .strong, solid: true, gesture: .steady)
+            }
+        }
+        func caption(_ words: String, _ colorway: MetalColorway) -> some View {
+            Text(words).metalType(MetalType.label).foregroundStyle(colorway.tokens.ink2.color)
+        }
+        for colorway in MetalColorway.allCases {
+            let view = HStack(alignment: .top, spacing: 16) {
+                VStack(spacing: 8) {
+                    ZStack {
+                        HStack(spacing: 0) {
+                            ForEach(0..<14, id: \.self) { i in Rectangle().fill(i.isMultiple(of: 2) ? Color(white: 0.12) : Color(white: 0.92)).frame(width: 14) }
+                        }
+                        HStack(spacing: 24) {
+                            ForEach([Color(red: 0.18, green: 0.71, blue: 0.45), Color(red: 0.96, green: 0.75, blue: 0.33), Color(red: 0.84, green: 0.22, blue: 0.16)], id: \.self) { c in
+                                RoundedRectangle(cornerRadius: MetalRadius.plate).fill(c).frame(width: 42, height: 150)
+                            }
+                        }
+                        parts().padding(16).metalFrost(.strip, in: RoundedRectangle(cornerRadius: MetalRadius.card, style: .continuous))
+                    }
+                    .frame(width: 196, height: 220).clipShape(RoundedRectangle(cornerRadius: MetalRadius.plate))
+                    caption("over frost", colorway)
+                }
+                VStack(spacing: 8) {
+                    parts().frame(width: 196, height: 220).background(sun).background(picture).clipShape(RoundedRectangle(cornerRadius: MetalRadius.plate))
+                    caption("over an image", colorway)
+                }
+                VStack(spacing: 8) {
+                    parts().metalColorway(.graphite).frame(width: 196, height: 220).background(MetalShared.pageDark.color).clipShape(RoundedRectangle(cornerRadius: MetalRadius.plate))
+                    caption("over graphite", colorway)
+                }
+            }
+            .padding(28)
+            .background(colorway == .bone ? MetalShared.page.color : MetalShared.pageDark.color)
+            .metalColorway(colorway)
+            capture("status-grounds-\(colorway.rawValue)", view)
         }
     }
 

@@ -9,12 +9,12 @@
   --mu-blue: #2457F2;
   --mu-red: #D8453B;
   --mu-gold: #C7A76B;
-  --mu-led-green: radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673 100%);
-  --mu-led-red: radial-gradient(circle at 40% 35%, #FFD9D2 0 18%, #FF7A66 45%, #D5392A 100%);
-  --mu-led-amber: radial-gradient(circle at 40% 35%, #FFF1CF 0 18%, #F5BF55 45%, #C98A18 100%);
-  --mu-led-blue: radial-gradient(circle at 40% 35%, #D8E6FF 0 18%, #6F9BFF 45%, #2457F2 100%);
-  --mu-led-off: radial-gradient(circle at 40% 35%, #8B8B8E 0 18%, #6A6A6D 50%, #4A4A4D 100%);
-  --mu-led-ring: 0 0 0 .5px rgba(0,0,0,.25);
+  --mu-led-green: radial-gradient(circle at 40% 35%, #C8FFF0 0 16%, #12B89A 52%, #08795F 100%);
+  --mu-led-red: radial-gradient(circle at 40% 35%, #FFB4A8 0 16%, #BE1E14 52%, #6E0A05 100%);
+  --mu-led-amber: radial-gradient(circle at 40% 35%, #FFF6C8 0 16%, #FFC30F 52%, #B87A00 100%);
+  --mu-led-blue: radial-gradient(circle at 40% 35%, #DCE6FF 0 16%, #3F75FF 52%, #1B3CB8 100%);
+  --mu-led-off: radial-gradient(circle at 40% 35%, #75746F 0 16%, #4E4D4A 52%, #353432 100%);
+  --mu-led-ring: 0 0 0 .5px rgba(0,0,0,.35);
   --mu-success: #AAD47C;
   --mu-warning: #E4B25E;
   --mu-photon: #F3D9A4;
@@ -374,9 +374,9 @@
   --mu-kbd-sunk-bg: linear-gradient(#232326, #1C1C1E);
   --mu-kbd-sunk-sh: inset 0 1px 1.5px rgba(0,0,0,.5), 0 .5px 0 rgba(255,255,255,.06);
   --mu-kbd-sunk-ink: #9A9A9E;
-  --mu-status-led: 5px;
+  --mu-status-led: 6px;
   --mu-status-led-small: 4px;
-  --mu-status-bloom: 0 0 2px rgba(80,220,150,.55);
+  --mu-status-bloom: 0 0 4px 1px rgba(18,184,154,.5);
   --mu-status-badge-height: 24px;
   --mu-status-badge-pad-start: 9px;
   --mu-status-badge-pad-end: 10px;
@@ -1311,26 +1311,13 @@
   --mu-r-hover-engraving-led-gap: 4px;
   --mu-r-hover-engraving-led-lift: 1px;
   /* status: reference style.css .pill, .pill.status, .led-g, .led-a, .led-r, .led-off */
-  --mu-r-status-led-shadow:
-    /* mu-recipe:status:0 */ 0 0 0 .5px rgba(0,0,0,.25);
-  --mu-r-status-led-live-shadow:
-    /* mu-recipe:status:1 */ 0 0 0 .5px rgba(0,0,0,.25),
-    /* mu-recipe:status:2 */ 0 0 2px rgba(123,234,174,.55);
-  --mu-r-status-led-live-background:
-    /* mu-recipe:status:3 */ radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673);
-  --mu-r-status-led-waiting-background:
-    /* mu-recipe:status:4 */ radial-gradient(circle at 40% 35%, #FFF1CF 0 18%, #F5BF55 45%, #C98A18);
-  --mu-r-status-led-failed-background:
-    /* mu-recipe:status:5 */ radial-gradient(circle at 40% 35%, #FFD9D2 0 18%, #FF7A66 45%, #D5392A);
-  --mu-r-status-led-link-background:
-    /* mu-recipe:status:6 */ radial-gradient(circle at 40% 35%, #D8E6FF 0 18%, #6F9BFF 45%, #2457F2);
-  --mu-r-status-led-size: 5px;
+  --mu-r-status-led-size: 6px;
   --mu-r-status-led-size-small: 4px;
   --mu-r-status-badge-height: 26px;
   --mu-r-status-badge-pad: 11px;
   --mu-r-status-badge-gap: 7px;
-  --mu-r-status-badge-font: 500 9.5px/1 var(--mu-mono);
-  --mu-r-status-badge-tracking: 0.1em;
+  --mu-r-status-badge-font: 500 10.5px/1 var(--mu-mono);
+  --mu-r-status-badge-tracking: 0.06em;
   /* button: reference style.css .pill, .pill:hover, .pill:active; the object sheet .btn, .sc-read button, #pastBanner button, #selTools button, #selTools button.danger, the object sheet primary and destructive caps */
   --mu-r-button-graphite-background:
     /* mu-recipe:button:36 */ rgba(255,255,255,.09);
@@ -2193,18 +2180,80 @@
   --mu-r-hover-engraving-tag-shadow:
     /* mu-recipe:hover-engraving:12 */ inset 0 0 0 .5px rgba(40,38,32,.2);
   --mu-r-hover-engraving-emphasis-color: rgba(40,38,32,.62);
+  --mu-r-status-led-shadow:
+    /* mu-recipe:status:0 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:1 */ 0 1px 0 1px rgba(255,255,255,.75);
+  --mu-r-status-led-live-background:
+    /* mu-recipe:status:4 */ radial-gradient(circle at 40% 35%, #C8FFF0 0 16%, #12B89A 52%, #08795F 100%);
+  --mu-r-status-led-live-shadow:
+    /* mu-recipe:status:6 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:7 */ 0 1px 0 1px rgba(255,255,255,.75),
+    /* mu-recipe:status:8 */ 0 0 4px 1px rgba(18,184,154,.5);
+  --mu-r-status-led-waiting-background:
+    /* mu-recipe:status:12 */ radial-gradient(circle at 40% 35%, #FFF6C8 0 16%, #FFC30F 52%, #B87A00 100%);
+  --mu-r-status-led-waiting-shadow:
+    /* mu-recipe:status:14 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:15 */ 0 1px 0 1px rgba(255,255,255,.75),
+    /* mu-recipe:status:16 */ 0 0 4px 1px rgba(255,195,15,.6);
+  --mu-r-status-led-failed-background:
+    /* mu-recipe:status:20 */ radial-gradient(circle at 40% 35%, #FFB4A8 0 16%, #BE1E14 52%, #6E0A05 100%);
+  --mu-r-status-led-failed-shadow:
+    /* mu-recipe:status:22 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:23 */ 0 1px 0 1px rgba(255,255,255,.75),
+    /* mu-recipe:status:24 */ 0 0 4px 1px rgba(190,30,20,.45);
+  --mu-r-status-led-link-background:
+    /* mu-recipe:status:28 */ radial-gradient(circle at 40% 35%, #DCE6FF 0 16%, #3F75FF 52%, #1B3CB8 100%);
+  --mu-r-status-led-link-shadow:
+    /* mu-recipe:status:30 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:31 */ 0 1px 0 1px rgba(255,255,255,.75),
+    /* mu-recipe:status:32 */ 0 0 4px 1px rgba(63,117,255,.45);
   --mu-r-status-led-off-background:
-    /* mu-recipe:status:7 */ #C9C8C4;
+    /* mu-recipe:status:36 */ radial-gradient(circle at 40% 35%, #75746F 0 16%, #4E4D4A 52%, #353432 100%);
   --mu-r-status-led-off-shadow:
-    /* mu-recipe:status:9 */ inset 0 1px 1px rgba(0,0,0,.2);
+    /* mu-recipe:status:38 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:39 */ 0 1px 0 1px rgba(255,255,255,.75),
+    /* mu-recipe:status:40 */ inset 0 1px 1px rgba(0,0,0,.35);
   --mu-r-status-badge-background:
-    /* mu-recipe:status:11 */ linear-gradient(#FFFFFF, #F2F1EE);
+    /* mu-recipe:status:44 */ linear-gradient(#FFFFFF, #F2F1EE);
   --mu-r-status-badge-shadow:
-    /* mu-recipe:status:13 */ inset 0 0 4px 1px rgba(255,255,255,.85),
-    /* mu-recipe:status:14 */ inset 1px 2px 2px -1px #FFFFFF,
-    /* mu-recipe:status:15 */ 0 0 0 .5px rgba(24,22,16,.05),
-    /* mu-recipe:status:16 */ 0 1px 2px rgba(24,22,16,.07),
-    /* mu-recipe:status:17 */ 0 5px 12px -4px rgba(24,22,16,.09);
+    /* mu-recipe:status:46 */ inset 0 0 4px 1px rgba(255,255,255,.85),
+    /* mu-recipe:status:47 */ inset 1px 2px 2px -1px #FFFFFF,
+    /* mu-recipe:status:48 */ 0 0 0 .5px rgba(24,22,16,.2),
+    /* mu-recipe:status:49 */ 0 1px 1.5px rgba(24,22,16,.16),
+    /* mu-recipe:status:50 */ 0 5px 12px -4px rgba(24,22,16,.12);
+  --mu-r-status-badge-strong-live-background:
+    /* mu-recipe:status:56 */ linear-gradient(#E6F8F2, #D2F0E6);
+  --mu-r-status-badge-strong-live-shadow:
+    /* mu-recipe:status:58 */ inset 0 1px 0 rgba(255,255,255,.7),
+    /* mu-recipe:status:59 */ 0 0 0 .5px rgba(18,150,124,.5),
+    /* mu-recipe:status:60 */ 0 1px 1.5px rgba(24,22,16,.14),
+    /* mu-recipe:status:61 */ 0 5px 12px -4px rgba(24,22,16,.12);
+  --mu-r-status-badge-strong-waiting-background:
+    /* mu-recipe:status:66 */ linear-gradient(#FFF6D6, #FCE8AE);
+  --mu-r-status-badge-strong-waiting-shadow:
+    /* mu-recipe:status:68 */ inset 0 1px 0 rgba(255,255,255,.7),
+    /* mu-recipe:status:69 */ 0 0 0 .5px rgba(196,140,0,.55),
+    /* mu-recipe:status:70 */ 0 1px 1.5px rgba(24,22,16,.14),
+    /* mu-recipe:status:71 */ 0 5px 12px -4px rgba(24,22,16,.12);
+  --mu-r-status-badge-strong-failed-background:
+    /* mu-recipe:status:76 */ linear-gradient(#FDE6E2, #F8D0C9);
+  --mu-r-status-badge-strong-failed-shadow:
+    /* mu-recipe:status:78 */ inset 0 1px 0 rgba(255,255,255,.7),
+    /* mu-recipe:status:79 */ 0 0 0 .5px rgba(190,30,20,.45),
+    /* mu-recipe:status:80 */ 0 1px 1.5px rgba(24,22,16,.14),
+    /* mu-recipe:status:81 */ 0 5px 12px -4px rgba(24,22,16,.12);
+  --mu-r-status-badge-strong-link-background:
+    /* mu-recipe:status:86 */ linear-gradient(#E9EFFF, #D7E2FF);
+  --mu-r-status-badge-strong-link-shadow:
+    /* mu-recipe:status:88 */ inset 0 1px 0 rgba(255,255,255,.7),
+    /* mu-recipe:status:89 */ 0 0 0 .5px rgba(63,117,255,.45),
+    /* mu-recipe:status:90 */ 0 1px 1.5px rgba(24,22,16,.14),
+    /* mu-recipe:status:91 */ 0 5px 12px -4px rgba(24,22,16,.12);
+  --mu-r-status-badge-keyline: rgba(24,22,16,.34);
+  --mu-r-status-strong-ink-live: #0A5A49;
+  --mu-r-status-strong-ink-waiting: #6B4800;
+  --mu-r-status-strong-ink-failed: #8C150B;
+  --mu-r-status-strong-ink-link: #1D43B5;
   --mu-r-button-self-background:
     /* mu-recipe:button:0 */ linear-gradient(#FFFFFF,#F4F3F0);
   --mu-r-button-self-shadow:
@@ -2688,18 +2737,80 @@
   --mu-r-hover-engraving-tag-shadow:
     /* mu-recipe:hover-engraving:13 */ inset 0 0 0 .5px rgba(255,255,255,.2);
   --mu-r-hover-engraving-emphasis-color: rgba(255,255,255,.55);
+  --mu-r-status-led-shadow:
+    /* mu-recipe:status:2 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:3 */ 0 1px 0 1px rgba(255,255,255,.14);
+  --mu-r-status-led-live-background:
+    /* mu-recipe:status:5 */ radial-gradient(circle at 40% 35%, #C4FBEE 0 16%, #22C4A6 52%, #087F68 100%);
+  --mu-r-status-led-live-shadow:
+    /* mu-recipe:status:9 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:10 */ 0 1px 0 1px rgba(255,255,255,.14),
+    /* mu-recipe:status:11 */ 0 0 6px 1.5px rgba(34,196,166,.55);
+  --mu-r-status-led-waiting-background:
+    /* mu-recipe:status:13 */ radial-gradient(circle at 40% 35%, #FFF8D6 0 16%, #FFD23D 52%, #CC9200 100%);
+  --mu-r-status-led-waiting-shadow:
+    /* mu-recipe:status:17 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:18 */ 0 1px 0 1px rgba(255,255,255,.14),
+    /* mu-recipe:status:19 */ 0 0 6px 1.5px rgba(255,210,61,.5);
+  --mu-r-status-led-failed-background:
+    /* mu-recipe:status:21 */ radial-gradient(circle at 40% 35%, #FFB2A6 0 16%, #C82519 52%, #760D06 100%);
+  --mu-r-status-led-failed-shadow:
+    /* mu-recipe:status:25 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:26 */ 0 1px 0 1px rgba(255,255,255,.14),
+    /* mu-recipe:status:27 */ 0 0 6px 1.5px rgba(200,37,25,.6);
+  --mu-r-status-led-link-background:
+    /* mu-recipe:status:29 */ radial-gradient(circle at 40% 35%, #E2EAFF 0 16%, #5A88FF 52%, #2448D0 100%);
+  --mu-r-status-led-link-shadow:
+    /* mu-recipe:status:33 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:34 */ 0 1px 0 1px rgba(255,255,255,.14),
+    /* mu-recipe:status:35 */ 0 0 6px 1.5px rgba(90,136,255,.55);
   --mu-r-status-led-off-background:
-    /* mu-recipe:status:8 */ radial-gradient(circle at 40% 35%, #8B8B8E 0 18%, #6A6A6D 50%, #4A4A4D);
+    /* mu-recipe:status:37 */ radial-gradient(circle at 40% 35%, #6A6A6E 0 16%, #48484C 52%, #2E2E31 100%);
   --mu-r-status-led-off-shadow:
-    /* mu-recipe:status:10 */ 0 0 0 .5px rgba(0,0,0,.25);
+    /* mu-recipe:status:41 */ 0 0 0 1px rgba(18,18,20,.9),
+    /* mu-recipe:status:42 */ 0 1px 0 1px rgba(255,255,255,.14),
+    /* mu-recipe:status:43 */ inset 0 1px 1px rgba(0,0,0,.35);
   --mu-r-status-badge-background:
-    /* mu-recipe:status:12 */ linear-gradient(#313134, #28282B);
+    /* mu-recipe:status:45 */ linear-gradient(#313134, #28282B);
   --mu-r-status-badge-shadow:
-    /* mu-recipe:status:18 */ inset 0 0 4px 1px rgba(255,255,255,.06),
-    /* mu-recipe:status:19 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
-    /* mu-recipe:status:20 */ 0 0 0 .5px rgba(0,0,0,.55),
-    /* mu-recipe:status:21 */ 0 1px 2px rgba(0,0,0,.3),
-    /* mu-recipe:status:22 */ 0 5px 12px -4px rgba(0,0,0,.3);
+    /* mu-recipe:status:51 */ inset 0 0 4px 1px rgba(255,255,255,.06),
+    /* mu-recipe:status:52 */ inset 1px 2px 2px -1px rgba(255,255,255,.12),
+    /* mu-recipe:status:53 */ 0 0 0 .5px rgba(0,0,0,.7),
+    /* mu-recipe:status:54 */ 0 1px 2px rgba(0,0,0,.3),
+    /* mu-recipe:status:55 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-status-badge-strong-live-background:
+    /* mu-recipe:status:57 */ linear-gradient(#1A3D35, #13312A);
+  --mu-r-status-badge-strong-live-shadow:
+    /* mu-recipe:status:62 */ inset 0 1px 0 rgba(255,255,255,.08),
+    /* mu-recipe:status:63 */ 0 0 0 .5px rgba(43,209,174,.5),
+    /* mu-recipe:status:64 */ 0 1px 2px rgba(0,0,0,.35),
+    /* mu-recipe:status:65 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-status-badge-strong-waiting-background:
+    /* mu-recipe:status:67 */ linear-gradient(#3F3415, #342A0F);
+  --mu-r-status-badge-strong-waiting-shadow:
+    /* mu-recipe:status:72 */ inset 0 1px 0 rgba(255,255,255,.08),
+    /* mu-recipe:status:73 */ 0 0 0 .5px rgba(255,210,61,.45),
+    /* mu-recipe:status:74 */ 0 1px 2px rgba(0,0,0,.35),
+    /* mu-recipe:status:75 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-status-badge-strong-failed-background:
+    /* mu-recipe:status:77 */ linear-gradient(#46211C, #3A1A16);
+  --mu-r-status-badge-strong-failed-shadow:
+    /* mu-recipe:status:82 */ inset 0 1px 0 rgba(255,255,255,.08),
+    /* mu-recipe:status:83 */ 0 0 0 .5px rgba(222,46,32,.55),
+    /* mu-recipe:status:84 */ 0 1px 2px rgba(0,0,0,.35),
+    /* mu-recipe:status:85 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-status-badge-strong-link-background:
+    /* mu-recipe:status:87 */ linear-gradient(#1F2B4C, #1A2441);
+  --mu-r-status-badge-strong-link-shadow:
+    /* mu-recipe:status:92 */ inset 0 1px 0 rgba(255,255,255,.08),
+    /* mu-recipe:status:93 */ 0 0 0 .5px rgba(90,136,255,.5),
+    /* mu-recipe:status:94 */ 0 1px 2px rgba(0,0,0,.35),
+    /* mu-recipe:status:95 */ 0 5px 12px -4px rgba(0,0,0,.3);
+  --mu-r-status-badge-keyline: rgba(255,255,255,.22);
+  --mu-r-status-strong-ink-live: #92F0D7;
+  --mu-r-status-strong-ink-waiting: #FFE08C;
+  --mu-r-status-strong-ink-failed: #FFB4A9;
+  --mu-r-status-strong-ink-link: #B7CAFF;
   --mu-r-button-self-background:
     /* mu-recipe:button:1 */ linear-gradient(#313134,#28282B);
   --mu-r-button-self-shadow:
@@ -3184,18 +3295,80 @@
     --mu-r-hover-engraving-tag-shadow:
       inset 0 0 0 .5px rgba(255,255,255,.2);
     --mu-r-hover-engraving-emphasis-color: rgba(255,255,255,.55);
+    --mu-r-status-led-shadow:
+      0 0 0 1px rgba(18,18,20,.9),
+      0 1px 0 1px rgba(255,255,255,.14);
+    --mu-r-status-led-live-background:
+      radial-gradient(circle at 40% 35%, #C4FBEE 0 16%, #22C4A6 52%, #087F68 100%);
+    --mu-r-status-led-live-shadow:
+      0 0 0 1px rgba(18,18,20,.9),
+      0 1px 0 1px rgba(255,255,255,.14),
+      0 0 6px 1.5px rgba(34,196,166,.55);
+    --mu-r-status-led-waiting-background:
+      radial-gradient(circle at 40% 35%, #FFF8D6 0 16%, #FFD23D 52%, #CC9200 100%);
+    --mu-r-status-led-waiting-shadow:
+      0 0 0 1px rgba(18,18,20,.9),
+      0 1px 0 1px rgba(255,255,255,.14),
+      0 0 6px 1.5px rgba(255,210,61,.5);
+    --mu-r-status-led-failed-background:
+      radial-gradient(circle at 40% 35%, #FFB2A6 0 16%, #C82519 52%, #760D06 100%);
+    --mu-r-status-led-failed-shadow:
+      0 0 0 1px rgba(18,18,20,.9),
+      0 1px 0 1px rgba(255,255,255,.14),
+      0 0 6px 1.5px rgba(200,37,25,.6);
+    --mu-r-status-led-link-background:
+      radial-gradient(circle at 40% 35%, #E2EAFF 0 16%, #5A88FF 52%, #2448D0 100%);
+    --mu-r-status-led-link-shadow:
+      0 0 0 1px rgba(18,18,20,.9),
+      0 1px 0 1px rgba(255,255,255,.14),
+      0 0 6px 1.5px rgba(90,136,255,.55);
     --mu-r-status-led-off-background:
-      radial-gradient(circle at 40% 35%, #8B8B8E 0 18%, #6A6A6D 50%, #4A4A4D);
+      radial-gradient(circle at 40% 35%, #6A6A6E 0 16%, #48484C 52%, #2E2E31 100%);
     --mu-r-status-led-off-shadow:
-      0 0 0 .5px rgba(0,0,0,.25);
+      0 0 0 1px rgba(18,18,20,.9),
+      0 1px 0 1px rgba(255,255,255,.14),
+      inset 0 1px 1px rgba(0,0,0,.35);
     --mu-r-status-badge-background:
       linear-gradient(#313134, #28282B);
     --mu-r-status-badge-shadow:
       inset 0 0 4px 1px rgba(255,255,255,.06),
       inset 1px 2px 2px -1px rgba(255,255,255,.12),
-      0 0 0 .5px rgba(0,0,0,.55),
+      0 0 0 .5px rgba(0,0,0,.7),
       0 1px 2px rgba(0,0,0,.3),
       0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-status-badge-strong-live-background:
+      linear-gradient(#1A3D35, #13312A);
+    --mu-r-status-badge-strong-live-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 0 0 .5px rgba(43,209,174,.5),
+      0 1px 2px rgba(0,0,0,.35),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-status-badge-strong-waiting-background:
+      linear-gradient(#3F3415, #342A0F);
+    --mu-r-status-badge-strong-waiting-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 0 0 .5px rgba(255,210,61,.45),
+      0 1px 2px rgba(0,0,0,.35),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-status-badge-strong-failed-background:
+      linear-gradient(#46211C, #3A1A16);
+    --mu-r-status-badge-strong-failed-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 0 0 .5px rgba(222,46,32,.55),
+      0 1px 2px rgba(0,0,0,.35),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-status-badge-strong-link-background:
+      linear-gradient(#1F2B4C, #1A2441);
+    --mu-r-status-badge-strong-link-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 0 0 .5px rgba(90,136,255,.5),
+      0 1px 2px rgba(0,0,0,.35),
+      0 5px 12px -4px rgba(0,0,0,.3);
+    --mu-r-status-badge-keyline: rgba(255,255,255,.22);
+    --mu-r-status-strong-ink-live: #92F0D7;
+    --mu-r-status-strong-ink-waiting: #FFE08C;
+    --mu-r-status-strong-ink-failed: #FFB4A9;
+    --mu-r-status-strong-ink-link: #B7CAFF;
     --mu-r-button-self-background:
       linear-gradient(#313134,#28282B);
     --mu-r-button-self-shadow:

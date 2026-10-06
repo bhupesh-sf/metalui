@@ -644,6 +644,11 @@
   --spacing-status-badge-pad: var(--mu-r-status-badge-pad);
   --spacing-status-badge-gap: var(--mu-r-status-badge-gap);
   --tracking-status-badge-tracking: var(--mu-r-status-badge-tracking);
+  --color-status-badge-keyline: var(--mu-r-status-badge-keyline);
+  --color-status-strong-ink-live: var(--mu-r-status-strong-ink-live);
+  --color-status-strong-ink-waiting: var(--mu-r-status-strong-ink-waiting);
+  --color-status-strong-ink-failed: var(--mu-r-status-strong-ink-failed);
+  --color-status-strong-ink-link: var(--mu-r-status-strong-ink-link);
   --spacing-button-height: var(--mu-r-button-self-height);
   --spacing-button-pad: var(--mu-r-button-self-pad);
   --spacing-button-gap: var(--mu-r-button-self-gap);
@@ -1846,17 +1851,20 @@
   box-shadow: var(--mu-r-status-led-shadow);
 }
 @utility recipe-status-led-live {
-  box-shadow: var(--mu-r-status-led-live-shadow);
   background: var(--mu-r-status-led-live-background);
+  box-shadow: var(--mu-r-status-led-live-shadow);
 }
 @utility recipe-status-led-waiting {
   background: var(--mu-r-status-led-waiting-background);
+  box-shadow: var(--mu-r-status-led-waiting-shadow);
 }
 @utility recipe-status-led-failed {
   background: var(--mu-r-status-led-failed-background);
+  box-shadow: var(--mu-r-status-led-failed-shadow);
 }
 @utility recipe-status-led-link {
   background: var(--mu-r-status-led-link-background);
+  box-shadow: var(--mu-r-status-led-link-shadow);
 }
 @utility recipe-status-led-off {
   background: var(--mu-r-status-led-off-background);
@@ -1865,6 +1873,22 @@
 @utility recipe-status-badge {
   background: var(--mu-r-status-badge-background);
   box-shadow: var(--mu-r-status-badge-shadow);
+}
+@utility recipe-status-badge-strong-live {
+  background: var(--mu-r-status-badge-strong-live-background);
+  box-shadow: var(--mu-r-status-badge-strong-live-shadow);
+}
+@utility recipe-status-badge-strong-waiting {
+  background: var(--mu-r-status-badge-strong-waiting-background);
+  box-shadow: var(--mu-r-status-badge-strong-waiting-shadow);
+}
+@utility recipe-status-badge-strong-failed {
+  background: var(--mu-r-status-badge-strong-failed-background);
+  box-shadow: var(--mu-r-status-badge-strong-failed-shadow);
+}
+@utility recipe-status-badge-strong-link {
+  background: var(--mu-r-status-badge-strong-link-background);
+  box-shadow: var(--mu-r-status-badge-strong-link-shadow);
 }
 @utility type-status-badge {
   font: var(--mu-r-status-badge-font);

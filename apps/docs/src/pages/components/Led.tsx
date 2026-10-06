@@ -41,10 +41,10 @@ export default function LedPage() {
     <>
       <PageHeader
         title="LED"
-        lede="A tiny lamp lit from the top left that says one state by colour, and by how it behaves over time. Five kinds say what: green live, amber waiting, red failed, blue a link, off idle. Five gestures say how: steady, a flicker of activity, a slow breath while something is in progress, two flashes for a failure, a slow rise as something comes on. Never colour alone: the lamp sits beside words."
+        lede="A tiny lamp in a small sunk socket, lit from the top left, that says one state by colour, and by how it behaves over time. The socket (a dark bezel with a light lip) is its own ground, so it reads on any surface. Five kinds say what: green live, amber waiting, red failed, blue a link, off a dull lens. Five gestures say how: steady, a flicker of activity, a slow breath while something is in progress, two flashes for a failure, a slow rise as something comes on. Never colour alone: the lamp sits beside words."
       />
 
-      <Section title="Kinds and gestures" lede="Every kind can make every gesture. A gesture dims and brightens the lamp's glow and never fades it away, so a lamp that is flickering still reads as its colour. Press Play to run them again.">
+      <Section title="Kinds and gestures" lede="Every kind can make every gesture. A gesture dims and brightens the whole lamp and never fades it away, so a lamp that is flickering still reads as its colour. Press Play to run them again.">
         <Bench caption={`status.gestures · ${GESTURES.filter((g) => G[g].ms).map((g) => `${g} ${G[g].ms} ms${G[g].loop ? ' loop' : ''}`).join(' · ')}`}>
           <div className="flex w-full flex-col items-center gap-20" data-testid="led-gestures">
             <table className="border-separate border-spacing-x-24 border-spacing-y-12">

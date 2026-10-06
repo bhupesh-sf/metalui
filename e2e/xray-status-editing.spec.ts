@@ -82,7 +82,7 @@ test('lamp: the sun moves the bright spot on the specimen and the bench', async 
   expect(await computed(card.locator('.ed-specimen .mu-badge .mu-led'), 'background-image')).not.toBe(specimen);
 });
 
-test('glow: a switch takes the green lamp\'s glow off both', async ({ page }) => {
+test('glow: a switch takes a lit lamp\'s halo off both', async ({ page }) => {
   const xray = await openXray(page, 'bone');
   const card = xray.locator('.xr-card');
   await part(xray, 'Glow');

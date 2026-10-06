@@ -2,7 +2,7 @@
   "name": "status",
   "title": "Status badge",
   "status": "alpha",
-  "description": "The 24 tall status badge: an LED part and the state in the label role, not pressable, with the fixing command as a tooltip.",
+  "description": "The 26 tall status badge: an LED part and the state in words, each state with its own gesture; plate, quiet or strong tone, and solid for transparent grounds (frost, glass, images). Not pressable; the fixing command is a tooltip.",
   "base": "@base-ui/react/tooltip (the badge's hint)",
   "react": {
     "export": "StatusBadge",

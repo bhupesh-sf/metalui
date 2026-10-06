@@ -46,8 +46,8 @@ export const BADGE: LayerDef[] = [
 ];
 export const LAMP: LayerDef[] = [
   { name: 'Lit ball', why: 'A round gradient with its brightest spot up and to the left. That spot is the reflection of the one light, so the lamp looks like a small glass ball.' },
-  { name: 'Rim', why: 'A very thin dark outline so a pale lamp does not melt into the badge.' },
-  { name: 'Glow', why: 'A soft coloured glow around the lamp. Only a lamp that is on has it.' },
+  { name: 'Socket', why: 'A dark bezel round the lamp, with a light lip under it: the small sunk socket it sits in. It gives the lamp its own ground, so it reads on light, dark, frosted and picture grounds alike.' },
+  { name: 'Glow', why: 'A soft halo in the lamp\'s own ink. Only a lamp that is on has it; an off lamp is a dull lens.' },
 ];
 
 export interface Model {
@@ -81,8 +81,8 @@ export function StatusXray({ startOpen = false }: { startOpen?: boolean }) {
   const badgeSh = badge.shadows.map((v, i) => (m.badge[i + 1] ? aim(v, 0, 1) : null)).filter(Boolean).join(', ') || 'none';
   const shadow = scalePx(badgeSh, S);
   const lampBg = m.lamp[0] ? lamp.fill.replace(/at [\d.]+% [\d.]+%/, `at ${m.spotX}% ${m.spotY}%`) : 'transparent';
-  // the lamp's own ring (an off bone lamp has a sunk inset instead), else the shared one
-  const glowSh = lamp.shadows.find((v) => /0 0 2px/.test(v));
+  // the lamp's socket (its dark bezel), else the shared one
+  const glowSh = lamp.shadows.find((v) => /^0 0 [1-9]/.test(v));
   const rim = lamp.shadows.find((v) => v !== glowSh) ?? base.shadows[0];
   const lampSh = [m.lamp[1] ? rim : null, m.lamp[2] && m.glow ? glowSh : null].filter(Boolean).join(', ') || 'none';
   const lampShadow = scalePx(lampSh, S);
