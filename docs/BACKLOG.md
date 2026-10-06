@@ -415,7 +415,7 @@ Plan it by the **kind of data**, not by features: each kind below is a real situ
 | **Live log**: rows keep arriving | CI output, audit log, events | new rows arrive at the top without moving what you're reading ("4 new" to jump up), a level LED, time, monospaced ids, many rows | Should |
 | **Hierarchy** | folders, accounts, an org | expandable rows with indent guides | Later (after Tree) |
 | **Editable grid** | price lists, bulk edits | cell focus, editing in place, copy and paste ranges | Later (the data grid) |
-| **Properties**: label and value pairs | a receipt, a details panel, specs | two columns, no header | Not a table: a small `Properties` part (a `<dl>`) |
+| **Properties**: label and value pairs | a receipt, a details panel, specs | two columns, no header | Must, as its own small `Properties` part (a `<dl>`), not a table |
 
 **Cell kinds** — the most useful variation is a fixed vocabulary of cells, so every table in a product reads the same. A column says its `kind`; the kind sets alignment, type and the empty look.
 
@@ -437,8 +437,9 @@ Plan it by the **kind of data**, not by features: each kind below is a real situ
 
 **Must**
 - [ ] **SwiftUI first**: `MetalTable` with the header, sort, selection and the cell kinds.
+- [ ] **Properties**: a small part for label and value pairs (a `<dl>`): engraved labels, values in the cell kinds' looks, regular and compact; SwiftUI in step.
 - [ ] **Cell kinds**: the vocabulary above as `kind` on a column, with `unit`; `cell` stays for anything else.
-- [ ] **Density**: `density` regular 40 / compact 32.
+- [ ] **Density**: `density` roomy 48 (touch, iOS) / regular 40 / compact 32.
 - [ ] **A reading guide, not stripes**: one plate glides under the hovered or focused row on the settle spring (the menu's `ListGlide`), keyboard included.
 - [ ] **Sticky header** in a scroll container.
 - [ ] **Open a row**: `onRowAction` on Enter and click; the opened row takes `Row`'s `opened` rail.
@@ -462,11 +463,10 @@ Plan it by the **kind of data**, not by features: each kind below is a real situ
 - [ ] Tree rows (after Tree, sharing its parts).
 - [ ] Virtual rows for very long lists, then infinite scroll.
 - [ ] The data grid: arrow keys between cells, editing in place, cell ranges with copy and paste, reordering columns (after Sortable).
-- [ ] `Properties` as its own small part, if the details panels need it first.
 
 Not doing: striped rows (the reading guide does it); full cell borders (they come with the editable grid, where cells are targets); ReUI's "light, rounded rows" look (the hover plate is already rounded); colour-only cells such as heatmap tints or red negatives (a sign or a glyph always carries it); a coloured sort LED per header (green and blue already mean other things); sideways scrolling as the answer to narrow screens.
 
-Decide: a roomier density (48) for touch on iOS? `Properties` now, or when a details panel needs it? Live rows in Should, or Later?
+Decided (Bhupesh Gupta, 2026-10-06): a roomy 48 density, yes; `Properties` now; live rows stay in Should.
 
 ### Card, and a frame of cards
 
