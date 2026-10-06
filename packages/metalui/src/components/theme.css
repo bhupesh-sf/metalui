@@ -1380,6 +1380,13 @@
   --color-slider-tick-color: var(--mu-r-slider-tick-color);
   --spacing-slider-tick-gap: var(--mu-r-slider-tick-gap);
   --spacing-slider-knob-rise: var(--mu-r-slider-knob-rise);
+  --spacing-slider-vertical-length: var(--mu-r-slider-vertical-length);
+  --spacing-slider-vertical-label: var(--mu-r-slider-vertical-label);
+  --spacing-slider-bubble-gap: var(--mu-r-slider-bubble-gap);
+  --spacing-slider-bubble-pad-x: var(--mu-r-slider-bubble-pad-x);
+  --spacing-slider-bubble-pad-y: var(--mu-r-slider-bubble-pad-y);
+  --spacing-slider-bubble-radius: var(--mu-r-slider-bubble-radius);
+  --radius-slider-bubble-radius: var(--mu-r-slider-bubble-radius);
   --spacing-switcher-pad: var(--mu-r-switcher-self-pad);
   --spacing-switcher-gap: var(--mu-r-switcher-self-gap);
   --spacing-switcher-option-height: var(--mu-r-switcher-option-height);
@@ -3859,6 +3866,10 @@
   background: var(--mu-r-slider-fill-background);
   box-shadow: var(--mu-r-slider-fill-shadow);
 }
+@utility recipe-slider-fill-ink {
+  background: var(--mu-r-slider-fill-ink-background);
+  box-shadow: var(--mu-r-slider-fill-ink-shadow);
+}
 @utility recipe-slider-knob {
   background: var(--mu-r-slider-knob-background);
   box-shadow: var(--mu-r-slider-knob-shadow);
@@ -3909,7 +3920,7 @@
   inset-inline-start: calc(var(--mu-slider-knob) / 2 + clamp(0, var(--mu-slider-at), 1) * (100% - var(--mu-slider-knob))) !important;
 }
 @utility slider-fill-along {
-  width: calc(var(--mu-slider-knob) / 2 + clamp(0, var(--mu-slider-at), 1) * (100% - var(--mu-slider-knob))) !important;
+  inset-inline-start: calc(var(--mu-slider-pad, 0px) + clamp(0, var(--mu-slider-lo), 1) * (100% - var(--mu-slider-knob))) !important; width: calc(var(--mu-slider-knob) / 2 - var(--mu-slider-pad, 0px) + (clamp(0, var(--mu-slider-hi), 1) - clamp(0, var(--mu-slider-lo), 1)) * (100% - var(--mu-slider-knob))) !important;
 }
 @utility slider-knob-lift {
   scale: var(--mu-r-slider-knob-lift);
@@ -3919,6 +3930,51 @@
 }
 @utility slider-knob-origin {
   transform-origin: calc(clamp(0, var(--mu-slider-at), 1) * 100%) 50%;
+}
+@utility slider-between {
+  --mu-slider-pad: calc(var(--mu-slider-knob) / 2);
+}
+@utility slider-v-length {
+  height: var(--mu-r-slider-vertical-length);
+}
+@utility slider-v-gap {
+  row-gap: var(--mu-slider-gap);
+}
+@utility slider-v-control-box {
+  width: var(--mu-slider-knob); min-height: var(--mu-slider-knob);
+}
+@utility slider-v-track-place {
+  left: calc(50% - var(--mu-slider-track) / 2); width: var(--mu-slider-track);
+}
+@utility slider-v-ticks-place {
+  left: calc(50% + var(--mu-slider-track) / 2 + var(--mu-r-slider-tick-gap));
+}
+@utility slider-v-ticks-room {
+  margin-inline-end: var(--mu-r-slider-vertical-label);
+}
+@utility slider-v-travel {
+  top: calc(var(--mu-slider-knob) / 2); bottom: calc(var(--mu-slider-knob) / 2);
+}
+@utility slider-v-knob-along {
+  bottom: calc(var(--mu-slider-knob) / 2 + clamp(0, var(--mu-slider-at), 1) * (100% - var(--mu-slider-knob))) !important;
+}
+@utility slider-v-fill-along {
+  bottom: calc(var(--mu-slider-pad, 0px) + clamp(0, var(--mu-slider-lo), 1) * (100% - var(--mu-slider-knob))) !important; height: calc(var(--mu-slider-knob) / 2 - var(--mu-slider-pad, 0px) + (clamp(0, var(--mu-slider-hi), 1) - clamp(0, var(--mu-slider-lo), 1)) * (100% - var(--mu-slider-knob))) !important;
+}
+@utility slider-v-knob-origin {
+  transform-origin: 50% calc(100% - clamp(0, var(--mu-slider-at), 1) * 100%);
+}
+@utility slider-bubble-place {
+  bottom: calc(100% + var(--mu-r-slider-bubble-gap)); left: 50%; translate: -50% 0;
+}
+@utility slider-v-bubble-place {
+  inset-inline-end: calc(100% + var(--mu-r-slider-bubble-gap)); top: 50%; translate: 0 -50%;
+}
+@utility slider-bubble-rest {
+  opacity: 0; scale: var(--mu-r-slider-bubble-rest);
+}
+@utility slider-bubble-shown {
+  opacity: 1; scale: 1;
 }
 @utility transition-slider {
   transition: var(--mu-r-slider-self-transition);
@@ -3934,6 +3990,12 @@
 }
 @utility transition-slider-knob {
   transition: var(--mu-r-slider-knob-transition);
+}
+@utility opacity-slider-bubble-rest {
+  opacity: var(--mu-r-slider-bubble-rest);
+}
+@utility transition-slider-bubble {
+  transition: var(--mu-r-slider-bubble-transition);
 }
 @utility recipe-switcher {
   background: var(--mu-r-switcher-self-background);

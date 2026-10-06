@@ -3188,7 +3188,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A track (a well) in three sizes (compact, regular, large: groove and knob together), optional glyphs at its ends and a value readout beside it, a green fill at full strength up to a knurled knob, notches cut across the groove (marks) and labelled ticks under it in the meta type at ink2; arrows step, Shift steps large; hover lifts the knob (settle spring, a longer shadow), pressing or dragging presses it (a tight shadow), a key pushing past an end nudges the groove one nest on the refusal spring; disabled at 40 %; a jump rides the part spring, a drag follows the pointer. The knob travels the groove minus itself (it never leaves the groove) and the fill, marks and ticks share that travel: half a knob in from each end. Knob and fill ride one animated fraction (--mu-slider-at), clamped to the travel, so a spring that overshoots stops flush at the groove's end. (reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob)
+    /// A track (a well) in three sizes (compact, regular, large: groove and knob together), optional glyphs at its ends and a value readout beside it, a green fill at full strength up to a knurled knob, notches cut across the groove (marks) and labelled ticks under it in the meta type at ink2; arrows step, Shift steps large; hover lifts the knob (settle spring, a longer shadow), pressing or dragging presses it (a tight shadow), a key pushing past an end nudges the groove one nest on the refusal spring; disabled at 40 %; a jump rides the part spring, a drag follows the pointer. The knob travels the groove minus itself (it never leaves the groove) and the fill, marks and ticks share that travel: half a knob in from each end. Knob and fill ride one animated fraction (--mu-slider-at), clamped to the travel, so a spring that overshoots stops flush at the groove's end. More kinds: a range (two knobs, the fill between them), a vertical slider (the minimum at the bottom; vertical.length tall unless set), detents (a notch at every step, the knob clicks from stop to stop on the part spring even while dragged, the detent haptic at each), a centred slider (the fill grows from the origin's notch to the knob) and an ink fill (tone ink) for a slider that is not an amount someone set. The bubble: while a knob is dragged its value stands on the tooltip's chip over it (beside it, on the start side, when vertical), fading and growing in on the settle spring. Right to left, the groove mirrors (logical insets) and a push past an end nudges toward that end. (reference style.css .sc-track, .sc-fill, .sc-marks i, .sc-days span::before, .sc-knob)
     public static let slider = MetalObjectRecipe(
         name: "slider",
         layers: [
@@ -3196,19 +3196,23 @@ public enum MetalRecipes {
             .init(part: "fill", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(69.0, 189.0, 127.0, 1.0)), 0.0), .init(.color(MetalRGBA(51.0, 159.0, 104.0, 1.0)), 1.0)])), // mu-recipe:slider:1 linear-gradient(#45BD7F, #339F68)
             .init(part: "fill", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 70.0, 35.0, 0.3)))), // mu-recipe:slider:2 inset 0 1px 2px rgba(0,70,35,.3)
             .init(part: "fill", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 70.0, 35.0, 0.25)))), // mu-recipe:slider:3 inset 0 0 0 .5px rgba(0,70,35,.25)
-            .init(part: "knob", state: nil, colorway: nil, fill: .conic(from: 200.0, stops: [.init(.color(MetalRGBA(250.0, 250.0, 248.0, 1.0)), 0.0), .init(.color(MetalRGBA(201.0, 201.0, 197.0, 1.0)), 0.25), .init(.color(MetalRGBA(242.0, 242.0, 239.0, 1.0)), 0.5), .init(.color(MetalRGBA(184.0, 184.0, 180.0, 1.0)), 0.75), .init(.color(MetalRGBA(250.0, 250.0, 248.0, 1.0)), 1.0)])), // mu-recipe:slider:4 conic-gradient(from 200deg, #FAFAF8, #C9C9C5, #F2F2EF, #B8B8B4, #FAFAF8)
-            .init(part: "knob", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.35)))), // mu-recipe:slider:5 inset 0 0 0 2px rgba(255,255,255,.35)
-            .init(part: "knob", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.12)))), // mu-recipe:slider:6 0 0 0 .5px rgba(0,0,0,.12)
-            .init(part: "knob", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 2.0, blur: 4.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.18)))), // mu-recipe:slider:7 0 2px 4px rgba(0,0,0,.18)
-            .init(part: "knob", state: "hover", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.35)))), // mu-recipe:slider:8 inset 0 0 0 2px rgba(255,255,255,.35)
-            .init(part: "knob", state: "hover", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.12)))), // mu-recipe:slider:9 0 0 0 .5px rgba(0,0,0,.12)
-            .init(part: "knob", state: "hover", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 4.0, blur: 9.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:slider:10 0 4px 9px rgba(0,0,0,.2)
-            .init(part: "knob", state: "press", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.35)))), // mu-recipe:slider:11 inset 0 0 0 2px rgba(255,255,255,.35)
-            .init(part: "knob", state: "press", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.12)))), // mu-recipe:slider:12 0 0 0 .5px rgba(0,0,0,.12)
-            .init(part: "knob", state: "press", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.22)))), // mu-recipe:slider:13 0 1px 2px rgba(0,0,0,.22)
+            .init(part: "fill", state: "ink", colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(69.0, 69.0, 74.0, 1.0)), 0.0), .init(.color(MetalRGBA(35.0, 35.0, 38.0, 1.0)), 1.0)])), // mu-recipe:slider:4 linear-gradient(#45454A, #232326)
+            .init(part: "fill", state: "ink", colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(242.0, 242.0, 240.0, 1.0)), 0.0), .init(.color(MetalRGBA(201.0, 201.0, 198.0, 1.0)), 1.0)])), // mu-recipe:slider:5 linear-gradient(#F2F2F0, #C9C9C6)
+            .init(part: "fill", state: "ink", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.3)))), // mu-recipe:slider:6 inset 0 1px 2px rgba(0,0,0,.3)
+            .init(part: "fill", state: "ink", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.25)))), // mu-recipe:slider:7 inset 0 0 0 .5px rgba(0,0,0,.25)
+            .init(part: "knob", state: nil, colorway: nil, fill: .conic(from: 200.0, stops: [.init(.color(MetalRGBA(250.0, 250.0, 248.0, 1.0)), 0.0), .init(.color(MetalRGBA(201.0, 201.0, 197.0, 1.0)), 0.25), .init(.color(MetalRGBA(242.0, 242.0, 239.0, 1.0)), 0.5), .init(.color(MetalRGBA(184.0, 184.0, 180.0, 1.0)), 0.75), .init(.color(MetalRGBA(250.0, 250.0, 248.0, 1.0)), 1.0)])), // mu-recipe:slider:8 conic-gradient(from 200deg, #FAFAF8, #C9C9C5, #F2F2EF, #B8B8B4, #FAFAF8)
+            .init(part: "knob", state: nil, colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.35)))), // mu-recipe:slider:9 inset 0 0 0 2px rgba(255,255,255,.35)
+            .init(part: "knob", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.12)))), // mu-recipe:slider:10 0 0 0 .5px rgba(0,0,0,.12)
+            .init(part: "knob", state: nil, colorway: nil, shadow: .init(inset: false, x: 0.0, y: 2.0, blur: 4.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.18)))), // mu-recipe:slider:11 0 2px 4px rgba(0,0,0,.18)
+            .init(part: "knob", state: "hover", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.35)))), // mu-recipe:slider:12 inset 0 0 0 2px rgba(255,255,255,.35)
+            .init(part: "knob", state: "hover", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.12)))), // mu-recipe:slider:13 0 0 0 .5px rgba(0,0,0,.12)
+            .init(part: "knob", state: "hover", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 4.0, blur: 9.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.2)))), // mu-recipe:slider:14 0 4px 9px rgba(0,0,0,.2)
+            .init(part: "knob", state: "press", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 2.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.35)))), // mu-recipe:slider:15 inset 0 0 0 2px rgba(255,255,255,.35)
+            .init(part: "knob", state: "press", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.12)))), // mu-recipe:slider:16 0 0 0 .5px rgba(0,0,0,.12)
+            .init(part: "knob", state: "press", colorway: nil, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.22)))), // mu-recipe:slider:17 0 1px 2px rgba(0,0,0,.22)
         ],
         props: [
-            "self.transition": .text("--mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part)"),
+            "self.transition": .text("--mu-slider-at var(--mu-spring-part-d) var(--mu-spring-part), --mu-slider-lo var(--mu-spring-part-d) var(--mu-spring-part), --mu-slider-hi var(--mu-spring-part-d) var(--mu-spring-part)"),
             "self.disabled": .text("0.4"),
             "compact.track": .number(6.0),
             "compact.knob": .number(16.0),
@@ -3233,6 +3237,14 @@ public enum MetalRecipes {
             "knob.lift": .text("1.08"),
             "knob.press": .text("0.94"),
             "knob.transition": .text("scale var(--mu-spring-settle-d) var(--mu-spring-settle), box-shadow var(--mu-spring-settle-d) var(--mu-spring-settle)"),
+            "vertical.length": .number(160.0),
+            "vertical.label": .number(32.0),
+            "bubble.gap": .number(6.0),
+            "bubble.pad-x": .number(8.0),
+            "bubble.pad-y": .number(3.0),
+            "bubble.radius": .number(8.0),
+            "bubble.rest": .text("0.9"),
+            "bubble.transition": .text("opacity var(--mu-spring-settle-d) var(--mu-spring-settle), scale var(--mu-spring-settle-d) var(--mu-spring-settle)"),
         ]
     )
 

@@ -5,6 +5,22 @@ A value on a track. React: `Slider` from `@unlocalhosted/metalui`, on Base UI Sl
 ## Use it for
 
 - A value in a known range that a person sets by feel: zoom, volume, brightness, a quality level, a position in time.
+- A span in a range (a price band, a time window): a range, `value={[lo, hi]}`.
+- A level in a tall, narrow place (a mixer channel): `orientation="vertical"`.
+- One of a few stops you can feel (a grid size, a zoom step): `detents`.
+- An amount either side of zero (balance, pan, an exposure offset): `origin={0}`.
+
+## Kinds
+
+| Kind | How | What changes |
+|---|---|---|
+| range | `value={[lo, hi]}`, `onValueChange([lo, hi])` | two knobs, each its own tab stop ("…, minimum", "…, maximum"); the fill between them; they push, never cross; the readout says "lo–hi" |
+| vertical | `orientation="vertical"`, `height` (160) | the minimum at the bottom, ↑ increases; the end glyph on top, the value above it; ticks hang to the end side (the slider keeps `vertical.label` of room there); the bubble stands on the start side |
+| detents | `detents` (with `step`) | a notch at every step inside the ends (up to 24); the knob clicks stop to stop on the part spring, even while dragged; each stop plays `haptic('detent')` where a device has one |
+| centred | `origin={0}` | a notch at the origin; the fill grows from it to the knob, either side |
+| ink | `tone="ink"` | the fill in ink (deep on bone, pale on graphite), for a slider that is not an amount someone set (a place in a song); green stays the default |
+| bubble | `bubble` | while a knob is dragged, its value (through `format`) on the tooltip's chip over it, fading and growing in on the settle spring; only the knob being dragged; plain text, not the drum (a drag changes it every frame) |
+| right to left | `dir="rtl"` on the page and `DirectionProvider direction="rtl"` (exported) around it | the groove, fill, notches and ticks mirror; ← raises it; a push past the maximum nudges left |
 
 ## Don't use it for
 
@@ -27,8 +43,14 @@ A value on a track. React: `Slider` from `@unlocalhosted/metalui`, on Base UI Sl
 | React | SwiftUI |
 |---|---|
 | `value`, `min`, `max`, `onValueChange` | `value:` (a binding), `in:` |
+| `value={[lo, hi]}` (a range) | `range:` (a `ClosedRange` binding) |
 | `step` (1), `largeStep` (10) | `step:`, `largeStep:` |
 | `size` (`compact`, `regular`, `large`) | `size:` (`.compact`, `.regular`, `.large`) |
+| `orientation` (`horizontal`, `vertical`), `height` | `orientation:` (`.horizontal`, `.vertical`), `.frame(height:)` |
+| `detents` | `detents:` |
+| `origin` | `origin:` |
+| `tone` (`green`, `ink`) | `tone:` (`.green`, `.ink`) |
+| `bubble` | `bubble:` |
 | `startIcon`, `endIcon` (a glyph node) | `startIcon:`, `endIcon:` (`MetalIconName`) |
 | `showValue`, `format` | `showsValue:`, `valueText:` |
 | `marks` (values), `ticks` (`{ value, label }[]`) | `marks:`, `ticks:` (fractions), `tickStyle:` |
@@ -46,7 +68,8 @@ A value on a track. React: `Slider` from `@unlocalhosted/metalui`, on Base UI Sl
 | pressed, dragging | the knob presses ×0.94, a tight shadow; the fill follows the pointer 1:1 | settle spring; no spring on the value while dragging |
 | focus (keyboard) | the green ring around the knob | – |
 | disabled | the whole slider at 40 %; no pointer, no keys | – |
-| refused (a key pushing past an end) | the groove and knob nudge one nest toward that end and ring back; the value stays | refusal spring |
+| refused (a key pushing past an end) | the groove and knob nudge one nest toward that end (left for the maximum in rtl, up when vertical) and ring back; the value stays | refusal spring |
+| bubble (`bubble`, the knob being dragged) | the value on the tooltip's chip over the knob | settle spring in, and out on release |
 
 - The knob's face grows away from the nearer end (its origin follows the value), so even lifted it never pokes past the groove; the refusal moves the groove with the knob, so the knob never leaves it.
 - Reduce Motion: jumps land at once, the readout crossfades, the lift and press change at once, and nothing nudges.
@@ -60,6 +83,9 @@ A value on a track. React: `Slider` from `@unlocalhosted/metalui`, on Base UI Sl
 
 ## Rules
 
-- A jump springs, a drag does not.
+- A jump springs, a drag does not (except with detents: the spring is the click).
+- Green is an amount someone set; use `tone="ink"` for anything else.
+- Detents are for a few stops you can feel (24 at most); with more, a plain slider.
+- Give a vertical slider with ticks room on its end side, and a bubbled vertical slider room on its start side.
 - Marks and ticks mean something: a step, an event, a labelled value.
 - Keep labels plain and readable, on a plain surface.

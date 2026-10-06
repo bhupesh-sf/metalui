@@ -2157,7 +2157,7 @@
       "name": "slider",
       "type": "registry:ui",
       "title": "Slider",
-      "description": "A knob in a groove that never leaves it, a green fill to the knob's centre, notches and labelled ticks on the same travel; three sizes, glyphs at the ends, full width or a set width, and a value readout on the drum. Arrows step, Shift steps large.",
+      "description": "A knob in a groove that never leaves it, a green fill to the knob's centre, notches and labelled ticks on the same travel; three sizes, glyphs at the ends, full width or a set width, and a value readout on the drum. A range (two knobs), vertical, detents, a centred fill, an ink tone and a value bubble while dragging; it mirrors right to left. Arrows step, Shift steps large.",
       "dependencies": [
         "@base-ui/react@^1.8.0"
       ],
