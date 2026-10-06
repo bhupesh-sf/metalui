@@ -43,9 +43,10 @@ public enum MetalFonts {
         return NSFont.Weight.black.rawValue
     }
 
-    /// A CoreText font for a type role at a size. Chrome resolves the demo's
+    /// A CoreText font for a type role at a size. Chrome resolves the tokens'
     /// `"SF Mono", ui-monospace, SFMono-Regular, Menlo, monospace` stack to
-    /// Courier on macOS; use that same available face for the Swift mono role.
+    /// Menlo on macOS (SF Mono is private to the system, and Chrome has no
+    /// ui-monospace); use that same face for the Swift mono role, never a serif Courier.
     /// Doto keeps its variable axes for pixel labels.
     public static func ctFont(_ role: MetalTypeRole, size: Double) -> CTFont {
         let base: CTFont
@@ -58,7 +59,7 @@ public enum MetalFonts {
             ]
             base = CTFontCreateWithFontDescriptor(CTFontDescriptorCreateWithAttributes(attributes as CFDictionary), size, nil)
         case .mono:
-            let name = role.weight > 500 ? "Courier-Bold" : "Courier"
+            let name = role.weight > 500 ? "Menlo-Bold" : "Menlo-Regular"
             base = (NSFont(name: name, size: size) ??
                     NSFont.monospacedSystemFont(ofSize: size, weight: NSFont.Weight(systemWeight(role.weight)))) as CTFont
         default:
