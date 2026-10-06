@@ -4,8 +4,8 @@
   "status": "alpha",
   "layer": "object",
   "kind": "composed",
-  "uses": ["surface", "well", "icon-button", "button"],
-  "description": "A file someone attached, as a small raised plate: type, name, size or upload progress; it lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed.",
+  "uses": ["surface", "well", "icon-button", "button", "progress"],
+  "description": "A file someone attached, as a small raised plate: type, name, size or upload progress; it lands on the object spring when added, fills while uploading, says when it failed, and leaves on release when removed. An image shows its picture; as a tile it is square, its picture in a sunk window, with Progress's ring on a raised disc while it uploads.",
   "base": "div role=group; @base-ui/react/progress",
   "react": {
     "export": "Attachment",

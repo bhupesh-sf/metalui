@@ -756,6 +756,24 @@
   --radius-attachment-type-radius: var(--mu-r-attachment-type-radius);
   --spacing-attachment-track-height: var(--mu-r-attachment-track-height);
   --spacing-attachment-remove-glyph: var(--mu-r-attachment-remove-glyph);
+  --spacing-attachment-tile-pad: var(--mu-r-attachment-tile-pad);
+  --spacing-attachment-tile-gap: var(--mu-r-attachment-tile-gap);
+  --spacing-attachment-tile-radius: var(--mu-r-attachment-tile-radius);
+  --radius-attachment-tile-radius: var(--mu-r-attachment-tile-radius);
+  --spacing-attachment-tile-window-radius: var(--mu-r-attachment-tile-window-radius);
+  --radius-attachment-tile-window-radius: var(--mu-r-attachment-tile-window-radius);
+  --spacing-attachment-tile-caption-pad: var(--mu-r-attachment-tile-caption-pad);
+  --spacing-attachment-tile-caption-gap: var(--mu-r-attachment-tile-caption-gap);
+  --spacing-attachment-tile-min-width: var(--mu-r-attachment-tile-min-width);
+  --spacing-attachment-tile-disc: var(--mu-r-attachment-tile-disc);
+  --spacing-attachment-tile-cap: var(--mu-r-attachment-tile-cap);
+  --spacing-attachment-tile-inset: var(--mu-r-attachment-tile-inset);
+  --spacing-attachment-compact-size: var(--mu-r-attachment-compact-size);
+  --spacing-attachment-compact-pad: var(--mu-r-attachment-compact-pad);
+  --spacing-attachment-compact-window-radius: var(--mu-r-attachment-compact-window-radius);
+  --radius-attachment-compact-window-radius: var(--mu-r-attachment-compact-window-radius);
+  --spacing-attachment-compact-cap: var(--mu-r-attachment-compact-cap);
+  --spacing-attachment-compact-inset: var(--mu-r-attachment-compact-inset);
   --spacing-table-row-height: var(--mu-r-table-row-height);
   --spacing-table-row-pad-x: var(--mu-r-table-row-pad-x);
   --spacing-table-row-pad-y: var(--mu-r-table-row-pad-y);
@@ -2457,6 +2475,18 @@
 }
 @utility attachment-land {
   animation: mu-attachment-land var(--mu-spring-object-d) var(--mu-spring-object) both;
+}
+@utility attachment-preview {
+  opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-starting-style] { opacity: 0; } @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+@utility attachment-window {
+  &::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: var(--mu-r-well-self-field-shadow); pointer-events: none; }
+}
+@utility attachment-dim {
+  opacity: 1; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); [data-dim] > & { opacity: var(--mu-r-attachment-tile-dim); }
+}
+@utility opacity-attachment-tile-dim {
+  opacity: var(--mu-r-attachment-tile-dim);
 }
 @utility table-reset {
   border-collapse: separate; border-spacing: 0; & th, & td { border: 0; } & :is(th, td):not(.table-sticky, .table-total, .table-group, .table-pin) { background: none; } & tr { background: none; }

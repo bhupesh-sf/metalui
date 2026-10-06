@@ -6,11 +6,11 @@ A place that receives files, by drop or by picking. React: `DropZone` from `@unl
 
 - Attaching files to a thing: a region, a message, a form.
 - Compact, the attach row of a composer.
+- One image with a preview (an avatar): a compact zone beside the large `Avatar` (below).
 
 ## Don't use it for
 
 - A whole canvas or window that takes drops: handle the drop there; a drop zone is a bounded place.
-- One image with a preview (an avatar picker): a button that opens the picker.
 
 ## Anatomy
 
@@ -50,6 +50,10 @@ While dragging, only the MIME type is known, so an extension pattern (`.pdf`) is
 - The input is named by `title` and described by `description`.
 - Dragging is not the only way in: the picker always works.
 - Say what was refused and why near the zone (the `refused` list), not only with the shake.
+
+## One image: an avatar upload
+
+A large `Avatar` beside `<DropZone compact multiple={false} accept="image/*" maxSize={…}>`. On `onFiles`, show the photo at once (`src={URL.createObjectURL(file)}`, revoking the one before) and hold the avatar's rim while it uploads (`waiting={useWait(work).busy}`); the title turns to "Replace your photo". Say a refusal near the zone; a "Remove photo" key puts the initials back. A second file is refused with `count`. The other layouts (a gallery, a composer's row, a table of files) are in the attachment guide.
 
 ## Rules
 

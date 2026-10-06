@@ -1533,7 +1533,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A file someone attached, as a small raised plate: its type engraved in a sunk well, its name (the middle cut, so the end stays readable) and a line saying its size or how its upload is going. A new file lands (T5b): from one nest above onto the table on the object spring, with its small overshoot. While uploading, a thin track fills with the progress fill on the settle spring. A failed upload says so in red with a way to try again. Removed, it leaves the way rows do (T9): one nest down, fading, on the release spring, and only then goes. Reduce Motion: it appears and goes at once; the fill still moves. (the raised surface (recipe surface raise-sm); the well; the progress fill; Transitions T5b (land) and T9 (leave))
+    /// A file someone attached, as a small raised plate: its type engraved in a sunk well, its name (the middle cut, so the end stays readable) and a line saying its size or how its upload is going. A new file lands (T5b): from one nest above onto the table on the object spring, with its small overshoot. While uploading, a thin track fills with the progress fill on the settle spring. A failed upload says so in red with a way to try again. Removed, it leaves the way rows do (T9): one nest down, fading, on the release spring, and only then goes. Reduce Motion: it appears and goes at once; the fill still moves. A picture of an image file (preview) fills the type well, fading in over the extension once it has loaded. As a tile it is square: a raised plate with a sunk window cut in it, like a slide in its mount, holding the picture or the extension engraved large, with the name and size under it (regular) or the window alone (compact, the row's 52). While a tile uploads its picture dims and a raised disc in the middle holds Progress's ring; failed, the disc holds Try again and the reason is said under it in red. Its remove and open keys sit on small raised caps at its top corners, so they read on any picture. (the raised surface (recipe surface raise-sm); the well; the progress fill; Progress's ring; the avatar photo's fade; Transitions T5b (land) and T9 (leave))
     public static let attachment = MetalObjectRecipe(
         name: "attachment",
         layers: [
@@ -1551,6 +1551,22 @@ public enum MetalRecipes {
             "type.radius": .number(10.0),
             "track.height": .number(3.0),
             "remove.glyph": .number(10.0),
+            "tile.pad": .number(4.0),
+            "tile.gap": .number(6.0),
+            "tile.radius": .number(14.0),
+            "tile.window-radius": .number(10.0),
+            "tile.caption-pad": .number(4.0),
+            "tile.caption-gap": .number(1.0),
+            "tile.min-width": .number(112.0),
+            "tile.dim": .text("0.45"),
+            "tile.disc": .number(28.0),
+            "tile.cap": .number(20.0),
+            "tile.inset": .number(6.0),
+            "compact.size": .number(52.0),
+            "compact.pad": .number(3.0),
+            "compact.window-radius": .number(11.0),
+            "compact.cap": .number(18.0),
+            "compact.inset": .number(3.0),
         ]
     )
 

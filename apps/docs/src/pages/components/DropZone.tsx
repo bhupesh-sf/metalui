@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Attachment, DropZone, formatBytes, type DropRefusal } from '@unlocalhosted/metalui';
+import { Attachment, Avatar, Button, DropZone, formatBytes, useWait, type DropRefusal, type WaitWork } from '@unlocalhosted/metalui';
 import { DocumentIcon, ImageIcon } from '@unlocalhosted/metalui/icons';
 import { type SpringName } from '../../../../../packages/metalui/src/motion/springs.generated';
 import { SPRING_NAMES, springVars } from '../../ui/springTuning';
@@ -43,6 +43,49 @@ function Region({ label }: { label: string }) {
   );
 }
 
+const PHOTO_MAX = 2_000_000;
+
+/** One image with a preview: the avatar shows the picked photo at once and waits while it uploads. */
+function AvatarUpload() {
+  const [src, setSrc] = React.useState<string>();
+  const [work, setWork] = React.useState<WaitWork>('idle');
+  const [refused, setRefused] = React.useState<DropRefusal[]>([]);
+  const wait = useWait(work);
+  // Stands in for the upload; a real host sets done when its request ends.
+  React.useEffect(() => {
+    if (work !== 'working') return;
+    const t = window.setTimeout(() => setWork('done'), 1600);
+    return () => window.clearTimeout(t);
+  }, [work, src]);
+  const show = (next?: string) => setSrc((was) => { if (was) URL.revokeObjectURL(was); return next; });
+  return (
+    <div role="region" aria-label="Profile photo" className="flex w-full max-w-[400px] items-center gap-16">
+      <Avatar name="Ana Rocha" src={src} size="large" waiting={wait.busy} />
+      <div className="grid min-w-0 flex-1 gap-8">
+        <DropZone
+          compact
+          multiple={false}
+          accept="image/*"
+          maxSize={PHOTO_MAX}
+          icon={<ImageIcon size={20} />}
+          title={src ? 'Replace your photo' : 'Add a photo'}
+          description={`PNG or JPG, up to ${formatBytes(PHOTO_MAX)}`}
+          onFiles={(took, no) => {
+            setRefused(no);
+            if (took[0]) { show(URL.createObjectURL(took[0])); setWork('working'); }
+          }}
+        />
+        {refused.length > 0 && (
+          <p role="alert" className="m-0 type-meta text-form-field-error-ink">
+            {refused[0].reason === 'size' ? `${refused[0].file.name} is larger than ${formatBytes(PHOTO_MAX)}` : refused[0].reason === 'count' ? 'One photo at a time' : `${refused[0].file.name} isn’t an image`}.
+          </p>
+        )}
+        {src && <Button size="compact" className="justify-self-start" disabled={wait.busy} onClick={() => { show(undefined); setWork('idle'); }}>Remove photo</Button>}
+      </div>
+    </div>
+  );
+}
+
 function DropTuner() {
   const d = useDialKit('Drop', {
     spring: { type: 'select', options: SPRING_NAMES, default: 'part' },
@@ -70,7 +113,10 @@ export default function DropZonePage() {
           </div>
         </div>
       ) }}
-      more={[{ id: 'tune', title: 'Tune the drop', lede: 'The Drop panel swaps the spring the tray sinks and the glyph rises on, sets how far the tray gives and how wide the edge lights, and stretches time.', node: <DropTuner /> }]}
+      more={[
+        { id: 'avatar', title: 'One image: an avatar upload', lede: 'A large avatar beside a compact drop zone that takes one image. The avatar shows the photo the moment it is picked or dropped, and waits on its rim while it uploads. Remove puts the initials back.', node: <div className="flex w-full justify-center"><AvatarUpload /></div> },
+        { id: 'tune', title: 'Tune the drop', lede: 'The Drop panel swaps the spring the tray sinks and the glyph rises on, sets how far the tray gives and how wide the edge lights, and stretches time.', node: <DropTuner /> },
+      ]}
       usage={`const [files, setFiles] = React.useState<File[]>([]);
 
 <DropZone
