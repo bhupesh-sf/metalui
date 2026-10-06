@@ -80,6 +80,7 @@ export const routes: RouteObject[] = [
       { path: 'components/table', lazy: lazy(() => import('../pages/components/Table')) },
       { path: 'components/properties', lazy: lazy(() => import('../pages/components/Properties')) },
       { path: 'components/empty-state', lazy: lazy(() => import('../pages/components/EmptyState')) },
+      { path: 'components/alert', lazy: lazy(() => import('../pages/components/Alert')) },
       { path: 'components/split-pane', lazy: lazy(() => import('../pages/components/SplitPane')) },
       { path: 'components/sidebar', lazy: lazy(() => import('../pages/components/Sidebar')) },
       { path: 'components/drop-zone', lazy: lazy(() => import('../pages/components/DropZone')) },
