@@ -34,6 +34,12 @@ import UIKit
 //   detail    `detail`: a chevron key opens a sunk panel under the row, revealed from its top edge
 //   columns   `columnsMenu`: hide and show from a menu; `resizable`: drag the hairline at a header's
 //             end (it thickens to a grip on the part spring); `columnsState` keeps both
+//   tree      `children`: the primary cell starts with the tree's guides and disclosure (MetalTreeGuides,
+//             MetalTreeDisclosure at the density's tree size); children land, the rows below travel;
+//             a level that loads (`loadChildren`) waits in the chevron's slot, a failed one says Try again
+//   virtual   a `maxHeight` table is a LazyVStack: only the rows in view are built
+//   more      `hasMore` and `loadMore`: a skeleton row at the end loads the next rows as it shows; a
+//             failed load is one row with Try again
 // Reduce Motion: rows jump and land at once; the guide, the arrow and the chevrons change at once.
 
 public enum MetalTableKind: Sendable { case text, number, currency, percent, delta, date, status, person, tags, progress, trend, yes, check, code, actions }
@@ -470,6 +476,12 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
     let columnsMenu: Bool
     let resizable: Bool
     let columnsBinding: Binding<MetalTableColumnsState>?
+    let children: ((Row) -> [Row]?)?
+    let hasChildren: ((Row) -> Bool)?
+    let loadChildren: ((Row) async throws -> Void)?
+    let treeBinding: Binding<Set<Row.ID>>?
+    let hasMore: Bool
+    let loadMore: (() async throws -> Void)?
 
     @State private var sort: MetalTableSort?
     @State private var widths: [String: Double] = [:]
@@ -483,12 +495,17 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
     @State private var ownColumns = MetalTableColumnsState()
     @State private var grip: String?
     @State private var dragStart: Double?
+    @State private var ownTree: Set<Row.ID> = []
+    @State private var loads: [Row.ID: MetalWork] = [:]
+    @State private var more: MetalWork = .idle
     @Namespace private var guide
     @Environment(\.metalColorway) private var colorway
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     /// `groupBy` groups the rows under headers (`collapsed` start closed); `live` keeps new rows from pushing a
-    /// reader; `detail` opens a panel under a row; `columnsState` keeps hidden columns and dragged widths.
+    /// reader; `detail` opens a panel under a row; `columnsState` keeps hidden columns and dragged widths;
+    /// `children` nests rows under rows (`hasChildren` and `loadChildren` for a level that loads, `expandedRows`
+    /// the opened ones); `hasMore` and `loadMore` load the next rows as the end shows.
     public init(_ rows: [Row], columns: [MetalTableColumn<Row>], caption: String, density: MetalTableDensity = .regular,
                 selection: Binding<Set<Row.ID>>? = nil, sort: MetalTableSort? = nil, opened: Row.ID? = nil,
                 onOpen: ((Row) -> Void)? = nil, filter: (total: Int, onClear: () -> Void)? = nil, loading: Bool = false,
@@ -496,7 +513,10 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
                 maxHeight: CGFloat? = nil, now: Date = Date(), footer: String = "Total",
                 groupBy: ((Row) -> String)? = nil, collapsed: Set<String> = [], live: Bool = false,
                 detail: ((Row) -> AnyView)? = nil, columnsState: Binding<MetalTableColumnsState>? = nil,
-                columnsMenu: Bool = false, resizable: Bool = false) {
+                columnsMenu: Bool = false, resizable: Bool = false,
+                children: ((Row) -> [Row]?)? = nil, hasChildren: ((Row) -> Bool)? = nil,
+                loadChildren: ((Row) async throws -> Void)? = nil, expandedRows: Binding<Set<Row.ID>>? = nil,
+                hasMore: Bool = false, loadMore: (() async throws -> Void)? = nil) {
         self.rows = rows
         self.columns = columns
         self.caption = caption
@@ -520,6 +540,12 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
         self.columnsBinding = columnsState
         self.columnsMenu = columnsMenu
         self.resizable = resizable
+        self.children = children
+        self.hasChildren = hasChildren
+        self.loadChildren = loadChildren
+        self.treeBinding = expandedRows
+        self.hasMore = hasMore
+        self.loadMore = loadMore
     }
 
     private var m: MetalTableMetrics { MetalTableMetrics(density) }
@@ -559,11 +585,86 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
     private var waiting: Int { rows.count - present.count }
     private var away: Bool { scrollY < -MetalRecipes.table.points("live.slop") }
 
-    private var sorted: [Row] {
-        guard let sort, let col = columns.first(where: { $0.id == sort.column }) else { return present }
-        return present.sorted { a, b in
+    private var sorted: [Row] { sorted(present) }
+
+    /// Siblings sort among themselves: the top rows, and each opened row's children.
+    private func sorted(_ list: [Row]) -> [Row] {
+        guard let sort, let col = columns.first(where: { $0.id == sort.column }) else { return list }
+        return list.sorted { a, b in
             let x = col.value(a).sortKey, y = col.value(b).sortKey
             return sort.ascending ? x < y : y < x
+        }
+    }
+
+    // MARK: Hierarchy
+
+    /// A row as it shows: its level, and whether it opens; or an opened branch's empty line.
+    private struct Line: Identifiable {
+        let id: AnyHashable
+        let row: Row?
+        let level: Int
+        let branch: Bool
+        let open: Bool
+    }
+
+    private var treeOpen: Set<Row.ID> { treeBinding?.wrappedValue ?? ownTree }
+    private func setTree(_ next: Set<Row.ID>) {
+        if let treeBinding { treeBinding.wrappedValue = next } else { ownTree = next }
+    }
+    private var treeSize: MetalTreeSize { density == .roomy ? .large : density == .compact ? .compact : .regular }
+    private var indent: Double { MetalRecipes.tree.points("\(treeSize.rawValue).indent") }
+
+    /// The rows in the order they show: each opened row's children after it, a level deeper.
+    private func lines(_ list: [Row], level: Int = 1) -> [Line] {
+        guard let children else { return list.map { Line(id: $0.id, row: $0, level: 1, branch: false, open: false) } }
+        var out: [Line] = []
+        for row in list {
+            let kids = children(row)
+            let branch = kids != nil || hasChildren?(row) == true
+            let open = branch && treeOpen.contains(row.id)
+            out.append(Line(id: row.id, row: row, level: level, branch: branch, open: open))
+            guard open, let kids else { continue }
+            if kids.isEmpty {
+                out.append(Line(id: "\(row.id):empty", row: nil, level: level + 1, branch: false, open: false))
+            } else {
+                out += lines(sorted(kids), level: level + 1)
+            }
+        }
+        return out
+    }
+
+    private func toggleBranch(_ row: Row, open: Bool) {
+        if open {
+            withAnimation(settle) { setTree(treeOpen.subtracting([row.id])) }
+            return
+        }
+        if children?(row) == nil, let loadChildren {
+            guard loads[row.id] != .working else { return }
+            loads[row.id] = .working
+            withAnimation(settle) { setTree(treeOpen.union([row.id])) }
+            Task { @MainActor in
+                do {
+                    try await loadChildren(row)
+                    withAnimation(object) { loads[row.id] = .idle }
+                } catch {
+                    loads[row.id] = .failed
+                    withAnimation(settle) { setTree(treeOpen.subtracting([row.id])) }
+                }
+            }
+            return
+        }
+        withAnimation(settle) { setTree(treeOpen.union([row.id])) }
+    }
+
+    /// Infinite: the next rows, once at a time; a failure waits for Try again.
+    private func loadNext() async {
+        guard let loadMore, more == .idle else { return }
+        more = .working
+        do {
+            try await loadMore()
+            more = .idle
+        } catch {
+            more = .failed
         }
     }
 
@@ -826,18 +927,7 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
                 if let retry = error.retry { MetalButton("Try again", size: .compact, action: retry) }
             }
         } else if loading && rows.isEmpty {
-            ForEach(0..<5, id: \.self) { _ in
-                HStack(spacing: .zero) {
-                    leadSpace
-                    ForEach(Array(shown.enumerated()), id: \.element.id) { index, c in
-                        Group { if c.kind != .actions && c.kind != .yes && c.kind != .check { MetalSkeleton(width: index == 0 ? nil : CGFloat(MetalRecipes.table.points("trend.width"))) } }
-                            .modifier(width(c, first: index == .zero))
-                    }
-                }
-                .frame(minHeight: m.row)
-                .overlay(alignment: .bottom) { MetalRule(.horizontal) }
-                .accessibilityHidden(true)
-            }
+            ForEach(0..<5, id: \.self) { _ in skeletonRow }
         } else if present.isEmpty {
             if let filter, filter.total > 0 {
                 stateRow { Text("Nothing matches."); MetalButton("Clear", size: .compact, action: filter.onClear) }
@@ -857,14 +947,47 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
                 }
             }
             .opacity(loading ? MetalRecipes.spinner.number("item.dim") ?? .one : .one)
+            if hasMore && loadMore != nil { moreRow }
+        }
+    }
+
+    /// A row in the columns' shapes: rows on their way.
+    private var skeletonRow: some View {
+        HStack(spacing: .zero) {
+            leadSpace
+            ForEach(Array(shown.enumerated()), id: \.element.id) { index, c in
+                Group { if c.kind != .actions && c.kind != .yes && c.kind != .check { MetalSkeleton(width: index == 0 ? nil : CGFloat(MetalRecipes.table.points("trend.width"))) } }
+                    .modifier(width(c, first: index == .zero))
+            }
+        }
+        .frame(minHeight: m.row)
+        .overlay(alignment: .bottom) { MetalRule(.horizontal) }
+        .accessibilityHidden(true)
+    }
+
+    /// The end of a feed: a skeleton row that loads the next rows while it shows (again after each load), or the
+    /// failure with Try again.
+    @ViewBuilder private var moreRow: some View {
+        if more == .failed {
+            stateRow {
+                MetalIcon(.syncError, size: m.glyph).foregroundStyle(MetalShared.red.color)
+                Text("Couldn’t load more.")
+                MetalButton("Try again", size: .compact) { more = .idle; Task { await loadNext() } }
+            }
+        } else {
+            skeletonRow.task(id: rows.count) { await loadNext() }
         }
     }
 
     @ViewBuilder private func rowsView(_ rows: [Row]) -> some View {
         let arrive: AnyTransition = live ? .asymmetric(insertion: .offset(y: -MetalRadius.nest).combined(with: .opacity), removal: .opacity) : .opacity
-        ForEach(rows) { row in
-            rowView(row).transition(arrive)
-            if let detail, expanded.contains(row.id) {
+        ForEach(lines(rows)) { line in
+            if let row = line.row {
+                rowView(row, line: line).transition(children != nil ? .asymmetric(insertion: .offset(y: -MetalRadius.nest).combined(with: .opacity), removal: .offset(y: MetalRadius.nest).combined(with: .opacity)) : arrive)
+            } else {
+                emptyLine(line)
+            }
+            if let row = line.row, let detail, expanded.contains(row.id) {
                 MetalWell(.field, radius: MetalRecipes.table.points("detail.radius")) {
                     detail(row)
                         .padding(MetalRecipes.table.points("detail.pad"))
@@ -996,7 +1119,24 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
             .padding(.vertical, MetalRecipes.table.points("state.pad-y"))
     }
 
-    private func rowView(_ row: Row) -> some View {
+    /// Where the primary cell's content starts in a row: after the lead cells and the cell's own padding.
+    private var treeStart: Double { leadWidth + m.padX }
+
+    /// An opened branch with nothing in it: "Empty" at its children's level.
+    private func emptyLine(_ line: Line) -> some View {
+        HStack(spacing: .zero) {
+            Color.clear.frame(width: treeStart + Double(line.level) * indent + MetalRecipes.table.points("tree.gap"))
+            Text("Empty").foregroundStyle(colorway.tokens.ink3.color)
+            Spacer(minLength: .zero)
+        }
+        .frame(minHeight: m.row)
+        .overlay(alignment: .leading) { MetalTreeGuides(level: line.level, lit: nil, indent: indent).padding(.leading, treeStart) }
+        .overlay(alignment: .bottom) { MetalRule(.horizontal) }
+        .transition(.offset(y: -MetalRadius.nest).combined(with: .opacity))
+        .accessibilityHidden(true)
+    }
+
+    private func rowView(_ row: Row, line: Line) -> some View {
         let t = colorway.tokens
         let on = selection.contains(row.id)
         let rail = MetalRecipes.row
@@ -1021,7 +1161,7 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
                             .accessibilityValue(open ? "expanded" : "collapsed")
                             .frame(width: m.row)
                         }
-                        cell(c, row: row, primary: true).modifier(width(c, first: true))
+                        cell(c, row: row, primary: true, line: line).modifier(width(c, first: true))
                     }, selected: on, hovered: hovered == row.id)
                 } else {
                     cell(c, row: row, primary: false).modifier(width(c, first: false))
@@ -1049,6 +1189,9 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
                     .zIndex(.one)
             }
         }
+        .overlay(alignment: .leading) {
+            if line.level > 1 { MetalTreeGuides(level: line.level, lit: nil, indent: indent).padding(.leading, treeStart).offset(x: scrollX) }
+        }
         .overlay(alignment: .bottom) { MetalRule(.horizontal) }
         .contentShape(Rectangle())
         .onHover { inside in withAnimation(settle) { hovered = inside ? row.id : (hovered == row.id ? nil : hovered) } }
@@ -1063,7 +1206,7 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
         return "\(row.id)"
     }
 
-    @ViewBuilder private func cell(_ c: MetalTableColumn<Row>, row: Row, primary: Bool) -> some View {
+    @ViewBuilder private func cell(_ c: MetalTableColumn<Row>, row: Row, primary: Bool, line: Line? = nil) -> some View {
         let value = c.value(row)
         if c.kind == .actions, let items = c.actions?(row), !items.isEmpty {
             Menu {
@@ -1085,32 +1228,57 @@ public struct MetalTable<Row: Identifiable>: View where Row.ID: Hashable {
             .accessibilityLabel("More for \(name(of: row))")
         } else if c.kind == .check, case .yes(let on) = value, let onCheck = c.onCheck {
             MetalDimple(isOn: Binding(get: { on }, set: { onCheck(row, $0) }), size: .row, label: "\(name(of: row)), \(c.header)")
-        } else if primary {
-            VStack(alignment: .leading, spacing: m.detailGap) {
-                MetalTableCell(c.kind, value, format: c.format, label: c.header, now: now)
-                    .accessibilityAddTraits(c.rowHeader ? .isHeader : [])
-                if case .text(_, let detail?) = value {
-                    Text(detail).font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.ink2.color).lineLimit(1)
-                }
-                if !moved.isEmpty {
-                    HStack(spacing: m.gap) {
-                        ForEach(moved) { mc in
-                            HStack(spacing: MetalSpace.s4) {
-                                Text(mc.header).foregroundStyle(colorway.tokens.ink3.color)
-                                MetalTableCell(mc.kind, mc.value(row), format: mc.format, label: mc.header, now: now)
-                            }
-                        }
+        } else if primary, children != nil, let line {
+            // A hierarchy row: the indent (grooves drawn over the row), then the disclosure, then the name.
+            HStack(spacing: MetalRecipes.table.points("tree.gap")) {
+                HStack(spacing: .zero) {
+                    Color.clear.frame(width: Double(line.level) * indent - indent)
+                    if line.branch {
+                        MetalTableBranch(open: line.open, work: loads[row.id] ?? .idle, name: name(of: row)) { toggleBranch(row, open: line.open) }
+                            .frame(width: indent)
+                    } else {
+                        Color.clear.frame(width: indent)
                     }
-                    .font(.metal(MetalType.meta))
-                    .foregroundStyle(colorway.tokens.ink2.color)
-                    .lineLimit(1)
+                }
+                VStack(alignment: .leading, spacing: m.detailGap) {
+                    primaryCell(c, row: row)
+                    if loads[row.id] == .failed {
+                        Text("Couldn’t load · Try again").font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.ink2.color)
+                    }
                 }
             }
+        } else if primary {
+            primaryCell(c, row: row)
         } else {
             MetalTableCell(c.kind, value, format: c.format, label: c.kind == .check ? "\(name(of: row)), \(c.header)" : c.header, now: now)
                 .lineLimit(1)
                 .fixedSize()
                 .accessibilityAddTraits(c.rowHeader ? .isHeader : [])
+        }
+    }
+
+    /// The primary cell: its value, the detail line, and the values of the columns that left at this width.
+    private func primaryCell(_ c: MetalTableColumn<Row>, row: Row) -> some View {
+        let value = c.value(row)
+        return VStack(alignment: .leading, spacing: m.detailGap) {
+            MetalTableCell(c.kind, value, format: c.format, label: c.header, now: now)
+                .accessibilityAddTraits(c.rowHeader ? .isHeader : [])
+            if case .text(_, let detail?) = value {
+                Text(detail).font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.ink2.color).lineLimit(1)
+            }
+            if !moved.isEmpty {
+                HStack(spacing: m.gap) {
+                    ForEach(moved) { mc in
+                        HStack(spacing: MetalSpace.s4) {
+                            Text(mc.header).foregroundStyle(colorway.tokens.ink3.color)
+                            MetalTableCell(mc.kind, mc.value(row), format: mc.format, label: mc.header, now: now)
+                        }
+                    }
+                }
+                .font(.metal(MetalType.meta))
+                .foregroundStyle(colorway.tokens.ink2.color)
+                .lineLimit(1)
+            }
         }
     }
 }
@@ -1144,5 +1312,27 @@ private struct Width: ViewModifier {
                 .frame(width: measured, alignment: alignment)
                 .padding(.horizontal, padX)
         }
+    }
+}
+
+/// A hierarchy row's disclosure: the tree's chevron as a key, with its own wait clock (each loading level
+/// keeps its own time).
+private struct MetalTableBranch: View {
+    let open: Bool
+    let work: MetalWork
+    let name: String
+    let toggle: () -> Void
+    @State private var wait = MetalWait()
+
+    var body: some View {
+        Button(action: toggle) {
+            MetalTreeDisclosure(branch: true, open: open, wait: wait, failed: work == .failed, label: "Loading \(name)")
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .metalWait(work == .working ? .working : .idle, into: $wait)
+        .metalWaitSaid(wait.phase, label: "Loading \(name)")
+        .accessibilityLabel("Rows under \(name)")
+        .accessibilityValue(open ? "expanded" : "collapsed")
     }
 }
