@@ -446,7 +446,7 @@
       "name": "field",
       "title": "Field",
       "status": "alpha",
-      "description": "Text input in a well with a leading glyph, a fixed prefix and suffix, and mini keys in the trail (clear, a shortcut keycap that turns to Esc, a remote check that passed); a counter and a width by expected length. SearchField, a button in a well that opens search.",
+      "description": "Text input in a well with a leading glyph, a fixed prefix and suffix, and mini keys in the trail (clear, copy, show password, a shortcut keycap that turns to Esc, a remote check that passed); a counter and a width by expected length. SearchField, a button in a well that opens search.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Field, SearchField",

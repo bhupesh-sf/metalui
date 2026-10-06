@@ -2336,7 +2336,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// Text input in a well with a leading glyph and trailing keycaps, in three sizes: large (44, the palette's field, where the caret is the focus) and the form sizes regular (32) and compact (28), which match the select and show the focus ring. Invalid draws the foundation's invalid ring; disabled is 40 %. A prefix or suffix is a fixed part of the value ("https://", "kg"), engraved in ink3 on the well's floor in the input's type: not selectable, not part of the value, and pressing it puts the caret at that end of the input. The trail holds mini keys: compact button caps, 20 round with a 12 glyph and a 24 hit area, which sit as far from the well's edge as from its top and bottom in every size; a key that comes and goes (clear, a remote check that passed) pops in on the settle spring from 60 % and leaves on the release spring, keeping its place so the trail never shifts. With a limit, Textarea's counter sits in the trail (meta type, tabular, ink3) and fades in at Textarea's share of the limit; it turns red at the limit, and typing past it shakes only the counter on the refusal spring. chars sizes the input to an expected length in its own font's character width, plus a 2 slack for the caret. SearchField is a button in a well that opens search (light or graphite). Reduce Motion: keys fade without the pop; nothing shakes. (reference style.css .pal-field, .pal-field input, .tb-search)
+    /// Text input in a well with a leading glyph and trailing keycaps, in three sizes: large (44, the palette's field, where the caret is the focus) and the form sizes regular (32) and compact (28), which match the select and show the focus ring. Invalid draws the foundation's invalid ring; disabled is 40 %. A prefix or suffix is a fixed part of the value ("https://", "kg"), engraved in ink3 on the well's floor in the input's type: not selectable, not part of the value, and pressing it puts the caret at that end of the input. The trail holds mini keys: compact button caps, 20 round with a 12 glyph and a 24 hit area, which sit as far from the well's edge as from its top and bottom in every size; a key that comes and goes (clear, a remote check that passed) pops in on the settle spring from 60 % and leaves on the release spring, keeping its place so the trail never shifts. The copy key's glyph turns on the drum to a check for copy.hold (Table's hold), then back; the show-password key's eye morphs to eye-off while the text shows. With a limit, Textarea's counter sits in the trail (meta type, tabular, ink3) and fades in at Textarea's share of the limit; it turns red at the limit, and typing past it shakes only the counter on the refusal spring. chars sizes the input to an expected length in its own font's character width, plus a 2 slack for the caret. SearchField is a button in a well that opens search (light or graphite). Reduce Motion: keys fade without the pop; nothing shakes. (reference style.css .pal-field, .pal-field input, .tb-search)
     public static let field = MetalObjectRecipe(
         name: "field",
         layers: [
@@ -2383,6 +2383,7 @@ public enum MetalRecipes {
             "key.hit": .number(24.0),
             "key.pop": .text("0.6"),
             "chars.slack": .number(2.0),
+            "copy.hold": .text("1400ms"),
         ]
     )
 

@@ -93,6 +93,42 @@ for (const colorway of COLORWAYS) {
     await expect(palette).toBeFocused();
   });
 
+  // Copy takes the value and its glyph turns on the drum to the check, then back; show password makes the input
+  // a password, toggles it to text, says so with aria-pressed, and morphs its eye.
+  test(`copy and show password keys in ${colorway}`, async ({ page, context }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await open(page, '/components/field', colorway);
+    const area = section(page, 'copy-reveal');
+    const copy = area.getByRole('button', { name: 'Copy' });
+    await copy.click();
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('mu_live_7Hq2v9KcX4');
+    await expect(area.getByRole('status')).toHaveText('Copied');
+    await expect(copy.locator('[data-state="in"] svg')).toHaveClass(/mu-ic-check/);
+    // The check holds for the recipe's copy.hold (1400 ms), then the copy glyph comes back.
+    await expect(copy.locator('[data-state="in"] svg')).toHaveClass(/mu-ic-copy/, { timeout: 5000 });
+
+    const password = page.getByLabel('Password', { exact: true });
+    const reveal = area.getByRole('button', { name: 'Show password' });
+    await expect(password).toHaveAttribute('type', 'password');
+    await expect(reveal).toHaveAttribute('aria-pressed', 'false');
+    await password.focus();
+    await reveal.click();
+    await expect(password).toHaveAttribute('type', 'text');
+    await expect(reveal).toHaveAttribute('aria-pressed', 'true');
+    await expect(password).toBeFocused();
+    await expect(reveal.locator('svg')).toHaveAttribute('data-glyph', 'eye-off');
+    await expect(reveal.locator('svg')).toHaveCount(1);
+    // The morph settles: two frames draw the same glyph.
+    await expect.poll(() => reveal.locator('svg').evaluate((el) => new Promise<boolean>((r) => {
+      const a = el.innerHTML;
+      requestAnimationFrame(() => requestAnimationFrame(() => r(a === el.innerHTML)));
+    }))).toBe(true);
+    await area.screenshot({ path: capture(`field-copy-reveal-${colorway}`) });
+    await reveal.press('Space');
+    await expect(password).toHaveAttribute('type', 'password');
+    await expect(reveal).toHaveAttribute('aria-pressed', 'false');
+  });
+
   // The counter: Textarea's, in the trail. It shows near the limit, turns red at it, and only the counter
   // shakes when typing goes past it. chars sizes the input to an expected length.
   test(`counter and chars in ${colorway}`, async ({ page }) => {
@@ -135,6 +171,12 @@ test('keys fade without the pop and nothing shakes under Reduce Motion', async (
   const count = section(page, 'length').locator('.mu-field-count');
   await expect(count).toHaveText(/^24\/24/);
   expect(await count.evaluate((el) => el.getAnimations().some((a) => a.id === 'mu-refusal'))).toBe(false);
+
+  // Show password still toggles; the eye changes in place.
+  const reveal = section(page, 'copy-reveal').getByRole('button', { name: 'Show password' });
+  await reveal.click();
+  await expect(page.getByLabel('Password', { exact: true })).toHaveAttribute('type', 'text');
+  await expect(reveal.locator('svg')).toHaveAttribute('data-glyph', 'eye-off');
 });
 
 test('a hidden clear key pops from 60 % with motion on', async ({ page }) => {

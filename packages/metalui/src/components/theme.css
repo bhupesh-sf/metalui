@@ -2755,6 +2755,10 @@
 @utility opacity-field-key-pop {
   opacity: var(--mu-r-field-key-pop);
 }
+@utility duration-field-copy-hold {
+  --tw-duration: var(--mu-r-field-copy-hold);
+  transition-duration: var(--mu-r-field-copy-hold);
+}
 @utility stroke-width-sparkline-line-width {
   stroke-width: var(--mu-r-sparkline-line-width);
 }

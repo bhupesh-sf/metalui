@@ -1,6 +1,6 @@
 # Field and search field
 
-React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Prefix`, `Field.Input`, `Field.Suffix`, `Field.Trail`, `Field.Key`, `Field.Clear`, `Field.Shortcut`, `Field.Check`; `SearchField`. SwiftUI: `MetalField("Website", text: $url, size: .regular, prefix: "https://", clear: true) { MetalFieldKey(…) }`, `MetalFieldKey`, `MetalSearchField`.
+React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Prefix`, `Field.Input`, `Field.Suffix`, `Field.Trail`, `Field.Key`, `Field.Clear`, `Field.Copy`, `Field.Reveal`, `Field.Shortcut`, `Field.Check`; `SearchField`. SwiftUI: `MetalField("Website", text: $url, size: .regular, prefix: "https://", clear: true) { MetalFieldKey(…) }`, `MetalFieldKey`, `MetalSearchField`.
 
 ## Field
 
@@ -26,7 +26,8 @@ React: `Field` with parts `Field.Root`, `Field.Icon`, `Field.Prefix`, `Field.Inp
 | shortcut | `<Field.Shortcut keys="⌘K" />` | a keycap that focuses the field from anywhere (⌘ also answers to Ctrl; `bind={false}` when the host binds it); it turns on the drum to "Esc" while the field is active; Esc clears the text, or leaves the field when it is empty. The input gets `aria-keyshortcuts` |
 | check | `<Field.Check shown={free} label="Name available"><Icon name="check" act /></Field.Check>` | a remote check that passed: the tick arrives acting, in the deep green, and is said once (`role="status"`). Ordinary valid fields show nothing |
 | any | `<Field.Key label="…" icon={…} onClick={…} />` | a mini key of your own; `shown` makes it come and go |
-| copy, show password | – | to come: `Field.Key` with `copy` → `check` and `eye` → `eye-off` morphs, once those glyphs are drawn |
+| copy | `<Field.Copy icon={<Icon name="copy" />} copiedIcon={<Icon name="check" />} />` | shows while there is text (or always, with `value`); copies the value, and its glyph turns on the drum to the check for the recipe's `copy.hold` (1400 ms, Table's), then back. Not a morph: copy → check strains 2.38, past the family's limit. "Copied" is said once (`role="status"`, `copiedLabel`) |
+| show password | `<Field.Reveal icon={<MorphIcon name="eye" />} hideIcon={<MorphIcon name="eye-off" />} />` | makes the input `type="password"`; pressing it shows the text (`type="text"`) and back. It is a toggle named "Show password" (`label`) with `aria-pressed`, so assistive tech says whether the text shows. Pass the same component for both glyphs: React keeps the element and `MorphIcon` morphs eye ↔ eye-off |
 
 - A key is a compact button cap, 20 round with a 12 glyph and a 24 hit area, as far from the well's edge as from its top and bottom in every size. Pressing one keeps focus in the input. Glyphs come from the host (`@unlocalhosted/metalui/icons`), so `Field` never ships the icon catalogue.
 - A key that comes and goes pops in from 60 % on the settle spring and leaves on the release spring, keeping its place so the trail never shifts. A field that loads with text shows its clear key at rest (no pop on load).
@@ -50,4 +51,4 @@ Keys fade without the pop, the shortcut's drum crossfades, and the counter does 
 
 ## SwiftUI
 
-`MetalField` draws the same well, sizes, caret, prefix and suffix, counter (trimming past `limit` and shaking), `chars`, `clear`, `shortcut` (a key equivalent; Esc clears or leaves), `check`, and any `MetalFieldKey` in `trail`. Inside a `MetalFormField` with an error it draws the invalid ring.
+`MetalField` draws the same well, sizes, caret, prefix and suffix, counter (trimming past `limit` and shaking), `chars`, `clear`, `copy` (the pasteboard; the glyph replaces to the check for `copy.hold` and "Copied" is announced), `secure` (a `SecureField` with a show-password key whose eye replaces to eye-off; the key's value says "Shown" or "Hidden"), `shortcut` (a key equivalent; Esc clears or leaves), `check`, and any `MetalFieldKey` in `trail`. Inside a `MetalFormField` with an error it draws the invalid ring.

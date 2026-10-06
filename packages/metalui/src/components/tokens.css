@@ -1777,6 +1777,7 @@
   --mu-r-field-key-hit: 24px;
   --mu-r-field-key-pop: 0.6;
   --mu-r-field-chars-slack: 2px;
+  --mu-r-field-copy-hold: 1400ms;
   /* sparkline: reference style.css .spark path, .spark circle, .spark circle.last, .spark .base */
   --mu-r-sparkline-line-width: 1.5px;
   --mu-r-sparkline-dot-r: 2px;

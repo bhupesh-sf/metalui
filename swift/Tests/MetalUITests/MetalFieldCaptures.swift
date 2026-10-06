@@ -39,6 +39,8 @@ final class MetalFieldCaptures: XCTestCase {
                 }
                 MetalField("Username", text: .constant("vijay"), size: .regular, prefix: "@", check: "Name available")
                     .snapshot(focused: false)
+                MetalField("API key", text: .constant("mu_live_7Hq2v9KcX4"), size: .regular, copy: true).snapshot(focused: false)
+                MetalField("Password", text: .constant("north-light-42"), size: .regular, secure: true).snapshot(focused: false)
             }
             .frame(width: 320, alignment: .leading)
             try write("field", colorway, view)
