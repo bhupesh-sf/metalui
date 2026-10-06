@@ -424,6 +424,39 @@
   --spacing-spinner-rim-stroke: var(--mu-r-spinner-rim-stroke);
   --spacing-spinner-edge-width: var(--mu-r-spinner-edge-width);
   --spacing-spinner-bar-height: var(--mu-r-spinner-bar-height);
+  --spacing-code-field-large-height: var(--mu-r-code-field-large-height);
+  --spacing-code-field-large-width: var(--mu-r-code-field-large-width);
+  --spacing-code-field-large-radius: var(--mu-r-code-field-large-radius);
+  --radius-code-field-large-radius: var(--mu-r-code-field-large-radius);
+  --spacing-code-field-large-pad: var(--mu-r-code-field-large-pad);
+  --spacing-code-field-large-cap-radius: var(--mu-r-code-field-large-cap-radius);
+  --radius-code-field-large-cap-radius: var(--mu-r-code-field-large-cap-radius);
+  --spacing-code-field-large-gap: var(--mu-r-code-field-large-gap);
+  --spacing-code-field-large-dash: var(--mu-r-code-field-large-dash);
+  --tracking-code-field-large-tracking: var(--mu-r-code-field-large-tracking);
+  --spacing-code-field-regular-height: var(--mu-r-code-field-regular-height);
+  --spacing-code-field-regular-width: var(--mu-r-code-field-regular-width);
+  --spacing-code-field-regular-radius: var(--mu-r-code-field-regular-radius);
+  --radius-code-field-regular-radius: var(--mu-r-code-field-regular-radius);
+  --spacing-code-field-regular-pad: var(--mu-r-code-field-regular-pad);
+  --spacing-code-field-regular-cap-radius: var(--mu-r-code-field-regular-cap-radius);
+  --radius-code-field-regular-cap-radius: var(--mu-r-code-field-regular-cap-radius);
+  --spacing-code-field-regular-gap: var(--mu-r-code-field-regular-gap);
+  --spacing-code-field-regular-dash: var(--mu-r-code-field-regular-dash);
+  --tracking-code-field-regular-tracking: var(--mu-r-code-field-regular-tracking);
+  --spacing-code-field-compact-height: var(--mu-r-code-field-compact-height);
+  --spacing-code-field-compact-width: var(--mu-r-code-field-compact-width);
+  --spacing-code-field-compact-radius: var(--mu-r-code-field-compact-radius);
+  --radius-code-field-compact-radius: var(--mu-r-code-field-compact-radius);
+  --spacing-code-field-compact-pad: var(--mu-r-code-field-compact-pad);
+  --spacing-code-field-compact-cap-radius: var(--mu-r-code-field-compact-cap-radius);
+  --radius-code-field-compact-cap-radius: var(--mu-r-code-field-compact-cap-radius);
+  --spacing-code-field-compact-gap: var(--mu-r-code-field-compact-gap);
+  --spacing-code-field-compact-dash: var(--mu-r-code-field-compact-dash);
+  --tracking-code-field-compact-tracking: var(--mu-r-code-field-compact-tracking);
+  --spacing-code-field-dash-thickness: var(--mu-r-code-field-dash-thickness);
+  --spacing-code-field-caret-width: var(--mu-r-code-field-caret-width);
+  --spacing-code-field-ring-gap: var(--mu-r-code-field-ring-gap);
   --spacing-number-field-gap: var(--mu-r-number-field-self-gap);
   --spacing-number-field-large-height: var(--mu-r-number-field-large-height);
   --spacing-number-field-large-radius: var(--mu-r-number-field-large-radius);
@@ -1758,6 +1791,55 @@
 @utility duration-spinner-bar-finish {
   --tw-duration: var(--mu-r-spinner-bar-finish);
   transition-duration: var(--mu-r-spinner-bar-finish);
+}
+@utility code-field-cap {
+  &[data-fresh] { animation: mu-code-field-in var(--mu-spring-part-d) var(--mu-spring-part) backwards; animation-delay: calc(var(--mu-code-field-step, 0) * var(--mu-r-code-field-key-ripple) * var(--mu-travel-part)); }
+}
+@utility code-field-caret {
+  width: var(--mu-r-code-field-caret-width); height: var(--mu-r-code-field-caret-height); border-radius: var(--mu-r-code-field-caret-width); background: var(--mu-r-field-field-caret);
+}
+@utility code-field-dash {
+  height: var(--mu-r-code-field-dash-thickness); border-radius: var(--mu-r-code-field-dash-thickness); background: var(--mu-ink3); box-shadow: var(--mu-lip-shadow);
+}
+@utility code-field-ring {
+  position: absolute; left: calc(100% + var(--mu-r-code-field-ring-gap)); top: 50%; translate: 0 -50%;
+}
+@utility code-field-input {
+  border-radius: inherit; color: transparent; caret-color: transparent; -webkit-text-fill-color: transparent; &::selection { background: transparent; }
+}
+@utility type-code-field-large {
+  font: var(--mu-r-code-field-large-font);
+  letter-spacing: var(--mu-r-code-field-large-tracking);
+}
+@utility stroke-width-code-field-large-width {
+  stroke-width: var(--mu-r-code-field-large-width);
+}
+@utility type-code-field-regular {
+  font: var(--mu-r-code-field-regular-font);
+  letter-spacing: var(--mu-r-code-field-regular-tracking);
+}
+@utility stroke-width-code-field-regular-width {
+  stroke-width: var(--mu-r-code-field-regular-width);
+}
+@utility type-code-field-compact {
+  font: var(--mu-r-code-field-compact-font);
+  letter-spacing: var(--mu-r-code-field-compact-tracking);
+}
+@utility stroke-width-code-field-compact-width {
+  stroke-width: var(--mu-r-code-field-compact-width);
+}
+@utility opacity-code-field-key-pop {
+  opacity: var(--mu-r-code-field-key-pop);
+}
+@utility duration-code-field-key-ripple {
+  --tw-duration: var(--mu-r-code-field-key-ripple);
+  transition-duration: var(--mu-r-code-field-key-ripple);
+}
+@utility stroke-width-code-field-caret-width {
+  stroke-width: var(--mu-r-code-field-caret-width);
+}
+@utility opacity-code-field-disabled-opacity {
+  opacity: var(--mu-r-code-field-disabled-opacity);
 }
 @utility number-field-row-gap {
   &::before { content: ''; display: block; height: var(--mu-r-number-field-self-gap); }
@@ -4463,6 +4545,12 @@
 }
 @utility animate-collapsible-hold {
   animation: mu-collapsible-hold 1ms;
+}
+@keyframes mu-code-field-in {
+  from { opacity: 0; scale: calc(1 - (1 - var(--mu-r-code-field-key-pop)) * var(--mu-travel-part)); }
+}
+@utility animate-code-field-in {
+  animation: mu-code-field-in var(--mu-spring-part-d) var(--mu-spring-part) backwards;
 }
 
 /* Lamp gestures (status.gestures): how an LED behaves over time. */

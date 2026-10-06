@@ -291,6 +291,23 @@
       "agent": "https://metalui.dev/r/code-card.md"
     },
     {
+      "name": "code-field",
+      "title": "Code field",
+      "status": "alpha",
+      "description": "A one-time code, one slot per character, at Field's sizes: each slot is the field well and a filled one holds a keycap that springs in as it is typed; a paste or the phone's autofill (autocomplete one-time-code) sets them in one ripple. Groups with an engraved dash; digits, letters or both; a refused character shakes its slot; a wrong code rings every slot and shakes the row; the spinner's small ring while it is checked, then the tick; Resend counts down on the drum.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "CodeField",
+        "base": "@base-ui/react/otp-field"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCodeField, MetalCodeFieldResend"
+      },
+      "registry": "https://metalui.dev/r/code-field.json",
+      "agent": "https://metalui.dev/r/code-field.md"
+    },
+    {
       "name": "collapsible",
       "title": "Collapsible",
       "status": "alpha",

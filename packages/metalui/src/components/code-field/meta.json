@@ -1,0 +1,21 @@
+{
+  "name": "code-field",
+  "title": "Code field",
+  "status": "alpha",
+  "layer": "component",
+  "description": "A one-time code, one slot per character, at Field's sizes: each slot is the field well and a filled one holds a keycap that springs in as it is typed; a paste or the phone's autofill (autocomplete one-time-code) sets them in one ripple. Groups with an engraved dash; digits, letters or both; a refused character shakes its slot; a wrong code rings every slot and shakes the row; the spinner's small ring while it is checked, then the tick; Resend counts down on the drum.",
+  "base": "@base-ui/react/otp-field",
+  "react": {
+    "export": "CodeField",
+    "files": ["code-field.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalCodeField, MetalCodeFieldResend",
+    "file": "swift/Sources/MetalUI/Components/MetalCodeField.swift"
+  },
+  "slots": {
+    "CodeField": ["Root", "Slot", "Separator", "Resend"]
+  },
+  "agent": "code-field.agent.md",
+  "page": "/components/code-field"
+}

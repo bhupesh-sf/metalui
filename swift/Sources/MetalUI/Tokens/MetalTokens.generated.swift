@@ -856,6 +856,50 @@ public enum MetalRecipes {
         ]
     )
 
+    /// A one-time code, one slot per character, at Field's three sizes: large (44, the default, a code alone on its screen), regular (32) and compact (28). Each slot is the field well; a filled slot holds a compact keycap (the button's compact cap, concentric with the well) with the character in mono type, so how far you are reads at a glance. A character arriving springs its keycap into the well from `key.pop` with a fade on the part spring (a part you touch; it may overshoot its stop); a paste or the phone's autofill sets them in one ripple, `key.ripple` apart, left to right. The slot you are on wears the flush focus ring and, while empty, a still caret in the field's caret green (nothing blinks: a field waiting for a code is at rest). Groups are parted by a short engraved dash. A character the code can't hold shakes the slot on the refusal spring; a wrong code puts the invalid ring on every slot and shakes the whole row. While the code is checked the slots dim to the spinner's item dim and the spinner's small ring turns `ring.gap` after the last slot, outside the row's box. Resend is a link cap whose seconds turn on the drum. Reduce Motion: keycaps appear without the pop or the ripple and nothing shakes. (the field well and Field's sizes (recipe field), the compact button cap (recipe button), the field caret, the label's engraved lip, the refusal, the spinner's small ring and item dim, the swap drum; Base UI OTP Field)
+    public static let codeField = MetalObjectRecipe(
+        name: "code-field",
+        layers: [
+
+        ],
+        props: [
+            "large.height": .number(44.0),
+            "large.width": .number(38.0),
+            "large.radius": .number(14.0),
+            "large.pad": .number(4.0),
+            "large.cap-radius": .number(10.0),
+            "large.gap": .number(6.0),
+            "large.dash": .number(8.0),
+            "large.font": .text("500 19px/1 mono"),
+            "large.tracking": .text("0"),
+            "regular.height": .number(32.0),
+            "regular.width": .number(28.0),
+            "regular.radius": .number(10.0),
+            "regular.pad": .number(3.0),
+            "regular.cap-radius": .number(7.0),
+            "regular.gap": .number(4.0),
+            "regular.dash": .number(6.0),
+            "regular.font": .text("500 14px/1 mono"),
+            "regular.tracking": .text("0"),
+            "compact.height": .number(28.0),
+            "compact.width": .number(24.0),
+            "compact.radius": .number(9.0),
+            "compact.pad": .number(3.0),
+            "compact.cap-radius": .number(6.0),
+            "compact.gap": .number(4.0),
+            "compact.dash": .number(6.0),
+            "compact.font": .text("500 12px/1 mono"),
+            "compact.tracking": .text("0"),
+            "key.pop": .text("0.6"),
+            "key.ripple": .text("45ms"),
+            "dash.thickness": .number(2.0),
+            "caret.width": .number(2.0),
+            "caret.height": .text("0.9em"),
+            "ring.gap": .number(10.0),
+            "disabled.opacity": .text("0.4"),
+        ]
+    )
+
     /// A number you step, scrub or type, at Field's three sizes and radii: the field well with a keycap at each end (the set's minus and plus glyphs), concentric with the well, and the value between them. Each step turns the value one drum step on the settle spring (the swap drum): plus rolls up, minus rolls down. Dragging the label sideways scrubs it. Holding Alt or Shift over the field turns the keycaps' legends on the drum to the fine or coarse step. A unit is engraved after the value in ink3. At a limit the keycap disables; an arrow or a scrub past it shakes only the digits on the refusal spring. Typing is a draft: plain numbers, the unit and arithmetic (+10, *2, =8*12, read back under the field) commit on Enter or blur. The inspector kind has no keycaps: a letter engraved at the well's start is the scrub handle. Reduce Motion: the drum crossfades and nothing shakes. (the field well (recipe well field) at the field recipe's sizes and radii; compact button caps; the swap drum; the refusal; the form field's changed mark, readback and error row; Base UI NumberField)
     public static let numberField = MetalObjectRecipe(
         name: "number-field",
