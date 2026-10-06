@@ -1,0 +1,22 @@
+{
+  "name": "widget",
+  "title": "Widget",
+  "status": "alpha",
+  "layer": "object",
+  "kind": "composed",
+  "uses": ["alert", "badge", "button", "calendar", "card", "field", "form-field", "markdown", "meter", "progress", "properties", "row", "select"],
+  "description": "A piece of interface a model sends as JSON (a card with a date and a Confirm key, a list of results, a progress line), rendered with MetalUI's own components. The JSON is untrusted: only the nodes and props in the published schema (widgets.schema.json) pass, URLs only http, https or mailto, and what can't be shown reads quietly in place. Keys never act: they hand { type: \"action\", name, payload } and the fields' values to the host.",
+  "base": "none (each node is the component it names, loaded on demand)",
+  "react": {
+    "export": "Widget, parseWidget",
+    "entry": "widget",
+    "files": ["widget.tsx", "spec.ts"]
+  },
+  "swift": {
+    "symbol": "MetalWidget",
+    "file": "swift/Sources/MetalUI/Components/MetalWidget.swift"
+  },
+  "sheet": "docs/sheets/render-json.md",
+  "agent": "widget.agent.md",
+  "page": "/components/widget"
+}

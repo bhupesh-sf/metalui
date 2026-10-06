@@ -1,0 +1,639 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://metalui.dev/widgets.schema.json",
+  "title": "MetalUI widget",
+  "description": "A piece of interface a model sends as JSON, rendered by MetalUI's Widget (React) and MetalWidget (SwiftUI): one node or an array of nodes. Keys never act; they hand their action to the host. At most 8 deep and 200 nodes; URLs only http, https or mailto. Generated from components/widget/spec.ts.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/node"
+    },
+    {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    }
+  ],
+  "$defs": {
+    "node": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Card"
+        },
+        {
+          "$ref": "#/$defs/List"
+        },
+        {
+          "$ref": "#/$defs/Badge"
+        },
+        {
+          "$ref": "#/$defs/Button"
+        },
+        {
+          "$ref": "#/$defs/Field"
+        },
+        {
+          "$ref": "#/$defs/Select"
+        },
+        {
+          "$ref": "#/$defs/DatePicker"
+        },
+        {
+          "$ref": "#/$defs/Properties"
+        },
+        {
+          "$ref": "#/$defs/Markdown"
+        },
+        {
+          "$ref": "#/$defs/Progress"
+        },
+        {
+          "$ref": "#/$defs/Meter"
+        },
+        {
+          "$ref": "#/$defs/Alert"
+        }
+      ]
+    },
+    "action": {
+      "type": "object",
+      "description": "What a key hands the host, with the widget's field values beside it.",
+      "properties": {
+        "type": {
+          "const": "action"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "payload": {
+          "type": "object",
+          "description": "Plain JSON, at most 8192 characters."
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "option": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "value",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "pair": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "value": {
+          "type": [
+            "string",
+            "number"
+          ]
+        }
+      },
+      "required": [
+        "label",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "Card": {
+      "type": "object",
+      "description": "A thing on a raised plate: a title, a description, a status lamp, body nodes and a footer of buttons.",
+      "properties": {
+        "type": {
+          "const": "Card"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "The card's title."
+        },
+        "href": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^(https?:|mailto:)",
+          "description": "Makes the title a link over the card (http, https or mailto only)."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 600,
+          "description": "One or two lines under the title."
+        },
+        "status": {
+          "enum": [
+            "live",
+            "waiting",
+            "failed"
+          ],
+          "description": "A lamp at the title's end: live (green), waiting (amber), failed (red)."
+        },
+        "size": {
+          "enum": [
+            "regular",
+            "compact"
+          ],
+          "description": "regular (the default) or compact."
+        },
+        "children": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/node"
+          },
+          "description": "Body nodes, in a column."
+        },
+        "footer": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Button"
+              }
+            ]
+          },
+          "description": "Buttons under the body."
+        }
+      },
+      "required": [
+        "type",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "List": {
+      "type": "object",
+      "description": "Rows of items, each a line of text with a detail and a trailing badge; an item with an action is a key.",
+      "properties": {
+        "type": {
+          "const": "List"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Names the list for assistive tech."
+        },
+        "children": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ListItem"
+              }
+            ]
+          },
+          "description": "The items."
+        }
+      },
+      "required": [
+        "type",
+        "children"
+      ],
+      "additionalProperties": false
+    },
+    "ListItem": {
+      "type": "object",
+      "description": "One row of a List.",
+      "properties": {
+        "type": {
+          "const": "ListItem"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "The row's words."
+        },
+        "detail": {
+          "type": "string",
+          "maxLength": 400,
+          "description": "A second, quieter line."
+        },
+        "badge": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "A short fact at the row's end."
+        },
+        "action": {
+          "$ref": "#/$defs/action",
+          "description": "Makes the row a key that sends this action."
+        }
+      },
+      "required": [
+        "type",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "Badge": {
+      "type": "object",
+      "description": "One short fact: a kind, a version, a state.",
+      "properties": {
+        "type": {
+          "const": "Badge"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "The words."
+        },
+        "led": {
+          "enum": [
+            "live",
+            "waiting",
+            "failed",
+            "off"
+          ],
+          "description": "A leading lamp: live (green), waiting (amber), failed (red), off."
+        },
+        "size": {
+          "enum": [
+            "regular",
+            "compact"
+          ],
+          "description": "regular (the default) or compact."
+        }
+      },
+      "required": [
+        "type",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "Button": {
+      "type": "object",
+      "description": "A key that sends an action to the host, with the widget's field values beside it.",
+      "properties": {
+        "type": {
+          "const": "Button"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "The verb on the key."
+        },
+        "action": {
+          "$ref": "#/$defs/action",
+          "description": "What the key sends."
+        },
+        "cap": {
+          "enum": [
+            "standard",
+            "primary",
+            "destructive"
+          ],
+          "description": "standard (the default), primary (the one main act), destructive (cannot be undone)."
+        },
+        "size": {
+          "enum": [
+            "default",
+            "compact"
+          ],
+          "description": "default or compact."
+        },
+        "disabled": {
+          "type": "boolean",
+          "description": "Shown but not pressable."
+        }
+      },
+      "required": [
+        "type",
+        "label",
+        "action"
+      ],
+      "additionalProperties": false
+    },
+    "Field": {
+      "type": "object",
+      "description": "A one-line text field; its value is sent with every action under its name.",
+      "properties": {
+        "type": {
+          "const": "Field"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[\\w.-]{1,64}$",
+          "description": "The key its value is sent under with every action (letters, digits, _ . -)."
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "What the field asks for, shown above it."
+        },
+        "input": {
+          "enum": [
+            "text",
+            "email",
+            "number",
+            "url"
+          ],
+          "description": "text (the default), email, number or url."
+        },
+        "placeholder": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "The hint while empty."
+        },
+        "defaultValue": {
+          "type": "string",
+          "maxLength": 400,
+          "description": "The value it starts with."
+        },
+        "size": {
+          "enum": [
+            "large",
+            "regular",
+            "compact"
+          ],
+          "description": "large, regular (the default) or compact."
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "Select": {
+      "type": "object",
+      "description": "One of a few options; its value is sent with every action under its name.",
+      "properties": {
+        "type": {
+          "const": "Select"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[\\w.-]{1,64}$",
+          "description": "The key its value is sent under with every action (letters, digits, _ . -)."
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "What the field asks for, shown above it."
+        },
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/option"
+          },
+          "description": "The options, [{ value, label }]."
+        },
+        "placeholder": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "The words before a choice."
+        },
+        "defaultValue": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "The value chosen at first."
+        },
+        "size": {
+          "enum": [
+            "regular",
+            "compact"
+          ],
+          "description": "regular (the default) or compact."
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "DatePicker": {
+      "type": "object",
+      "description": "One day, typed or picked; sent as YYYY-MM-DD under its name.",
+      "properties": {
+        "type": {
+          "const": "DatePicker"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[\\w.-]{1,64}$",
+          "description": "The key its value is sent under with every action (letters, digits, _ . -)."
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "What the field asks for, shown above it."
+        },
+        "defaultValue": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "The day it starts with, YYYY-MM-DD."
+        },
+        "min": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "The first day that can be chosen."
+        },
+        "max": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "The last day that can be chosen."
+        },
+        "size": {
+          "enum": [
+            "regular",
+            "compact"
+          ],
+          "description": "regular (the default) or compact."
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "Properties": {
+      "type": "object",
+      "description": "Label and value pairs: a receipt, a details panel.",
+      "properties": {
+        "type": {
+          "const": "Properties"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/pair"
+          },
+          "description": "The pairs, [{ label, value }]."
+        },
+        "size": {
+          "enum": [
+            "regular",
+            "compact"
+          ],
+          "description": "regular (the default) or compact."
+        }
+      },
+      "required": [
+        "type",
+        "items"
+      ],
+      "additionalProperties": false
+    },
+    "Markdown": {
+      "type": "object",
+      "description": "Words, in Markdown. Links other than http, https and mailto become their words.",
+      "properties": {
+        "type": {
+          "const": "Markdown"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 4000,
+          "description": "The Markdown source."
+        }
+      },
+      "required": [
+        "type",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "Progress": {
+      "type": "object",
+      "description": "How far a task has gone.",
+      "properties": {
+        "type": {
+          "const": "Progress"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "What is under way."
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Done so far, 0 to 100; leave it out when unknown."
+        },
+        "state": {
+          "enum": [
+            "running",
+            "paused",
+            "failed",
+            "complete"
+          ],
+          "description": "running (the default), paused, failed or complete."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Meter": {
+      "type": "object",
+      "description": "A measured amount in a known range: storage, quota, a level.",
+      "properties": {
+        "type": {
+          "const": "Meter"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "What is measured."
+        },
+        "value": {
+          "type": "number",
+          "description": "The amount."
+        },
+        "min": {
+          "type": "number",
+          "description": "The range's low end, 0 by default."
+        },
+        "max": {
+          "type": "number",
+          "description": "The range's high end, 100 by default."
+        }
+      },
+      "required": [
+        "type",
+        "label",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "Alert": {
+      "type": "object",
+      "description": "A message about this place, with buttons.",
+      "properties": {
+        "type": {
+          "const": "Alert"
+        },
+        "kind": {
+          "enum": [
+            "note",
+            "done",
+            "waiting",
+            "urgent",
+            "failed"
+          ],
+          "description": "note (the default), done, waiting, urgent or failed."
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "The message."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 600,
+          "description": "More about it."
+        },
+        "actions": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Button"
+              }
+            ]
+          },
+          "description": "Buttons."
+        }
+      },
+      "required": [
+        "type",
+        "title"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

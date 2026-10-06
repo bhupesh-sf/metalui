@@ -7916,6 +7916,99 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 ---
 
+# Widget
+
+A piece of interface a model sends as JSON, rendered with MetalUI's own components: a card with a date and a Book key, a list of results, a progress line. React: `Widget` and `parseWidget` from `@unlocalhosted/metalui/widget` (its own entry: it loads each component on demand, and keeping those imports out of the main entry keeps every other import small). SwiftUI: `MetalWidget`. An object: it stands for what the model produced and stays in the thread. Composed: every look is the component a node names; the widget lays its nodes out in a column, 12 apart (the `widget` recipe). The vocabulary, its props and its limits are one spec (`widget/spec.ts`), published as `https://metalui.dev/widgets.schema.json` and listed under "Widgets: render from JSON" in AI.md.
+
+## Use it for
+
+- An assistant's answer that is easier to act on than to read: a booking to confirm, choices to pick from, a status to watch.
+- A tool's result shown as interface, in a `Message` or a `ToolCall`.
+
+## Don't use it for
+
+- Interface you write yourself: use the components directly.
+- A question the agent must have answered before it goes on: use `Confirmation`.
+
+## Anatomy
+
+- A column of nodes (`Card`, `List` of `ListItem`, `Badge`, `Button`, `Field`, `Select`, `DatePicker`, `Properties`, `Markdown`, `Progress`, `Meter`, `Alert`), each the component it names. Keys and badges keep their own width.
+- Fallback: "Can't show this part" in meta type, ink3, in place of a node that can't be shown.
+
+## States
+
+| State | Look |
+|---|---|
+| loading a component's module | nothing yet (the widget is empty until its components are in) |
+| a node is unknown, misses a required prop, or throws | the fallback in its place; the rest renders |
+| a prop is invalid | dropped; the node renders without it |
+| the JSON doesn't parse | the fallback alone |
+
+Nothing of its own moves; each component keeps its motion and its Reduce Motion.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `Widget` `widget` (a node, an array of nodes, or JSON text), `onAction(action, { values })` | `MetalWidget(json: Data or String, onAction: (MetalWidgetAction, [String: String]) -> Void)` |
+| `parseWidget(input)` → `{ nodes, issues }`: the cleaned tree and what was dropped, for a host that checks before it stores | `MetalWidgetNode.parse(_:)` |
+| `WidgetAction` `{ type: "action", name, payload? }` | `MetalWidgetAction` `name`, `payload` (JSON data) |
+
+## Safety
+
+- The JSON is untrusted. Only the nodes and props in the spec reach a component; a node's `type` is looked up as an own key (`__proto__`, `constructor` are unknown nodes).
+- Strings are text; nothing is rendered as HTML. No prop is a function or a component.
+- URLs: a Card's `href` only http, https or mailto; Markdown links that are anything else (relative, `javascript:`, `data:`) become their words.
+- Limits: 8 deep, 200 nodes, 100 items in a list, 4000 characters of text, an action's payload 8 KB.
+- Keys never run anything: they call `onAction`. A payload is a plain-JSON copy.
+
+## Keyboard and accessibility
+
+- Each node is the component's own: its keys, focus and names. A `List` is a list; an item with an action is a button.
+- Fields need a `label` to be named visibly; without one their `name` names them.
+- The fallback is plain text, read in order.
+
+## Rules
+
+- Give the model the schema, not prose about it: structured output or a tool's input schema.
+- The host decides what an action does. Never map an action name straight to a URL or a command.
+- Keep `values` beside the `payload`: what the person typed is not what the model said.
+- One primary key per widget, as anywhere.
+
+---
+
+# Widgets: render from JSON
+
+A model can answer with interface instead of words: JSON that `<Widget widget={json} onAction={…} />` (React, from `@unlocalhosted/metalui/widget`) or `MetalWidget(json:onAction:)` (SwiftUI) renders with the components above. The schema is https://metalui.dev/widgets.schema.json (also `@unlocalhosted/metalui/widgets.schema.json`). Give it to the model as the shape of its answer (structured output or a tool's input schema).
+
+- A widget is one node or an array of nodes: `{ "type": "Card", "title": "…", "children": [ … ] }`.
+- A key never acts: it hands the host `{ "type": "action", "name": "…", "payload": { … } }`, and beside it the values of every `Field`, `Select` and `DatePicker` by `name`. The host decides what happens.
+- Only http, https and mailto URLs pass. Strings are text, never HTML. At most 8 deep and 200 nodes. What can't be shown reads "Can't show this part" in its place; the rest renders.
+
+| Node | Renders | Props (* required) |
+|---|---|---|
+| `Card` | Card: A thing on a raised plate: a title, a description, a status lamp, body nodes and a footer of buttons. | `title`* (string), `href` (url), `description` (string), `status` (live, waiting, failed), `size` (regular, compact), `children` (nodes), `footer` (Button) |
+| `List` | Row: Rows of items, each a line of text with a detail and a trailing badge; an item with an action is a key. | `label` (string), `children`* (ListItem) |
+| `ListItem` | Row: One row of a List. | `text`* (string), `detail` (string), `badge` (string), `action` (action) |
+| `Badge` | Badge: One short fact: a kind, a version, a state. | `text`* (string), `led` (live, waiting, failed, off), `size` (regular, compact) |
+| `Button` | Button: A key that sends an action to the host, with the widget's field values beside it. | `label`* (string), `action`* (action), `cap` (standard, primary, destructive), `size` (default, compact), `disabled` (boolean) |
+| `Field` | Field: A one-line text field; its value is sent with every action under its name. | `name`* (name), `label` (string), `input` (text, email, number, url), `placeholder` (string), `defaultValue` (string), `size` (large, regular, compact) |
+| `Select` | Select: One of a few options; its value is sent with every action under its name. | `name`* (name), `label` (string), `options`* (options), `placeholder` (string), `defaultValue` (string), `size` (regular, compact) |
+| `DatePicker` | DatePicker: One day, typed or picked; sent as YYYY-MM-DD under its name. | `name`* (name), `label` (string), `defaultValue` (date), `min` (date), `max` (date), `size` (regular, compact) |
+| `Properties` | Properties: Label and value pairs: a receipt, a details panel. | `items`* (pairs), `size` (regular, compact) |
+| `Markdown` | Markdown: Words, in Markdown. Links other than http, https and mailto become their words. | `text`* (string) |
+| `Progress` | Progress: How far a task has gone. | `label` (string), `value` (number), `state` (running, paused, failed, complete) |
+| `Meter` | Meter: A measured amount in a known range: storage, quota, a level. | `label`* (string), `value`* (number), `min` (number), `max` (number) |
+| `Alert` | Alert: A message about this place, with buttons. | `kind` (note, done, waiting, urgent, failed), `title`* (string), `description` (string), `actions` (Button) |
+
+```json
+{ "type": "Card", "title": "Table for 2, Friday", "description": "Casa Lume, 20:30",
+  "children": [{ "type": "DatePicker", "name": "day", "label": "Day", "defaultValue": "2026-10-09" }],
+  "footer": [{ "type": "Button", "label": "Book", "cap": "primary", "action": { "type": "action", "name": "book", "payload": { "venue": "casa-lume" } } }] }
+```
+
+---
+
 # Icons
 
 `@unlocalhosted/metalui/icons` has 78 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.

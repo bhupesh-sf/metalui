@@ -15,6 +15,7 @@
       "@unlocalhosted/metalui/icons": ["../../packages/metalui/src/icons.ts"],
       "@unlocalhosted/metalui/icons/life": ["../../packages/metalui/src/icons-life.ts"],
       "@unlocalhosted/metalui/sound": ["../../packages/metalui/src/sound.ts"],
+      "@unlocalhosted/metalui/widget": ["../../packages/metalui/src/widget.ts"],
     }
   },
   "include": ["src", "slices", "vite.config.ts", "vitest.config.ts"]

@@ -76,7 +76,8 @@ const resolve = (from, spec) => {
   }
   throw new Error(`${relative(SRC, from)} imports ${spec}, which does not exist`);
 };
-const imports = (f) => [...readFileSync(f, 'utf8').matchAll(/(?:from|import)\s+['"](\.{1,2}\/[^'"]+)['"]/g)].map((m) => m[1]);
+// Static imports and dynamic import('…') (a component that loads others on demand, as the widget does).
+const imports = (f) => [...readFileSync(f, 'utf8').matchAll(/(?:from|import)\s*\(?\s*['"](\.{1,2}\/[^'"]+)['"]/g)].map((m) => m[1]);
 
 const metas = components();
 const byDir = new Map(metas.map((m) => [m.dir, m]));
