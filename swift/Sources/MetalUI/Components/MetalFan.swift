@@ -17,8 +17,8 @@ private extension EnvironmentValues {
 @MainActor
 private final class MetalFanState: ObservableObject {
     @Published var open: MetalFanCell?
-    var pickerCount = 0
-    var pickerDirection: MetalFanDirection = .up
+    /// The open grid's reach past the cap, in cap steps (left, right, up, down), for a press outside.
+    var pickerReach = (left: 0, right: 0, up: 0, down: 0)
     init(open: MetalFanCell? = nil) { self.open = open }
     func toggle(_ cell: MetalFanCell) { open = open == cell ? nil : cell }
 }
@@ -47,6 +47,8 @@ public struct MetalFan<Content: View>: View {
 
     public var body: some View {
         HStack(alignment: .bottom, spacing: MetalRecipes.toolbar.points("self.gap")) { content }
+            // A graphite toolbar to what it holds: separators, picks and the plain ink read on the dark caps.
+            .environment(\.metalToolbarVariant, true)
             .environmentObject(state)
             .environment(\.metalFanReduceMotionOverride, reduceMotionOverride)
             .accessibilityElement(children: .contain)
@@ -76,8 +78,12 @@ public struct MetalFan<Content: View>: View {
                             }
                             var bounds = view.convert(view.bounds, to: nil)
                             if state.open == .picker {
-                                let reach = Double(state.pickerCount) * (MetalRecipes.iconButton.points("tool.size") + MetalRecipes.toolbar.points("self.gap"))
-                                bounds = bounds.insetBy(dx: 0, dy: -reach)
+                                // AppKit's window space runs up: the grid above the cap is +y.
+                                let step = MetalRecipes.iconButton.points("tool.size") + MetalRecipes.toolbar.points("self.gap")
+                                let r = state.pickerReach
+                                bounds = CGRect(x: bounds.minX - Double(r.left) * step, y: bounds.minY - Double(r.down) * step,
+                                                width: bounds.width + Double(r.left + r.right) * step,
+                                                height: bounds.height + Double(r.up + r.down) * step)
                             }
                             if !bounds.contains(event.locationInWindow) { state.open = nil }
                             return event
@@ -100,12 +106,29 @@ private struct MetalFanWindowProbe: NSViewRepresentable {
 }
 #endif
 
-/// Current context, using the same graphite cap material as the tool cells.
+/// What the bar is about: a word, or (with `icon`) a glyph cap the title names (tooltip and
+/// accessibility label), on the same graphite cap material as the tool cells.
 public struct MetalFanLabel: View {
     let title: String
-    public init(_ title: String) { self.title = title }
+    let icon: MetalIconName?
+    public init(_ title: String, icon: MetalIconName? = nil) { self.title = title; self.icon = icon }
     public var body: some View {
         let r = MetalRecipes.iconButton
+        if let icon {
+            MetalIcon(icon, size: r.points("tool.glyph"))
+                .foregroundStyle((r.color("tool.ink") ?? MetalTokens.graphite.ink).color)
+                .frame(width: r.points("tool.size"), height: r.points("tool.size"))
+                .metalObjectRecipe(r, part: "tool", in: RoundedRectangle(cornerRadius: r.points("tool.radius"), style: .continuous))
+                .metalTooltip(title)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(title)
+                .accessibilityAddTraits(.isImage)
+        } else {
+            word(r)
+        }
+    }
+
+    private func word(_ r: MetalObjectRecipe) -> some View {
         Text(title)
             .font(MetalRecipes.toolbar.font("search.font"))
             .foregroundStyle((r.color("tool.ink") ?? MetalTokens.graphite.ink).color)
@@ -121,15 +144,65 @@ public struct MetalFanOption<Value: Hashable>: Identifiable {
     public let label: String
     public let icon: MetalIconName
     public let shortcut: String?
+    /// Related choices share a group and a row of the grid.
+    public let group: String?
     public var id: Value { value }
-    public init(_ value: Value, _ label: String, icon: MetalIconName, shortcut: String? = nil) {
-        self.value = value; self.label = label; self.icon = icon; self.shortcut = shortcut
+    public init(_ value: Value, _ label: String, icon: MetalIconName, shortcut: String? = nil, group: String? = nil) {
+        self.value = value; self.label = label; self.icon = icon; self.shortcut = shortcut; self.group = group
     }
 }
 
 public enum MetalFanDirection: Sendable { case up, both }
 
-/// Current choice stays in the bar; its siblings fan from behind it.
+/// The fan's own motion constants, the same as the React fan's.
+enum MetalFanMotion {
+    /// A key's scale while tucked behind the cap; it grows to full size on its way out.
+    static let tucked = 0.6
+    /// The chevron is drawn pointing down; a quarter turn clockwise points it left, the way the tray folds.
+    static let foldTurn = 90.0
+}
+
+/// One key's place in the grid: its row and column, and its offset from the cap in cap steps.
+struct MetalFanGridCell: Equatable { let row: Int, column: Int, x: Int, y: Int }
+
+/// The grid: one row per group, in order (ungrouped, rows of ⌈√n⌉); the cap's column is the grid's
+/// middle (left of middle for an even width); rows sit above the cap (up) or split around it (both).
+struct MetalFanGrid {
+    let rows: [[Int]]
+    let cells: [MetalFanGridCell]
+    let above: Int
+
+    init(groups: [String?], direction: MetalFanDirection) {
+        var rows: [[Int]] = []
+        if groups.contains(where: { $0 != nil }) {
+            for k in groups.indices {
+                if k > 0, groups[k] == groups[k - 1] { rows[rows.count - 1].append(k) } else { rows.append([k]) }
+            }
+        } else if !groups.isEmpty {
+            let n = max(1, Int(Double(groups.count).squareRoot().rounded(.up)))
+            rows = stride(from: 0, to: groups.count, by: n).map { Array($0..<min($0 + n, groups.count)) }
+        }
+        let columns = rows.map(\.count).max() ?? 1
+        let above = direction == .up ? rows.count : (rows.count + 1) / 2
+        var cells = Array(repeating: MetalFanGridCell(row: 0, column: 0, x: 0, y: 0), count: groups.count)
+        for (r, row) in rows.enumerated() {
+            for (c, k) in row.enumerated() {
+                cells[k] = MetalFanGridCell(row: r, column: c, x: c - (columns - 1) / 2, y: r < above ? r - above : r - above + 1)
+            }
+        }
+        self.rows = rows; self.cells = cells; self.above = above
+    }
+
+    /// Staggered by distance from the cap: one beat per ring of equal distance, nearest first.
+    var rings: [Int] {
+        let distance = cells.map(Self.distance)
+        let levels = Array(Set(distance)).sorted()
+        return distance.map { levels.firstIndex(of: $0) ?? 0 }
+    }
+    private static func distance(_ c: MetalFanGridCell) -> Int { Int((Double(c.x * c.x + c.y * c.y).squareRoot() * 100).rounded()) }
+}
+
+/// The current choice stays in the bar; pressing it unfolds every choice into a grid from behind it.
 public struct MetalFanPicker<Value: Hashable>: View {
     private let label: String
     @Binding private var value: Value
@@ -145,46 +218,42 @@ public struct MetalFanPicker<Value: Hashable>: View {
         self.label = label; _value = value; self.options = options; self.direction = direction
     }
 
-    private var others: [MetalFanOption<Value>] { options.filter { $0.value != value } }
-    private var current: MetalFanOption<Value>? { options.first { $0.value == value } ?? options.first }
+    private var currentIndex: Int { options.firstIndex { $0.value == value } ?? 0 }
     private var open: Bool { state.open == .picker }
     private var still: Bool { reduceMotionOverride ?? reduceMotion }
-    private func slot(_ index: Int) -> Int {
-        if direction == .up { return -(index + 1) }
-        return (index.isMultiple(of: 2) ? -1 : 1) * (index / 2 + 1)
-    }
 
     public var body: some View {
         let step = MetalRecipes.iconButton.points("tool.size") + MetalRecipes.toolbar.points("self.gap")
+        let grid = MetalFanGrid(groups: options.map(\.group), direction: direction)
+        let rings = grid.rings
+        let farthest = rings.max() ?? 0
         ZStack(alignment: .bottom) {
-            ForEach(Array(others.enumerated()), id: \.element.id) { index, option in
+            ForEach(Array(options.enumerated()), id: \.element.id) { index, option in
+                let cell = grid.cells[index]
                 MetalIconButton(option.shortcut.map { "\(option.label) · \($0)" } ?? option.label,
-                                icon: option.icon, variant: .tool) {
+                                icon: option.icon, variant: .tool, pressed: index == currentIndex) {
                     value = option.value
                     state.open = nil
                     capFocused = true
                 }
                 .focused($focusedOption, equals: index)
-                .onMoveCommand { move in
-                    let next = index + (move == .up ? 1 : move == .down ? -1 : 0)
-                    if next < 0 { capFocused = true }
-                    else if next < others.count { focusedOption = next }
-                }
+                .onMoveCommand { move in moveFocus(from: cell, move, grid: grid) }
                 // Before the offset: the reported frame moves with the drawn option.
                 .metalHitRegion(open)
-                // Each choice travels out of the cap on SwiftUI's own snappy motion (the chrome
-                // role): quick and exact like a system menu. Opening staggers by a beat; folding
-                // goes back together.
-                .offset(y: open ? Double(slot(index)) * step : 0)
+                // Each key grows out of the cap and travels to its cell on SwiftUI's own snappy
+                // motion (the chrome role). Opening staggers by ring; folding goes back together.
+                .scaleEffect(open || still ? .one : MetalFanMotion.tucked)
+                .offset(x: open ? Double(cell.x) * step : .zero, y: open ? Double(cell.y) * step : .zero)
                 .opacity(open ? .one : .zero)
                 .animation(still ? MetalSpringClass.crossfade.spring.animation
-                                 : MetalSprings.chrome.animation.delay(open ? Double(index) * MetalMotionTokens.fanStagger : .zero),
+                                 : MetalSprings.chrome.animation.delay(open ? Double(rings[index]) * MetalMotionTokens.fanStagger : .zero),
                            value: open)
                 .allowsHitTesting(open)
                 .accessibilityHidden(!open)
-                .zIndex(open ? Double(others.count - index) : 0)
+                .zIndex(open ? Double(farthest - rings[index]) : 0)
             }
-            if let current {
+            if options.indices.contains(currentIndex) {
+                let current = options[currentIndex]
                 MetalIconButton("\(label): \(current.label)", icon: current.icon, variant: .tool) {
                     state.toggle(.picker)
                 }
@@ -195,13 +264,29 @@ public struct MetalFanPicker<Value: Hashable>: View {
         }
         .frame(width: MetalRecipes.iconButton.points("tool.size"), height: MetalRecipes.iconButton.points("tool.size"))
         .onChange(of: state.open) { old, new in
-            if new == .picker { focusedOption = others.isEmpty ? nil : 0 }
+            if new == .picker { focusedOption = options.isEmpty ? nil : currentIndex }
             else if old == .picker && new == nil { capFocused = true }
         }
         .onAppear {
-            state.pickerCount = others.count
-            state.pickerDirection = direction
+            let xs = grid.cells.map(\.x), ys = grid.cells.map(\.y)
+            state.pickerReach = (left: max(0, -(xs.min() ?? 0)), right: max(0, xs.max() ?? 0),
+                                 up: max(0, -(ys.min() ?? 0)), down: max(0, ys.max() ?? 0))
         }
+    }
+
+    /// Arrows move in two dimensions, as the grid is drawn; down past the row nearest the cap returns to it.
+    private func moveFocus(from cell: MetalFanGridCell, _ move: MoveCommandDirection, grid: MetalFanGrid) {
+        var r = cell.row, c = cell.column
+        switch move {
+        case .left: c -= 1
+        case .right: c += 1
+        case .up: r -= 1
+        case .down: r += 1
+        @unknown default: return
+        }
+        if move == .down, r == grid.above, direction == .up { capFocused = true; return }
+        let row = grid.rows[min(max(r, 0), grid.rows.count - 1)]
+        focusedOption = row[min(max(c, 0), row.count - 1)]
     }
 }
 
@@ -229,8 +314,9 @@ public struct MetalFanTray<Icon: View, Content: View>: View {
                 content
                     .environment(\.metalToolbarVariant, true)
                     .accessibilityLabel(label)
+                // The set's chevron, turned to point the way the tray folds.
                 MetalIconButton("Fold \(label)", variant: .tool) { state.open = nil; capFocused = true } icon: {
-                    Text("‹").font(MetalRecipes.toolbar.font("search.font"))
+                    MetalIcon(.chevron, size: r.points("tool.glyph")).rotationEffect(.degrees(MetalFanMotion.foldTurn))
                 }
                 .focused($foldFocused)
             } else {

@@ -1097,7 +1097,7 @@ Square dots on one pitch, printed into a well. React: `DotDisplay` and `useDotTi
 
 # Draw picks
 
-The ink and width choices beside the drawing tools. React: `InkPicks`, `WidthPicks` from `@unlocalhosted/metalui`. SwiftUI: `MetalInkPicks`, `MetalWidthPicks` with `Binding<MetalInk>` and `Binding<MetalInkWidth>`.
+The ink and width choices beside the drawing tools. React: `InkPicks`, `WidthPicks` from `@unlocalhosted/metalui`. SwiftUI: `MetalInkPicks`, `MetalWidthPicks` with `Binding<MetalInk>` and `Binding<MetalInkWidth>`, and `MetalInkStroke(ink:width:)`.
 
 ## Use it for
 
@@ -1288,6 +1288,7 @@ A compact control bar for a toolbar that must stay small: it shows the current s
 - The Ink tray explains itself: its cap is `<InkStroke ink={ink} width={width} />` (the stroke the pen will draw), and it holds `InkPicks`, a `ToolbarSeparator` and `WidthPicks`: two named groups ("Ink", "Width") whose picks are named in their tooltips ("Ink: red", "Width: fine"), the chosen ones latched in the strip's well, the widths drawn as strokes in the chosen ink.
 - A selection's actions are glyph keys, not worded buttons: `<IconButton variant="tool" label="Export" title="Export" icon={<DownloadIcon />} />` (SwiftUI: `MetalIconButton("Export", icon: .download, variant: .tool)`). The name is the tooltip and the accessible name; the glyph plays its act on hover and press.
 - Motion is the part spring; Reduce Motion keeps the layout and drops the travel.
+- SwiftUI: `MetalFan`, `MetalFanLabel("Ink", icon: .palette)`, `MetalFanPicker` with `MetalFanOption(value, label, icon:, shortcut:, group:)` (the same grid, latched current, arrows in two dimensions), `MetalFanTray("Ink and width", icon: { MetalInkStroke(ink: ink, width: width) }) { MetalInkPicks(…); MetalToolbarSeparator(); MetalWidthPicks(…) }`; the bar is a graphite strip to what it holds.
 
 ## Example
 ```tsx

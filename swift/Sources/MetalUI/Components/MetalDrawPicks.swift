@@ -4,7 +4,8 @@ import SwiftUI
 public enum MetalInk: String, CaseIterable, Sendable, Identifiable {
     case ink, red, blue, green, amber
     public var id: String { rawValue }
-    public var label: String { rawValue.capitalized }
+    /// "Plain" for the colorway's own ink (dark on bone, light on graphite), else the colour's name.
+    public var label: String { self == .ink ? "Plain" : rawValue.capitalized }
 
     public func color(in colorway: MetalColorway, graphiteStrip: Bool = false) -> MetalRGBA {
         let key = self == .ink && graphiteStrip ? "ink.on-dark" : "ink.\(rawValue)"
@@ -12,7 +13,7 @@ public enum MetalInk: String, CaseIterable, Sendable, Identifiable {
     }
 }
 
-/// Three stroke widths, shown as dots in the current ink.
+/// Three stroke widths, shown as strokes in the current ink.
 public enum MetalInkWidth: String, CaseIterable, Sendable, Identifiable {
     case fine, regular, bold
     public var id: String { rawValue }
@@ -33,7 +34,7 @@ public struct MetalInkPicks: View {
     public var body: some View {
         HStack(spacing: MetalRecipes.draw.points("self.gap")) {
             ForEach(MetalInk.allCases) { ink in
-                MetalDrawPick(label: ink.label, chosen: value == ink, disabled: disabled, ink: ink, width: nil) {
+                MetalDrawPick(label: "Ink: \(ink.label.lowercased())", chosen: value == ink, disabled: disabled, ink: ink, width: nil) {
                     value = ink
                 }
             }
@@ -43,7 +44,7 @@ public struct MetalInkPicks: View {
     }
 }
 
-/// Three stroke-width dots, painted in the chosen ink.
+/// Three stroke widths, drawn as strokes in the chosen ink.
 public struct MetalWidthPicks: View {
     @Binding private var value: MetalInkWidth
     private let ink: MetalInk
@@ -58,13 +59,33 @@ public struct MetalWidthPicks: View {
     public var body: some View {
         HStack(spacing: MetalRecipes.draw.points("self.gap")) {
             ForEach(MetalInkWidth.allCases) { width in
-                MetalDrawPick(label: width.label, chosen: value == width, disabled: disabled, ink: ink, width: width) {
+                MetalDrawPick(label: "Width: \(width.label.lowercased())", chosen: value == width, disabled: disabled, ink: ink, width: width) {
                     value = width
                 }
             }
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Width")
+    }
+}
+
+/// A stroke of one width in one ink, slanted as the pen draws it: the width picks' face, and a
+/// tray cap that shows the pen as it is set (the Fan's Ink tray). Decorative.
+public struct MetalInkStroke: View {
+    private let ink: MetalInk
+    private let width: MetalInkWidth
+    @Environment(\.metalColorway) private var colorway
+    @Environment(\.metalToolbarVariant) private var graphiteStrip
+
+    public init(ink: MetalInk = .ink, width: MetalInkWidth = .regular) { self.ink = ink; self.width = width }
+
+    public var body: some View {
+        let r = MetalRecipes.draw
+        Capsule()
+            .fill(ink.color(in: colorway, graphiteStrip: graphiteStrip).color)
+            .frame(width: r.points("self.stroke"), height: width.points)
+            .rotationEffect(.degrees(r.scalar("self.slant")))
+            .accessibilityHidden(true)
     }
 }
 
@@ -108,20 +129,25 @@ private struct MetalDrawPickStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         let r = MetalRecipes.draw
         let size = r.points("self.size")
-        let dot = width?.points ?? r.points("self.bead")
+        let dot = r.points("self.bead")
         let scale = configuration.isPressed ? r.scalar("bead.press") : hovering && isEnabled ? r.scalar("bead.hover") : .one
         let t = colorway.tokens
         let well = MetalRecipe(fill: t.pressedBg, shadows: t.pressedSh)
-        let bead = Circle()
-            .fill(ink.color(in: colorway, graphiteStrip: graphiteStrip).color)
-            .frame(width: dot, height: dot)
-            .background {
-                if width == nil {
-                    Circle()
-                        .fill(ink.color(in: colorway, graphiteStrip: graphiteStrip).color)
-                        .metalRecipe(MetalDrawGloss.recipe(ink: ink.color(in: colorway, graphiteStrip: graphiteStrip), colorway: colorway), in: Circle())
-                }
+        let face = Group {
+            if let width {
+                MetalInkStroke(ink: ink, width: width)
+            } else {
+                Circle()
+                    .fill(ink.color(in: colorway, graphiteStrip: graphiteStrip).color)
+                    .frame(width: dot, height: dot)
+                    .background {
+                        Circle()
+                            .fill(ink.color(in: colorway, graphiteStrip: graphiteStrip).color)
+                            .metalRecipe(MetalDrawGloss.recipe(ink: ink.color(in: colorway, graphiteStrip: graphiteStrip), colorway: colorway), in: Circle())
+                    }
             }
+        }
+        let bead = face
             .scaleEffect(reduceMotion ? .one : scale)
             .animation(reduceMotion ? nil : configuration.isPressed ? .easeOut(duration: MetalDrawPickMotion.pressDuration) : MetalSpringClass.part.spring.animation,
                        value: scale)
@@ -129,7 +155,12 @@ private struct MetalDrawPickStyle: ButtonStyle {
         return bead
             .frame(width: size, height: size)
             .background {
-                if chosen { Color.clear.metalRecipe(well, in: Circle()) }
+                // Latched in the strip's own well: the graphite strip's dark one, else the colorway's.
+                if chosen && graphiteStrip {
+                    Color.clear.metalObjectRecipe(MetalRecipes.toolbar, part: "tool", state: "pressed", in: Circle())
+                } else if chosen {
+                    Color.clear.metalRecipe(well, in: Circle())
+                }
             }
             .contentShape(Circle())
             .opacity(isEnabled ? .one : MetalButtonMetrics.disabled)
