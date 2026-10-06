@@ -665,6 +665,23 @@
       "agent": "https://metalui.dev/r/empty-state.md"
     },
     {
+      "name": "event-calendar",
+      "title": "Event calendar",
+      "status": "alpha",
+      "description": "The person's time: their events on a month, a week, a day or a few days by hours. Timed events stand at their time and share the day side by side; all-day and multi-day events run as bars across the days; a green hairline marks now. Pressed and moved, an event lifts and steps by the snap to another hour or day, a detent each step, and its lower edge changes its end; keys do the same, out loud, in one commit. A failed save glides every event back. Pressing one opens its details in a popover.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "EventCalendar",
+        "base": "div role=group; events are buttons named with their title and time; its own pointer drag over strips of days (window listeners, a snap, useRowMotion for the glide); Base UI Popover for details; Switcher for the views"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalEventCalendar"
+      },
+      "registry": "https://metalui.dev/r/event-calendar.json",
+      "agent": "https://metalui.dev/r/event-calendar.md"
+    },
+    {
       "name": "fan",
       "title": "Fan",
       "status": "alpha",

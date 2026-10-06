@@ -1055,6 +1055,30 @@
       "docs": "Agent guide: https://metalui.dev/r/empty-state.md. SwiftUI: MetalEmptyState in the MetalUI Swift package."
     },
     {
+      "name": "event-calendar",
+      "type": "registry:ui",
+      "title": "Event calendar",
+      "description": "The person's time: their events on a month, a week, a day or a few days by hours. Timed events stand at their time and share the day side by side; all-day and multi-day events run as bars across the days; a green hairline marks now. Pressed and moved, an event lifts and steps by the snap to another hour or day, a detent each step, and its lower edge changes its end; keys do the same, out loud, in one commit. A failed save glides every event back. Pressing one opens its details in a popover.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/calendar.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/switcher.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/event-calendar/event-calendar.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/event-calendar/event-calendar.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/event-calendar.md. SwiftUI: MetalEventCalendar in the MetalUI Swift package."
+    },
+    {
       "name": "fan",
       "type": "registry:ui",
       "title": "Fan",
