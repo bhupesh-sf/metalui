@@ -42,7 +42,7 @@ for (const colorway of COLORWAYS) {
     await jump.click();
     await expect.poll(() => fromFoot(page)).toBeLessThan(30);
     await expect(jump).toHaveCount(0);
-    await expect(reply).toHaveAttribute('aria-busy', 'false', { timeout: 15_000 });
+    await expect(reply.locator('.mu-message-text')).toHaveAttribute('aria-busy', 'false', { timeout: 15_000 });
   });
 }
 
@@ -52,7 +52,7 @@ test('sending from up the thread comes back to the foot (pinKey)', async ({ page
   const viewport = section.locator('.mu-scroll-area-viewport').first();
   await section.getByRole('button', { name: 'Ask' }).click();
   const reply = section.getByRole('article', { name: 'Assistant, Fast' }).last();
-  await expect(reply).toHaveAttribute('aria-busy', 'false', { timeout: 15_000 });
+  await expect(reply.locator('.mu-message-text')).toHaveAttribute('aria-busy', 'false', { timeout: 15_000 });
   await viewport.evaluate((v) => { v.scrollTop = 0; });
   await expect(section.getByRole('button', { name: 'Jump to latest' })).toBeVisible();
 
@@ -94,7 +94,7 @@ test('Reduce Motion: nothing lands, and Jump to latest jumps', async ({ page }) 
   await section.getByRole('button', { name: 'Ask' }).click();
   expect(await section.locator('[data-row]').last().evaluate((el) => el.getAnimations().length)).toBe(0);
   const reply = section.getByRole('article', { name: 'Assistant, Fast' }).last();
-  await expect(reply).toHaveAttribute('aria-busy', 'false', { timeout: 15_000 });
+  await expect(reply.locator('.mu-message-text')).toHaveAttribute('aria-busy', 'false', { timeout: 15_000 });
   const viewport = section.locator('.mu-scroll-area-viewport').first();
   await viewport.evaluate((v) => { v.scrollTop = 0; });
   await section.getByRole('button', { name: 'Jump to latest' }).click();

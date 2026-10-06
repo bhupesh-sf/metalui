@@ -1379,6 +1379,26 @@
       "docs": "Agent guide: https://metalui.dev/r/mark-scrub.md. SwiftUI: MetalMarkScrub in the MetalUI Swift package."
     },
     {
+      "name": "markdown",
+      "type": "registry:ui",
+      "title": "Markdown",
+      "description": "An answer's text, set as it arrives: headings, paragraphs, nested lists, quotes, tables, inline code and safe links, with every fence in a Code block. While it streams a green caret follows the last word, a half-arrived mark is closed, and a pace reveals what has arrived a word at a time.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/code-block.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/markdown/markdown.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/markdown/markdown.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/markdown.md. SwiftUI: MetalMarkdown in the MetalUI Swift package."
+    },
+    {
       "name": "menu",
       "type": "registry:ui",
       "title": "Menu and correction popover",
@@ -1444,6 +1464,29 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/message.md. SwiftUI: MetalMessage in the MetalUI Swift package."
+    },
+    {
+      "name": "message-actions",
+      "type": "registry:ui",
+      "title": "Message actions",
+      "description": "The keys that act on a message, in Message's footer: Copy (turning to Copied on the drum), Retry, Edit, and Good and Bad as latching thumbs, with an optional row of reasons after Bad that says Thanks and goes.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/message-actions/message-actions.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/message-actions/message-actions.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/message-actions.md. SwiftUI: MetalMessageActions in the MetalUI Swift package."
     },
     {
       "name": "meter",
@@ -1664,6 +1707,32 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/progress.md. SwiftUI: MetalProgress in the MetalUI Swift package."
+    },
+    {
+      "name": "prompt-input",
+      "type": "registry:ui",
+      "title": "Prompt input",
+      "description": "Where a message is written and sent: a raised plate with the host's attached files, a well that grows from one line, attach (picked, dropped or pasted), the host's tools such as a model select, and Send that becomes Stop while a reply writes. ↩ sends and ⇧↩ breaks the line; disabled with a reason when offline.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/button.json",
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/icon-morph.json",
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/textarea.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/prompt-input/prompt-input.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/prompt-input/prompt-input.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/prompt-input.md. SwiftUI: MetalPromptInput in the MetalUI Swift package."
     },
     {
       "name": "properties",

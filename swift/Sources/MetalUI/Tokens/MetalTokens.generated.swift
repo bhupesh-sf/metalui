@@ -1187,6 +1187,59 @@ public enum MetalRecipes {
         ]
     )
 
+    /// An answer's text, set as it arrives (a Component: you read it, follow its links and copy its code). Paragraphs in the content type with a gap between blocks; # and ## in the display role, ### and #### in the doc subheading role (#### in ink2), each with a little more room above; bullets and numbers indented, nested by indent, their markers in ink3; a quote on a 2 rail in the rule ink, its words in ink2; a rule; GFM tables in the body type with tabular figures, a hairline under the head (ui type, ink2), cells padded, scrolling sideways when wide. Inline code in the code block's type on its ghost tint, padded and rounded; links in ink with an ink3 underline that darkens on hover. Every fence is a framed Code block; an open one streams. While streaming, a green pill caret follows the last word and a half-arrived mark is closed. With a pace, what has arrived is revealed a word at a time; under Reduce Motion a phrase every phrase-every, with no caret. (the content, display, doc subheading, body and ui type roles; the code block (fences, its code type and ghost tint); the rule; the green LED ink for the caret (the AI composer's caret))
+    public static let markdown = MetalObjectRecipe(
+        name: "markdown",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(12.0),
+            "heading.gap": .number(8.0),
+            "list.indent": .number(22.0),
+            "list.gap": .number(4.0),
+            "quote.rail": .number(2.0),
+            "quote.pad": .number(12.0),
+            "code.pad-x": .number(4.0),
+            "code.radius": .number(4.0),
+            "table.pad-x": .number(12.0),
+            "table.pad-y": .number(6.0),
+            "caret.width": .number(2.0),
+            "caret.height": .number(16.0),
+            "caret.gap": .number(2.0),
+            "caret.drop": .number(2.0),
+            "stream.phrase-every": .text("450ms"),
+        ]
+    )
+
+    /// Where a message is written and sent (a Component: it sends into the thread or stops a reply). A raised plate (raise-sm, the card radius) padded 8: the host's attached files above, a large Textarea that starts at one row and grows on the settle spring to six, then scrolls, and a strip: the attach key (ghost, the attach glyph, a tooltip), the host's tools (a compact Select), the hint in meta ink3 (hidden under 28rem), and Send (a compact primary cap). While a reply writes Send becomes Stop: the send glyph morphs to stop and the word turns on the drum. Send is disabled while there is nothing to send. Files dragged over the plate light its edge green, as a drop zone's. Disabled: the well, attach and Send dim, and the reason stands in the hint's place with the amber lamp. Reduce Motion: the well snaps, the glyph and word change in place. (the raised surface (raise-sm); Textarea; Button (primary, compact) with MorphPair and SwapText; IconButton; Tooltip; the LED; the drop zone's edge; the AI composer block's composer)
+    public static let promptInput = MetalObjectRecipe(
+        name: "prompt-input",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(8.0),
+            "self.pad": .number(8.0),
+            "files.gap": .number(6.0),
+            "strip.gap": .number(6.0),
+        ]
+    )
+
+    /// The keys that act on a message (a Component: copy it, write it again, edit it, say how it went), in Message's footer. A row of ghost icon keys 2 apart, each with a tooltip: Copy (the copy glyph turns to the check on the drum and its name to Copied for copy.hold), Retry, Edit (the pen), and the two thumbs, the thumb and the thumb turned over, latched (pressed) on the one chosen. With reasons, choosing a thumb fades in a row of compact buttons under the keys (settle spring), 6 apart; picking one says Thanks on the drum and the row leaves. Reduce Motion: the row appears and the glyphs change in place. (IconButton (ghost) and Tooltip; the copy, check, retry, pen and thumb glyphs; SwapIcon and SwapText (the drum); Button (compact); the settle spring; the AI composer block's Copy and Retry)
+    public static let messageActions = MetalObjectRecipe(
+        name: "message-actions",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(2.0),
+            "reasons.gap": .number(6.0),
+            "copy.hold": .text("1600ms"),
+            "thanks.hold": .text("1600ms"),
+        ]
+    )
+
     /// A level in a range (storage used, battery, signal), not a task: a row of LED segments like a level meter. A segment's colour comes from where it sits (green through the range, amber near the top, red at the end), the way a level meter is printed. When the value changes the level sweeps from its old edge to its new one, segment by segment (16 ms apart, each lamp fading in 90 ms): rising lights upward, falling darkens downward. Reduce Motion: every segment changes at once. The lamps are the LED part's looks. (the LED part (status recipe lamps); hardware level meters; Base UI Meter)
     public static let meter = MetalObjectRecipe(
         name: "meter",

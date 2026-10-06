@@ -25,7 +25,7 @@ for (const colorway of COLORWAYS) {
     await section.screenshot({ path: capture(`message-${colorway}`) });
 
     await reply.getByRole('button', { name: 'Retry' }).click();
-    await expect(reply).toHaveAttribute('aria-busy', 'true');
+    await expect(reply.getByRole('status')).toContainText('Thinking');
     await expect(reply.locator('header')).toContainText('Thinking');
     await expect(reply.locator('header .mu-led')).toHaveAttribute('data-kind', 'waiting');
     await expect(reply.locator('.mu-skeleton-text')).toBeVisible();
@@ -33,7 +33,7 @@ for (const colorway of COLORWAYS) {
 
     await expect(reply.locator('header')).toContainText('Writing');
     await expect(reply.locator('header .mu-led')).toHaveAttribute('data-kind', 'live');
-    await expect(reply).toHaveAttribute('aria-busy', 'false', { timeout: 8000 });
+    await expect(reply.locator('.mu-message-text')).toHaveAttribute('aria-busy', 'false', { timeout: 8000 });
     const footer = reply.locator('.mu-message-footer');
     await expect(footer).toBeVisible();
     expect(await footer.evaluate((el) => el.getAnimations().length)).toBeGreaterThan(0);
@@ -80,6 +80,6 @@ test('Reduce Motion: the footer appears at once', async ({ page }) => {
   await open(page, '/components/message', 'bone');
   const reply = playground(page).getByRole('article', { name: 'Assistant, Fast' });
   await reply.getByRole('button', { name: 'Retry' }).click();
-  await expect(reply).toHaveAttribute('aria-busy', 'false', { timeout: 8000 });
+  await expect(reply.locator('.mu-message-text')).toHaveAttribute('aria-busy', 'false', { timeout: 8000 });
   expect(await reply.locator('.mu-message-footer').evaluate((el) => el.getAnimations().length)).toBe(0);
 });

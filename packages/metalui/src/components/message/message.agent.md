@@ -41,7 +41,7 @@ Reduce Motion: the footer appears at once; the lamp holds steady; the drum chang
 - Set `grouped` when the turn before has the same `from` (and speaker); the host decides, from its own list.
 - Pass the avatar as an element (`<Avatar name="Ana Rocha" size="small" label="" />`): the turn's name already says who, so the avatar is silent.
 - Put actions (Copy, Retry) and delivery ("Sent", "Not sent · Try again") in `footer`; show actions once a reply settles, so they fade in.
-- The body is the host's node. Streaming words and Markdown are their own entry; a caret, if any, is the host's until then.
+- The body is the host's node: for a reply, a `Markdown` (`streaming` while it writes, with its caret). Put `MessageActions` in `footer`.
 
 ## API
 
@@ -54,6 +54,6 @@ Reduce Motion: the footer appears at once; the lamp holds steady; the drum chang
 ## Keyboard and accessibility
 
 - An `article` named by its speaker: "You", or "Assistant, Thorough" when a model is set. Nothing in it is focusable but the host's actions and files.
-- `aria-busy` while a reply waits or writes, so a reader hears the turn once it settles; `false` after.
+- The state's word ("Thinking", "Writing", "Stopped", "Failed") is a `role="status"`, so a reader hears it change. The body is `aria-busy` while a reply writes, so its words are heard once they settle; `false` after.
 - The lamp is decorative; the word says the state. The avatar is decorative when its label is `''`.
 - A system message is a `note`; its rules are hidden.

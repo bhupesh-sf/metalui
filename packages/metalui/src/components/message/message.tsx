@@ -27,8 +27,9 @@ import { Skeleton } from '../skeleton/skeleton';
  *   system     centred meta words in ink2 between two engraved rules, a note
  *   narrow     under 28rem (a container query on the turn) the person's indent narrows
  * Reduce Motion: the footer appears at once; the lamp holds steady.
- * Semantics: an article named by its speaker ("You", "Assistant, Thorough"), busy while a reply thinks or
- * writes, so a reader hears it once it settles. A system message is a note.
+ * Semantics: an article named by its speaker ("You", "Assistant, Thorough"). The state's word is a status
+ * (heard as it changes); the body is busy while a reply writes, so a reader hears the words once they
+ * settle. A system message is a note.
  * ───────────────────────────────────────────────────────── */
 
 export type MessageFrom = 'user' | 'assistant' | 'system';
@@ -124,7 +125,6 @@ export function Message({ from, name, model, time, status, avatar, attachments, 
   return (
     <article
       aria-label={model && !user ? `${speaker}, ${model}` : speaker}
-      aria-busy={status ? busy : undefined}
       data-from={from}
       data-status={status}
       data-grouped={grouped ? '' : undefined}
@@ -139,13 +139,13 @@ export function Message({ from, name, model, time, status, avatar, attachments, 
               {state && <Led kind={state.led} size="small" gesture={status === 'waiting' ? 'breathe' : 'steady'} />}
               {!user && <span>{speaker}{model && ` · ${model}`}</span>}
               {when}
-              {state && <span className="text-ink3" data-status={status}><SwapText value={state.words} /></span>}
+              {state && <span role="status" className="text-ink3" data-status={status}><SwapText value={state.words} /></span>}
             </header>
           )}
           {attachments && <div className={join(FILES, user && 'justify-end')}>{attachments}</div>}
           {status === 'waiting' && empty
             ? <Skeleton.Text lines={1} width="62%" />
-            : !empty && <div className={user ? PLATE : TEXT}>{children}</div>}
+            : !empty && <div aria-busy={status ? busy : undefined} className={user ? PLATE : TEXT}>{children}</div>}
           {footer != null && footer !== false && <div ref={footerRef} className={join(FOOTER, user && 'justify-end')}>{footer}</div>}
         </div>
       </div>

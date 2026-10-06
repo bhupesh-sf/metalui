@@ -41,12 +41,12 @@ for (const colorway of COLORWAYS) {
 
     // The reply waits in its own header, then writes with a caret, then settles.
     const reply = replies(page).last();
-    await expect(reply).toHaveAttribute('aria-busy', 'true');
+    await expect(reply.getByRole('status')).toContainText('Thinking');
     await expect(reply.locator('header')).toContainText('Thinking');
     await expect(reply.locator('header')).toContainText('Writing');
     await expect(reply.locator('[data-caret]')).toBeVisible();
     await b.screenshot({ path: capture(`block-ai-composer-${colorway}`) });
-    await expect(reply).toHaveAttribute('aria-busy', 'false', { timeout: 6000 });
+    await expect(reply.locator('.mu-message-text')).toHaveAttribute('aria-busy', 'false', { timeout: 6000 });
     await expect(reply.locator('[data-caret]')).toHaveCount(0);
     await expect(b.getByRole('button', { name: 'Send' })).toBeDisabled();
 
@@ -94,14 +94,14 @@ test('Retry writes the last reply again as a new take', async ({ page }) => {
   await expect(replies(page)).toHaveCount(1);
   await expect(replies(page).last().locator('header')).toContainText('Thinking');
   await page.clock.runFor(8000);
-  await expect(replies(page).last()).toHaveAttribute('aria-busy', 'false');
+  await expect(replies(page).last().locator('.mu-message-text')).toHaveAttribute('aria-busy', 'false');
   expect(await replies(page).last().locator('[data-reply-text]').innerText()).not.toBe(before);
 });
 
 test('files are attached, removed, and sent with the message', async ({ page }) => {
   await open(page, '/blocks/ai-composer', 'bone');
   const b = block(page);
-  const composer = b.getByRole('group', { name: 'Composer' });
+  const composer = b.getByRole('group', { name: 'Message' });
   await b.locator('[data-attach-input]').setInputFiles([
     { name: 'brief.pdf', mimeType: 'application/pdf', buffer: Buffer.alloc(120_000) },
     { name: 'notes.md', mimeType: 'text/markdown', buffer: Buffer.alloc(900) },

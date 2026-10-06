@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 75,
+  "count": 76,
   "icons": [
     {
       "name": "select",
@@ -1206,6 +1206,26 @@
       },
       "tuned16": false,
       "construction": "Two portrait sheets 10 × 12.8, r2.4, offset 3.4 across and 3.2 down: the copy in front at the upper right, tinted .12, and the original behind at the lower left as an L of its left and bottom edges ending clear of the copy (no clearance, no plus: Duplicate's original is at the upper left and whole). With the original at the upper left (the first draft) the mean strain was 1.65, and 1.61 at a wider offset; here 1.55. Motion (study): the copy is laid back 1.2 onto the original and pressed .96; a light passes down it; it is pulled off .5 past its place on the object spring."
+    },
+    {
+      "name": "thumb",
+      "component": "ThumbIcon",
+      "label": "Good · Feedback",
+      "category": "Actions",
+      "hover": "The thumb is cocked over the fist, then flicked back up past upright and stands; the fist lets go of it.",
+      "press": "plays the same act",
+      "pressMs": 1006,
+      "motion": {
+        "caption": "The thumb is cocked over the fist, then flicked back up past upright and stands; the fist lets go of it.",
+        "durationMs": 1006,
+        "stages": [
+          "Cock",
+          "Flick",
+          "Stand"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A fist 12.6 × 11.4, r2.4, tinted .12; the cuff one upright wire 2.6 to its left; the thumb an open wire standing off the fist's top, root 9.2–13.8, leaning a little left, tip r1.8 at y3. With the cuff drawn as a capsule ring and the fist right of centre (the first draft) the mean strain was 1.78; a wire cuff and the fist moved left to sit on the centre bring it to 1.49. The glyph is centred on (12, 12) within .3, so the thumbs-down is the same drawing turned 180° about the centre. Motion (study): the thumb is cocked 28° over the fist, which squeezes, then flicked back past upright to −10° on the hinge spring; two mirror-symmetric rays open either side of the tip."
     },
     {
       "name": "external",

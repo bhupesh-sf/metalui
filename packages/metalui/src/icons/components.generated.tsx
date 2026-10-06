@@ -123,6 +123,8 @@ export const BellIcon = /* @__PURE__ */ glyphIcon(glyphs.bellGlyph, "BellIcon");
 export const PaletteIcon = /* @__PURE__ */ glyphIcon(glyphs.paletteGlyph, "PaletteIcon");
 /** Copy. Hover: The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place.. Press: plays the same act. */
 export const CopyIcon = /* @__PURE__ */ glyphIcon(glyphs.copyGlyph, "CopyIcon");
+/** Good · Feedback. Hover: The thumb is cocked over the fist, then flicked back up past upright and stands; the fist lets go of it.. Press: plays the same act. */
+export const ThumbIcon = /* @__PURE__ */ glyphIcon(glyphs.thumbGlyph, "ThumbIcon");
 /** Open elsewhere · External. Hover: The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.. Press: plays the same act. */
 export const ExternalIcon = /* @__PURE__ */ glyphIcon(glyphs.externalGlyph, "ExternalIcon");
 /** Settings. Hover: The gear is wound back and turned forward a notch against a detent, clicks, and springs back home.. Press: plays the same act. */

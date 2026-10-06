@@ -1500,6 +1500,30 @@ export const copyGlyph = {
 } satisfies IconRecord;
 
 /* ─────────────────────────────────────────────────────────
+ * GOOD · FEEDBACK · Actions · one act, 1006ms
+ *
+ * Cock → Flick → Stand
+ *          The thumb is cocked over the fist, then flicked back up past upright and stands; the fist lets go of it.
+ *  thumb      0 → 150 → 260 → 633 → 1006ms
+ *  fist       0 → 150 → 250 → 564 → 1006ms
+ *  rays       0 → 260 → 300 → 480 → 1006ms
+ * Plays once through on hover, focus or click; finishes if the pointer leaves.
+ * REDUCED MOTION   static glyph
+ * ───────────────────────────────────────────────────────── */
+export const thumbGlyph = {
+  name: "thumb",
+  label: "Good · Feedback",
+  category: "Actions",
+  hover: "The thumb is cocked over the fist, then flicked back up past upright and stands; the fist lets go of it.",
+  press: "plays the same act",
+  pressMs: 1006,
+  defs: "",
+  body: "<path d=\"M4.2 9.8v9.8\"/><g data-part=\"fist\"><path class=\"f\" style=\"--duo:.12\" d=\"M9.2 9h7.8a2.4 2.4 0 0 1 2.4 2.4v6.6a2.4 2.4 0 0 1-2.4 2.4H9.2a2.4 2.4 0 0 1-2.4-2.4v-6.6A2.4 2.4 0 0 1 9.2 9Z\"/></g><g data-part=\"thumb\"><path d=\"M9.2 9l1.6-4.2a1.8 1.8 0 0 1 3.4.6L13.8 9\"/></g><path class=\"ac\" data-part=\"rays\" opacity=\"0\" d=\"M9.7 3.9l-1-.6M14.9 3.9l1-.6\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+  sw16: 1.85,
+  motion: {"duration":1006,"caption":"The thumb is cocked over the fist, then flicked back up past upright and stands; the fist lets go of it.","stages":["Cock","Flick","Stand"],"tracks":[{"part":"thumb","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.14911,"transform":"translate(0px,0.4px) rotate(28deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.25845,"transform":"translate(0px,-0.6px) rotate(-10deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.62922,"transform":"translate(0px,0.0441px) rotate(0.7354deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"fist","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.14911,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.96)","easing":"linear"},{"offset":0.24851,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.96)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.56064,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"rays","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.25845,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.29821,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.47714,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
+} satisfies IconRecord;
+
+/* ─────────────────────────────────────────────────────────
  * OPEN ELSEWHERE · EXTERNAL · Actions · one act, 596ms
  *
  * Draw back → Leave → Settle

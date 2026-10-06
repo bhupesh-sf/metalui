@@ -76,7 +76,9 @@ if (process.argv.includes('--gate')) {
   // Thread 14.3 (ScrollArea and Button come with it), Message 3.2.
   // Combobox 80 → 81: its chosen row draws the Checkbox's tick with the shared pen (icons/pen.tsx) instead of the check glyph.
   // Reasoning 13.2 (Collapsible 12.2 comes with it), ToolCall 15.2 (Collapsible, Properties, Spinner), Confirmation 19.2 (Alert and Button).
-  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 92, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20 };
+  // Thread 14.3 (ScrollArea and Button come with it), Message 3.2. Markdown 16.4 (CodeBlock comes with it); PromptInput
+  // 56.2 and MessageActions 43.5, most of it Tooltip (34.3, Base UI's positioning), shared with every tooltip in an app.
+  const CEILING = { Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 92, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20, Markdown: 17, PromptInput: 57, MessageActions: 44 };
   const over = Object.entries(CEILING).filter(([n, kb]) => !perExport[n] || perExport[n].gzip / 1024 > kb);
   if (over.length) {
     console.error(`\nbench-bundle gate: ${over.map(([n, kb]) => `${n} ${perExport[n] ? (perExport[n].gzip / 1024).toFixed(1) : 'missing'} KB gzip > ${kb}`).join(', ')}`);

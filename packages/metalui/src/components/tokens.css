@@ -1237,6 +1237,32 @@
   --mu-r-confirmation-hint-gap: 6px;
   --mu-r-confirmation-decision-gap: 6px;
   --mu-r-confirmation-decision-glyph: 14px;
+  /* markdown: the content, display, doc subheading, body and ui type roles; the code block (fences, its code type and ghost tint); the rule; the green LED ink for the caret (the AI composer's caret) */
+  --mu-r-markdown-self-gap: 12px;
+  --mu-r-markdown-heading-gap: 8px;
+  --mu-r-markdown-list-indent: 22px;
+  --mu-r-markdown-list-gap: 4px;
+  --mu-r-markdown-quote-rail: 2px;
+  --mu-r-markdown-quote-pad: 12px;
+  --mu-r-markdown-code-pad-x: 4px;
+  --mu-r-markdown-code-radius: 4px;
+  --mu-r-markdown-table-pad-x: 12px;
+  --mu-r-markdown-table-pad-y: 6px;
+  --mu-r-markdown-caret-width: 2px;
+  --mu-r-markdown-caret-height: 16px;
+  --mu-r-markdown-caret-gap: 2px;
+  --mu-r-markdown-caret-drop: 2px;
+  --mu-r-markdown-stream-phrase-every: 450ms;
+  /* prompt-input: the raised surface (raise-sm); Textarea; Button (primary, compact) with MorphPair and SwapText; IconButton; Tooltip; the LED; the drop zone's edge; the AI composer block's composer */
+  --mu-r-prompt-input-self-gap: 8px;
+  --mu-r-prompt-input-self-pad: 8px;
+  --mu-r-prompt-input-files-gap: 6px;
+  --mu-r-prompt-input-strip-gap: 6px;
+  /* message-actions: IconButton (ghost) and Tooltip; the copy, check, retry, pen and thumb glyphs; SwapIcon and SwapText (the drum); Button (compact); the settle spring; the AI composer block's Copy and Retry */
+  --mu-r-message-actions-self-gap: 2px;
+  --mu-r-message-actions-reasons-gap: 6px;
+  --mu-r-message-actions-copy-hold: 1600ms;
+  --mu-r-message-actions-thanks-hold: 1600ms;
   /* meter: the LED part (status recipe lamps); hardware level meters; Base UI Meter */
   --mu-r-meter-self-height: 10px;
   --mu-r-meter-self-gap: 2px;

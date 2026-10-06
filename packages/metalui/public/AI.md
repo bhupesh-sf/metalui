@@ -3300,6 +3300,61 @@ The `mark-scrub` recipe's props: `scrub.pixels`, `number.*`, `duration.*`, `cloc
 
 ---
 
+# Markdown
+
+An answer's text, set as it arrives. React: `Markdown` from `@unlocalhosted/metalui`. SwiftUI: `MetalMarkdown`. A component: you read it, follow its links and copy its code; it hands every fence to `CodeBlock`. It renders real elements and never sets the source as HTML. The `markdown` recipe holds the gaps, the list indent, the quote rail, the inline code's padding, the table's cells, the caret and the phrase time under Reduce Motion.
+
+## Use it for
+
+- The body of an assistant's `Message`, while it streams and after.
+- Any Markdown from a model or a person: release notes, a README in a panel.
+
+## Don't use it for
+
+- Code alone: use `CodeBlock`.
+- Rich text someone edits: that is an editor.
+- Words that change in place (a count, a state): use `SwapText`.
+
+## Anatomy
+
+- Blocks, 12 apart: paragraphs (content type, ink); `#` and `##` as `h2`/`h3` in the display role, `###` and `####` as `h4`/`h5` in the doc subheading role (`####` in ink2), 8 more room above each heading.
+- Lists: bullets (`-`, `*`, `+`) and numbers (`1.`, `1)`, from their start), indented 22, 4 apart, nested by indent; markers in ink3.
+- A quote: a 2 rail in the rule ink, 12 from its words in ink2. A rule: the engraved rule.
+- Tables (GFM pipes): body type with tabular figures; the head in ui type, ink2, over a hairline; cells padded 12 × 6; `:--`, `:-:`, `--:` align columns; a wide table scrolls sideways inside itself.
+- Inline: **bold**, *italic*, ~~struck~~, `code` (the code block's type on its ghost tint, padded 4, radius 4), links (ink, an ink3 underline that darkens on hover; http and https open in a new tab). Only http, https, mailto, `#` and relative links become links; anything else stays text.
+- Fences: a framed `CodeBlock`, the fence's language as its label.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| `streaming` | a green 2 × 16 pill after the last word; an open fence's `CodeBlock` streams (its rows land, its own caret); a half-arrived `**`, `*` or `` ` `` in the last paragraph is closed for the render | – |
+| `pace` while streaming | what has arrived shows a word at a time, `pace` words a second, until it has caught up | a timer only while behind; nothing runs once caught up |
+| streaming ends | everything that arrived shows at once; the caret goes | – |
+
+Reduce Motion: a phrase (10 words) every `stream.phrase-every` (450 ms), and no caret.
+
+## Rules
+
+- Pass what has arrived so far as `children`; keep `streaming` true until the reply is done or stopped.
+- Use `pace` when chunks arrive in bursts (a network stream); leave it out when the host already paces the words.
+- Put it in `Message` as the body; `Message` says the state ("Writing") with its status word, so Markdown doesn't say it again.
+- Highlighting is `CodeBlock`'s (its tint, or a host's `html` when you render fences yourself).
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `Markdown` `children` (the Markdown), `streaming`, `pace` | `MetalMarkdown(_ source:, streaming:, pace:)` |
+
+## Keyboard and accessibility
+
+- Headings are real headings (`h2`–`h5`), lists real lists, tables real tables with a header row.
+- `aria-busy` while streaming, so a reader isn't read each word; the caret is hidden.
+- Links and each code block's copy key are the only stops.
+
+---
+
 # Menu and correction popover
 
 A frosted plate of rows. React: `Menu`, `ContextMenu`, `MenuItem`, `MenuCheckboxItem`, `MenuSeparator` from `@unlocalhosted/metalui` (Base UI Menu and Context Menu). SwiftUI: `MetalMenuPanel`, `MetalMenuItem`, `.metalMenu(isPresented:at:heading:items:)`.
@@ -3461,7 +3516,7 @@ Reduce Motion: the footer appears at once; the lamp holds steady; the drum chang
 - Set `grouped` when the turn before has the same `from` (and speaker); the host decides, from its own list.
 - Pass the avatar as an element (`<Avatar name="Ana Rocha" size="small" label="" />`): the turn's name already says who, so the avatar is silent.
 - Put actions (Copy, Retry) and delivery ("Sent", "Not sent · Try again") in `footer`; show actions once a reply settles, so they fade in.
-- The body is the host's node. Streaming words and Markdown are their own entry; a caret, if any, is the host's until then.
+- The body is the host's node: for a reply, a `Markdown` (`streaming` while it writes, with its caret). Put `MessageActions` in `footer`.
 
 ## API
 
@@ -3474,9 +3529,62 @@ Reduce Motion: the footer appears at once; the lamp holds steady; the drum chang
 ## Keyboard and accessibility
 
 - An `article` named by its speaker: "You", or "Assistant, Thorough" when a model is set. Nothing in it is focusable but the host's actions and files.
-- `aria-busy` while a reply waits or writes, so a reader hears the turn once it settles; `false` after.
+- The state's word ("Thinking", "Writing", "Stopped", "Failed") is a `role="status"`, so a reader hears it change. The body is `aria-busy` while a reply writes, so its words are heard once they settle; `false` after.
 - The lamp is decorative; the word says the state. The avatar is decorative when its label is `''`.
 - A system message is a `note`; its rules are hidden.
+
+---
+
+# Message actions
+
+The keys that act on a message, in `Message`'s footer. React: `MessageActions` from `@unlocalhosted/metalui`. SwiftUI: `MetalMessageActions`. A component: each key changes something else (the clipboard, the thread, the person's turn, the feedback the host keeps). Every look is borrowed: ghost `IconButton`s with `Tooltip`s, the copy, check, retry, pen and thumb glyphs (Bad is the thumb turned over), the drum (`SwapIcon`, `SwapText`), compact `Button`s for reasons. The `message-actions` recipe holds the gaps and the two holds.
+
+## Use it for
+
+- Copy and Retry under a reply; Edit under the person's last turn; Good and Bad on replies.
+
+## Don't use it for
+
+- Actions on something that isn't a message (a card's menu, a row's keys).
+- Delivery ("Sent", "Not sent · Try again"): that is words in the footer.
+
+## Anatomy
+
+- A `toolbar`: the keys 2 apart, each only when given: Copy (`copy`, the text), Retry (`onRetry`), Edit (`onEdit`), Good and Bad (`onFeedback`); then the host's `children`.
+- Under the keys, 6 below, the reasons row after Bad (`reasons`), its buttons 6 apart.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| copied | the check, named "Copied", for `copy.hold` (1.6 s); "Copied" said once | the glyph and the name turn on the drum |
+| `retryDisabled` | Retry dimmed | – |
+| `feedback` up or down | that thumb latched (aria-pressed, the ghost's lit look) | – |
+| asking | after Bad with `reasons`: a row of compact buttons | fades in on the settle spring |
+| thanked | the row says "Thanks" for `thanks.hold`, then goes | the word on the drum |
+
+Reduce Motion: the row appears at once; glyphs and words change in place.
+
+## Rules
+
+- Show the actions once a reply has settled (pass them to `Message` `footer` only then), so they fade in and nothing offers to copy half an answer.
+- Retry only the last reply, and disable it (`retryDisabled`) while another writes.
+- Keep `feedback` in the host when it is stored; pressing the chosen thumb again clears it (`null`).
+- Offer reasons as a few words ("Not accurate", "Too long", "Other"); "Other" is the host's moment to ask more.
+- Copy the message's source (its Markdown), not its rendered text.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `MessageActions` `copy`, `onRetry`, `retryDisabled`, `onEdit`, `feedback`, `onFeedback(feedback, reason?)`, `reasons`, `children` | `MetalMessageActions(copy:, onRetry:, retryDisabled:, onEdit:, feedback:, onFeedback:, reasons:)` |
+| `MessageFeedback` `'up'`, `'down'`, `null` | `MetalMessageFeedback` `.up`, `.down` (optional) |
+
+## Keyboard and accessibility
+
+- A `toolbar` named "Message actions"; each key is a button named by its tooltip ("Copy", "Retry", "Edit", "Good response", "Bad response").
+- The thumbs are toggle buttons (`aria-pressed`).
+- The reasons are a `group` named "What went wrong?"; "Copied" and "Thanks for the feedback" are said through a status.
 
 ---
 
@@ -4068,6 +4176,60 @@ Reduce Motion: the edge snaps; the unknown segment sits in the middle and breath
 - The fill never moves backward unless the task really did (reset, cancel, a real rollback); when it does, it drains, never jumps.
 - Say what is in progress in the label, not "Loading…"; when you can count, say so in `detail`.
 - Only `transform` and `opacity` animate: the fill slides, the failed ink and the pause fade.
+
+---
+
+# Prompt input
+
+Where a message is written and sent. React: `PromptInput` from `@unlocalhosted/metalui`. SwiftUI: `MetalPromptInput`. A component: you operate it to send a message into a `Thread`, or to stop a reply. Every look is borrowed: the plate is the raised surface (raise-sm), the well is `Textarea`, Send is a primary `Button` whose glyph morphs send → stop (`MorphPair`) and whose word turns on the drum, attach is a ghost `IconButton` with a `Tooltip`, the offline lamp is the `Led`, and files over it light the drop zone's edge. The `prompt-input` recipe holds the gaps and the padding.
+
+## Use it for
+
+- The composer at the foot of a chat, an assistant panel, a comment box that sends.
+
+## Don't use it for
+
+- A form field that is submitted with others: use `Textarea` in a `FormField`.
+- Search: use a field or `CommandPalette`.
+
+## Anatomy
+
+- A plate, padded 8, its parts 8 apart: the host's `attachments` (`Attachment`s, 6 apart), the well (a large `Textarea`, one row growing to `maxRows`, 6, then scrolling), the strip (6 apart).
+- The strip: the attach key (with `onAttach`), the host's `tools` (a compact `Select` for the model), a gap, the hint ("⇧↩ new line", meta ink3, hidden under 28 rem) or, while disabled, the reason with the amber lamp, then Send.
+- A hidden file input behind the attach key (`data-attach-input`), taking `accept`.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| empty | Send disabled | – |
+| writing | the well grows a row at a time to `maxRows`, then scrolls | the settle spring (the Textarea's) |
+| `busy` | Send reads Stop; ↩ doesn't send; ⎋ in the well or Stop calls `onStop` and focus returns to the well | the glyph morphs send → stop, the word turns on the drum |
+| files over it | the plate's edge lit green | the drop zone's edge, on the settle spring |
+| `disabled` | the well, attach and Send dimmed and refusing; `disabledReason` with the amber lamp in the hint's place | – |
+
+Reduce Motion: the well snaps to its height; the glyph and the word change in place.
+
+## Rules
+
+- Keep the text in the host (`value`, `onValueChange`) and clear it in `onSend`, or leave it uncontrolled and it clears itself.
+- Hand over files and show them yourself: `onAttach(files)` → your list → `attachments={files.map((f) => <Attachment … onRemove />)}`. An attached file lets Send send an empty text.
+- Pass `busy` while the reply writes and stop it in `onStop`; the person can keep writing the next message.
+- Say why it's disabled (`disabledReason="You're offline"`); the lamp never says it alone.
+- Focus the well after your own actions (removing a file) through the ref (it is the textarea).
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `PromptInput` `value`, `defaultValue`, `onValueChange`, `onSend(text)`, `busy`, `onStop`, `onAttach(files)`, `accept`, `attachments`, `tools`, `canSend`, `disabled`, `disabledReason`, `placeholder`, `label`, `hint`, `maxRows`, `maxLength`; ref: the textarea | `MetalPromptInput(_ label:, text:, busy:, canSend:, disabledReason:, hint:, maxRows:, onSend:, onStop:, onAttach:) { files } tools: { … }`; disable with `.disabled(_:)` |
+
+## Keyboard and accessibility
+
+- A `group` named by `label` ("Message"); the well is the textbox of that name.
+- ↩ sends, ⇧↩ breaks the line, ↩ while an IME composes is the IME's; ⎋ stops a reply.
+- Send's name is "Send" or "Stop"; it is disabled (not hidden) while there is nothing to send.
+- Pasting files into the well attaches them when `onAttach` is set; text pastes as text.
 
 ---
 
@@ -7023,7 +7185,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 75 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 76 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -7101,6 +7263,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `BellIcon` | `bell` | Status | The bell swings on its loop and the clapper, lagging, strikes the rim on each side. | plays the same act |
 | `PaletteIcon` | `palette` | Tools | The palette is lifted on its thumb and each paint is dabbed in turn. | plays the same act |
 | `CopyIcon` | `copy` | Actions | The copy is laid back on the original and pressed; a light passes down it and it is pulled off into place. | plays the same act |
+| `ThumbIcon` | `thumb` | Actions | The thumb is cocked over the fist, then flicked back up past upright and stands; the fist lets go of it. | plays the same act |
 | `ExternalIcon` | `external` | Actions | The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it. | plays the same act |
 | `SettingsIcon` | `settings` | Tools | The gear is wound back and turned forward a notch against a detent, clicks, and springs back home. | plays the same act |
 | `FilterIcon` | `filter` | Tools | The funnel is shaken down once; the drop in its bowl is tossed up and falls back in. | plays the same act |

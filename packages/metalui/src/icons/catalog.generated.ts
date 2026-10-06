@@ -67,6 +67,7 @@ export const ICON_CATALOG = {
   "bell": glyphs.bellGlyph,
   "palette": glyphs.paletteGlyph,
   "copy": glyphs.copyGlyph,
+  "thumb": glyphs.thumbGlyph,
   "external": glyphs.externalGlyph,
   "settings": glyphs.settingsGlyph,
   "filter": glyphs.filterGlyph,
@@ -85,4 +86,4 @@ export const ICON_CATALOG = {
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;
-export const ICON_NAMES: IconName[] = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "keeper", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette", "copy", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "info", "warning", "coin", "sun", "moon", "folder", "folder-open", "sidebar"];
+export const ICON_NAMES: IconName[] = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "keeper", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette", "copy", "thumb", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "info", "warning", "coin", "sun", "moon", "folder", "folder-open", "sidebar"];

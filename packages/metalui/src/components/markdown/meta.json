@@ -1,0 +1,20 @@
+{
+  "name": "markdown",
+  "title": "Markdown",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["code-block"],
+  "description": "An answer's text, set as it arrives: headings, paragraphs, nested lists, quotes, tables, inline code and safe links, with every fence in a Code block. While it streams a green caret follows the last word, a half-arrived mark is closed, and a pace reveals what has arrived a word at a time.",
+  "base": "none (real elements, never HTML from the source)",
+  "react": {
+    "export": "Markdown",
+    "files": ["markdown.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalMarkdown",
+    "file": "swift/Sources/MetalUI/Components/MetalMarkdown.swift"
+  },
+  "agent": "markdown.agent.md",
+  "page": "/components/markdown"
+}
