@@ -67,6 +67,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case settings = "settings"
     case filter = "filter"
     case sort = "sort"
+    case eye = "eye"
+    case eyeOff = "eye-off"
+    case lock = "lock"
 
     public enum Category: String, Sendable { case tools = "Tools", actions = "Actions", status = "Status" }
 
@@ -136,6 +139,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .settings: return "Settings"
         case .filter: return "Filter"
         case .sort: return "Sort"
+        case .eye: return "Show"
+        case .eyeOff: return "Hide"
+        case .lock: return "Lock · Locked"
         }
     }
 
@@ -205,6 +211,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .settings: return .tools
         case .filter: return .tools
         case .sort: return .tools
+        case .eye: return .actions
+        case .eyeOff: return .actions
+        case .lock: return .status
         }
     }
 
@@ -275,6 +284,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .settings: return 0.12
         case .filter: return 0.12
         case .sort: return 0.1
+        case .eye: return 0.133
+        case .eyeOff: return 0.1
+        case .lock: return 0.12
         }
     }
 
@@ -345,6 +357,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .settings: return nil
         case .filter: return nil
         case .sort: return nil
+        case .eye: return nil
+        case .eyeOff: return nil
+        case .lock: return nil
         }
     }
 
@@ -415,6 +430,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .settings: return false
         case .filter: return false
         case .sort: return false
+        case .eye: return false
+        case .eyeOff: return false
+        case .lock: return false
         }
     }
 
@@ -485,6 +503,9 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .settings: return 1.85
         case .filter: return 1.85
         case .sort: return 1.85
+        case .eye: return 1.85
+        case .eyeOff: return 1.85
+        case .lock: return 1.85
         }
     }
 }

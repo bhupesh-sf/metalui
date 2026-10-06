@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 64,
+  "count": 67,
   "icons": [
     {
       "name": "select",
@@ -1281,6 +1281,66 @@
       },
       "tuned16": false,
       "construction": "Disc r8.5, tinted .1 (the key of Send, Download and Upload), holding an up arrow at 9.4 and a down arrow at 14.6, each 8.6 long with 2.2 arms, their heads at opposite ends so they pass without touching. Five parts, one over K2: as harpoons (one arm each, four parts) the pair read as a 1 and an N at 16 px, so the full heads stay; the disc keeps it next to Download and Upload (.39 each way). Motion (study): the up arrow crouches .8 and strikes 1.1 up; the down arrow answers 60 ms later, 1.1 down; each comes back on the part spring; two puffs open under the up arrow's tail."
+    },
+    {
+      "name": "eye",
+      "component": "EyeIcon",
+      "label": "Show",
+      "category": "Actions",
+      "hover": "The eye looks one way, then the other, and blinks; it opens wide and rays open over it.",
+      "press": "plays the same act",
+      "pressMs": 900,
+      "motion": {
+        "caption": "The eye looks one way, then the other, and blinks; it opens wide and rays open over it.",
+        "durationMs": 900,
+        "stages": [
+          "Look",
+          "Look back",
+          "Blink"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Lids a lens 17 × 10.4 (two arcs r9.55 meeting in sharp corners at 3.5 and 20.5), tinted .1; an iris ring r2.8 tinted .3 on the centre. Eye-off is the same eye behind a bar, so the two morph by the bar alone. Motion (study): the iris looks left 1.6 and right 1.6 as the lids narrow .9, then the lids close to .3 and open 1.03 about the centre line with the iris; rays open over the upper lid."
+    },
+    {
+      "name": "eye-off",
+      "component": "EyeOffIcon",
+      "label": "Hide",
+      "category": "Actions",
+      "hover": "The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again.",
+      "press": "plays the same act",
+      "pressMs": 996,
+      "motion": {
+        "caption": "The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again.",
+        "durationMs": 996,
+        "stages": [
+          "Draw back",
+          "Slide home",
+          "Reopen"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Eye's lids (17 × 10.4, tinted .1) with no iris, behind a bar from 4.6/4.6 to 19.4/19.4 that casts its clearance (1 each side) onto them: from Eye the iris opens and stretches into the bar (.64 each way). Keeping the iris under the bar cost a second clearance (K6) and scored .89. Motion (study): the bar is drawn back 1.4 up its diagonal as the eye peeks open 1.06, then slid home .5 past its seat on the part spring; the eye shuts to .5 and reopens on the hinge spring; a stop shows at the bar's foot."
+    },
+    {
+      "name": "lock",
+      "component": "LockIcon",
+      "label": "Lock · Locked",
+      "category": "Status",
+      "hover": "The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.",
+      "press": "plays the same act",
+      "pressMs": 840,
+      "motion": {
+        "caption": "The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.",
+        "durationMs": 840,
+        "stages": [
+          "Lift",
+          "Push home",
+          "Catch"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A case 14 × 9.4 r2.4 from 10.6 to 20, tinted .12, with a keyhole bead r1.3 at its centre; a shackle 7.6 wide (r3.8) standing on its top edge, legs 3 long, its crown at 3.8. Motion (study): the shackle is lifted 1.4 and pushed home .4 past its seat, squashing .92, on the part spring; the case takes it a beat later (.96 tall, 1.02 wide) on the object spring; a click opens beside its shoulders."
     }
   ]
 }

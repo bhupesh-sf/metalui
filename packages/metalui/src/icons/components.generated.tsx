@@ -129,3 +129,9 @@ export const SettingsIcon = createIcon("settings", "SettingsIcon");
 export const FilterIcon = createIcon("filter", "FilterIcon");
 /** Sort. Hover: The up arrow is pushed up and the down arrow answers, pushed down: they pass like rows changing places.. Press: plays the same act. */
 export const SortIcon = createIcon("sort", "SortIcon");
+/** Show. Hover: The eye looks one way, then the other, and blinks; it opens wide and rays open over it.. Press: plays the same act. */
+export const EyeIcon = createIcon("eye", "EyeIcon");
+/** Hide. Hover: The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again.. Press: plays the same act. */
+export const EyeOffIcon = createIcon("eye-off", "EyeOffIcon");
+/** Lock · Locked. Hover: The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.. Press: plays the same act. */
+export const LockIcon = createIcon("lock", "LockIcon");

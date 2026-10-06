@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette", "copy", "external", "settings", "filter", "sort"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette", "copy", "external", "settings", "filter", "sort", "eye", "eye-off", "lock"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -328,5 +328,18 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M9.4 7.8L9.4 16.4", 1.7, 0, 0, 1],
     ["M14.6 7.6L14.6 16.2", 1.7, 0, 0, 1],
     ["M12.4 14L14.6 16.2L16.8 14", 1.7, 0, 0, 1],
+  ],
+  "eye": [
+    ["M12 6.8C15.58 6.8 18.87 8.81 20.5 12C18.87 15.19 15.58 17.2 12 17.2C8.42 17.2 5.13 15.19 3.5 12C5.13 8.81 8.42 6.8 12 6.8Z", 1.7, 0.1, 0, 1],
+    ["M12 9.2C13.55 9.2 14.8 10.45 14.8 12C14.8 13.55 13.55 14.8 12 14.8C10.45 14.8 9.2 13.55 9.2 12C9.2 10.45 10.45 9.2 12 9.2Z", 1.7, 0.3, 0, 1],
+  ],
+  "eye-off": [
+    ["M12 6.8C15.58 6.8 18.87 8.81 20.5 12C18.87 15.19 15.58 17.2 12 17.2C8.42 17.2 5.13 15.19 3.5 12C5.13 8.81 8.42 6.8 12 6.8Z", 1.7, 0.1, 0, 1, [["behind",1,1.85]]],
+    ["M4.6 4.6L19.4 19.4", 1.7, 0, 0, 1],
+  ],
+  "lock": [
+    ["M8.2 10.6L8.2 7.6C8.2 5.5 9.9 3.8 12 3.8C14.1 3.8 15.8 5.5 15.8 7.6L15.8 10.6", 1.7, 0, 0, 1],
+    ["M7.4 10.6L16.6 10.6C17.93 10.6 19 11.67 19 13L19 17.6C19 18.93 17.93 20 16.6 20L7.4 20C6.07 20 5 18.93 5 17.6L5 13C5 11.67 6.07 10.6 7.4 10.6Z", 1.7, 0.12, 0, 1],
+    ["M12 15.3", 2.6, 0, 0, 1],
   ],
 };

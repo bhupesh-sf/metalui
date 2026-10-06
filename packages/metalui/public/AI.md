@@ -4231,7 +4231,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 64 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 67 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4242,7 +4242,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 
 - **Triggering:** an icon inside any element with the class `mu-icon-trigger` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
 - **Accessibility:** icons without `title` are decorative (`aria-hidden`). Give icon-only controls an `aria-label`.
-- **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, send/stop, download/upload, save) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
+- **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, send/stop, download/upload, eye/eye-off, save) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
 - **On cue:** `act` plays the glyph's act whenever it turns to a new truthy value, for a result rather than a touch: `<Icon name="check" act={saves} />` plays on each save; `act` alone plays it as the icon arrives.
 - **Static:** `animate={false}` keeps a glyph static. Reduced motion does this automatically.
 - **SwiftUI and SVG:** the same glyphs ship as SF Symbols (planned), plus static and animated SVGs at `https://metalui.dev/icons/svg/<name>.svg`.
@@ -4313,3 +4313,6 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `SettingsIcon` | `settings` | Tools | The gear is wound back and turned forward a notch against a detent, clicks, and springs back home. | plays the same act |
 | `FilterIcon` | `filter` | Tools | The funnel is shaken down once; the drop in its bowl is tossed up and falls back in. | plays the same act |
 | `SortIcon` | `sort` | Tools | The up arrow is pushed up and the down arrow answers, pushed down: they pass like rows changing places. | plays the same act |
+| `EyeIcon` | `eye` | Actions | The eye looks one way, then the other, and blinks; it opens wide and rays open over it. | plays the same act |
+| `EyeOffIcon` | `eye-off` | Actions | The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again. | plays the same act |
+| `LockIcon` | `lock` | Status | The shackle is lifted and pushed home into the case, which takes it, and it clicks shut. | plays the same act |

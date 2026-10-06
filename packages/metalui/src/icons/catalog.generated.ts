@@ -1461,6 +1461,72 @@ export const ICON_CATALOG = {
     sw16: 1.85,
     motion: {"duration":585,"caption":"The up arrow is pushed up and the down arrow answers, pushed down: they pass like rows changing places.","stages":["Crouch","Pass","Settle"],"tracks":[{"part":"up","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.23932,"transform":"translate(0px,0.8px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.37607,"transform":"translate(0px,-1.1px) rotate(0deg) scale(1,1.04)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.89744,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"down","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.10256,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.34188,"transform":"translate(0px,-0.8px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.47863,"transform":"translate(0px,1.1px) rotate(0deg) scale(1,1.04)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"puff","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.34188,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.42735,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.76923,"transform":"scale(1.4)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
   },
+  /* ─────────────────────────────────────────────────────────
+   * SHOW · Actions · one act, 900ms
+   *
+   * Look → Look back → Blink
+   *          The eye looks one way, then the other, and blinks; it opens wide and rays open over it.
+   *  lids       0 → 170 → 400 → 560 → 700 → 800 → 900ms
+   *  iris       0 → 170 → 280 → 400 → 560 → 700 → 800 → 900ms
+   *  rays       0 → 640 → 690 → 860 → 900ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "eye": {
+    label: "Show",
+    category: "Actions",
+    hover: "The eye looks one way, then the other, and blinks; it opens wide and rays open over it.",
+    press: "plays the same act",
+    pressMs: 900,
+    defs: "",
+    body: "<g data-part=\"lids\"><path class=\"f\" style=\"--duo:.1\" d=\"M12 6.8a9.55 9.55 0 0 1 8.5 5.2 9.55 9.55 0 0 1-17 0A9.55 9.55 0 0 1 12 6.8Z\"/></g><g data-part=\"iris\"><path class=\"f\" style=\"--duo:.3\" d=\"M12 9.2a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 1 1 0-5.6Z\"/></g><path class=\"ac\" data-part=\"rays\" opacity=\"0\" d=\"M12 4.7V3.5M8.2 5.5l-.6-.9M15.8 5.5l.6-.9\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":900,"caption":"The eye looks one way, then the other, and blinks; it opens wide and rays open over it.","stages":["Look","Look back","Blink"],"tracks":[{"part":"lids","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.18889,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44444,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.62222,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.3)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.77778,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.03)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.88889,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"iris","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.18889,"transform":"translate(-1.6px,0px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.31111,"transform":"translate(-1.6px,0px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44444,"transform":"translate(1.6px,0px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.62222,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.3)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.77778,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.03)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.88889,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"rays","keyframes":[{"offset":0,"transform":"scale(.7)","opacity":0},{"offset":0.71111,"transform":"scale(.7)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.76667,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.95556,"transform":"scale(1.1)","opacity":0},{"offset":1,"transform":"scale(.7)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * HIDE · Actions · one act, 996ms
+   *
+   * Draw back → Slide home → Reopen
+   *          The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again.
+   *  bar        0 → 160 → 240 → 545 → 996ms
+   *  lids       0 → 160 → 250 → 623 → 996ms
+   *  stop       0 → 230 → 270 → 470 → 996ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "eye-off": {
+    label: "Hide",
+    category: "Actions",
+    hover: "The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again.",
+    press: "plays the same act",
+    pressMs: 996,
+    defs: "<mask id=\"&-m\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"24\" height=\"24\"><rect width=\"24\" height=\"24\" fill=\"#fff\" stroke=\"none\"/><g data-part=\"bar\"><path d=\"M4.6 4.6 19.4 19.4\" fill=\"none\" stroke=\"#000\" stroke-width=\"3.7\"/></g></mask>",
+    body: "<g mask=\"url(#&-m)\"><g data-part=\"lids\"><path class=\"f\" style=\"--duo:.1\" d=\"M12 6.8a9.55 9.55 0 0 1 8.5 5.2 9.55 9.55 0 0 1-17 0A9.55 9.55 0 0 1 12 6.8Z\"/></g></g><g data-part=\"bar\"><path d=\"M4.6 4.6 19.4 19.4\"/></g><path class=\"ac\" data-part=\"stop\" opacity=\"0\" d=\"M20.7 18.3l.7-.3M18.3 20.7l-.3.7\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":996,"caption":"The bar is drawn back and slid home across the eye; the eye shuts behind it and opens again.","stages":["Draw back","Slide home","Reopen"],"tracks":[{"part":"bar","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16064,"transform":"translate(-0.9899px,-0.9899px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.24096,"transform":"translate(0.3536px,0.3536px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.54719,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"lids","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16064,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.06)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.251,"transform":"translate(0px,0px) rotate(0deg) scale(1,0.5)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6255,"transform":"translate(0px,0px) rotate(0deg) scale(1,1.0368)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"stop","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.23092,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.27108,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.47189,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * LOCK · LOCKED · Status · one act, 840ms
+   *
+   * Lift → Push home → Catch
+   *          The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.
+   *  shackle    0 → 150 → 230 → 535 → 840ms
+   *  case       0 → 235 → 245 → 601 → 840ms
+   *  click      0 → 220 → 260 → 460 → 840ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "lock": {
+    label: "Lock · Locked",
+    category: "Status",
+    hover: "The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.",
+    press: "plays the same act",
+    pressMs: 840,
+    defs: "",
+    body: "<g data-part=\"shackle\"><path d=\"M8.2 10.6V7.6a3.8 3.8 0 0 1 7.6 0v3\"/></g><g data-part=\"case\"><path class=\"f\" style=\"--duo:.12\" d=\"M7.4 10.6h9.2a2.4 2.4 0 0 1 2.4 2.4v4.6a2.4 2.4 0 0 1-2.4 2.4H7.4A2.4 2.4 0 0 1 5 17.6V13a2.4 2.4 0 0 1 2.4-2.4Z\"/><circle class=\"s\" cx=\"12\" cy=\"15.3\" r=\"1.3\"/></g><path class=\"ac\" data-part=\"click\" opacity=\"0\" d=\"M6.4 7.4l-.9-.5M17.6 7.4l.9-.5\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":840,"caption":"The shackle is lifted and pushed home into the case, which takes it, and it clicks shut.","stages":["Lift","Push home","Catch"],"tracks":[{"part":"shackle","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.17857,"transform":"translate(0px,-1.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.27381,"transform":"translate(0px,0.4px) rotate(0deg) scale(1,0.92)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6369,"transform":"translate(0px,-0.0348px) rotate(0deg) scale(1,1.007)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"case","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.27976,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.29167,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.96)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.71548,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"click","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.2619,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.30952,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.54762,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;
