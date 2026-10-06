@@ -88,3 +88,25 @@ test('the standalone SVG plays the same act without script', async ({ page }) =>
   await page.waitForTimeout(320);
   expect(await transformOf(cursor)).not.toBe(REST);
 });
+
+// On cue: act plays the glyph when it turns to a new value (a save), not on mount at 0, and never under Reduce Motion.
+test('act plays the glyph on each new value, not at rest, and not under Reduce Motion', async ({ page }) => {
+  await open(page, '/icons', 'bone');
+  const bench = page.getByTestId('icon-act');
+  const glyph = bench.locator('svg.mu-ic-check');
+  const plays = () => glyph.evaluate((el) => (el as unknown as { plays?: number }).plays ?? 0);
+  await glyph.evaluate((el) => {
+    new MutationObserver(() => { if (el.hasAttribute('data-playing')) (el as unknown as { plays: number }).plays = ((el as unknown as { plays?: number }).plays ?? 0) + 1; })
+      .observe(el, { attributes: true, attributeFilter: ['data-playing'] });
+  });
+  await page.waitForTimeout(300);
+  expect(await plays()).toBe(0);
+  await bench.getByRole('button', { name: 'Save' }).click();
+  await expect.poll(plays).toBe(1);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(glyph).not.toHaveAttribute('data-playing', '');
+  await bench.getByRole('button', { name: 'Save' }).click();
+  await expect(bench).toContainText('Saved 2 times');
+  await page.waitForTimeout(300);
+  expect(await plays()).toBe(1);
+});

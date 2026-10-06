@@ -180,8 +180,17 @@ test('empty views say why; finishing everything is Inbox zero', async ({ page })
   await rows(page).first().getByRole('gridcell').nth(2).focus();
   await page.keyboard.press('ControlOrMeta+a');
   await expect(strip(page)).toContainText('8 selected');
+  // The check plays its act once as Inbox zero arrives (Icon's act cue): watch for it from before.
+  await page.evaluate(() => {
+    const w = window as unknown as { plays: number };
+    w.plays = 0;
+    new MutationObserver((list) => list.forEach((m) => {
+      if ((m.target as Element).matches('.mu-ic-check[data-playing]')) w.plays++;
+    })).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['data-playing'] });
+  });
   await page.keyboard.press('e');
   await expect(b.getByText('Inbox zero')).toBeVisible({ timeout: 4000 });
+  await expect.poll(() => page.evaluate(() => (window as unknown as { plays: number }).plays)).toBe(1);
   await page.waitForTimeout(700);
   await b.screenshot({ path: capture('block-task-inbox-zero-bone') });
   await b.getByRole('radio', { name: 'Due soon' }).click();

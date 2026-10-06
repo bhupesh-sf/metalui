@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
 import { Icon, ICON_CATALOG, ICON_NAMES, MorphIcon, type IconName, type MorphTurn } from '@unlocalhosted/metalui/icons';
+import { Button } from '@unlocalhosted/metalui';
 import { Bench, Code, PageHeader, Rules, Section } from '../ui/doc';
 import { MorphFilmstrips, MorphParity, MorphPlayground } from '../demos/MorphGlyphs';
 
@@ -93,6 +94,7 @@ export default function Icons() {
       </Section>
 
       <Turns />
+      <OnCue />
 
       <Section title="Morph" lede="Any wire icon in the set becomes any other. The morph is born from what the icons are made of: wires at one weight with round caps, beads (a wire of zero length), tint inside a wire, and depth (a part in front keeps its clearance on the part behind). Each part pairs with the part it takes least energy to become and rides a carriage: it turns, scales and travels as one rigid thing, bending only what it must. Beads draw out into wires, rings open where they meet their new ends and their tint follows the area, clearances travel with the parts that cast them. A part the next icon lacks tucks behind a body or gathers into a wire that stays; a part it gains emerges or buds. A mirror pair turns over. Nothing fades and nothing appears from empty space. Each filmstrip shows its strain: under 1 the pair reads as one object changing. The character glyph, a solid body, is not in the morph family; it changes by the drum. Click the large icon to step through the family, or pick one.">
         <Bench caption="Live · every part on one settle spring (k380 c36)">
@@ -133,6 +135,26 @@ const TURNS: { turn: MorphTurn; label: string }[] = [
   { turn: 180, label: 'up · 180' },
   { turn: 270, label: 'right · 270' },
 ];
+
+/** A glyph that plays when something happens, not when it is touched: act turns to a new value. */
+function OnCue() {
+  const [saves, setSaves] = React.useState(0);
+  return (
+    <Section id="act" title="On cue" lede="Some acts answer a result, not a hand: a save lands, an inbox empties. act plays the glyph whenever it turns to a new truthy value; act alone plays it as the icon arrives. Reduce Motion plays nothing.">
+      <Bench caption="Icon · act={saves} · press Save">
+        <div className="flex items-center justify-center gap-16" data-testid="icon-act">
+          <Button size="compact" onClick={() => setSaves((n) => n + 1)}>Save</Button>
+          <span className="flex items-center gap-8 type-ui text-ink2">
+            <Icon name="check" size={24} act={saves} />
+            {saves ? `Saved ${saves === 1 ? 'once' : `${saves} times`}` : 'Not saved yet'}
+          </span>
+        </div>
+      </Bench>
+      <Code label="JSX" code={`<Icon name="check" act={saves} />      // plays on each new save, not on mount at 0
+<Icon name="check" act />              // plays once as it arrives (Inbox zero)`} />
+    </Section>
+  );
+}
 
 /** One chevron, four directions: a set direction turns the Icon; a changing one morphs. */
 function Turns() {

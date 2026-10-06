@@ -334,7 +334,7 @@ Building real screens shows what the components lack. Each was worked around ins
 - [ ] **ToolStrip** items take no icons, no menu trigger and no leading count; the task inbox rebuilds the strip from Base UI Toolbar. Extend `ToolStrip` (with the Tool strip entry above).
 - [x] **Button strip / graphite / link caps don't size an `icon`** (noted with the icon slot); blocks pass `size-16`.
 - [ ] **Icons: no person / assign glyph** (the `me` glyph reads as a chart); add `person`.
-- [ ] **Icon: no way to play a glyph's act on demand** (a celebration, a result): add `play()` via a ref or an `act` prop; the inbox dispatches a synthetic click.
+- [x] **Icon: no way to play a glyph's act on demand** (a celebration, a result): add `play()` via a ref or an `act` prop; the inbox dispatches a synthetic click. (`act`: plays whenever it turns to a new truthy value, `act` alone on arrival; StrictMode-safe. The inbox uses it; the Icons page shows it under On cue.)
 - [x] **AlertDialog.Popup** doesn't type Base UI's `finalFocus` (it passes it through); type it.
 - [x] **Avatar**: no accessible label separate from the name its initials come from. (`label`; `''` makes it decorative.)
 - [ ] **Row**: no selected / opened state for a list row; blocks borrow the option rail classes.

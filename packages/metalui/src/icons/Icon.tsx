@@ -14,6 +14,8 @@ import { motionReduced, onMotionChange } from '../motion/reduced';
  *   Nms   the act ends at rest, N = its duration; it finishes even if the pointer leaves,
  *         and a trigger during the act is ignored (one performance at a time)
  * Disabled triggers and reduced motion play nothing; reduced motion also stops an act.
+ * On cue: `act` plays it whenever it turns to a new truthy value (a result arrives, a count goes up),
+ *         one frame after the change, so the glyph is on the page.
  *
  * Legacy icons (no study yet):
  * Hover   the trigger (nearest .mu-icon-trigger, else the icon) is hovered:
@@ -42,6 +44,9 @@ export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, 'children
    *  down, so 90 points it left, 180 up and 270 right. A direction that is set, not a state change:
    *  a control whose chevron turns when it opens uses MorphIcon's `turn`, which morphs. */
   turn?: 0 | 90 | 180 | 270;
+  /** Plays the glyph's act on cue, whenever this turns to a new truthy value: `act` alone plays it as the
+   *  icon arrives (a celebration), a count or a result's id plays it on each new one. 0 or false stays still. */
+  act?: React.Key | boolean;
 }
 
 function markup(name: IconName, uid: string, small: boolean) {
@@ -57,7 +62,9 @@ const disabled = (trigger: Element) =>
   trigger.hasAttribute('data-disabled') ||
   trigger.getAttribute('aria-disabled') === 'true';
 
-function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconName, enabled: boolean) {
+type Player = React.MutableRefObject<(() => void) | undefined>;
+
+function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconName, enabled: boolean, player: Player) {
   React.useEffect(() => {
     const svg = ref.current;
     const icon = ICON_CATALOG[name];
@@ -95,6 +102,7 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
     const onReduce = () => {
       if (motionReduced(svg)) stop();
     };
+    player.current = play;
     trigger.addEventListener('pointerenter', onPointer);
     // Focus listeners on a bare svg make Chrome give it a Tab stop of its own; only a real trigger listens.
     if (trigger !== svg) trigger.addEventListener('focusin', onFocus);
@@ -102,16 +110,17 @@ function useActPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconNa
     const unwatch = onMotionChange(onReduce);
     return () => {
       stop();
+      player.current = undefined;
       svg.removeAttribute('data-motion-runtime');
       trigger.removeEventListener('pointerenter', onPointer);
       trigger.removeEventListener('focusin', onFocus);
       trigger.removeEventListener('click', play);
       unwatch();
     };
-  }, [ref, name, enabled]);
+  }, [ref, name, enabled, player]);
 }
 
-function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconName, enabled: boolean) {
+function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, name: IconName, enabled: boolean, player: Player) {
   React.useEffect(() => {
     const svg = ref.current;
     if (!svg || !enabled || 'motion' in ICON_CATALOG[name]) return;
@@ -129,19 +138,35 @@ function usePressPlayback(ref: React.RefObject<SVGSVGElement | null>, name: Icon
       const { key, repeat } = event as KeyboardEvent;
       if (!repeat && (key === 'Enter' || key === ' ')) play();
     };
+    player.current = play;
     trigger.addEventListener('pointerdown', play);
     trigger.addEventListener('keydown', onKey);
     return () => {
       clearTimeout(timer);
+      player.current = undefined;
       trigger.removeEventListener('pointerdown', play);
       trigger.removeEventListener('keydown', onKey);
       svg.removeAttribute('data-press');
     };
-  }, [ref, name, enabled]);
+  }, [ref, name, enabled, player]);
+}
+
+/** Plays the act when `act` turns to a new truthy value. A frame later, and cancelled on cleanup, so the
+ *  glyph is laid out and a StrictMode remount still plays it once. */
+function useActCue(player: Player, act: IconProps['act']) {
+  const played = React.useRef<IconProps['act']>(undefined);
+  React.useEffect(() => {
+    if (!act || Object.is(played.current, act)) return;
+    const frame = requestAnimationFrame(() => {
+      played.current = act;
+      player.current?.();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [player, act]);
 }
 
 export const Icon = React.forwardRef<SVGSVGElement, IconProps & { name: IconName }>(function Icon(
-  { name, size = 24, title, strokeWidth, animate = true, turn = 0, className, style, ...props },
+  { name, size = 24, title, strokeWidth, animate = true, turn = 0, act, className, style, ...props },
   forwardedRef,
 ) {
   const ref = React.useRef<SVGSVGElement>(null);
@@ -149,8 +174,10 @@ export const Icon = React.forwardRef<SVGSVGElement, IconProps & { name: IconName
   const uid = `mu${React.useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const small = !animate && size <= SMALL;
   const sw = strokeWidth ?? (small ? ICON_CATALOG[name].sw16 : undefined);
-  useActPlayback(ref, name, animate);
-  usePressPlayback(ref, name, animate);
+  const player: Player = React.useRef(undefined);
+  useActPlayback(ref, name, animate, player);
+  usePressPlayback(ref, name, animate, player);
+  useActCue(player, act);
 
   const html = markup(name, uid, small) + (title ? `<title>${title.replace(/[<&]/g, '')}</title>` : '');
   return (
