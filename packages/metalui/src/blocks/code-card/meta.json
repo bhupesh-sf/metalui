@@ -4,10 +4,11 @@
   "status": "alpha",
   "layer": "object",
   "kind": "custom",
-  "reason": "The numbered, tinted code on its own dark screen is drawn by no component. The bezel, glare and tag are still GlassFace and Chip.",
+  "reason": "The numbered, tinted code on its own dark screen is drawn by no component. The bezel, glare and tag are still GlassFace and Chip; the tint and diff classes are the code block's.",
   "uses": [
     "glass-face",
-    "chip"
+    "chip",
+    "code-block"
   ],
   "description": "Code as a glass object: numbered, tinted lines (at most 18) on a dark screen under a CODE · LANG · N LINES tag.",
   "base": "none",

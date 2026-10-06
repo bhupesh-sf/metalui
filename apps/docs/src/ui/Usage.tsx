@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Tabs, TabList, TabPanel } from '@unlocalhosted/metalui';
+import { Tabs, TabList } from '@unlocalhosted/metalui';
 import { useLocation } from 'react-router';
 import { Code, Section, TokenTable } from './doc';
 import { PARTS } from '../app/parts';
@@ -63,7 +63,6 @@ export function Usage({ meta, agent, example }: { meta: UsageMeta; agent: string
           lang={how === 'package' ? 'tsx' : undefined}
           label="Install"
           head={<TabList size="compact" aria-label="Install" items={[{ value: 'package', label: 'Package' }, { value: 'registry', label: 'Copy into your project' }]} />}
-          wrap={(lines) => (['package', 'registry'] as const).map((id) => <TabPanel key={id} value={id}>{id === how ? lines : null}</TabPanel>)}
         />
       </Tabs>
       {names.length > 0 && <Code code={example ? `${importLine}\n\n${example.trim()}` : importLine} lang="tsx" label="Usage" />}

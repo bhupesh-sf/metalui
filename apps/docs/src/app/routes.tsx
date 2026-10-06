@@ -59,6 +59,7 @@ export const routes: RouteObject[] = [
       { path: 'components/accordion', lazy: lazy(() => import('../pages/components/Accordion')) },
       { path: 'components/collapsible', lazy: lazy(() => import('../pages/components/Collapsible')) },
       { path: 'components/stepper', lazy: lazy(() => import('../pages/components/Stepper')) },
+      { path: 'components/code-block', lazy: lazy(() => import('../pages/components/CodeBlock')) },
       { path: 'components/meter', lazy: lazy(() => import('../pages/components/Meter')) },
       { path: 'components/rating', lazy: lazy(() => import('../pages/components/Rating')) },
       { path: 'components/sheet', lazy: lazy(() => import('../pages/components/Sheet')) },

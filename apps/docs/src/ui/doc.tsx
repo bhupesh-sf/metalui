@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useLocation } from 'react-router';
 import { PARTS } from '../app/parts';
-import { Button, Surface, SwapText, Tabs, TabList, TabPanel } from '@unlocalhosted/metalui';
+import { Button, CodeBlock, Surface, SwapText, Tabs, TabList } from '@unlocalhosted/metalui';
 import { MorphIcon } from '@unlocalhosted/metalui/icons';
 import { pageMarkdown } from '../lib/pageMarkdown';
 import { highlight, langOf, type Lang } from '../lib/highlight';
@@ -205,6 +205,8 @@ export function TokenTable({ rows, head = ['Token', 'Value', 'Used for'], mono =
 export const Table = TokenTable;
 
 const COPIED_MS = 1400;
+/** A docs code object stops at this many lines (about 440 tall) and scrolls. */
+const CODE_LINES = 22;
 
 function useCopied(ms: number) {
   const [copied, setCopied] = React.useState(false);
@@ -263,24 +265,18 @@ export function CopyPageButton() {
   );
 }
 
-/** Highlighted lines inside a <pre>. */
+/** The docs' code object: the package's CodeBlock, highlighted here by twinkleplop (its classes are mapped in styles.css). */
+export function Code({ code, label, lang, head, numbers = false, maxH = true }: { code: string; label?: string; lang?: Lang; head?: React.ReactNode; numbers?: boolean; maxH?: boolean }) {
+  const l = lang ?? langOf(label);
+  const src = code.replace(/\n+$/, '');
+  const html = React.useMemo(() => highlight(src, l), [src, l]);
+  return <CodeBlock className="twinkleplop" code={src} html={html} label={label ?? 'Code'} head={head} numbers={numbers} maxLines={maxH ? CODE_LINES : undefined} />;
+}
+
+/** Highlighted lines inside a <pre>, for the code-screen. */
 function Lines({ code, lang, numbers, className = '' }: { code: string; lang: Lang; numbers?: boolean; className?: string }) {
   const html = React.useMemo(() => highlight(code, lang, numbers), [code, lang, numbers]);
   return <pre className={`twinkleplop max-w-full min-w-0 overflow-auto ${className}`}><code dangerouslySetInnerHTML={{ __html: html }} /></pre>;
-}
-
-/** A quiet code object: a file name (or tabs), a copy button, highlighted lines. */
-export function Code({ code, label, lang, head, numbers = false, maxH = true, wrap }: { code: string; label?: string; lang?: Lang; head?: React.ReactNode; numbers?: boolean; maxH?: boolean; wrap?: (lines: React.ReactNode) => React.ReactNode }) {
-  const lines = <Lines code={code} lang={lang ?? langOf(label)} numbers={numbers} className={['type-doc-code px-16 py-14', maxH ? 'max-h-440' : ''].join(' ')} />;
-  return (
-    <div className="material-stage max-w-full min-w-0 overflow-hidden rounded-plate">
-      <div data-md="skip" className="flex min-h-40 flex-wrap items-center justify-between gap-x-12 gap-y-4 border-b border-rule py-6 pl-14 pr-6">
-        <div className="min-w-0 max-w-full overflow-x-auto">{head ?? <span className="type-readout truncate text-ink3">{label ?? 'Code'}</span>}</div>
-        <CopyButton text={code} />
-      </div>
-      {wrap ? wrap(lines) : lines}
-    </div>
-  );
 }
 
 /**
@@ -326,13 +322,7 @@ export function SourceTabs({ tabs }: { tabs: { id: string; label: string; code: 
   const lang: Lang = code.id === 'css' ? 'css' : code.id === 'swift' ? 'swift' : code.id === 'agent' ? 'md' : 'tsx';
   return (
     <Tabs value={tab} onValueChange={setTab}>
-      <Code
-        code={code.code}
-        lang={lang}
-        numbers
-        head={<TabList size="compact" aria-label="Source" items={tabs.map((t) => ({ value: t.id, label: t.label }))} />}
-        wrap={(lines) => tabs.map((t) => <TabPanel key={t.id} value={t.id}>{t.id === tab ? lines : null}</TabPanel>)}
-      />
+      <Code code={code.code} lang={lang} numbers head={<TabList size="compact" aria-label="Source" items={tabs.map((t) => ({ value: t.id, label: t.label }))} />} />
     </Tabs>
   );
 }

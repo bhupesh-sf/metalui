@@ -1,0 +1,20 @@
+{
+  "name": "code-block",
+  "title": "Code block",
+  "status": "alpha",
+  "layer": "component",
+  "kind": "composed",
+  "uses": ["icon-button", "button", "led"],
+  "description": "Code to read and copy in the flow: framed (a plate with a head) or ghost; numbers from any start line, wrap, a max height with its own scroll, the copy glyph turning to the check on the drum. Highlighted and focused lines, lines picked by their numbers to reference in a chat, diff and unified patch (two gutters), diagnostics with an action, streaming from an AI reply with splitFences for Markdown. Highlighting is the host's (pass html); a light tint is built in.",
+  "base": "none",
+  "react": {
+    "export": "CodeBlock, splitFences, splitHtmlLines, tintLine",
+    "files": ["code-block.tsx"]
+  },
+  "swift": {
+    "symbol": "MetalCodeBlock",
+    "file": "swift/Sources/MetalUI/Components/MetalCodeBlock.swift"
+  },
+  "agent": "code-block.agent.md",
+  "page": "/components/code-block"
+}

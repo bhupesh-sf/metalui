@@ -274,6 +274,23 @@
       "agent": "https://metalui.dev/r/chip.md"
     },
     {
+      "name": "code-block",
+      "title": "Code block",
+      "status": "alpha",
+      "description": "Code to read and copy in the flow: framed (a plate with a head) or ghost; numbers from any start line, wrap, a max height with its own scroll, the copy glyph turning to the check on the drum. Highlighted and focused lines, lines picked by their numbers to reference in a chat, diff and unified patch (two gutters), diagnostics with an action, streaming from an AI reply with splitFences for Markdown. Highlighting is the host's (pass html); a light tint is built in.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "CodeBlock, splitFences, splitHtmlLines, tintLine",
+        "base": "none"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalCodeBlock"
+      },
+      "registry": "https://metalui.dev/r/code-block.json",
+      "agent": "https://metalui.dev/r/code-block.md"
+    },
+    {
       "name": "code-card",
       "title": "Code card",
       "status": "alpha",
