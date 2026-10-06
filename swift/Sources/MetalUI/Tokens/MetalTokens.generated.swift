@@ -3169,6 +3169,8 @@ public enum MetalRecipes {
             "deck.gap": .number(8.0),
             "deck.swipe": .number(40.0),
             "deck.press": .text("0.96"),
+            "deck.more-height": .number(16.0),
+            "deck.more-pad": .number(6.0),
             "close.size": .number(28.0),
             "close.ink": .perColorway(bone: "#6E6E72", graphite: "#9A9AA0"),
             "text.gap": .number(6.0),

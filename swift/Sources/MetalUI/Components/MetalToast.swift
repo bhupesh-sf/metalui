@@ -45,6 +45,8 @@ public struct MetalToast: View {
     let onClose: (() -> Void)?
     /// A card behind the front of a folded deck: the pill shows, its words don't.
     var concealed = false
+    /// A card behind the front one takes the front card's width.
+    var width: CGFloat?
     @Environment(\.metalColorway) private var colorway
 
     public init(_ model: MetalToastModel, count: Int = 1, onUndo: @escaping () -> Void = {}, onClose: (() -> Void)? = nil) {
@@ -59,8 +61,8 @@ public struct MetalToast: View {
         let cw = MetalRecipeColorway(colorway)
         return HStack(spacing: recipe.points("self.gap")) {
             HStack(spacing: recipe.points("text.gap")) {
-                if model.tone == .success { Text("✓").foregroundColor(MetalShared.success.color).accessibilityLabel("Done") }
-                if model.tone == .error { Text("!").foregroundColor(MetalShared.red.color).accessibilityLabel("Error") }
+                if model.tone == .success { MetalIcon(.check, size: 14).foregroundStyle(MetalShared.success.color).accessibilityLabel("Done") }
+                if model.tone == .error { MetalIcon(.syncError, size: 14).foregroundStyle(MetalShared.red.color).accessibilityLabel("Error") }
                 Text(model.title)
                 if let sub = model.sub { Text("· \(sub)").foregroundColor((recipe.color("sub.ink", colorway: cw) ?? colorway.tokens.ink2).color) }
                 if count > 1 {
@@ -105,6 +107,7 @@ public struct MetalToast: View {
         .padding(.trailing, model.undo != nil || onClose != nil ? recipe.points("self.pad-right") : recipe.points("self.pad-left"))
         .frame(height: recipe.points("self.height"))
         .fixedSize()
+        .frame(width: width)
         .metalObjectRecipe(recipe, part: "self", in: Capsule(style: .continuous))
         .background(.ultraThinMaterial, in: Capsule(style: .continuous))
         .accessibilityElement(children: .contain)
@@ -168,11 +171,12 @@ extension View {
 //
 // rest      each card behind is a step smaller (deck.step-scale), peeks deck.peek upward
 //           past the card in front, is deck.dim dimmer, its words hidden; deck.visible
-//           drawn, the rest counted (+2) above the back card
+//           drawn, the rest counted (+2) on a tab in the back card's top edge; the cards behind
+//           take the front card's width (fanned out, each its own)
 // arrive    the new card rises self.rise from below, from self.scale, into the front on the
 //           object spring; the cards behind step back one on the same spring, together
-// fan out   the pointer on the deck: a column deck.gap apart on the surface spring; every
-//           clock pauses. The pointer leaves: back into the deck on the surface spring
+// fan out   the pointer on the deck, or keyboard focus in it: a column deck.gap apart on the
+//           surface spring; every clock pauses. Both leave: back into the deck on the surface spring
 // swipe     the front card follows the finger (down or right); past deck.swipe on release
 //           it leaves on release; short of it, it settles home
 // close     its close key: it leaves on release; the next card comes forward
@@ -219,6 +223,7 @@ public struct MetalToastDeckView: View {
     let deck: MetalToastDeck
     let expanded: Bool
     @State private var drag: CGSize = .zero
+    @State private var frontWidth: CGFloat?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     public init(_ deck: MetalToastDeck, expanded: Bool = false) {
@@ -242,7 +247,9 @@ public struct MetalToastDeckView: View {
                 MetalToastDeckCard(deck: deck, card: card, index: index, expanded: expanded,
                                    drag: index == 0 ? drag : .zero, travel: travel,
                                    more: index == drawn.count - 1 ? more : 0,
+                                   width: index > 0 && !expanded ? frontWidth : nil,
                                    onDismiss: { dismiss(card.id) })
+                    .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { if index == 0 { frontWidth = $0 } }
                     .zIndex(Double(visible - index))
                     .gesture(swipe(card.id), including: index == 0 ? .all : .subviews)
                     .transition(.asymmetric(
@@ -288,6 +295,7 @@ private struct MetalToastDeckCard: View {
     let drag: CGSize
     let travel: Bool
     let more: Int
+    let width: CGFloat?
     let onDismiss: () -> Void
     @State private var pressed = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -300,6 +308,7 @@ private struct MetalToastDeckCard: View {
         let lift = expanded ? step * (recipe.points("self.height") + recipe.points("deck.gap")) : step * recipe.points("deck.peek")
         var toast = MetalToast(card.model, count: card.count, onUndo: onDismiss, onClose: onDismiss)
         toast.concealed = index > 0 && !expanded
+        toast.width = width
         return toast
             .metalHitRegion(true)
             .scaleEffect(pressed && travel ? recipe.scalar("deck.press") : 1)
@@ -315,8 +324,11 @@ private struct MetalToastDeckCard: View {
                         .metalType(MetalType.readout)
                         .foregroundColor((recipe.color("sub.ink", colorway: MetalRecipeColorway(colorway)) ?? colorway.tokens.ink2).color)
                         .fixedSize()
-                        // Above the card where it is drawn (its offset moves the drawing, not its frame).
-                        .offset(y: -(MetalType.readout.line + recipe.points("deck.peek")) - lift)
+                        .padding(.horizontal, recipe.points("deck.more-pad"))
+                        .frame(height: recipe.points("deck.more-height"))
+                        .metalObjectRecipe(recipe, part: "self", in: Capsule(style: .continuous))
+                        // A tab on the back card's top edge, where it is drawn (its offset moves the drawing, not its frame).
+                        .offset(y: -recipe.points("deck.more-height") / 2 - lift)
                         .accessibilityHidden(true)
                 }
             }
@@ -343,19 +355,38 @@ private struct MetalToastDeckCard: View {
 
 private struct MetalToastDeckHost: ViewModifier {
     let deck: MetalToastDeck
-    @State private var expanded = false
+    @State private var hovering = false
+    @FocusState private var focused: Bool
+    /// Set while keyboard focus is anywhere in the deck: on it, or on a card's Undo or close key.
+    @FocusedValue(\.metalToastDeckFocus) private var focusWithin
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     func body(content: Content) -> some View {
+        let expanded = hovering || focused || focusWithin == true
         content.overlay(alignment: .bottom) {
             MetalToastDeckView(deck, expanded: expanded)
                 .contentShape(Rectangle())
+                // Tab (or F6) reaches the deck as one stop, as the web deck's landmark does.
+                .focusable()
+                .focusEffectDisabled()
+                .focused($focused)
+                .focusedValue(\.metalToastDeckFocus, true)
                 .onHover { inside in
-                    withMetalAnimation(.surface, reduceMotion: reduceMotion) { expanded = inside }
-                    deck.paused = inside
+                    withMetalAnimation(.surface, reduceMotion: reduceMotion) { hovering = inside }
                 }
+                .onChange(of: expanded) { _, now in deck.paused = now }
+                .metalAnimation(.surface, value: focused || focusWithin == true)
                 .padding(.bottom, MetalRecipes.toast.points("self.bottom"))
         }
+    }
+}
+
+private struct MetalToastDeckFocusKey: FocusedValueKey { typealias Value = Bool }
+
+extension FocusedValues {
+    var metalToastDeckFocus: Bool? {
+        get { self[MetalToastDeckFocusKey.self] }
+        set { self[MetalToastDeckFocusKey.self] = newValue }
     }
 }
 

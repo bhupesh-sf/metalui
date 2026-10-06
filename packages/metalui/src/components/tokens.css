@@ -2218,6 +2218,8 @@
   --mu-r-toast-deck-gap: 8px;
   --mu-r-toast-deck-swipe: 40px;
   --mu-r-toast-deck-press: 0.96;
+  --mu-r-toast-deck-more-height: 16px;
+  --mu-r-toast-deck-more-pad: 6px;
   --mu-r-toast-close-size: 28px;
   --mu-r-toast-text-gap: 6px;
   --mu-r-toast-undo-height: 28px;
