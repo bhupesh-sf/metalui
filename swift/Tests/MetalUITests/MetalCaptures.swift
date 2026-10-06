@@ -215,17 +215,34 @@ final class MetalCaptures: XCTestCase {
                 MetalDimple(isOn: .constant(false), ghost: true, label: "ghost")
                 MetalCueUrgency()
             }
-            (Text("Send ") + Text("tomorrow 4pm").metalCue(.date, colorway: colorway) + Text(", ") + Text("1h30").metalCue(.duration, colorway: colorway)
-                + Text(" for ") + Text("$40").metalCue(.amount, colorway: colorway) + Text(", slept ") + Text("6h").metalCue(.measurement, colorway: colorway)
-                + Text(" in ") + Text("#FF6B3D").metalCue(.hex, colorway: colorway, hex: MetalShared.orange))
-                .font(.metal(MetalType.content))
-                .foregroundColor(colorway.tokens.ink.color)
+            HStack(alignment: .firstTextBaseline, spacing: 5) {
+                Text("Send").font(.metal(MetalType.content))
+                MetalCueTag("#poster")
+                MetalCueMark("tomorrow 4pm", kind: .date, resolved: "WED 30 SEP · 16:00")
+                MetalCueMark("1h30", kind: .duration)
+                Text("for").font(.metal(MetalType.content))
+                MetalCueMark("$40", kind: .amount, glyph: .life(.spent))
+            }
+            .foregroundColor(colorway.tokens.ink.color)
+            HStack(alignment: .firstTextBaseline, spacing: 5) {
+                Text("slept").font(.metal(MetalType.content))
+                MetalCueMark("6h", kind: .measurement, label: "Sleep", glyph: .life(.lateNight))
+                MetalCueMark("8k steps", kind: .measurement, label: "Steps", glyph: .life(.steps))
+                MetalCueMark("#FF6B3D", kind: .hex, hex: MetalShared.orange)
+                Text("to").font(.metal(MetalType.content))
+                MetalCueMark("Sam", kind: .person, glyph: .person("Sam Ito"))
+                MetalCueMark("fri", kind: .date, inferred: true)
+            }
+            .foregroundColor(colorway.tokens.ink.color)
             HStack(spacing: 8) {
                 MetalCueTag("#poster")
-                MetalCueTag("#studio", derived: true)
+                MetalCueTag("#studio")
+                MetalCueTag("#coffee")
+                MetalCueTag("#done", derived: true)
                 MetalCueURLPill(host: "figma.com") {}
                 MetalCueInferred("fri")
-                MetalCueLife(.coffee)
+                MetalCueInferred("fri", confirmed: true)
+                MetalCueLife(.coffee, label: "A drink · coffee?")
             }
         }
         .padding(28)

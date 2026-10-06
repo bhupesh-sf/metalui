@@ -1681,6 +1681,7 @@
   --mu-r-mark-tag-hue-4: 46deg;
   --mu-r-mark-tag-hue-5: 338deg;
   --mu-r-mark-motion-act: 1200ms;
+  --mu-r-mark-motion-glyph-delay: 83ms;
   --mu-r-mark-motion-chip-hold: 1800ms;
   --mu-r-mark-motion-sparkle: 9px;
   --mu-r-mark-motion-sparkle-ms: 520ms;

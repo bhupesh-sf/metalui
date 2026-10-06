@@ -2233,6 +2233,7 @@ public enum MetalRecipes {
             "tag.hue-4": .text("46deg"),
             "tag.hue-5": .text("338deg"),
             "motion.act": .text("1200ms"),
+            "motion.glyph-delay": .text("83ms"),
             "motion.chip-hold": .text("1800ms"),
             "motion.sparkle": .number(9.0),
             "motion.sparkle-ms": .text("520ms"),

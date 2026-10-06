@@ -38,7 +38,7 @@ function Line({ cues, bare, raw, fresh }: { cues: boolean; bare?: boolean; raw?:
 const LEGEND: { kind: string; specimen: React.ReactNode; glyph: string; line: string; chip: string }[] = [
   { kind: 'time · date', specimen: <Cue kind="date" resolved="WED 30 SEP · 16:00">tomorrow 4pm</Cue>, glyph: 'clock (its act: an hour passes)', line: 'engraved groove', chip: 'DATE · WED 30 SEP · 16:00' },
   { kind: 'time · duration', specimen: <Cue kind="duration" resolved="1 H 30 · 90 MIN">1h30</Cue>, glyph: 'clock', line: 'engraved groove', chip: 'DURATION · 1 H 30 · 90 MIN' },
-  { kind: 'money', specimen: <Cue kind="amount" resolved="$40.00" glyph={COIN}>$40</Cue>, glyph: 'coin (spent stands in)', line: 'quiet hairline, tabular figures', chip: 'AMOUNT · $40.00' },
+  { kind: 'money', specimen: <Cue kind="amount" resolved="$40.00" glyph={COIN}>$40</Cue>, glyph: 'coin (spent stands in)', line: 'quiet hairline (tabular in the chip)', chip: 'AMOUNT · $40.00' },
   { kind: 'body · sleep', specimen: <Cue kind="measurement" label="Sleep" resolved="6 H" glyph={MOON}>6h</Cue>, glyph: 'moon (late night stands in)', line: 'soft green', chip: 'SLEEP · 6 H' },
   { kind: 'body · steps', specimen: <Cue kind="measurement" label="Steps" resolved="8 000" glyph={STEPS}>8k steps</Cue>, glyph: 'steps', line: 'soft green', chip: 'STEPS · 8 000' },
   { kind: 'colour', specimen: <Cue kind="hex" color="#3F7FE0">#3F7FE0</Cue>, glyph: 'the live swatch', line: '3 pt in the colour', chip: 'COLOUR' },
@@ -73,7 +73,7 @@ export default function CueFamilyPage() {
     <div style={motion}>
       <PageHeader
         title="Cue family"
-        lede="Recognition made visible. Every kind has one look: time is an engraved groove with a clock, money a quiet hairline with tabular figures and a coin, the body a soft green line with its moon or steps, a colour its live swatch, a person their avatar, a tag a luggage tag in its own colour. The glyph sits at full ink before the words it explains; hover a cue for what the glyph means and the value it resolved to. The words never move: the drawing sits behind them, and raw text keeps every chunk exactly in place."
+        lede="Recognition made visible. Every kind has one look: time is an engraved groove with a clock, money a quiet hairline and a coin (its formatted amount, tabular, in the chip), the body a soft green line with its moon or steps, a colour its live swatch, a person their avatar, a tag a luggage tag in its own colour. The glyph sits at full ink before the words it explains; hover a cue for what the glyph means and the value it resolved to. The words never move: the drawing sits behind them, and raw text keeps every chunk exactly in place."
       />
 
       <Section title="Kinds" lede="The legend. One look per kind, everywhere: the glyph says what it is, the line says it was understood, the chip (on hover or focus) names it and shows the value.">
