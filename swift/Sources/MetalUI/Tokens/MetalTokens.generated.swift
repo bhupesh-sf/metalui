@@ -795,16 +795,27 @@ public enum MetalRecipes {
         ]
     )
 
-    /// How far a task has come: the switch's sunk track with the switch's green on look as the fill, a label and the value above it. The fill's width follows the value on the settle spring (no overshoot: progress never claims more than is done). Unknown amount: a short lit segment sweeps across the track and loops, ease-in-out. Reduce Motion: the width snaps and the segment breathes in place instead of sweeping. The look is the switch recipe (one recipe per look); this recipe adds the size, the text and the motion. (the switch track and on fill (recipe switch); the settle spring; Base UI Progress)
+    /// How far a task has come: the switch's sunk track with the switch's green on look as the fill, an optional head above it (a glyph, the label, and the value or a detail like "8 of 12 · about 20 s", tabular, turning on the drum). The fill is a whole pill slid in from the start (translate, composited), so its leading edge is always round; it follows a rising value on the settle spring (no overshoot: progress never claims more than is done) and drains back on the release spring when the value falls (reset, cancel). End states: complete (the fill finishes, then the head turns to its result), failed (the fill stops where it was and takes the failed ink, fill.failed, cross-faded), paused (the fill holds and dims to paused.dim). Shapes: the bar; slim (no head, slim.height, under a toolbar or along a card's edge); steps (the track split into one well per known step, steps.gap apart); buffered (a lighter second fill ahead, buffer.opacity); the ring is the spinner's ring with a value. Sizes: regular, and compact (compact.*) for a row or a toast. Unknown amount: a short lit segment sweeps across the track and loops, ease-in-out. Reduce Motion: the edge snaps and the segment breathes in place instead of sweeping; the fades stay. The look is the switch recipe (one recipe per look); this recipe adds the size, the text, the failed ink and the motion. (the switch track and on fill (recipe switch); the failed lamp's red (status recipe); the settle and release springs; the drum (motion/swap); the spinner's ring; Base UI Progress)
     public static let progress = MetalObjectRecipe(
         name: "progress",
         layers: [
-
+            .init(part: "fill", state: "failed", colorway: nil, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(214.0, 72.0, 62.0, 1.0)), 0.0), .init(.color(MetalRGBA(230.0, 106.0, 95.0, 1.0)), 1.0)])), // mu-recipe:progress:0 linear-gradient(#D6483E, #E66A5F)
+            .init(part: "fill", state: "failed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 2.0, blur: 5.0, spread: -1.0, paint: .color(MetalRGBA(110.0, 10.0, 5.0, 0.3)))), // mu-recipe:progress:1 inset 0 2px 5px -1px rgba(110,10,5,.3)
+            .init(part: "fill", state: "failed", colorway: nil, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 6.0, spread: 1.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.2)))), // mu-recipe:progress:2 inset 0 0 6px 1px rgba(255,255,255,.2)
         ],
         props: [
             "self.height": .number(8.0),
             "self.gap": .number(6.0),
             "self.min-width": .number(160.0),
+            "self.glyph": .number(16.0),
+            "self.glyph-gap": .number(6.0),
+            "compact.height": .number(6.0),
+            "compact.gap": .number(4.0),
+            "compact.glyph": .number(14.0),
+            "slim.height": .number(3.0),
+            "steps.gap": .number(3.0),
+            "buffer.opacity": .text("0.4"),
+            "paused.dim": .text("0.45"),
             "segment.ratio": .text("0.32"),
             "segment.sweep": .text("1400ms"),
             "segment.breathe": .text("1600ms"),
