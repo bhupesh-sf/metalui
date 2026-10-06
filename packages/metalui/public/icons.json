@@ -1,6 +1,6 @@
 {
   "$description": "MetalUI icons: Soft Hardware monoline + duotone, 24×24 grid, stroke 1.7. Each icon has an authored hover pose and press one-shot.",
-  "count": 49,
+  "count": 59,
   "icons": [
     {
       "name": "select",
@@ -981,6 +981,206 @@
       },
       "tuned16": false,
       "construction": "Seed 11.2 × 13.2, tinted .14; sprout stem 2.6 and a tinted leaf from its top. Motion (study): the seed lifts 1.6 and lands on its bottom (squash .9, object spring); the sprout lags, sinks .5 into it and springs .7 past rest; the leaf flops 18° about its joint and swings back; two puffs of soil spread along the ground at its base."
+    },
+    {
+      "name": "send",
+      "component": "SendIcon",
+      "label": "Send",
+      "category": "Actions",
+      "hover": "The arrow crouches on the disc, pushes off its floor and launches; the floor springs back.",
+      "press": "plays the same act",
+      "pressMs": 840,
+      "motion": {
+        "caption": "The arrow crouches on the disc, pushes off its floor and launches; the floor springs back.",
+        "durationMs": 840,
+        "stages": [
+          "Crouch",
+          "Launch",
+          "Land"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Disc r8.5, tinted .12, with an upright arrow 8.4 long (head 3.6 each way) on its centre, so Send and Stop are one key that morphs by its mark. Motion (study): the arrow crouches 1.2 on its tail and pushes off the disc floor, striking 1.6 up and stretching 1.04 while its head stays clear of the rim; the floor gives .96 and springs back on the object spring; two puffs open under the tail."
+    },
+    {
+      "name": "stop",
+      "component": "StopIcon",
+      "label": "Stop",
+      "category": "Actions",
+      "hover": "The block is lifted and set down hard in the middle of the key; everything closes in on it and stops.",
+      "press": "plays the same act",
+      "pressMs": 830,
+      "motion": {
+        "caption": "The block is lifted and set down hard in the middle of the key; everything closes in on it and stops.",
+        "durationMs": 830,
+        "stages": [
+          "Lift",
+          "Set down",
+          "Halt"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Disc r8.5, tinted .12 (Send's key), with a 6.8 square r1.6 tinted .24 on its centre, so Send and Stop morph by the mark alone. Motion (study): the block is lifted 1.4 and set down hard, .4 past its seat, squashing .88 and widening 1.08 on the part spring; the disc takes the blow a beat later on the object spring; a faint ring closes in round the block."
+    },
+    {
+      "name": "attach",
+      "component": "AttachIcon",
+      "label": "Attach",
+      "category": "Actions",
+      "hover": "The clip is drawn back and slid onto a sheet; the sheet's edge shows under it as it bites.",
+      "press": "plays the same act",
+      "pressMs": 850,
+      "motion": {
+        "caption": "The clip is drawn back and slid onto a sheet; the sheet's edge shows under it as it bites.",
+        "durationMs": 850,
+        "stages": [
+          "Draw back",
+          "Slide on",
+          "Bite"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A three-leg paper clip on the diagonal (legs 3.2 apart, a 3.2 top bend and a 1.6 inner bend, 48u of wire), its long loop to the upper right, centred on the grid. One wire and no tint: like Check and Close it is a light exception to the grammar's body rule (K4), kept because a clip on a card read as a bag or an edit pen. Motion (study): the clip is drawn back 1.6 along its legs and slid on .5 past its seat, tipping 4° as it bites, on the part spring; a sheet's edge shows under its legs at the bite and fades."
+    },
+    {
+      "name": "retry",
+      "component": "RetryIcon",
+      "label": "Retry · Try again",
+      "category": "Actions",
+      "hover": "The arrowhead backs up round the loop, erasing it, and goes again, drawing it.",
+      "press": "plays the same act",
+      "pressMs": 1000,
+      "motion": {
+        "caption": "The arrowhead backs up round the loop, erasing it, and goes again, drawing it.",
+        "durationMs": 1000,
+        "stages": [
+          "Back up",
+          "Go again",
+          "Arrive"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A 7.4 loop, tinted .06, drawn 302.4° clockwise from the top so its gap sits at the upper left; an open arrowhead (2.6 arms) rides its end, pointing on clockwise. Motion (study): the head backs up round the loop to a little under half, erasing it, then goes again drawing it, is carried 7° into the gap and pulled back onto the end; a tick opens where it arrives."
+    },
+    {
+      "name": "save",
+      "component": "SaveIcon",
+      "label": "Save",
+      "category": "Actions",
+      "hover": "The disk is pushed home; as it seats the shutter catches and slides open, then springs shut.",
+      "press": "plays the same act",
+      "pressMs": 913,
+      "motion": {
+        "caption": "The disk is pushed home; as it seats the shutter catches and slides open, then springs shut.",
+        "durationMs": 913,
+        "stages": [
+          "Push",
+          "Seat",
+          "Shut"
+        ]
+      },
+      "tuned16": false,
+      "construction": "A 15 × 15 disk with its top-right corner cut 3.9 and r1.9 corners, tinted .1; a 5.6 shutter hanging from the top edge and a 7 label standing on the bottom edge. Motion (study): the disk is pushed 1.2 down and seats .4 past on the object spring, squashing .96; the shutter is caught and slides 1 right, then springs shut on the part spring; a click opens at the cut corner."
+    },
+    {
+      "name": "download",
+      "component": "DownloadIcon",
+      "label": "Download",
+      "category": "Actions",
+      "hover": "The arrow is drawn up and comes down onto the floor, which takes it.",
+      "press": "plays the same act",
+      "pressMs": 850,
+      "motion": {
+        "caption": "The arrow is drawn up and comes down onto the floor, which takes it.",
+        "durationMs": 850,
+        "stages": [
+          "Draw up",
+          "Come down",
+          "Land"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Disc r8.5, tinted .1; a 7.6 arrow pointing down (3 arms) over a 6.8 floor bar at 17. Upload is the same disc with the bar overhead and the arrow rising, so the two morph by their marks; Send is the disc with an arrow and no bar. (A tray at the bottom, the first draft, scored 2.03 mean strain against the set; the disc scores 1.4.) Motion (study): the arrow is drawn up 1 and comes down 1.2 onto the floor, squashing .9; the floor squashes .7 and widens 1.1 under it on the part spring; puffs open beside it."
+    },
+    {
+      "name": "upload",
+      "component": "UploadIcon",
+      "label": "Upload",
+      "category": "Actions",
+      "hover": "The arrow crouches and pushes up to the ceiling, which takes it.",
+      "press": "plays the same act",
+      "pressMs": 850,
+      "motion": {
+        "caption": "The arrow crouches and pushes up to the ceiling, which takes it.",
+        "durationMs": 850,
+        "stages": [
+          "Crouch",
+          "Push up",
+          "Reach"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Download's disc (r8.5, tinted .1) with the bar overhead at 7 and a 7.6 arrow rising to it (3 arms). Motion (study): the arrow crouches .9 and pushes up 1.2 to the ceiling, stretching 1.04; the ceiling squashes .7 and widens 1.1 on the part spring; puffs open under the tail."
+    },
+    {
+      "name": "person",
+      "component": "PersonIcon",
+      "label": "Person · Assign",
+      "category": "Tools",
+      "hover": "The figure looks up and nods; its shoulders follow, and a ring opens round its head.",
+      "press": "plays the same act",
+      "pressMs": 910,
+      "motion": {
+        "caption": "The figure looks up and nods; its shoulders follow, and a ring opens round its head.",
+        "durationMs": 910,
+        "stages": [
+          "Look up",
+          "Nod",
+          "Here"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Portrait disc r8.5, tinted .1; head a 2.9 ring at 12/9.2; shoulders an arc from 6.6/18.4 to 17.4/18.4 rising to 14.6, its ends on the disc's line. Motion (study): the head looks up .9 and tips back 8° about the neck, then nods .5 past rest on the part spring; the shoulders rise .5 a beat later on the object spring; a ring opens round the head."
+    },
+    {
+      "name": "bell",
+      "component": "BellIcon",
+      "label": "Notifications",
+      "category": "Status",
+      "hover": "The bell swings on its loop and the clapper, lagging, strikes the rim on each side.",
+      "press": "plays the same act",
+      "pressMs": 900,
+      "motion": {
+        "caption": "The bell swings on its loop and the clapper, lagging, strikes the rim on each side.",
+        "durationMs": 900,
+        "stages": [
+          "Swing",
+          "Strike",
+          "Ring down"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Bell 10.6 wide at the shoulder, flaring to 13.6 at the rim (16.5), tinted .12, hung from a 1.7 loop at 12/2.9; a clapper bead r1.35 under its mouth. Motion (study): the bell swings about its loop 10°, −8°, 6° and rings down; the clapper lags, meets the rim on each return, and a sound arc opens on that side."
+    },
+    {
+      "name": "palette",
+      "component": "PaletteIcon",
+      "label": "Appearance",
+      "category": "Tools",
+      "hover": "The palette is lifted on its thumb and each paint is dabbed in turn.",
+      "press": "plays the same act",
+      "pressMs": 950,
+      "motion": {
+        "caption": "The palette is lifted on its thumb and each paint is dabbed in turn.",
+        "durationMs": 950,
+        "stages": [
+          "Lift",
+          "Dab",
+          "Settle"
+        ]
+      },
+      "tuned16": false,
+      "construction": "Palette 16.9 × 16.8, tinted .12, its thumb notch at the lower right; three paint beads r1.35 in an arc on the upper left. Motion (study): the board tips back 5° about its notch and rises .6 on the object spring; the paints are dabbed in turn (flattened .78, widened 1.12) and spring back on the part spring; a glint opens at the last."
     }
   ]
 }

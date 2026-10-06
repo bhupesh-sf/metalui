@@ -99,3 +99,23 @@ export const ClockIcon = createIcon("clock", "ClockIcon");
 export const MeIcon = createIcon("me", "MeIcon");
 /** Seed sample. Hover: The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings.. Press: plays the same act. */
 export const SeedIcon = createIcon("seed", "SeedIcon");
+/** Send. Hover: The arrow crouches on the disc, pushes off its floor and launches; the floor springs back.. Press: plays the same act. */
+export const SendIcon = createIcon("send", "SendIcon");
+/** Stop. Hover: The block is lifted and set down hard in the middle of the key; everything closes in on it and stops.. Press: plays the same act. */
+export const StopIcon = createIcon("stop", "StopIcon");
+/** Attach. Hover: The clip is drawn back and slid onto a sheet; the sheet's edge shows under it as it bites.. Press: plays the same act. */
+export const AttachIcon = createIcon("attach", "AttachIcon");
+/** Retry · Try again. Hover: The arrowhead backs up round the loop, erasing it, and goes again, drawing it.. Press: plays the same act. */
+export const RetryIcon = createIcon("retry", "RetryIcon");
+/** Save. Hover: The disk is pushed home; as it seats the shutter catches and slides open, then springs shut.. Press: plays the same act. */
+export const SaveIcon = createIcon("save", "SaveIcon");
+/** Download. Hover: The arrow is drawn up and comes down onto the floor, which takes it.. Press: plays the same act. */
+export const DownloadIcon = createIcon("download", "DownloadIcon");
+/** Upload. Hover: The arrow crouches and pushes up to the ceiling, which takes it.. Press: plays the same act. */
+export const UploadIcon = createIcon("upload", "UploadIcon");
+/** Person · Assign. Hover: The figure looks up and nods; its shoulders follow, and a ring opens round its head.. Press: plays the same act. */
+export const PersonIcon = createIcon("person", "PersonIcon");
+/** Notifications. Hover: The bell swings on its loop and the clapper, lagging, strikes the rim on each side.. Press: plays the same act. */
+export const BellIcon = createIcon("bell", "BellIcon");
+/** Appearance. Hover: The palette is lifted on its thumb and each paint is dabbed in turn.. Press: plays the same act. */
+export const PaletteIcon = createIcon("palette", "PaletteIcon");

@@ -1130,6 +1130,228 @@ export const ICON_CATALOG = {
     sw16: 1.85,
     motion: {"duration":1040,"caption":"The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings.","stages":["Lift","Plant","Take root"],"tracks":[{"part":"seed","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.15385,"transform":"translate(0px,-1.6px) rotate(0deg) scale(0.98,1.03)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.28846,"transform":"translate(0px,0px) rotate(0deg) scale(1.06,0.9)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63077,"transform":"translate(0px,0px) rotate(0deg) scale(0.9941,1.0099)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.97404,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"sprout","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.15385,"transform":"translate(0px,0.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.28846,"transform":"translate(0px,0.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.32692,"transform":"translate(0px,0.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44231,"transform":"translate(0px,-0.7px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.55769,"transform":"translate(0px,0.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.67308,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"leaf","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.25,"transform":"translate(0px,0px) rotate(-6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.34615,"transform":"translate(0px,0px) rotate(18deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.48077,"transform":"translate(0px,0px) rotate(-8deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61538,"transform":"translate(0px,0px) rotate(3deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.75,"transform":"translate(0px,0px) rotate(-0.8deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"soil","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.27885,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.31731,"transform":"scale(1)","opacity":1,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.53846,"transform":"scale(1.35)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
   },
+  /* ─────────────────────────────────────────────────────────
+   * SEND · Actions · one act, 840ms
+   *
+   * Crouch → Launch → Land
+   *          The arrow crouches on the disc, pushes off its floor and launches; the floor springs back.
+   *  arrow      0 → 150 → 230 → 535 → 840ms
+   *  disc       0 → 150 → 235 → 591 → 840ms
+   *  puff       0 → 200 → 250 → 470 → 840ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "send": {
+    label: "Send",
+    category: "Actions",
+    hover: "The arrow crouches on the disc, pushes off its floor and launches; the floor springs back.",
+    press: "plays the same act",
+    pressMs: 840,
+    defs: "",
+    body: "<g data-part=\"disc\"><path class=\"f\" style=\"--duo:.12\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/></g><g data-part=\"arrow\"><path d=\"M12 7.8v8.4M8.4 11.4 12 7.8l3.6 3.6\"/></g><path class=\"ac\" data-part=\"puff\" opacity=\"0\" d=\"M10.6 18.2l-.7.8M13.4 18.2l.7.8\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":840,"caption":"The arrow crouches on the disc, pushes off its floor and launches; the floor springs back.","stages":["Crouch","Launch","Land"],"tracks":[{"part":"arrow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.17857,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.88)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.27381,"transform":"translate(0px,-1.6px) rotate(0deg) scale(1,1.04)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.6369,"transform":"translate(0px,0.1393px) rotate(0deg) scale(1,0.9965)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"disc","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.17857,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.96)","easing":"linear"},{"offset":0.27976,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.96)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.70357,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"puff","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.2381,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.29762,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.55952,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * STOP · Actions · one act, 830ms
+   *
+   * Lift → Set down → Halt
+   *          The block is lifted and set down hard in the middle of the key; everything closes in on it and stops.
+   *  block      0 → 140 → 220 → 525 → 830ms
+   *  disc       0 → 230 → 240 → 596 → 830ms
+   *  halt       0 → 210 → 250 → 450 → 830ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "stop": {
+    label: "Stop",
+    category: "Actions",
+    hover: "The block is lifted and set down hard in the middle of the key; everything closes in on it and stops.",
+    press: "plays the same act",
+    pressMs: 830,
+    defs: "",
+    body: "<g data-part=\"disc\"><path class=\"f\" style=\"--duo:.12\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/></g><g data-part=\"block\"><rect class=\"f\" style=\"--duo:.24\" x=\"8.6\" y=\"8.6\" width=\"6.8\" height=\"6.8\" rx=\"1.6\"/></g><circle class=\"ac\" data-part=\"halt\" opacity=\"0\" cx=\"12\" cy=\"12\" r=\"5.6\" style=\"stroke-width:calc(var(--sw) * .5)\"/>",
+    sw16: 1.85,
+    motion: {"duration":830,"caption":"The block is lifted and set down hard in the middle of the key; everything closes in on it and stops.","stages":["Lift","Set down","Halt"],"tracks":[{"part":"block","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16867,"transform":"translate(0px,-1.4px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.26506,"transform":"translate(0px,0.4px) rotate(0deg) scale(1.08,0.88)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.63253,"transform":"translate(0px,-0.0348px) rotate(0deg) scale(0.993,1.0104)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"disc","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.27711,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.28916,"transform":"translate(0px,0px) rotate(0deg) scale(1.02,0.97)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.71807,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"halt","keyframes":[{"offset":0,"transform":"scale(1.1)","opacity":0},{"offset":0.25301,"transform":"scale(1.1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.3012,"transform":"scale(1)","opacity":0.6,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.54217,"transform":"scale(.8)","opacity":0},{"offset":1,"transform":"scale(1.1)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * ATTACH · Actions · one act, 850ms
+   *
+   * Draw back → Slide on → Bite
+   *          The clip is drawn back and slid onto a sheet; the sheet's edge shows under it as it bites.
+   *  clip       0 → 160 → 240 → 545 → 850ms
+   *  sheet      0 → 220 → 260 → 520 → 850ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "attach": {
+    label: "Attach",
+    category: "Actions",
+    hover: "The clip is drawn back and slid onto a sheet; the sheet's edge shows under it as it bites.",
+    press: "plays the same act",
+    pressMs: 850,
+    defs: "",
+    body: "<g data-part=\"clip\"><path d=\"M14.05 9.95L7.69 16.31A1.6 1.6 0 0 1 5.42 14.05L13.27 6.20A3.2 3.2 0 0 1 17.80 10.73L8.46 20.06\"/></g><path class=\"ac\" data-part=\"sheet\" opacity=\"0\" d=\"M5.21 12.57L11.43 18.79\" style=\"stroke-width:calc(var(--sw) * .6)\"/>",
+    sw16: 1.85,
+    motion: {"duration":850,"caption":"The clip is drawn back and slid onto a sheet; the sheet's edge shows under it as it bites.","stages":["Draw back","Slide on","Bite"],"tracks":[{"part":"clip","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.18824,"transform":"translate(1.131px,-1.131px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.28235,"transform":"translate(-0.354px,0.354px) rotate(-4deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.64118,"transform":"translate(0.0308px,-0.0308px) rotate(0.3483deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"sheet","keyframes":[{"offset":0,"transform":"scale(.8)","opacity":0},{"offset":0.25882,"transform":"scale(.8)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.30588,"transform":"scale(1)","opacity":0.55,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61176,"transform":"scale(1.05)","opacity":0},{"offset":1,"transform":"scale(.8)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * RETRY · TRY AGAIN · Actions · one act, 1000ms
+   *
+   * Back up → Go again → Arrive
+   *          The arrowhead backs up round the loop, erasing it, and goes again, drawing it.
+   *  loop       0 → 40 → 260 → 320 → 700 → 1000ms
+   *  head       0 → 40 → 260 → 320 → 700 → 760 → 860 → 1000ms
+   *  tick       0 → 690 → 740 → 940 → 1000ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "retry": {
+    label: "Retry · Try again",
+    category: "Actions",
+    hover: "The arrowhead backs up round the loop, erasing it, and goes again, drawing it.",
+    press: "plays the same act",
+    pressMs: 1000,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.06\" data-part=\"loop\" pathLength=\"1\" d=\"M12 4.6A7.4 7.4 0 1 1 5.75 8.03\"/><path data-part=\"head\" d=\"M3.27 8.83 5.75 8.03 6.09 10.62\"/><circle class=\"ac\" data-part=\"tick\" opacity=\"0\" cx=\"5.75\" cy=\"8.03\" r=\"2.6\" style=\"stroke-width:calc(var(--sw) * .45)\"/>",
+    sw16: 1.85,
+    motion: {"duration":1000,"caption":"The arrowhead backs up round the loop, erasing it, and goes again, drawing it.","stages":["Back up","Go again","Arrive"],"tracks":[{"part":"loop","keyframes":[{"offset":0,"strokeDashoffset":0,"easing":"linear"},{"offset":0.04,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.6,1)"},{"offset":0.26,"strokeDashoffset":0.55,"easing":"linear"},{"offset":0.32,"strokeDashoffset":0.55,"easing":"cubic-bezier(.45,0,.25,1)"},{"offset":0.7,"strokeDashoffset":0,"easing":"linear"},{"offset":1,"strokeDashoffset":0,"easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"head","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.04,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.6,1)"},{"offset":0.26,"transform":"translate(0px,0px) rotate(-166.32deg) scale(1,1)","easing":"linear"},{"offset":0.32,"transform":"translate(0px,0px) rotate(-166.32deg) scale(1,1)","easing":"cubic-bezier(.45,0,.25,1)"},{"offset":0.7,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.76,"transform":"translate(0px,0px) rotate(7deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.86,"transform":"translate(0px,0px) rotate(-0.8deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"tick","keyframes":[{"offset":0,"transform":"scale(.5)","opacity":0},{"offset":0.69,"transform":"scale(.5)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.74,"transform":"scale(.9)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.94,"transform":"scale(1.5)","opacity":0},{"offset":1,"transform":"scale(.5)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * SAVE · Actions · one act, 913ms
+   *
+   * Push → Seat → Shut
+   *          The disk is pushed home; as it seats the shutter catches and slides open, then springs shut.
+   *  disk       0 → 140 → 200 → 556 → 913ms
+   *  shutter    0 → 190 → 260 → 565 → 913ms
+   *  click      0 → 190 → 230 → 430 → 913ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "save": {
+    label: "Save",
+    category: "Actions",
+    hover: "The disk is pushed home; as it seats the shutter catches and slides open, then springs shut.",
+    press: "plays the same act",
+    pressMs: 913,
+    defs: "",
+    body: "<g data-part=\"disk\"><path class=\"f\" style=\"--duo:.1\" d=\"M6.4 4.5h9.2l3.9 3.9v9.2a1.9 1.9 0 0 1-1.9 1.9H6.4a1.9 1.9 0 0 1-1.9-1.9V6.4a1.9 1.9 0 0 1 1.9-1.9Z\"/><path d=\"M8.5 19.5v-4.3h7v4.3\"/><g data-part=\"shutter\"><path d=\"M8.5 4.5v3.4h5.6V4.5\"/></g></g><path class=\"ac\" data-part=\"click\" opacity=\"0\" d=\"M19.6 5.6l1-1M20.2 7.6h1.2\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":913,"caption":"The disk is pushed home; as it seats the shutter catches and slides open, then springs shut.","stages":["Push","Seat","Shut"],"tracks":[{"part":"disk","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.15334,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.21906,"transform":"translate(0px,1.6px) rotate(0deg) scale(1,0.96)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.60898,"transform":"translate(0px,-0.1579px) rotate(0deg) scale(1,1.0039)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"shutter","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.20811,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.28478,"transform":"translate(1px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.61884,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"click","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.20811,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.25192,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.47097,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * DOWNLOAD · Actions · one act, 850ms
+   *
+   * Draw up → Come down → Land
+   *          The arrow is drawn up and comes down onto the floor, which takes it.
+   *  arrow      0 → 150 → 230 → 535 → 840 → 850ms
+   *  floor      0 → 225 → 240 → 545 → 850ms
+   *  puff       0 → 220 → 255 → 450 → 850ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "download": {
+    label: "Download",
+    category: "Actions",
+    hover: "The arrow is drawn up and comes down onto the floor, which takes it.",
+    press: "plays the same act",
+    pressMs: 850,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><g data-part=\"arrow\"><path d=\"M12 6.9v7.6M9 11.5l3 3 3-3\"/></g><path data-part=\"floor\" d=\"M8.6 17h6.8\"/><path class=\"ac\" data-part=\"puff\" opacity=\"0\" d=\"M7.2 16.2l-.8-.5M16.8 16.2l.8-.5\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":850,"caption":"The arrow is drawn up and comes down onto the floor, which takes it.","stages":["Draw up","Come down","Land"],"tracks":[{"part":"arrow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.17647,"transform":"translate(0px,-1px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.27059,"transform":"translate(0px,1.2px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.62941,"transform":"translate(0px,-0.1045px) rotate(0deg) scale(1,1.0087)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.98824,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"floor","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.26471,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.28235,"transform":"translate(0px,0px) rotate(0deg) scale(1.1,0.7)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.64118,"transform":"translate(0px,0px) rotate(0deg) scale(0.9913,1.0261)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"puff","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.25882,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.3,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.52941,"transform":"scale(1.4)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * UPLOAD · Actions · one act, 850ms
+   *
+   * Crouch → Push up → Reach
+   *          The arrow crouches and pushes up to the ceiling, which takes it.
+   *  arrow      0 → 150 → 230 → 535 → 840 → 850ms
+   *  ceiling    0 → 225 → 240 → 545 → 850ms
+   *  puff       0 → 200 → 245 → 450 → 850ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "upload": {
+    label: "Upload",
+    category: "Actions",
+    hover: "The arrow crouches and pushes up to the ceiling, which takes it.",
+    press: "plays the same act",
+    pressMs: 850,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><path data-part=\"ceiling\" d=\"M8.6 7h6.8\"/><g data-part=\"arrow\"><path d=\"M12 9.5v7.6M9 12.5l3-3 3 3\"/></g><path class=\"ac\" data-part=\"puff\" opacity=\"0\" d=\"M10.5 18.2l-.7.6M13.5 18.2l.7.6\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":850,"caption":"The arrow crouches and pushes up to the ceiling, which takes it.","stages":["Crouch","Push up","Reach"],"tracks":[{"part":"arrow","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.17647,"transform":"translate(0px,0.9px) rotate(0deg) scale(1,0.9)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.27059,"transform":"translate(0px,-1.2px) rotate(0deg) scale(1,1.04)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.62941,"transform":"translate(0px,0.1045px) rotate(0deg) scale(1,0.9965)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.98824,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"ceiling","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.26471,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.28235,"transform":"translate(0px,0px) rotate(0deg) scale(1.1,0.7)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.64118,"transform":"translate(0px,0px) rotate(0deg) scale(0.9913,1.0261)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"puff","keyframes":[{"offset":0,"transform":"scale(.6)","opacity":0},{"offset":0.23529,"transform":"scale(.6)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.28824,"transform":"scale(1)","opacity":0.85,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.52941,"transform":"scale(1.4)","opacity":0},{"offset":1,"transform":"scale(.6)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * PERSON · ASSIGN · Tools · one act, 910ms
+   *
+   * Look up → Nod → Here
+   *          The figure looks up and nods; its shoulders follow, and a ring opens round its head.
+   *  head       0 → 170 → 300 → 605 → 910ms
+   *  shoulders  0 → 60 → 220 → 320 → 676 → 910ms
+   *  here       0 → 270 → 320 → 560 → 910ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "person": {
+    label: "Person · Assign",
+    category: "Tools",
+    hover: "The figure looks up and nods; its shoulders follow, and a ring opens round its head.",
+    press: "plays the same act",
+    pressMs: 910,
+    defs: "",
+    body: "<path class=\"f\" style=\"--duo:.1\" d=\"M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 1 1 0-17Z\"/><path data-part=\"head\" d=\"M12 6.3a2.9 2.9 0 1 1 0 5.8 2.9 2.9 0 1 1 0-5.8Z\"/><path data-part=\"shoulders\" d=\"M6.6 18.4c1.1-2.4 3.1-3.8 5.4-3.8s4.3 1.4 5.4 3.8\"/><circle class=\"ac\" data-part=\"here\" opacity=\"0\" cx=\"12\" cy=\"9.2\" r=\"4.4\" style=\"stroke-width:calc(var(--sw) * .45)\"/>",
+    sw16: 1.85,
+    motion: {"duration":910,"caption":"The figure looks up and nods; its shoulders follow, and a ring opens round its head.","stages":["Look up","Nod","Here"],"tracks":[{"part":"head","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.18681,"transform":"translate(0px,-0.9px) rotate(-8deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.32967,"transform":"translate(0px,0.5px) rotate(4deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.66484,"transform":"translate(0px,-0.0435px) rotate(-0.3483deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"shoulders","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.06593,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.24176,"transform":"translate(0px,-0.5px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.55,0,.85,.45)"},{"offset":0.35165,"transform":"translate(0px,0.3px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.74286,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"here","keyframes":[{"offset":0,"transform":"scale(1)","opacity":0},{"offset":0.2967,"transform":"scale(1)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.35165,"transform":"scale(1.06)","opacity":0.6,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61538,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(1)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * NOTIFICATIONS · Status · one act, 900ms
+   *
+   * Swing → Strike → Ring down
+   *          The bell swings on its loop and the clapper, lagging, strikes the rim on each side.
+   *  bell       0 → 120 → 260 → 400 → 520 → 640 → 760 → 900ms
+   *  clapper    0 → 120 → 260 → 400 → 520 → 640 → 780 → 900ms
+   *  ring-r     0 → 240 → 280 → 480 → 900ms
+   *  ring-l     0 → 380 → 420 → 620 → 900ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "bell": {
+    label: "Notifications",
+    category: "Status",
+    hover: "The bell swings on its loop and the clapper, lagging, strikes the rim on each side.",
+    press: "plays the same act",
+    pressMs: 900,
+    defs: "",
+    body: "<g data-part=\"bell\"><path class=\"f\" style=\"--duo:.12\" d=\"M12 4.6c3 0 5.3 2.5 5.3 5.5v3.3l1.5 3.1H5.2l1.5-3.1v-3.3c0-3 2.3-5.5 5.3-5.5Z\"/><path d=\"M12 2.9v1.7\"/></g><g data-part=\"clapper\"><circle class=\"s\" cx=\"12\" cy=\"19\" r=\"1.35\"/></g><path class=\"ac\" data-part=\"ring-r\" opacity=\"0\" d=\"M20.2 7.6a6.4 6.4 0 0 1 1 3.4\" style=\"stroke-width:calc(var(--sw) * .7)\"/><path class=\"ac\" data-part=\"ring-l\" opacity=\"0\" d=\"M3.8 7.6a6.4 6.4 0 0 0-1 3.4\" style=\"stroke-width:calc(var(--sw) * .7)\"/>",
+    sw16: 1.85,
+    motion: {"duration":900,"caption":"The bell swings on its loop and the clapper, lagging, strikes the rim on each side.","stages":["Swing","Strike","Ring down"],"tracks":[{"part":"bell","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13333,"transform":"translate(0px,0px) rotate(10deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.28889,"transform":"translate(0px,0px) rotate(-8deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.44444,"transform":"translate(0px,0px) rotate(6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.57778,"transform":"translate(0px,0px) rotate(-3.5deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.71111,"transform":"translate(0px,0px) rotate(1.6deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.84444,"transform":"translate(0px,0px) rotate(-0.6deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"clapper","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.13333,"transform":"translate(0px,0px) rotate(4deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.28889,"transform":"translate(0px,0px) rotate(9deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.44444,"transform":"translate(0px,0px) rotate(-7deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.57778,"transform":"translate(0px,0px) rotate(4deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.71111,"transform":"translate(0px,0px) rotate(-2deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.86667,"transform":"translate(0px,0px) rotate(0.6deg) scale(1,1)","easing":"cubic-bezier(.22,1,.36,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"ring-r","keyframes":[{"offset":0,"transform":"scale(.7)","opacity":0},{"offset":0.26667,"transform":"scale(.7)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.31111,"transform":"scale(1)","opacity":0.9,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.53333,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.7)","opacity":0}]},{"part":"ring-l","keyframes":[{"offset":0,"transform":"scale(.7)","opacity":0},{"offset":0.42222,"transform":"scale(.7)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.46667,"transform":"scale(1)","opacity":0.7,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.68889,"transform":"scale(1.3)","opacity":0},{"offset":1,"transform":"scale(.7)","opacity":0}]}]},
+  },
+  /* ─────────────────────────────────────────────────────────
+   * APPEARANCE · Tools · one act, 950ms
+   *
+   * Lift → Dab → Settle
+   *          The palette is lifted on its thumb and each paint is dabbed in turn.
+   *  board      0 → 160 → 200 → 556 → 913 → 950ms
+   *  p1         0 → 120 → 180 → 485 → 790 → 950ms
+   *  p2         0 → 200 → 260 → 565 → 870 → 950ms
+   *  p3         0 → 280 → 340 → 645 → 950ms
+   *  glint      0 → 330 → 370 → 580 → 950ms
+   * Plays once through on hover, focus or click; finishes if the pointer leaves.
+   * REDUCED MOTION   static glyph
+   * ───────────────────────────────────────────────────────── */
+  "palette": {
+    label: "Appearance",
+    category: "Tools",
+    hover: "The palette is lifted on its thumb and each paint is dabbed in turn.",
+    press: "plays the same act",
+    pressMs: 950,
+    defs: "",
+    body: "<g data-part=\"board\"><path class=\"f\" style=\"--duo:.12\" d=\"M12 3.6c4.8 0 8.5 3.3 8.5 7.6 0 2.5-1.9 3.9-4.1 3.9-1.4 0-2.3.6-2.3 1.8 0 .8.6 1.1.6 1.8 0 1.1-1 1.7-2.6 1.7-4.8 0-8.5-3.8-8.5-8.6S7.2 3.6 12 3.6Z\"/><g data-part=\"p1\"><circle class=\"s\" cx=\"8\" cy=\"12\" r=\"1.35\"/></g><g data-part=\"p2\"><circle class=\"s\" cx=\"10\" cy=\"8\" r=\"1.35\"/></g><g data-part=\"p3\"><circle class=\"s\" cx=\"14.4\" cy=\"7.6\" r=\"1.35\"/></g></g><circle class=\"ac\" data-part=\"glint\" opacity=\"0\" cx=\"14.4\" cy=\"7.6\" r=\"2.8\" style=\"stroke-width:calc(var(--sw) * .45)\"/>",
+    sw16: 1.85,
+    motion: {"duration":950,"caption":"The palette is lifted on its thumb and each paint is dabbed in turn.","stages":["Lift","Dab","Settle"],"tracks":[{"part":"board","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.16842,"transform":"translate(0px,-0.6px) rotate(-5deg) scale(1,1)","easing":"linear"},{"offset":0.21053,"transform":"translate(0px,-0.6px) rotate(-5deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.58526,"transform":"translate(0px,0.0592px) rotate(0.4934deg) scale(1,1)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.96105,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"p1","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.12632,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.18947,"transform":"translate(0px,0px) rotate(0deg) scale(1.12,0.78)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.51053,"transform":"translate(0px,0px) rotate(0deg) scale(0.9896,1.0192)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.83158,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"p2","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.21053,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.27368,"transform":"translate(0px,0px) rotate(0deg) scale(1.12,0.78)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.59474,"transform":"translate(0px,0px) rotate(0deg) scale(0.9896,1.0192)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.91579,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.4,0,.2,1)"}]},{"part":"p3","keyframes":[{"offset":0,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"linear"},{"offset":0.29474,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)","easing":"cubic-bezier(.16,.75,.3,.95)"},{"offset":0.35789,"transform":"translate(0px,0px) rotate(0deg) scale(1.12,0.78)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":0.67895,"transform":"translate(0px,0px) rotate(0deg) scale(0.9896,1.0192)","easing":"cubic-bezier(.37,0,.63,1)"},{"offset":1,"transform":"translate(0px,0px) rotate(0deg) scale(1,1)"}]},{"part":"glint","keyframes":[{"offset":0,"transform":"scale(.9)","opacity":0},{"offset":0.34737,"transform":"scale(.9)","opacity":0,"easing":"cubic-bezier(.22,1,.36,1)"},{"offset":0.38947,"transform":"scale(1)","opacity":0.6,"easing":"cubic-bezier(.4,0,.2,1)"},{"offset":0.61053,"transform":"scale(1.35)","opacity":0},{"offset":1,"transform":"scale(.9)","opacity":0}]}]},
+  },
 } satisfies Record<string, IconRecord>;
 
 export type IconName = keyof typeof ICON_CATALOG;

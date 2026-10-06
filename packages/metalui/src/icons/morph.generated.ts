@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
@@ -255,5 +255,54 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
     ["M12 7C15.09 7 17.6 9.95 17.6 13.6C17.6 17.25 15.09 20.2 12 20.2C8.91 20.2 6.4 17.25 6.4 13.6C6.4 9.95 8.91 7 12 7Z", 1.7, 0.14, 0, 1],
     ["M12 4.4L12 7", 1.7, 0, 0, 1],
     ["M15.4 3.2C15.1 4.7 13.8 5.4 12 5.2C12.5 3.7 13.8 3 15.4 3.2Z", 1.7, 0.2, 0, 1],
+  ],
+  "send": [
+    ["M12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 16.69 16.69 20.5 12 20.5C7.31 20.5 3.5 16.69 3.5 12C3.5 7.31 7.31 3.5 12 3.5Z", 1.7, 0.12, 0, 1],
+    ["M12 7.8L12 16.2", 1.7, 0, 0, 1],
+    ["M8.4 11.4L12 7.8L15.6 11.4", 1.7, 0, 0, 1],
+  ],
+  "stop": [
+    ["M12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 16.69 16.69 20.5 12 20.5C7.31 20.5 3.5 16.69 3.5 12C3.5 7.31 7.31 3.5 12 3.5Z", 1.7, 0.12, 0, 1],
+    ["M10.2 8.6L13.8 8.6C14.68 8.6 15.4 9.32 15.4 10.2L15.4 13.8C15.4 14.68 14.68 15.4 13.8 15.4L10.2 15.4C9.32 15.4 8.6 14.68 8.6 13.8L8.6 10.2C8.6 9.32 9.32 8.6 10.2 8.6Z", 1.7, 0.24, 0, 1],
+  ],
+  "attach": [
+    ["M14.05 9.95L7.69 16.31C7.07 16.94 6.05 16.94 5.42 16.32C4.8 15.69 4.8 14.68 5.42 14.05L13.27 6.2C14.52 4.95 16.55 4.95 17.8 6.2C19.05 7.45 19.05 9.48 17.8 10.73L8.46 20.06", 1.7, 0, 0, 1],
+  ],
+  "retry": [
+    ["M12 4.6C15.38 4.6 18.33 6.89 19.16 10.16C20 13.44 18.52 16.86 15.56 18.49C12.59 20.11 8.91 19.53 6.6 17.06C4.29 14.6 3.94 10.88 5.75 8.03", 1.7, 0.06, 0, 1],
+    ["M3.27 8.83L5.75 8.03L6.09 10.62", 1.7, 0, 0, 1],
+  ],
+  "save": [
+    ["M6.4 4.5L15.6 4.5L19.5 8.4L19.5 17.6C19.5 18.65 18.65 19.5 17.6 19.5L6.4 19.5C5.35 19.5 4.5 18.65 4.5 17.6L4.5 6.4C4.5 5.35 5.35 4.5 6.4 4.5Z", 1.7, 0.1, 0, 1],
+    ["M8.5 19.5L8.5 15.2L15.5 15.2L15.5 19.5", 1.7, 0, 0, 1],
+    ["M8.5 4.5L8.5 7.9L14.1 7.9L14.1 4.5", 1.7, 0, 0, 1],
+  ],
+  "download": [
+    ["M12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 16.69 16.69 20.5 12 20.5C7.31 20.5 3.5 16.69 3.5 12C3.5 7.31 7.31 3.5 12 3.5Z", 1.7, 0.1, 0, 1],
+    ["M12 6.9L12 14.5", 1.7, 0, 0, 1],
+    ["M9 11.5L12 14.5L15 11.5", 1.7, 0, 0, 1],
+    ["M8.6 17L15.4 17", 1.7, 0, 0, 1],
+  ],
+  "upload": [
+    ["M12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 16.69 16.69 20.5 12 20.5C7.31 20.5 3.5 16.69 3.5 12C3.5 7.31 7.31 3.5 12 3.5Z", 1.7, 0.1, 0, 1],
+    ["M8.6 7L15.4 7", 1.7, 0, 0, 1],
+    ["M12 9.5L12 17.1", 1.7, 0, 0, 1],
+    ["M9 12.5L12 9.5L15 12.5", 1.7, 0, 0, 1],
+  ],
+  "person": [
+    ["M12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 16.69 16.69 20.5 12 20.5C7.31 20.5 3.5 16.69 3.5 12C3.5 7.31 7.31 3.5 12 3.5Z", 1.7, 0.1, 0, 1],
+    ["M12 6.3C13.6 6.3 14.9 7.6 14.9 9.2C14.9 10.8 13.6 12.1 12 12.1C10.4 12.1 9.1 10.8 9.1 9.2C9.1 7.6 10.4 6.3 12 6.3Z", 1.7, 0, 0, 1],
+    ["M6.6 18.4C7.7 16 9.7 14.6 12 14.6C14.3 14.6 16.3 16 17.4 18.4", 1.7, 0, 0, 1],
+  ],
+  "bell": [
+    ["M12 4.6C15 4.6 17.3 7.1 17.3 10.1L17.3 13.4L18.8 16.5L5.2 16.5L6.7 13.4L6.7 10.1C6.7 7.1 9 4.6 12 4.6Z", 1.7, 0.12, 0, 1],
+    ["M12 2.9L12 4.6", 1.7, 0, 0, 1],
+    ["M12 19", 2.7, 0, 0, 1],
+  ],
+  "palette": [
+    ["M12 3.6C16.8 3.6 20.5 6.9 20.5 11.2C20.5 13.7 18.6 15.1 16.4 15.1C15 15.1 14.1 15.7 14.1 16.9C14.1 17.7 14.7 18 14.7 18.7C14.7 19.8 13.7 20.4 12.1 20.4C7.3 20.4 3.6 16.6 3.6 11.8C3.6 7 7.2 3.6 12 3.6Z", 1.7, 0.12, 0, 1],
+    ["M8 12", 2.7, 0, 0, 1],
+    ["M10 8", 2.7, 0, 0, 1],
+    ["M14.4 7.6", 2.7, 0, 0, 1],
   ],
 };

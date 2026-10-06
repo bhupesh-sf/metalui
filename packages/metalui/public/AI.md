@@ -4226,7 +4226,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Icons
 
-`@unlocalhosted/metalui/icons` has 49 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
+`@unlocalhosted/metalui/icons` has 59 Soft Hardware glyphs: monoline + duotone on a 24×24 grid, with a 1.7 stroke. Each glyph has an authored **hover pose** (a reversible spring) and a **press one-shot**. Icons inherit `currentColor`. A static icon (`animate={false}`) at 16px or below uses a tuned small cut with a heavier stroke.
 
 ```tsx
 import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
@@ -4237,7 +4237,7 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 
 - **Triggering:** an icon inside any element with the class `mu-icon-trigger` plays from that element, and MetalUI Buttons already have it. Otherwise the icon plays from its own hover and press.
 - **Accessibility:** icons without `title` are decorative (`aria-hidden`). Give icon-only controls an `aria-label`.
-- **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, play/pause, download/upload) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
+- **State glyphs morph:** `MorphIcon` (copy, check, plus, close, minus, menu, arrows, chevrons, send/stop, download/upload, save) transforms into another state glyph instead of being replaced: `<MorphIcon name={copied ? 'check' : 'copy'} size={14} />`.
 - **On cue:** `act` plays the glyph's act whenever it turns to a new truthy value, for a result rather than a touch: `<Icon name="check" act={saves} />` plays on each save; `act` alone plays it as the icon arrives.
 - **Static:** `animate={false}` keeps a glyph static. Reduced motion does this automatically.
 - **SwiftUI and SVG:** the same glyphs ship as SF Symbols (planned), plus static and animated SVGs at `https://metalui.dev/icons/svg/<name>.svg`.
@@ -4293,3 +4293,13 @@ import { SendAwayIcon, Icon } from '@unlocalhosted/metalui/icons';
 | `ClockIcon` | `clock` | Status | An hour passes: the minute hand sweeps round as the hour hand steps one on, a tick marks the hour, and the hands are set back. | plays the same act |
 | `MeIcon` | `me` | Tools | Today's point runs back along your days and climbs to today again, drawing the trend behind it. | plays the same act |
 | `SeedIcon` | `seed` | Actions | The seed is dropped in and lands on its bottom; the sprout takes the blow, springs up, and its leaf swings. | plays the same act |
+| `SendIcon` | `send` | Actions | The arrow crouches on the disc, pushes off its floor and launches; the floor springs back. | plays the same act |
+| `StopIcon` | `stop` | Actions | The block is lifted and set down hard in the middle of the key; everything closes in on it and stops. | plays the same act |
+| `AttachIcon` | `attach` | Actions | The clip is drawn back and slid onto a sheet; the sheet's edge shows under it as it bites. | plays the same act |
+| `RetryIcon` | `retry` | Actions | The arrowhead backs up round the loop, erasing it, and goes again, drawing it. | plays the same act |
+| `SaveIcon` | `save` | Actions | The disk is pushed home; as it seats the shutter catches and slides open, then springs shut. | plays the same act |
+| `DownloadIcon` | `download` | Actions | The arrow is drawn up and comes down onto the floor, which takes it. | plays the same act |
+| `UploadIcon` | `upload` | Actions | The arrow crouches and pushes up to the ceiling, which takes it. | plays the same act |
+| `PersonIcon` | `person` | Tools | The figure looks up and nods; its shoulders follow, and a ring opens round its head. | plays the same act |
+| `BellIcon` | `bell` | Status | The bell swings on its loop and the clapper, lagging, strikes the rim on each side. | plays the same act |
+| `PaletteIcon` | `palette` | Tools | The palette is lifted on its thumb and each paint is dabbed in turn. | plays the same act |

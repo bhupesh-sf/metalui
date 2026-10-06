@@ -52,6 +52,16 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case clock = "clock"
     case me = "me"
     case seed = "seed"
+    case send = "send"
+    case stop = "stop"
+    case attach = "attach"
+    case retry = "retry"
+    case save = "save"
+    case download = "download"
+    case upload = "upload"
+    case person = "person"
+    case bell = "bell"
+    case palette = "palette"
 
     public enum Category: String, Sendable { case tools = "Tools", actions = "Actions", status = "Status" }
 
@@ -106,6 +116,16 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .clock: return "Time"
         case .me: return "Me"
         case .seed: return "Seed sample"
+        case .send: return "Send"
+        case .stop: return "Stop"
+        case .attach: return "Attach"
+        case .retry: return "Retry · Try again"
+        case .save: return "Save"
+        case .download: return "Download"
+        case .upload: return "Upload"
+        case .person: return "Person · Assign"
+        case .bell: return "Notifications"
+        case .palette: return "Appearance"
         }
     }
 
@@ -160,6 +180,16 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .clock: return .status
         case .me: return .tools
         case .seed: return .actions
+        case .send: return .actions
+        case .stop: return .actions
+        case .attach: return .actions
+        case .retry: return .actions
+        case .save: return .actions
+        case .download: return .actions
+        case .upload: return .actions
+        case .person: return .tools
+        case .bell: return .status
+        case .palette: return .tools
         }
     }
 
@@ -215,6 +245,16 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .clock: return 0.08
         case .me: return 0.08
         case .seed: return 0.142
+        case .send: return 0.12
+        case .stop: return 0.14
+        case .attach: return nil
+        case .retry: return 0.06
+        case .save: return 0.1
+        case .download: return 0.1
+        case .upload: return 0.1
+        case .person: return 0.1
+        case .bell: return 0.12
+        case .palette: return 0.12
         }
     }
 
@@ -270,6 +310,16 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .clock: return nil
         case .me: return nil
         case .seed: return nil
+        case .send: return nil
+        case .stop: return nil
+        case .attach: return nil
+        case .retry: return nil
+        case .save: return nil
+        case .download: return nil
+        case .upload: return nil
+        case .person: return nil
+        case .bell: return nil
+        case .palette: return nil
         }
     }
 
@@ -325,6 +375,16 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .clock: return false
         case .me: return false
         case .seed: return false
+        case .send: return false
+        case .stop: return false
+        case .attach: return false
+        case .retry: return false
+        case .save: return false
+        case .download: return false
+        case .upload: return false
+        case .person: return false
+        case .bell: return false
+        case .palette: return false
         }
     }
 
@@ -380,6 +440,16 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .clock: return 1.85
         case .me: return 1.85
         case .seed: return 1.85
+        case .send: return 1.85
+        case .stop: return 1.85
+        case .attach: return 1.85
+        case .retry: return 1.85
+        case .save: return 1.85
+        case .download: return 1.85
+        case .upload: return 1.85
+        case .person: return 1.85
+        case .bell: return 1.85
+        case .palette: return 1.85
         }
     }
 }
