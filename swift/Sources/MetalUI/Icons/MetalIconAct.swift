@@ -112,6 +112,9 @@ struct MetalIconAct: Sendable {
     let caption: String
     let parts: [MetalIconActPart]
     let ink: [MetalIconActInk]
+    /// A held act's followed span (seconds): a hold's progress sets the time up to here, and the
+    /// rest plays when the hold completes. 0 for a played act.
+    var scrub: Double = 0
 
     /// Where one part is at progress `p` (0…1 of the act).
     struct PartState {

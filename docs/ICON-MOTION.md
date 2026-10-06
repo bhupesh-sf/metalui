@@ -50,6 +50,10 @@ One source, three players:
 
 Reduced motion plays nothing, and the rest glyph is complete on its own.
 
+### Held: a second, followed timeline
+
+An icon that serves as a hold's gauge (a `Button` with `hold`) may export `act.hold`: a study on the same parts, in the same order, plus `scrub` (ms). Its first `scrub` ms are not played but followed: the host sets the time from its progress each frame (the trash lid lifts with the fill and comes down with it when let go). When the hold completes, the rest plays on its own clock (the lid drops shut) and ends at rest. The build checks it like an act, plus the parts and the scrub; React follows it from the trigger's `mu-hold` events (`[data-hold]`), SwiftUI from `metalIconHold`. Inside a hold the hover act doesn't play. Reduced motion follows nothing.
+
 The build (`scripts/build-icons.mjs`) checks every study and fails when:
 - a track doesn't bind to exactly one `data-part`;
 - frames don't start at 0 and end at the duration, or aren't in time order;

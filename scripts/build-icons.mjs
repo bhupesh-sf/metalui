@@ -76,6 +76,15 @@ for (const ic of ICONS) {
 }
 
 for (const ic of ICONS) if (ic.study) validateStudy(ic.name, ic.study, ic.body, ic.defs);
+// A held act (docs/ICON-MOTION.md, "Held"): the act's parts, its first `scrub` ms followed by a
+// host's progress (a Button's hold), the rest played when the hold completes.
+for (const ic of ICONS) if (ic.hold) {
+  validateStudy(`${ic.name} (held)`, ic.hold, ic.body, ic.defs);
+  const parts = (st) => st.tracks.map((t) => t.part).join(',');
+  if (parts(ic.hold) !== parts(ic.study)) throw new Error(`${ic.name}: the held act moves the act's parts, in its order`);
+  if (!(ic.hold.scrub > 0 && ic.hold.scrub < ic.hold.duration)) throw new Error(`${ic.name}: the held act's scrub ends inside it`);
+}
+const motionData = (st) => ({ duration: st.duration, caption: st.caption, stages: st.stages, tracks: studyKeyframes(st), ...(st.scrub ? { scrub: st.scrub } : {}) });
 
 const entries = ICONS.map((ic) => {
   const tracks = ic.study ? [] : pressTrack(ic);
@@ -99,6 +108,8 @@ export interface IconRecord {
   sw16: number;
   /** The icon's act (docs/ICON-MOTION.md): Web Animations keyframes per data-part. */
   motion?: IconMotion;
+  /** Its held act: the first \`scrub\` ms follow a hold's progress, the rest plays when it completes. */
+  hold?: IconMotion & { scrub: number };
 }
 
 export interface IconMotion {
@@ -118,7 +129,7 @@ ${entries.map(({ ic, tracks, pressMs, t16 }) => `${storyboard(ic, tracks).replac
     pressMs: ${pressMs},
     defs: ${JSON.stringify(ic.defs || '')},
     body: ${JSON.stringify(ic.body)},${t16?.body ? `\n    body16: ${JSON.stringify(t16.body)},` : ''}
-    sw16: ${t16?.sw ?? SW16},${ic.study ? `\n    motion: ${JSON.stringify({ duration: ic.study.duration, caption: ic.study.caption, stages: ic.study.stages, tracks: studyKeyframes(ic.study) })},` : ''}
+    sw16: ${t16?.sw ?? SW16},${ic.study ? `\n    motion: ${JSON.stringify(motionData(ic.study))},` : ''}${ic.hold ? `\n    hold: ${JSON.stringify(motionData(ic.hold))},` : ''}
   },`).join('\n')}
 } satisfies Record<string, IconRecord>;
 
@@ -152,6 +163,7 @@ emit('packages/metalui/public/icons.json', JSON.stringify({
     press: ic.press,
     pressMs,
     ...(ic.study ? { motion: { caption: ic.study.caption, durationMs: ic.study.duration, stages: ic.study.stages } } : {}),
+    ...(ic.hold ? { hold: { caption: ic.hold.caption, durationMs: ic.hold.duration, scrubMs: ic.hold.scrub } } : {}),
     tuned16: Boolean(t16?.body),
     construction: ic.shape,
   })),

@@ -169,6 +169,30 @@ extension View {
     }
 }
 
+/// A hold on the control hosting an icon (`MetalButton` with `hold`): how full it is, and when it
+/// completed. An icon with a held act (the trash) follows it instead of playing its act.
+public struct MetalIconHold: Equatable, Sendable {
+    public var progress: Double
+    public var shutAt: Date?
+
+    public init(progress: Double, shutAt: Date? = nil) {
+        self.progress = progress
+        self.shutAt = shutAt
+    }
+}
+
+private struct MetalIconHoldKey: EnvironmentKey {
+    static let defaultValue: MetalIconHold? = nil
+}
+
+extension EnvironmentValues {
+    /// The hold of the control that hosts an icon. `MetalButton` sets it when it holds to confirm.
+    public var metalIconHold: MetalIconHold? {
+        get { self[MetalIconHoldKey.self] }
+        set { self[MetalIconHoldKey.self] = newValue }
+    }
+}
+
 // MARK: - Motion (the symbolEffect table, from the reference set's native notes §1)
 
 /// The spring constants shared with the web (`--k-spring`, `--k-soft`).
@@ -311,6 +335,7 @@ public struct MetalIcon: View {
     var interaction: MetalIconInteraction?
 
     @Environment(\.metalIconInteraction) private var hostInteraction
+    @Environment(\.metalIconHold) private var hold
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.metalColorway) private var colorway
     @State private var ownHover = false
@@ -333,7 +358,7 @@ public struct MetalIcon: View {
 
     /// One performance at a time: a trigger during the act is ignored.
     private func playAct() {
-        guard act != nil, actStart == nil else { return }
+        guard act != nil, actStart == nil, hold == nil || MetalIconAct.held[icon] == nil else { return }
         actStart = Date()
     }
 
@@ -362,7 +387,18 @@ public struct MetalIcon: View {
 
     @ViewBuilder
     private func content(motion: MetalIconMotion, state: MetalIconInteraction, duotone: Double) -> some View {
-        if let act {
+        if let hold, let held = act.flatMap({ _ in MetalIconAct.held[icon] }) {
+            // In a hold the glyph is its gauge: the first `scrub` follows the fill, the rest plays once it completes.
+            TimelineView(.animation(paused: hold.shutAt == nil)) { timeline in
+                MetalIconActCanvas(
+                    act: held,
+                    box: size,
+                    lineUnits: MetalIconMetrics.strokeUnits(for: weight, regular: isSmall ? icon.smallStrokeUnits : 1.7),
+                    duoK: colorway.tokens.duoK,
+                    elapsed: hold.shutAt.map { held.scrub + timeline.date.timeIntervalSince($0) } ?? min(max(hold.progress, 0), 1) * held.scrub
+                )
+            }
+        } else if let act {
             MetalIconActView(
                 act: act,
                 box: size,
