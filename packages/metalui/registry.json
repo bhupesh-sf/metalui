@@ -279,6 +279,26 @@
       "docs": "Agent guide: https://metalui.dev/r/avatar.md. SwiftUI: MetalAvatar in the MetalUI Swift package."
     },
     {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "One short fact about a thing: a kind, a version, a state or a count. A shallow stamp cut into the surface with the words in the engraved mono; a leading LED (steady, flickering once when the state changes) or glyph; a count that turns on the drum, 99+ past max; regular 18 and compact 15, matched to the type beside it. Badge.Anchor puts a count on another control's corner as a readout cap in the other colorway. Not pressable and not announced.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/led.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/badge/badge.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/badge/badge.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/badge.md. SwiftUI: MetalBadge in the MetalUI Swift package."
+    },
+    {
       "name": "block-silhouette",
       "type": "registry:ui",
       "title": "Block silhouette",

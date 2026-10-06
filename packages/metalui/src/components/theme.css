@@ -784,6 +784,23 @@
   --spacing-hover-engraving-led-size: var(--mu-r-hover-engraving-led-size);
   --spacing-hover-engraving-led-gap: var(--mu-r-hover-engraving-led-gap);
   --spacing-hover-engraving-led-lift: var(--mu-r-hover-engraving-led-lift);
+  --spacing-badge-regular-height: var(--mu-r-badge-regular-height);
+  --spacing-badge-regular-pad: var(--mu-r-badge-regular-pad);
+  --spacing-badge-regular-gap: var(--mu-r-badge-regular-gap);
+  --spacing-badge-regular-glyph: var(--mu-r-badge-regular-glyph);
+  --tracking-badge-regular-tracking: var(--mu-r-badge-regular-tracking);
+  --spacing-badge-compact-height: var(--mu-r-badge-compact-height);
+  --spacing-badge-compact-pad: var(--mu-r-badge-compact-pad);
+  --spacing-badge-compact-gap: var(--mu-r-badge-compact-gap);
+  --spacing-badge-compact-glyph: var(--mu-r-badge-compact-glyph);
+  --tracking-badge-compact-tracking: var(--mu-r-badge-compact-tracking);
+  --tracking-badge-count-tracking: var(--mu-r-badge-count-tracking);
+  --spacing-badge-count-pad: var(--mu-r-badge-count-pad);
+  --tracking-badge-count-compact-tracking: var(--mu-r-badge-count-compact-tracking);
+  --spacing-badge-count-compact-pad: var(--mu-r-badge-count-compact-pad);
+  --spacing-badge-corner-offset: var(--mu-r-badge-corner-offset);
+  --spacing-badge-corner-ring: var(--mu-r-badge-corner-ring);
+  --color-badge-corner-ink: var(--mu-r-badge-corner-ink);
   --spacing-status-led-size: var(--mu-r-status-led-size);
   --spacing-status-led-size-small: var(--mu-r-status-led-size-small);
   --spacing-status-badge-height: var(--mu-r-status-badge-height);
@@ -2329,6 +2346,39 @@
 @utility type-hover-engraving-tag {
   font: var(--mu-r-hover-engraving-tag-font);
   letter-spacing: var(--mu-r-hover-engraving-tag-tracking);
+}
+@utility recipe-badge {
+  background: var(--mu-r-badge-self-background);
+  box-shadow: var(--mu-r-badge-self-shadow);
+}
+@utility recipe-badge-corner {
+  background: var(--mu-r-badge-corner-background);
+  box-shadow: var(--mu-r-badge-corner-shadow);
+}
+@utility badge-corner-ring {
+  outline: var(--mu-r-badge-corner-ring) solid var(--mu-s);
+}
+@utility badge-corner-motion {
+  transform: none; opacity: 1; transition: transform var(--mu-spring-object-d) var(--mu-spring-object), opacity var(--mu-spring-settle-d) var(--mu-spring-settle); &[data-empty] { transform: scale(var(--mu-r-badge-corner-from)); opacity: 0; transition: transform var(--mu-spring-release-d) var(--mu-spring-release), opacity var(--mu-spring-release-d) var(--mu-spring-release); } @media (prefers-reduced-motion: reduce) { transform: none !important; }
+}
+@utility type-badge-regular {
+  font: var(--mu-r-badge-regular-font);
+  letter-spacing: var(--mu-r-badge-regular-tracking);
+}
+@utility type-badge-compact {
+  font: var(--mu-r-badge-compact-font);
+  letter-spacing: var(--mu-r-badge-compact-tracking);
+}
+@utility type-badge-count {
+  font: var(--mu-r-badge-count-font);
+  letter-spacing: var(--mu-r-badge-count-tracking);
+}
+@utility type-badge-count-compact {
+  font: var(--mu-r-badge-count-compact-font);
+  letter-spacing: var(--mu-r-badge-count-compact-tracking);
+}
+@utility opacity-badge-corner-from {
+  opacity: var(--mu-r-badge-corner-from);
 }
 @utility recipe-status-led {
   box-shadow: var(--mu-r-status-led-shadow);
