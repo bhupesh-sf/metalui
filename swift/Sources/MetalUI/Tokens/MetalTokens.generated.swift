@@ -1201,7 +1201,7 @@ public enum MetalRecipes {
         ]
     )
 
-    /// A month to choose a day from: the weekday initials, then six rows of days (always six, so the height never jumps). Days sink a touch on hover (the switcher's track look, so only the chosen day stands raised); today carries a small green lamp under its number; the chosen day takes the switcher's raised thumb look and lands into it on the part spring (a day is not a track, so the choice lands where it is instead of gliding across the weeks). Changing month, the title turns on the drum (up for later, down for earlier) and the grid comes in two grid steps from the side you are heading to as it fades in, on the settle spring. Days outside the month are ink3; days out of range are disabled at 40 %. A date picker is a form field that opens the calendar in a popover; choosing a day closes it and the field's text turns on the drum. Reduce Motion: the grid arrives and the choice lands at once; fades stay. (the switcher thumb; the row recipe's list hover; the swap drum; the LED; the settle spring; the ARIA date grid pattern)
+    /// A month to choose a day from, or a range, several days, a month, quarter, half year or year: the weekday initials, then six rows of days (always six, so the height never jumps). Days sink a touch on hover (the switcher's track look, so only what is chosen stands raised); today carries a small green lamp under its number, and a marked day a small dot beside it (ink2, or the amber or red LED when the mark is urgent or failed). The chosen day takes the switcher's raised thumb look and lands into it on the part spring. A range is one thumb stretched across each week it covers, round at its true ends and nearly square where it runs on to the next week; while the second end is being chosen, the stretch it would make shows as a sunken track. Changing month, the title turns on the drum (up for later, down for earlier) and the grid comes in two grid steps from the side you are heading to as it fades in, on the settle spring. The title opens the months of its year, and the year's title the years: a level up comes in from a touch larger, a level down from a touch smaller, in the same footprint. Days outside the month are ink3; days out of range, or out of a range's reach, are disabled at 40 %. Week numbers stand in ink3 before each week. A date picker is a form field you can type a date into (read back under it as it is understood), with a clear key and a calendar key that opens the calendar in a popover, with Today and range presets beside it. Reduce Motion: the grid arrives and the choice lands at once; fades stay. (the switcher thumb and track; the row recipe's list hover; the swap drum; the LED; the settle spring; the field and form field; the menu row; the ARIA date grid pattern)
     public static let calendar = MetalObjectRecipe(
         name: "calendar",
         layers: [
@@ -1217,8 +1217,17 @@ public enum MetalRecipes {
             "today.offset": .number(4.0),
             "self.pad": .number(4.0),
             "self.disabled": .text("0.4"),
-            "step.glyph": .number(10.0),
+            "self.land": .text("0.9"),
+            "self.zoom": .text("0.06"),
+            "step.glyph": .number(12.0),
             "picker.min-width": .number(200.0),
+            "picker.range-min-width": .number(264.0),
+            "band.open-radius": .number(3.0),
+            "band.land": .text("0.85"),
+            "page.gap": .number(16.0),
+            "unit.sub-gap": .number(2.0),
+            "presets.width": .number(148.0),
+            "presets.gap": .number(8.0),
         ]
     )
 

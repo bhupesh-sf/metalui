@@ -1,6 +1,7 @@
 [
   "packages/metalui/src/components/block-silhouette/block-silhouette.tsx: component has no matching component recipe",
   "packages/metalui/src/components/brush-cursor/brush-cursor.tsx: component has no matching component recipe",
+  "packages/metalui/src/components/calendar/date-picker.tsx: component has no matching component recipe",
   "packages/metalui/src/components/command-palette/command-palette.tsx: component has no matching component recipe",
   "packages/metalui/src/components/draw-picks/draw-picks.tsx: component has no matching component recipe",
   "packages/metalui/src/components/fan/fan.tsx: component has no matching component recipe",

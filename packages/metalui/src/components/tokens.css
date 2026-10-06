@@ -1206,7 +1206,7 @@
   --mu-r-preview-card-self-gap: 6px;
   --mu-r-preview-card-self-image: 140px;
   --mu-r-preview-card-self-radius: 10px;
-  /* calendar: the switcher thumb; the row recipe's list hover; the swap drum; the LED; the settle spring; the ARIA date grid pattern */
+  /* calendar: the switcher thumb and track; the row recipe's list hover; the swap drum; the LED; the settle spring; the field and form field; the menu row; the ARIA date grid pattern */
   --mu-r-calendar-day-size: 32px;
   --mu-r-calendar-day-radius: 10px;
   --mu-r-calendar-day-gap: 2px;
@@ -1216,8 +1216,17 @@
   --mu-r-calendar-today-offset: 4px;
   --mu-r-calendar-self-pad: 4px;
   --mu-r-calendar-self-disabled: 0.4;
-  --mu-r-calendar-step-glyph: 10px;
+  --mu-r-calendar-self-land: 0.9;
+  --mu-r-calendar-self-zoom: 0.06;
+  --mu-r-calendar-step-glyph: 12px;
   --mu-r-calendar-picker-min-width: 200px;
+  --mu-r-calendar-picker-range-min-width: 264px;
+  --mu-r-calendar-band-open-radius: 3px;
+  --mu-r-calendar-band-land: 0.85;
+  --mu-r-calendar-page-gap: 16px;
+  --mu-r-calendar-unit-sub-gap: 2px;
+  --mu-r-calendar-presets-width: 148px;
+  --mu-r-calendar-presets-gap: 8px;
   /* avatar: the raised surface (recipe surface raise-sm); the LED part; the settle, object and release springs; Base UI Avatar */
   --mu-r-avatar-size-small: 24px;
   --mu-r-avatar-size-regular: 32px;
