@@ -3,7 +3,10 @@
   "title": "Chip",
   "status": "alpha",
   "layer": "part",
-  "description": "A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass, glass-action and tag.",
+  "uses": [
+    "led"
+  ],
+  "description": "A small pill with an optional leading LED (the LED part's lamp, any of its kinds) or glyph and trailing actions: suggestion, glass, glass-action and tag.",
   "base": "none",
   "react": {
     "export": "Chip",

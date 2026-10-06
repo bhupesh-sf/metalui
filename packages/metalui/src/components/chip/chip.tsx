@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import type { LedKind } from '../led/led';
 
 /* CHIP: a small pill with an optional leading LED or glyph and trailing actions.
  *   suggestion     frosted with a green hairline (a question with its confidence and ✓ ×)
@@ -30,9 +31,13 @@ const VARIANTS = {
   tag: 'px-chip-tag-pad-x rounded-pill type-chip-tag text-chip-tag-ink recipe-chip-tag',
 };
 const LEAD = 'mu-chip-lead inline-grid place-items-center flex-none';
-const LEDS = {
-  link: 'size-chip-led-size rounded-round recipe-chip-led-link',
-  code: 'size-chip-led-size rounded-round recipe-chip-led-code',
+// The LED part's lamps (the status recipe), at the chip's size.
+const LEDS: Record<LedKind, string> = {
+  live: 'recipe-status-led-live',
+  waiting: 'recipe-status-led-waiting',
+  failed: 'recipe-status-led-failed',
+  link: 'recipe-status-led-link',
+  off: 'recipe-status-led-off',
 };
 const ACTIONS = 'mu-chip-actions inline-flex items-center group-data-[variant=suggestion]/chip:gap-chip-suggestion-gap';
 
@@ -42,9 +47,9 @@ const Root = React.forwardRef<HTMLElement, ChipRootProps>(function ChipRoot({ va
   return <Tag ref={ref} data-variant={variant} data-waiting={waiting ? '' : undefined} aria-busy={waiting || undefined} className={className ? `${own} ${className}` : own} {...props} />;
 });
 
-/** The leading LED (`led="link" | "code"`) or a glyph (children). */
-function Lead({ led, children, className, ...props }: React.HTMLAttributes<HTMLSpanElement> & { led?: 'link' | 'code' }) {
-  const own = led ? `${LEAD} ${LEDS[led]}` : LEAD;
+/** The leading LED (`led`, one of the LED's kinds: "link" for a link's kind) or a glyph (children). */
+function Lead({ led, children, className, ...props }: React.HTMLAttributes<HTMLSpanElement> & { led?: LedKind }) {
+  const own = led ? `${LEAD} size-chip-led-size rounded-round ${LEDS[led]}` : LEAD;
   return (
     <span aria-hidden data-led={led} className={className ? `${own} ${className}` : own} {...props}>
       {children}

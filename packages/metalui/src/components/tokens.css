@@ -1362,25 +1362,21 @@
     /* mu-recipe:toolbar:15 */ inset 0 1px 3px rgba(0,0,0,.7),
     /* mu-recipe:toolbar:16 */ inset 0 0 0 .5px rgba(0,0,0,.8),
     /* mu-recipe:toolbar:17 */ 0 1px 0 rgba(255,255,255,.06);
-  --mu-r-toolbar-led-background:
-    /* mu-recipe:toolbar:18 */ radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673);
-  --mu-r-toolbar-led-shadow:
-    /* mu-recipe:toolbar:19 */ 0 0 2px rgba(123,234,174,.6);
   --mu-r-toolbar-sep-background:
-    /* mu-recipe:toolbar:20 */ rgba(0,0,0,.55);
+    /* mu-recipe:toolbar:18 */ rgba(0,0,0,.55);
   --mu-r-toolbar-sep-shadow:
-    /* mu-recipe:toolbar:21 */ 1px 0 0 rgba(255,255,255,.055);
+    /* mu-recipe:toolbar:19 */ 1px 0 0 rgba(255,255,255,.055);
   --mu-r-toolbar-search-background:
-    /* mu-recipe:toolbar:22 */ linear-gradient(#121213, #171718);
+    /* mu-recipe:toolbar:20 */ linear-gradient(#121213, #171718);
   --mu-r-toolbar-search-shadow:
-    /* mu-recipe:toolbar:23 */ inset 1px 2px 5px -1px rgba(0,0,0,.6),
-    /* mu-recipe:toolbar:24 */ inset 0 0 0 .5px rgba(0,0,0,.55),
-    /* mu-recipe:toolbar:25 */ 0 .5px 0 rgba(255,255,255,.07);
+    /* mu-recipe:toolbar:21 */ inset 1px 2px 5px -1px rgba(0,0,0,.6),
+    /* mu-recipe:toolbar:22 */ inset 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:toolbar:23 */ 0 .5px 0 rgba(255,255,255,.07);
   --mu-r-toolbar-kbd-background:
-    /* mu-recipe:toolbar:26 */ linear-gradient(#303033, #262628);
+    /* mu-recipe:toolbar:24 */ linear-gradient(#303033, #262628);
   --mu-r-toolbar-kbd-shadow:
-    /* mu-recipe:toolbar:27 */ inset 0 1px 0 rgba(255,255,255,.09),
-    /* mu-recipe:toolbar:28 */ 0 0 0 .5px rgba(0,0,0,.8);
+    /* mu-recipe:toolbar:25 */ inset 0 1px 0 rgba(255,255,255,.09),
+    /* mu-recipe:toolbar:26 */ 0 0 0 .5px rgba(0,0,0,.8);
   --mu-r-toolbar-self-pad: 7px;
   --mu-r-toolbar-self-gap: 6px;
   --mu-r-toolbar-self-radius: 24px;
@@ -1693,10 +1689,6 @@
     /* mu-recipe:icon-button:7 */ inset 0 1px 3px rgba(0,0,0,.7),
     /* mu-recipe:icon-button:8 */ inset 0 0 0 .5px rgba(0,0,0,.8),
     /* mu-recipe:icon-button:9 */ 0 1px 0 rgba(255,255,255,.06);
-  --mu-r-icon-button-led-background:
-    /* mu-recipe:icon-button:10 */ radial-gradient(circle at 40% 35%, #D9FFE9 0 18%, #7BEAAE 42%, #2FB673);
-  --mu-r-icon-button-led-shadow:
-    /* mu-recipe:icon-button:11 */ 0 0 2px rgba(123,234,174,.6);
   --mu-r-icon-button-tool-size: 38px;
   --mu-r-icon-button-tool-radius: 15px;
   --mu-r-icon-button-tool-glyph: 16px;
@@ -1717,10 +1709,6 @@
   --mu-r-icon-button-self-fade: 160ms;
   --mu-r-icon-button-self-transition: background var(--mu-r-icon-button-self-fade), color var(--mu-r-icon-button-self-fade);
   /* chip: reference style.css .sugg, .sugg .eng, .glass-tag, .glass-tag .led, .linkobj a.open, .meta .derived-tags span */
-  --mu-r-chip-led-link-background:
-    /* mu-recipe:chip:19 */ radial-gradient(circle at 40% 35%, #E6EEFF 0 18%, #9DB9FF 45%, #4B78F0);
-  --mu-r-chip-led-code-background:
-    /* mu-recipe:chip:20 */ radial-gradient(circle at 40% 35%, #F6E4FF 0 18%, #D4A6F0 45%, #9B5CC8);
   --mu-r-chip-suggestion-height: 20px;
   --mu-r-chip-suggestion-pad-left: 9px;
   --mu-r-chip-suggestion-pad-right: 3px;
@@ -2611,9 +2599,9 @@
   --mu-r-mark-derived-shadow:
     /* mu-recipe:mark:6 */ inset 0 0 0 .5px rgba(40,38,32,.18);
   --mu-r-icon-button-ghost-hover-background:
-    /* mu-recipe:icon-button:12 */ rgba(0,0,0,.05);
+    /* mu-recipe:icon-button:10 */ rgba(0,0,0,.05);
   --mu-r-icon-button-mini-hover-background:
-    /* mu-recipe:icon-button:14 */ rgba(0,0,0,.06);
+    /* mu-recipe:icon-button:12 */ rgba(0,0,0,.06);
   --mu-r-icon-button-ghost-ink: #5C5C60;
   --mu-r-icon-button-ghost-ink-hover: #1B1B1D;
   --mu-r-icon-button-mini-ink: #6C6C6F;
@@ -2634,7 +2622,7 @@
   --mu-r-chip-glass-action-hover-background:
     /* mu-recipe:chip:17 */ rgba(0,0,0,.09);
   --mu-r-chip-tag-shadow:
-    /* mu-recipe:chip:21 */ inset 0 0 0 .5px rgba(40,38,32,.2);
+    /* mu-recipe:chip:19 */ inset 0 0 0 .5px rgba(40,38,32,.2);
   --mu-r-chip-suggestion-ink: #5C5C60;
   --mu-r-chip-glass-ink: rgba(27,27,29,.72);
   --mu-r-chip-glass-action-ink: rgba(27,27,29,.7);
@@ -3192,9 +3180,9 @@
   --mu-r-mark-derived-shadow:
     /* mu-recipe:mark:7 */ inset 0 0 0 .5px rgba(255,255,255,.2);
   --mu-r-icon-button-ghost-hover-background:
-    /* mu-recipe:icon-button:13 */ rgba(255,255,255,.08);
+    /* mu-recipe:icon-button:11 */ rgba(255,255,255,.08);
   --mu-r-icon-button-mini-hover-background:
-    /* mu-recipe:icon-button:15 */ rgba(255,255,255,.08);
+    /* mu-recipe:icon-button:13 */ rgba(255,255,255,.08);
   --mu-r-icon-button-ghost-ink: #A6A6A9;
   --mu-r-icon-button-ghost-ink-hover: #F2F2F0;
   --mu-r-icon-button-mini-ink: #939397;
@@ -3215,7 +3203,7 @@
   --mu-r-chip-glass-action-hover-background:
     /* mu-recipe:chip:18 */ rgba(255,255,255,.16);
   --mu-r-chip-tag-shadow:
-    /* mu-recipe:chip:22 */ inset 0 0 0 .5px rgba(255,255,255,.16);
+    /* mu-recipe:chip:20 */ inset 0 0 0 .5px rgba(255,255,255,.16);
   --mu-r-chip-suggestion-ink: #A6A6A9;
   --mu-r-chip-glass-ink: rgba(255,255,255,.8);
   --mu-r-chip-glass-action-ink: rgba(255,255,255,.75);

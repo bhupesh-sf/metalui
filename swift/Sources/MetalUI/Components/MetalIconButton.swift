@@ -97,9 +97,7 @@ private struct MetalIconButtonStyle: ButtonStyle {
                        value: tool ? down : hovering)
             .overlay(alignment: .topTrailing) {
                 if latched && tool {
-                    Color.clear
-                        .frame(width: recipe.points("led.size"), height: recipe.points("led.size"))
-                        .metalObjectRecipe(recipe, part: "led", in: Circle())
+                    MetalLED(.live, diameter: recipe.points("led.size"))
                         .padding(recipe.points("led.inset"))
                 }
             }

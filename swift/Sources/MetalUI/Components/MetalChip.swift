@@ -14,8 +14,6 @@ public enum MetalChipVariant: Sendable {
     }
 }
 
-/// An optional leading lamp in a glass chip.
-public enum MetalChipLED: Sendable { case link, code }
 
 private struct MetalChipShape: InsettableShape {
     let glass: Bool
@@ -97,22 +95,20 @@ extension EnvironmentValues {
     }
 }
 
-/// Decorative lead content. The lamp shape is supplied by the recipe.
+/// Decorative lead content: the LED part's lamp, or a glyph.
 public struct MetalChipLead<Content: View>: View {
-    let led: MetalChipLED?
+    let led: MetalLEDKind?
     @ViewBuilder let content: Content
 
-    public init(led: MetalChipLED? = nil, @ViewBuilder content: () -> Content) {
+    /// - Parameter led: the LED part's lamp, at the chip's size, in one of its kinds (`.link` for a link's kind).
+    public init(led: MetalLEDKind? = nil, @ViewBuilder content: () -> Content) {
         self.led = led
         self.content = content()
     }
 
     public var body: some View {
         if let led {
-            let recipe = MetalRecipes.chip
-            Color.clear
-                .frame(width: recipe.points("led.size"), height: recipe.points("led.size"))
-                .metalObjectRecipe(recipe, part: "led", state: led == .link ? "link" : "code", in: Circle())
+            MetalLED(led, diameter: MetalRecipes.chip.points("led.size"))
                 .accessibilityHidden(true)
         } else {
             content.accessibilityHidden(true)

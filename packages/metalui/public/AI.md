@@ -631,7 +631,7 @@ A person's thing, held on a raised plate. React: `Card` from `@unlocalhosted/met
 - Status (optional): an LED at the end of the title's line, in an 18 box (the title's line).
 - Action (optional): a ghost icon key (`more`) level with the title's first line, reaching 5 into the padding, above the stretched link.
 - Description (body type, ink2); Footer: actions, 12 apart (compact 8), above the stretched link.
-- Choice: the latch's 4 pt green LED, 12 in from the top and end corner.
+- Choice: the latch's 4 pt green LED (the LED part's live lamp), 12 in from the top and end corner.
 - Frame: separated is the field well, padding 8 (compact 6), cards 8 apart (compact 6), radius card + padding; stacked is one raised plate, sections between engraved hairlines (the rule's groove, inset by the padding); ghost is a grid with no tray. Columns fill by a 200 minimum; side cards make one column.
 - Empty slot: the track well (a step deeper than the tray), card radius, at least 120 tall, plus and a verb in ink2.
 
@@ -790,7 +790,7 @@ A small pill. React: `Chip` with parts `Chip.Root`, `Chip.Lead`, `Chip.Text`, `C
 ## Variants
 
 - `suggestion`: 20 tall, frosted, a green hairline and a small raise; a question in `Chip.Text`, a confidence `Label`, and `IconButton variant="mini"` actions (✓ accept, × dismiss).
-- `glass`: an 18 tall tag on a glass screen in the colorway (light on Bone, dark on Graphite), backdrop-blurred; `Chip.Lead led="link" | "code"` for its LED.
+- `glass`: an 18 tall tag on a glass screen in the colorway (light on Bone, dark on Graphite), backdrop-blurred; `Chip.Lead led` for its LED: the LED part's lamp (socket, glow) at 5 pt, in one of its kinds (`link` for a link's kind, `off` for a kind with no state, as the code card's tag). No other colours.
 - `glass-action`: an 18 tall light cap on glass (`as="a"` for a link out), brighter on hover.
 - `tag`: a 15 tall engraved mono tag in a hairline pill (a derived #tag); no fill.
 
@@ -1683,7 +1683,7 @@ A pressable cap with only a glyph. React: `IconButton`. SwiftUI: `MetalIconButto
 
 ## Variants
 
-- `tool`: a 38 graphite cap (radius 15). Pressed sinks 1 into a dark well (50 ms linear, back on release). `pressed={true}` latches it down with a 4 pt green LED 5 in from the top right.
+- `tool`: a 38 graphite cap (radius 15). Pressed sinks 1 into a dark well (50 ms linear, back on release). `pressed={true}` latches it down with the LED part's live lamp (the status recipe: sunk socket and glow) at 4 pt, 5 in from the top right.
 - `ghost`: a 28 flat round button; hover fills it faintly and darkens the glyph.
 - `mini`: an 18 × 16 flat pill inside a chip; `accept` turns its glyph green on hover.
 
@@ -4635,7 +4635,7 @@ A strip of tools. React: `Toolbar`, `ToolButton`, `ToolbarSeparator`, `ToolbarSe
 ## Anatomy
 
 - **Strip**: 48 tall (36 tools in a 6 nest), radius 24, so a true capsule; the strip frost in the colorway, or graphite (`variant="graphite"`) as the canvas uses in both colorways.
-- **Tool**: a circular 36 cap (the button material), a 16 glyph in the icon ink; latched: pressed (`pressed-bg`, `pressed-sh`) with a 4 pt green LED 5 in from its top right.
+- **Tool**: a circular 36 cap (the button material), a 16 glyph in the icon ink; latched: pressed (`pressed-bg`, `pressed-sh`) with the LED part's live lamp (the status recipe: sunk socket and glow) at 4 pt, 5 in from its top right.
 - **Separator**: a 1 × 22 engraved rule.
 - **Search well**: a 36 tall pill well with the placeholder in ink3 and a `⌘K` keycap.
 - **Tooltip**: a graphite label chip with the key, 10 above, after 120 ms: `SELECT · V`.
@@ -4674,7 +4674,7 @@ A strip of tools. React: `Toolbar`, `ToolButton`, `ToolbarSeparator`, `ToolbarSe
 
 ## Tokens
 
-`--mu-toolbar-*`, `.mu-frost-strip`, `.mu-frost-graphite`, `--mu-btn-*`, `--mu-pressed-*`, `--mu-led-green`, `--mu-radius-card`. Swift: `MetalToolbarMetrics`.
+`--mu-toolbar-*`, `.mu-frost-strip`, `.mu-frost-graphite`, `--mu-btn-*`, `--mu-pressed-*`, `--mu-r-status-led-live-*` (the LED part's lamp), `--mu-radius-card`. Swift: `MetalToolbarMetrics`.
 
 ---
 

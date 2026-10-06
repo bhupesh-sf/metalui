@@ -110,8 +110,7 @@ private struct MetalToolButtonStyle: ButtonStyle {
                                    in: RoundedRectangle(cornerRadius: r.points("tool.radius"), style: .continuous))
                 .overlay(alignment: .topTrailing) {
                     if latched {
-                        Color.clear.frame(width: ledSize, height: ledSize)
-                            .metalObjectRecipe(r, part: "led", in: Circle())
+                        MetalLED(.live, diameter: ledSize)
                             .padding(r.points("led.inset"))
                     }
                 }

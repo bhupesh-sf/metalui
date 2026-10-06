@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Toolbar, ToolButton, ToolbarSeparator } from '@unlocalhosted/metalui';
 import { Icon } from '@unlocalhosted/metalui/icons';
-import { Exploded, IsoCap, XrayFrame, capTop, scalePx, type SpotDef } from './kit';
+import { Exploded, IsoCap, XrayFrame, capTop, scalePx, useStateLayers, type SpotDef } from './kit';
 import { HintLayer } from '../edit';
 import { INITIAL, LAYERS, P, STRIP_BG, STRIP_SH, TOOLS, ToolbarSpecimenCard, outerRadius, pick, type Model, type Spot } from './ToolbarSpecimens';
 
@@ -22,7 +22,6 @@ import { INITIAL, LAYERS, P, STRIP_BG, STRIP_SH, TOOLS, ToolbarSpecimenCard, out
 
 const TOOL_BG = pick('tool', 'background')[0], TOOL_SH = pick('tool', 'shadow');
 const DOWN_BG = pick('tool', 'background', 'pressed')[0], DOWN_SH = pick('tool', 'shadow', 'pressed');
-const LED_BG = pick('led', 'background')[0], LED_SH = pick('led', 'shadow')[0];
 const SEP_BG = pick('sep', 'background')[0], SEP_SH = pick('sep', 'shadow')[0];
 const S = 2.2;
 
@@ -55,6 +54,8 @@ export function ToolbarXray({ startOpen = false }: { startOpen?: boolean }) {
   const lift = 2 + m.lift * 8;
   const stripTop = capTop(lift, 5);
   const exploded = spot === 'layers';
+  // A latched tool lights the LED part's live lamp (the status recipe), as the real tool does.
+  const lamp = useStateLayers('status', 'live', 'led');
   const stripShadow = scalePx(STRIP_SH.slice(0, 4).filter((_, i) => m.on[i + 1]).join(', ') || 'none', S);
 
   let cx = m.pad;
@@ -78,7 +79,7 @@ export function ToolbarXray({ startOpen = false }: { startOpen?: boolean }) {
                 fill={(down ? DOWN_BG : TOOL_BG)} shadow={scalePx((down ? DOWN_SH : TOOL_SH).join(', '), S)} wallTone="#141416"
                 transition="transform 50ms linear, box-shadow 90ms ease-out">
                 <span style={{ color: P.tool.ink, display: 'grid' }}><Icon name={t.id} size={P.tool.glyph * S} /></span>
-                {down && <span className="xr-led" style={{ top: P.led.inset * S, right: P.led.inset * S, width: P.led.size * S, height: P.led.size * S, background: LED_BG, boxShadow: scalePx(LED_SH, S) }} />}
+                {down && <span className="xr-led" style={{ top: P.led.inset * S, right: P.led.inset * S, width: P.led.size * S, height: P.led.size * S, background: lamp.fill, boxShadow: scalePx(lamp.shadows.join(', '), S) }} />}
               </IsoCap>
             </div>
           );

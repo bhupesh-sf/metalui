@@ -84,7 +84,7 @@ export const CodeCard = React.forwardRef<HTMLDivElement, CodeCardProps>(function
     <GlassFace.Root ref={ref} className={className ? `${CARD} ${className}` : CARD} {...props}>
       <GlassFace.Screen className={SCREEN}>
         <Chip variant="glass" className={TAG}>
-          <Chip.Lead led="code" />
+          <Chip.Lead led="off" />
           <Chip.Text>{label}</Chip.Text>
         </Chip>
         <pre className={CODE} dangerouslySetInnerHTML={{ __html: tintCode(code, maxLines, diff ?? (lang === 'diff' ? diffClasses(code) : undefined)) }} />

@@ -443,9 +443,10 @@
       "name": "chip",
       "type": "registry:ui",
       "title": "Chip",
-      "description": "A small pill with an optional leading LED or glyph and trailing actions: suggestion, glass, glass-action and tag.",
+      "description": "A small pill with an optional leading LED (the LED part's lamp, any of its kinds) or glyph and trailing actions: suggestion, glass, glass-action and tag.",
       "dependencies": [],
       "registryDependencies": [
+        "https://metalui.dev/r/led.json",
         "https://metalui.dev/r/tokens.json"
       ],
       "files": [
