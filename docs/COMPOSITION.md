@@ -34,13 +34,17 @@ The generators emit CSS custom properties and classes, and Swift `MetalTokens` /
 
 ## 2. Where every part lives
 
+<!-- layers:start (generated from each meta.json `layer` by scripts/build-agent-docs.mjs; don't edit) -->
 | Layer | Members |
 |---|---|
-| **Parts** | Surface, Well, Glass face, Label, Glyph, Rule, LED, Keycap, Swatch, Chip, Mark, Row, Sparkline |
-| **Components** | Status badge, Button, Icon button, Checkbox, Switch, Switcher, Tabs, Select, Slider, Field, Menu, Tooltip, Dialog, Toast, Toolbar, Command palette, Tool strip, Draw tools, Draw picks, Settings |
-| **Objects** | Folder, Link card, Code card, Connector, Block silhouette (an object seen from far away) |
-| **Instruments** | Selection frame, Snap guides, Lasso, Brush cursor, Line handles, Perfect preview, Size readout, Hover engraving, Provenance tooltip, Suggestion chip, the cue family |
-| **Places** | Region, Lens (the lens bar), the past (Past banner, Time scrubber) |
+| **Parts** | Chip, Dot display, Glass face, Glyph, Keycap, LED, Label, Mark, Row, Rule, Skeleton, Sparkline, Spatial field, Surface, Well |
+| **Components** | Accordion, Alert dialog, Breadcrumbs, Button, Button group, Calendar, Checkbox, Checkbox group, Combobox, Command palette, Dialog, Draw picks, Draw tools, Fan, Field, Form field, Icon button, Link, Menu and correction popover, Menubar, Meter, Navigation menu, Number field, Pagination, Popover, Preview card, Progress, Quick edit, Radio group, Scroll area, Select, Settings, Sheet, Slider, Spinner, Status badge, Switch, Switcher, Tabs, Textarea, Toast, Toggle, Tool strip, Toolbar and tool button, Tooltip |
+| **Objects** | Attachment, Avatar, Block silhouette, Card, Code card, Connector, Day, Folder, Link card, Table, Weather |
+| **Instruments** | Brush cursor, Hover engraving, Lasso, Line handles, Perfect preview, Provenance tooltip, Selection frame, Size readout, Snap guides, Suggestion chip |
+| **Places** | Drop zone, Empty state, Filter bar, Past banner, Region, Sidebar, Split pane, Time scrubber |
+<!-- layers:end -->
+
+Without a folder of their own: Swatch (a part), the cue family (instruments), the Lens bar (a place).
 
 A part can be **composed** (every visible piece is a member of an earlier layer, arranged) or **custom** (it needs drawing nothing earlier expresses, such as the selection frame's band and edge light). Custom parts still take every value from foundations, and their `meta.json` says why they are custom and what they still use.
 

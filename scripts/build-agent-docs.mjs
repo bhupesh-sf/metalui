@@ -106,4 +106,9 @@ emit('packages/metalui/public/components.json', JSON.stringify({
     sheet: m.sheet,
   })),
 }, null, 2) + '\n');
+// docs/COMPOSITION.md: the layer table, from each meta.json `layer`, so it can't fall behind.
+const LAYERS = [['part', 'Parts'], ['component', 'Components'], ['object', 'Objects'], ['instrument', 'Instruments'], ['place', 'Places']];
+const composition = readFileSync(root('docs/COMPOSITION.md'), 'utf8');
+const table = ['| Layer | Members |', '|---|---|', ...LAYERS.map(([k, name]) => `| **${name}** | ${list.filter((m) => m.layer === k).map((m) => m.title).sort().join(', ')} |`)].join('\n');
+emit('docs/COMPOSITION.md', composition.replace(/(<!-- layers:start[^>]*-->\n)[\s\S]*?(<!-- layers:end -->)/, `$1${table}\n$2`));
 finish(`agent docs (${list.length} components)`);
