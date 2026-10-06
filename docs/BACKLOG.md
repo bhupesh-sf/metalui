@@ -686,14 +686,19 @@ The block (`apps/docs/src/blocks/ai-composer`) already does these inside itself;
   Done (2026-10-06): `ToolCall` folded by default (lamp or ring, name, state, summary; input as Properties, result in the well), `ToolCall.Group` for consecutive calls, `children` for a tool's own UI.
 - [x] **Confirmation** (V C): the agent asks before it acts ("Delete 3 files?"), with Allow and Deny, and what was decided kept in the thread. Destructive ones can use the hold to confirm from "Destructive confirm".
   Done (2026-10-06): `Confirmation` on Alert and Button; `destructive` uses `hold`; the decision stays as a quiet note. Later: Allow always, editing inputs first.
-- [ ] **Plan, task and queue** (V A): the agent's to-do list with progress, tasks nested under a step, and what is waiting to run.
-- [ ] **Sources and inline citations** (V P X): numbered marks in the text that open the source in a preview card; a list of sources under the answer. Builds on the `ProvenanceTooltip` block.
+- [x] **Plan, task and queue** (V A): the agent's to-do list with progress, tasks nested under a step, and what is waiting to run.
+  Done (2026-10-06): `Plan` (a Progress head "3 of 5", steps in ToolCall's states, nested tasks); the queue is the steps in `queued`. Later: a plan revised while it runs, the person's queued messages.
+- [x] **Sources and inline citations** (V P X): numbered marks in the text that open the source in a preview card; a list of sources under the answer. Builds on the `ProvenanceTooltip` block.
+  Done (2026-10-06): `Citation` (a numbered pill that opens a PreviewCard) and `Citation.Sources` (a folded list). 46.9 KB: PreviewCard and Link carry Base UI's floating code.
 - [ ] **Thinking indicator / shimmer** (V P S): shimmering placeholder text and a thinking bar. Do it inside "Spinner: rethink as waiting" rather than as its own thing.
-- [ ] **Starter prompts and follow-ups** (V P A X): prompts on an empty thread and follow-ups after a reply. Different from `Chip variant="suggestion"`, which accepts or dismisses an AI suggestion.
-- [ ] **Welcome** (A X): the empty thread's greeting with starter prompts; check against `EmptyState` first.
+- [x] **Starter prompts and follow-ups** (V P A X): prompts on an empty thread and follow-ups after a reply. Different from `Chip variant="suggestion"`, which accepts or dismisses an AI suggestion.
+  Done (2026-10-06) on existing parts: compact Buttons in EmptyState's action row, and a row under the reply (not Chips: those accept or dismiss a suggestion).
+- [x] **Welcome** (A X): the empty thread's greeting with starter prompts; check against `EmptyState` first.
+  Done (2026-10-06): an `EmptyState` inside the `Thread` (EmptyState page, "Welcome a new chat").
 - [ ] **Conversation list** (A X): past chats in a sidebar, with rename, delete and a loading skeleton.
 - [ ] **Branch picker** (A): moves between alternate replies, "2 of 3".
-- [ ] **Context meter** (V): how full the model's context window is, likely a `Meter` use.
+- [x] **Context meter** (V): how full the model's context window is, likely a `Meter` use.
+  Done (2026-10-06): a `Meter` with the tokens in words (Meter page, "A model's context window").
 - [ ] **Checkpoint** (V): a point in the thread to restore to.
 
 ### 3. Code and artifacts (only if MetalUI targets coding agents)
