@@ -56,7 +56,7 @@ export { Checkbox, Dimple, type CheckboxProps, type DimpleProps } from './compon
 export { RadioGroup, Radio, type RadioGroupProps, type RadioProps } from './components/radio/radio';
 export { CheckboxGroup, type CheckboxGroupProps, type CheckboxGroupItemProps } from './components/checkbox-group/checkbox-group';
 export { Swatch, swatchInk, type SwatchProps } from './components/swatch/swatch';
-export { InkPicks, WidthPicks, INKS, INK_WIDTHS, inkColor, type Ink, type InkWidth, type InkPicksProps, type WidthPicksProps } from './components/draw-picks/draw-picks';
+export { InkPicks, WidthPicks, InkStroke, INKS, INK_WIDTHS, inkColor, type Ink, type InkWidth, type InkPicksProps, type WidthPicksProps } from './components/draw-picks/draw-picks';
 export { Connector, type ConnectorProps, type ConnectorEnd, type ConnectorLook, type ConnectorFlow } from './components/connector/connector';
 export { Tabs, TabList, TabPanel, type TabsProps, type TabListProps, type TabPanelProps, type TabItem } from './components/tabs/tabs';
 export { Accordion } from './components/accordion/accordion';
@@ -71,7 +71,7 @@ export { PastBanner, type PastBannerProps } from './blocks/past-banner/past-bann
 export { TimeScrubber, MemoryScrubber, type TimeScrubberProps, type MemoryScrubberProps } from './blocks/time-scrubber/time-scrubber';
 export { FilterBar, LensBar, type FilterBarProps, type FilterView, type LensBarProps, type LensMode } from './blocks/filter-bar/filter-bar';
 export { Switcher, type SwitcherProps, type SwitcherOption, Segmented, type SegmentedProps, type SegmentedOption } from './components/switcher/switcher';
-export { Fan, type FanProps, type FanOption, type FanPickerProps, type FanTrayProps } from './components/fan/fan';
+export { Fan, type FanProps, type FanLabelProps, type FanOption, type FanPickerProps, type FanTrayProps } from './components/fan/fan';
 export { Region, RegionRow, type RegionProps, type RegionRowProps } from './blocks/region/region';
 export { ProvenanceTooltip, ProvenanceProvider, type ProvenanceTooltipProps } from './blocks/provenance-tooltip/provenance-tooltip';
 export { HoverEngraving, type HoverEngravingProps, type EngravingStatus } from './blocks/hover-engraving/hover-engraving';

@@ -1140,6 +1140,7 @@
   --spacing-draw-size: var(--mu-r-draw-self-size);
   --spacing-draw-bead: var(--mu-r-draw-self-bead);
   --spacing-draw-gap: var(--mu-r-draw-self-gap);
+  --spacing-draw-stroke: var(--mu-r-draw-self-stroke);
   --color-draw-ink-ink: var(--mu-r-draw-ink-ink);
   --color-draw-ink-red: var(--mu-r-draw-ink-red);
   --color-draw-ink-blue: var(--mu-r-draw-ink-blue);
@@ -3106,13 +3107,13 @@
   opacity: var(--mu-r-brush-pencil-ink);
 }
 @utility draw-pick {
-  position: relative; display: grid; place-items: center; width: var(--mu-r-draw-self-size); height: var(--mu-r-draw-self-size); padding: 0; border: 0; border-radius: var(--mu-round); background: transparent; cursor: pointer; transition: background .12s linear, box-shadow .12s linear; &[data-pressed] { background: var(--mu-pressed-bg); box-shadow: var(--mu-pressed-sh); } &:focus-visible { outline: var(--mu-switcher-focus-width) solid var(--mu-focus); outline-offset: 0; } &[data-disabled] { opacity: .4; cursor: default; }
+  position: relative; display: grid; place-items: center; width: var(--mu-r-draw-self-size); height: var(--mu-r-draw-self-size); padding: 0; border: 0; border-radius: var(--mu-round); background: transparent; cursor: pointer; transition: background .12s linear, box-shadow .12s linear; &[data-pressed] { background: var(--mu-pressed-bg); box-shadow: var(--mu-pressed-sh); } &:focus-visible { outline: var(--mu-switcher-focus-width) solid var(--mu-focus); outline-offset: 0; } &[data-disabled] { opacity: .4; cursor: default; } .mu-toolbar[data-variant=graphite] &[data-pressed] { background: var(--mu-r-toolbar-tool-pressed-background); box-shadow: var(--mu-r-toolbar-tool-pressed-shadow); }
 }
 @utility draw-bead {
   display: block; width: var(--mu-r-draw-self-bead); height: var(--mu-r-draw-self-bead); border-radius: var(--mu-round); background: var(--mu-self); box-shadow: var(--mu-r-draw-bead-gloss); transition: transform var(--mu-spring-part-d) var(--mu-spring-part);
 }
 @utility draw-dot {
-  display: block; width: var(--mu-draw-w); height: var(--mu-draw-w); border-radius: var(--mu-round); background: var(--mu-self); transition: transform var(--mu-spring-part-d) var(--mu-spring-part), background .12s linear;
+  display: block; width: var(--mu-r-draw-self-stroke); height: var(--mu-draw-w); border-radius: var(--mu-round); rotate: calc(var(--mu-r-draw-self-slant) * 1deg); .mu-toolbar[data-variant=graphite] & { --mu-r-draw-ink-ink: var(--mu-r-draw-ink-on-dark); } background: var(--mu-self); transition: transform var(--mu-spring-part-d) var(--mu-spring-part), background .12s linear;
 }
 @utility draw-lift {
   .mu-draw-pick:hover:not([data-disabled]) > & { transform: scale(var(--mu-r-draw-bead-hover)); } .mu-draw-pick:active:not([data-disabled]) > & { transform: scale(var(--mu-r-draw-bead-press)); transition-duration: 80ms; }
@@ -3128,6 +3129,12 @@
 }
 @utility draw-picks {
   display: inline-flex; align-items: center; gap: var(--mu-r-draw-self-gap); .mu-toolbar[data-variant=graphite] & { --mu-r-draw-ink-ink: var(--mu-r-draw-ink-on-dark); }
+}
+@utility stroke-width-draw-stroke {
+  stroke-width: var(--mu-r-draw-self-stroke);
+}
+@utility opacity-draw-slant {
+  opacity: var(--mu-r-draw-self-slant);
 }
 @utility opacity-draw-bead-hover {
   opacity: var(--mu-r-draw-bead-hover);

@@ -2023,6 +2023,8 @@
   --mu-r-draw-self-size: 28px;
   --mu-r-draw-self-bead: 14px;
   --mu-r-draw-self-gap: 2px;
+  --mu-r-draw-self-stroke: 20px;
+  --mu-r-draw-self-slant: -40;
   --mu-r-draw-ink-red: #D8453B;
   --mu-r-draw-ink-blue: #2457F2;
   --mu-r-draw-ink-green: #3FB97A;

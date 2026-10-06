@@ -362,7 +362,7 @@
       "name": "draw-picks",
       "title": "Draw picks",
       "status": "alpha",
-      "description": "The ink and width choices in the drawing group: five glossy ink beads and three width dots in the current ink; the chosen one sits in a sunk well like a latched tool.",
+      "description": "The ink and width choices in the drawing group: five glossy ink beads and three width strokes in the current ink, each named with its group (Ink: red, Width: fine); the chosen one sits in a sunk well like a latched tool.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "InkPicks",
@@ -430,7 +430,7 @@
       "name": "fan",
       "title": "Fan",
       "status": "alpha",
-      "description": "A compact control bar whose cells open in place: a label, the current choice that fans its siblings out along one axis, and an options cap that stretches sideways into more controls. One open at a time; nothing hides in a menu.",
+      "description": "A compact control bar whose cells open in place: a label (a word or a glyph), the current choice that unfolds every choice into a grouped grid, and an options cap that stretches sideways into more controls. One open at a time; nothing hides in a menu.",
       "react": {
         "package": "@unlocalhosted/metalui",
         "export": "Fan"
