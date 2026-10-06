@@ -9,10 +9,14 @@ public struct MetalCard<Content: View>: View {
     private let title: String
     private let description: String?
     private let content: Content
+    private let waiting: Bool
 
-    public init(_ title: String, description: String? = nil, @ViewBuilder content: () -> Content = { EmptyView() }) {
+    /// `waiting`: its work is under way; after the show delay a lit edge travels round its border. Its
+    /// words (the description) say what is happening.
+    public init(_ title: String, description: String? = nil, waiting: Bool = false, @ViewBuilder content: () -> Content = { EmptyView() }) {
         self.title = title
         self.description = description
+        self.waiting = waiting
         self.content = content()
     }
 
@@ -25,5 +29,11 @@ public struct MetalCard<Content: View>: View {
         .padding(MetalRecipes.card.points("self.pad"))
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.background, in: RoundedRectangle(cornerRadius: MetalRecipes.surface.points("radius.card"), style: .continuous))
+        .overlay {
+            if waiting {
+                MetalSpinnerEdge(shape: RoundedRectangle(cornerRadius: MetalRecipes.surface.points("radius.card"), style: .continuous), waiting: waiting)
+            }
+        }
+        .accessibilityValue(waiting ? "In progress" : "")
     }
 }

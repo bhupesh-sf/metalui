@@ -13,6 +13,7 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
     let selected: Bool
     let opened: Bool
     let maybe: Bool
+    let waiting: Bool
     @ViewBuilder let lead: Lead
     @ViewBuilder let content: Content
     @ViewBuilder let trail: Trail
@@ -22,6 +23,7 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
 
     public init(_ variant: MetalRowVariant = .list, checked: Bool = false,
                 active: Bool = false, selected: Bool = false, opened: Bool = false, maybe: Bool = false,
+                waiting: Bool = false,
                 @ViewBuilder lead: () -> Lead,
                 @ViewBuilder text: () -> Content,
                 @ViewBuilder trail: () -> Trail) {
@@ -31,6 +33,7 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
         self.selected = selected
         self.opened = opened
         self.maybe = maybe
+        self.waiting = waiting
         self.lead = lead()
         self.content = text()
         self.trail = trail()
@@ -47,10 +50,12 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
         HStack(alignment: variant == .option ? .center : .top,
                spacing: recipe.points("\(part).gap")) {
             lead.fixedSize()
+            // Waiting (a MetalSpinner in the lead): the rest dims and the row takes no hits.
             content
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .environment(\.metalRowChecked, checked)
-            trail.fixedSize()
+                .metalWaitDim(waiting)
+            trail.fixedSize().metalWaitDim(waiting)
         }
         .font(recipe.font("\(part).font"))
         .foregroundColor(colorway.tokens.ink.color)
@@ -69,6 +74,8 @@ public struct MetalRow<Lead: View, Content: View, Trail: View>: View {
         }
         .contentShape(shape)
         .opacity(maybe ? recipe.scalar("self.maybe") : .one)
+        .allowsHitTesting(!waiting)
+        .accessibilityValue(waiting ? "In progress" : "")
         .onHover { hovering = $0 }
         .animation(.easeInOut(duration: recipe.durationSeconds("self.fade")), value: hovering)
     }

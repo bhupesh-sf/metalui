@@ -39,13 +39,17 @@ private struct MetalChipShape: InsettableShape {
 /// A chip supplies paint and layout; its slots decide whether it is an action.
 public struct MetalChip<Content: View>: View {
     let variant: MetalChipVariant
+    let waiting: Bool
     @ViewBuilder let content: Content
     @Environment(\.metalColorway) private var colorway
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @State private var hovering = false
 
-    public init(_ variant: MetalChipVariant = .suggestion, @ViewBuilder content: () -> Content) {
+    /// `waiting`: its work is under way (put a small MetalSpinner before its text): it takes no hits and its
+    /// text and actions dim.
+    public init(_ variant: MetalChipVariant = .suggestion, waiting: Bool = false, @ViewBuilder content: () -> Content) {
         self.variant = variant
+        self.waiting = waiting
         self.content = content()
     }
 
@@ -77,7 +81,19 @@ public struct MetalChip<Content: View>: View {
             }
             .onHover { hovering = $0 }
             .fixedSize()
+            .environment(\.metalChipWaiting, waiting)
+            .allowsHitTesting(!waiting)
             .accessibilityElement(children: .contain)
+            .accessibilityValue(waiting ? "In progress" : "")
+    }
+}
+
+private struct MetalChipWaitingKey: EnvironmentKey { static let defaultValue = false }
+
+extension EnvironmentValues {
+    var metalChipWaiting: Bool {
+        get { self[MetalChipWaitingKey.self] }
+        set { self[MetalChipWaitingKey.self] = newValue }
     }
 }
 
@@ -106,14 +122,16 @@ public struct MetalChipLead<Content: View>: View {
 
 public struct MetalChipText<Content: View>: View {
     @ViewBuilder let content: Content
+    @Environment(\.metalChipWaiting) private var waiting
     public init(@ViewBuilder content: () -> Content) { self.content = content() }
-    public var body: some View { content }
+    public var body: some View { content.metalWaitDim(waiting) }
 }
 
 public struct MetalChipActions<Content: View>: View {
     @ViewBuilder let content: Content
+    @Environment(\.metalChipWaiting) private var waiting
     public init(@ViewBuilder content: () -> Content) { self.content = content() }
     public var body: some View {
-        HStack(spacing: MetalRecipes.chip.points("suggestion.gap")) { content }
+        HStack(spacing: MetalRecipes.chip.points("suggestion.gap")) { content }.metalWaitDim(waiting)
     }
 }
