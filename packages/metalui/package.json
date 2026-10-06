@@ -33,6 +33,9 @@
       ],
       "sound": [
         "dist/sound.d.ts"
+      ],
+      "widget": [
+        "dist/widget.d.ts"
       ]
     }
   },
@@ -53,6 +56,10 @@
       "types": "./dist/sound.d.ts",
       "import": "./dist/sound.js"
     },
+    "./widget": {
+      "types": "./dist/widget.d.ts",
+      "import": "./dist/widget.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./styles.unlayered.css": "./dist/styles.unlayered.css",
     "./icons.css": "./dist/icons.css",
@@ -65,7 +72,7 @@
     "./widgets.schema.json": "./public/widgets.schema.json"
   },
   "scripts": {
-    "build": "tsup && rm -f dist/index.css dist/components/*/*.css dist/blocks/*/*.css && tailwindcss -i styles.input.css -o dist/styles.css --minify && node ../../scripts/build-unlayered.mjs",
+    "build": "tsup && rm -f dist/index.css dist/widget.css dist/components/*/*.css dist/blocks/*/*.css && tailwindcss -i styles.input.css -o dist/styles.css --minify && node ../../scripts/build-unlayered.mjs",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {

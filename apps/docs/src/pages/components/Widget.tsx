@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useDialKit } from 'dialkit';
-import { Message, Properties, Textarea, Widget, parseWidget, type WidgetAction, type WidgetActionContext } from '@unlocalhosted/metalui';
+import { Message, Properties, Textarea } from '@unlocalhosted/metalui';
+import { Widget, parseWidget, type WidgetAction, type WidgetActionContext } from '@unlocalhosted/metalui/widget';
 import reactSource from '../../../../../packages/metalui/src/components/widget/widget.tsx?raw';
 import cssSource from '../../../../../packages/metalui/src/components/theme.css?raw';
 import swiftSource from '../../../../../swift/Sources/MetalUI/Components/MetalWidget.swift?raw';

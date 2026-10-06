@@ -7704,7 +7704,7 @@ A sunk field or track. React: `Well`. SwiftUI: `MetalWell`.
 
 # Widget
 
-A piece of interface a model sends as JSON, rendered with MetalUI's own components: a card with a date and a Book key, a list of results, a progress line. React: `Widget` and `parseWidget` from `@unlocalhosted/metalui`. SwiftUI: `MetalWidget`. An object: it stands for what the model produced and stays in the thread. Composed: every look is the component a node names; the widget lays its nodes out in a column, 12 apart (the `widget` recipe). The vocabulary, its props and its limits are one spec (`widget/spec.ts`), published as `https://metalui.dev/widgets.schema.json` and listed under "Widgets: render from JSON" in AI.md.
+A piece of interface a model sends as JSON, rendered with MetalUI's own components: a card with a date and a Book key, a list of results, a progress line. React: `Widget` and `parseWidget` from `@unlocalhosted/metalui/widget` (its own entry: it loads each component on demand, and keeping those imports out of the main entry keeps every other import small). SwiftUI: `MetalWidget`. An object: it stands for what the model produced and stays in the thread. Composed: every look is the component a node names; the widget lays its nodes out in a column, 12 apart (the `widget` recipe). The vocabulary, its props and its limits are one spec (`widget/spec.ts`), published as `https://metalui.dev/widgets.schema.json` and listed under "Widgets: render from JSON" in AI.md.
 
 ## Use it for
 
@@ -7765,7 +7765,7 @@ Nothing of its own moves; each component keeps its motion and its Reduce Motion.
 
 # Widgets: render from JSON
 
-A model can answer with interface instead of words: JSON that `<Widget widget={json} onAction={…} />` (React) or `MetalWidget(json:onAction:)` (SwiftUI) renders with the components above. The schema is https://metalui.dev/widgets.schema.json (also `@unlocalhosted/metalui/widgets.schema.json`). Give it to the model as the shape of its answer (structured output or a tool's input schema).
+A model can answer with interface instead of words: JSON that `<Widget widget={json} onAction={…} />` (React, from `@unlocalhosted/metalui/widget`) or `MetalWidget(json:onAction:)` (SwiftUI) renders with the components above. The schema is https://metalui.dev/widgets.schema.json (also `@unlocalhosted/metalui/widgets.schema.json`). Give it to the model as the shape of its answer (structured output or a tool's input schema).
 
 - A widget is one node or an array of nodes: `{ "type": "Card", "title": "…", "children": [ … ] }`.
 - A key never acts: it hands the host `{ "type": "action", "name": "…", "payload": { … } }`, and beside it the values of every `Field`, `Select` and `DatePicker` by `name`. The host decides what happens.

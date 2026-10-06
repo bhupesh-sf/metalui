@@ -9,6 +9,7 @@
   "base": "none (each node is the component it names, loaded on demand)",
   "react": {
     "export": "Widget, parseWidget",
+    "entry": "widget",
     "files": ["widget.tsx", "spec.ts"]
   },
   "swift": {

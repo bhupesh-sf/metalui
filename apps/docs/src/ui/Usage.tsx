@@ -20,7 +20,8 @@ const REGISTRY = 'https://metalui.dev/r';
 
 export interface UsageMeta {
   name: string;
-  react?: { export?: string };
+  /** entry: a subpath of its own ("widget" → @unlocalhosted/metalui/widget). */
+  react?: { export?: string; entry?: string };
 }
 
 /** The named exports a component offers, from meta.json's react.export ("RadioGroup, Radio"). */
@@ -48,7 +49,7 @@ function Cell({ text }: { text: string }) {
 
 export function Usage({ meta, agent, example }: { meta: UsageMeta; agent: string; example?: string }) {
   const names = exportsOf(meta);
-  const importLine = `import { ${names.join(', ')} } from '${PACKAGE}';`;
+  const importLine = `import { ${names.join(', ')} } from '${PACKAGE}${meta.react?.entry ? `/${meta.react.entry}` : ''}';`;
   const install = {
     package: `npm install ${PACKAGE}\n\n// once, at the root of your app\nimport '${PACKAGE}/styles.css';`,
     registry: `npx shadcn@latest add ${REGISTRY}/${meta.name}.json`,

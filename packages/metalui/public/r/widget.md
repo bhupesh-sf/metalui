@@ -1,6 +1,6 @@
 # Widget
 
-A piece of interface a model sends as JSON, rendered with MetalUI's own components: a card with a date and a Book key, a list of results, a progress line. React: `Widget` and `parseWidget` from `@unlocalhosted/metalui`. SwiftUI: `MetalWidget`. An object: it stands for what the model produced and stays in the thread. Composed: every look is the component a node names; the widget lays its nodes out in a column, 12 apart (the `widget` recipe). The vocabulary, its props and its limits are one spec (`widget/spec.ts`), published as `https://metalui.dev/widgets.schema.json` and listed under "Widgets: render from JSON" in AI.md.
+A piece of interface a model sends as JSON, rendered with MetalUI's own components: a card with a date and a Book key, a list of results, a progress line. React: `Widget` and `parseWidget` from `@unlocalhosted/metalui/widget` (its own entry: it loads each component on demand, and keeping those imports out of the main entry keeps every other import small). SwiftUI: `MetalWidget`. An object: it stands for what the model produced and stays in the thread. Composed: every look is the component a node names; the widget lays its nodes out in a column, 12 apart (the `widget` recipe). The vocabulary, its props and its limits are one spec (`widget/spec.ts`), published as `https://metalui.dev/widgets.schema.json` and listed under "Widgets: render from JSON" in AI.md.
 
 ## Use it for
 

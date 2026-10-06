@@ -50,17 +50,21 @@ for (const name of names) {
   const buf = Buffer.from(r.outputFiles[0].contents);
   perExport[name] = { raw: buf.length, gzip: gzipSync(buf, { level: 9 }).length };
 }
-// A component that loads others on demand (the widget) also has an eager cost: its own module and what it
-// imports statically, with every import('…') left out. That is what the first render waits for.
+// The widget entry (@unlocalhosted/metalui/widget) loads each component on demand with import(), so it has two
+// costs: all-in (every component it can name, as a bundler without splitting ships it) and eager (its own module
+// and static imports, every import('…') left out: what the first render waits for). It is its own entry because
+// esbuild keeps an import() target even when the code that calls it is shaken out, which in index.js would add
+// those components to every other import.
+const widgetEntry = root('packages/metalui/dist/widget.js');
 const lazyOut = { name: 'leave-out-dynamic', setup(b) { b.onResolve({ filter: /.*/ }, (a) => (a.kind === 'dynamic-import' ? { path: a.path, external: true } : undefined)); } };
-for (const name of ['Widget']) {
+for (const [name, plugins] of [['Widget', []], ['Widget (eager)', [lazyOut]], ['parseWidget', []]]) {
   const r = await build({
-    stdin: { contents: `export { ${name} } from ${JSON.stringify(entry)};`, resolveDir: root(), loader: 'js' },
-    bundle: true, minify: true, format: 'esm', write: false, treeShaking: true, logLevel: 'silent', plugins: [lazyOut],
+    stdin: { contents: `export { ${name.split(' ')[0]} } from ${JSON.stringify(widgetEntry)};`, resolveDir: root(), loader: 'js' },
+    bundle: true, minify: true, format: 'esm', write: false, treeShaking: true, logLevel: 'silent', plugins,
     external: ['react', 'react-dom', 'react/jsx-runtime', 'react-dom/*'], loader: { '.css': 'empty' },
   });
   const buf = Buffer.from(r.outputFiles[0].contents);
-  perExport[`${name} (eager)`] = { raw: buf.length, gzip: gzipSync(buf, { level: 9 }).length };
+  perExport[name] = { raw: buf.length, gzip: gzipSync(buf, { level: 9 }).length };
 }
 out.exports = perExport;
 
@@ -101,7 +105,7 @@ if (process.argv.includes('--gate')) {
   // NumberField 27.1, mostly Base UI's, shared with every select and number field in an app) and Sortable for the columns.
   // DateSelector 62.7 (Popover, Dialog and Switcher's Base UI parts, both presentations in one import; the calendar is 8.7);
   // matchesDate 1.3 (the calendar's date arithmetic only).
-  // Widget 135.8 is every component it can name (the worst case: a widget that uses all of them); its eager cost,
+  // Widget 136.0 (its own entry, @unlocalhosted/metalui/widget) is every component it can name (the worst case: a widget that uses all of them); its eager cost,
   // what an app pays before a node needs a component, is 4.8 (the parser and the views; each component loads on demand).
   // parseWidget 3.0 (the spec and the checks, for a host that validates on the server).
   const CEILING = { Widget: 137, 'Widget (eager)': 6, parseWidget: 4, Button: 6, Switch: 7, Led: 1, Well: 1, Surface: 1, Table: 96, Combobox: 81, QuickEdit: 28, ToolStrip: 68, Card: 50, Link: 39, Filters: 102, Thread: 15, Message: 4, Reasoning: 14, ToolCall: 16, Confirmation: 20, Markdown: 17, PromptInput: 57, MessageActions: 44, MarkScrub: 9, MarkPick: 95, Plan: 11, Citation: 49, Slider: 19, BranchPicker: 39, ConversationList: 86, DataGrid: 137, DateSelector: 64, matchesDate: 2 };

@@ -158,7 +158,7 @@ const widgetsDoc = `
 
 # Widgets: render from JSON
 
-A model can answer with interface instead of words: JSON that \`<Widget widget={json} onAction={…} />\` (React) or \`MetalWidget(json:onAction:)\` (SwiftUI) renders with the components above. The schema is ${ORIGIN}/widgets.schema.json (also \`@unlocalhosted/metalui/widgets.schema.json\`). Give it to the model as the shape of its answer (structured output or a tool's input schema).
+A model can answer with interface instead of words: JSON that \`<Widget widget={json} onAction={…} />\` (React, from \`@unlocalhosted/metalui/widget\`) or \`MetalWidget(json:onAction:)\` (SwiftUI) renders with the components above. The schema is ${ORIGIN}/widgets.schema.json (also \`@unlocalhosted/metalui/widgets.schema.json\`). Give it to the model as the shape of its answer (structured output or a tool's input schema).
 
 - A widget is one node or an array of nodes: \`{ "type": "Card", "title": "…", "children": [ … ] }\`.
 - A key never acts: it hands the host \`{ "type": "action", "name": "…", "payload": { … } }\`, and beside it the values of every \`Field\`, \`Select\` and \`DatePicker\` by \`name\`. The host decides what happens.
@@ -207,7 +207,7 @@ emit('packages/metalui/public/components.json', JSON.stringify({
     title: m.title,
     status: m.status,
     description: m.description,
-    react: { package: '@unlocalhosted/metalui', export: m.react.export, base: m.base },
+    react: { package: `@unlocalhosted/metalui${m.react.entry ? `/${m.react.entry}` : ''}`, export: m.react.export, base: m.base },
     swift: { package: 'MetalUI', symbol: m.swift.symbol },
     registry: `${ORIGIN}/r/${m.name}.json`,
     agent: `${ORIGIN}/r/${m.name}.md`,
