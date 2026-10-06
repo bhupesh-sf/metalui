@@ -1444,6 +1444,28 @@
   --mu-r-hover-engraving-led-size: 5px;
   --mu-r-hover-engraving-led-gap: 4px;
   --mu-r-hover-engraving-led-lift: 1px;
+  /* badge: the well's sunk light (recipe well field), cut shallow; the engraved label's lip (recipe label engraved); the LED part; the readout type; the swap drum; the avatar's ring of the surface; the object and release springs */
+  --mu-r-badge-regular-height: 18px;
+  --mu-r-badge-regular-pad: 7px;
+  --mu-r-badge-regular-gap: 4px;
+  --mu-r-badge-regular-glyph: 11px;
+  --mu-r-badge-regular-font: 500 9.5px/1 var(--mu-mono);
+  --mu-r-badge-regular-tracking: 0.08em;
+  --mu-r-badge-compact-height: 15px;
+  --mu-r-badge-compact-pad: 5px;
+  --mu-r-badge-compact-gap: 3px;
+  --mu-r-badge-compact-glyph: 10px;
+  --mu-r-badge-compact-font: 500 8.5px/1 var(--mu-mono);
+  --mu-r-badge-compact-tracking: 0.09em;
+  --mu-r-badge-count-font: 500 10.5px/1 var(--mu-mono);
+  --mu-r-badge-count-tracking: 0.02em;
+  --mu-r-badge-count-pad: 5px;
+  --mu-r-badge-count-compact-font: 500 9px/1 var(--mu-mono);
+  --mu-r-badge-count-compact-tracking: 0.02em;
+  --mu-r-badge-count-compact-pad: 4px;
+  --mu-r-badge-corner-offset: -5px;
+  --mu-r-badge-corner-ring: 1.5px;
+  --mu-r-badge-corner-from: 0.6;
   /* status: reference style.css .pill, .pill.status, .led-g, .led-a, .led-r, .led-off */
   --mu-r-status-led-size: 6px;
   --mu-r-status-led-size-small: 4px;
@@ -2387,6 +2409,18 @@
   --mu-r-hover-engraving-tag-shadow:
     /* mu-recipe:hover-engraving:12 */ inset 0 0 0 .5px rgba(40,38,32,.2);
   --mu-r-hover-engraving-emphasis-color: rgba(40,38,32,.62);
+  --mu-r-badge-self-background:
+    /* mu-recipe:badge:0 */ linear-gradient(#E6E5E1, #EDECE8);
+  --mu-r-badge-self-shadow:
+    /* mu-recipe:badge:2 */ inset 0 1px 1.5px rgba(60,55,40,.13),
+    /* mu-recipe:badge:3 */ inset 0 0 0 .5px rgba(24,22,16,.10),
+    /* mu-recipe:badge:4 */ 0 .5px 0 rgba(255,255,255,.9);
+  --mu-r-badge-corner-background:
+    /* mu-recipe:badge:8 */ linear-gradient(#38383C, #28282B);
+  --mu-r-badge-corner-shadow:
+    /* mu-recipe:badge:10 */ inset 0 1px 0 rgba(255,255,255,.12),
+    /* mu-recipe:badge:11 */ 0 1px 2px rgba(24,22,16,.22);
+  --mu-r-badge-corner-ink: #EDEDEF;
   --mu-r-status-led-shadow:
     /* mu-recipe:status:0 */ 0 0 0 1px rgba(18,18,20,.9),
     /* mu-recipe:status:1 */ 0 1px 0 1px rgba(255,255,255,.75);
@@ -2975,6 +3009,18 @@
   --mu-r-hover-engraving-tag-shadow:
     /* mu-recipe:hover-engraving:13 */ inset 0 0 0 .5px rgba(255,255,255,.2);
   --mu-r-hover-engraving-emphasis-color: rgba(255,255,255,.55);
+  --mu-r-badge-self-background:
+    /* mu-recipe:badge:1 */ linear-gradient(#141415, #18181A);
+  --mu-r-badge-self-shadow:
+    /* mu-recipe:badge:5 */ inset 0 1px 1.5px rgba(0,0,0,.55),
+    /* mu-recipe:badge:6 */ inset 0 0 0 .5px rgba(0,0,0,.55),
+    /* mu-recipe:badge:7 */ 0 .5px 0 rgba(255,255,255,.07);
+  --mu-r-badge-corner-background:
+    /* mu-recipe:badge:9 */ linear-gradient(#FBFAF8, #E6E5E1);
+  --mu-r-badge-corner-shadow:
+    /* mu-recipe:badge:12 */ inset 0 1px 0 rgba(255,255,255,.9),
+    /* mu-recipe:badge:13 */ 0 1px 2px rgba(0,0,0,.45);
+  --mu-r-badge-corner-ink: #1B1B1D;
   --mu-r-status-led-shadow:
     /* mu-recipe:status:2 */ 0 0 0 1px rgba(18,18,20,.9),
     /* mu-recipe:status:3 */ 0 1px 0 1px rgba(255,255,255,.14);
@@ -3564,6 +3610,18 @@
     --mu-r-hover-engraving-tag-shadow:
       inset 0 0 0 .5px rgba(255,255,255,.2);
     --mu-r-hover-engraving-emphasis-color: rgba(255,255,255,.55);
+    --mu-r-badge-self-background:
+      linear-gradient(#141415, #18181A);
+    --mu-r-badge-self-shadow:
+      inset 0 1px 1.5px rgba(0,0,0,.55),
+      inset 0 0 0 .5px rgba(0,0,0,.55),
+      0 .5px 0 rgba(255,255,255,.07);
+    --mu-r-badge-corner-background:
+      linear-gradient(#FBFAF8, #E6E5E1);
+    --mu-r-badge-corner-shadow:
+      inset 0 1px 0 rgba(255,255,255,.9),
+      0 1px 2px rgba(0,0,0,.45);
+    --mu-r-badge-corner-ink: #1B1B1D;
     --mu-r-status-led-shadow:
       0 0 0 1px rgba(18,18,20,.9),
       0 1px 0 1px rgba(255,255,255,.14);

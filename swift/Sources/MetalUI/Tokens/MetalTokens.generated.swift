@@ -1592,6 +1592,51 @@ public enum MetalRecipes {
         ]
     )
 
+    /// One short fact about a thing: its kind, version or state, or how many are waiting. A shallow stamp cut into the surface (the well's light, cut for 18 tall), the words in the engraved mono in ink2 with the lip; never raised, because raised at this size is a key or the system speaking. A leading LED part (steady; it flickers once when the state changes) or a glyph. A count is tabular in the readout type, a circle for one digit, 99+ past max, and turns on the drum (up as it grows, down as it shrinks). Two sizes follow the type it sits beside: regular 18 by ui and body text, compact 15 by meta text, in dense rows and on corners. On another control's corner the count is a small readout cap in the other colorway, ringed in the surface, and it comes in from corner.from on the object spring when it leaves zero and goes on the release spring at zero. Not pressable; a badge you remove is a Chip. (the well's sunk light (recipe well field), cut shallow; the engraved label's lip (recipe label engraved); the LED part; the readout type; the swap drum; the avatar's ring of the surface; the object and release springs)
+    public static let badge = MetalObjectRecipe(
+        name: "badge",
+        layers: [
+            .init(part: "self", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(230.0, 229.0, 225.0, 1.0)), 0.0), .init(.color(MetalRGBA(237.0, 236.0, 232.0, 1.0)), 1.0)])), // mu-recipe:badge:0 linear-gradient(#E6E5E1, #EDECE8)
+            .init(part: "self", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(20.0, 20.0, 21.0, 1.0)), 0.0), .init(.color(MetalRGBA(24.0, 24.0, 26.0, 1.0)), 1.0)])), // mu-recipe:badge:1 linear-gradient(#141415, #18181A)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 1.5, spread: 0.0, paint: .color(MetalRGBA(60.0, 55.0, 40.0, 0.13)))), // mu-recipe:badge:2 inset 0 1px 1.5px rgba(60,55,40,.13)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.1)))), // mu-recipe:badge:3 inset 0 0 0 .5px rgba(24,22,16,.10)
+            .init(part: "self", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.9)))), // mu-recipe:badge:4 0 .5px 0 rgba(255,255,255,.9)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 1.5, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:badge:5 inset 0 1px 1.5px rgba(0,0,0,.55)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 0.0, blur: 0.0, spread: 0.5, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.55)))), // mu-recipe:badge:6 inset 0 0 0 .5px rgba(0,0,0,.55)
+            .init(part: "self", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 0.5, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.07)))), // mu-recipe:badge:7 0 .5px 0 rgba(255,255,255,.07)
+            .init(part: "corner", state: nil, colorway: .bone, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(56.0, 56.0, 60.0, 1.0)), 0.0), .init(.color(MetalRGBA(40.0, 40.0, 43.0, 1.0)), 1.0)])), // mu-recipe:badge:8 linear-gradient(#38383C, #28282B)
+            .init(part: "corner", state: nil, colorway: .graphite, fill: .linear(angle: 180.0, stops: [.init(.color(MetalRGBA(251.0, 250.0, 248.0, 1.0)), 0.0), .init(.color(MetalRGBA(230.0, 229.0, 225.0, 1.0)), 1.0)])), // mu-recipe:badge:9 linear-gradient(#FBFAF8, #E6E5E1)
+            .init(part: "corner", state: nil, colorway: .bone, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.12)))), // mu-recipe:badge:10 inset 0 1px 0 rgba(255,255,255,.12)
+            .init(part: "corner", state: nil, colorway: .bone, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(24.0, 22.0, 16.0, 0.22)))), // mu-recipe:badge:11 0 1px 2px rgba(24,22,16,.22)
+            .init(part: "corner", state: nil, colorway: .graphite, shadow: .init(inset: true, x: 0.0, y: 1.0, blur: 0.0, spread: 0.0, paint: .color(MetalRGBA(255.0, 255.0, 255.0, 0.9)))), // mu-recipe:badge:12 inset 0 1px 0 rgba(255,255,255,.9)
+            .init(part: "corner", state: nil, colorway: .graphite, shadow: .init(inset: false, x: 0.0, y: 1.0, blur: 2.0, spread: 0.0, paint: .color(MetalRGBA(0.0, 0.0, 0.0, 0.45)))), // mu-recipe:badge:13 0 1px 2px rgba(0,0,0,.45)
+        ],
+        props: [
+            "regular.height": .number(18.0),
+            "regular.pad": .number(7.0),
+            "regular.gap": .number(4.0),
+            "regular.glyph": .number(11.0),
+            "regular.font": .text("500 9.5px/1 mono"),
+            "regular.tracking": .text("0.08em"),
+            "compact.height": .number(15.0),
+            "compact.pad": .number(5.0),
+            "compact.gap": .number(3.0),
+            "compact.glyph": .number(10.0),
+            "compact.font": .text("500 8.5px/1 mono"),
+            "compact.tracking": .text("0.09em"),
+            "count.font": .text("500 10.5px/1 mono"),
+            "count.tracking": .text("0.02em"),
+            "count.pad": .number(5.0),
+            "count-compact.font": .text("500 9px/1 mono"),
+            "count-compact.tracking": .text("0.02em"),
+            "count-compact.pad": .number(4.0),
+            "corner.offset": .number(-5.0),
+            "corner.ring": .number(1.5),
+            "corner.from": .text("0.6"),
+            "corner.ink": .perColorway(bone: "#EDEDEF", graphite: "#1B1B1D"),
+        ]
+    )
+
     /// A lamp in a small sunk socket, and the status badge. The lamp sits in a dark bezel with a light lip under it, so it carries its own ground on light, dark, frosted and image grounds; a lit lamp glows in its ink, an off lamp is a dull lens. The badge is a raised pill (plate), a lamp and words with no plate (quiet), or a plate tinted in the state's ink (strong); solid adds a keyline for transparent grounds. Not pressable. (reference style.css .pill, .pill.status, .led-g, .led-a, .led-r, .led-off)
     public static let status = MetalObjectRecipe(
         name: "status",

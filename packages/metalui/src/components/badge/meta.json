@@ -1,0 +1,21 @@
+{
+  "name": "badge",
+  "title": "Badge",
+  "status": "alpha",
+  "layer": "part",
+  "uses": ["led"],
+  "description": "One short fact about a thing: a kind, a version, a state or a count. A shallow stamp cut into the surface with the words in the engraved mono; a leading LED (steady, flickering once when the state changes) or glyph; a count that turns on the drum, 99+ past max; regular 18 and compact 15, matched to the type beside it. Badge.Anchor puts a count on another control's corner as a readout cap in the other colorway. Not pressable and not announced.",
+  "base": "none (a span)",
+  "react": {
+    "export": "Badge",
+    "files": [
+      "badge.tsx"
+    ]
+  },
+  "swift": {
+    "symbol": "MetalBadge",
+    "file": "swift/Sources/MetalUI/Components/MetalBadge.swift"
+  },
+  "agent": "badge.agent.md",
+  "page": "/components/badge"
+}

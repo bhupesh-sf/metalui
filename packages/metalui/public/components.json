@@ -70,6 +70,23 @@
       "agent": "https://metalui.dev/r/avatar.md"
     },
     {
+      "name": "badge",
+      "title": "Badge",
+      "status": "alpha",
+      "description": "One short fact about a thing: a kind, a version, a state or a count. A shallow stamp cut into the surface with the words in the engraved mono; a leading LED (steady, flickering once when the state changes) or glyph; a count that turns on the drum, 99+ past max; regular 18 and compact 15, matched to the type beside it. Badge.Anchor puts a count on another control's corner as a readout cap in the other colorway. Not pressable and not announced.",
+      "react": {
+        "package": "@unlocalhosted/metalui",
+        "export": "Badge",
+        "base": "none (a span)"
+      },
+      "swift": {
+        "package": "MetalUI",
+        "symbol": "MetalBadge"
+      },
+      "registry": "https://metalui.dev/r/badge.json",
+      "agent": "https://metalui.dev/r/badge.md"
+    },
+    {
       "name": "block-silhouette",
       "title": "Block silhouette",
       "status": "alpha",
