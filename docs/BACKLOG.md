@@ -463,8 +463,8 @@ Plan it by the **kind of data**, not by features: each kind below is a real situ
 - [x] **Pages**: `Pagination` under the table for records; "Load more" for feeds. Infinite scroll only with virtual rows (Later).
 - [x] **Waiting and empty, told apart**: `loading` (`Skeleton` rows in the columns' widths), `empty` ("No invoices yet" and its action), `emptyFiltered` ("Nothing matches" and Clear), `error` (`sync-error`, Try again).
 - [x] **Narrow widths**: each column has a `priority`; as the block narrows (`@container/block`), the lowest-priority columns leave first and their values move to a second line under the primary cell. No sideways scroll for records.
-
 - Must done (2026-10-06): every cell kind (`kind`, `unit`, `TableCell` exported), densities 48/40/32, the gliding guide, the sort arrow morphs, sticky head, `onRowAction` with the rail, row actions, "12 of 240", loading/empty/filtered/error, `priority` for narrow widths (`@container/table`, 720 and 560), `Properties` (a Part; the host passes a `TableCell` as its value), a real `MetalTable` and `MetalProperties`. Left (SwiftUI): the guide follows hover only; the sort arrow rotates; avatars scale until `MetalAvatar` has sizes.
+
 **Should**
 - [ ] **Totals**: `footer`, a sunk readout row, sticky; totals turn on the drum when rows change.
 - [ ] **Grouped rows**: `groupBy` with engraved group headers (the name and a count), collapsing with a chevron on the part spring, subtotals, the header sticky under the table header.
