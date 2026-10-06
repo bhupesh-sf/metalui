@@ -29,7 +29,8 @@ Owner: "the tick animation is boring, it just makes it appear; it should make th
 - [x] **Mixed (the parent's half)**: the dash draws from left to right the same way; mixed to ticked morphs the dash into the tick instead of swapping.
 - [x] **The group cascade** keeps its stagger, with each child's tick drawing in turn.
 - [x] Reduce Motion: the tick appears whole and at once. Keep SwiftUI in step (`trim(from:to:)` on the same path).
-- [ ] Anything else that draws a tick uses the same drawing: the menu's checkbox item, the select's chosen row, and the table's select column (it uses Checkbox already).
+- [x] Anything else that draws a tick uses the same drawing: the menu's checkbox item, the select's chosen row, and the table's select column (it uses Checkbox already).
+  Done (2026-10-06): the pen lives in `icons/pen.tsx` (`Ink`, `Tick`); `MenuCheckboxItem`, Select's chosen row (the green LED became the tick: green means live, and a chosen value isn't), Combobox, Cascader and the Filters operator menu draw it; SwiftUI `MetalTick`. Left: Table's read-only check column keeps the static glyph.
 
 ## Destructive confirm: hold to delete (Alert dialog, Button)
 
@@ -75,7 +76,8 @@ Rules to adopt first (one layer, in the Button foundation and agent guides):
 
 - [x] **An action names itself with a glyph and a verb** (done: `Button` `icon` prop; link, graphite and strip caps still lack a glyph size token): a button that does something (save, share, export, delete, send, attach, copy, new) leads with its glyph. A plain choice (Cancel, Done, Close as a word) stays words only. `Button` gets a documented `icon` slot (leading, sized by the cap), not ad hoc children.
 - [ ] **A state change morphs, never swaps**: when the same control's meaning changes (copy → copied, pin → unpin, collapse → expand), its glyph morphs with `MorphIcon` on the settle spring, and its label turns on the drum (`SwapText`) together.
-- [ ] **No hand-drawn glyphs in components**: chevrons, arrows, ticks, plus and minus come from the set (one source).
+- [x] **No hand-drawn glyphs in components**: chevrons, arrows, ticks, plus and minus come from the set (one source).
+  Done (2026-10-06) except Select's up-down chevron (the set has no up-down glyph yet; draw it in the act format first).
 
 ### A. Action buttons that should carry a glyph (existing glyph in brackets)
 
@@ -242,7 +244,8 @@ Owner, on the Toast page: "the stacking in toast is vertical; it should be 3D, i
 - [x] **Repeats merge**: the same message again doesn't add a card: the front toast bumps (a small press) and shows a count ("×5").
 - [x] **Reading and focus**: only the front card is read out (polite status); the deck is one landmark; F6 or a shortcut reaches it. Reduce Motion: cards cross-fade into place, no travel or scale.
 - [x] **Placement**: the deck grows toward the screen edge it sits on (bottom stack peeks upward, top stack downward); tokens for step scale, peek, depth and visible count; Swift in step.
-- [ ] **Follow-up: cards behind take the front card's width** (as Sonner does). Now a short front toast ("Gathered 4 notes") sits on wider cards that stick out on both sides. Also: the "+N" count floats detached above the deck; tuck it into the back card's edge. Swift fans out on hover only (add keyboard focus). The React error toast has no red mark while Swift has one.
+- [x] **Follow-up: cards behind take the front card's width** (as Sonner does). Now a short front toast ("Gathered 4 notes") sits on wider cards that stick out on both sides. Also: the "+N" count floats detached above the deck; tuck it into the back card's edge. Swift fans out on hover only (add keyboard focus). The React error toast has no red mark while Swift has one.
+  Done (2026-10-06): folded cards take the front's width; "+N" is a tab on the back card's edge; error and success toasts use the set's glyphs on both platforms; Swift fans out on keyboard focus (untested by a slice).
 
 ## Tool strip: adapt to what was clicked
 
@@ -370,7 +373,8 @@ Building real screens shows what the components lack. Each was worked around ins
 
 ## Docs console: "NaN is an invalid value for width"
 
-- [ ] Seen on several docs pages (Collapsible, Stepper) as of 2026-10-06; not from either component. Find the width written from an unmeasured element and guard it.
+- [x] Seen on several docs pages (Collapsible, Stepper) as of 2026-10-06; not from either component. Find the width written from an unmeasured element and guard it.
+  Done (2026-10-06): `SwapText` measured an unrendered panel (`width: auto` → NaN); `target()` now returns undefined unless the width is finite.
 
 ## Docs pages without a Usage section
 
@@ -378,7 +382,7 @@ Building real screens shows what the components lack. Each was worked around ins
 
 ## Tests that fail only under a full parallel run
 
-- [ ] `xray-slider-editing` "track: dragging the bottom edge down…" fails about half the time even alone (2026-10-06): a drag race, fix first. `xray-dialog-editing` "pulling the dialog up…" and `toast` (deck, undo) and `region`, `scroll-area`, `slider-states` focus ring, `spinner` (whole place, known or unknown), `toggle`, `tooltip`: each failed once in the 4-worker full run (2026-10-06) and passed alone. Also `drop-zone` (reduced motion), `memory-scrubber`, `progress` (Reduce Motion), `table` (sorts, graphite), in the 3-worker run that closed wave 2; all passed alone. Wave 3's run added `cue` (reduced motion tick), `fan` (graphite), `icon-turn`, `icons` (acts from keys), `scroll-area` (bar leaves), `table-should` captures: all passed alone. Wave 7's run added `field` (password keys, graphite), `hover-engraving` (graphite), `spinner` (large item, graphite), `table-should` captures: all passed alone. `selection-frame` fails every run because its page imports `SurfaceFieldDemo`, which needs the surface-field build (`npm ci` with install scripts). Find the race in each (AGENTS.md: sample with rAF, poll), don't retry.
+- [ ] `xray-slider-editing` "track: dragging the bottom edge down…": fixed 2026-10-06 (it read the groove's shadow mid-spring; now polls). `xray-dialog-editing` "pulling the dialog up…" and `toast` (deck, undo) and `region`, `scroll-area`, `slider-states` focus ring, `spinner` (whole place, known or unknown), `toggle`, `tooltip`: each failed once in the 4-worker full run (2026-10-06) and passed alone. Also `drop-zone` (reduced motion), `memory-scrubber`, `progress` (Reduce Motion), `table` (sorts, graphite), in the 3-worker run that closed wave 2; all passed alone. Wave 3's run added `cue` (reduced motion tick), `fan` (graphite), `icon-turn`, `icons` (acts from keys), `scroll-area` (bar leaves), `table-should` captures: all passed alone. Wave 7's run added `field` (password keys, graphite), `hover-engraving` (graphite), `spinner` (large item, graphite), `table-should` captures: all passed alone. `selection-frame` fails every run because its page imports `SurfaceFieldDemo`, which needs the surface-field build (`npm ci` with install scripts). Find the race in each (AGENTS.md: sample with rAF, poll), don't retry.
 
 ## Variation sheets: existing components
 
