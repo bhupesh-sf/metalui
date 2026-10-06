@@ -358,6 +358,28 @@
       "docs": "Agent guide: https://metalui.dev/r/block-silhouette.md. SwiftUI: MetalBlockSilhouette in the MetalUI Swift package."
     },
     {
+      "name": "branch-picker",
+      "type": "registry:ui",
+      "title": "Branch picker",
+      "description": "Moves between the replies to one question, in Message's footer: previous and next ghost keys and \"2 / 3\" between them, the number turning on the drum; nothing for a single reply.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/tokens.json",
+        "https://metalui.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/branch-picker/branch-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/branch-picker/branch-picker.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/branch-picker.md. SwiftUI: MetalBranchPicker in the MetalUI Swift package."
+    },
+    {
       "name": "breadcrumbs",
       "type": "registry:ui",
       "title": "Breadcrumbs",
@@ -807,6 +829,32 @@
         }
       ],
       "docs": "Agent guide: https://metalui.dev/r/connector.md. SwiftUI: MetalConnector in the MetalUI Swift package."
+    },
+    {
+      "name": "conversation-list",
+      "type": "registry:ui",
+      "title": "Conversation list",
+      "description": "The person's past conversations in a Sidebar's body: grouped by day under engraved titles, the open one under the sidebar's gliding highlight, a More key with Rename (QuickEdit in a popover) and Delete (the row leaves and the list closes up), skeleton rows while loading.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://metalui.dev/r/icon-button.json",
+        "https://metalui.dev/r/icon-components.json",
+        "https://metalui.dev/r/menu.json",
+        "https://metalui.dev/r/motion.json",
+        "https://metalui.dev/r/popover.json",
+        "https://metalui.dev/r/quick-edit.json",
+        "https://metalui.dev/r/row.json",
+        "https://metalui.dev/r/skeleton.json",
+        "https://metalui.dev/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "packages/metalui/src/components/conversation-list/conversation-list.tsx",
+          "type": "registry:ui",
+          "target": "components/metalui/components/conversation-list/conversation-list.tsx"
+        }
+      ],
+      "docs": "Agent guide: https://metalui.dev/r/conversation-list.md. SwiftUI: MetalConversationList in the MetalUI Swift package."
     },
     {
       "name": "day",

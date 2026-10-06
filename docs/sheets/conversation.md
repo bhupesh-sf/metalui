@@ -28,7 +28,7 @@ Neighbours that must not be duplicated:
 - **A thinking bar (P's ThinkingBar)?** Covered: the reply's header says Thinking and `PromptInput` `busy` turns Send into Stop. A second bar would be a second Stop.
 - **Only transform and opacity animate.** The sheen is a window that slides across the words (translate) holding a copy of them that slides the other way (so the copy stays put), with a soft-edged mask fixed to the window. No background-position animation.
 - **How are conversations grouped?** By the day the person last spoke in them: Today, Yesterday, Previous 7 days, Previous 30 days, then by month ("September 2026"). The list groups from each conversation's `time`; pinned ones come first under Pinned. The host sorts nothing.
-- **Which row is current?** `Row` `opened`: the row whose thread is showing wears the green rail. Not `selected` (that is one of several picked).
+- **Which row is current?** The Sidebar's own current: the open row says `aria-current="page"`, so the sidebar's lifted highlight sits under it and glides when another is chosen, exactly as for `Sidebar.Item`. Not `Row` `opened` (a rail beside the highlight would say it twice) and not `selected` (one of several picked). SwiftUI, with no gliding highlight yet, uses the row's selected plate.
 - **Where do Rename and Delete live?** In each row's More key (a `Menu`), visible on the current row and on hover or focus. Rename opens `QuickEdit` in a `Popover` anchored to the row (the rule for every rename); Delete lets the row leave (one nest down, release spring, the rows under it close up) and then calls `onDelete`; the host offers Undo in a toast. No confirmation dialog: deleting is undone, not asked.
 - **Loading.** `loading` shows skeleton rows where the conversations will be (`Skeleton.Swap`), so the first load never flashes.
 - **Branch picker: Pagination's track or its own?** Its own: Pagination is a landmark of numbered pages; a branch picker is two ghost keys and "2 / 3" in a footer, at the footer's size. The count turns on the drum. Hidden when there is one reply.
@@ -52,7 +52,7 @@ Neighbours that must not be duplicated:
 | Job | Where | Our form | Tier |
 |---|---|---|---|
 | See past chats and go into one | a chat app's sidebar | `ConversationList`: rows of titles (`Row` `list`, ellipsis), grouped by day under engraved titles; pressing one calls `onSelect` | Must |
-| Know which is open | | `current`: that row is `opened` (the green rail), `aria-current="page"` | Must |
+| Know which is open | | `current`: `aria-current="page"`; the sidebar's highlight sits under the row and glides to the next | Must |
 | Rename a chat | a better title | the row's More key → Rename → `QuickEdit` in a `Popover` anchored to the row; `onRename(id, title)` (a promise holds the key) | Must |
 | Delete a chat | | More → Delete (red): the row leaves and the rows close up, then `onDelete(id)`; focus goes to the next row | Must |
 | A loading list | first load | `loading`: skeleton rows | Must |

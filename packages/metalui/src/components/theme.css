@@ -630,6 +630,9 @@
   --spacing-prompt-input-strip-gap: var(--mu-r-prompt-input-strip-gap);
   --spacing-message-actions-gap: var(--mu-r-message-actions-self-gap);
   --spacing-message-actions-reasons-gap: var(--mu-r-message-actions-reasons-gap);
+  --spacing-branch-picker-gap: var(--mu-r-branch-picker-self-gap);
+  --spacing-branch-picker-count-pad: var(--mu-r-branch-picker-count-pad);
+  --spacing-conversation-list-loading-rows: var(--mu-r-conversation-list-loading-rows);
   --spacing-meter-height: var(--mu-r-meter-self-height);
   --spacing-meter-gap: var(--mu-r-meter-self-gap);
   --spacing-meter-radius: var(--mu-r-meter-self-radius);
@@ -2355,6 +2358,9 @@
 @utility duration-message-actions-thanks-hold {
   --tw-duration: var(--mu-r-message-actions-thanks-hold);
   transition-duration: var(--mu-r-message-actions-thanks-hold);
+}
+@utility conversation-list-reveal {
+  opacity: 0; transition: opacity var(--mu-spring-settle-d) var(--mu-spring-settle); [data-row]:hover &, [data-row]:focus-within &, [data-current] &, &:has([data-popup-open]), &[data-popup-open] { opacity: 1; } @media (hover: none) { opacity: 1; }
 }
 @utility meter-lamp {
   position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity var(--mu-r-meter-lamp-fade) ease-out; transition-delay: calc(var(--mu-meter-step, 0) * var(--mu-r-meter-lamp-stagger) * var(--mu-travel-part)); [data-lit] > & { opacity: 1; }

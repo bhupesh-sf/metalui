@@ -1242,6 +1242,29 @@ public enum MetalRecipes {
         ]
     )
 
+    /// Which of a message's replies is showing, and the way to the others (a Component), in Message's footer before the actions: a ghost key with the chevron turned back, the count "2 / 3" in meta type and tabular figures, ink2, then the chevron turned forward; 2 apart, the count `count.pad` each side. Moving turns the number on the drum. At an end that key is disabled and hands focus to the other. A single reply draws nothing. Reduce Motion: the number crossfades in place. (IconButton (ghost) and Tooltip; the chevron glyph turned; SwapText (the drum); assistant-ui BranchPicker)
+    public static let branchPicker = MetalObjectRecipe(
+        name: "branch-picker",
+        layers: [
+
+        ],
+        props: [
+            "self.gap": .number(2.0),
+            "count.pad": .number(4.0),
+        ]
+    )
+
+    /// The person's past conversations (a Place), in a Sidebar's body: grouped by the day they last spoke under the sidebar's engraved section titles (Pinned, Today, Yesterday, Previous 7 days, Previous 30 days, then by month), the sidebar's gaps between groups and rows. Each conversation is a list row (the row recipe) with its title on one line; the open one says aria-current=page, so the Sidebar's lifted highlight sits under it and glides to the next one chosen. A More key at the row's end shows on hover, on focus, while its menu is open and on the open row (opacity on the settle spring; always on touch), opening Rename and Delete and the host's actions. Rename is QuickEdit in a popover anchored to the row. Delete: the row leaves one nest down on the release spring and the rows under it close up on the settle spring; a new row lands on the object spring. Loading: `loading.rows` skeleton lines in the rows' places. Reduce Motion: rows appear, leave and close up at once. (Sidebar (section titles and gaps); Row (list, opened); IconButton (ghost) and Menu; QuickEdit in a Popover; Skeleton; useRowMotion and leaveRows; assistant-ui ThreadList, Ant Design X Conversations)
+    public static let conversationList = MetalObjectRecipe(
+        name: "conversation-list",
+        layers: [
+
+        ],
+        props: [
+            "loading.rows": .number(6.0),
+        ]
+    )
+
     /// A level in a range (storage used, battery, signal), not a task: a row of LED segments like a level meter. A segment's colour comes from where it sits (green through the range, amber near the top, red at the end), the way a level meter is printed. When the value changes the level sweeps from its old edge to its new one, segment by segment (16 ms apart, each lamp fading in 90 ms): rising lights upward, falling darkens downward. Reduce Motion: every segment changes at once. The lamps are the LED part's looks. (the LED part (status recipe lamps); hardware level meters; Base UI Meter)
     public static let meter = MetalObjectRecipe(
         name: "meter",

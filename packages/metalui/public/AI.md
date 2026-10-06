@@ -578,6 +578,63 @@ No text other than a region's name, no shadows beyond a hairline: it must stay c
 
 ---
 
+# Branch picker
+
+Which of a message's replies is showing, and the way to the others. React: `BranchPicker` from `@unlocalhosted/metalui`. SwiftUI: `MetalBranchPicker`. A component: you operate it to change something else (the reply the message shows). Every look is borrowed: ghost `IconButton`s with `Tooltip`s, the chevron turned back and forward, the drum (`SwapText`) for the count. The `branch-picker` recipe holds the gap and the count's padding.
+
+## Use it for
+
+- A reply written more than once (Retry keeps the earlier takes): "2 / 3" in the reply's footer, before `MessageActions`.
+- The person's turn edited and sent again: the same picker under their turn.
+
+## Don't use it for
+
+- Pages of results (use `Pagination`), steps of a task (use `Stepper`), slides (use `Carousel`).
+
+## Anatomy
+
+- Previous key, the count, Next key, 2 apart. The count is "2 / 3" in meta type, tabular figures, ink2, 4 each side.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| between | both keys on | – |
+| first / last | Previous / Next disabled; focus moves to the other key if it was on the one turning off | – |
+| moved | the new count | the number turns on the drum |
+| one reply (`count` under 2) | nothing drawn | – |
+
+Reduce Motion: the number crossfades in place.
+
+## Rules
+
+- The host keeps the takes and `index`; Retry adds a take and moves to it (`index = count`).
+- Show it only once the reply has settled, in the same footer as the actions, so it fades in with them.
+- While a take is writing, keep the picker out (the footer is the host's while it writes).
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `index` (from 1), `count`, `onIndexChange(index)` | `MetalBranchPicker(index: $index, count:)` |
+| `label` ("Reply") | `label:` |
+
+```tsx
+<Message from="assistant" status="done" footer={<>
+  <BranchPicker index={take + 1} count={takes.length} onIndexChange={(i) => setTake(i - 1)} />
+  <MessageActions copy={takes[take]} onRetry={retry} />
+</>}>
+  <Markdown>{takes[take]}</Markdown>
+</Message>
+```
+
+## Keyboard and accessibility
+
+- A `group` named "Reply 2 of 3"; the keys are buttons named "Previous reply" and "Next reply" (with tooltips).
+- After a move, a polite status says "Reply 3 of 3".
+
+---
+
 # Breadcrumbs
 
 Where you are, as a path you can climb. React: `Breadcrumbs` from `@unlocalhosted/metalui`. SwiftUI: `MetalBreadcrumbs` (work in progress). The `breadcrumbs` recipe sets the gaps, the chevrons, the fold key and the arrival; the fold opens the `menu`.
@@ -1867,6 +1924,83 @@ The line is world ink (scales with zoom); halo, dots, handles, hit band (18) and
 ## API
 
 `Connector from={x,y,attached} to={…} look flow ink width state label scale onHoverChange onPress onEndPointerDown`
+
+---
+
+# Conversation list
+
+The person's past conversations, in a `Sidebar`'s body. React: `ConversationList` from `@unlocalhosted/metalui`. SwiftUI: `MetalConversationList`. A place: it has area, holds the person's conversations, and you go into one from it. Every look is borrowed: the sidebar's engraved section titles and gaps, `Row` (`list`), the sidebar's lifted highlight for the open one, a ghost `IconButton` with a `Menu`, `QuickEdit` in a `Popover` for Rename, `Skeleton` while loading, `useRowMotion` and `leaveRows` for rows that arrive and leave. The `conversation-list` recipe holds the More key's reveal and the skeleton row count.
+
+## Use it for
+
+- A chat app's past conversations beside the thread: in `Sidebar` under its header's New chat key.
+
+## Don't use it for
+
+- An app's places (use `Sidebar.Item`), a list of files or people (use `Row`s in a list), search results (use `Table` or `Combobox`).
+
+## Anatomy
+
+- Groups by the day a conversation was last spoken in: Pinned, Today, Yesterday, Previous 7 days, Previous 30 days, then by month ("September 2026"). Each group: the sidebar's engraved title (label type, 10 in) and its rows 2 apart; groups 16 apart.
+- Row: the `list` row (5 / 8, radius 12, 13 pt); the title on one line with an ellipsis (the whole title in the native tooltip); at its end a ghost More key (28, pulled into the row's padding).
+- Loading: six skeleton lines in the rows' places.
+
+## States and motion
+
+| State | Look | Motion |
+|---|---|---|
+| rest | titles in ink | – |
+| hover, focus | the row's lift; the More key shows | the key fades in on the settle spring |
+| current | the sidebar's lifted highlight under the whole row; its More key always shows | the highlight glides to a newly chosen row on the settle spring |
+| menu open | the key stays shown | the menu's own |
+| renaming | `QuickEdit` in a popover beside the row; the key holds while `onRename`'s promise is out, then Renamed | QuickEdit's own |
+| deleted | the row leaves one nest down, fading | release spring; the rows and groups under it close up on the settle spring; then `onDelete` |
+| new row | – | lands one nest from above on the object spring |
+| loading | skeleton lines | the skeleton's beat and sheen |
+| empty | the host's `empty` node | – |
+
+Reduce Motion: rows appear, leave and close up at once; the key appears at once.
+
+## Rules
+
+- Keep the order and the times in the host; the list sorts (pinned first, newest first) and groups from `time`.
+- Delete without asking, and offer Undo in a toast ("Deleted “Tide tables” · Undo"); put the conversation back with its old `time` and it lands where it was.
+- Rename goes through `QuickEdit` (the rule for every rename): return a promise from `onRename` when the save is remote.
+- Pin, Archive, Share are the host's `actions` (rows between Rename and Delete). Pinned conversations come first under Pinned.
+- New chat is the host's key in `Sidebar.Header`; a conversation added to the array lands at the top of Today.
+
+## API
+
+| React | SwiftUI |
+|---|---|
+| `conversations` `{ id, title, time, pinned? }[]` | `conversations: [MetalConversation]` |
+| `current`, `onSelect(id)` | `current: Binding<String?>` |
+| `onRename(id, title)` (a promise holds the key) | `onRename: (String, String) async throws -> Void` |
+| `onDelete(id)` | `onDelete:` |
+| `actions` `{ label, icon?, onSelect(id) }[]` | `actions: [MetalConversationAction]` |
+| `loading`, `empty` | `loading:`, `empty:` view builder |
+| `now`, `aria-label` ("Conversations") | `now:`, `label:` |
+
+```tsx
+<Sidebar aria-label="Chats">
+  <Sidebar.Header><Button icon={<PlusIcon />} onClick={newChat}>New chat</Button></Sidebar.Header>
+  <ConversationList
+    aria-label="Chats"
+    conversations={chats}
+    current={open}
+    onSelect={setOpen}
+    onRename={(id, title) => save(id, { title })}
+    onDelete={(id) => { const was = chats; setChats(chats.filter((c) => c.id !== id)); toast.show({ title: 'Deleted', undo: () => setChats(was) }); }}
+    loading={!chats}
+  />
+</Sidebar>
+```
+
+## Keyboard and accessibility
+
+- A `group` named by `aria-label`; each day a `group` named by its title holding a list. Tab reaches each title (a button; the open one `aria-current="page"`) and its More key ("More for Tide tables").
+- The More key opens a `Menu` (↑ ↓, ↩, ⎋). Rename moves focus into the popover's field; closing it returns focus to the row. After a delete, focus moves to the next row (or the one before).
+- Loading is a busy `status` named "Loading conversations".
 
 ---
 

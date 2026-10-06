@@ -1265,6 +1265,11 @@
   --mu-r-message-actions-reasons-gap: 6px;
   --mu-r-message-actions-copy-hold: 1600ms;
   --mu-r-message-actions-thanks-hold: 1600ms;
+  /* branch-picker: IconButton (ghost) and Tooltip; the chevron glyph turned; SwapText (the drum); assistant-ui BranchPicker */
+  --mu-r-branch-picker-self-gap: 2px;
+  --mu-r-branch-picker-count-pad: 4px;
+  /* conversation-list: Sidebar (section titles and gaps); Row (list, opened); IconButton (ghost) and Menu; QuickEdit in a Popover; Skeleton; useRowMotion and leaveRows; assistant-ui ThreadList, Ant Design X Conversations */
+  --mu-r-conversation-list-loading-rows: 6px;
   /* meter: the LED part (status recipe lamps); hardware level meters; Base UI Meter */
   --mu-r-meter-self-height: 10px;
   --mu-r-meter-self-gap: 2px;
