@@ -39,18 +39,19 @@ Not doing: a wheel or a clock face (above); a Confirm key (above); AM/PM placeme
 
 ## Must
 
-- [ ] `TimePicker` with `value` / `defaultValue` / `onValueChange` (an ISO time string or null), `step`, `min`, `max`, `isTimeUnavailable`, `hourCycle`, `granularity`, `timeZone`, `locale`, `size`, `placeholder`, `required`, `name`, `readOnly`, `disabled`, `invalid`, `readback`, `now`, `aria-label`, `id`.
-- [ ] Typed entry with the readback; ↑ ↓ per part; leaving writes the reader's words; refused words and times outside the window as the input's validity.
-- [ ] The slot plate on `RadioKeys`, scrolled to and focused on the chosen time, Now under it.
-- [ ] The zone as the suffix.
-- [ ] `DatePicker` `time`.
-- [ ] SwiftUI `MetalTimePicker` (typed, read back, the slot plate with Now, `step`, bounds, unavailable, zone), and `MetalDatePicker` with `time`.
-- [ ] The `time-picker` recipe, agent guide, `meta.json`, a page with a DialKit panel, an e2e slice.
+- [x] `TimePicker` with `value` / `defaultValue` / `onValueChange` (an ISO time string or null), `step`, `min`, `max`, `isTimeUnavailable`, `hourCycle`, `granularity`, `timeZone`, `locale`, `size`, `placeholder`, `required`, `name`, `readOnly`, `disabled`, `invalid`, `readback`, `now`, `aria-label`, `id`.
+- [x] Typed entry with the readback; ↑ ↓ per part; leaving writes the reader's words; refused words and times outside the window as the input's validity.
+- [x] The slot plate on `RadioKeys`, scrolled to and focused on the chosen time, Now under it.
+- [x] The zone as the suffix.
+- [x] `DatePicker` `time`.
+- [x] SwiftUI `MetalTimePicker` (typed, read back, the slot plate with Now, `step`, bounds, unavailable, zone), and `MetalDatePicker` with `time`.
+- [x] The `time-picker` recipe, agent guide, `meta.json`, a page with a DialKit panel, an e2e slice.
 
 ## Should
 
-- [ ] A window across midnight.
-- [ ] A start and an end: `from`, and slots that say their length.
+- [x] A window across midnight.
+- [x] A start and an end: `from`, and slots that say their length.
+- Done (2026-10-06): Must and Should. The slots sit in their own Base UI field root (inside a FormField they took its label and validity); they still carry the form field's description. Like DatePicker, the readback needs a FormField around it (or `readback={false}`). With DatePicker `time`, a cleared time is the day's start (the value is a `Date`). SwiftUI: the slots are button caps held down in the pressed look with the lamp (no latch travel); no ↑ ↓ on a part.
 
 ## Later
 
