@@ -570,11 +570,11 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
   - Step states: inactive, active, completed, loading, disabled; custom indicators per state.
   - Layouts: number only, title, title and bar, title and status, title and description, title inline beside the indicator; horizontal and vertical.
   - Controlled or not; a progress bar across the steps; a panel per step.
-- [ ] **Time picker**: see "Time" in the Calendar entry.
+- [x] **Time picker**: see "Time" in the Calendar entry. (Built 2026-10-06; sheet in `docs/sheets/time-picker.md`: an ISO time string; a typed field with readback and slot keys; unavailable slots stay choosable like Calendar's; DatePicker takes `time`. Left: scrubbing a part, SwiftUI ↑/↓, converting zones.)
   - In a popover, or typed by segment; 12 or 24 hour; hour, minute or second granularity; AM/PM before or after.
   - Steps (every 15 minutes), opening hours (`min`/`max`), unavailable slots; a start and end time pair; a time zone label.
   - Now, Clear, and Confirm before applying; localised labels; a form field with validation; date and time together.
-- [ ] **Input OTP** (shadcn): one box per digit for a one-time code; paste fills all of them.
+- [x] **Input OTP** (shadcn): one box per digit for a one-time code; paste fills all of them. (Built 2026-10-06 as `CodeField`; sheet in `docs/sheets/code-input.md`: Base UI's OTP field, one input per slot, autofill on the first; keycaps spring in, paste ripples; a wrong code shakes once and stays; `CodeField.Resend`. Left: SwiftUI edits only at the end; WebOTP.)
 - [ ] **Phone input**: a country picker plus number formatting; E.164 value; a default country; sizes sm, default, lg; disabled.
 - [ ] **Rating**: stars; half stars from decimals; the number shown beside them; editable or read-only; `max`; sizes sm, default, lg.
 - [ ] **Cascader**: a value chosen through nested levels.
