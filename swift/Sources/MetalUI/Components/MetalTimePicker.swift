@@ -235,6 +235,8 @@ struct MetalTimeSlots: View {
     let iso: (Int) -> String
     let isUnavailable: ((String) -> Bool)?
     let choose: (Int) -> Void
+    /// false draws the grid without its scroll view (captures: an ImageRenderer can't draw one).
+    var scrolls = true
     @Environment(\.metalColorway) private var colorway
 
     private func length(_ n: Int) -> String {
@@ -243,31 +245,50 @@ struct MetalTimeSlots: View {
         return h > .zero ? (m % 60 > .zero ? "\(h) h \(m % 60)" : "\(h) h") : "\(m) min"
     }
 
-    var body: some View {
-        let recipe = MetalRecipes.timePicker
-        let columns = Int(recipe.scalar(from == nil ? "slots.columns" : "slots.length-columns"))
-        let gap = recipe.points("slots.gap")
-        let target = chosen ?? slots.min { abs($0 - near) < abs($1 - near) }
-        ScrollViewReader { reader in
-            ScrollView {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: gap), count: Swift.max(1, columns)), spacing: gap) {
-                    ForEach(slots, id: \.self) { s in
-                        let quiet = isUnavailable?(iso(s)) ?? false
-                        MetalButton(from == nil ? show(s) : "\(show(s))  \(length(s))", size: .default) { choose(s) } icon: {
-                            MetalLED(s == chosen ? .live : .off, size: .small)
-                        }
-                        .monospacedDigit()
-                        .foregroundColor(quiet && s != chosen ? colorway.tokens.ink3.color : colorway.tokens.ink.color)
-                        .accessibilityAddTraits(s == chosen ? .isSelected : [])
-                        .accessibilityHint(quiet ? "Unavailable" : "")
-                        .id(s)
-                    }
-                }
-                .padding(recipe.points("self.pad"))
+    /// A slot: the button cap with its lamp; the chosen one stays down in the pressed look (the latch), lamp lit.
+    private func key(_ s: Int) -> some View {
+        let quiet = isUnavailable?(iso(s)) ?? false
+        let recipe = MetalRecipes.button
+        return Button { choose(s) } label: {
+            HStack(spacing: recipe.points("self.gap")) {
+                MetalLED(s == chosen ? .live : .off, size: .small)
+                Text(show(s)).monospacedDigit()
+                    .foregroundStyle(quiet && s != chosen ? colorway.tokens.ink3.color : colorway.tokens.ink.color)
+                if from != nil { Text(length(s)).font(.metal(MetalType.meta)).foregroundStyle(colorway.tokens.ink3.color) }
             }
-            .frame(maxHeight: recipe.points("slots.height"))
-            .accessibilityLabel("\(label), times")
-            .onAppear { if let target { reader.scrollTo(target, anchor: .center) } }
+        }
+        .buttonStyle(MetalButtonStyle())
+        .metalButtonState(s == chosen ? .done : .ready)
+        .focusEffectDisabled()
+        .accessibilityAddTraits(s == chosen ? .isSelected : [])
+        .accessibilityHint(quiet ? "Unavailable" : "")
+        .id(s)
+    }
+
+    /// Every slot, four to a row (two with lengths); a plain grid, at most a day of slots.
+    private var grid: some View {
+        let recipe = MetalRecipes.timePicker
+        let columns = Swift.max(1, Int(recipe.scalar(from == nil ? "slots.columns" : "slots.length-columns")))
+        let gap = recipe.points("slots.gap")
+        return Grid(horizontalSpacing: gap, verticalSpacing: gap) {
+            ForEach(Array(stride(from: 0, to: slots.count, by: columns)), id: \.self) { row in
+                GridRow {
+                    ForEach(slots[row..<Swift.min(row + columns, slots.count)], id: \.self) { s in key(s) }
+                }
+            }
+        }
+        .padding(recipe.points("self.pad"))
+    }
+
+    var body: some View {
+        let target = chosen ?? slots.min { abs($0 - near) < abs($1 - near) }
+        if !scrolls { grid } else {
+        ScrollViewReader { reader in
+            ScrollView { grid }
+                .frame(maxHeight: MetalRecipes.timePicker.points("slots.height"))
+                .accessibilityLabel("\(label), times")
+                .onAppear { if let target { reader.scrollTo(target, anchor: .center) } }
+        }
         }
     }
 }
