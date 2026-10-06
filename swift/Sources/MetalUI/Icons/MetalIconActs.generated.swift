@@ -4118,6 +4118,60 @@ extension MetalIconAct {
             MetalIconActInk(d: "M10.6 7.4L16.2 7.4", parts: [1], stroke: 0.6, fill: .none, opacity: 1.0),
             ]
         ),
+        .thumb: MetalIconAct(
+            duration: 1.006,
+            caption: "The thumb is cocked over the fist, then flicked back up past upright and stands; the fist lets go of it.",
+            parts: [
+            MetalIconActPart(
+                name: "thumb", origin: CGPoint(x: 11.5, y: 9.0),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.55, 0.0, 0.85, 0.45)),
+                    .init(0.1491, x: 0.0, y: 0.4, r: 28.0, sx: 1.0, sy: 1.0, ease: .init(0.16, 0.75, 0.3, 0.95)),
+                    .init(0.2584, x: 0.0, y: -0.6, r: -10.0, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.6292, x: 0.0, y: 0.0441, r: 0.7354, sx: 1.0, sy: 1.0, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "fist", origin: CGPoint(x: 13.1, y: 20.4),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.1491, x: 0.0, y: 0.0, r: 0.0, sx: 1.02, sy: 0.96, ease: .linear),
+                    .init(0.2485, x: 0.0, y: 0.0, r: 0.0, sx: 1.02, sy: 0.96, ease: .init(0.37, 0.0, 0.63, 1.0)),
+                    .init(0.5606, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                ],
+                opacity: [],
+                draw: []
+            ),
+            MetalIconActPart(
+                name: "rays", origin: CGPoint(x: 12.3, y: 3.6),
+                poses: [
+                    .init(0.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.5, sy: 0.5, ease: .linear),
+                    .init(0.2584, x: 0.0, y: 0.0, r: 0.0, sx: 0.5, sy: 0.5, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.2982, x: 0.0, y: 0.0, r: 0.0, sx: 1.0, sy: 1.0, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4771, x: 0.0, y: 0.0, r: 0.0, sx: 1.3, sy: 1.3, ease: .linear),
+                    .init(1.0, x: 0.0, y: 0.0, r: 0.0, sx: 0.5, sy: 0.5, ease: .linear),
+                ],
+                opacity: [
+                    .init(0.0, 0.0, ease: .linear),
+                    .init(0.2584, 0.0, ease: .init(0.22, 1.0, 0.36, 1.0)),
+                    .init(0.2982, 0.9, ease: .init(0.4, 0.0, 0.2, 1.0)),
+                    .init(0.4771, 0.0, ease: .linear),
+                    .init(1.0, 0.0, ease: .linear),
+                ],
+                draw: []
+            ),
+            ],
+            ink: [
+            MetalIconActInk(d: "M4.2 9.8L4.2 19.6", parts: [], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M9.2 9L17 9C18.3255 9 19.4 10.0745 19.4 11.4L19.4 18C19.4 19.3255 18.3255 20.4 17 20.4L9.2 20.4C7.8745 20.4 6.8 19.3255 6.8 18L6.8 11.4C6.8 10.0745 7.8745 9 9.2 9Z", parts: [1], stroke: 1.0, fill: .duotone(0.12), opacity: 1.0),
+            MetalIconActInk(d: "M9.2 9L10.8 4.8C11.1555 4.0859 11.9386 3.6909 12.7242 3.8295C13.5098 3.9682 14.1104 4.6073 14.2 5.4L13.8 9", parts: [0], stroke: 1.0, fill: .none, opacity: 1.0),
+            MetalIconActInk(d: "M9.7 3.9L8.7 3.3M14.9 3.9L15.9 3.3", parts: [2], stroke: 0.7, fill: .none, opacity: 1.0),
+            ]
+        ),
         .external: MetalIconAct(
             duration: 0.596,
             caption: "The arrow is drawn back into the frame and thrown out of its open corner; the frame gives behind it.",

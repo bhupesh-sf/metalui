@@ -66,6 +66,7 @@ export const ICONS = [
   { name: 'bell', cat: 'Status', label: 'Notifications' },
   { name: 'palette', cat: 'Tools', label: 'Appearance' },
   { name: 'copy', cat: 'Actions', label: 'Copy' },
+  { name: 'thumb', cat: 'Actions', label: 'Good · Feedback' },
   { name: 'external', cat: 'Actions', label: 'Open elsewhere · External' },
   { name: 'settings', cat: 'Tools', label: 'Settings' },
   { name: 'filter', cat: 'Tools', label: 'Filter' },

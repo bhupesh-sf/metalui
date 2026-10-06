@@ -63,6 +63,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
     case bell = "bell"
     case palette = "palette"
     case copy = "copy"
+    case thumb = "thumb"
     case external = "external"
     case settings = "settings"
     case filter = "filter"
@@ -143,6 +144,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .bell: return "Notifications"
         case .palette: return "Appearance"
         case .copy: return "Copy"
+        case .thumb: return "Good · Feedback"
         case .external: return "Open elsewhere · External"
         case .settings: return "Settings"
         case .filter: return "Filter"
@@ -223,6 +225,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .bell: return .status
         case .palette: return .tools
         case .copy: return .actions
+        case .thumb: return .actions
         case .external: return .actions
         case .settings: return .tools
         case .filter: return .tools
@@ -304,6 +307,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .bell: return 0.12
         case .palette: return 0.12
         case .copy: return 0.12
+        case .thumb: return 0.12
         case .external: return 0.1
         case .settings: return 0.12
         case .filter: return 0.12
@@ -385,6 +389,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .bell: return nil
         case .palette: return nil
         case .copy: return nil
+        case .thumb: return nil
         case .external: return nil
         case .settings: return nil
         case .filter: return nil
@@ -466,6 +471,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .bell: return false
         case .palette: return false
         case .copy: return false
+        case .thumb: return false
         case .external: return false
         case .settings: return false
         case .filter: return false
@@ -547,6 +553,7 @@ public enum MetalIconName: String, CaseIterable, Sendable {
         case .bell: return 1.85
         case .palette: return 1.85
         case .copy: return 1.85
+        case .thumb: return 1.85
         case .external: return 1.85
         case .settings: return 1.85
         case .filter: return 1.85

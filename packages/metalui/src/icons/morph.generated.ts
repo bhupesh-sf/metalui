@@ -11,7 +11,7 @@ export type MorphRelationSource = readonly [kind: 'behind' | 'inside', part: num
 export type MorphPartSource = readonly [path: string, weight: number, tint: number, solid: number, opacity: number, relations?: readonly MorphRelationSource[]];
 
 /** The icons that morph: every wire-based glyph of the set. */
-export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette", "copy", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "info", "warning", "coin", "sun", "moon", "folder", "folder-open", "sidebar"] as const;
+export const MORPH_NAMES = ["select", "text", "note", "image", "link", "draw", "pen", "marker", "line", "arrow", "rectangle", "ellipse", "eraser", "layout", "tidy", "search", "zoom-in", "zoom-out", "fit", "duplicate", "send-away", "trash", "group", "ungroup", "pin", "board", "share", "undo", "redo", "more", "close", "check", "synced", "offline", "sync-error", "capture", "paste", "plus", "minus", "chevron", "region", "task", "tag", "calendar", "document", "clock", "me", "seed", "send", "stop", "attach", "retry", "save", "download", "upload", "person", "bell", "palette", "copy", "thumb", "external", "settings", "filter", "sort", "eye", "eye-off", "lock", "info", "warning", "coin", "sun", "moon", "folder", "folder-open", "sidebar"] as const;
 export type MorphIconName = (typeof MORPH_NAMES)[number];
 
 export const selectMorph: readonly MorphPartSource[] = [
@@ -367,6 +367,12 @@ export const copyMorph: readonly MorphPartSource[] = [
   ["M10.8 4.4L16 4.4C17.33 4.4 18.4 5.47 18.4 6.8L18.4 14.8C18.4 16.13 17.33 17.2 16 17.2L10.8 17.2C9.47 17.2 8.4 16.13 8.4 14.8L8.4 6.8C8.4 5.47 9.47 4.4 10.8 4.4Z", 1.7, 0.12, 0, 1],
 ];
 
+export const thumbMorph: readonly MorphPartSource[] = [
+  ["M4.2 9.8L4.2 19.6", 1.7, 0, 0, 1],
+  ["M9.2 9L17 9C18.33 9 19.4 10.07 19.4 11.4L19.4 18C19.4 19.33 18.33 20.4 17 20.4L9.2 20.4C7.87 20.4 6.8 19.33 6.8 18L6.8 11.4C6.8 10.07 7.87 9 9.2 9Z", 1.7, 0.12, 0, 1],
+  ["M9.2 9L10.8 4.8C11.16 4.09 11.94 3.69 12.72 3.83C13.51 3.97 14.11 4.61 14.2 5.4L13.8 9", 1.7, 0, 0, 1],
+];
+
 export const externalMorph: readonly MorphPartSource[] = [
   ["M6.9 7.5L14.1 7.5C15.43 7.5 16.5 8.57 16.5 9.9L16.5 17.1C16.5 18.43 15.43 19.5 14.1 19.5L6.9 19.5C5.57 19.5 4.5 18.43 4.5 17.1L4.5 9.9C4.5 8.57 5.57 7.5 6.9 7.5Z", 1.7, 0.1, 0, 1, [["behind",1,1.85]]],
   ["M11.4 12.6L19.4 4.6", 1.7, 0, 0, 1],
@@ -519,6 +525,7 @@ export const MORPH_PARTS: Record<MorphIconName, readonly MorphPartSource[]> = {
   "bell": bellMorph,
   "palette": paletteMorph,
   "copy": copyMorph,
+  "thumb": thumbMorph,
   "external": externalMorph,
   "settings": settingsMorph,
   "filter": filterMorph,
