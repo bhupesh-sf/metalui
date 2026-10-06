@@ -74,7 +74,7 @@ if (process.argv.includes('--gate')) {
   // Table, ToolStrip, Card, Link (2026-10-06): one module per glyph, so they ship the glyphs they draw, not the catalog
   // (was 122, 95, 79, 67). Combobox and QuickEdit take the glyph itself (its record and morph parts), not a name, so they
   // no longer ship the catalog and the morph family (was 111.9 and 37.3; 81.4 and 31.5 measured).
-  const CEILING = { Button: 10, Switch: 12, Led: 6, Well: 6, Surface: 6, Table: 94, Combobox: 82, QuickEdit: 32, ToolStrip: 72, Card: 55, Link: 44 };
+  const CEILING = { Button: 10, Switch: 12, Led: 6, Well: 6, Surface: 6, Table: 94, Combobox: 82, QuickEdit: 32, ToolStrip: 72, Card: 55, Link: 44, Filters: 105 };
   const over = Object.entries(CEILING).filter(([n, kb]) => !perExport[n] || perExport[n].gzip / 1024 > kb);
   if (over.length) {
     console.error(`\nbench-bundle gate: ${over.map(([n, kb]) => `${n} ${perExport[n] ? (perExport[n].gzip / 1024).toFixed(1) : 'missing'} KB gzip > ${kb}`).join(', ')}`);

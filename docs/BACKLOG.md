@@ -371,7 +371,7 @@ Building real screens shows what the components lack. Each was worked around ins
 
 ## Docs pages without a Usage section
 
-- [ ] `e2e/docs-usage.spec.ts` never checked a page until 2026-10-06 (it read `nav a`; the side nav is an `aside`). It now does, and lists 20 known gaps: 18 component pages with no Usage section, Swatch's Usage with no import line, and Selection frame (needs the surface-field build). Give each page its Usage and remove it from the list.
+- [x] `e2e/docs-usage.spec.ts` never checked a page until 2026-10-06 (it read `nav a`; the side nav is an `aside`). It now does, and lists 20 known gaps: 18 component pages with no Usage section, Swatch's Usage with no import line, and Selection frame (needs the surface-field build). Give each page its Usage and remove it from the list. (Done 2026-10-06: 19 pages; only Selection frame stays listed until surface-field builds here.)
 
 ## Tests that fail only under a full parallel run
 
@@ -587,7 +587,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
   - Levels loaded on demand; virtualised long lists.
 - [x] **Autocomplete**: free text with suggestions, where the value isn't limited to the list. A thin wrapper on Base UI Autocomplete. (Built 2026-10-06; sheet in `docs/sheets/autocomplete.md`: a separate component whose value is the text; shares Combobox's plate, rows, groups and empties through new exports; inline completion after the caret, Tab takes it. 70 KB gzip, mostly Base UI.)
   - Highlight the first match; a clear button, a trigger button, or both; groups; async search with a loading state; sizes; in a form; disabled.
-- [ ] **Signature pad**: a form field that captures a signature. `BrushCursor` and `DrawPicks` are canvas tools, not a field.
+- [x] **Signature pad**: a form field that captures a signature. `BrushCursor` and `DrawPicks` are canvas tools, not a field. (Built 2026-10-06; sheet in `docs/sheets/signature-pad.md`: the form posts SVG; smoothing on lift; "Type instead" first for keyboard and screen readers; no legal claims; PNG/JPEG via `signatureToImage`. Left: upload a picture, SwiftUI pressure and palm rejection.)
   - Undo and redo; draw or type the name; stylus with pressure and palm rejection (`sizing`: auto, pressure, velocity); smoothing and min/max width.
   - Export PNG, JPEG, SVG or the strokes as JSON; `name`, `required` and validation in a form.
   - In a dialog, on an agreement card, initials per clause, proof of delivery.
@@ -607,7 +607,7 @@ Each entry lists the variations ReUI shows on its page (checked 2026-10-05); tak
 - [x] **Combobox**: groups, async search with a loading state, and a trigger button beside the clear mark (from ReUI's Autocomplete). See "Variation sheets: Combobox".
 - [x] **Field → input group** (shadcn; see "Variation sheets: Field"): text attached to the input (a `https://` prefix, a `.com` suffix) and buttons inside the field.
 - [x] **Collapsible** (shadcn): a standalone show/hide wrapper. (Built 2026-10-06; sheet in `docs/sheets/collapsible.md`. Height never animates: the panel is uncovered from its top edge and what follows travels by transform (`useTravelAfter` in `motion/rows.ts`). Accordion takes the set's chevron; moving it onto the shared reveal is Later. A plate around it resizes in one step.) `Accordion` and `SplitPane` collapse, but nothing does on its own.
-- [ ] **Icon tile**: probably `Glyph` in a `well`, as a documented recipe.
+- [x] **Icon tile**: probably `Glyph` in a `well`, as a documented recipe. (Built 2026-10-06 as the `IconTile` part; sheet in `docs/sheets/icon-tile.md`: sunk or raised, compact/regular/large/hero, square or round, a glyph or 1–3 letters, a status LED on the rim. Left: Alert's window and EmptyState's well should draw with it; `glyph/meta.json` points at a missing `MetalGlyph.swift`.)
   - Looks: outline, elevated, soft, solid, framed; sizes xs to xl; square or round; tones and brand colours.
   - Holds an icon, initials or short text; a status overlay; interactive; used in a list row, a feature card and an empty state.
 - [x] **Code block**: `CodeCard` lives only in the docs; decide whether it ships in the package. (Built 2026-10-06 as `CodeBlock`, a Component; sheet in `docs/sheets/code-block.md`. The code card stays a separate Object but shares its tint and diff; no highlighter in the package (the host passes `html`); the docs' `Code` renders it. Left: the docs' Source/Install tabs aren't linked to their code; SwiftUI picks lines by click only; folding is Later.)
@@ -630,12 +630,12 @@ Moved to "AI components" below (shadcn's Bubble, Message, Message scroller and M
 - [x] **Timeline**: a vertical list of events in order. `MemoryScrubber` looks through the past; this is not that. (Built 2026-10-06 as an Object; sheet in `docs/sheets/timeline.md`: states use the LED meanings, running waits with the Spinner's ring, the now marker comes from the states, lamps gesture only on change. Left: horizontal, day groups and a fold (Later); move the relative-time wording shared with Table into one module.)
   - Dates on the left; custom indicators or icons; alternating sides; horizontal with indicators above or below; an active step.
   - Uses: a roadmap, an activity feed, an order's status, git activity, milestones, CI/CD steps, deployment history.
-- [ ] **Filters**: a bar for building filters, for example "Status is Open".
+- [x] **Filters**: a bar for building filters, for example "Status is Open". (Built 2026-10-06; sheet in `docs/sheets/filters.md`: separate from FilterBar (a Place that names a question; `describeFilters()` gives it its sentence); each condition reads as a sentence; dates use is/before/after/between with Apply; `filterRows`. 103 KB gzip, ceiling 105. Left: host editors per field, nested groups (Later).)
   - Basic (a row of chips for a toolbar) or advanced (nested conditions, reorderable, inline in a sidebar).
   - Field types: text, number, range, select, multiselect, boolean; nested fields.
   - Operators: is, contains, starts and ends with, empty, is any of, is none of, greater and less than, between.
   - Searchable options, chosen ones pinned to the top, an option that clears the rest, custom editors (toggles, radios, checkboxes); clear all; filters a data grid.
-- [ ] **Icon stack**: layered isometric icons for small illustrations (empty states, onboarding, feature cards, status panels); sizes and tones. Check against `BlockSilhouette` and `EmptyState` first.
+- [x] **Icon stack**: layered isometric icons for small illustrations (empty states, onboarding, feature cards, status panels); sizes and tones. Check against `BlockSilhouette` and `EmptyState` first. (Dropped 2026-10-06, see `docs/sheets/icon-tile.md`: EmptyState and a hero IconTile do its jobs; isometric art would need a second way of drawing icons.)
 
 Not needed as components: Aspect Ratio (the CSS `aspect-ratio` property), Native Select (a `<select>` on a `well`), Typography (`Label`). Direction (a right-to-left provider) only if the library commits to right-to-left text.
 
