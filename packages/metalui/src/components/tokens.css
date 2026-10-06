@@ -1369,7 +1369,7 @@
   --mu-r-card-slot-height: 120px;
   --mu-r-card-slot-gap: 6px;
   --mu-r-card-slot-glyph: 16px;
-  /* attachment: the raised surface (recipe surface raise-sm); the well; the progress fill; Transitions T5b (land) and T9 (leave) */
+  /* attachment: the raised surface (recipe surface raise-sm); the well; the progress fill; Progress's ring; the avatar photo's fade; Transitions T5b (land) and T9 (leave) */
   --mu-r-attachment-self-height: 52px;
   --mu-r-attachment-self-pad: 8px;
   --mu-r-attachment-self-gap: 10px;
@@ -1381,6 +1381,22 @@
   --mu-r-attachment-type-radius: 10px;
   --mu-r-attachment-track-height: 3px;
   --mu-r-attachment-remove-glyph: 10px;
+  --mu-r-attachment-tile-pad: 4px;
+  --mu-r-attachment-tile-gap: 6px;
+  --mu-r-attachment-tile-radius: 14px;
+  --mu-r-attachment-tile-window-radius: 10px;
+  --mu-r-attachment-tile-caption-pad: 4px;
+  --mu-r-attachment-tile-caption-gap: 1px;
+  --mu-r-attachment-tile-min-width: 112px;
+  --mu-r-attachment-tile-dim: 0.45;
+  --mu-r-attachment-tile-disc: 28px;
+  --mu-r-attachment-tile-cap: 20px;
+  --mu-r-attachment-tile-inset: 6px;
+  --mu-r-attachment-compact-size: 52px;
+  --mu-r-attachment-compact-pad: 3px;
+  --mu-r-attachment-compact-window-radius: 11px;
+  --mu-r-attachment-compact-cap: 18px;
+  --mu-r-attachment-compact-inset: 3px;
   /* table: the label's engraving; the rule; the menu's row highlight (the guide); the row's rail; the checkbox (row size); LED, avatar, chip, meter, sparkline, skeleton; the frost; the settle and part springs */
   --mu-r-table-row-height: 40px;
   --mu-r-table-row-pad-x: 12px;
